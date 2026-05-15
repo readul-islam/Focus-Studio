@@ -1,48 +1,37 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { usePermissions } from '@/hooks/usePermissions';
+import useUser from '@/hooks/useUser';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  Home,
-  Users,
-  Users2,
-  FolderOpen,
+  Activity,
+  BarChart3,
   BookOpen,
   Calendar,
-  DollarSign,
-  BarChart3,
-  Settings,
-  ChevronRight,
-  ChevronLeft,
-  ChevronUp,
-  MoreHorizontal,
-  Mail,
   CheckSquare,
-  Activity,
-  User,
-  Clock,
-  LogOut,
-  Briefcase,
+  ChevronRight,
+  DollarSign,
+  FolderOpen,
+  Home,
+  Mail,
+  MoreHorizontal,
+  Settings,
+  Users,
+  Users2
 } from 'lucide-react';
-import useUser from '@/hooks/useUser';
-import { usePermissions } from '@/hooks/usePermissions';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from './ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
-import { useMediaQuery } from '@/hooks/use-media-query';
-import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
 
 // Sidebar dimension
 const COLLAPSED_WIDTH = 64;
@@ -330,11 +319,11 @@ export function AppSidebar() {
             <div className="flex items-center flex-1 min-w-0">
               <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
                 <Image
-                  width={100}
-                  height={100}
+                  width={35}
+                  height={35}
                   src="/brand/Logo.png"
                   alt="Focuspilot"
-                  className="w-8 h-8 object-contain"
+                  className="w-8 h-8 pl-1 object-contain"
                 />
               </div>
               <motion.span

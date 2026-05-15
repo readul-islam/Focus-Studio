@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { Loader2, Mail, ArrowLeft, RefreshCw, CheckCircle2 } from 'lucide-react';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { fetchData, postData } from '@/lib/Api';
 import { gooeyToast as toast } from 'goey-toast';
+import { ArrowLeft, CheckCircle2, Loader2, Mail, RefreshCw } from 'lucide-react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 
 const RESEND_COOLDOWN = 60;
 
@@ -157,13 +157,13 @@ export default function VerifyOtpPage() {
           <div className="flex items-center gap-2.5 mb-10">
             <Image
               src="/brand/Logo.png"
-              alt="TechStyles"
+              alt="Focuspilot"
               width={32}
               height={32}
               className="object-contain"
             />
             <span className="text-base font-semibold text-gray-900 tracking-tight">
-              TechStyles
+            Focuspilot
             </span>
           </div>
 

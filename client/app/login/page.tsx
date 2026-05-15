@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, Suspense } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useLogin } from '@/hooks/useLogin';
 import { postData } from '@/lib/Api';
-import { Loader2, Eye, EyeOff, Mail, Lock, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowRight, CheckCircle2, Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useState } from 'react';
 
 function LoginContent() {
   const [email, setEmail] = useState('');
@@ -70,14 +71,37 @@ function LoginContent() {
           <div className="flex items-center gap-2 mb-10">
             <Image
               src="/brand/Logo.png"
-              alt="TechStyles"
-              width={44}
-              height={44}
+              alt="Focuspilot"
+              width={35}
+              height={35}
               className="object-contain"
             />
-            <span className="text-base font-semibold text-gray-900 tracking-tight">
-              Focuspilot
-            </span>
+            <motion.span
+              className="relative inline-flex flex-col items-stretch select-none pt-2"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <span className="text-[1.0625rem] font-semibold tracking-[-0.042em] leading-none text-gray-900">
+                Focus
+                <span className="font-medium text-gray-500">pilot</span>
+              </span>
+              <svg
+                className="mt-1 h-[5px] w-full shrink-0 text-clay-500/55"
+                viewBox="0 0 104 7"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden
+              >
+                <path
+                  d="M2 5.25C22 1.5 42 1.5 52 3.25C62 5 82 5 102 1.75"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </svg>
+            </motion.span>
           </div>
 
           {!isResetMode ? (

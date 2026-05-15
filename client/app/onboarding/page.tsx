@@ -1,17 +1,29 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Building2, Mail, Phone, Upload, ArrowRight, ArrowLeft,
-  Check, Loader2, UserPlus, X, Sparkles, Briefcase, PenLine, LayoutList, Palette,
-} from 'lucide-react';
-import { postData, patchFormData } from '@/lib/Api';
-import { gooeyToast as toast } from 'goey-toast';
 import useUser from '@/hooks/useUser';
+import { patchFormData, postData } from '@/lib/Api';
 import { useQueryClient } from '@tanstack/react-query';
+import { AnimatePresence, motion } from 'framer-motion';
+import { gooeyToast as toast } from 'goey-toast';
+import {
+  ArrowLeft,
+  ArrowRight,
+  Briefcase,
+  Building2,
+  Check,
+  LayoutList,
+  Loader2,
+  Mail,
+  Palette,
+  PenLine,
+  Phone,
+  Sparkles,
+  Upload,
+  UserPlus, X,
+} from 'lucide-react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -521,13 +533,13 @@ export default function OnboardingPage() {
         <div className="flex items-center gap-2.5">
           <Image
             src="/brand/Logo.png"
-            alt="TechStyles"
+            alt="Focuspilot"
             width={28}
             height={28}
             className="object-contain"
           />
           <span className="text-sm font-semibold text-gray-900 tracking-tight">
-            TechStyles
+            Focuspilot
           </span>
         </div>
         {step < 4 && (

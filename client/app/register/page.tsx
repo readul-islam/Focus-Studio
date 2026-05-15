@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { usePost } from '@/hooks/usePost';
-import { Loader2, Eye, EyeOff, Mail, Lock, User, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Eye, EyeOff, Loader2, Lock, Mail, User } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface FormData {
   name: string;
@@ -155,13 +155,13 @@ export default function Register() {
           <div className="flex items-center gap-2.5 mb-10">
             <Image
               src="/brand/Logo.png"
-              alt="TechStyles"
+              alt="Focuspilot"
               width={32}
               height={32}
               className="object-contain"
             />
             <span className="text-base font-semibold text-gray-900 tracking-tight">
-              TechStyles
+            Focuspilot
             </span>
           </div>
 

@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { postData } from '@/lib/Api';
+import { gooeyToast as toast } from 'goey-toast';
+import { ArrowRight, CheckCircle2, Eye, EyeOff, Loader2, Lock, XCircle } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Loader2, Eye, EyeOff, Lock, CheckCircle2, XCircle, ArrowRight } from 'lucide-react';
-import { gooeyToast as toast } from 'goey-toast';
-import { postData } from '@/lib/Api';
+import { Suspense, useEffect, useState } from 'react';
 
 const STRENGTH_CHECKS = [
   { key: 'length',    label: 'At least 8 characters',    test: (p: string) => p.length >= 8 },
@@ -154,13 +154,13 @@ function ResetPasswordContent() {
             <div className="flex items-center gap-2 mb-10">
               <Image
                 src="/brand/Logo.png"
-                alt="TechStyles"
+                alt="Focuspilot"
                 width={32}
                 height={32}
                 className="object-contain"
               />
               <span className="text-base font-semibold text-gray-900 tracking-tight">
-                TechStyles
+              Focuspilot
               </span>
             </div>
             <div className="flex flex-col items-center gap-4 py-6">
@@ -202,13 +202,13 @@ function ResetPasswordContent() {
           <div className="flex items-center gap-2 mb-10">
             <Image
               src="/brand/Logo.png"
-              alt="TechStyles"
+              alt="Focuspilot"
               width={32}
               height={32}
               className="object-contain"
             />
             <span className="text-base font-semibold text-gray-900 tracking-tight">
-              TechStyles
+            Focuspilot
             </span>
           </div>
 
