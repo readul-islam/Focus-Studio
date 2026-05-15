@@ -5,7 +5,13 @@ import Userback from '@userback/widget';
 
 const UserbackWidget = () => {
   useEffect(() => {
-    const token = 'A-toB4qf6TlycGzt55mrEgeMRHe';
+    const token =
+      typeof process.env.NEXT_PUBLIC_USERBACK_TOKEN === 'string' &&
+      process.env.NEXT_PUBLIC_USERBACK_TOKEN.length > 0
+        ? process.env.NEXT_PUBLIC_USERBACK_TOKEN
+        : undefined;
+    if (!token) return;
+
     const options = {
       user_data: {
         id: '123456',
@@ -16,7 +22,9 @@ const UserbackWidget = () => {
       },
     };
 
-    Userback(token, options).then(userback_instance => {});
+    Userback(token, options).catch(() => {
+      /* Invalid token/project or Userback outage — avoid crashing the Next.js overlay */
+    });
   }, []);
 
   return null;

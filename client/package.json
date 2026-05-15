@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "node scripts/generate-version.js && next build",
+    "predev": "node scripts/generate-version.js",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start"

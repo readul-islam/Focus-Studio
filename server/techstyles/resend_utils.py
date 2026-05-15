@@ -1,10 +1,64 @@
-from django.core.mail import EmailMultiAlternatives
+import base64
+
+import requests
 from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 
 FROM_EMAIL = f"TechStyles <{settings.DEFAULT_FROM_EMAIL}>"
 
+RESEND_API_URL = "https://api.resend.com/emails"
 
-def _send(subject: str, from_email: str, to: list[str], html: str, plain: str, cc: list[str] = None, attachments: list[dict] = None) -> dict:
+
+def _send_via_resend(
+    subject: str,
+    from_email: str,
+    to: list[str],
+    html: str,
+    plain: str,
+    cc: list[str] | None = None,
+    attachments: list[dict] | None = None,
+) -> dict:
+    payload: dict = {
+        "from": from_email,
+        "to": to,
+        "subject": subject,
+        "html": html,
+        "text": plain,
+    }
+    if cc:
+        payload["cc"] = cc
+    if attachments:
+        attach_list = []
+        for att in attachments:
+            content = att["content"]
+            if isinstance(content, bytes):
+                content = base64.b64encode(content).decode("ascii")
+            attach_list.append({"filename": att["filename"], "content": content})
+        payload["attachments"] = attach_list
+
+    resp = requests.post(
+        RESEND_API_URL,
+        json=payload,
+        headers={
+            "Authorization": f"Bearer {settings.RESEND_API_KEY}",
+            "Content-Type": "application/json",
+        },
+        timeout=60,
+    )
+    if not resp.ok:
+        raise RuntimeError(f"Resend API error {resp.status_code}: {resp.text}")
+    return resp.json() if resp.text else {}
+
+
+def _send_smtp(
+    subject: str,
+    from_email: str,
+    to: list[str],
+    html: str,
+    plain: str,
+    cc: list[str] | None = None,
+    attachments: list[dict] | None = None,
+) -> dict:
     msg = EmailMultiAlternatives(subject=subject, body=plain, from_email=from_email, to=to, cc=cc or [])
     msg.attach_alternative(html, "text/html")
     if attachments:
@@ -12,6 +66,12 @@ def _send(subject: str, from_email: str, to: list[str], html: str, plain: str, c
             msg.attach(att["filename"], att["content"], att.get("content_type", "application/octet-stream"))
     msg.send()
     return {}
+
+
+def _send(subject: str, from_email: str, to: list[str], html: str, plain: str, cc: list[str] = None, attachments: list[dict] = None) -> dict:
+    if getattr(settings, "RESEND_API_KEY", None):
+        return _send_via_resend(subject, from_email, to, html, plain, cc=cc, attachments=attachments)
+    return _send_smtp(subject, from_email, to, html, plain, cc=cc, attachments=attachments)
 
 
 def send_registration_welcome_email(to_email: str, login_url: str, html_message: str, plain_message: str) -> dict:
