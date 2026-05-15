@@ -2,12 +2,12 @@ import { HelpArticle } from '../types';
 
 export const settingsStudioArticles: HelpArticle[] = [
   {
-    slug: 'general-settings',
-    title: 'General Settings',
-    description: 'Studio name, address, currency, and regional settings',
-    category: 'settings',
+    slug: "general-settings",
+    title: "General Settings",
+    description: "Studio name, address, currency, and regional settings",
+    category: "settings",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# General Settings
 
 Studio General Settings control your company profile and default preferences.
@@ -20,7 +20,7 @@ Go to **Settings** → **Studio** → **General**.
 
 ### Studio Name
 
-Your company or practise name. Displayed throughout Techstyles and on invoices.
+Your company or practise name. Displayed throughout Focuspilot and on invoices.
 
 ### Legal Name
 
@@ -106,20 +106,20 @@ Changes affect all team members and new transactions.
 - **Set correct currency** — Changing later is complex
 - **Update tax rate annually** — If your local rate changes
 
-General settings establish your studio's identity in Techstyles — set them up carefully at the start.`,
-    screenshots: ['settings/general-settings.png'],
-    related: ['setting-up-studio', 'branding', 'finance-settings'],
+General settings establish your studio's identity in Focuspilot — set them up carefully at the start.`,
+    screenshots: ["settings/general-settings.png"],
+    related: ["setting-up-studio", "branding", "finance-settings"],
   },
   {
-    slug: 'branding',
-    title: 'Branding',
-    description: 'Logo, colours, and email signature customization',
-    category: 'settings',
+    slug: "branding",
+    title: "Branding",
+    description: "Logo, colours, and email signature customization",
+    category: "settings",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Branding
 
-Customize Techstyles with your studio's brand identity.
+Customize Focuspilot with your studio's brand identity.
 
 ## Accessing Branding Settings
 
@@ -168,7 +168,7 @@ Set your primary brand colour:
 
 ## Email Signature
 
-Customize the signature for emails sent from Techstyles:
+Customize the signature for emails sent from Focuspilot:
 
 - Invoice delivery emails
 - Proposal emails
@@ -218,17 +218,21 @@ Select font pairing for documents:
 - **Brand consistently** — Use same colours across all materials
 - **Professional signature** — Keep it concise and informative
 
-Your branding makes Techstyles feel like your studio — invest in setting it up well.`,
-    screenshots: ['settings/branding-settings.png', 'settings/logo-upload.png', 'settings/brand-colours.png'],
-    related: ['general-settings', 'templates', 'creating-invoice'],
+Your branding makes Focuspilot feel like your studio — invest in setting it up well.`,
+    screenshots: [
+      "settings/branding-settings.png",
+      "settings/logo-upload.png",
+      "settings/brand-colours.png",
+    ],
+    related: ["general-settings", "templates", "creating-invoice"],
   },
   {
-    slug: 'finance-settings',
-    title: 'Finance Settings',
-    description: 'Tax rates, payment terms, and invoice defaults',
-    category: 'settings',
+    slug: "finance-settings",
+    title: "Finance Settings",
+    description: "Tax rates, payment terms, and invoice defaults",
+    category: "settings",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Finance Settings
 
 Configure default settings for invoices, purchase orders, and financial transactions.
@@ -360,16 +364,19 @@ Enable **Multi-Currency** to allow different currencies per transaction:
 - **Consistent tax rate** — Update if your local rate changes
 
 Finance settings streamline your invoicing workflow — configure them thoughtfully.`,
-    screenshots: ['settings/finance-settings.png', 'settings/invoice-numbering.png'],
-    related: ['general-settings', 'creating-invoice', 'purchase-orders'],
+    screenshots: [
+      "settings/finance-settings.png",
+      "settings/invoice-numbering.png",
+    ],
+    related: ["general-settings", "creating-invoice", "purchase-orders"],
   },
   {
-    slug: 'team-management',
-    title: 'Team Management',
-    description: 'Adding, removing members, and managing roles',
-    category: 'settings',
+    slug: "team-management",
+    title: "Team Management",
+    description: "Adding, removing members, and managing roles",
+    category: "settings",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Team Management
 
 Manage your studio team from the Team Management settings page.
@@ -471,19 +478,19 @@ Click any team member to see:
 - **Communicate changes** — Let team know if roles change
 
 Team management keeps your studio secure and organised — review it regularly.`,
-    screenshots: ['settings/team-management.png', 'settings/change-role.png'],
-    related: ['inviting-team', 'roles-permissions', 'team-overview'],
+    screenshots: ["settings/team-management.png", "settings/change-role.png"],
+    related: ["inviting-team", "roles-permissions", "team-overview"],
   },
   {
-    slug: 'integrations',
-    title: 'Integrations',
-    description: 'Connecting Xero, Gmail, and other tools',
-    category: 'settings',
+    slug: "integrations",
+    title: "Integrations",
+    description: "Connecting Xero, Gmail, and other tools",
+    category: "settings",
     readTime: 5,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Integrations
 
-Connect Techstyles with other tools you use to sync data and automate workflows.
+Connect Focuspilot with other tools you use to sync data and automate workflows.
 
 ## Accessing Integrations
 
@@ -495,7 +502,7 @@ Go to **Settings** → **Studio** → **Integrations**.
 
 Accounting software integration:
 
-- **Sync Invoices** — Invoices created in Techstyles sync to Xero
+- **Sync Invoices** — Invoices created in Focuspilot sync to Xero
 - **Sync Contacts** — Contacts sync between systems
 - **Sync Payments** — Payment status updates
 
@@ -503,9 +510,9 @@ Accounting software integration:
 
 1. Click **Connect Xero**
 2. Log into your Xero account
-3. Authorize Techstyles
+3. Authorize Focuspilot
 4. Select sync preferences:
-   - One-way (Techstyles → Xero) or two-way
+   - One-way (Focuspilot → Xero) or two-way
    - What to sync (invoices, contacts, payments)
 5. Save
 
@@ -519,21 +526,21 @@ Click **Disconnect** to revoke access. Historical synced data remains in Xero.
 
 Email integration:
 
-- **Read emails** — View client emails in Techstyles Inbox
-- **Send from Techstyles** — Send emails from Techstyles using your Gmail
+- **Read emails** — View client emails in Focuspilot Inbox
+- **Send from Focuspilot** — Send emails from Focuspilot using your Gmail
 - **Link emails to projects** — Associate emails with projects
 
 #### Connecting Gmail
 
 1. Click **Connect Gmail**
 2. Log into your Google account
-3. Authorize Techstyles to access Gmail
+3. Authorize Focuspilot to access Gmail
 4. Choose sync options:
    - Sync all email or specific labels
    - Auto-link emails to projects (by client email)
 5. Save
 
-Emails appear in your Techstyles Inbox.
+Emails appear in your Focuspilot Inbox.
 
 #### Disconnecting Gmail
 
@@ -541,7 +548,7 @@ Click **Disconnect** to revoke access.
 
 ### Google Calendar
 
-Sync Techstyles calendar with Google Calendar:
+Sync Focuspilot calendar with Google Calendar:
 
 - **Two-way sync** — Events sync between systems
 - **Team calendars** — Sync team member calendars
@@ -553,7 +560,7 @@ Sync Techstyles calendar with Google Calendar:
 3. Choose calendars to sync
 4. Save
 
-Techstyles events appear in Google Calendar and vice versa.
+Focuspilot events appear in Google Calendar and vice versa.
 
 ### QuickBooks (Coming Soon)
 
@@ -577,7 +584,7 @@ See API documentation at docs.techstyles.com.
 
 ## Webhook Setup
 
-Receive webhooks for Techstyles events:
+Receive webhooks for Focuspilot events:
 
 1. Go to **Integrations** → **Webhooks**
 2. Click **Add Webhook**
@@ -597,17 +604,21 @@ Your webhook endpoint receives POST requests for selected events.
 - **Use the API** — Automate repetitive workflows with custom integrations
 - **Secure API keys** — Don't share API keys publicly
 
-Integrations extend Techstyles into your existing workflow — use them to save time.`,
-    screenshots: ['settings/integrations.png', 'settings/xero-connect.png', 'settings/gmail-connect.png'],
-    related: ['creating-invoice', 'inbox', 'calendar'],
+Integrations extend Focuspilot into your existing workflow — use them to save time.`,
+    screenshots: [
+      "settings/integrations.png",
+      "settings/xero-connect.png",
+      "settings/gmail-connect.png",
+    ],
+    related: ["creating-invoice", "inbox", "calendar"],
   },
   {
-    slug: 'templates',
-    title: 'Templates',
-    description: 'Document and email templates',
-    category: 'settings',
+    slug: "templates",
+    title: "Templates",
+    description: "Document and email templates",
+    category: "settings",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Templates
 
 Create reusable templates for proposals, invoices, emails, and other documents.
@@ -652,7 +663,7 @@ Edit in **Settings** → **Studio** → **Branding** and **Finance**.
 
 ### Email Templates
 
-Customize emails sent from Techstyles:
+Customize emails sent from Focuspilot:
 
 #### Invoice Email Template
 
@@ -741,19 +752,23 @@ Great for recurring workflows (e.g., every project needs the same 15 tasks).
 - **Share templates with team** — Ensure consistency across team
 
 Templates save massive amounts of time — invest in building a good library.`,
-    screenshots: ['settings/templates.png', 'settings/email-template.png', 'settings/proposal-template.png'],
-    related: ['proposals', 'creating-invoice', 'creating-first-project'],
+    screenshots: [
+      "settings/templates.png",
+      "settings/email-template.png",
+      "settings/proposal-template.png",
+    ],
+    related: ["proposals", "creating-invoice", "creating-first-project"],
   },
   {
-    slug: 'audit-logs',
-    title: 'Audit Logs',
-    description: 'Viewing activity history and changes',
-    category: 'settings',
+    slug: "audit-logs",
+    title: "Audit Logs",
+    description: "Viewing activity history and changes",
+    category: "settings",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Audit Logs
 
-Audit Logs provide a complete history of actions taken in your Techstyles studio.
+Audit Logs provide a complete history of actions taken in your Focuspilot studio.
 
 ## Accessing Audit Logs
 
@@ -864,7 +879,7 @@ Review team member activity for productivity assessments.
 - **Don't rely solely on logs** — Communicate changes to team directly
 
 Audit logs provide accountability and transparency — use them to keep your studio secure.`,
-    screenshots: ['settings/audit-logs.png', 'settings/audit-detail.png'],
-    related: ['security', 'team-management', 'general-settings'],
+    screenshots: ["settings/audit-logs.png", "settings/audit-detail.png"],
+    related: ["security", "team-management", "general-settings"],
   },
 ];

@@ -2,15 +2,16 @@ import { HelpArticle } from '../types';
 
 export const financeArticles: HelpArticle[] = [
   {
-    slug: 'finance-overview',
-    title: 'Finance Overview',
-    description: 'Understanding invoices, purchase orders, and financial tracking',
-    category: 'finance',
+    slug: "finance-overview",
+    title: "Finance Overview",
+    description:
+      "Understanding invoices, purchase orders, and financial tracking",
+    category: "finance",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Finance Overview
 
-Techstyles Finance helps you manage invoicing, track expenses, and monitor studio profitability.
+Focuspilot Finance helps you manage invoicing, track expenses, and monitor studio profitability.
 
 ## Finance Features
 
@@ -85,19 +86,19 @@ Go to **Settings** → **Integrations** to connect.
 - **Link to projects** — Always associate invoices and POs with projects
 
 Finance visibility keeps your studio profitable — monitor it closely.`,
-    screenshots: ['finance/finance-dashboard.png'],
-    related: ['creating-invoice', 'purchase-orders', 'project-finance'],
+    screenshots: ["finance/finance-dashboard.png"],
+    related: ["creating-invoice", "purchase-orders", "project-finance"],
   },
   {
-    slug: 'creating-invoice',
-    title: 'Creating an Invoice',
-    description: 'Step-by-step guide to creating and sending invoices',
-    category: 'finance',
+    slug: "creating-invoice",
+    title: "Creating an Invoice",
+    description: "Step-by-step guide to creating and sending invoices",
+    category: "finance",
     readTime: 5,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Creating an Invoice
 
-Invoices are how you bill clients for your work. Techstyles generates professional, branded invoices with full tracking.
+Invoices are how you bill clients for your work. Focuspilot generates professional, branded invoices with full tracking.
 
 ## Creating an Invoice
 
@@ -275,16 +276,20 @@ Configure reminder email template in **Settings** → **Studio** → **Templates
 - **Link to projects** — Always associate invoices with projects
 
 Invoicing is your revenue lifeline — keep it professional and timely.`,
-    screenshots: ['finance/invoice-editor.png', 'finance/invoice-preview.png', 'finance/invoice-send.png'],
-    related: ['sending-invoice', 'project-finance', 'finance-overview'],
+    screenshots: [
+      "finance/invoice-editor.png",
+      "finance/invoice-preview.png",
+      "finance/invoice-send.png",
+    ],
+    related: ["sending-invoice", "project-finance", "finance-overview"],
   },
   {
-    slug: 'sending-invoice',
-    title: 'Sending an Invoice',
-    description: 'Email delivery, PDF generation, and payment tracking',
-    category: 'finance',
+    slug: "sending-invoice",
+    title: "Sending an Invoice",
+    description: "Email delivery, PDF generation, and payment tracking",
+    category: "finance",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Sending an Invoice
 
 Once your invoice is ready, send it to your client via email with a professional PDF attachment.
@@ -344,7 +349,7 @@ Example message:
 
 ## Invoice Tracking
 
-Once sent, Techstyles tracks:
+Once sent, Focuspilot tracks:
 
 - **Sent Date** — When invoice was emailed
 - **Viewed** — If/when client opened the invoice (email tracking)
@@ -369,7 +374,7 @@ If you've enabled online payment (Stripe, PayPal, etc.):
 
 - Payment link included in email
 - Client clicks link and pays instantly
-- Payment syncs to Techstyles automatically
+- Payment syncs to Focuspilot automatically
 - Invoice status updates to **Paid**
 
 Enable online payments in **Settings** → **Studio** → **Integrations**.
@@ -378,7 +383,7 @@ Enable online payments in **Settings** → **Studio** → **Integrations**.
 
 For unpaid invoices past due date:
 
-1. Techstyles auto-flags as **Overdue**
+1. Focuspilot auto-flags as **Overdue**
 2. You can manually send reminders:
    - Open invoice
    - Click **Send Reminder**
@@ -407,16 +412,16 @@ Click any invoice to view details or resend.
 - **Thank clients** — Send a thank-you note when payment received
 
 Professional invoicing strengthens client relationships — make every invoice count.`,
-    screenshots: ['finance/send-invoice.png', 'finance/invoice-email.png'],
-    related: ['creating-invoice', 'finance-overview', 'integrations'],
+    screenshots: ["finance/send-invoice.png", "finance/invoice-email.png"],
+    related: ["creating-invoice", "finance-overview", "integrations"],
   },
   {
-    slug: 'purchase-orders',
-    title: 'Purchase Orders',
-    description: 'Creating, approving, and tracking procurement spending',
-    category: 'finance',
+    slug: "purchase-orders",
+    title: "Purchase Orders",
+    description: "Creating, approving, and tracking procurement spending",
+    category: "finance",
     readTime: 5,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Purchase Orders
 
 Purchase Orders (POs) help you document and track spending with suppliers and contractors.
@@ -566,16 +571,20 @@ Access in **Reports** → **Cost Reports**.
 - **Enable approval workflow** — For spending accountability
 
 POs keep spending organised and transparent — use them consistently.`,
-    screenshots: ['finance/purchase-order-editor.png', 'finance/po-preview.png', 'finance/po-list.png'],
-    related: ['project-finance', 'project-procurement', 'finance-overview'],
+    screenshots: [
+      "finance/purchase-order-editor.png",
+      "finance/po-preview.png",
+      "finance/po-list.png",
+    ],
+    related: ["project-finance", "project-procurement", "finance-overview"],
   },
   {
-    slug: 'project-finance-tracking',
-    title: 'Project Finance Tracking',
-    description: 'Linking invoices to projects and tracking profitability',
-    category: 'finance',
+    slug: "project-finance-tracking",
+    title: "Project Finance Tracking",
+    description: "Linking invoices to projects and tracking profitability",
+    category: "finance",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Project Finance Tracking
 
 Every invoice and purchase order can be linked to a project, enabling project-level financial tracking and profitability analysis.
@@ -702,7 +711,15 @@ Identify which project types are most profitable.
 - **Analyze margins** — Learn from profitable and unprofitable projects
 
 Project financial tracking is essential for studio profitability — monitor it diligently.`,
-    screenshots: ['finance/project-finance-overview.png', 'finance/budget-tracking.png'],
-    related: ['project-finance', 'creating-invoice', 'purchase-orders', 'profitability-reports'],
+    screenshots: [
+      "finance/project-finance-overview.png",
+      "finance/budget-tracking.png",
+    ],
+    related: [
+      "project-finance",
+      "creating-invoice",
+      "purchase-orders",
+      "profitability-reports",
+    ],
   },
 ];

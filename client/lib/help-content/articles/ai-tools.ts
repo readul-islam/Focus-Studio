@@ -2,15 +2,15 @@ import { HelpArticle } from '../types';
 
 export const aiToolsArticles: HelpArticle[] = [
   {
-    slug: 'ai-clipper-overview',
-    title: 'AI Clipper Overview',
-    description: 'What the AI Clipper does and how it works',
-    category: 'ai-tools',
+    slug: "ai-clipper-overview",
+    title: "AI Clipper Overview",
+    description: "What the AI Clipper does and how it works",
+    category: "ai-tools",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# AI Clipper Overview
 
-The Techstyles AI Clipper is a Chrome extension that uses artificial intelligence to automatically extract product information from any website and add it to your Techstyles library.
+The Focuspilot AI Clipper is a Chrome extension that uses artificial intelligence to automatically extract product information from any website and add it to your Focuspilot library.
 
 ## What is the AI Clipper?
 
@@ -33,7 +33,7 @@ The extension detects product information on the page using AI vision.
 
 ### 3. One-Click Capture
 
-Click the Techstyles extension icon. Product data is extracted instantly.
+Click the Focuspilot extension icon. Product data is extracted instantly.
 
 ### 4. Review and Save
 
@@ -86,41 +86,44 @@ Add products directly to project procurement lists while sourcing.
 ## Requirements
 
 - **Google Chrome browser**
-- **Techstyles account** (logged in)
+- **Focuspilot account** (logged in)
 - **Extension installed** (see Installing the AI Clipper article)
 
 ## Privacy & Security
 
 - The AI Clipper only activates when you click it
 - No browsing data is collected passively
-- Product data is sent securely to your Techstyles account
+- Product data is sent securely to your Focuspilot account
 - Your browsing remains private
 
 The AI Clipper is your design sourcing superpower — install it and save hours of manual work.`,
-    screenshots: ['ai-tools/ai-clipper-icon.png', 'ai-tools/clipper-action.png'],
-    related: ['installing-ai-clipper', 'using-ai-clipper', 'adding-products'],
+    screenshots: [
+      "ai-tools/ai-clipper-icon.png",
+      "ai-tools/clipper-action.png",
+    ],
+    related: ["installing-ai-clipper", "using-ai-clipper", "adding-products"],
   },
   {
-    slug: 'installing-ai-clipper',
-    title: 'Installing the AI Clipper',
-    description: 'Step-by-step Chrome extension installation guide',
-    category: 'ai-tools',
+    slug: "installing-ai-clipper",
+    title: "Installing the AI Clipper",
+    description: "Step-by-step Chrome extension installation guide",
+    category: "ai-tools",
     readTime: 5,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Installing the AI Clipper
 
-Install the Techstyles AI Clipper Chrome extension to start clipping products from any website.
+Install the Focuspilot AI Clipper Chrome extension to start clipping products from any website.
 
 ## Requirements
 
 - **Google Chrome browser** (not supported in Safari, Firefox, or Edge)
-- **Techstyles account** (sign up at techstyles.com if needed)
+- **Focuspilot account** (sign up at techstyles.com if needed)
 
 ## Installation Steps
 
 ### 1. Download the Extension
 
-Go to the **Help** page in Techstyles and click **Download Extension**, or visit the Chrome Web Store and search for "Techstyles AI Clipper".
+Go to the **Help** page in Focuspilot and click **Download Extension**, or visit the Chrome Web Store and search for "Focuspilot AI Clipper".
 
 A ZIP file will download to your computer.
 
@@ -158,15 +161,15 @@ The extension installs and appears in your extensions list.
 ### 6. Pin the Extension
 
 1. Click the **puzzle icon** (🧩) in Chrome toolbar
-2. Find **Techstyles AI Clipper** in the list
+2. Find **Focuspilot AI Clipper** in the list
 3. Click the **pin icon** to pin it to your toolbar
 
-The Techstyles icon now appears in your Chrome toolbar for easy access.
+The Focuspilot icon now appears in your Chrome toolbar for easy access.
 
 ### 7. Log In
 
-1. Click the Techstyles extension icon
-2. Enter your Techstyles email and password
+1. Click the Focuspilot extension icon
+2. Enter your Focuspilot email and password
 3. Click **Log In**
 
 You're now connected and ready to clip products.
@@ -176,7 +179,7 @@ You're now connected and ready to clip products.
 To confirm it's working:
 
 1. Visit any product page (e.g., furniture retailer)
-2. Click the Techstyles extension icon
+2. Click the Focuspilot extension icon
 3. You should see product data detected
 
 If the extension detects the product, you're all set.
@@ -191,8 +194,8 @@ If the extension detects the product, you're all set.
 
 ### Login Issues
 
-- Verify your Techstyles credentials
-- Ensure you have an active Techstyles account
+- Verify your Focuspilot credentials
+- Ensure you have an active Focuspilot account
 - Try logging in at techstyles.com first, then retry extension login
 
 ### Product Not Detected
@@ -209,7 +212,7 @@ The extension is **only compatible with Google Chrome**. It does not work in Saf
 
 When a new version is released:
 
-1. Download the latest version from Techstyles
+1. Download the latest version from Focuspilot
 2. Extract the new ZIP file
 3. In Chrome Extensions page, click **Remove** on the old version
 4. Load the new unpacked extension
@@ -220,23 +223,28 @@ When a new version is released:
 To remove the extension:
 
 1. Go to **chrome://extensions/**
-2. Find **Techstyles AI Clipper**
+2. Find **Focuspilot AI Clipper**
 3. Click **Remove**
 4. Confirm removal
 
 Your library products remain; only the extension is removed.
 
 Once installed, the AI Clipper becomes an indispensable sourcing tool — happy clipping!`,
-    screenshots: ['ai-tools/extension-download.png', 'ai-tools/developer-mode.png', 'ai-tools/load-unpacked.png', 'ai-tools/pin-extension.png'],
-    related: ['ai-clipper-overview', 'using-ai-clipper'],
+    screenshots: [
+      "ai-tools/extension-download.png",
+      "ai-tools/developer-mode.png",
+      "ai-tools/load-unpacked.png",
+      "ai-tools/pin-extension.png",
+    ],
+    related: ["ai-clipper-overview", "using-ai-clipper"],
   },
   {
-    slug: 'using-ai-clipper',
-    title: 'Using the AI Clipper',
-    description: 'How to clip a product and send it to your studio',
-    category: 'ai-tools',
+    slug: "using-ai-clipper",
+    title: "Using the AI Clipper",
+    description: "How to clip a product and send it to your studio",
+    category: "ai-tools",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Using the AI Clipper
 
 Once installed, the AI Clipper makes product sourcing effortless.
@@ -256,7 +264,7 @@ Make sure you're on an **individual product page** (not a category or search res
 
 ### Step 2: Click the Extension Icon
 
-Click the **Techstyles icon** in your Chrome toolbar.
+Click the **Focuspilot icon** in your Chrome toolbar.
 
 The AI Clipper activates and scans the page.
 
@@ -361,23 +369,31 @@ If the AI doesn't capture a field:
 The AI learns over time and improves accuracy.
 
 The AI Clipper is your fastest path from product discovery to library — use it constantly.`,
-    screenshots: ['ai-tools/clipper-popup.png', 'ai-tools/clipper-review.png', 'ai-tools/clipper-success.png'],
-    related: ['ai-clipper-overview', 'installing-ai-clipper', 'adding-products'],
+    screenshots: [
+      "ai-tools/clipper-popup.png",
+      "ai-tools/clipper-review.png",
+      "ai-tools/clipper-success.png",
+    ],
+    related: [
+      "ai-clipper-overview",
+      "installing-ai-clipper",
+      "adding-products",
+    ],
   },
   {
-    slug: 'ai-daily-brief',
-    title: 'AI Daily Brief',
-    description: 'Understanding your AI-generated daily project updates',
-    category: 'ai-tools',
+    slug: "ai-daily-brief",
+    title: "AI Daily Brief",
+    description: "Understanding your AI-generated daily project updates",
+    category: "ai-tools",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# AI Daily Brief
 
 The AI Daily Brief is an automatically generated summary of your studio's activity, priorities, and upcoming deadlines.
 
 ## What is the Daily Brief?
 
-Each morning, Techstyles AI scans your:
+Each morning, Focuspilot AI scans your:
 
 - Projects and tasks
 - Calendar events
@@ -483,23 +499,23 @@ Useful for reviewing what was prioritized on a past date.
 - **Customize for relevance** — Turn off sections that don't add value
 
 The Daily Brief is your AI-powered morning routine — let it focus your day.`,
-    screenshots: ['ai-tools/daily-brief.png', 'ai-tools/brief-priorities.png'],
-    related: ['dashboard-overview', 'ai-activity', 'my-tasks'],
+    screenshots: ["ai-tools/daily-brief.png", "ai-tools/brief-priorities.png"],
+    related: ["dashboard-overview", "ai-activity", "my-tasks"],
   },
   {
-    slug: 'ai-activity',
-    title: 'AI Activity',
-    description: 'Reviewing AI actions and suggestions',
-    category: 'ai-tools',
+    slug: "ai-activity",
+    title: "AI Activity",
+    description: "Reviewing AI actions and suggestions",
+    category: "ai-tools",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# AI Activity
 
-The AI Activity page shows a log of all actions taken by Techstyles AI on your behalf.
+The AI Activity page shows a log of all actions taken by Focuspilot AI on your behalf.
 
 ## What is AI Activity?
 
-Techstyles AI works behind the scenes to:
+Focuspilot AI works behind the scenes to:
 
 - Generate daily briefs
 - Extract product data (via AI Clipper)
@@ -572,8 +588,8 @@ Filter the activity feed:
 - **Provide feedback** — If AI makes mistakes, let support know
 - **Leverage insights** — Use AI suggestions to improve workflows
 
-AI Activity keeps Techstyles transparent — you're always in control.`,
-    screenshots: ['ai-tools/ai-activity.png', 'ai-tools/activity-detail.png'],
-    related: ['ai-daily-brief', 'ai-clipper-overview'],
+AI Activity keeps Focuspilot transparent — you're always in control.`,
+    screenshots: ["ai-tools/ai-activity.png", "ai-tools/activity-detail.png"],
+    related: ["ai-daily-brief", "ai-clipper-overview"],
   },
 ];

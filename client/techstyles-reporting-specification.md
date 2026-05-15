@@ -1,4 +1,4 @@
-# Techstyles Reporting System Specification
+# Focuspilot Reporting System Specification
 
 ## Executive Summary
 
@@ -569,9 +569,9 @@ Phase Cost = Hours Actual × Staff Cost Rate
 
 ## Part 7: Competitive Differentiation
 
-### What makes Techstyles reporting best-in-class:
+### What makes Focuspilot reporting best-in-class:
 
-| Feature | Techstyles | Studio Designer | Design Manager | Programma |
+| Feature | Focuspilot | Studio Designer | Design Manager | Programma |
 |---------|------------|-----------------|----------------|-----------|
 | Phase-level profitability | ✅ | Limited | Limited | ❌ |
 | Real-time margin on project page | ✅ | ❌ | ❌ | ❌ |

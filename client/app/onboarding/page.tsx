@@ -519,10 +519,22 @@ export default function OnboardingPage() {
     <div className="min-h-screen bg-white flex flex-col">
       <header className="flex items-center justify-between px-8 py-5 border-b border-gray-100">
         <div className="flex items-center gap-2.5">
-          <Image src="/brand/techstyles-t-logo.png" alt="TechStyles" width={28} height={28} className="object-contain" />
-          <span className="text-sm font-semibold text-gray-900 tracking-tight">TechStyles</span>
+          <Image
+            src="/brand/Logo.png"
+            alt="TechStyles"
+            width={28}
+            height={28}
+            className="object-contain"
+          />
+          <span className="text-sm font-semibold text-gray-900 tracking-tight">
+            TechStyles
+          </span>
         </div>
-        {step < 4 && <span className="text-xs text-gray-400">{step + 1} of {STEPS.length}</span>}
+        {step < 4 && (
+          <span className="text-xs text-gray-400">
+            {step + 1} of {STEPS.length}
+          </span>
+        )}
       </header>
 
       <div className="h-0.5 bg-gray-100">
@@ -545,13 +557,27 @@ export default function OnboardingPage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.22, ease: 'easeOut' }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
             className="w-full"
           >
             {step === 0 && <StepRole onNext={() => setStep(1)} />}
-            {step === 1 && <StepStudio onNext={() => setStep(2)} onBack={() => setStep(0)} />}
-            {step === 2 && <StepBranding onNext={() => setStep(3)} onBack={() => setStep(1)} onSkip={() => setStep(3)} />}
-            {step === 3 && <StepInvite onFinish={finish} onBack={() => setStep(2)} onSkip={finish} />}
+            {step === 1 && (
+              <StepStudio onNext={() => setStep(2)} onBack={() => setStep(0)} />
+            )}
+            {step === 2 && (
+              <StepBranding
+                onNext={() => setStep(3)}
+                onBack={() => setStep(1)}
+                onSkip={() => setStep(3)}
+              />
+            )}
+            {step === 3 && (
+              <StepInvite
+                onFinish={finish}
+                onBack={() => setStep(2)}
+                onSkip={finish}
+              />
+            )}
             {step === 4 && <StepComplete onDone={redirect} />}
           </motion.div>
         </AnimatePresence>

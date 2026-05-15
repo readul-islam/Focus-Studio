@@ -2,15 +2,15 @@ import { HelpArticle } from '../types';
 
 export const settingsUserArticles: HelpArticle[] = [
   {
-    slug: 'profile-settings',
-    title: 'Profile Settings',
-    description: 'Managing your name, email, avatar, and personal details',
-    category: 'settings',
+    slug: "profile-settings",
+    title: "Profile Settings",
+    description: "Managing your name, email, avatar, and personal details",
+    category: "settings",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Profile Settings
 
-Your profile settings control your personal information displayed throughout Techstyles.
+Your profile settings control your personal information displayed throughout Focuspilot.
 
 ## Accessing Profile Settings
 
@@ -45,7 +45,7 @@ Upload a profile photo:
 
 Your avatar appears throughout the app (tasks, messages, team lists).
 
-If no avatar, Techstyles shows your initials in a colored circle.
+If no avatar, Focuspilot shows your initials in a colored circle.
 
 ### Job Title
 
@@ -95,20 +95,23 @@ Click **Save Changes** at the bottom to apply updates.
 - **Keep email current** — Ensure you receive notifications
 - **Add job title** — Helps team understand your role
 
-Your profile is your digital identity in Techstyles — keep it current.`,
-    screenshots: ['settings/profile-settings.png', 'settings/avatar-upload.png'],
-    related: ['appearance', 'notifications', 'security'],
+Your profile is your digital identity in Focuspilot — keep it current.`,
+    screenshots: [
+      "settings/profile-settings.png",
+      "settings/avatar-upload.png",
+    ],
+    related: ["appearance", "notifications", "security"],
   },
   {
-    slug: 'appearance',
-    title: 'Appearance',
-    description: 'Dark/light mode and visual preferences',
-    category: 'settings',
+    slug: "appearance",
+    title: "Appearance",
+    description: "Dark/light mode and visual preferences",
+    category: "settings",
     readTime: 2,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Appearance
 
-Customize how Techstyles looks to suit your preferences.
+Customize how Focuspilot looks to suit your preferences.
 
 ## Accessing Appearance Settings
 
@@ -172,7 +175,7 @@ Show only what's useful to you.
 
 ### Default Dashboard View
 
-Choose what you see first when opening Techstyles:
+Choose what you see first when opening Focuspilot:
 
 - Dashboard (default)
 - Inbox
@@ -213,20 +216,20 @@ Appearance changes apply immediately (no save button needed).
 - **Use compact density** — If you have a small screen
 - **Customize dashboard** — Remove widgets you don't use
 
-Make Techstyles feel like home — customise it to your liking.`,
-    screenshots: ['settings/appearance-settings.png', 'settings/dark-mode.png'],
-    related: ['profile-settings', 'notifications', 'dashboard-overview'],
+Make Focuspilot feel like home — customise it to your liking.`,
+    screenshots: ["settings/appearance-settings.png", "settings/dark-mode.png"],
+    related: ["profile-settings", "notifications", "dashboard-overview"],
   },
   {
-    slug: 'notifications',
-    title: 'Notifications',
-    description: 'Control what notifications you receive',
-    category: 'settings',
+    slug: "notifications",
+    title: "Notifications",
+    description: "Control what notifications you receive",
+    category: "settings",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Notifications
 
-Control when and how Techstyles notifies you about updates.
+Control when and how Focuspilot notifies you about updates.
 
 ## Accessing Notification Settings
 
@@ -250,19 +253,19 @@ Toggle on/off for:
 
 ### In-App Notifications
 
-Badge and popup notifications within Techstyles.
+Badge and popup notifications within Focuspilot.
 
 Always enabled (can't disable). Shows unread count in sidebar.
 
 ### Desktop Push Notifications
 
-Browser notifications even when Techstyles isn't open.
+Browser notifications even when Focuspilot isn't open.
 
 Enable in your browser when prompted.
 
 ### Mobile Push Notifications
 
-Notifications on Techstyles mobile app (when available).
+Notifications on Focuspilot mobile app (when available).
 
 ## Notification Types
 
@@ -354,16 +357,19 @@ Confirms notifications are working.
 - **Set quiet hours** — Protect personal time
 
 Notifications keep you informed — configure them to support your workflow, not overwhelm you.`,
-    screenshots: ['settings/notifications-settings.png', 'settings/quiet-hours.png'],
-    related: ['inbox', 'my-tasks', 'ai-daily-brief'],
+    screenshots: [
+      "settings/notifications-settings.png",
+      "settings/quiet-hours.png",
+    ],
+    related: ["inbox", "my-tasks", "ai-daily-brief"],
   },
   {
-    slug: 'security',
-    title: 'Security',
-    description: 'Password changes, 2FA, and account security',
-    category: 'settings',
+    slug: "security",
+    title: "Security",
+    description: "Password changes, 2FA, and account security",
+    category: "settings",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Security
 
 Manage your account security and login settings.
@@ -434,7 +440,7 @@ Only disable if absolutely necessary.
 
 ## Active Sessions
 
-See all devices where you're logged into Techstyles:
+See all devices where you're logged into Focuspilot:
 
 - **Device Type** (Desktop, Mobile, Tablet)
 - **Browser**
@@ -476,23 +482,27 @@ Set a recovery email (different from your login email):
 
 ## Best Practices
 
-- **Use a strong password** — Unique to Techstyles, not reused
+- **Use a strong password** — Unique to Focuspilot, not reused
 - **Enable 2FA** — Significantly increases account security
 - **Save backup codes** — Store securely in case you lose your authenticator
 - **Review sessions** — Check active sessions monthly
 - **Log out on shared devices** — Always log out on public computers
 
 Security protects your studio's data — take it seriously.`,
-    screenshots: ['settings/security-settings.png', 'settings/2fa-setup.png', 'settings/active-sessions.png'],
-    related: ['profile-settings', 'notifications'],
+    screenshots: [
+      "settings/security-settings.png",
+      "settings/2fa-setup.png",
+      "settings/active-sessions.png",
+    ],
+    related: ["profile-settings", "notifications"],
   },
   {
-    slug: 'time-tracking-settings',
-    title: 'Time Tracking',
-    description: 'Configuring time tracking preferences',
-    category: 'settings',
+    slug: "time-tracking-settings",
+    title: "Time Tracking",
+    description: "Configuring time tracking preferences",
+    category: "settings",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Time Tracking
 
 Configure how you track time on tasks and projects.
@@ -607,7 +617,10 @@ Your time tracking data appears on:
 - **Review weekly** — Check your time logs each Friday
 
 Time tracking provides visibility into where your hours go — use it to optimise your workload.`,
-    screenshots: ['settings/time-tracking-settings.png', 'settings/time-tracking-timer.png'],
-    related: ['my-tasks', 'productivity-reports', 'calendar'],
+    screenshots: [
+      "settings/time-tracking-settings.png",
+      "settings/time-tracking-timer.png",
+    ],
+    related: ["my-tasks", "productivity-reports", "calendar"],
   },
 ];

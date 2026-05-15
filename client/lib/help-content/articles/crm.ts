@@ -2,15 +2,15 @@ import { HelpArticle } from '../types';
 
 export const crmArticles: HelpArticle[] = [
   {
-    slug: 'crm-overview',
-    title: 'CRM Overview',
-    description: 'Understanding contacts, leads, pipeline, and proposals',
-    category: 'crm',
+    slug: "crm-overview",
+    title: "CRM Overview",
+    description: "Understanding contacts, leads, pipeline, and proposals",
+    category: "crm",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# CRM Overview
 
-The Techstyles CRM (Client Relationship Management) system helps you manage contacts, track leads, visualize your sales pipeline, and create proposals.
+The Focuspilot CRM (Client Relationship Management) system helps you manage contacts, track leads, visualize your sales pipeline, and create proposals.
 
 ## What's in the CRM?
 
@@ -83,16 +83,16 @@ Click **CRM** in the sidebar to access:
 - **Analyze conversion rate** — Review pipeline reports monthly
 
 Your CRM is your business development engine — use it diligently.`,
-    screenshots: ['crm/crm-dashboard.png'],
-    related: ['contacts', 'leads', 'pipeline', 'proposals'],
+    screenshots: ["crm/crm-dashboard.png"],
+    related: ["contacts", "leads", "pipeline", "proposals"],
   },
   {
-    slug: 'contacts',
-    title: 'Contacts',
-    description: 'Adding, editing, and managing your contact database',
-    category: 'crm',
+    slug: "contacts",
+    title: "Contacts",
+    description: "Adding, editing, and managing your contact database",
+    category: "crm",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Contacts
 
 Your **Contacts** database stores all people and companies you interact with — clients, leads, suppliers, contractors, and professional connections.
@@ -186,7 +186,7 @@ Bulk import contacts from CSV:
 1. Go to **Contacts** page
 2. Click **Import**
 3. Upload CSV file (with columns: name, email, phone, etc.)
-4. Map CSV columns to Techstyles fields
+4. Map CSV columns to Focuspilot fields
 5. Import
 
 ## Contact Export
@@ -209,7 +209,7 @@ Find contacts quickly:
 
 ## Duplicate Detection
 
-Techstyles detects potential duplicates:
+Focuspilot detects potential duplicates:
 
 - When adding a contact with similar name/email
 - In the **Contacts** list (Duplicates filter)
@@ -225,16 +225,17 @@ Merge duplicates to keep database clean.
 - **Link to projects** — Always associate contacts with relevant projects
 
 Your contact database is your relationship asset — keep it organised and current.`,
-    screenshots: ['crm/contacts-list.png', 'crm/contact-detail.png'],
-    related: ['crm-overview', 'leads', 'projects-overview'],
+    screenshots: ["crm/contacts-list.png", "crm/contact-detail.png"],
+    related: ["crm-overview", "leads", "projects-overview"],
   },
   {
-    slug: 'leads',
-    title: 'Leads',
-    description: 'Managing potential projects — lead status and converting to projects',
-    category: 'crm',
+    slug: "leads",
+    title: "Leads",
+    description:
+      "Managing potential projects — lead status and converting to projects",
+    category: "crm",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Leads
 
 **Leads** are potential projects in early stages — inquiries, consultations, or prospects not yet converted to active projects.
@@ -382,16 +383,21 @@ Adjust based on your experience. Helps forecast weighted pipeline value.
 - **Analyze lost leads** — Learn from leads that didn't convert
 
 Leads are your future revenue — manage them carefully.`,
-    screenshots: ['crm/leads-list.png', 'crm/lead-detail.png'],
-    related: ['crm-overview', 'pipeline', 'proposals', 'creating-first-project'],
+    screenshots: ["crm/leads-list.png", "crm/lead-detail.png"],
+    related: [
+      "crm-overview",
+      "pipeline",
+      "proposals",
+      "creating-first-project",
+    ],
   },
   {
-    slug: 'pipeline',
-    title: 'Pipeline',
-    description: 'Visual Kanban view of leads moving through your sales funnel',
-    category: 'crm',
+    slug: "pipeline",
+    title: "Pipeline",
+    description: "Visual Kanban view of leads moving through your sales funnel",
+    category: "crm",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Pipeline
 
 The **Pipeline** is a visual Kanban board showing all your leads and their progress through your sales funnel.
@@ -501,16 +507,16 @@ Pipeline updates to reflect your custom stages.
 - **Learn from losses** — Review lost leads to improve process
 
 Your pipeline is your revenue forecast — keep it accurate and up to date.`,
-    screenshots: ['crm/pipeline.png'],
-    related: ['leads', 'proposals', 'crm-overview'],
+    screenshots: ["crm/pipeline.png"],
+    related: ["leads", "proposals", "crm-overview"],
   },
   {
-    slug: 'proposals',
-    title: 'Proposals',
-    description: 'Creating and sending professional project proposals',
-    category: 'crm',
+    slug: "proposals",
+    title: "Proposals",
+    description: "Creating and sending professional project proposals",
+    category: "crm",
     readTime: 5,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Proposals
 
 Create professional project proposals to convert leads into signed projects.
@@ -667,7 +673,11 @@ Access in **Reports** → **CRM Reports**.
 - **Track metrics** — Improve proposals based on acceptance rate
 
 Proposals close deals — make them professional, clear, and compelling.`,
-    screenshots: ['crm/proposals-list.png', 'crm/proposal-editor.png', 'crm/proposal-preview.png'],
-    related: ['leads', 'pipeline', 'creating-first-project'],
+    screenshots: [
+      "crm/proposals-list.png",
+      "crm/proposal-editor.png",
+      "crm/proposal-preview.png",
+    ],
+    related: ["leads", "pipeline", "creating-first-project"],
   },
 ];

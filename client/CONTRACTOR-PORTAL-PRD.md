@@ -7,7 +7,7 @@
 
 ## Background & Problem
 
-Techstyles has a separate contractor portal at `contractor.techstyles.ai` and a Contractors tab inside each project. Both exist but are incomplete and disconnected:
+Focuspilot has a separate contractor portal at `contractor.techstyles.ai` and a Contractors tab inside each project. Both exist but are incomplete and disconnected:
 
 - **Add Contractor** is mock-only — vanishes on refresh, not saved to DB
 - **Share Drawings/Documents** is mock-only — nothing hits the backend
@@ -116,7 +116,7 @@ Returns:
 ```json
 {
   "project_name": "The Belgravia Residence",
-  "studio_name": "Techstyles Studio",
+  "studio_name": "Focuspilot Studio",
   "studio_logo": "...",
   "requires_code": true
 }

@@ -2,15 +2,16 @@ import { HelpArticle } from '../types';
 
 export const homeDashboardArticles: HelpArticle[] = [
   {
-    slug: 'dashboard-overview',
-    title: 'Dashboard Overview',
-    description: 'Understanding your Techstyles dashboard — KPIs, daily brief, and what everything means',
-    category: 'home-dashboard',
+    slug: "dashboard-overview",
+    title: "Dashboard Overview",
+    description:
+      "Understanding your Focuspilot dashboard — KPIs, daily brief, and what everything means",
+    category: "home-dashboard",
     readTime: 5,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Dashboard Overview
 
-Your Techstyles dashboard is the first thing you see each day — a personalized overview of your studio's health and your personal workload.
+Your Focuspilot dashboard is the first thing you see each day — a personalized overview of your studio's health and your personal workload.
 
 ## What's on the Dashboard?
 
@@ -124,19 +125,22 @@ On mobile devices, the dashboard adapts to show:
 The full dashboard experience is optimised for desktop/tablet use.
 
 Your dashboard is your mission control — use it to stay on top of your studio every day.`,
-    screenshots: ['home-dashboard/dashboard.png', 'home-dashboard/daily-brief.png'],
-    related: ['ai-daily-brief', 'my-tasks', 'inbox'],
+    screenshots: [
+      "home-dashboard/dashboard.png",
+      "home-dashboard/daily-brief.png",
+    ],
+    related: ["ai-daily-brief", "my-tasks", "inbox"],
   },
   {
-    slug: 'inbox',
-    title: 'Inbox',
-    description: 'Messages, notifications, and Gmail integration',
-    category: 'home-dashboard',
+    slug: "inbox",
+    title: "Inbox",
+    description: "Messages, notifications, and Gmail integration",
+    category: "home-dashboard",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Inbox
 
-Your Techstyles Inbox consolidates all communication in one place — team messages, system notifications, and Gmail integration.
+Your Focuspilot Inbox consolidates all communication in one place — team messages, system notifications, and Gmail integration.
 
 ## What Appears in Your Inbox?
 
@@ -220,18 +224,18 @@ To connect your Gmail:
 
 1. Go to **Settings** → **Studio** → **Integrations**
 2. Click **Connect Gmail**
-3. Authorize Techstyles to access your email
+3. Authorize Focuspilot to access your email
 4. Choose which emails sync (optional filters)
 
 Once connected, you can:
 
-- Read and reply to client emails in Techstyles
+- Read and reply to client emails in Focuspilot
 - Automatically link emails to projects
 - Search across email and internal messages
 
 ### Privacy & Security
 
-Techstyles only accesses emails you explicitly connect. Your email data is encrypted and never shared.
+Focuspilot only accesses emails you explicitly connect. Your email data is encrypted and never shared.
 
 ## Notification Preferences
 
@@ -270,16 +274,16 @@ Speed up your inbox workflow:
 - **Set up filters** — Reduce noise by filtering system notifications
 
 Your inbox keeps you connected — check it regularly to stay responsive to your team and clients.`,
-    screenshots: ['home-dashboard/inbox.png', 'home-dashboard/message.png'],
-    related: ['project-messages', 'integrations', 'notifications'],
+    screenshots: ["home-dashboard/inbox.png", "home-dashboard/message.png"],
+    related: ["project-messages", "integrations", "notifications"],
   },
   {
-    slug: 'my-tasks',
-    title: 'My Tasks',
-    description: 'Your personal task list — filters, status, and quick actions',
-    category: 'home-dashboard',
+    slug: "my-tasks",
+    title: "My Tasks",
+    description: "Your personal task list — filters, status, and quick actions",
+    category: "home-dashboard",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# My Tasks
 
 **My Tasks** is your personal command centre for all work assigned to you across every project.
@@ -418,19 +422,22 @@ On mobile, **My Tasks** displays in a simplified view optimised for quick status
 - **Break down large tasks** — Split big tasks into smaller, actionable items
 
 Your task list is your personal workflow engine — keep it organised and up to date.`,
-    screenshots: ['home-dashboard/my-tasks.png', 'home-dashboard/task-detail.png'],
-    related: ['project-tasks', 'time-tracking', 'notifications'],
+    screenshots: [
+      "home-dashboard/my-tasks.png",
+      "home-dashboard/task-detail.png",
+    ],
+    related: ["project-tasks", "time-tracking", "notifications"],
   },
   {
-    slug: 'calendar',
-    title: 'Calendar',
-    description: 'Studio calendar, project events, and time tracking',
-    category: 'home-dashboard',
+    slug: "calendar",
+    title: "Calendar",
+    description: "Studio calendar, project events, and time tracking",
+    category: "home-dashboard",
     readTime: 5,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Calendar
 
-The Techstyles Calendar gives you a unified view of deadlines, milestones, events, and team schedules.
+The Focuspilot Calendar gives you a unified view of deadlines, milestones, events, and team schedules.
 
 ## Calendar Views
 
@@ -554,7 +561,7 @@ Time entries appear on time tracking reports.
 
 ## Syncing External Calendars
 
-You can sync Techstyles with external calendars:
+You can sync Focuspilot with external calendars:
 
 ### Google Calendar Sync
 
@@ -563,11 +570,11 @@ You can sync Techstyles with external calendars:
 3. Authorize access
 4. Choose sync direction (one-way or two-way)
 
-Once synced, Techstyles events appear in Google Calendar and vice versa.
+Once synced, Focuspilot events appear in Google Calendar and vice versa.
 
 ### Outlook/iCal Sync
 
-Export your Techstyles calendar as an iCal feed:
+Export your Focuspilot calendar as an iCal feed:
 
 1. Go to **Calendar Settings** (gear icon)
 2. Click **Export Calendar**
@@ -593,7 +600,10 @@ Configure in **Settings** → **User** → **Notifications**.
 - **Use recurring events** — Set up repeating team meetings
 
 Your calendar keeps your studio synchronized — use it to plan, coordinate, and never miss a deadline.`,
-    screenshots: ['home-dashboard/calendar.png', 'home-dashboard/calendar-event.png'],
-    related: ['project-calendar', 'time-tracking', 'integrations'],
+    screenshots: [
+      "home-dashboard/calendar.png",
+      "home-dashboard/calendar-event.png",
+    ],
+    related: ["project-calendar", "time-tracking", "integrations"],
   },
 ];

@@ -153,19 +153,36 @@ export default function Register() {
         <div className="w-full max-w-sm mx-auto py-10">
           {/* Logo */}
           <div className="flex items-center gap-2.5 mb-10">
-            <Image src="/brand/techstyles-t-logo.png" alt="TechStyles" width={32} height={32} className="object-contain" />
-            <span className="text-base font-semibold text-gray-900 tracking-tight">TechStyles</span>
+            <Image
+              src="/brand/Logo.png"
+              alt="TechStyles"
+              width={32}
+              height={32}
+              className="object-contain"
+            />
+            <span className="text-base font-semibold text-gray-900 tracking-tight">
+              TechStyles
+            </span>
           </div>
 
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-1.5">Create your account</h1>
-            <p className="text-sm text-gray-500">Start managing your design studio today</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-1.5">
+              Create your account
+            </h1>
+            <p className="text-sm text-gray-500">
+              Start managing your design studio today
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} noValidate>
             {/* Name */}
             <div className="mb-4">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1.5">Full name</label>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 mb-1.5"
+              >
+                Full name
+              </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                 <input
@@ -173,18 +190,25 @@ export default function Register() {
                   type="text"
                   autoComplete="name"
                   value={formData.name}
-                  onChange={e => handleChange('name', e.target.value)}
-                  onBlur={() => handleBlur('name')}
+                  onChange={(e) => handleChange("name", e.target.value)}
+                  onBlur={() => handleBlur("name")}
                   placeholder="Jane Smith"
-                  className={inputClass('name')}
+                  className={inputClass("name")}
                 />
               </div>
-              {errors.name && touched.name && <p className="text-xs text-red-600 mt-1.5">{errors.name}</p>}
+              {errors.name && touched.name && (
+                <p className="text-xs text-red-600 mt-1.5">{errors.name}</p>
+              )}
             </div>
 
             {/* Email */}
             <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-1.5"
+              >
+                Email
+              </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                 <input
@@ -192,85 +216,118 @@ export default function Register() {
                   type="email"
                   autoComplete="email"
                   value={formData.email}
-                  onChange={e => handleChange('email', e.target.value)}
-                  onBlur={() => handleBlur('email')}
+                  onChange={(e) => handleChange("email", e.target.value)}
+                  onBlur={() => handleBlur("email")}
                   placeholder="you@company.com"
-                  className={inputClass('email')}
+                  className={inputClass("email")}
                 />
               </div>
-              {errors.email && touched.email && <p className="text-xs text-red-600 mt-1.5">{errors.email.charAt(0).toUpperCase() + errors.email.slice(1)}</p>}
+              {errors.email && touched.email && (
+                <p className="text-xs text-red-600 mt-1.5">
+                  {errors.email.charAt(0).toUpperCase() + errors.email.slice(1)}
+                </p>
+              )}
             </div>
 
             {/* Password */}
             <div className="mb-4">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1.5"
+              >
+                Password
+              </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                 <input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
                   value={formData.password}
-                  onChange={e => handleChange('password', e.target.value)}
-                  onBlur={() => handleBlur('password')}
+                  onChange={(e) => handleChange("password", e.target.value)}
+                  onBlur={() => handleBlur("password")}
                   placeholder="Min. 8 characters"
-                  className={`${inputClass('password')} pr-10`}
+                  className={`${inputClass("password")} pr-10`}
                 />
                 <button
                   type="button"
                   tabIndex={-1}
-                  onClick={() => setShowPassword(v => !v)}
+                  onClick={() => setShowPassword((v) => !v)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                 </button>
               </div>
               {/* Strength meter */}
               {formData.password && (
                 <div className="mt-2">
                   <div className="flex gap-1 mb-1">
-                    {[1,2,3,4,5].map(i => (
-                      <div key={i} className={`h-1 flex-1 rounded-full transition-colors ${i <= pwStrength ? strengthColor : 'bg-gray-100'}`} />
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <div
+                        key={i}
+                        className={`h-1 flex-1 rounded-full transition-colors ${i <= pwStrength ? strengthColor : "bg-gray-100"}`}
+                      />
                     ))}
                   </div>
                   <p className="text-xs text-gray-500">{strengthText}</p>
                 </div>
               )}
-              {errors.password && touched.password && <p className="text-xs text-red-600 mt-1.5">{errors.password}</p>}
+              {errors.password && touched.password && (
+                <p className="text-xs text-red-600 mt-1.5">{errors.password}</p>
+              )}
             </div>
 
             {/* Confirm Password */}
             <div className="mb-5">
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1.5">Confirm password</label>
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700 mb-1.5"
+              >
+                Confirm password
+              </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                 <input
                   id="confirmPassword"
-                  type={showConfirm ? 'text' : 'password'}
+                  type={showConfirm ? "text" : "password"}
                   autoComplete="new-password"
                   value={formData.confirmPassword}
-                  onChange={e => handleChange('confirmPassword', e.target.value)}
-                  onBlur={() => handleBlur('confirmPassword')}
+                  onChange={(e) =>
+                    handleChange("confirmPassword", e.target.value)
+                  }
+                  onBlur={() => handleBlur("confirmPassword")}
                   placeholder="Repeat your password"
-                  className={`${inputClass('confirmPassword')} pr-10`}
+                  className={`${inputClass("confirmPassword")} pr-10`}
                 />
                 <button
                   type="button"
                   tabIndex={-1}
-                  onClick={() => setShowConfirm(v => !v)}
+                  onClick={() => setShowConfirm((v) => !v)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showConfirm ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                 </button>
               </div>
               {errors.confirmPassword && touched.confirmPassword && (
-                <p className="text-xs text-red-600 mt-1.5">{errors.confirmPassword}</p>
+                <p className="text-xs text-red-600 mt-1.5">
+                  {errors.confirmPassword}
+                </p>
               )}
             </div>
 
             {/* Form-level error */}
             {errors.form && (
-              <p className="text-xs capitalize text-red-600 mb-4 p-3 bg-red-50 rounded-lg border border-red-100">{errors.form}</p>
+              <p className="text-xs capitalize text-red-600 mb-4 p-3 bg-red-50 rounded-lg border border-red-100">
+                {errors.form}
+              </p>
             )}
 
             <button
@@ -293,8 +350,11 @@ export default function Register() {
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-500">
-            Already have an account?{' '}
-            <Link href="/login" className="font-medium text-gray-900 hover:underline">
+            Already have an account?{" "}
+            <Link
+              href="/login"
+              className="font-medium text-gray-900 hover:underline"
+            >
               Sign in
             </Link>
           </p>
@@ -306,7 +366,11 @@ export default function Register() {
         {/* Background texture */}
         <div
           className="absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '32px 32px' }}
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+            backgroundSize: "32px 32px",
+          }}
         />
 
         <div className="relative z-10">
@@ -316,15 +380,21 @@ export default function Register() {
           </div>
 
           <h2 className="text-4xl font-bold text-white leading-tight mb-5">
-            The operating system<br />for interior designers
+            The operating system
+            <br />
+            for interior designers
           </h2>
           <p className="text-white/60 text-base leading-relaxed max-w-sm">
-            Manage projects, clients, finances, and team communication — all in one place.
+            Manage projects, clients, finances, and team communication — all in
+            one place.
           </p>
 
           <ul className="mt-10 space-y-3">
-            {features.map(f => (
-              <li key={f} className="flex items-center gap-3 text-sm text-white/80">
+            {features.map((f) => (
+              <li
+                key={f}
+                className="flex items-center gap-3 text-sm text-white/80"
+              >
                 <span className="flex-shrink-0 w-5 h-5 rounded-full bg-white/10 flex items-center justify-center">
                   <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                 </span>
@@ -337,7 +407,8 @@ export default function Register() {
         {/* Testimonial */}
         <div className="relative z-10 bg-white/8 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
           <p className="text-white/80 text-sm leading-relaxed mb-4">
-            &ldquo;TechStyles has completely changed how we run projects. Our team spends less time on admin and more time designing.&rdquo;
+            &ldquo;Focuspilot has completely changed how we run projects. Our
+            team spends less time on admin and more time designing.&rdquo;
           </p>
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-semibold">
@@ -345,7 +416,9 @@ export default function Register() {
             </div>
             <div>
               <p className="text-white text-xs font-medium">Sarah Mitchell</p>
-              <p className="text-white/50 text-xs">Principal Designer, Studio M</p>
+              <p className="text-white/50 text-xs">
+                Principal Designer, Studio M
+              </p>
             </div>
           </div>
         </div>

@@ -2,15 +2,15 @@ import { HelpArticle } from '../types';
 
 export const libraryArticles: HelpArticle[] = [
   {
-    slug: 'library-overview',
-    title: 'Library Overview',
-    description: 'Understanding your products and materials library',
-    category: 'library',
+    slug: "library-overview",
+    title: "Library Overview",
+    description: "Understanding your products and materials library",
+    category: "library",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Library Overview
 
-Your Techstyles Library is your curated collection of products and materials — the design resources you use across projects.
+Your Focuspilot Library is your curated collection of products and materials — the design resources you use across projects.
 
 ## What's in the Library?
 
@@ -77,7 +77,7 @@ Star products you use frequently to access them quickly.
 Use the Chrome extension:
 
 1. Browse a product page online
-2. Click Techstyles extension icon
+2. Click Focuspilot extension icon
 3. Click **Clip Product**
 4. Product is added to your library automatically
 
@@ -117,16 +117,16 @@ Attach product spec sheets to project documents for reference.
 - **Leverage AI Clipper** — Save time with automated product capture
 
 Your library is your design toolkit — build it thoughtfully.`,
-    screenshots: ['library/library-overview.png'],
-    related: ['adding-products', 'materials', 'ai-clipper-overview'],
+    screenshots: ["library/library-overview.png"],
+    related: ["adding-products", "materials", "ai-clipper-overview"],
   },
   {
-    slug: 'adding-products',
-    title: 'Adding Products',
-    description: 'Manual product entry and using the AI Clipper',
-    category: 'library',
+    slug: "adding-products",
+    title: "Adding Products",
+    description: "Manual product entry and using the AI Clipper",
+    category: "library",
     readTime: 5,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Adding Products
 
 Build your product library manually or use the AI Clipper for instant product capture.
@@ -185,14 +185,14 @@ The AI Clipper Chrome extension automates product capture from any website.
 ### Installing AI Clipper
 
 1. Go to **Help** page (or directly to Chrome Web Store)
-2. Download Techstyles AI Clipper extension
+2. Download Focuspilot AI Clipper extension
 3. Install in Chrome
-4. Log in with your Techstyles account
+4. Log in with your Focuspilot account
 
 ### Clipping a Product
 
 1. Browse to any product page online (e.g., retailer, manufacturer website)
-2. Click the **Techstyles extension icon** in Chrome toolbar
+2. Click the **Focuspilot extension icon** in Chrome toolbar
 3. AI automatically detects:
    - Product name
    - Price
@@ -202,7 +202,7 @@ The AI Clipper Chrome extension automates product capture from any website.
 4. Review extracted data
 5. Click **Add to Library**
 
-Product is added to your Techstyles library instantly.
+Product is added to your Focuspilot library instantly.
 
 ### What the AI Captures
 
@@ -276,7 +276,7 @@ Import many products at once:
 2. Go to **Library** → **Products**
 3. Click **Import**
 4. Upload CSV
-5. Map CSV columns to Techstyles fields
+5. Map CSV columns to Focuspilot fields
 6. Review and import
 
 Great for migrating from spreadsheets or old systems.
@@ -291,16 +291,20 @@ Great for migrating from spreadsheets or old systems.
 - **Link to source** — Always save product URL for reordering
 
 Your product library grows over time — build it consistently.`,
-    screenshots: ['library/add-product.png', 'library/ai-clipper-action.png', 'library/product-detail.png'],
-    related: ['library-overview', 'ai-clipper-overview', 'project-procurement'],
+    screenshots: [
+      "library/add-product.png",
+      "library/ai-clipper-action.png",
+      "library/product-detail.png",
+    ],
+    related: ["library-overview", "ai-clipper-overview", "project-procurement"],
   },
   {
-    slug: 'materials',
-    title: 'Materials',
-    description: 'Managing your materials library',
-    category: 'library',
+    slug: "materials",
+    title: "Materials",
+    description: "Managing your materials library",
+    category: "library",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Materials
 
 The Materials section of your library stores finishes, fabrics, and surface materials you use in projects.
@@ -406,16 +410,16 @@ Collections are like mood boards for materials.
 - **Organize by project or style** — Use collections for curation
 
 Your materials library is your design palette — curate it with care.`,
-    screenshots: ['library/materials-list.png', 'library/material-detail.png'],
-    related: ['library-overview', 'adding-products', 'project-procurement'],
+    screenshots: ["library/materials-list.png", "library/material-detail.png"],
+    related: ["library-overview", "adding-products", "project-procurement"],
   },
   {
-    slug: 'product-preview',
-    title: 'Product Preview',
-    description: 'How to use the product preview feature',
-    category: 'library',
+    slug: "product-preview",
+    title: "Product Preview",
+    description: "How to use the product preview feature",
+    category: "library",
     readTime: 2,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Product Preview
 
 The Product Preview feature lets you view detailed product information quickly.
@@ -500,7 +504,7 @@ Recipients can view product details (if they have access).
 - **Review details before ordering** — Double-check SKU, price, lead time
 
 Product preview keeps you efficient — use it to move fast.`,
-    screenshots: ['library/product-preview.png'],
-    related: ['adding-products', 'project-procurement', 'library-overview'],
+    screenshots: ["library/product-preview.png"],
+    related: ["adding-products", "project-procurement", "library-overview"],
   },
 ];

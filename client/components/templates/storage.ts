@@ -35,13 +35,17 @@ export function saveTemplates(bundle: TemplatesBundle) {
   localStorage.setItem(LS_KEYS.TASKS, JSON.stringify(bundle.tasksPerPhase));
 }
 
-export function resetToTechstylesDefaults(): TemplatesBundle {
-  if (typeof window !== 'undefined') {
+export function resetToFocuspilotDefaults(): TemplatesBundle {
+  if (typeof window !== "undefined") {
     localStorage.removeItem(LS_KEYS.PHASES);
     localStorage.removeItem(LS_KEYS.WORK);
     localStorage.removeItem(LS_KEYS.TASKS);
   }
-  return { phases: DEFAULT_PHASES, workPackages: DEFAULT_WORK_PACKAGES, tasksPerPhase: DEFAULT_TASKS_PER_PHASE };
+  return {
+    phases: DEFAULT_PHASES,
+    workPackages: DEFAULT_WORK_PACKAGES,
+    tasksPerPhase: DEFAULT_TASKS_PER_PHASE,
+  };
 }
 
 export function saveAsStudioDefault(bundle: TemplatesBundle) {
@@ -49,7 +53,7 @@ export function saveAsStudioDefault(bundle: TemplatesBundle) {
   localStorage.setItem(LS_KEYS.STUDIO_DEFAULT, JSON.stringify(bundle));
 }
 
-// Load previously saved studio default (if any), else fall back to current saved templates or Techstyles defaults
+// Load previously saved studio default (if any), else fall back to current saved templates or Focuspilot defaults
 export function loadStudioDefault(): TemplatesBundle {
   if (typeof window === 'undefined') {
     return { phases: DEFAULT_PHASES, workPackages: DEFAULT_WORK_PACKAGES, tasksPerPhase: DEFAULT_TASKS_PER_PHASE };

@@ -155,8 +155,16 @@ export default function VerifyOtpPage() {
         <div className="w-full max-w-sm mx-auto py-10">
           {/* Logo */}
           <div className="flex items-center gap-2.5 mb-10">
-            <Image src="/brand/techstyles-t-logo.png" alt="TechStyles" width={32} height={32} className="object-contain" />
-            <span className="text-base font-semibold text-gray-900 tracking-tight">TechStyles</span>
+            <Image
+              src="/brand/Logo.png"
+              alt="TechStyles"
+              width={32}
+              height={32}
+              className="object-contain"
+            />
+            <span className="text-base font-semibold text-gray-900 tracking-tight">
+              TechStyles
+            </span>
           </div>
 
           {/* Header */}
@@ -164,10 +172,14 @@ export default function VerifyOtpPage() {
             <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-5">
               <Mail className="w-6 h-6 text-gray-600" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1.5">Check your email</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-1.5">
+              Check your email
+            </h1>
             <p className="text-sm text-gray-500">
-              We sent a 6-digit code to{' '}
-              <span className="font-medium text-gray-800">{maskEmail(email)}</span>
+              We sent a 6-digit code to{" "}
+              <span className="font-medium text-gray-800">
+                {maskEmail(email)}
+              </span>
             </p>
           </div>
 
@@ -177,11 +189,11 @@ export default function VerifyOtpPage() {
               maxLength={6}
               value={otp}
               onChange={setOtp}
-              disabled={stage === 'submitting'}
+              disabled={stage === "submitting"}
               autoFocus
             >
               <InputOTPGroup className="gap-2">
-                {[0, 1, 2, 3, 4, 5].map(i => (
+                {[0, 1, 2, 3, 4, 5].map((i) => (
                   <InputOTPSlot
                     key={i}
                     index={i}
@@ -194,22 +206,24 @@ export default function VerifyOtpPage() {
 
           {/* Error */}
           {error && (
-            <p className="text-xs text-red-600 mb-4 p-3 bg-red-50 rounded-lg border border-red-100">{error}</p>
+            <p className="text-xs text-red-600 mb-4 p-3 bg-red-50 rounded-lg border border-red-100">
+              {error}
+            </p>
           )}
 
           {/* Submit button (fallback for users who don't auto-trigger) */}
           <button
             onClick={() => submitOtp(otp)}
-            disabled={otp.length !== 6 || stage === 'submitting'}
+            disabled={otp.length !== 6 || stage === "submitting"}
             className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mb-4"
           >
-            {stage === 'submitting' ? (
+            {stage === "submitting" ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
                 Verifying…
               </>
             ) : (
-              'Verify email'
+              "Verify email"
             )}
           </button>
 
@@ -218,9 +232,9 @@ export default function VerifyOtpPage() {
             <p className="text-sm text-gray-500 mb-1">Didn't receive a code?</p>
             {resendCooldown > 0 ? (
               <p className="text-sm text-gray-400">
-                Resend in{' '}
+                Resend in{" "}
                 <span className="font-medium text-gray-600 tabular-nums">
-                  0:{String(resendCooldown).padStart(2, '0')}
+                  0:{String(resendCooldown).padStart(2, "0")}
                 </span>
               </p>
             ) : (
@@ -229,7 +243,11 @@ export default function VerifyOtpPage() {
                 disabled={isResending}
                 className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-900 hover:underline disabled:opacity-50"
               >
-                {isResending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5" />}
+                {isResending ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-3.5 h-3.5" />
+                )}
                 Resend code
               </button>
             )}
@@ -251,14 +269,21 @@ export default function VerifyOtpPage() {
       <div className="hidden lg:flex flex-col justify-center w-[52%] bg-[#1a2e2a] px-14 py-10 relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '32px 32px' }}
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+            backgroundSize: "32px 32px",
+          }}
         />
         <div className="relative z-10">
           <h2 className="text-4xl font-bold text-white leading-tight mb-5">
-            One step away<br />from your studio
+            One step away
+            <br />
+            from your studio
           </h2>
           <p className="text-white/60 text-base leading-relaxed max-w-sm">
-            Confirm your email to unlock all features and get started managing your design projects.
+            Confirm your email to unlock all features and get started managing
+            your design projects.
           </p>
         </div>
       </div>

@@ -2,15 +2,16 @@ import { HelpArticle } from '../types';
 
 export const projectsArticles: HelpArticle[] = [
   {
-    slug: 'projects-overview',
-    title: 'Projects Overview',
-    description: 'Understanding the project list, creating projects, and project status',
-    category: 'projects',
+    slug: "projects-overview",
+    title: "Projects Overview",
+    description:
+      "Understanding the project list, creating projects, and project status",
+    category: "projects",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Projects Overview
 
-Projects are the heart of Techstyles — each project represents a client engagement with all its tasks, documents, finances, and team collaboration.
+Projects are the heart of Focuspilot — each project represents a client engagement with all its tasks, documents, finances, and team collaboration.
 
 ## The Projects Page
 
@@ -139,16 +140,20 @@ Archived projects are hidden from default views but remain searchable and access
 - **Archive old projects** — Keep your project list focused on current work
 
 Projects keep your studio organised — treat them as your single source of truth for each client engagement.`,
-    screenshots: ['projects/projects-list.png', 'projects/project-dashboard.png'],
-    related: ['creating-first-project', 'project-settings', 'project-plan'],
+    screenshots: [
+      "projects/projects-list.png",
+      "projects/project-dashboard.png",
+    ],
+    related: ["creating-first-project", "project-settings", "project-plan"],
   },
   {
-    slug: 'project-tasks',
-    title: 'Project Tasks',
-    description: 'Creating tasks, assigning team members, due dates, and status tracking',
-    category: 'projects',
+    slug: "project-tasks",
+    title: "Project Tasks",
+    description:
+      "Creating tasks, assigning team members, due dates, and status tracking",
+    category: "projects",
     readTime: 5,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Project Tasks
 
 Tasks are the actionable work items within a project. Use them to break down project deliverables and track progress.
@@ -331,16 +336,20 @@ Time logs appear on reports and can be billed.
 - **Break down large tasks** — If a task takes >8 hours, split it into subtasks
 
 Tasks drive project execution — keep them organised and up to date.`,
-    screenshots: ['projects/tasks-list.png', 'projects/task-detail.png', 'projects/kanban.png'],
-    related: ['my-tasks', 'project-plan', 'time-tracking'],
+    screenshots: [
+      "projects/tasks-list.png",
+      "projects/task-detail.png",
+      "projects/kanban.png",
+    ],
+    related: ["my-tasks", "project-plan", "time-tracking"],
   },
   {
-    slug: 'project-docs',
-    title: 'Project Docs',
-    description: 'Notes, folders, file uploads, and document organization',
-    category: 'projects',
+    slug: "project-docs",
+    title: "Project Docs",
+    description: "Notes, folders, file uploads, and document organization",
+    category: "projects",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Project Docs
 
 The **Docs** section is your project's knowledge repository — store notes, files, contracts, drawings, and any project-related documentation.
@@ -448,7 +457,7 @@ Results highlight matching text.
 
 ## File Versions
 
-Techstyles tracks file versions:
+Focuspilot tracks file versions:
 
 - Upload a file with the same name to create a new version
 - Previous versions are preserved
@@ -500,7 +509,7 @@ Link your Google Drive:
 
 1. Go to **Settings** → **Integrations**
 2. Connect Google Drive
-3. Files in Drive can be linked into Techstyles docs
+3. Files in Drive can be linked into Focuspilot docs
 
 ### Dropbox
 
@@ -515,16 +524,20 @@ Similar integration available for Dropbox.
 - **Regular cleanup** — Archive outdated docs to keep things tidy
 
 Your project docs are the project's memory — keep them organised and accessible.`,
-    screenshots: ['projects/docs-list.png', 'projects/note-editor.png', 'projects/file-preview.png'],
-    related: ['project-messages', 'project-tasks', 'integrations'],
+    screenshots: [
+      "projects/docs-list.png",
+      "projects/note-editor.png",
+      "projects/file-preview.png",
+    ],
+    related: ["project-messages", "project-tasks", "integrations"],
   },
   {
-    slug: 'project-messages',
-    title: 'Project Messages',
-    description: 'Internal project chat and team communication',
-    category: 'projects',
+    slug: "project-messages",
+    title: "Project Messages",
+    description: "Internal project chat and team communication",
+    category: "projects",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Project Messages
 
 Each project has its own **Messages** channel for team communication specific to that project.
@@ -665,16 +678,17 @@ All project messages are preserved:
 - **Use threads** — Reply to specific messages to keep conversations organised
 
 Project messages keep your team aligned — use them for real-time collaboration.`,
-    screenshots: ['projects/messages.png', 'projects/message-thread.png'],
-    related: ['inbox', 'project-docs', 'project-tasks'],
+    screenshots: ["projects/messages.png", "projects/message-thread.png"],
+    related: ["inbox", "project-docs", "project-tasks"],
   },
   {
-    slug: 'project-finance',
-    title: 'Project Finance',
-    description: 'Project-specific invoices, purchase orders, and budget tracking',
-    category: 'projects',
+    slug: "project-finance",
+    title: "Project Finance",
+    description:
+      "Project-specific invoices, purchase orders, and budget tracking",
+    category: "projects",
     readTime: 5,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Project Finance
 
 The **Finance** tab in each project shows all financial activity related to that project — invoices sent to clients and purchase orders for project expenses.
@@ -829,16 +843,21 @@ Useful for accounting or client reporting.
 - **Use PO approval** — Prevent unauthorized spending on projects
 
 Project finance visibility keeps projects profitable — monitor it regularly.`,
-    screenshots: ['projects/finance-overview.png', 'projects/invoice.png', 'projects/purchase-order.png'],
-    related: ['creating-invoice', 'purchase-orders', 'profitability-reports'],
+    screenshots: [
+      "projects/finance-overview.png",
+      "projects/invoice.png",
+      "projects/purchase-order.png",
+    ],
+    related: ["creating-invoice", "purchase-orders", "profitability-reports"],
   },
   {
-    slug: 'project-procurement',
-    title: 'Project Procurement',
-    description: 'Managing procurement items, tracking costs, and coordinating deliveries',
-    category: 'projects',
+    slug: "project-procurement",
+    title: "Project Procurement",
+    description:
+      "Managing procurement items, tracking costs, and coordinating deliveries",
+    category: "projects",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Project Procurement
 
 The **Procurement** tab helps you manage product sourcing, ordering, and delivery for your projects.
@@ -888,7 +907,7 @@ Product details (cost, supplier, lead time) import automatically.
 Use the AI Clipper Chrome extension to add products:
 
 1. Browse a product page online
-2. Click the Techstyles extension
+2. Click the Focuspilot extension
 3. Clip the product
 4. Select "Add to Project Procurement"
 5. Choose the project
@@ -1017,16 +1036,19 @@ Useful for client approval or installation coordination.
 - **Link to POs** — Always create POs for ordered items
 
 Procurement keeps your projects on schedule and on budget — stay organised.`,
-    screenshots: ['projects/procurement-list.png', 'projects/procurement-item.png'],
-    related: ['library-overview', 'ai-clipper-overview', 'purchase-orders'],
+    screenshots: [
+      "projects/procurement-list.png",
+      "projects/procurement-item.png",
+    ],
+    related: ["library-overview", "ai-clipper-overview", "purchase-orders"],
   },
   {
-    slug: 'project-contractors',
-    title: 'Project Contractors',
-    description: 'Adding and managing contractors working on your project',
-    category: 'projects',
+    slug: "project-contractors",
+    title: "Project Contractors",
+    description: "Adding and managing contractors working on your project",
+    category: "projects",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Project Contractors
 
 The **Contractors** tab helps you manage subcontractors, trades, and external vendors working on your project.
@@ -1174,16 +1196,19 @@ Historical data is preserved but contractor no longer shows in active list.
 - **Review performance** — Add notes on quality and timeliness
 
 Contractors are critical to project delivery — manage them carefully.`,
-    screenshots: ['projects/contractors-list.png', 'projects/contractor-detail.png'],
-    related: ['project-tasks', 'project-calendar', 'purchase-orders'],
+    screenshots: [
+      "projects/contractors-list.png",
+      "projects/contractor-detail.png",
+    ],
+    related: ["project-tasks", "project-calendar", "purchase-orders"],
   },
   {
-    slug: 'project-plan',
-    title: 'Project Plan',
-    description: 'Project phases, milestones, and timeline visualization',
-    category: 'projects',
+    slug: "project-plan",
+    title: "Project Plan",
+    description: "Project phases, milestones, and timeline visualization",
+    category: "projects",
     readTime: 5,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Project Plan
 
 The **Plan** tab gives you a high-level timeline view of your project — phases, milestones, and key dates.
@@ -1343,16 +1368,21 @@ The plan should be a living document.
 - **Communicate changes** — If timeline shifts, notify stakeholders
 
 The project plan keeps everyone aligned on the roadmap — maintain it diligently.`,
-    screenshots: ['projects/project-plan.png', 'projects/timeline.png', 'projects/milestones.png'],
-    related: ['project-tasks', 'project-calendar', 'creating-first-project'],
+    screenshots: [
+      "projects/project-plan.png",
+      "projects/timeline.png",
+      "projects/milestones.png",
+    ],
+    related: ["project-tasks", "project-calendar", "creating-first-project"],
   },
   {
-    slug: 'project-calendar',
-    title: 'Project Calendar',
-    description: 'Project-specific calendar showing deadlines, events, and milestones',
-    category: 'projects',
+    slug: "project-calendar",
+    title: "Project Calendar",
+    description:
+      "Project-specific calendar showing deadlines, events, and milestones",
+    category: "projects",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Project Calendar
 
 Each project has its own **Calendar** showing project-specific deadlines, events, and milestones.
@@ -1440,16 +1470,16 @@ Project events now appear in your personal calendar.
 - **Color-code** — Use task priorities to visually identify urgent items
 
 The project calendar ensures nothing falls through the cracks.`,
-    screenshots: ['projects/project-calendar.png'],
-    related: ['calendar', 'project-plan', 'project-tasks'],
+    screenshots: ["projects/project-calendar.png"],
+    related: ["calendar", "project-plan", "project-tasks"],
   },
   {
-    slug: 'project-settings',
-    title: 'Project Settings',
-    description: 'Configuring project details, client, status, and preferences',
-    category: 'projects',
+    slug: "project-settings",
+    title: "Project Settings",
+    description: "Configuring project details, client, status, and preferences",
+    category: "projects",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Project Settings
 
 The **Settings** tab lets you configure project details, permissions, and preferences.
@@ -1583,7 +1613,10 @@ All project data is erased and cannot be recovered.
 - **Archive completed projects** — Keep active project list focused
 
 Project settings are your control panel — configure them thoughtfully.`,
-    screenshots: ['projects/project-settings.png', 'projects/team-management.png'],
-    related: ['projects-overview', 'team-overview', 'finance-settings'],
+    screenshots: [
+      "projects/project-settings.png",
+      "projects/team-management.png",
+    ],
+    related: ["projects-overview", "team-overview", "finance-settings"],
   },
 ];

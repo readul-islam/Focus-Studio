@@ -11,8 +11,8 @@ import { AppUpdateChecker } from '@/components/app-update-checker';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Techstyles',
-  description: 'Techstyles Web Application',
+  title: "Focuspilot",
+  description: "Focuspilot Web Application",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

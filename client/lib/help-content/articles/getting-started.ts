@@ -2,19 +2,20 @@ import { HelpArticle } from '../types';
 
 export const gettingStartedArticles: HelpArticle[] = [
   {
-    slug: 'welcome-to-techstyles',
-    title: 'Welcome to Techstyles',
-    description: 'An introduction to the Techstyles platform and who it\'s designed for',
-    category: 'getting-started',
+    slug: "welcome-to-techstyles",
+    title: "Welcome to Focuspilot",
+    description:
+      "An introduction to the Focuspilot platform and who it's designed for",
+    category: "getting-started",
     readTime: 3,
-    lastUpdated: '2026-02-27',
-    content: `# Welcome to Techstyles
+    lastUpdated: "2026-02-27",
+    content: `# Welcome to Focuspilot
 
-Techstyles is a comprehensive project management platform built specifically for interior designers, architects, and creative studios.
+Focuspilot is a comprehensive project management platform built specifically for interior designers, architects, and creative studios.
 
-## What is Techstyles?
+## What is Focuspilot?
 
-Techstyles brings together everything you need to run your creative practise in one place:
+Focuspilot brings together everything you need to run your creative practise in one place:
 
 - **Project Management** — Tasks, timelines, phases, and milestones
 - **Client Relationship Management** — Contacts, leads, pipeline, and proposals
@@ -23,9 +24,9 @@ Techstyles brings together everything you need to run your creative practise in 
 - **Team Collaboration** — Messages, shared calendars, and task assignments
 - **AI-Powered Tools** — Smart product clipping, daily briefs, and intelligent automation
 
-## Who is Techstyles for?
+## Who is Focuspilot for?
 
-Techstyles is designed for:
+Focuspilot is designed for:
 
 - Interior design studios managing multiple residential or commercial projects
 - Architects coordinating procurement and contractor relationships
@@ -34,13 +35,13 @@ Techstyles is designed for:
 
 ## Key Benefits
 
-**Everything in one place** — Stop juggling spreadsheets, email threads, and disconnected tools. Techstyles centralizes your projects, finances, and team communication.
+**Everything in one place** — Stop juggling spreadsheets, email threads, and disconnected tools. Focuspilot centralizes your projects, finances, and team communication.
 
-**Built for design** — Unlike generic project management tools, Techstyles understands the unique workflows of design professionals — from product sourcing to contractor coordination.
+**Built for design** — Unlike generic project management tools, Focuspilot understands the unique workflows of design professionals — from product sourcing to contractor coordination.
 
-**AI-powered efficiency** — Let Techstyles handle repetitive tasks like extracting product information, generating daily briefs, and tracking project updates.
+**AI-powered efficiency** — Let Focuspilot handle repetitive tasks like extracting product information, generating daily briefs, and tracking project updates.
 
-**Scalable for growth** — Whether you're a solo designer or a 50-person studio, Techstyles grows with your practise.
+**Scalable for growth** — Whether you're a solo designer or a 50-person studio, Focuspilot grows with your practise.
 
 ## Getting Started
 
@@ -56,20 +57,21 @@ Ready to dive in? Here's where to start:
 
 Browse articles by category in this help centre, or reach out to support@techstyles.com if you need assistance.
 
-Welcome to Techstyles — let's build something great together.`,
-    screenshots: ['getting-started/welcome.png'],
-    related: ['setting-up-studio', 'creating-first-project', 'inviting-team'],
+Welcome to Focuspilot — let's build something great together.`,
+    screenshots: ["getting-started/welcome.png"],
+    related: ["setting-up-studio", "creating-first-project", "inviting-team"],
   },
   {
-    slug: 'setting-up-studio',
-    title: 'Setting Up Your Studio',
-    description: 'Configure your studio name, logo, branding, and company details',
-    category: 'getting-started',
+    slug: "setting-up-studio",
+    title: "Setting Up Your Studio",
+    description:
+      "Configure your studio name, logo, branding, and company details",
+    category: "getting-started",
     readTime: 5,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Setting Up Your Studio
 
-Your Studio settings control your company profile, branding, and default preferences across Techstyles.
+Your Studio settings control your company profile, branding, and default preferences across Focuspilot.
 
 ## Accessing Studio Settings
 
@@ -97,7 +99,7 @@ Set your basic company details:
 
 ## Branding
 
-Make Techstyles feel like your own with custom branding:
+Make Focuspilot feel like your own with custom branding:
 
 ### Logo Upload
 
@@ -140,19 +142,22 @@ Once your studio is configured:
 3. **Create document templates** — Customize proposal and invoice templates
 
 Your studio settings create a professional foundation for all your projects and client interactions.`,
-    screenshots: ['getting-started/studio-settings.png', 'getting-started/branding.png'],
-    related: ['general-settings', 'branding', 'finance-settings'],
+    screenshots: [
+      "getting-started/studio-settings.png",
+      "getting-started/branding.png",
+    ],
+    related: ["general-settings", "branding", "finance-settings"],
   },
   {
-    slug: 'inviting-team',
-    title: 'Inviting Your Team',
-    description: 'Add team members, assign roles, and manage permissions',
-    category: 'getting-started',
+    slug: "inviting-team",
+    title: "Inviting Your Team",
+    description: "Add team members, assign roles, and manage permissions",
+    category: "getting-started",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Inviting Your Team
 
-Techstyles supports collaborative workflows for your entire studio. Add team members and assign them appropriate access levels.
+Focuspilot supports collaborative workflows for your entire studio. Add team members and assign them appropriate access levels.
 
 ## How to Invite Team Members
 
@@ -173,7 +178,7 @@ You can also invite members via **Settings** → **Studio** → **Team Managemen
 
 ## Understanding Roles
 
-Techstyles has four permission levels:
+Focuspilot has four permission levels:
 
 ### Owner
 
@@ -252,19 +257,22 @@ After inviting your team:
 3. **Configure notifications** — Ensure team members get important updates
 
 Your team is the heart of your studio — make sure everyone has the right access to collaborate effectively.`,
-    screenshots: ['getting-started/invite-team.png', 'getting-started/roles.png'],
-    related: ['team-overview', 'roles-permissions', 'team-management'],
+    screenshots: [
+      "getting-started/invite-team.png",
+      "getting-started/roles.png",
+    ],
+    related: ["team-overview", "roles-permissions", "team-management"],
   },
   {
-    slug: 'creating-first-project',
-    title: 'Creating Your First Project',
-    description: 'Step-by-step guide to setting up a project in TechStyles',
-    category: 'getting-started',
+    slug: "creating-first-project",
+    title: "Creating Your First Project",
+    description: "Step-by-step guide to setting up a project in TechStyles",
+    category: "getting-started",
     readTime: 6,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Creating Your First Project
 
-Projects are the core of Techstyles. Each project contains tasks, documents, finances, and all the information for a client engagement.
+Projects are the core of Focuspilot. Each project contains tasks, documents, finances, and all the information for a client engagement.
 
 ## Step 1: Navigate to Projects
 
@@ -396,20 +404,24 @@ With your first project set up:
 3. **Start tracking time** — Log hours worked on tasks
 4. **Create your first invoice** — Bill your client for project work
 
-You're now ready to manage your project end-to-end in Techstyles.`,
-    screenshots: ['getting-started/new-project.png', 'getting-started/project-details.png', 'getting-started/project-dashboard.png'],
-    related: ['projects-overview', 'project-tasks', 'project-plan'],
+You're now ready to manage your project end-to-end in Focuspilot.`,
+    screenshots: [
+      "getting-started/new-project.png",
+      "getting-started/project-details.png",
+      "getting-started/project-dashboard.png",
+    ],
+    related: ["projects-overview", "project-tasks", "project-plan"],
   },
   {
-    slug: 'navigating-sidebar',
-    title: 'Navigating the Sidebar',
-    description: 'Complete guide to every item in the Techstyles navigation',
-    category: 'getting-started',
+    slug: "navigating-sidebar",
+    title: "Navigating the Sidebar",
+    description: "Complete guide to every item in the Focuspilot navigation",
+    category: "getting-started",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Navigating the Sidebar
 
-The Techstyles sidebar is your command centre for accessing every feature in the platform.
+The Focuspilot sidebar is your command centre for accessing every feature in the platform.
 
 ## Top Section: Home
 
@@ -531,8 +543,8 @@ Use the global search (top right) to find:
 - Contacts and leads
 - Documents and files
 
-You now know your way around Techstyles — explore confidently!`,
-    screenshots: ['getting-started/sidebar.png'],
-    related: ['dashboard-overview', 'inbox', 'my-tasks'],
+You now know your way around Focuspilot — explore confidently!`,
+    screenshots: ["getting-started/sidebar.png"],
+    related: ["dashboard-overview", "inbox", "my-tasks"],
   },
 ];

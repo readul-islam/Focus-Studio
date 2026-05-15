@@ -132,15 +132,27 @@ function StudioGeneralPageContent() {
   return (
     <div className="space-y-6 md:space-y-8">
       <div>
-        <h1 className="text-base font-semibold text-gray-900">Studio settings</h1>
-        <p className="text-sm text-gray-600">Organisation-wide configuration for TechStyles Studio.</p>
+        <h1 className="text-base font-semibold text-gray-900">
+          Studio settings
+        </h1>
+        <p className="text-sm text-gray-600">
+          Organisation-wide configuration for TechStyles Studio.
+        </p>
       </div>
 
-      <Section title="General" description="Studio name, contact details, and address.">
+      <Section
+        title="General"
+        description="Studio name, contact details, and address."
+      >
         <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2">
             <Label htmlFor="name">Studio name</Label>
-            <Input id="name" value={studioData.name} onChange={set('name')} placeholder="Techstyles" />
+            <Input
+              id="name"
+              value={studioData.name}
+              onChange={set("name")}
+              placeholder="Focuspilot"
+            />
           </div>
 
           <div>
@@ -149,19 +161,29 @@ function StudioGeneralPageContent() {
               id="support_email"
               type="email"
               value={studioData.support_email}
-              onChange={set('support_email')}
+              onChange={set("support_email")}
               placeholder="support@techstyles.com"
             />
           </div>
 
           <div>
             <Label htmlFor="phone_number">Phone</Label>
-            <Input id="phone_number" value={studioData.phone_number} onChange={set('phone_number')} placeholder="+44 20 7123 4567" />
+            <Input
+              id="phone_number"
+              value={studioData.phone_number}
+              onChange={set("phone_number")}
+              placeholder="+44 20 7123 4567"
+            />
           </div>
 
           <div className="sm:col-span-2">
             <Label htmlFor="address_line_1">Address line 1</Label>
-            <Input id="address_line_1" value={studioData.address_line_1} onChange={set('address_line_1')} placeholder="123 High Street" />
+            <Input
+              id="address_line_1"
+              value={studioData.address_line_1}
+              onChange={set("address_line_1")}
+              placeholder="123 High Street"
+            />
           </div>
 
           <div className="sm:col-span-2">
@@ -169,48 +191,75 @@ function StudioGeneralPageContent() {
             <Input
               id="address_line_2"
               value={studioData.address_line_2}
-              onChange={set('address_line_2')}
+              onChange={set("address_line_2")}
               placeholder="Suite / Floor (optional)"
             />
           </div>
 
           <div>
             <Label htmlFor="city">Town / City</Label>
-            <Input id="city" value={studioData.city} onChange={set('city')} placeholder="London" />
+            <Input
+              id="city"
+              value={studioData.city}
+              onChange={set("city")}
+              placeholder="London"
+            />
           </div>
 
           <div>
             <Label htmlFor="county">County</Label>
-            <Input id="county" value={studioData.county} onChange={set('county')} placeholder="Greater London" />
+            <Input
+              id="county"
+              value={studioData.county}
+              onChange={set("county")}
+              placeholder="Greater London"
+            />
           </div>
 
           <div>
             <Label htmlFor="postcode">Postcode</Label>
-            <Input id="postcode" value={studioData.postcode} onChange={set('postcode')} placeholder="SW1A 1AA" />
+            <Input
+              id="postcode"
+              value={studioData.postcode}
+              onChange={set("postcode")}
+              placeholder="SW1A 1AA"
+            />
           </div>
 
           <div>
             <Label htmlFor="country">Country</Label>
-            <Input id="country" value={studioData.country} onChange={set('country')} placeholder="United Kingdom" />
+            <Input
+              id="country"
+              value={studioData.country}
+              onChange={set("country")}
+              placeholder="United Kingdom"
+            />
           </div>
 
           <div className="sm:col-span-2 flex justify-end">
-            <Button disabled={mutation.isPending}>{mutation.isPending ? 'Saving...' : 'Save'}</Button>
+            <Button disabled={mutation.isPending}>
+              {mutation.isPending ? "Saving..." : "Save"}
+            </Button>
           </div>
         </form>
       </Section>
 
-      <Section title="Studio Logo" description="Upload your studio logos. Used on proposals, invoices, and the client portal.">
+      <Section
+        title="Studio Logo"
+        description="Upload your studio logos. Used on proposals, invoices, and the client portal."
+      >
         <div className="grid gap-6 sm:grid-cols-2">
-          {logoSlots.map(slot => (
+          {logoSlots.map((slot) => (
             <div key={slot.key} className="space-y-2">
               <Label>{slot.label}</Label>
-              <p className="text-xs text-muted-foreground">{slot.description}</p>
+              <p className="text-xs text-muted-foreground">
+                {slot.description}
+              </p>
               <div
                 className="relative flex items-center justify-center h-28 border-2 border-dashed border-gray-200 rounded-lg bg-stone-50 cursor-pointer hover:border-gray-300 transition-colors overflow-hidden"
                 onClick={() => inputRefs.current[slot.key]?.click()}
-                onDragOver={e => e.preventDefault()}
-                onDrop={e => {
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => {
                   e.preventDefault();
                   const f = e.dataTransfer.files?.[0];
                   if (f) handleFile(slot.key, f);
@@ -218,12 +267,16 @@ function StudioGeneralPageContent() {
               >
                 {logos[slot.key] ? (
                   <>
-                    <img src={logos[slot.key]!} alt={slot.label} className="max-h-full max-w-full object-contain p-3" />
+                    <img
+                      src={logos[slot.key]!}
+                      alt={slot.label}
+                      className="max-h-full max-w-full object-contain p-3"
+                    />
                     <button
                       type="button"
-                      onClick={e => {
+                      onClick={(e) => {
                         e.stopPropagation();
-                        setLogos(prev => ({ ...prev, [slot.key]: null }));
+                        setLogos((prev) => ({ ...prev, [slot.key]: null }));
                         fileRefs.current[slot.key] = null;
                       }}
                       className="absolute top-1.5 right-1.5 bg-white rounded-full p-0.5 shadow border border-gray-200"
@@ -235,18 +288,20 @@ function StudioGeneralPageContent() {
                   <div className="flex flex-col items-center gap-1.5 text-gray-400 pointer-events-none">
                     <UploadCloud className="w-6 h-6" />
                     <span className="text-xs">Click or drag to upload</span>
-                    <span className="text-[10px] text-gray-300">PNG, JPG, SVG — max 5MB</span>
+                    <span className="text-[10px] text-gray-300">
+                      PNG, JPG, SVG — max 5MB
+                    </span>
                   </div>
                 )}
               </div>
               <input
-                ref={el => {
+                ref={(el) => {
                   inputRefs.current[slot.key] = el;
                 }}
                 type="file"
                 accept="image/png,image/jpeg,image/svg+xml,image/webp"
                 className="hidden"
-                onChange={e => {
+                onChange={(e) => {
                   const f = e.target.files?.[0];
                   if (f) handleFile(slot.key, f);
                 }}
@@ -255,7 +310,7 @@ function StudioGeneralPageContent() {
           ))}
           <div className="sm:col-span-2 flex justify-end pt-2">
             <Button onClick={handleSaveLogo} disabled={isSavingLogo}>
-              {isSavingLogo ? 'Saving...' : 'Save logo'}
+              {isSavingLogo ? "Saving..." : "Save logo"}
             </Button>
           </div>
         </div>

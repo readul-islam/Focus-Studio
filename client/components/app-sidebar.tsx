@@ -309,17 +309,19 @@ export function AppSidebar() {
         )}
       </AnimatePresence>
 
-      {isTablet && <div className="flex-shrink-0 h-screen bg-transparent w-[64px]" />}
+      {isTablet && (
+        <div className="flex-shrink-0 h-screen bg-transparent w-[64px]" />
+      )}
 
       <motion.div
         variants={sidebarVariants}
         initial={false}
-        animate={isCollapsed ? 'collapsed' : 'expanded'}
+        animate={isCollapsed ? "collapsed" : "expanded"}
         className={cn(
-          'border-r border-gray-200 h-screen flex flex-col bg-white overflow-hidden',
-          isTablet ? 'fixed inset-y-0 left-0 z-50' : '',
-          isTablet && !isCollapsed ? 'shadow-2xl' : '',
-          !hasMounted && 'opacity-0',
+          "border-r border-gray-200 h-screen flex flex-col bg-white overflow-hidden",
+          isTablet ? "fixed inset-y-0 left-0 z-50" : "",
+          isTablet && !isCollapsed ? "shadow-2xl" : "",
+          !hasMounted && "opacity-0",
         )}
       >
         {/* Logo Section */}
@@ -327,25 +329,31 @@ export function AppSidebar() {
           <div className="flex items-center h-11">
             <div className="flex items-center flex-1 min-w-0">
               <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
-                <Image width={100} height={100} src="/brand/techstyles-t-logo.png" alt="Techstyles" className="w-8 h-8 object-contain" />
+                <Image
+                  width={100}
+                  height={100}
+                  src="/brand/Logo.png"
+                  alt="Focuspilot"
+                  className="w-8 h-8 object-contain"
+                />
               </div>
               <motion.span
                 variants={logoTextVariants}
                 initial={false}
-                animate={isCollapsed ? 'collapsed' : 'expanded'}
+                animate={isCollapsed ? "collapsed" : "expanded"}
                 className="font-semibold text-gray-900 whitespace-nowrap overflow-hidden ml-3"
               >
-                Techstyles
+                Focuspilot
               </motion.span>
             </div>
             <button
-              onClick={() => setIsCollapsed(prev => !prev)}
+              onClick={() => setIsCollapsed((prev) => !prev)}
               className="py-1.5 text-gray-400 hover:text-gray-600 hover:bg-stone-50 rounded-lg transition-colors flex-shrink-0 ml-7"
-              title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             >
               <motion.div
                 animate={{ rotate: isCollapsed ? 0 : 180 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
                 className="flex items-center justify-center"
               >
                 <ChevronRight className="w-4 h-4" />
@@ -359,7 +367,12 @@ export function AppSidebar() {
           {/* Personal Group */}
           <div className="space-y-0">
             {allowedPersonalItems.map((item, index) => (
-              <NavItem key={`personal-${index}`} item={item} isActive={pathname.startsWith(item.basePath)} isCollapsed={isCollapsed} />
+              <NavItem
+                key={`personal-${index}`}
+                item={item}
+                isActive={pathname.startsWith(item.basePath)}
+                isCollapsed={isCollapsed}
+              />
             ))}
           </div>
 
@@ -370,7 +383,7 @@ export function AppSidebar() {
                 <motion.div
                   key="line"
                   initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: '100%' }}
+                  animate={{ opacity: 1, width: "100%" }}
                   exit={{ opacity: 0, width: 0 }}
                   transition={{ duration: 0.2 }}
                   className="h-px bg-stone-200"
@@ -392,7 +405,12 @@ export function AppSidebar() {
           {/* Studio Group */}
           <div className="space-y-1">
             {visibleStudioItems.map((item, index) => (
-              <NavItem key={`studio-${index}`} item={item} isActive={pathname.startsWith(item.basePath)} isCollapsed={isCollapsed} />
+              <NavItem
+                key={`studio-${index}`}
+                item={item}
+                isActive={pathname.startsWith(item.basePath)}
+                isCollapsed={isCollapsed}
+              />
             ))}
 
             {overflowItems.length > 0 && (
@@ -402,15 +420,21 @@ export function AppSidebar() {
                     <DropdownMenuTrigger asChild>
                       <button
                         className={cn(
-                          'flex items-center rounded-md text-sm font-medium transition-colors duration-150 w-full h-10 px-3.5',
-                          isMoreActive ? 'bg-white text-gray-900' : 'text-gray-600 hover:text-gray-900 hover:bg-stone-50',
+                          "flex items-center rounded-md text-sm font-medium transition-colors duration-150 w-full h-10 px-3.5",
+                          isMoreActive
+                            ? "bg-white text-gray-900"
+                            : "text-gray-600 hover:text-gray-900 hover:bg-stone-50",
                         )}
                       >
                         {isCollapsed && isMoreActive && (
                           <motion.span
                             layoutId="sidebar-nav-active"
                             className="absolute inset-0 bg-white rounded-md"
-                            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                            transition={{
+                              type: "spring",
+                              stiffness: 400,
+                              damping: 30,
+                            }}
                           />
                         )}
                         <div className="relative z-10 w-5 h-5 flex items-center justify-center flex-shrink-0">
@@ -419,7 +443,7 @@ export function AppSidebar() {
                         <motion.span
                           variants={labelVariants}
                           initial={false}
-                          animate={isCollapsed ? 'collapsed' : 'expanded'}
+                          animate={isCollapsed ? "collapsed" : "expanded"}
                           className="relative z-10 whitespace-nowrap overflow-hidden ml-3"
                         >
                           More
@@ -434,13 +458,24 @@ export function AppSidebar() {
                   )}
                 </Tooltip>
 
-                <DropdownMenuContent align="start" side="right" className="w-56 bg-white" sideOffset={8}>
+                <DropdownMenuContent
+                  align="start"
+                  side="right"
+                  className="w-56 bg-white"
+                  sideOffset={8}
+                >
                   {overflowItems.map((item, index) => {
                     const Icon = item.icon;
                     const isActive = pathname.startsWith(item.basePath);
                     return (
                       <DropdownMenuItem key={index} asChild>
-                        <Link href={item.href} className={cn('flex w-full items-center gap-2 cursor-pointer', isActive && 'bg-stone-100')}>
+                        <Link
+                          href={item.href}
+                          className={cn(
+                            "flex w-full items-center gap-2 cursor-pointer",
+                            isActive && "bg-stone-100",
+                          )}
+                        >
                           <Icon className="w-4 h-4" />
                           <span>{item.label}</span>
                         </Link>

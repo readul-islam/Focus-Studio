@@ -2,15 +2,15 @@ import { HelpArticle } from '../types';
 
 export const reportsArticles: HelpArticle[] = [
   {
-    slug: 'reports-overview',
-    title: 'Reports Overview',
-    description: 'Understanding all available report types',
-    category: 'reports',
+    slug: "reports-overview",
+    title: "Reports Overview",
+    description: "Understanding all available report types",
+    category: "reports",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Reports Overview
 
-Techstyles Reports provide insights into studio performance, project health, and team productivity.
+Focuspilot Reports provide insights into studio performance, project health, and team productivity.
 
 ## Available Reports
 
@@ -108,16 +108,21 @@ Use dashboards for executive summaries or weekly team reviews.
 - **Act on insights** — Use data to improve processes
 
 Reports turn your data into actionable insights — use them regularly.`,
-    screenshots: ['reports/reports-dashboard.png'],
-    related: ['cost-reports', 'productivity-reports', 'profitability-reports', 'utilisation-reports'],
+    screenshots: ["reports/reports-dashboard.png"],
+    related: [
+      "cost-reports",
+      "productivity-reports",
+      "profitability-reports",
+      "utilisation-reports",
+    ],
   },
   {
-    slug: 'cost-reports',
-    title: 'Cost Reports',
-    description: 'Understanding cost breakdowns and project spending',
-    category: 'reports',
+    slug: "cost-reports",
+    title: "Cost Reports",
+    description: "Understanding cost breakdowns and project spending",
+    category: "reports",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Cost Reports
 
 Cost Reports help you track spending across projects and identify where money is going.
@@ -217,16 +222,20 @@ Export options:
 - **Analyze trends** — Learn from past projects to estimate future costs
 
 Cost reports keep your studio financially healthy — monitor them closely.`,
-    screenshots: ['reports/cost-report.png', 'reports/cost-by-project.png', 'reports/cost-trends.png'],
-    related: ['reports-overview', 'profitability-reports', 'project-finance'],
+    screenshots: [
+      "reports/cost-report.png",
+      "reports/cost-by-project.png",
+      "reports/cost-trends.png",
+    ],
+    related: ["reports-overview", "profitability-reports", "project-finance"],
   },
   {
-    slug: 'productivity-reports',
-    title: 'Productivity Reports',
-    description: 'Team and project productivity tracking',
-    category: 'reports',
+    slug: "productivity-reports",
+    title: "Productivity Reports",
+    description: "Team and project productivity tracking",
+    category: "reports",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Productivity Reports
 
 Productivity Reports measure team output and project progress.
@@ -341,16 +350,19 @@ Click any team member to see:
 - **Celebrate wins** — Recognize high-performing team members
 
 Productivity reports help optimise your team — use them to support and improve.`,
-    screenshots: ['reports/productivity-report.png', 'reports/team-productivity.png'],
-    related: ['reports-overview', 'utilisation-reports', 'my-tasks'],
+    screenshots: [
+      "reports/productivity-report.png",
+      "reports/team-productivity.png",
+    ],
+    related: ["reports-overview", "utilisation-reports", "my-tasks"],
   },
   {
-    slug: 'profitability-reports',
-    title: 'Profitability Reports',
-    description: 'Analyzing margins and revenue',
-    category: 'reports',
+    slug: "profitability-reports",
+    title: "Profitability Reports",
+    description: "Analyzing margins and revenue",
+    category: "reports",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Profitability Reports
 
 Profitability Reports show which projects and clients are most profitable.
@@ -469,16 +481,19 @@ Use historical margin data to forecast:
 - **Bill for everything** — Ensure all costs are passed to client or factored into pricing
 
 Profitability is the ultimate measure of business health — track it obsessively.`,
-    screenshots: ['reports/profitability-report.png', 'reports/profitability-by-project.png'],
-    related: ['reports-overview', 'cost-reports', 'project-finance'],
+    screenshots: [
+      "reports/profitability-report.png",
+      "reports/profitability-by-project.png",
+    ],
+    related: ["reports-overview", "cost-reports", "project-finance"],
   },
   {
-    slug: 'utilisation-reports',
-    title: 'Utilisation Reports',
-    description: 'Resource utilisation and capacity planning',
-    category: 'reports',
+    slug: "utilisation-reports",
+    title: "Utilisation Reports",
+    description: "Resource utilisation and capacity planning",
+    category: "reports",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Utilisation Reports
 
 Utilisation Reports show how team capacity is allocated and identify available bandwidth.
@@ -587,7 +602,10 @@ Filter by:
 - **Track billable time** — Maximize billable utilisation for profitability
 
 Utilisation reports ensure your team is productive but not burned out — use them to plan capacity.`,
-    screenshots: ['reports/utilisation-report.png', 'reports/capacity-planning.png'],
-    related: ['reports-overview', 'productivity-reports', 'team-overview'],
+    screenshots: [
+      "reports/utilisation-report.png",
+      "reports/capacity-planning.png",
+    ],
+    related: ["reports-overview", "productivity-reports", "team-overview"],
   },
 ];

@@ -78,8 +78,13 @@ function ResetPasswordContent() {
 
   const panelContent = (
     <div className="hidden lg:flex flex-col justify-center w-[52%] bg-[#1a2e2a] px-14 py-10 relative overflow-hidden gap-12">
-      <div className="absolute inset-0 opacity-[0.03]"
-        style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '32px 32px' }}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+          backgroundSize: "32px 32px",
+        }}
       />
       <div className="relative z-10">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/70 text-xs font-medium mb-16">
@@ -87,14 +92,20 @@ function ResetPasswordContent() {
           Now in early access
         </div>
         <h2 className="text-4xl font-bold text-white leading-tight mb-5">
-          The operating system<br />for interior designers
+          The operating system
+          <br />
+          for interior designers
         </h2>
         <p className="text-white/60 text-base leading-relaxed max-w-sm">
-          Manage projects, clients, finances, and team communication — all in one place.
+          Manage projects, clients, finances, and team communication — all in
+          one place.
         </p>
         <ul className="mt-10 space-y-3">
-          {features.map(f => (
-            <li key={f} className="flex items-center gap-3 text-sm text-white/80">
+          {features.map((f) => (
+            <li
+              key={f}
+              className="flex items-center gap-3 text-sm text-white/80"
+            >
               <span className="flex-shrink-0 w-5 h-5 rounded-full bg-white/10 flex items-center justify-center">
                 <CheckCircle2 className="w-3 h-3 text-emerald-400" />
               </span>
@@ -105,10 +116,13 @@ function ResetPasswordContent() {
       </div>
       <div className="relative z-10 bg-white/8 backdrop-blur-sm border border-white/10 rounded-2xl py-3 px-4">
         <p className="text-white/80 text-sm leading-relaxed mb-4">
-          &ldquo;TechStyles has completely changed how we run projects. Our team spends less time on admin and more time designing.&rdquo;
+          &ldquo; Focuspilot has completely changed how we run projects. Our
+          team spends less time on admin and more time designing. &rdquo;
         </p>
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-semibold">S</div>
+          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-semibold">
+            S
+          </div>
           <div>
             <p className="text-white text-xs font-medium">Roxi Zemaan</p>
             <p className="text-white/50 text-xs">Souq Studio</p>
@@ -138,22 +152,34 @@ function ResetPasswordContent() {
         <div className="flex-1 flex flex-col justify-center px-8 sm:px-12 lg:px-20 bg-white">
           <div className="w-full max-w-sm mx-auto">
             <div className="flex items-center gap-2 mb-10">
-              <Image src="/brand/techstyles-t-logo.png" alt="TechStyles" width={32} height={32} className="object-contain" />
-              <span className="text-base font-semibold text-gray-900 tracking-tight">TechStyles</span>
+              <Image
+                src="/brand/Logo.png"
+                alt="TechStyles"
+                width={32}
+                height={32}
+                className="object-contain"
+              />
+              <span className="text-base font-semibold text-gray-900 tracking-tight">
+                TechStyles
+              </span>
             </div>
             <div className="flex flex-col items-center gap-4 py-6">
               <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center">
                 <XCircle className="w-6 h-6 text-red-500" />
               </div>
               <div className="text-center">
-                <h1 className="text-2xl font-bold text-gray-900 mb-1.5">Invalid reset link</h1>
-                <p className="text-sm text-gray-500">This password reset link is invalid or has expired.</p>
+                <h1 className="text-2xl font-bold text-gray-900 mb-1.5">
+                  Invalid reset link
+                </h1>
+                <p className="text-sm text-gray-500">
+                  This password reset link is invalid or has expired.
+                </p>
               </div>
               <p className="text-sm text-gray-500 text-center mt-2">
                 Please request a new reset link from the login page.
               </p>
               <button
-                onClick={() => router.push('/login')}
+                onClick={() => router.push("/login")}
                 className="mt-2 w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors"
               >
                 Back to sign in
@@ -174,58 +200,90 @@ function ResetPasswordContent() {
         <div className="w-full max-w-sm mx-auto py-10">
           {/* Logo */}
           <div className="flex items-center gap-2 mb-10">
-            <Image src="/brand/techstyles-t-logo.png" alt="TechStyles" width={32} height={32} className="object-contain" />
-            <span className="text-base font-semibold text-gray-900 tracking-tight">TechStyles</span>
+            <Image
+              src="/brand/Logo.png"
+              alt="TechStyles"
+              width={32}
+              height={32}
+              className="object-contain"
+            />
+            <span className="text-base font-semibold text-gray-900 tracking-tight">
+              TechStyles
+            </span>
           </div>
 
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-1.5">Set new password</h1>
-            <p className="text-sm text-gray-500">Choose a strong password for your account.</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-1.5">
+              Set new password
+            </h1>
+            <p className="text-sm text-gray-500">
+              Choose a strong password for your account.
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} noValidate>
             {/* New Password */}
             <div className="mb-4">
-              <label htmlFor="new-password" className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label
+                htmlFor="new-password"
+                className="block text-sm font-medium text-gray-700 mb-1.5"
+              >
                 New password
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                 <input
                   id="new-password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
                   value={newPassword}
-                  onChange={e => { setNewPassword(e.target.value); setErrors(v => ({ ...v, newPassword: undefined })); }}
+                  onChange={(e) => {
+                    setNewPassword(e.target.value);
+                    setErrors((v) => ({ ...v, newPassword: undefined }));
+                  }}
                   placeholder="Enter new password"
                   className={`w-full pl-9 pr-10 py-2.5 text-sm rounded-lg border bg-white outline-none transition-colors
-                    ${errors.newPassword
-                      ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100'
-                      : 'border-gray-200 focus:border-gray-900 focus:ring-2 focus:ring-gray-100'
+                    ${
+                      errors.newPassword
+                        ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100"
+                        : "border-gray-200 focus:border-gray-900 focus:ring-2 focus:ring-gray-100"
                     }`}
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(v => !v)}
+                  onClick={() => setShowPassword((v) => !v)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                   tabIndex={-1}
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                 </button>
               </div>
-              {errors.newPassword && <p className="text-xs text-red-600 mt-1.5">{errors.newPassword}</p>}
+              {errors.newPassword && (
+                <p className="text-xs text-red-600 mt-1.5">
+                  {errors.newPassword}
+                </p>
+              )}
             </div>
 
             {/* Strength checklist */}
             {newPassword && (
               <div className="mb-4 space-y-1.5">
-                {strength.map(c => (
+                {strength.map((c) => (
                   <div key={c.key} className="flex items-center gap-2">
-                    {c.passed
-                      ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                      : <XCircle className="w-3.5 h-3.5 text-red-400 shrink-0" />
-                    }
-                    <span className={`text-xs ${c.passed ? 'text-emerald-600' : 'text-red-500'}`}>{c.label}</span>
+                    {c.passed ? (
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                    ) : (
+                      <XCircle className="w-3.5 h-3.5 text-red-400 shrink-0" />
+                    )}
+                    <span
+                      className={`text-xs ${c.passed ? "text-emerald-600" : "text-red-500"}`}
+                    >
+                      {c.label}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -233,34 +291,49 @@ function ResetPasswordContent() {
 
             {/* Confirm Password */}
             <div className="mb-6">
-              <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label
+                htmlFor="confirm-password"
+                className="block text-sm font-medium text-gray-700 mb-1.5"
+              >
                 Confirm password
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                 <input
                   id="confirm-password"
-                  type={showConfirm ? 'text' : 'password'}
+                  type={showConfirm ? "text" : "password"}
                   autoComplete="new-password"
                   value={confirmPassword}
-                  onChange={e => { setConfirmPassword(e.target.value); setErrors(v => ({ ...v, confirmPassword: undefined })); }}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    setErrors((v) => ({ ...v, confirmPassword: undefined }));
+                  }}
                   placeholder="Confirm new password"
                   className={`w-full pl-9 pr-10 py-2.5 text-sm rounded-lg border bg-white outline-none transition-colors
-                    ${errors.confirmPassword
-                      ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100'
-                      : 'border-gray-200 focus:border-gray-900 focus:ring-2 focus:ring-gray-100'
+                    ${
+                      errors.confirmPassword
+                        ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-100"
+                        : "border-gray-200 focus:border-gray-900 focus:ring-2 focus:ring-gray-100"
                     }`}
                 />
                 <button
                   type="button"
-                  onClick={() => setShowConfirm(v => !v)}
+                  onClick={() => setShowConfirm((v) => !v)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                   tabIndex={-1}
                 >
-                  {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showConfirm ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
                 </button>
               </div>
-              {errors.confirmPassword && <p className="text-xs text-red-600 mt-1.5">{errors.confirmPassword}</p>}
+              {errors.confirmPassword && (
+                <p className="text-xs text-red-600 mt-1.5">
+                  {errors.confirmPassword}
+                </p>
+              )}
             </div>
 
             <button
@@ -283,10 +356,10 @@ function ResetPasswordContent() {
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-500">
-            Remember your password?{' '}
+            Remember your password?{" "}
             <button
               type="button"
-              onClick={() => router.push('/login')}
+              onClick={() => router.push("/login")}
               className="font-medium text-gray-900 hover:underline"
             >
               Sign in

@@ -2,12 +2,12 @@ import { HelpArticle } from '../types';
 
 export const teamArticles: HelpArticle[] = [
   {
-    slug: 'team-overview',
-    title: 'Team Overview',
-    description: 'Managing your studio team',
-    category: 'team',
+    slug: "team-overview",
+    title: "Team Overview",
+    description: "Managing your studio team",
+    category: "team",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Team Overview
 
 The Team page shows all members of your studio and allows you to manage roles, permissions, and workload.
@@ -29,7 +29,7 @@ Each team member card shows:
 
 ## Team Roles
 
-Techstyles has four permission levels:
+Focuspilot has four permission levels:
 
 ### Owner
 
@@ -99,19 +99,19 @@ Their access is revoked, but historical data (tasks they created, etc.) remains.
 - **Communicate roles clearly** — Ensure everyone knows their access level
 
 Your team is your studio's engine — manage it thoughtfully.`,
-    screenshots: ['team/team-list.png', 'team/team-workload.png'],
-    related: ['inviting-team', 'roles-permissions', 'team-management'],
+    screenshots: ["team/team-list.png", "team/team-workload.png"],
+    related: ["inviting-team", "roles-permissions", "team-management"],
   },
   {
-    slug: 'inviting-members',
-    title: 'Inviting Members',
-    description: 'How to invite and onboard new team members',
-    category: 'team',
+    slug: "inviting-members",
+    title: "Inviting Members",
+    description: "How to invite and onboard new team members",
+    category: "team",
     readTime: 3,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Inviting Members
 
-Add team members to your Techstyles studio so they can collaborate on projects.
+Add team members to your Focuspilot studio so they can collaborate on projects.
 
 ## How to Invite
 
@@ -170,23 +170,23 @@ To cancel a pending invitation:
 
 - **Send personal messages** — Help new members feel welcome
 - **Assign to projects immediately** — Get them productive fast
-- **Set up a call** — Walk through Techstyles if they're new
+- **Set up a call** — Walk through Focuspilot if they're new
 - **Share help centre** — Point them to this help centre for onboarding
 
 Onboarding new team members well sets them up for success.`,
-    screenshots: ['team/invite-member.png', 'team/invitation-email.png'],
-    related: ['team-overview', 'roles-permissions', 'inviting-team'],
+    screenshots: ["team/invite-member.png", "team/invitation-email.png"],
+    related: ["team-overview", "roles-permissions", "inviting-team"],
   },
   {
-    slug: 'roles-permissions',
-    title: 'Roles & Permissions',
-    description: 'Understanding what each role can do',
-    category: 'team',
+    slug: "roles-permissions",
+    title: "Roles & Permissions",
+    description: "Understanding what each role can do",
+    category: "team",
     readTime: 4,
-    lastUpdated: '2026-02-27',
+    lastUpdated: "2026-02-27",
     content: `# Roles & Permissions
 
-Techstyles has four permission levels controlling what team members can access and do.
+Focuspilot has four permission levels controlling what team members can access and do.
 
 ## Owner
 
@@ -327,7 +327,7 @@ Project permissions layer on top of studio-wide roles.
 - **Review permissions quarterly** — Ensure roles still match responsibilities
 
 Proper permission management keeps your studio secure and organised.`,
-    screenshots: ['team/roles-chart.png', 'team/change-role.png'],
-    related: ['team-overview', 'inviting-team', 'team-management'],
+    screenshots: ["team/roles-chart.png", "team/change-role.png"],
+    related: ["team-overview", "inviting-team", "team-management"],
   },
 ];
