@@ -1,0 +1,51 @@
+'use client';
+
+import { ReactNode } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/app-sidebar';
+import { TopBar } from '@/components/top-bar';
+import PrivateRoute from '@/layout/PrivateRoute';
+
+const PUBLIC_ROUTES = ['/login', '/register', '/verify-email', '/verify-otp', '/reset-password', '/forgot-password', '/accept-invitation'];
+const STANDALONE_ROUTES = ['/xeroredirect', '/oauth/gmail/callback', '/onboarding'];
+
+export function RootLayoutWrapper({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const isPublic = PUBLIC_ROUTES.includes(pathname);
+  const isPdfRoute = pathname?.includes('/pdf/');
+  const isStandalone = STANDALONE_ROUTES.includes(pathname);
+  const isContractorPortal = pathname?.startsWith('/contractor/');
+  const isSignPage = pathname?.startsWith('/sign/');
+  const isPrototype = pathname?.startsWith('/prototype/');
+
+  
+  // if(!user?.studio && !isLoading){
+  //   router.replace('/onboarding');
+  //   return ;
+  // }
+  
+  // Signing page, contractor portal, PDF routes — completely standalone, no nav, no auth
+  if (isPublic || isPdfRoute || isContractorPortal || isSignPage) {
+    return <>{children}</>;
+  }
+
+  // Standalone routes with auth but no sidebar/topbar (prototypes, OAuth callbacks, etc.)
+  if (isStandalone || isPrototype) {
+    return <PrivateRoute>{children}</PrivateRoute>;
+  }
+
+  return (
+    <PrivateRoute>
+      <SidebarProvider defaultOpen={true}>
+        <div className="flex min-h-screen w-full bg-white">
+          <AppSidebar />
+          <div className="flex-1 h-screen flex flex-col min-w-0 bg-white">
+            <TopBar />
+            <main className="flex-1 bg-stone-50 overflow-auto">{children}</main>
+          </div>
+        </div>
+      </SidebarProvider>
+    </PrivateRoute>
+  );
+}

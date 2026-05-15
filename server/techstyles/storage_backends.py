@@ -1,0 +1,14 @@
+from storages.backends.s3boto3 import S3Boto3Storage
+
+
+class StaticStorage(S3Boto3Storage):
+    """Custom storage for static files in S3."""
+    location = 'static'
+    default_acl = None
+
+
+class MediaStorage(S3Boto3Storage):
+    """Custom storage for media files in S3."""
+    location = 'media'
+    default_acl = None
+    file_overwrite = False

@@ -1,0 +1,470 @@
+'use client';
+
+import { useState, useMemo, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import {
+  Home,
+  Users,
+  Users2,
+  FolderOpen,
+  BookOpen,
+  Calendar,
+  DollarSign,
+  BarChart3,
+  Settings,
+  ChevronRight,
+  ChevronLeft,
+  ChevronUp,
+  MoreHorizontal,
+  Mail,
+  CheckSquare,
+  Activity,
+  User,
+  Clock,
+  LogOut,
+  Briefcase,
+} from 'lucide-react';
+import useUser from '@/hooks/useUser';
+import { usePermissions } from '@/hooks/usePermissions';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+
+// Sidebar dimension
+const COLLAPSED_WIDTH = 64;
+const EXPANDED_WIDTH = 220;
+
+type Item = {
+  label: string;
+  icon: any;
+  href: string;
+  basePath: string;
+  permission?: string; // permission key from /user/studio/roles/ — if set, item is hidden when user lacks it
+};
+
+// Personal section item
+const personalSidebarItems: Item[] = [
+  { label: 'Home',     icon: Home,        href: '/home/dashboard', basePath: '/home/dashboard' },
+  { label: 'Inbox',    icon: Mail,        href: '/ai/inbox',       basePath: '/ai/inbox' },
+  { label: 'My Tasks', icon: CheckSquare, href: '/home/tasks',     basePath: '/home/tasks',  permission: 'tasks.view' },
+  { label: 'Calendar', icon: Calendar,    href: '/calendar',       basePath: '/calendar' },
+  { label: 'Projects', icon: FolderOpen,  href: '/projects',       basePath: '/projects',    permission: 'projects.view' },
+];
+
+// Studio section items
+const studioSidebarItems: Item[] = [
+  { label: 'CRM',         icon: Users,     href: '/crm/contacts', basePath: '/crm',        permission: 'clients.view' },
+  { label: 'Library',     icon: BookOpen,  href: '/library/products',      basePath: '/library/products',    permission: 'library.view' },
+  { label: 'Team',        icon: Users2,    href: '/teams',        basePath: '/teams',      permission: 'team.view' },
+  { label: 'Finance',     icon: DollarSign,href: '/finance',      basePath: '/finance',    permission: 'finance.view' },
+  { label: 'Reports',     icon: BarChart3, href: '/reports',      basePath: '/reports',    permission: 'reports.view' },
+  { label: 'AI Activity', icon: Activity,  href: '/ai/activity',  basePath: '/ai/activity' },
+];
+
+const extraSidebarItems = [
+  {
+    label: 'Help Center',
+    href: '/help',
+    icon: (props: any) => (
+      <svg {...props} className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+    ),
+  },
+  {
+    label: 'Settings',
+    href: '/settings/user/profile',
+    icon: Settings,
+  },
+];
+
+// Framer Motion variants
+const sidebarVariants = {
+  expanded: {
+    width: EXPANDED_WIDTH,
+    transition: { type: 'spring', stiffness: 300, damping: 30, mass: 0.8 },
+  },
+  collapsed: {
+    width: COLLAPSED_WIDTH,
+    transition: { type: 'spring', stiffness: 300, damping: 30, mass: 0.8 },
+  },
+};
+
+const labelVariants = {
+  expanded: {
+    opacity: 1,
+    width: 'auto',
+    marginLeft: 12,
+    transition: {
+      opacity: { duration: 0.2, delay: 0.1 },
+      width: { type: 'spring' as const, stiffness: 300, damping: 30 },
+      marginLeft: { type: 'spring' as const, stiffness: 300, damping: 30 },
+    },
+  },
+  collapsed: {
+    opacity: 0,
+    width: 0,
+    marginLeft: 0,
+    transition: {
+      opacity: { duration: 0.15 },
+      width: { type: 'spring' as const, stiffness: 300, damping: 30 },
+      marginLeft: { type: 'spring' as const, stiffness: 300, damping: 30 },
+    },
+  },
+};
+
+const logoTextVariants = {
+  expanded: {
+    opacity: 1,
+    width: 'auto',
+    transition: {
+      opacity: { duration: 0.2, delay: 0.15 },
+      width: { type: 'spring', stiffness: 300, damping: 30 },
+    },
+  },
+  collapsed: {
+    opacity: 0,
+    width: 0,
+    transition: {
+      opacity: { duration: 0.1 },
+      width: { type: 'spring', stiffness: 300, damping: 30 },
+    },
+  },
+};
+
+function NavItem({ item, isActive, isCollapsed }: { item: Item; isActive: boolean; isCollapsed: boolean }) {
+  const Icon = item.icon;
+
+  const linkContent = (
+    <Link
+      href={item.href}
+      className={cn(
+        'relative flex  items-center py-2 rounded-md text-sm font-medium h-9 px-[8px] transition-colors duration-150',
+        !isActive && 'hover:bg-stone-50',
+        !isCollapsed && isActive && 'bg-stone-100',
+      )}
+    >
+      {/* Animated active background - only when collapsed */}
+      {isCollapsed && isActive && (
+        <motion.span
+          layoutId="sidebar-nav-active"
+          className="absolute inset-0 bg-stone-100 rounded-md"
+          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+        />
+      )}
+      {/* Fixed icon container */}
+      <div
+        className={cn(
+          'relative z-10 w-5 h-5 flex items-center justify-center flex-shrink-0 transition-colors duration-150',
+          isActive ? 'text-gray-900' : 'text-gray-600',
+        )}
+      >
+        <Icon className="w-5 h-5" />
+      </div>
+      {/* Animated label */}
+      <motion.span
+        variants={labelVariants}
+        initial={false}
+        animate={isCollapsed ? 'collapsed' : 'expanded'}
+        className={cn(
+          'relative z-10 whitespace-nowrap overflow-hidden transition-colors duration-150',
+          isActive ? 'text-gray-900' : 'text-gray-600',
+        )}
+      >
+        {item.label}
+      </motion.span>
+    </Link>
+  );
+
+  if (isCollapsed) {
+    return (
+      <Tooltip delayDuration={0}>
+        <TooltipTrigger asChild>{linkContent}</TooltipTrigger>
+        <TooltipContent side="right" sideOffset={10}>
+          <p>{item.label}</p>
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+
+  return linkContent;
+}
+
+export function AppSidebar() {
+  const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('sidebarCollapsed');
+      return stored ? JSON.parse(stored) : false;
+    }
+    return false;
+  });
+  const [hasMounted, setHasMounted] = useState(false);
+  const { user } = useUser();
+  const { can, isLoading: permLoading } = usePermissions();
+  const isTablet = useMediaQuery('(max-width: 1024px)');
+  const isShortScreen = useMediaQuery('(max-height: 600px)');
+  const router = useRouter();
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  // Auto-collapse on tablet
+  useEffect(() => {
+    if (isTablet && hasMounted) {
+      setIsCollapsed(true);
+    }
+  }, [isTablet, hasMounted]);
+
+  useEffect(() => {
+    if (hasMounted) {
+      localStorage.setItem('sidebarCollapsed', JSON.stringify(isCollapsed));
+    }
+  }, [isCollapsed, hasMounted]);
+
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === 'sidebarCollapsed' && e.newValue !== null) {
+        setIsCollapsed(JSON.parse(e.newValue));
+      }
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
+  // Sign out functionality
+  const signOutBtn = async () => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/logout/`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } catch {
+      // Even if the request fails, redirect — cookies will expire naturally
+    }
+    window.location.href = '/login';
+  };
+
+  const allowedPersonalItems = useMemo(() => {
+    if (permLoading) return [];
+    return personalSidebarItems.filter(item =>
+      !item.permission || can(item.permission)
+    );
+  }, [permLoading, can]);
+
+  const allowedStudioItems = useMemo(() => {
+    if (permLoading) return [];
+    return studioSidebarItems.filter(item =>
+      !item.permission || can(item.permission)
+    );
+  }, [permLoading, can]);
+
+  // Handle overflow menu
+  const { visibleStudioItems, overflowItems } = useMemo(() => {
+    if (isShortScreen && allowedStudioItems.length > 2) {
+      return {
+        visibleStudioItems: allowedStudioItems.slice(0, 2),
+        overflowItems: allowedStudioItems.slice(2),
+      };
+    }
+    return { visibleStudioItems: allowedStudioItems, overflowItems: [] };
+  }, [isShortScreen, allowedStudioItems]);
+
+  const isMoreActive = useMemo(() => {
+    return overflowItems.some(item => pathname.startsWith(item.basePath));
+  }, [overflowItems, pathname]);
+
+  return (
+    <>
+      <AnimatePresence>
+        {isTablet && !isCollapsed && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/50 z-40"
+            onClick={() => setIsCollapsed(true)}
+          />
+        )}
+      </AnimatePresence>
+
+      {isTablet && <div className="flex-shrink-0 h-screen bg-transparent w-[64px]" />}
+
+      <motion.div
+        variants={sidebarVariants}
+        initial={false}
+        animate={isCollapsed ? 'collapsed' : 'expanded'}
+        className={cn(
+          'border-r border-gray-200 h-screen flex flex-col bg-white overflow-hidden',
+          isTablet ? 'fixed inset-y-0 left-0 z-50' : '',
+          isTablet && !isCollapsed ? 'shadow-2xl' : '',
+          !hasMounted && 'opacity-0',
+        )}
+      >
+        {/* Logo Section */}
+        <div className="p-3 bg-white relative">
+          <div className="flex items-center h-11">
+            <div className="flex items-center flex-1 min-w-0">
+              <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
+                <Image width={100} height={100} src="/brand/techstyles-t-logo.png" alt="Techstyles" className="w-8 h-8 object-contain" />
+              </div>
+              <motion.span
+                variants={logoTextVariants}
+                initial={false}
+                animate={isCollapsed ? 'collapsed' : 'expanded'}
+                className="font-semibold text-gray-900 whitespace-nowrap overflow-hidden ml-3"
+              >
+                Techstyles
+              </motion.span>
+            </div>
+            <button
+              onClick={() => setIsCollapsed(prev => !prev)}
+              className="py-1.5 text-gray-400 hover:text-gray-600 hover:bg-stone-50 rounded-lg transition-colors flex-shrink-0 ml-7"
+              title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            >
+              <motion.div
+                animate={{ rotate: isCollapsed ? 0 : 180 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                className="flex items-center justify-center"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </motion.div>
+            </button>
+          </div>
+        </div>
+
+        {/* Navigation Area */}
+        <nav className="flex-1 px-3.5 space-y-1 bg-white overflow-hidden">
+          {/* Personal Group */}
+          <div className="space-y-0">
+            {allowedPersonalItems.map((item, index) => (
+              <NavItem key={`personal-${index}`} item={item} isActive={pathname.startsWith(item.basePath)} isCollapsed={isCollapsed} />
+            ))}
+          </div>
+
+          {/* Divider Section */}
+          <div className="h-8 flex items-center px-3 overflow-hidden">
+            <AnimatePresence mode="wait" initial={false}>
+              {isCollapsed ? (
+                <motion.div
+                  key="line"
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: '100%' }}
+                  exit={{ opacity: 0, width: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="h-px bg-stone-200"
+                />
+              ) : (
+                <motion.span
+                  key="text"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  className="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
+                >
+                  Studio
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Studio Group */}
+          <div className="space-y-1">
+            {visibleStudioItems.map((item, index) => (
+              <NavItem key={`studio-${index}`} item={item} isActive={pathname.startsWith(item.basePath)} isCollapsed={isCollapsed} />
+            ))}
+
+            {overflowItems.length > 0 && (
+              <DropdownMenu>
+                <Tooltip delayDuration={0}>
+                  <TooltipTrigger asChild>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        className={cn(
+                          'flex items-center rounded-md text-sm font-medium transition-colors duration-150 w-full h-10 px-3.5',
+                          isMoreActive ? 'bg-white text-gray-900' : 'text-gray-600 hover:text-gray-900 hover:bg-stone-50',
+                        )}
+                      >
+                        {isCollapsed && isMoreActive && (
+                          <motion.span
+                            layoutId="sidebar-nav-active"
+                            className="absolute inset-0 bg-white rounded-md"
+                            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                          />
+                        )}
+                        <div className="relative z-10 w-5 h-5 flex items-center justify-center flex-shrink-0">
+                          <MoreHorizontal className="w-5 h-5" />
+                        </div>
+                        <motion.span
+                          variants={labelVariants}
+                          initial={false}
+                          animate={isCollapsed ? 'collapsed' : 'expanded'}
+                          className="relative z-10 whitespace-nowrap overflow-hidden ml-3"
+                        >
+                          More
+                        </motion.span>
+                      </button>
+                    </DropdownMenuTrigger>
+                  </TooltipTrigger>
+                  {isCollapsed && (
+                    <TooltipContent side="right" sideOffset={12}>
+                      <p>More</p>
+                    </TooltipContent>
+                  )}
+                </Tooltip>
+
+                <DropdownMenuContent align="start" side="right" className="w-56 bg-white" sideOffset={8}>
+                  {overflowItems.map((item, index) => {
+                    const Icon = item.icon;
+                    const isActive = pathname.startsWith(item.basePath);
+                    return (
+                      <DropdownMenuItem key={index} asChild>
+                        <Link href={item.href} className={cn('flex w-full items-center gap-2 cursor-pointer', isActive && 'bg-stone-100')}>
+                          <Icon className="w-4 h-4" />
+                          <span>{item.label}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    );
+                  })}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
+        </nav>
+
+        {/* Footer */}
+        <div className="px-3.5 pb-3 bg-white space-y-0">
+          {extraSidebarItems.map((item, index) => (
+            <NavItem
+              key={`extra-${index}`}
+              item={{ ...item, basePath: item.href } as Item}
+              isActive={pathname.startsWith(item.href)}
+              isCollapsed={isCollapsed}
+            />
+          ))}
+        </div>
+      </motion.div>
+    </>
+  );
+}

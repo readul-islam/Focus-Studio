@@ -1,0 +1,26 @@
+node_modules
+node_modules
+
+.env
+.DS_Store
+dist
+build
+.vscode
+.idea
+*.log
+coverage
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.cache
+.next
+out
+*.tsbuildinfo
+
+# Generated version file
+public/version.json

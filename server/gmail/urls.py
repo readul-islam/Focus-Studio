@@ -1,0 +1,37 @@
+from django.urls import path
+from .views import (
+    gmail_connect,
+    gmail_callback,
+    fetch_emails,
+    send_email,
+    get_thread,
+    get_thread_summary,
+    get_all_threads,
+    disconnect_gmail,
+    link_thread_to_project,
+    unlink_thread_from_project,
+    get_threads_by_project,
+    create_calendar_event,
+    search_emails,
+    get_calendar_events,
+    mark_suggestion_created,
+)
+
+urlpatterns = [
+    path('connect/', gmail_connect, name='gmail-connect'),
+    path('callback/', gmail_callback, name='gmail-callback'),
+    path('disconnect/', disconnect_gmail, name='gmail-disconnect'),
+    path('fetch/', fetch_emails, name='gmail-fetch'),
+    path('send/', send_email, name='gmail-send'),
+    path('calendar/events/', get_calendar_events, name='calendar-events'),
+    path('calendar/create-event/', create_calendar_event, name='calendar-create-event'),
+    path('thread/<str:thread_id>/', get_thread, name='gmail-thread'),
+    path('thread/<str:thread_id>/summary/', get_thread_summary, name='gmail-thread-summary'),
+
+    path('threads/', get_all_threads, name='gmail-threads-list'),
+    path('threads/link/', link_thread_to_project, name='gmail-link-thread'),
+    path('threads/unlink/', unlink_thread_from_project, name='gmail-unlink-thread'),
+    path('threads/project/<int:project_id>/', get_threads_by_project, name='gmail-project-threads'),
+    path('search/', search_emails, name='gmail-search'),
+    path('suggestions/mark-created/', mark_suggestion_created, name='gmail-mark-suggestion-created'),
+]

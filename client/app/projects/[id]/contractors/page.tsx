@@ -1,0 +1,662 @@
+'use client';
+
+import { useState, useEffect, useMemo } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Plus, HardHat, Loader2, Search, UserPlus, Link2 } from 'lucide-react';
+import { gooeyToast as toast } from 'goey-toast';
+import { ContractorCard, ShareFilesDialog } from '@/components/contractor';
+import { ContractorMessageDialog } from '@/components/contractor/ContractorMessageDialog';
+import { ContractorProfileDrawer } from '@/components/contractor/ContractorProfileDrawer';
+import type { ProjectContractor, TradeType, ContractorShare } from '@/lib/contractor/types';
+import { TRADE_OPTIONS } from '@/lib/contractor/types';
+import useFetch from '@/hooks/useFetch';
+import { usePost } from '@/hooks/usePost';
+import { DeleteDialog } from '@/components/DeleteDialog';
+import { usePermissions } from '@/hooks/usePermissions';
+
+interface StudioContractor {
+  id: number;
+  name: string;
+  surname: string;
+  company_name: string;
+  email: string;
+  phone: string;
+  trade: string;
+  access_code: string;
+  last_login: string | null;
+  shared_items_count: number;
+  shared_drawings_count: number;
+}
+
+interface ApiContractor {
+  id: number;
+  name: string;
+  surname: string;
+  company_name: string;
+  email: string;
+  phone: string;
+  last_login: string | null;
+  item_count: number;
+  drawing_count: number;
+  confirmed_drawing_count: number;
+  shared_procurements: Array<{
+    id: number;
+    procurement: number;
+    product_name: string;
+    product_url: string;
+    room: string;
+    project_id: number;
+    image: string | null;
+    shared_at: string;
+    viewed_at: string | null;
+    is_viewed: boolean;
+  }>;
+  shared_documents: Array<{
+    id: number;
+    document: number;
+    document_name: string;
+    document_url: string;
+    project_id: number;
+    shared_at: string;
+    viewed_at: string | null;
+    is_viewed: boolean;
+  }>;
+}
+
+// Map API response to ProjectContractor type
+function mapApiContractorToProjectContractor(apiContractor: ApiContractor): ProjectContractor {
+  const fullName = `${apiContractor.name} ${apiContractor.surname}`.trim();
+
+  // Map shared procurements to shared_items
+  const shared_items: ContractorShare[] = apiContractor.shared_procurements.map(proc => ({
+    id: proc.id.toString(),
+    contractor_id: apiContractor.id.toString(),
+    item_type: 'procurement' as const,
+    item_id: proc.procurement.toString(),
+    item_name: proc.product_name,
+    shared_at: proc.shared_at,
+    shared_by: 'Studio',
+    viewed_at: proc.viewed_at || undefined,
+    view_count: proc.is_viewed ? 1 : 0,
+  }));
+
+  // Map shared documents to shared_drawings
+  const shared_drawings: ContractorShare[] = apiContractor.shared_documents.map(doc => ({
+    id: doc.id.toString(),
+    contractor_id: apiContractor.id.toString(),
+    item_type: 'drawing' as const,
+    item_id: doc.document.toString(),
+    item_name: doc.document_name,
+    shared_at: doc.shared_at,
+    shared_by: 'Studio',
+    viewed_at: doc.viewed_at || undefined,
+    view_count: doc.is_viewed ? 1 : 0,
+  }));
+
+  return {
+    id: apiContractor.id.toString(),
+    name: fullName || apiContractor.company_name,
+    trade: 'General', // Default trade, can be updated based on your needs
+    token: `contractor-${apiContractor.id}`, // Generate token
+    status: 'active',
+    created_at: new Date().toISOString(),
+    last_accessed: apiContractor.last_login || undefined,
+    shared_items,
+    shared_drawings,
+    activities: [],
+    messages: [],
+  };
+}
+
+export default function ProjectContractorsPage({ params }: { params: { id: string } }) {
+  const [contractors, setContractors] = useState<ProjectContractor[]>([]);
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [addTab, setAddTab] = useState<'new' | 'existing'>('new');
+  const [newContractor, setNewContractor] = useState({
+    name: '',
+    surname: '',
+    company_name: '',
+    email: '',
+    phone: '',
+    trade: ''
+  });
+  const [existingSearch, setExistingSearch] = useState('');
+  const [selectedContractorId, setSelectedContractorId] = useState<number | null>(null);
+  const [searchText, setSearchText] = useState('');
+  const {can} = usePermissions();
+  const projectEditPermission = can('projects.edit');
+
+  // Message dialog state
+  const [messageContractor, setMessageContractor] = useState<ProjectContractor | null>(null);
+
+  // Share files dialog state
+  const [shareFilesContractor, setShareFilesContractor] = useState<ProjectContractor | null>(null);
+
+  // Profile drawer state
+  const [profileContractor, setProfileContractor] = useState<ProjectContractor | null>(null);
+
+  // Delete confirmation state
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<{
+    contractorId: string;
+    shareId: string;
+    itemName: string;
+    type: 'item' | 'drawing';
+  } | null>(null);
+
+  // Fetch contractors from API
+  const { data: apiData, isLoading, refetch } = useFetch(
+    `contractor_portal/project/${params.id}/contractors/`
+  );
+
+  // Map API data to contractors
+  useEffect(() => {
+    if (apiData && Array.isArray(apiData)) {
+      const mappedContractors = apiData.map(mapApiContractorToProjectContractor);
+      setContractors(mappedContractors);
+    }
+  }, [apiData]);
+
+  // Fetch studio contractors for "link existing" tab (only when dialog is open on that tab)
+  const { data: studioContractorsData, isLoading: isLoadingStudio } = useFetch(
+    isAddOpen && addTab === 'existing'
+      ? `contractor_portal/studio-contractors?exclude_project_id=${params.id}`
+      : null
+  );
+  const studioContractors = (studioContractorsData as StudioContractor[] | undefined) ?? [];
+
+  const filteredStudioContractors = useMemo(() => {
+    if (!existingSearch.trim()) return studioContractors;
+    const q = existingSearch.toLowerCase();
+    return studioContractors.filter(c =>
+      `${c.name} ${c.surname}`.toLowerCase().includes(q) ||
+      c.company_name?.toLowerCase().includes(q) ||
+      c.trade?.toLowerCase().includes(q) ||
+      c.email?.toLowerCase().includes(q)
+    );
+  }, [studioContractors, existingSearch]);
+
+  // Add new contractor mutation
+  const { mutate: addContractor, isPending: isAdding } = usePost({
+    onSuccess: (data: any) => {
+      const accessCode = data?.access_code || 'N/A';
+      toast.success(`Contractor added. Access code: ${accessCode}`);
+      refetch();
+      closeAddDialog();
+    },
+    onError: (error: any) => {
+      toast.error(error?.message || 'Failed to add contractor');
+    },
+  });
+
+  // Link existing contractor mutation
+  const { mutate: linkContractor, isPending: isLinking } = usePost({
+    onSuccess: () => {
+      toast.success('Contractor linked to project');
+      refetch();
+      closeAddDialog();
+    },
+    onError: (error: any) => {
+      toast.error(error?.message || 'Failed to link contractor');
+    },
+  });
+
+  const closeAddDialog = () => {
+    setIsAddOpen(false);
+    setAddTab('new');
+    setNewContractor({ name: '', surname: '', company_name: '', email: '', phone: '', trade: '' });
+    setExistingSearch('');
+    setSelectedContractorId(null);
+  };
+
+  const handleAddContractor = () => {
+    if (!newContractor.name || !newContractor.email || !newContractor.trade) return;
+    addContractor({
+      url: 'contractor_portal/add/',
+      data: {
+        project_id: parseInt(params.id),
+        name: newContractor.name,
+        surname: newContractor.surname,
+        company_name: newContractor.company_name,
+        email: newContractor.email,
+        phone: newContractor.phone,
+        trade: newContractor.trade,
+      },
+    });
+  };
+
+  const handleLinkContractor = () => {
+    if (!selectedContractorId) return;
+    linkContractor({
+      url: 'contractor_portal/add-existing/',
+      data: { project_id: parseInt(params.id), contractor_id: selectedContractorId },
+    });
+  };
+
+  // Copy link
+  const handleCopyLink = (contractor: ProjectContractor) => {
+    const link = `${window.location.origin}/contractor/${params.id}/${contractor.token}?trade=${contractor.trade}`;
+    navigator.clipboard.writeText(link);
+    toast.success('Link copied to clipboard');
+  };
+
+  // Open portal
+  const handleOpenPortal = (contractor: ProjectContractor) => {
+    const link = `/contractor/${params.id}/${contractor.token}?trade=${contractor.trade}`;
+    window.open(link, '_blank');
+  };
+
+  // Delete mutations using POST
+  const { mutate: deleteProcurement, isPending: isDeletingProcurement } = usePost({
+    onSuccess: () => {
+      toast.success('Item removed successfully');
+      refetch();
+      setDeleteDialogOpen(false);
+      setDeleteTarget(null);
+    },
+    onError: (error: any) => {
+      toast.error(error?.message || 'Failed to remove item');
+    },
+  });
+
+  const { mutate: deleteDocument, isPending: isDeletingDocument } = usePost({
+    onSuccess: () => {
+      toast.success('Drawing removed successfully');
+      refetch();
+      setDeleteDialogOpen(false);
+      setDeleteTarget(null);
+    },
+    onError: (error: any) => {
+      toast.error(error?.message || 'Failed to remove drawing');
+    },
+  });
+
+  // Open delete confirmation (receives only shareId from ContractorCard)
+  const handleRemoveShare = (contractorId: string, shareId: string) => {
+    const contractor = contractors.find(c => c.id === contractorId);
+    if (!contractor) return;
+
+    // Find the share in either shared_items or shared_drawings
+    const itemShare = contractor.shared_items.find(s => s.id === shareId);
+    if (itemShare) {
+      setDeleteTarget({
+        contractorId,
+        shareId,
+        itemName: itemShare.item_name,
+        type: 'item',
+      });
+      setDeleteDialogOpen(true);
+      return;
+    }
+
+    const drawingShare = contractor.shared_drawings.find(s => s.id === shareId);
+    if (drawingShare) {
+      setDeleteTarget({
+        contractorId,
+        shareId,
+        itemName: drawingShare.item_name,
+        type: 'drawing',
+      });
+      setDeleteDialogOpen(true);
+    }
+  };
+
+  // Confirm delete
+  const confirmDelete = () => {
+    if (!deleteTarget) return;
+
+    const contractor = contractors.find(c => c.id === deleteTarget.contractorId);
+    if (!contractor) return;
+
+    if (deleteTarget.type === 'item') {
+      const share = contractor.shared_items.find(s => s.id === deleteTarget.shareId);
+      if (share) {
+        deleteProcurement({
+          url: 'contractor_portal/remove-shared-procurement/',
+          data: {
+            contractor_id: parseInt(deleteTarget.contractorId),
+            procurement_id: parseInt(share.item_id),
+          },
+        });
+      }
+    } else {
+      const share = contractor.shared_drawings.find(s => s.id === deleteTarget.shareId);
+      if (share) {
+        deleteDocument({
+          url: 'contractor_portal/remove-shared-document/',
+          data: {
+            contractor_id: parseInt(deleteTarget.contractorId),
+            document_id: parseInt(share.item_id),
+          },
+        });
+      }
+    }
+  };
+
+  // Filter contractors by search
+  const filteredContractors = useMemo(() => {
+    if (!searchText.trim()) return contractors;
+    const searchLower = searchText.toLowerCase();
+    return contractors.filter(c => c.name.toLowerCase().includes(searchLower) || c.trade.toLowerCase().includes(searchLower));
+  }, [contractors, searchText]);
+
+  if (isLoading) {
+    return (
+      <div className="flex-1 bg-stone-50 p-6 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6">
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-neutral-400" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="">
+      <div className="  space-y-6">
+        {/* Action Bar */}
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+              <Input
+                value={searchText}
+                onChange={e => setSearchText(e.target.value)}
+                placeholder="Search contractors..."
+                className="pl-10 w-64 h-9"
+              />
+            </div>
+          </div>
+          {projectEditPermission && <Dialog open={isAddOpen} onOpenChange={open => open ? setIsAddOpen(true) : closeAddDialog()}>
+            <DialogTrigger asChild>
+              <Button className="h-9 bg-gray-900 text-white hover:bg-gray-800">
+                <Plus className="w-4 h-4 mr-2" />
+                Add Contractor
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[520px] bg-white max-h-[90vh] flex flex-col">
+              <DialogHeader>
+                <DialogTitle className="text-lg">Add Contractor</DialogTitle>
+              </DialogHeader>
+
+              <Tabs value={addTab} onValueChange={v => setAddTab(v as 'new' | 'existing')} className="flex-1 flex flex-col min-h-0">
+                <TabsList className="grid grid-cols-2 w-full">
+                  <TabsTrigger value="new" className="flex items-center gap-1.5">
+                    <UserPlus className="w-3.5 h-3.5" /> Create New
+                  </TabsTrigger>
+                  <TabsTrigger value="existing" className="flex items-center gap-1.5">
+                    <Link2 className="w-3.5 h-3.5" /> Link Existing
+                  </TabsTrigger>
+                </TabsList>
+
+                {/* CREATE NEW */}
+                <TabsContent value="new" className="overflow-y-auto flex-1 mt-0">
+                  <div className="py-4 space-y-4">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-1.5">
+                        <Label htmlFor="name" className="text-sm text-neutral-700">
+                          First Name <span className="text-red-500">*</span>
+                        </Label>
+                        <Input
+                          id="name"
+                          placeholder="e.g. James"
+                          value={newContractor.name}
+                          onChange={e => setNewContractor(prev => ({ ...prev, name: e.target.value }))}
+                        />
+                      </div>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="surname" className="text-sm text-neutral-700">Surname</Label>
+                        <Input
+                          id="surname"
+                          placeholder="e.g. Fletcher"
+                          value={newContractor.surname}
+                          onChange={e => setNewContractor(prev => ({ ...prev, surname: e.target.value }))}
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="company_name" className="text-sm text-neutral-700">Company Name</Label>
+                      <Input
+                        id="company_name"
+                        placeholder="e.g. Fletcher & Sons Builders"
+                        value={newContractor.company_name}
+                        onChange={e => setNewContractor(prev => ({ ...prev, company_name: e.target.value }))}
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="email" className="text-sm text-neutral-700">
+                        Email <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="e.g. james@fletcherbuilders.co.uk"
+                        value={newContractor.email}
+                        onChange={e => setNewContractor(prev => ({ ...prev, email: e.target.value }))}
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="phone" className="text-sm text-neutral-700">Phone</Label>
+                      <Input
+                        id="phone"
+                        type="tel"
+                        placeholder="e.g. +44 7700 900123"
+                        value={newContractor.phone}
+                        onChange={e => setNewContractor(prev => ({ ...prev, phone: e.target.value }))}
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="trade" className="text-sm text-neutral-700">
+                        Trade <span className="text-red-500">*</span>
+                      </Label>
+                      <Select value={newContractor.trade} onValueChange={value => setNewContractor(prev => ({ ...prev, trade: value }))}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select trade" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {TRADE_OPTIONS.map((trade) => (
+                            <SelectItem key={trade} value={trade}>{trade}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={closeAddDialog}>Cancel</Button>
+                    <Button
+                      className="bg-gray-900 text-white hover:bg-gray-800"
+                      disabled={!newContractor.name || !newContractor.email || !newContractor.trade || isAdding}
+                      onClick={handleAddContractor}
+                    >
+                      {isAdding ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Adding...</> : 'Add Contractor'}
+                    </Button>
+                  </DialogFooter>
+                </TabsContent>
+
+                {/* LINK EXISTING */}
+                <TabsContent value="existing" className="flex-1 flex flex-col min-h-0 mt-0">
+                  <div className="py-4 flex flex-col gap-3 flex-1 min-h-0">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                      <Input
+                        placeholder="Search by name, company or trade..."
+                        className="pl-9"
+                        value={existingSearch}
+                        onChange={e => setExistingSearch(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="flex-1 overflow-y-auto max-h-72 space-y-1.5 pr-0.5">
+                      {isLoadingStudio ? (
+                        <div className="flex items-center justify-center py-8">
+                          <Loader2 className="w-5 h-5 animate-spin text-neutral-400" />
+                        </div>
+                      ) : filteredStudioContractors.length === 0 ? (
+                        <p className="text-sm text-neutral-500 text-center py-8">No contractors found</p>
+                      ) : (
+                        filteredStudioContractors.map(c => {
+                          const fullName = `${c.name} ${c.surname}`.trim();
+                          const isSelected = selectedContractorId === c.id;
+                          return (
+                            <button
+                              key={c.id}
+                              onClick={() => setSelectedContractorId(isSelected ? null : c.id)}
+                              className={`w-full text-left px-3 py-2.5 rounded-lg border transition-colors ${
+                                isSelected
+                                  ? 'border-gray-900 bg-gray-900/5'
+                                  : 'border-neutral-200 hover:border-neutral-300 hover:bg-stone-50'
+                              }`}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div className="min-w-0">
+                                  <p className="text-sm font-medium text-neutral-900 truncate">{fullName || c.company_name}</p>
+                                  <p className="text-xs text-neutral-500 truncate">{c.company_name}{c.trade ? ` · ${c.trade}` : ''}</p>
+                                </div>
+                                <div className="flex items-center gap-2 shrink-0 ml-3">
+                                  <span className="text-xs font-mono text-neutral-400">{c.access_code}</span>
+                                  {isSelected && (
+                                    <div className="w-4 h-4 rounded-full bg-gray-900 flex items-center justify-center">
+                                      <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 12 12">
+                                        <path d="M10 3L5 8.5 2 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                                      </svg>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </button>
+                          );
+                        })
+                      )}
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={closeAddDialog}>Cancel</Button>
+                    <Button
+                      className="bg-gray-900 text-white hover:bg-gray-800"
+                      disabled={!selectedContractorId || isLinking}
+                      onClick={handleLinkContractor}
+                    >
+                      {isLinking ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Linking...</> : 'Link to Project'}
+                    </Button>
+                  </DialogFooter>
+                </TabsContent>
+              </Tabs>
+            </DialogContent>
+          </Dialog> }
+        </div>
+
+        {/* Contractors List */}
+        {contractors.length === 0 ? (
+          <Card className="p-8 text-center border border-dashed border-neutral-300">
+            <HardHat className="w-10 h-10 text-neutral-300 mx-auto mb-3" />
+            <p className="text-sm text-neutral-500 mb-4">No contractors added yet</p>
+          {projectEditPermission &&  <Button onClick={() => setIsAddOpen(true)} className="h-9 bg-gray-900 text-white hover:bg-gray-800">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Contractor
+            </Button>}
+          </Card>
+        ) : filteredContractors.length === 0 ? (
+          <Card className="p-8 text-center">
+            <p className="text-sm text-neutral-500">No contractors match your search</p>
+          </Card>
+        ) : (
+          <div className="space-y-3">
+            {filteredContractors.map(contractor => (
+              <ContractorCard
+                key={contractor.id}
+                contractor={contractor}
+                projectId={params.id}
+                onCopyLink={() => handleCopyLink(contractor)}
+                onOpenPortal={() => handleOpenPortal(contractor)}
+                onRemoveShare={shareId => handleRemoveShare(contractor.id, shareId)}
+                onMessage={() => setMessageContractor(contractor)}
+                onShareFiles={() => setShareFilesContractor(contractor)}
+                onProfile={() => setProfileContractor(contractor)}
+                projectEditPermission={projectEditPermission}
+                
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Message Dialog */}
+      <ContractorMessageDialog
+        contractor={messageContractor}
+        open={!!messageContractor}
+        onOpenChange={open => !open && setMessageContractor(null)}
+        onMessageSent={async () => {
+          // Refresh contractors to get updated messages
+          refetch();
+        }}
+      />
+
+      {/* Share Files Dialog */}
+      {shareFilesContractor && (
+        <ShareFilesDialog
+          projectId={params.id}
+          contractorId={shareFilesContractor.id}
+          contractorName={shareFilesContractor.name}
+          isOpen={!!shareFilesContractor}
+          onClose={() => setShareFilesContractor(null)}
+          alreadyShared={shareFilesContractor.shared_drawings}
+          onShareComplete={async () => {
+            // Refresh contractors to get updated data
+            refetch();
+          }}
+        />
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      <DeleteDialog
+        isOpen={deleteDialogOpen}
+        onClose={() => {
+          setDeleteDialogOpen(false);
+          setDeleteTarget(null);
+        }}
+        onConfirm={confirmDelete}
+        title={`Remove Shared ${deleteTarget?.type === 'item' ? 'Item' : 'Drawing'}`}
+        description={`Are you sure you want to remove "${deleteTarget?.itemName}" from this contractor? They will no longer have access to this ${deleteTarget?.type === 'item' ? 'item' : 'drawing'}.`}
+        itemName={deleteTarget?.itemName}
+        requireConfirmation={false}
+        confirmText="Remove"
+        isDeleting={isDeletingProcurement || isDeletingDocument}
+      />
+
+      {/* Profile Drawer */}
+      {profileContractor && (
+        <ContractorProfileDrawer
+          contractorId={profileContractor.id}
+          isOpen={!!profileContractor}
+          onClose={() => setProfileContractor(null)}
+          onSaved={() => {
+            refetch();
+          }}
+          initialData={{
+            name: apiData?.find((c: any) => c.id.toString() === profileContractor.id)?.name || '',
+            surname: apiData?.find((c: any) => c.id.toString() === profileContractor.id)?.surname || '',
+            company_name: apiData?.find((c: any) => c.id.toString() === profileContractor.id)?.company_name || '',
+            email: apiData?.find((c: any) => c.id.toString() === profileContractor.id)?.email || '',
+            phone: apiData?.find((c: any) => c.id.toString() === profileContractor.id)?.phone || '',
+            trade: profileContractor.trade,
+            insurance_expiry: (apiData?.find((c: any) => c.id.toString() === profileContractor.id) as any)?.insurance_expiry,
+            insurance_document: (apiData?.find((c: any) => c.id.toString() === profileContractor.id) as any)?.insurance_document,
+            trade_cert: (apiData?.find((c: any) => c.id.toString() === profileContractor.id) as any)?.trade_cert,
+            emergency_contact_name: (apiData?.find((c: any) => c.id.toString() === profileContractor.id) as any)?.emergency_contact_name,
+            emergency_contact_phone: (apiData?.find((c: any) => c.id.toString() === profileContractor.id) as any)?.emergency_contact_phone,
+            notes: (apiData?.find((c: any) => c.id.toString() === profileContractor.id) as any)?.notes,
+            access_code: (apiData?.find((c: any) => c.id.toString() === profileContractor.id) as any)?.access_code,
+          }}
+          projectId={params.id}
+        />
+      )}
+    </div>
+  );
+}
