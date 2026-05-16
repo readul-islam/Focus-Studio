@@ -20,23 +20,31 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
 
+def _env(key: str, default: str = '') -> str:
+    """Read from environment; secrets must be set in server/.env (no defaults in code)."""
+    return os.getenv(key, default)
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-7)kclv1h=rxp*$2$m$hj3ad$tm(t*2==9ca-*))-f9=2y5u2zf')
+SECRET_KEY = _env('SECRET_KEY')
+if not SECRET_KEY:
+    raise ValueError('SECRET_KEY is required. Set it in server/.env (see .env.example).')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+DEBUG = _env('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = [h.strip() for h in _env('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',') if h.strip()]
 
-XERO_CLIENT_ID = os.getenv('XERO_CLIENT_ID', "ACC37794023848ED952F60A40C937E6A")
-XERO_CLIENT_SECRET = os.getenv('XERO_CLIENT_SECRET', "RXPM2Odz8c7KKSRXunALNR8q037gzMgjgFWg8XJM1Bb3sNN7")
-XERO_SCOPE = os.getenv('XERO_SCOPE', "offline_access accounting.transactions accounting.contacts")
-XERO_REDIRECT_URI= os.getenv('XERO_REDIRECT_URI', "http://localhost:8000/xero/xero/callback/")
+XERO_CLIENT_ID = _env('XERO_CLIENT_ID')
+XERO_CLIENT_SECRET = _env('XERO_CLIENT_SECRET')
+XERO_SCOPE = _env(
+    'XERO_SCOPE',
+    'offline_access accounting.transactions accounting.contacts',
+)
+XERO_REDIRECT_URI = _env('XERO_REDIRECT_URI', 'http://localhost:8000/xero/xero/callback/')
 
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', "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")
+OPENAI_API_KEY = _env('OPENAI_API_KEY')
 
 # Application definition
 
@@ -75,14 +83,14 @@ INSTALLED_APPS = [
     'billing',
 ]
 
-VEXA_API_KEY = os.getenv('VEXA_API_KEY', '')
-VEXA_API_BASE = os.getenv('VEXA_API_BASE', 'https://gateway.vexa.ai')
+VEXA_API_KEY = _env('VEXA_API_KEY')
+VEXA_API_BASE = _env('VEXA_API_BASE', 'https://gateway.vexa.ai')
 
 # AWS S3 Settings
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID', 'AKIARSU7LCZG57ZHW757')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY', '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')
-AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME', 'techstyles')
-AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'eu-west-2')
+AWS_ACCESS_KEY_ID = _env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = _env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = _env('AWS_STORAGE_BUCKET_NAME', 'techstyles')
+AWS_S3_REGION_NAME = _env('AWS_S3_REGION_NAME', 'eu-west-2')
 AWS_S3_FILE_OVERWRITE = False
 AWS_QUERYSTRING_AUTH = False
 AWS_DEFAULT_ACL = None
@@ -211,37 +219,46 @@ SPECTACULAR_SETTINGS = {
     'SCHEMA_PATH_PREFIX': r'/api/',
 }
 
-_ALLOWED_ORIGINS_DEFAULT = 'https://app-stg.techstyles.ai,http://localhost:3000'
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', _ALLOWED_ORIGINS_DEFAULT).split(',')
+CORS_ALLOWED_ORIGINS = [
+    o.strip()
+    for o in _env(
+        'CORS_ALLOWED_ORIGINS',
+        'http://localhost:3000',
+    ).split(',')
+    if o.strip()
+]
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 
-GMAIL_CLIENT_ID = os.getenv('GMAIL_CLIENT_ID', "678827139040-i6gk4o0k3sfclaerbj9duarv0v12fl5k.apps.googleusercontent.com")
-GMAIL_CLIENT_SECRET = os.getenv('GMAIL_CLIENT_SECRET', "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")
-GMAIL_REDIRECT_URI = os.getenv('GMAIL_REDIRECT_URI', "http://127.0.0.1:8000/gmail/callback")
-GMAIL_SCOPES = os.getenv('GMAIL_SCOPES', "https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/calendar")
+GMAIL_CLIENT_ID = _env('GMAIL_CLIENT_ID')
+GMAIL_CLIENT_SECRET = _env('GMAIL_CLIENT_SECRET')
+GMAIL_REDIRECT_URI = _env('GMAIL_REDIRECT_URI', 'http://127.0.0.1:8000/gmail/callback')
+GMAIL_SCOPES = _env(
+    'GMAIL_SCOPES',
+    'https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/calendar',
+)
 
-RESEND_API_KEY = os.getenv('RESEND_API_KEY', '')
+RESEND_API_KEY = _env('RESEND_API_KEY')
 
-FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:3000')
+FRONTEND_URL = _env('FRONTEND_URL', 'http://localhost:3000')
 
 # Stripe (SaaS subscriptions)
-STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
-STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY', '')
-STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', '')
-STRIPE_PRICE_STARTER = os.getenv('STRIPE_PRICE_STARTER', '')
-STRIPE_PRICE_PROFESSIONAL = os.getenv('STRIPE_PRICE_PROFESSIONAL', '')
-STRIPE_PRICE_ENTERPRISE = os.getenv('STRIPE_PRICE_ENTERPRISE', '')
-STRIPE_TRIAL_DAYS = int(os.getenv('STRIPE_TRIAL_DAYS', '14'))
-CLIENT_PORTAL_URL = os.getenv('CLIENT_PORTAL_URL', 'http://localhost:3001')
-CONTRACTOR_PORTAL_URL = os.getenv('CONTRACTOR_PORTAL_URL', 'http://localhost:3002')
+STRIPE_SECRET_KEY = _env('STRIPE_SECRET_KEY')
+STRIPE_PUBLISHABLE_KEY = _env('STRIPE_PUBLISHABLE_KEY')
+STRIPE_WEBHOOK_SECRET = _env('STRIPE_WEBHOOK_SECRET')
+STRIPE_PRICE_STARTER = _env('STRIPE_PRICE_STARTER')
+STRIPE_PRICE_PROFESSIONAL = _env('STRIPE_PRICE_PROFESSIONAL')
+STRIPE_PRICE_ENTERPRISE = _env('STRIPE_PRICE_ENTERPRISE')
+STRIPE_TRIAL_DAYS = int(_env('STRIPE_TRIAL_DAYS', '14'))
+CLIENT_PORTAL_URL = _env('CLIENT_PORTAL_URL', 'http://localhost:3001')
+CONTRACTOR_PORTAL_URL = _env('CONTRACTOR_PORTAL_URL', 'http://localhost:3002')
 EMAIL_BACKEND = "techstyles.email_backend.CertifiEmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', "no-reply@focuspilot.io")
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', "jgzsatgoaeasbpjf")
-DEFAULT_FROM_EMAIL = "no-reply@focuspilot.io"
+EMAIL_HOST = _env('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(_env('EMAIL_PORT', '587'))
+EMAIL_USE_TLS = _env('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_HOST_USER = _env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = _env('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = _env('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER or 'no-reply@example.com')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
