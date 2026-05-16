@@ -238,7 +238,7 @@ class ProjectViewSet(StudioScopedMixin, viewsets.ModelViewSet):
         token = ProjectProposalToken.objects.create(project=project)
         accept_url = f"{settings.FRONTEND_URL}/proposal/accept/{token.token}/"
 
-        studio_name = project.studio.name if project.studio else 'TechStyles'
+        studio_name = project.studio.name if project.studio else 'Focuspilot'
         html_content = _get_project_proposal_email_html(project, studio_name, accept_url)
         plain_body = (
             f"Dear {project.client.name or 'Client'},\n\n"
@@ -376,7 +376,7 @@ def _procurement_change_email_html(procurement, studio_name, client_name, old_qt
           <tr>
             <td style="padding: 24px 32px; background-color: #f9fafb; border-top: 1px solid #e5e7eb;">
               <p style="margin: 0; color: #9ca3af; font-size: 13px; text-align: center;">
-                &copy; 2025 TechStyles. All rights reserved.
+                &copy; 2025 Focuspilot. All rights reserved.
               </p>
             </td>
           </tr>
@@ -397,7 +397,7 @@ def _send_procurement_change_email(procurement, old_qty, old_price, new_qty, new
     if not client or not client.email:
         return
 
-    studio_name = (procurement.studio.name if procurement.studio else None) or 'TechStyles'
+    studio_name = (procurement.studio.name if procurement.studio else None) or 'Focuspilot'
     client_name = client.name or client.company_name or 'Client'
     product_name = procurement.product.name if procurement.product else '—'
 
@@ -441,7 +441,7 @@ def _send_bulk_procurement_change_email(procurement_changes):
     if not client or not client.email:
         return
 
-    studio_name = (first_proc.studio.name if first_proc.studio else None) or 'TechStyles'
+    studio_name = (first_proc.studio.name if first_proc.studio else None) or 'Focuspilot'
     client_name = client.name or client.company_name or 'Client'
     project_name = project.project_name if project else '—'
     currency = (project.currency or '£') if project else '£'
@@ -566,7 +566,7 @@ def _send_bulk_procurement_change_email(procurement_changes):
           <tr>
             <td style="padding: 24px 32px; background-color: #f9fafb; border-top: 1px solid #e5e7eb;">
               <p style="margin: 0; color: #9ca3af; font-size: 13px; text-align: center;">
-                &copy; 2025 TechStyles. All rights reserved.
+                &copy; 2025 Focuspilot. All rights reserved.
               </p>
             </td>
           </tr>

@@ -681,7 +681,7 @@ Login URL: {login_url}
 For security, we recommend changing your password after your first login.
 
 Best regards,
-The TechStyles Team
+The Focuspilot Team
     """
 
     html_message = request.data.get('html_content')
@@ -689,7 +689,7 @@ The TechStyles Team
     if not html_message:
         html_message = _get_welcome_email_html(project, contractor, login_url)
 
-    studio_name = request.user.studio.name if request.user.studio else 'TechStyles'
+    studio_name = request.user.studio.name if request.user.studio else 'Focuspilot'
     try:
         send_contractor_portal_welcome_email(contractor.email, studio_name, html_message, message)
     except Exception as e:
@@ -849,7 +849,7 @@ def _get_welcome_email_html(project, contractor, login_url):
           <tr>
             <td style="padding: 40px 32px; text-align: center; background-color: #111827;">
               <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600;">
-                Welcome to TechStyles
+                Welcome to Focuspilot
               </h1>
               <p style="margin: 10px 0 0; color: #d1d5db; font-size: 14px;">
                 {project.project_name}
@@ -925,7 +925,7 @@ def _get_welcome_email_html(project, contractor, login_url):
           <tr>
             <td style="padding: 24px 32px; background-color: #f9fafb; border-top: 1px solid #e5e7eb;">
               <p style="margin: 0; color: #9ca3af; font-size: 13px; text-align: center;">
-                © 2025 TechStyles. All rights reserved.
+                © 2025 Focuspilot. All rights reserved.
               </p>
             </td>
           </tr>
@@ -1333,7 +1333,7 @@ def _send_procurement_notification_email(contractor, procurements):
             f"The following procurement items have been shared with you:\n\n"
             f"{item_lines}\n\n"
             f"Log in to your contractor portal to view the details:\n{portal_url}\n\n"
-            f"Best regards,\nThe TechStyles Team"
+            f"Best regards,\nThe Focuspilot Team"
         )
         item_rows = "".join(
             f"<div style=\"margin-bottom: 16px;\">"
@@ -1364,7 +1364,7 @@ def _send_procurement_notification_email(contractor, procurements):
             f"  Item: {product_name}\n"
             f"  Project: {project_name}\n\n"
             f"Log in to your contractor portal to view the details:\n{portal_url}\n\n"
-            f"Best regards,\nThe TechStyles Team"
+            f"Best regards,\nThe Focuspilot Team"
         )
         body_content = (
             f"<p style=\"margin: 0 0 16px; color: #6b7280; font-size: 15px; line-height: 1.5;\">A procurement item has been shared with you.</p>"
@@ -1406,7 +1406,7 @@ def _send_document_notification_email(contractor, documents):
             f"The following documents have been shared with you:\n\n"
             f"{item_lines}\n\n"
             f"Log in to your contractor portal to view the details:\n{portal_url}\n\n"
-            f"Best regards,\nThe TechStyles Team"
+            f"Best regards,\nThe Focuspilot Team"
         )
         item_rows = "".join(
             f"<div style=\"margin-bottom: 16px;\">"
@@ -1437,7 +1437,7 @@ def _send_document_notification_email(contractor, documents):
             f"  Document: {doc_name}\n"
             f"  Project: {project_name}\n\n"
             f"Log in to your contractor portal to view the details:\n{portal_url}\n\n"
-            f"Best regards,\nThe TechStyles Team"
+            f"Best regards,\nThe Focuspilot Team"
         )
         body_content = (
             f"<p style=\"margin: 0 0 16px; color: #6b7280; font-size: 15px; line-height: 1.5;\">A document has been shared with you.</p>"
@@ -1483,7 +1483,7 @@ def _notification_email_html(contractor, body_content, portal_url):
           <tr>
             <td style="padding: 40px 32px; text-align: center; background-color: #111827;">
               <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600;">
-                Welcome to TechStyles
+                Welcome to Focuspilot
               </h1>
             </td>
           </tr>
@@ -1523,7 +1523,7 @@ def _notification_email_html(contractor, body_content, portal_url):
           <tr>
             <td style="padding: 24px 32px; background-color: #f9fafb; border-top: 1px solid #e5e7eb;">
               <p style="margin: 0; color: #9ca3af; font-size: 13px; text-align: center;">
-                © 2025 TechStyles. All rights reserved.
+                © 2025 Focuspilot. All rights reserved.
               </p>
             </td>
           </tr>

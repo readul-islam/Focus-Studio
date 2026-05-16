@@ -95,12 +95,12 @@ export function InviteClientDialog({
           const defaultTemplate = `
             <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
               <div style="background: linear-gradient(135deg, #111827 0%, #1F1D1A 100%); padding: 40px; text-align: center; border-radius: 12px 12px 0 0;">
-                <h1 style="color: white; margin: 0;">Welcome to TechStyles!</h1>
+                <h1 style="color: white; margin: 0;">Welcome to Focuspilot!</h1>
                 <p style="color: rgba(255, 255, 255, 0.8); margin: 8px 0 0;">Get ready for something amazing</p>
               </div>
               <div style="padding: 40px; background: white;">
                 <h2 style="color: #111827; margin: 0 0 16px;">Hello,</h2>
-                <p style="color: #374151; line-height: 1.7;">You have been invited to join TechStyles!</p>
+                <p style="color: #374151; line-height: 1.7;">You have been invited to join Focuspilot!</p>
               </div>
             </div>
           `;

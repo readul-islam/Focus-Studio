@@ -200,7 +200,7 @@ class PurchaseOrderViewSet(StudioScopedMixin, viewsets.ModelViewSet):
         
 
 
-        subject = f"Purchase Order {purchase_order.id} from {purchase_order.studio.name if purchase_order.studio else 'TechStyles'}"
+        subject = f"Purchase Order {purchase_order.id} from {purchase_order.studio.name if purchase_order.studio else 'Focuspilot'}"
 
         text_body = f"""
 Dear {purchase_order.supplier.name},
@@ -218,7 +218,7 @@ Items:
 
         text_body += f"""
 Thank you,
-{purchase_order.studio.name if purchase_order.studio else 'TechStyles Team'}
+{purchase_order.studio.name if purchase_order.studio else 'Focuspilot Team'}
 """
 
         try:
@@ -333,10 +333,10 @@ Thank you,
       <p style="margin-top: 25px;">Please send us your trade invoice at your earliest convenience<br>
 
       <p style="margin-top: 25px;">Thank you,<br>
-      <strong>{purchase_order.studio.name if purchase_order.studio else 'TechStyles Team'}</strong></p>
+      <strong>{purchase_order.studio.name if purchase_order.studio else 'Focuspilot Team'}</strong></p>
 
       <div class="footer" style="margin-top: 30px; font-size: 13px; color: #555555; text-align: center;">
-        This email was sent via TechStyles.
+        This email was sent via Focuspilot.
       </div>
     </div>
   </body>

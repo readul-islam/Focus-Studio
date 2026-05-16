@@ -230,7 +230,7 @@ Login URL: {login_url}
 For security, we recommend changing your password after your first login.
 
 Best regards,
-The TechStyles Team
+The Focuspilot Team
     """
     
     # Check if HTML content is provided in the request
@@ -240,7 +240,7 @@ The TechStyles Team
     if not html_message:
         html_message = _get_welcome_email_html(project, client, login_url)
     
-    studio_name = request.user.studio.name if request.user.studio else 'TechStyles'
+    studio_name = request.user.studio.name if request.user.studio else 'Focuspilot'
     try:
         send_client_portal_welcome_email(client.email, studio_name, html_message, message)
     except Exception as e:
@@ -427,7 +427,7 @@ def _get_welcome_email_html(project, client, login_url):
           <tr>
             <td style="padding: 40px 32px; text-align: center; background-color: #111827;">
               <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600;">
-                Welcome to TechStyles
+                Welcome to Focuspilot
               </h1>
               <p style="margin: 10px 0 0; color: #d1d5db; font-size: 14px;">
                 {project.project_name}
@@ -503,7 +503,7 @@ def _get_welcome_email_html(project, client, login_url):
           <tr>
             <td style="padding: 24px 32px; background-color: #f9fafb; border-top: 1px solid #e5e7eb;">
               <p style="margin: 0; color: #9ca3af; font-size: 13px; text-align: center;">
-                © 2025 TechStyles. All rights reserved.
+                © 2025 Focuspilot. All rights reserved.
               </p>
             </td>
           </tr>

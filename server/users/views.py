@@ -142,12 +142,12 @@ class RegisterView(generics.CreateAPIView):
         user_name = serializer.data['name']
         login_url = f"{settings.FRONTEND_URL}/login"
 
-        subject = "Welcome to TechStyles!"
+        subject = "Welcome to Focuspilot!"
 
         message = f"""
 Hello {user_name},
 
-Welcome to TechStyles! Your account has been successfully created.
+Welcome to Focuspilot! Your account has been successfully created.
 
 You can log in using the link below:
 {login_url}
@@ -155,7 +155,7 @@ You can log in using the link below:
 Please keep your login details secure. If this was not you, please contact support immediately.
 
 Best regards,
-The TechStyles Team
+The Focuspilot Team
 """
 
         html_message = f"""
@@ -167,7 +167,7 @@ The TechStyles Team
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="color-scheme" content="light">
     <meta name="supported-color-schemes" content="light">
-    <title>Welcome to TechStyles</title>
+    <title>Welcome to Focuspilot</title>
     <!--[if mso]>
       <style type="text/css">
         body,
@@ -225,7 +225,7 @@ The TechStyles Team
             <tr>
               <td class="ios-solid-bg gradient-fallback" style="padding: 40px 20px; text-align: center; background-color: #111827; position: relative;">
                 <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600; letter-spacing: -0.5px;">
-                  Welcome to TechStyles!
+                  Welcome to Focuspilot!
                 </h1>
                 <p style="margin: 8px 0 0; color: rgba(255, 255, 255, 0.8); font-size: 14px;">
                   Get ready for something amazing ✨
@@ -240,7 +240,7 @@ The TechStyles Team
                   Hello {user_name},
                 </h2>
                 <p style="margin: 0; color: #374151; font-size: 16px; line-height: 1.7;">
-                  Thank you for registering with TechStyles! Your account has been successfully created. 🎉
+                  Thank you for registering with Focuspilot! Your account has been successfully created. 🎉
                 </p>
               </td>
             </tr>
@@ -311,7 +311,7 @@ The TechStyles Team
                     <td style="text-align: center;">
                       <!-- Copyright -->
                       <p style="margin: 0 0 12px; color: rgba(255, 255, 255, 0.7); font-size: 13px;">
-                        © 2025 TechStyles. All rights reserved.
+                        © 2025 Focuspilot. All rights reserved.
                       </p>
 
                       <!-- Address/Links -->
@@ -340,10 +340,10 @@ The TechStyles Team
             <tr>
               <td style="text-align: center;">
                 <p style="margin: 0; color: #6b7280; font-size: 12px; line-height: 1.5;">
-                  This email was sent to you because you registered for a TechStyles account.<br />
+                  This email was sent to you because you registered for a Focuspilot account.<br />
                   If you have questions, please contact us at
-                  <a href="mailto:support@techstyles.ai" style="color: #111827; text-decoration: none; font-weight: 500;">
-                    support@techstyles.ai
+                  <a href="mailto:support@focuspilot.io" style="color: #111827; text-decoration: none; font-weight: 500;">
+                    support@focuspilot.io
                   </a>
                 </p>
               </td>
@@ -427,37 +427,37 @@ class VerifyOtpView(APIView):
         login_url = f"{settings.FRONTEND_URL}/login"
         plain_message = f"""Hello {user_name},
 
-Welcome to TechStyles! Your email has been verified and your account is ready.
+Welcome to Focuspilot! Your email has been verified and your account is ready.
 
 You can log in using the link below:
 {login_url}
 
 Best regards,
-The TechStyles Team
+The Focuspilot Team
 """
         html_message = f"""<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Welcome to TechStyles</title></head>
+<title>Welcome to Focuspilot</title></head>
 <body style="margin:0;padding:0;background:#f9fafb;font-family:Arial,Helvetica,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9fafb;padding:40px 0;">
     <tr><td align="center">
       <table width="480" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;">
         <tr><td style="background:#111827;padding:28px 40px;">
-          <p style="margin:0;font-size:18px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;">TechStyles</p>
+          <p style="margin:0;font-size:18px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;">Focuspilot</p>
         </td></tr>
         <tr><td style="padding:40px;">
           <p style="margin:0 0 8px;font-size:22px;font-weight:700;color:#111827;">Welcome, {user_name}!</p>
           <p style="margin:0 0 28px;font-size:15px;color:#6b7280;">Your email is verified and your account is ready to use.</p>
           <table cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
             <tr><td style="background:#111827;border-radius:8px;padding:12px 28px;">
-              <a href="{login_url}" style="color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Go to TechStyles →</a>
+              <a href="{login_url}" style="color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Go to Focuspilot →</a>
             </td></tr>
           </table>
           <p style="margin:0;font-size:13px;color:#9ca3af;">If this wasn't you, please contact our support team immediately.</p>
         </td></tr>
         <tr><td style="background:#f9fafb;padding:20px 40px;border-top:1px solid #f3f4f6;">
-          <p style="margin:0;font-size:12px;color:#d1d5db;text-align:center;">© TechStyles · Do not reply to this email</p>
+          <p style="margin:0;font-size:12px;color:#d1d5db;text-align:center;">© Focuspilot · Do not reply to this email</p>
         </td></tr>
       </table>
     </td></tr>
@@ -549,12 +549,12 @@ class SendInvitationView(generics.CreateAPIView):
         
         login_url = f"{settings.FRONTEND_URL}/login"
         
-        subject = f"You've been invited to join {self.request.user.studio.name if self.request.user.studio else 'TechStyles'}"
+        subject = f"You've been invited to join {self.request.user.studio.name if self.request.user.studio else 'Focuspilot'}"
 
         message = f"""
 Hello,
 
-{self.request.user.name or self.request.user.email} has invited you to join their team on TechStyles.
+{self.request.user.name or self.request.user.email} has invited you to join their team on Focuspilot.
 
 Your account has been created with the following credentials:
 
@@ -567,7 +567,7 @@ Please log in using the link below and change your password:
 For security reasons, please change your password after your first login.
 
 Best regards,
-The TechStyles Team
+The Focuspilot Team
         """
         
         html_message = f"""
@@ -579,7 +579,7 @@ The TechStyles Team
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="color-scheme" content="light">
   <meta name="supported-color-schemes" content="light">
-  <title>Team Invitation - TechStyles</title>
+  <title>Team Invitation - Focuspilot</title>
   <!--[if mso]>
   <style type="text/css">
     body, table, td {{font-family: Arial, Helvetica, sans-serif !important;}}
@@ -646,7 +646,7 @@ The TechStyles Team
                 Hello,
               </h2>
               <p style="margin: 0; color: #374151; font-size: 16px; line-height: 1.7; mso-line-height-rule: exactly;">
-                <span style="background-color: #111827; padding: 4px 12px; color: #ffffff; font-weight: 600;">{self.request.user.name or self.request.user.email}</span> has invited you to join their team on TechStyles. 🎉
+                <span style="background-color: #111827; padding: 4px 12px; color: #ffffff; font-weight: 600;">{self.request.user.name or self.request.user.email}</span> has invited you to join their team on Focuspilot. 🎉
               </p>
             </td>
           </tr>
@@ -697,7 +697,7 @@ The TechStyles Team
                       <tr>
                         <td style="border-radius: 8px; background-color: #111827;">
                           <a href="{login_url}" style="display: block; padding: 16px 40px; background-color: #111827; color: #ffffff !important; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600; white-space: nowrap; -webkit-text-size-adjust: none;">
-                            Log In to TechStyles &rarr;
+                            Log In to Focuspilot &rarr;
                           </a>
                         </td>
                       </tr>
@@ -746,7 +746,7 @@ The TechStyles Team
                   <td style="text-align: center;">
                     <!-- Copyright -->
                     <p style="margin: 0 0 12px; color: rgba(255, 255, 255, 0.7); font-size: 13px; mso-line-height-rule: exactly;">
-                      © 2025 TechStyles. All rights reserved.
+                      © 2025 Focuspilot. All rights reserved.
                     </p>
                     
                     <!-- Address/Links -->
@@ -768,8 +768,8 @@ The TechStyles Team
           <tr>
             <td style="text-align: center;">
               <p style="margin: 0; color: #6b7280; font-size: 12px; line-height: 1.5; mso-line-height-rule: exactly;">
-                This email was sent to you because you were invited to join a team on TechStyles.<br>
-                If you have questions, please contact us at <a href="mailto:support@techstyles.ai" style="color: #111827; text-decoration: none; font-weight: 500;">support@techstyles.ai</a>
+                This email was sent to you because you were invited to join a team on Focuspilot.<br>
+                If you have questions, please contact us at <a href="mailto:support@focuspilot.io" style="color: #111827; text-decoration: none; font-weight: 500;">support@focuspilot.io</a>
               </p>
             </td>
           </tr>
@@ -784,7 +784,7 @@ The TechStyles Team
 
         """
         
-        studio_name = self.request.user.studio.name if self.request.user.studio else 'TechStyles'
+        studio_name = self.request.user.studio.name if self.request.user.studio else 'Focuspilot'
         try:
             send_team_invitation_email(invitation.email, studio_name, html_message, message)
         except Exception as e:
@@ -1070,11 +1070,11 @@ class ForgotPasswordView(APIView):
         reset_token = PasswordResetToken.objects.create(user=user)
         reset_url = f"{settings.FRONTEND_URL}/reset-password?token={reset_token.token}"
 
-        subject = "Reset your TechStyles password"
+        subject = "Reset your Focuspilot password"
         message = f"""
 Hello {user.name or user.email},
 
-We received a request to reset the password for your TechStyles account.
+We received a request to reset the password for your Focuspilot account.
 
 Click the link below to set a new password (valid for 1 hour):
 {reset_url}
@@ -1082,7 +1082,7 @@ Click the link below to set a new password (valid for 1 hour):
 If you did not request a password reset, you can safely ignore this email.
 
 Best regards,
-The TechStyles Team
+The Focuspilot Team
 """
         html_message = f"""
 <!DOCTYPE html>
@@ -1110,14 +1110,14 @@ The TechStyles Team
             <tr>
               <td class="ios-solid-bg gradient-fallback" style="padding: 40px 20px; text-align: center; background-color: #111827;">
                 <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600; letter-spacing: -0.5px;">Password Reset</h1>
-                <p style="margin: 8px 0 0; color: rgba(255,255,255,0.8); font-size: 14px;">TechStyles Account Security</p>
+                <p style="margin: 8px 0 0; color: rgba(255,255,255,0.8); font-size: 14px;">Focuspilot Account Security</p>
               </td>
             </tr>
             <tr>
               <td class="mobile-padding" style="padding: 40px 30px 24px;">
                 <h2 style="margin: 0 0 16px; color: #111827; font-size: 22px; font-weight: 700;">Hello {user.name or user.email},</h2>
                 <p style="margin: 0; color: #374151; font-size: 16px; line-height: 1.7;">
-                  We received a request to reset the password for your TechStyles account.
+                  We received a request to reset the password for your Focuspilot account.
                   Click the button below to choose a new password. This link is valid for <strong>15 minutes</strong>.
                 </p>
               </td>
@@ -1159,7 +1159,7 @@ The TechStyles Team
             </tr>
             <tr>
               <td class="ios-solid-bg gradient-fallback" style="padding: 32px 20px; background-color: #111827; text-align: center;">
-                <p style="margin: 0 0 12px; color: rgba(255,255,255,0.7); font-size: 13px;">© 2025 TechStyles. All rights reserved.</p>
+                <p style="margin: 0 0 12px; color: rgba(255,255,255,0.7); font-size: 13px;">© 2025 Focuspilot. All rights reserved.</p>
                 <p style="margin: 0; color: rgba(255,255,255,0.5); font-size: 12px;">
                   <a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none; margin: 0 6px;">Privacy Policy</a> •
                   <a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none; margin: 0 6px;">Terms of Service</a> •

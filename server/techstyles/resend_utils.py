@@ -4,7 +4,7 @@ import requests
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 
-FROM_EMAIL = f"TechStyles <{settings.DEFAULT_FROM_EMAIL}>"
+FROM_EMAIL = f"Focuspilot <{settings.DEFAULT_FROM_EMAIL}>"
 
 RESEND_API_URL = "https://api.resend.com/emails"
 
@@ -76,7 +76,7 @@ def _send(subject: str, from_email: str, to: list[str], html: str, plain: str, c
 
 def send_registration_welcome_email(to_email: str, login_url: str, html_message: str, plain_message: str) -> dict:
     return _send(
-        subject="Welcome to TechStyles — Your Account is Ready",
+        subject="Welcome to Focuspilot — Your Account is Ready",
         from_email=FROM_EMAIL,
         to=[to_email],
         html=html_message,
@@ -86,7 +86,7 @@ def send_registration_welcome_email(to_email: str, login_url: str, html_message:
 
 def send_team_invitation_email(to_email: str, studio_name: str, html_message: str, plain_message: str) -> dict:
     return _send(
-        subject=f"You've been invited to join {studio_name} on TechStyles",
+        subject=f"You've been invited to join {studio_name} on Focuspilot",
         from_email=FROM_EMAIL,
         to=[to_email],
         html=html_message,
@@ -145,7 +145,7 @@ def send_proposal_email(to_email: str, studio_name: str, proposal_title: str, ht
 
 
 def send_otp_email(to_email: str, otp: str, name: str) -> dict:
-    plain = f"Hi {name},\n\nYour TechStyles verification code is: {otp}\n\nThis code expires in 10 minutes. Do not share it with anyone.\n\nThe TechStyles Team"
+    plain = f"Hi {name},\n\nYour Focuspilot verification code is: {otp}\n\nThis code expires in 10 minutes. Do not share it with anyone.\n\nThe Focuspilot Team"
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
@@ -155,7 +155,7 @@ def send_otp_email(to_email: str, otp: str, name: str) -> dict:
     <tr><td align="center">
       <table width="480" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;">
         <tr><td style="background:#111827;padding:28px 40px;">
-          <p style="margin:0;font-size:18px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;">TechStyles</p>
+          <p style="margin:0;font-size:18px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;">Focuspilot</p>
         </td></tr>
         <tr><td style="padding:40px;">
           <p style="margin:0 0 8px;font-size:22px;font-weight:700;color:#111827;">Verify your email</p>
@@ -168,7 +168,7 @@ def send_otp_email(to_email: str, otp: str, name: str) -> dict:
           <p style="margin:0;font-size:13px;color:#9ca3af;">If you didn't create an account, you can safely ignore this email.</p>
         </td></tr>
         <tr><td style="background:#f9fafb;padding:20px 40px;border-top:1px solid #f3f4f6;">
-          <p style="margin:0;font-size:12px;color:#d1d5db;text-align:center;">© TechStyles · Do not reply to this email</p>
+          <p style="margin:0;font-size:12px;color:#d1d5db;text-align:center;">© Focuspilot · Do not reply to this email</p>
         </td></tr>
       </table>
     </td></tr>
@@ -176,7 +176,7 @@ def send_otp_email(to_email: str, otp: str, name: str) -> dict:
 </body>
 </html>"""
     return _send(
-        subject="Your TechStyles verification code",
+        subject="Your Focuspilot verification code",
         from_email=FROM_EMAIL,
         to=[to_email],
         html=html,
@@ -186,7 +186,7 @@ def send_otp_email(to_email: str, otp: str, name: str) -> dict:
 
 def send_password_reset_email(to_email: str, html_message: str, plain_message: str) -> dict:
     return _send(
-        subject="Reset your TechStyles password",
+        subject="Reset your Focuspilot password",
         from_email=FROM_EMAIL,
         to=[to_email],
         html=html_message,

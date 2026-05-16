@@ -184,7 +184,7 @@ def get_dashboard_data(user):
         'greeting': {
             'greeting': greeting,
             'name': f"{user.name} {user.username if hasattr(user, 'username') else ''}".strip() or user.email,
-            'date': today.strftime("%A %-d %B"),
+            'date': f"{today.strftime('%A')} {today.day} {today.strftime('%B')}",
             'meetings_today': f"{len(meetings)} meetings today" if meetings else "No meetings today",
             'overdue_count': overdue_tasks_count,
         },

@@ -644,7 +644,7 @@ class ProposalViewSet(StudioScopedMixin, viewsets.ModelViewSet):
         if not proposal.client.email:
             return Response({'error': 'Client has no email address.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        studio_name = proposal.studio.name if proposal.studio else 'TechStyles'
+        studio_name = proposal.studio.name if proposal.studio else 'Focuspilot'
         html_content = _get_proposal_email_html(proposal, studio_name)
 
         plain_body = (
