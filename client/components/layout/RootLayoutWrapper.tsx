@@ -7,12 +7,24 @@ import { AppSidebar } from '@/components/app-sidebar';
 import { TopBar } from '@/components/top-bar';
 import PrivateRoute from '@/layout/PrivateRoute';
 
-const PUBLIC_ROUTES = ['/login', '/register', '/verify-email', '/verify-otp', '/reset-password', '/forgot-password', '/accept-invitation'];
+const PUBLIC_ROUTES = [
+  '/',
+  '/login',
+  '/register',
+  '/verify-email',
+  '/verify-otp',
+  '/reset-password',
+  '/forgot-password',
+  '/accept-invitation',
+  '/pricing',
+];
 const STANDALONE_ROUTES = ['/xeroredirect', '/oauth/gmail/callback', '/onboarding'];
 
 export function RootLayoutWrapper({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const isPublic = PUBLIC_ROUTES.includes(pathname);
+  const isPublic =
+    !!pathname &&
+    PUBLIC_ROUTES.some((r) => pathname === r || pathname.startsWith(`${r}/`));
   const isPdfRoute = pathname?.includes('/pdf/');
   const isStandalone = STANDALONE_ROUTES.includes(pathname);
   const isContractorPortal = pathname?.startsWith('/contractor/');

@@ -4,14 +4,26 @@ import useUser from '@/hooks/useUser';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
-const PUBLIC_ROUTES = ['/login', '/register', '/verify-otp', '/verify-email', '/reset-password', '/forgot-password', '/accept-invitation'];
+const PUBLIC_ROUTES = [
+  '/',
+  '/login',
+  '/register',
+  '/verify-otp',
+  '/verify-email',
+  '/reset-password',
+  '/forgot-password',
+  '/accept-invitation',
+  '/pricing',
+];
 
 export default function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useUser();
   const router = useRouter();
   const pathname = usePathname();
 
-  const isPublic = PUBLIC_ROUTES.includes(pathname);
+  const isPublic =
+    !!pathname &&
+    PUBLIC_ROUTES.some((r) => pathname === r || pathname.startsWith(`${r}/`));
   const isOnboarding = pathname === '/onboarding';
 
   useEffect(() => {

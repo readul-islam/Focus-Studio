@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Routes that require no auth
 const PUBLIC_ROUTES = [
+  '/',
   '/login',
   '/register',
   '/reset-password',
@@ -9,6 +10,7 @@ const PUBLIC_ROUTES = [
   '/accept-invitation',
   '/verify-email',
   '/verify-otp',
+  '/pricing',
 ];
 
 // Routes that logged-in users should be bounced away from
@@ -37,6 +39,11 @@ export function middleware(request: NextRequest) {
 
   const hasSession = !!request.cookies.get('access')?.value || !!request.cookies.get('refresh')?.value;
   const hasPendingEmail = !!request.cookies.get('pending_email')?.value;
+
+  // Logged-in users skip marketing home
+  if (hasSession && pathname === '/') {
+    return NextResponse.redirect(new URL('/home/dashboard', request.url));
+  }
 
   // Authenticated user hits /login, /register, /verify-otp → send to dashboard
   if (hasSession && isAuthOnly(pathname)) {
