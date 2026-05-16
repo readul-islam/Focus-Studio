@@ -109,10 +109,24 @@ const REVENUE_STREAMS = [
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen bg-stone-50">
+    <div className="relative min-h-screen overflow-x-hidden bg-stone-50">
+      <div
+        className="pointer-events-none absolute inset-0 min-h-full bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(224,122,87,0.14),transparent_55%),radial-gradient(ellipse_50%_45%_at_100%_0%,rgba(15,23,42,0.06),transparent)]"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 min-h-full opacity-[0.5]"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle at 1px 1px, rgb(15 23 42 / 0.05) 1px, transparent 0)',
+          backgroundSize: '32px 32px',
+        }}
+        aria-hidden
+      />
+
       <LandingNav />
 
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-6">
+      <main className="relative mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-6">
         {/* Hero */}
         <div className="relative mx-auto max-w-3xl text-center">
         
@@ -200,7 +214,7 @@ export default function PricingPage() {
         </p>
 
         {/* Revenue streams (README) */}
-        <section className="mt-20 border-t border-gray-200/90 pt-14" aria-labelledby="streams-heading">
+        <section className="mt-20 border-t border-gray-200/70 pt-14" aria-labelledby="streams-heading">
           <div className="mx-auto max-w-2xl text-center">
             <h2 id="streams-heading" className="text-2xl font-bold tracking-tight text-gray-900">
               Other revenue streams

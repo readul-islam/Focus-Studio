@@ -1,7 +1,8 @@
 'use client';
 
+import { AuthBrandPanel } from '@/components/auth/auth-brand-panel';
 import { usePost } from '@/hooks/usePost';
-import { ArrowRight, CheckCircle2, Eye, EyeOff, Loader2, Lock, Mail, User } from 'lucide-react';
+import { ArrowRight, Eye, EyeOff, Loader2, Lock, Mail, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -131,13 +132,6 @@ export default function Register() {
 
   const pwStrength = passwordStrength(formData.password);
   const { label: strengthText, color: strengthColor } = strengthLabel(pwStrength);
-
-  const features = [
-    'Project & task management',
-    'Client communication hub',
-    'Finance & invoicing',
-    'AI-powered inbox',
-  ];
 
   const inputClass = (field: keyof FormData) =>
     `w-full pl-9 pr-4 py-2.5 text-sm rounded-lg border bg-white outline-none transition-colors ${
@@ -361,68 +355,7 @@ export default function Register() {
         </div>
       </div>
 
-      {/* Right — Brand panel */}
-      <div className="hidden lg:flex flex-col justify-center w-[52%] bg-[#1a2e2a] px-14 py-10 relative overflow-hidden gap-12">
-        {/* Background texture */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
-            backgroundSize: "32px 32px",
-          }}
-        />
-
-        <div className="relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/70 text-xs font-medium mb-16">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Now in early access
-          </div>
-
-          <h2 className="text-4xl font-bold text-white leading-tight mb-5">
-            The operating system
-            <br />
-            for interior designers
-          </h2>
-          <p className="text-white/60 text-base leading-relaxed max-w-sm">
-            Manage projects, clients, finances, and team communication — all in
-            one place.
-          </p>
-
-          <ul className="mt-10 space-y-3">
-            {features.map((f) => (
-              <li
-                key={f}
-                className="flex items-center gap-3 text-sm text-white/80"
-              >
-                <span className="flex-shrink-0 w-5 h-5 rounded-full bg-white/10 flex items-center justify-center">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                </span>
-                {f}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Testimonial */}
-        <div className="relative z-10 bg-white/8 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
-          <p className="text-white/80 text-sm leading-relaxed mb-4">
-            &ldquo;Focuspilot has completely changed how we run projects. Our
-            team spends less time on admin and more time designing.&rdquo;
-          </p>
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-semibold">
-              S
-            </div>
-            <div>
-              <p className="text-white text-xs font-medium">Sarah Mitchell</p>
-              <p className="text-white/50 text-xs">
-                Principal Designer, Studio M
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <AuthBrandPanel />
     </div>
   );
 }
