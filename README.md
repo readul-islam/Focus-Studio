@@ -574,6 +574,7 @@ Design and architecture studios face significant operational challenges:
 ### Prerequisites
 - Node.js 18+ (frontend)
 - Python 3.10+ (backend)
+- **Windows:** If `python` is not recognized, install Python 3.10+ from [python.org](https://www.python.org/downloads/) (enable **Add python.exe to PATH** during setup), or run: `winget install Python.Python.3.12 --accept-package-agreements`
 - pnpm (package manager)
 - PostgreSQL (for production)
 
@@ -589,10 +590,23 @@ pnpm dev
 
 ### Backend Setup
 
+All of the following commands assume your shell’s working directory is **`server`** (that is where `.venv` and `requirements.txt` are created).
+
 ```bash
 cd server
 python -m venv .venv
-source .venv/bin/activate  # macOS/Linux
+```
+
+Activate the virtual environment (pick one):
+
+- **macOS / Linux:** `source .venv/bin/activate`
+- **Windows (PowerShell):** `.\.venv\Scripts\Activate.ps1`  
+  If execution of scripts is disabled, run once: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+- **Windows (Command Prompt):** `.venv\Scripts\activate.bat`
+
+Then:
+
+```bash
 python -m pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
