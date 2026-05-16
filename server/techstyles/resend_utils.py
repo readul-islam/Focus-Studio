@@ -4,6 +4,8 @@ import requests
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 
+from techstyles.email_branding import email_brand_row_html
+
 FROM_EMAIL = f"Focuspilot <{settings.DEFAULT_FROM_EMAIL}>"
 
 RESEND_API_URL = "https://api.resend.com/emails"
@@ -155,7 +157,7 @@ def send_otp_email(to_email: str, otp: str, name: str) -> dict:
     <tr><td align="center">
       <table width="480" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;">
         <tr><td style="background:#111827;padding:28px 40px;">
-          <p style="margin:0;font-size:18px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;">Focuspilot</p>
+          {email_brand_row_html(align='left')}
         </td></tr>
         <tr><td style="padding:40px;">
           <p style="margin:0 0 8px;font-size:22px;font-weight:700;color:#111827;">Verify your email</p>

@@ -9,6 +9,7 @@ from techstyles.resend_utils import (
     send_contractor_portal_welcome_email,
     send_contractor_notification_email,
 )
+from techstyles.email_branding import email_brand_row_html, email_header_inner_html
 from django.contrib.auth.hashers import make_password
 from drf_spectacular.utils import (
     extend_schema, extend_schema_view, OpenApiParameter, OpenApiTypes, inline_serializer,
@@ -848,12 +849,7 @@ def _get_welcome_email_html(project, contractor, login_url):
           <!-- Header Section -->
           <tr>
             <td style="padding: 40px 32px; text-align: center; background-color: #111827;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600;">
-                Welcome to Focuspilot
-              </h1>
-              <p style="margin: 10px 0 0; color: #d1d5db; font-size: 14px;">
-                {project.project_name}
-              </p>
+              {email_header_inner_html(title='Welcome to Focuspilot', subtitle=project.project_name, align='center')}
             </td>
           </tr>
 
@@ -1482,9 +1478,7 @@ def _notification_email_html(contractor, body_content, portal_url):
           <!-- Header Section -->
           <tr>
             <td style="padding: 40px 32px; text-align: center; background-color: #111827;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600;">
-                Welcome to Focuspilot
-              </h1>
+              {email_brand_row_html(align='center')}
             </td>
           </tr>
 

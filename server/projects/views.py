@@ -19,6 +19,7 @@ import datetime
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 from rest_framework import serializers as drf_serializers
 from techstyles.mixins import StudioScopedMixin
+from techstyles.email_branding import email_brand_row_html
 
 class PhaseViewSet(StudioScopedMixin, viewsets.ModelViewSet):
     queryset = Phase.objects.all()
@@ -55,7 +56,8 @@ def _get_project_proposal_email_html(project, studio_name, accept_url):
           <!-- Header -->
           <tr>
             <td style="padding: 40px 32px; text-align: center; background-color: #111827;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 26px; font-weight: 600;">{studio_name}</h1>
+              {email_brand_row_html(align='center')}
+              <h1 style="margin: 16px 0 0; color: #ffffff; font-size: 26px; font-weight: 600;">{studio_name}</h1>
               <p style="margin: 8px 0 0; color: #d1d5db; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase;">Project Proposal</p>
             </td>
           </tr>
@@ -330,7 +332,8 @@ def _procurement_change_email_html(procurement, studio_name, client_name, old_qt
           <!-- Header -->
           <tr>
             <td style="padding: 40px 32px; text-align: center; background-color: #111827;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 26px; font-weight: 600;">{studio_name}</h1>
+              {email_brand_row_html(align='center')}
+              <h1 style="margin: 16px 0 0; color: #ffffff; font-size: 26px; font-weight: 600;">{studio_name}</h1>
               <p style="margin: 8px 0 0; color: #d1d5db; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase;">Procurement Update</p>
             </td>
           </tr>
@@ -536,7 +539,8 @@ def _send_bulk_procurement_change_email(procurement_changes):
           <!-- Header -->
           <tr>
             <td style="padding: 40px 32px; text-align: center; background-color: #111827;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 26px; font-weight: 600;">{studio_name}</h1>
+              {email_brand_row_html(align='center')}
+              <h1 style="margin: 16px 0 0; color: #ffffff; font-size: 26px; font-weight: 600;">{studio_name}</h1>
               <p style="margin: 8px 0 0; color: #d1d5db; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase;">Procurement Update</p>
             </td>
           </tr>

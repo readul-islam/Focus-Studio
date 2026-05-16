@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.db.models import Sum
 from django.conf import settings
 from techstyles.resend_utils import send_client_portal_welcome_email
+from techstyles.email_branding import email_header_inner_html
 from documents.models import Document
 from documents.serializers import DocumentSerializer
 from projects.models import Procurement, Project
@@ -426,12 +427,7 @@ def _get_welcome_email_html(project, client, login_url):
           <!-- Header Section -->
           <tr>
             <td style="padding: 40px 32px; text-align: center; background-color: #111827;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600;">
-                Welcome to Focuspilot
-              </h1>
-              <p style="margin: 10px 0 0; color: #d1d5db; font-size: 14px;">
-                {project.project_name}
-              </p>
+              {email_header_inner_html(title='Welcome to Focuspilot', subtitle=project.project_name, align='center')}
             </td>
           </tr>
 

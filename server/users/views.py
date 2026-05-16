@@ -40,6 +40,7 @@ from techstyles.resend_utils import (
     send_password_reset_email,
     send_otp_email,
 )
+from techstyles.email_branding import email_brand_row_html, email_header_inner_html
 from .models import OtpVerification
 from rest_framework.views import APIView
 from techstyles.currency import get_curency_details_json
@@ -226,12 +227,7 @@ The Focuspilot Team
             <!-- Header Section with Solid Color (iOS fix) -->
             <tr>
               <td class="ios-solid-bg gradient-fallback" style="padding: 40px 20px; text-align: center; background-color: #111827; position: relative;">
-                <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600; letter-spacing: -0.5px;">
-                  Welcome to Focuspilot!
-                </h1>
-                <p style="margin: 8px 0 0; color: rgba(255, 255, 255, 0.8); font-size: 14px;">
-                  Get ready for something amazing ✨
-                </p>
+                {email_header_inner_html(title='Welcome to Focuspilot!', subtitle='Get ready for something amazing ✨', align='center')}
               </td>
             </tr>
 
@@ -446,7 +442,7 @@ The Focuspilot Team
     <tr><td align="center">
       <table width="480" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;">
         <tr><td style="background:#111827;padding:28px 40px;">
-          <p style="margin:0;font-size:18px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;">Focuspilot</p>
+          {email_brand_row_html(align='left')}
         </td></tr>
         <tr><td style="padding:40px;">
           <p style="margin:0 0 8px;font-size:22px;font-weight:700;color:#111827;">Welcome, {user_name}!</p>
@@ -632,12 +628,7 @@ The Focuspilot Team
           <!-- Header Section with Solid Color -->
           <tr>
             <td class="ios-solid-bg gradient-fallback" style="padding: 40px 20px 32px; text-align: center; background-color: #111827; mso-line-height-rule: exactly;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600; letter-spacing: -0.5px; mso-line-height-rule: exactly;">
-                Team Invitation
-              </h1>
-              <p style="margin: 8px 0 0; color: rgba(255, 255, 255, 0.8); font-size: 14px; mso-line-height-rule: exactly;">
-                You've been invited to collaborate! 🤝
-              </p>
+              {email_header_inner_html(title='Team Invitation', subtitle="You've been invited to collaborate! 🤝", align='center')}
             </td>
           </tr>
           
@@ -1111,8 +1102,7 @@ The Focuspilot Team
           <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
             <tr>
               <td class="ios-solid-bg gradient-fallback" style="padding: 40px 20px; text-align: center; background-color: #111827;">
-                <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600; letter-spacing: -0.5px;">Password Reset</h1>
-                <p style="margin: 8px 0 0; color: rgba(255,255,255,0.8); font-size: 14px;">Focuspilot Account Security</p>
+                {email_header_inner_html(title='Password Reset', subtitle='Focuspilot Account Security', align='center')}
               </td>
             </tr>
             <tr>

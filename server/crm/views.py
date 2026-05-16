@@ -11,6 +11,7 @@ from users.permissions import ClientsViewPermission
 from django.db.models import Q
 from django.conf import settings
 from techstyles.resend_utils import send_proposal_email
+from techstyles.email_branding import email_brand_row_html
 from techstyles.mixins import StudioScopedMixin
 
 
@@ -417,7 +418,8 @@ def _get_proposal_email_html(proposal, studio_name):
           <!-- Header -->
           <tr>
             <td style="padding: 40px 32px; text-align: center; background-color: #111827;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 26px; font-weight: 600;">{studio_name}</h1>
+              {email_brand_row_html(align='center')}
+              <h1 style="margin: 16px 0 0; color: #ffffff; font-size: 26px; font-weight: 600;">{studio_name}</h1>
               <p style="margin: 8px 0 0; color: #d1d5db; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase;">Proposal</p>
             </td>
           </tr>
