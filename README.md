@@ -116,8 +116,8 @@ Design and architecture studios face significant operational challenges:
 - **Payments:** Stripe (planned)
 
 ### Deployment
-- **Backend:** Django + Gunicorn (containerized)
-- **Frontend:** Next.js static export or server deployment
+- **Backend:** Django + Gunicorn on EC2 ([docs/EC2-DEPLOYMENT.md](docs/EC2-DEPLOYMENT.md)) or ECS ([docs/AWS-DEPLOYMENT.md](docs/AWS-DEPLOYMENT.md))
+- **Frontend:** Next.js on Vercel ([docs/VERCEL-DEPLOYMENT.md](docs/VERCEL-DEPLOYMENT.md))
 - **Storage:** AWS S3 (via django-storages)
 - **Environment:** .env-based configuration
 
@@ -616,10 +616,13 @@ python manage.py runserver
 
 ### Environment Variables
 
-#### Frontend (`.env.local`)
+#### Frontend (`.env.local` — local dev only)
+
+For **Vercel production**, set the same keys in the Vercel dashboard or CLI — see [docs/VERCEL-DEPLOYMENT.md](docs/VERCEL-DEPLOYMENT.md).
+
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
-NEXT_PUBLIC_APP_NAME=TechStyles
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 #### Backend (`.env`)

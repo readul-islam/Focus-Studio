@@ -230,6 +230,16 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 
+# Required for cross-origin POST from https://focuspilot.io → https://api.focuspilot.io
+CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
+
+# Auth cookies (login/register) — e.g. .focuspilot.io for api + www + app subdomains
+AUTH_COOKIE_DOMAIN = _env('AUTH_COOKIE_DOMAIN')
+
+# Behind Nginx TLS termination
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+
 GMAIL_CLIENT_ID = _env('GMAIL_CLIENT_ID')
 GMAIL_CLIENT_SECRET = _env('GMAIL_CLIENT_SECRET')
 GMAIL_REDIRECT_URI = _env('GMAIL_REDIRECT_URI', 'http://127.0.0.1:8000/gmail/callback')

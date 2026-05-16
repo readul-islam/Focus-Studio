@@ -50,8 +50,7 @@ from .utils import get_dashboard_data, generate_daily_brief
 
 def _cookie_settings(secure: bool) -> dict:
     """
-    Production: SameSite=None; Secure; Domain=.techstyles.ai — shared across all
-    subdomains (app-stg, be-stg, api, etc.) so Next.js middleware can read the cookie.
+    Production: SameSite=None; Secure; Domain from AUTH_COOKIE_DOMAIN (e.g. .focuspilot.io).
 
     Development: SameSite=Lax; no Secure; no Domain — localhost:3000 and localhost:8000
     are same-site, so Lax works and Secure is not needed on HTTP.
@@ -63,8 +62,9 @@ def _cookie_settings(secure: bool) -> dict:
         'samesite': 'None' if secure else 'Lax',
         'path': '/',
     }
-    if secure:
-        cookie['domain'] = '.techstyles.ai'
+    domain = getattr(settings, 'AUTH_COOKIE_DOMAIN', '') or ''
+    if secure and domain:
+        cookie['domain'] = domain
     return cookie
 
 
@@ -121,7 +121,9 @@ class LogoutView(APIView):
                 pass
         response = Response({'detail': 'Logged out.'}, status=status.HTTP_200_OK)
         secure = not settings.DEBUG
-        domain = '.techstyles.ai' if secure else None
+        domain = getattr(settings, 'AUTH_COOKIE_DOMAIN', '') or None
+        if not secure:
+            domain = None
         response.delete_cookie('access', path='/', domain=domain)
         response.delete_cookie('refresh', path='/', domain=domain)
         response.delete_cookie('pending_email', path='/', domain=domain)

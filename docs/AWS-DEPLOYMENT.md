@@ -1,6 +1,6 @@
 # Focus-Studio / TechStyles — AWS Server Deployment Guide
 
-End-to-end guide for deploying the **Django API** (`server/`) to AWS with a CI/CD pipeline. The Next.js client can stay on Vercel/Amplify; this document focuses on the backend.
+End-to-end guide for deploying the **Django API** (`server/`) to AWS with a CI/CD pipeline. The Next.js client can stay on Vercel — see **[VERCEL-DEPLOYMENT.md](./VERCEL-DEPLOYMENT.md)**. This document focuses on the backend.
 
 ---
 

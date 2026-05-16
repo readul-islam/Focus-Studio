@@ -24,3 +24,4 @@ out
 
 # Generated version file
 public/version.json
+.vercel
