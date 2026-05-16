@@ -24,9 +24,9 @@ const SUBSCRIPTION_TIERS = [
   {
     id: 'starter',
     name: 'Starter',
-    priceRange: '£99–149',
+    tagline: 'For solo practitioners & small teams',
+    priceRange: '£149',
     priceNote: 'per month',
-    idealFor: 'Solo practitioners, small teams',
     features: [
       'Up to 5 team members',
       '10 active projects',
@@ -40,9 +40,9 @@ const SUBSCRIPTION_TIERS = [
   {
     id: 'professional',
     name: 'Professional',
-    priceRange: '£299–399',
+    tagline: 'For growing studios (10–30 people)',
+    priceRange: '£399',
     priceNote: 'per month',
-    idealFor: 'Mid-size studios (10–30 people)',
     features: [
       'Up to 20 team members',
       'Unlimited projects',
@@ -59,9 +59,9 @@ const SUBSCRIPTION_TIERS = [
   {
     id: 'enterprise',
     name: 'Enterprise',
-    priceRange: 'Custom',
-    priceNote: 'pricing',
-    idealFor: 'Large studios, networks',
+    tagline: 'For large studios & networks',
+    priceRange: '£999',
+    priceNote: 'per month',
     features: [
       'Unlimited team members',
       'Unlimited projects',
@@ -160,9 +160,11 @@ export default function PricingPage() {
               ) : null}
               <CardHeader className="px-6 pb-2 pt-6">
                 <CardTitle className="text-lg font-semibold text-gray-900">{tier.name}</CardTitle>
-                <CardDescription className="text-sm text-gray-600">
-                  <span className="font-medium text-gray-800">Ideal for:</span> {tier.idealFor}
-                </CardDescription>
+                {'tagline' in tier && tier.tagline ? (
+                  <CardDescription className="text-sm font-medium text-gray-600">
+                    {tier.tagline}
+                  </CardDescription>
+                ) : null}
                 <div className="mt-4 flex flex-wrap items-baseline gap-x-1 gap-y-0">
                   <span className="text-3xl font-bold tracking-tight text-gray-900 tabular-nums">
                     {tier.priceRange}
@@ -205,8 +207,8 @@ export default function PricingPage() {
         </div>
 
         <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-gray-500 sm:text-sm">
-          Indicative ranges from our commercial model; published quotes, tax, annual billing discounts,
-          and add-ons are confirmed during signup or sales.{' '}
+          All plans include a 14-day free trial. Prices exclude VAT where applicable; annual billing
+          discounts and add-ons are available on request.{' '}
           <Link href="/login" className="font-medium text-clay-700 underline-offset-2 hover:underline">
             Sign in
           </Link>{' '}

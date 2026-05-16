@@ -15,7 +15,7 @@ function getBaseUrl() {
     return `https://${process.env.VERCEL_URL}`;
   }
   // Local development
-  return process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3300';
+  return process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 }
 
 /**

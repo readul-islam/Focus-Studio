@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'meetings',
     'notifications',
     'changelog',
+    'billing',
 ]
 
 VEXA_API_KEY = os.getenv('VEXA_API_KEY', '')
@@ -223,6 +224,15 @@ GMAIL_SCOPES = os.getenv('GMAIL_SCOPES', "https://www.googleapis.com/auth/gmail.
 RESEND_API_KEY = os.getenv('RESEND_API_KEY', '')
 
 FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:3000')
+
+# Stripe (SaaS subscriptions)
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY', '')
+STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', '')
+STRIPE_PRICE_STARTER = os.getenv('STRIPE_PRICE_STARTER', '')
+STRIPE_PRICE_PROFESSIONAL = os.getenv('STRIPE_PRICE_PROFESSIONAL', '')
+STRIPE_PRICE_ENTERPRISE = os.getenv('STRIPE_PRICE_ENTERPRISE', '')
+STRIPE_TRIAL_DAYS = int(os.getenv('STRIPE_TRIAL_DAYS', '14'))
 CLIENT_PORTAL_URL = os.getenv('CLIENT_PORTAL_URL', 'http://localhost:3001')
 CONTRACTOR_PORTAL_URL = os.getenv('CONTRACTOR_PORTAL_URL', 'http://localhost:3002')
 EMAIL_BACKEND = "techstyles.email_backend.CertifiEmailBackend"

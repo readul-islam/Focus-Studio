@@ -41,4 +41,5 @@ urlpatterns = [
     path('meetings/', include('meetings.urls')),
     path('notifications/', include('notifications.urls')),
     path('changelog/', include('changelog.urls')),
+    path('billing/', include('billing.urls')),
 ]

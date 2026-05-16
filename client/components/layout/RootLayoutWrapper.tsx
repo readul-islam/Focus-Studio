@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
 import { TopBar } from '@/components/top-bar';
+import { SubscriptionGate } from '@/components/billing/subscription-gate';
 import PrivateRoute from '@/layout/PrivateRoute';
 
 const PUBLIC_ROUTES = [
@@ -18,7 +19,13 @@ const PUBLIC_ROUTES = [
   '/accept-invitation',
   '/pricing',
 ];
-const STANDALONE_ROUTES = ['/xeroredirect', '/oauth/gmail/callback', '/onboarding'];
+const STANDALONE_ROUTES = [
+  '/xeroredirect',
+  '/oauth/gmail/callback',
+  '/onboarding',
+  '/billing/success',
+  '/billing/cancel',
+];
 
 export function RootLayoutWrapper({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -49,15 +56,17 @@ export function RootLayoutWrapper({ children }: { children: ReactNode }) {
 
   return (
     <PrivateRoute>
-      <SidebarProvider defaultOpen={true}>
-        <div className="flex min-h-screen w-full bg-white">
-          <AppSidebar />
-          <div className="flex-1 h-screen flex flex-col min-w-0 bg-white">
-            <TopBar />
-            <main className="flex-1 bg-stone-50 overflow-auto">{children}</main>
+      <SubscriptionGate>
+        <SidebarProvider defaultOpen={true}>
+          <div className="flex min-h-screen w-full bg-white">
+            <AppSidebar />
+            <div className="flex-1 h-screen flex flex-col min-w-0 bg-white">
+              <TopBar />
+              <main className="flex-1 bg-stone-50 overflow-auto">{children}</main>
+            </div>
           </div>
-        </div>
-      </SidebarProvider>
+        </SidebarProvider>
+      </SubscriptionGate>
     </PrivateRoute>
   );
 }

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { usePermissions } from '@/hooks/usePermissions';
-import { User, Clock, Settings, DollarSign, Puzzle, Users, LucideIcon, Shield, Bell, FileText, ShieldCheck } from 'lucide-react';
+import { User, Clock, Settings, DollarSign, Puzzle, Users, LucideIcon, Shield, Bell, FileText, ShieldCheck, CreditCard } from 'lucide-react';
 
 type Item = {
   label: string;
@@ -21,6 +21,7 @@ const userItems: Item[] = [
 
 const studioItems: Item[] = [
   { label: 'General', href: '/settings/studio/general', icon: Settings },
+  { label: 'Upgrade plan', href: '/settings/studio/billing', icon: CreditCard },
   { label: 'Finance', href: '/settings/studio/finance', icon: DollarSign },
   { label: 'Team', href: '/settings/studio/team', icon: Users },
   { label: 'Roles & Permissions', href: '/settings/studio/roles', icon: ShieldCheck },
