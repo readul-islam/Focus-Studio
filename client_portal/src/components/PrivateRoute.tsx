@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from '@/lib/navigation';
 import useUser from '@/hooks/userUser';
 
 const PrivateRoute = () => {

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from '@/lib/navigation';
 import { Toaster } from 'sonner';
 import { Suspense, lazy } from 'react';
 import PrivateRoute from './components/PrivateRoute';
@@ -7,8 +7,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Loader from './components/ui/loader';
 
-const Dashboard = lazy(() => import('@/pages/Dashboard'));
-const Login = lazy(() => import('@/pages/Login'));
+const Dashboard = lazy(() => import('@/views/Dashboard'));
+const Login = lazy(() => import('@/views/Login'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const Procurement = lazy(() => import('./pages/procurement/Procurement.tsx'));
 const Finance = lazy(() => import('./pages/finance/Finance'));

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "FF&E Procurement Software for Interior Designers | Techstyles",
     description:
       "Streamline FF&E procurement with AI-powered product sourcing. Auto-generate POs, track deliveries, manage vendors. 94% on-time delivery rate. Try free for 3 months.",
-    url: "https://techstyles.ai/platform/procurement",
+    url: "https://focuspilot.io/platform/procurement",
     type: "website",
     images: [
       {
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description: "Streamline FF&E procurement with AI-powered product sourcing. Auto-generate POs, track deliveries, manage vendors.",
   },
   alternates: {
-    canonical: "https://techstyles.ai/platform/procurement",
+    canonical: "https://focuspilot.io/platform/procurement",
   },
 }
 

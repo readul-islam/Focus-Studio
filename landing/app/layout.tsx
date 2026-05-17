@@ -12,7 +12,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://techstyles.ai"),
+  metadataBase: new URL("https://focuspilot.io"),
   title: {
     default: "Interior Design Project Management Software UK | Focuspilot",
     template: "%s",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_GB",
-    url: "https://techstyles.ai",
+    url: "https://focuspilot.io",
     siteName: "Focuspilot",
     title: "Interior Design Project Management Software UK | Focuspilot",
     description:
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
   //   google: "ADD_YOUR_GOOGLE_VERIFICATION_CODE",
   // },
   alternates: {
-    canonical: "https://techstyles.ai",
+    canonical: "https://focuspilot.io",
   },
   category: "technology",
     generator: 'v0.app'
@@ -88,12 +88,12 @@ export const metadata: Metadata = {
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "@id": "https://techstyles.ai/#organization",
+  "@id": "https://focuspilot.io/#organization",
   name: "Techstyles",
-  url: "https://techstyles.ai",
+  url: "https://focuspilot.io",
   logo: {
     "@type": "ImageObject",
-    url: "https://techstyles.ai/images/logo.png",
+    url: "https://focuspilot.io/images/logo.png",
     width: 200,
     height: 60,
   },
@@ -115,16 +115,16 @@ const organizationSchema = {
 const softwareApplicationSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "@id": "https://techstyles.ai/#software",
+  "@id": "https://focuspilot.io/#software",
   name: "Techstyles",
   applicationCategory: "BusinessApplication",
   applicationSubCategory: "Project Management Software",
   operatingSystem: "Web",
   description:
     "Interior design studio management software for project management, procurement, client collaboration, and finance.",
-  url: "https://techstyles.ai",
+  url: "https://focuspilot.io",
   author: {
-    "@id": "https://techstyles.ai/#organization",
+    "@id": "https://focuspilot.io/#organization",
   },
   offers: {
     "@type": "Offer",
@@ -148,21 +148,21 @@ const softwareApplicationSchema = {
     "Finance & Invoicing",
     "Product Library Management",
   ],
-  screenshot: "https://techstyles.ai/images/og-image.png",
+  screenshot: "https://focuspilot.io/images/og-image.png",
 }
 
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "@id": "https://techstyles.ai/#website",
+  "@id": "https://focuspilot.io/#website",
   name: "Techstyles",
-  url: "https://techstyles.ai",
+  url: "https://focuspilot.io",
   publisher: {
-    "@id": "https://techstyles.ai/#organization",
+    "@id": "https://focuspilot.io/#organization",
   },
   potentialAction: {
     "@type": "SearchAction",
-    target: "https://techstyles.ai/blog?q={search_term_string}",
+    target: "https://focuspilot.io/blog?q={search_term_string}",
     "query-input": "required name=search_term_string",
   },
 }

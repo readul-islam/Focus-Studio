@@ -29,11 +29,11 @@ export const metadata: Metadata = {
   title: "AI for Interior Design Studios | Automation & Intelligence | Techstyles",
   description:
     "AI that handles the busywork: draft emails, extract product specs, generate proposals, summarise client threads. Reduce admin time by 70%. See all AI features.",
-  alternates: { canonical: "https://techstyles.ai/platform/ai" },
+  alternates: { canonical: "https://focuspilot.io/platform/ai" },
   openGraph: {
     title: "AI for Interior Design Studios | Automation & Intelligence | Techstyles",
     description: "AI that handles the busywork: draft emails, extract product specs, generate proposals, summarise client threads. Reduce admin time by 70%.",
-    url: "https://techstyles.ai/platform/ai",
+    url: "https://focuspilot.io/platform/ai",
     type: "website",
   },
   twitter: {

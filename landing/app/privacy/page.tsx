@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Privacy Policy | Techstyles",
   description: "Techstyles privacy policy. Learn how we collect, use, and protect your data.",
-  alternates: { canonical: "https://techstyles.ai/privacy" },
+  alternates: { canonical: "https://focuspilot.io/privacy" },
 }
 
 export default function PrivacyPage() {

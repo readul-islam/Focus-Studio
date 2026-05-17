@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description:
       "Expert insights on interior design workflows, studio management & industry trends. Practical guides for running a successful design studio.",
     type: "website",
-    url: "https://techstyles.ai/blog",
+    url: "https://focuspilot.io/blog",
   },
   twitter: {
     card: "summary_large_image",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     description: "Expert insights on interior design workflows, studio management & industry trends. Practical guides for running a successful design studio.",
   },
   alternates: {
-    canonical: "https://techstyles.ai/blog",
+    canonical: "https://focuspilot.io/blog",
   },
 }
 

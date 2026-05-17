@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Contractor Portal for Interior Designers | Techstyles",
     description: "Give contractors access to project schedules, specifications, and documents. Streamline communication with trades.",
-    url: "https://techstyles.ai/platform/contractor-portal",
+    url: "https://focuspilot.io/platform/contractor-portal",
     type: "website",
   },
   twitter: {
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     description: "Streamline communication with contractors on interior design projects.",
   },
   alternates: {
-    canonical: "https://techstyles.ai/platform/contractor-portal",
+    canonical: "https://focuspilot.io/platform/contractor-portal",
   },
 }
 

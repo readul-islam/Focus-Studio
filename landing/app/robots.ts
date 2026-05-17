@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/private/", "/admin/", "/api/"],
     },
-    sitemap: "https://techstyles.ai/sitemap.xml",
+    sitemap: "https://focuspilot.io/sitemap.xml",
   }
 }

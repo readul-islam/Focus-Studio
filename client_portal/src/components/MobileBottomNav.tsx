@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from '@/lib/navigation';
 import { cn } from '@/lib/utils';
 import { menuItems } from '@/lib/menuItems';
 

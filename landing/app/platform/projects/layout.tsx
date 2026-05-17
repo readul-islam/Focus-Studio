@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "Interior Design Project Management Software | Track Projects | Techstyles",
     description:
       "Manage interior design projects from concept to completion. Track timelines, budgets, tasks & team collaboration. Purpose-built for UK design studios. Start free.",
-    url: "https://techstyles.ai/platform/projects",
+    url: "https://focuspilot.io/platform/projects",
     type: "website",
     images: [
       {
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description: "Manage interior design projects from concept to completion. Track timelines, budgets, tasks & team collaboration. Purpose-built for UK design studios.",
   },
   alternates: {
-    canonical: "https://techstyles.ai/platform/projects",
+    canonical: "https://focuspilot.io/platform/projects",
   },
 }
 

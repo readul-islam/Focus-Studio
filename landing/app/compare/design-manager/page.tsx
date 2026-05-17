@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     description:
       "Compare Techstyles vs Design Manager. Modern cloud software vs legacy desktop. AI features, real-time collaboration, mobile access. Migrate free from Design Manager.",
     type: "article",
-    url: "https://techstyles.ai/compare/design-manager",
+    url: "https://focuspilot.io/compare/design-manager",
   },
   twitter: {
     card: "summary_large_image",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     description: "Compare Techstyles vs Design Manager. Modern cloud software vs legacy desktop. AI features, real-time collaboration, mobile access.",
   },
   alternates: {
-    canonical: "https://techstyles.ai/compare/design-manager",
+    canonical: "https://focuspilot.io/compare/design-manager",
   },
 }
 

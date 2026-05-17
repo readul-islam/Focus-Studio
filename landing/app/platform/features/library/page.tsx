@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Product Library for Interior Designers | AI-Powered Sourcing | Techstyles",
     description: "Your studio's centralized product database. Save, organise, and instantly add products to any project with AI-powered sourcing.",
-    url: "https://techstyles.ai/platform/features/library",
+    url: "https://focuspilot.io/platform/features/library",
     type: "website",
   },
   twitter: {
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     description: "Your studio's centralized product database with AI-powered sourcing.",
   },
   alternates: {
-    canonical: "https://techstyles.ai/platform/features/library",
+    canonical: "https://focuspilot.io/platform/features/library",
   },
 }
 

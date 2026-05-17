@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     description:
       "Compare Techstyles with Programa, Houzz Pro, Studio Designer, DesignFiles and more. See why UK interior designers choose Techstyles.",
     type: "website",
-    url: "https://techstyles.ai/compare",
+    url: "https://focuspilot.io/compare",
   },
   twitter: {
     card: "summary_large_image",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     description: "Compare Techstyles with leading interior design software. See detailed feature comparisons.",
   },
   alternates: {
-    canonical: "https://techstyles.ai/compare",
+    canonical: "https://focuspilot.io/compare",
   },
 }
 
@@ -83,8 +83,8 @@ export default function ComparePage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://techstyles.ai" },
-      { "@type": "ListItem", position: 2, name: "Compare", item: "https://techstyles.ai/compare" },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://focuspilot.io" },
+      { "@type": "ListItem", position: 2, name: "Compare", item: "https://focuspilot.io/compare" },
     ],
   }
 

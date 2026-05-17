@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: "Techstyles Pricing | Interior Design Software from £49/user | Free Trial",
     description: "Simple, transparent pricing for interior design studios. Free 3-month beta or £49/user/month Professional. All AI features included. No setup fees.",
     type: "website",
-    url: "https://techstyles.ai/pricing",
+    url: "https://focuspilot.io/pricing",
   },
   twitter: {
     card: "summary_large_image",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     description: "Simple, transparent pricing for interior design studios. Free 3-month beta or £49/user/month Professional. All AI features included.",
   },
   alternates: {
-    canonical: "https://techstyles.ai/pricing",
+    canonical: "https://focuspilot.io/pricing",
   },
 }
 

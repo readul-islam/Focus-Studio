@@ -16,11 +16,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Proposals & Invoicing | Techstyles",
     description: "Create professional proposals and automate invoicing for your interior design studio.",
-    url: "https://techstyles.ai/platform/features/invoicing",
+    url: "https://focuspilot.io/platform/features/invoicing",
     type: "website",
   },
   alternates: {
-    canonical: "https://techstyles.ai/platform/features/invoicing",
+    canonical: "https://focuspilot.io/platform/features/invoicing",
   },
 }
 

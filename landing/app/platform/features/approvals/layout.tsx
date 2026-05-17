@@ -16,11 +16,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Client Approval Software | Techstyles",
     description: "Streamline client sign-offs with beautiful approval workflows for interior design projects.",
-    url: "https://techstyles.ai/platform/features/approvals",
+    url: "https://focuspilot.io/platform/features/approvals",
     type: "website",
   },
   alternates: {
-    canonical: "https://techstyles.ai/platform/features/approvals",
+    canonical: "https://focuspilot.io/platform/features/approvals",
   },
 }
 

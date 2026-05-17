@@ -10,7 +10,10 @@ mobile-app
 node_modules
 dist
 dist-ssr
+.next
+out
 *.local
+.env.prod.example
 
 # Editor directories and files
 .vscode/*
@@ -25,3 +28,4 @@ dist-ssr
 .expo
 .claude
 .claudeignore
+.vercel

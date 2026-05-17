@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "Interior Design CRM Software | Lead to Project Pipeline | Techstyles",
     description:
       "Manage interior design leads, clients & proposals in one CRM built for designers. AI-powered proposals, pipeline tracking, seamless project conversion. Start free.",
-    url: "https://techstyles.ai/platform/crm",
+    url: "https://focuspilot.io/platform/crm",
     type: "website",
     images: [
       {
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description: "Manage interior design leads, clients & proposals in one CRM built for designers. AI-powered proposals, pipeline tracking.",
   },
   alternates: {
-    canonical: "https://techstyles.ai/platform/crm",
+    canonical: "https://focuspilot.io/platform/crm",
   },
 }
 

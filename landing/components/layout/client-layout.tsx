@@ -12,7 +12,8 @@ export function ClientLayout({ children }: { children: ReactNode }) {
     pathname?.startsWith("/signup") ||
     pathname?.startsWith("/auth/") ||
     pathname?.startsWith("/login") ||
-    pathname?.startsWith("/forgot-password")
+    pathname?.startsWith("/forgot-password") ||
+    pathname?.startsWith("/verify-otp")
 
   return (
     <>

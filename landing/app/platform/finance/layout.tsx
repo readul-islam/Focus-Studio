@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "Interior Design Invoicing & Accounting Software | Xero Integration | Techstyles",
     description:
       "Streamline interior design studio finances. Create invoices, track project profitability, sync with Xero & QuickBooks. Real-time budget vs actual tracking. Start free.",
-    url: "https://techstyles.ai/platform/finance",
+    url: "https://focuspilot.io/platform/finance",
     type: "website",
     images: [
       {
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description: "Streamline interior design studio finances. Create invoices, track project profitability, sync with Xero & QuickBooks.",
   },
   alternates: {
-    canonical: "https://techstyles.ai/platform/finance",
+    canonical: "https://focuspilot.io/platform/finance",
   },
 }
 

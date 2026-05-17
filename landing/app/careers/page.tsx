@@ -5,7 +5,7 @@ import { CtaButton } from "@/components/cta-button"
 export const metadata: Metadata = {
   title: "Careers at Techstyles | Join Our Team",
   description: "Join the Techstyles team. We're building AI-powered software for interior designers and looking for passionate people to help us grow.",
-  alternates: { canonical: "https://techstyles.ai/careers" },
+  alternates: { canonical: "https://focuspilot.io/careers" },
 }
 
 export default function CareersPage() {

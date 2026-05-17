@@ -16,11 +16,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AI Product Procurement | Techstyles",
     description: "AI-powered web clipper extracts product details from any website instantly for interior designers.",
-    url: "https://techstyles.ai/platform/features/ai-procurement",
+    url: "https://focuspilot.io/platform/features/ai-procurement",
     type: "website",
   },
   alternates: {
-    canonical: "https://techstyles.ai/platform/features/ai-procurement",
+    canonical: "https://focuspilot.io/platform/features/ai-procurement",
   },
 }
 

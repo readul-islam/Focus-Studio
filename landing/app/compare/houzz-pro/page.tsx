@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     description:
       "Compare Techstyles vs Houzz Pro for interior design studios. Independent platform vs Houzz ecosystem. AI features, UK pricing, and more.",
     type: "article",
-    url: "https://techstyles.ai/compare/houzz-pro",
+    url: "https://focuspilot.io/compare/houzz-pro",
   },
   twitter: {
     card: "summary_large_image",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     description: "Compare Techstyles vs Houzz Pro. See why UK designers choose an independent platform.",
   },
   alternates: {
-    canonical: "https://techstyles.ai/compare/houzz-pro",
+    canonical: "https://focuspilot.io/compare/houzz-pro",
   },
 }
 
@@ -149,9 +149,9 @@ export default function TechstylesVsHouzzProPage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://techstyles.ai" },
-      { "@type": "ListItem", position: 2, name: "Compare", item: "https://techstyles.ai/compare" },
-      { "@type": "ListItem", position: 3, name: "Techstyles vs Houzz Pro", item: "https://techstyles.ai/compare/houzz-pro" },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://focuspilot.io" },
+      { "@type": "ListItem", position: 2, name: "Compare", item: "https://focuspilot.io/compare" },
+      { "@type": "ListItem", position: 3, name: "Techstyles vs Houzz Pro", item: "https://focuspilot.io/compare/houzz-pro" },
     ],
   }
 

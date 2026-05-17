@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     description:
       "Compare Techstyles vs DesignFiles for interior designers. AI features, procurement, finance tools, and scalability comparison.",
     type: "article",
-    url: "https://techstyles.ai/compare/designfiles",
+    url: "https://focuspilot.io/compare/designfiles",
   },
   twitter: {
     card: "summary_large_image",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     description: "Compare Techstyles vs DesignFiles. See which scales better for growing studios.",
   },
   alternates: {
-    canonical: "https://techstyles.ai/compare/designfiles",
+    canonical: "https://focuspilot.io/compare/designfiles",
   },
 }
 
@@ -149,9 +149,9 @@ export default function TechstylesVsDesignFilesPage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://techstyles.ai" },
-      { "@type": "ListItem", position: 2, name: "Compare", item: "https://techstyles.ai/compare" },
-      { "@type": "ListItem", position: 3, name: "Techstyles vs DesignFiles", item: "https://techstyles.ai/compare/designfiles" },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://focuspilot.io" },
+      { "@type": "ListItem", position: 2, name: "Compare", item: "https://focuspilot.io/compare" },
+      { "@type": "ListItem", position: 3, name: "Techstyles vs DesignFiles", item: "https://focuspilot.io/compare/designfiles" },
     ],
   }
 

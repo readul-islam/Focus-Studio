@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     description:
       "Compare Techstyles vs Studio Designer for interior design firms. AI features, UK pricing, and comprehensive feature comparison.",
     type: "article",
-    url: "https://techstyles.ai/compare/studio-designer",
+    url: "https://focuspilot.io/compare/studio-designer",
   },
   twitter: {
     card: "summary_large_image",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     description: "Compare Techstyles vs Studio Designer. See why UK designers are switching.",
   },
   alternates: {
-    canonical: "https://techstyles.ai/compare/studio-designer",
+    canonical: "https://focuspilot.io/compare/studio-designer",
   },
 }
 
@@ -149,9 +149,9 @@ export default function TechstylesVsStudioDesignerPage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://techstyles.ai" },
-      { "@type": "ListItem", position: 2, name: "Compare", item: "https://techstyles.ai/compare" },
-      { "@type": "ListItem", position: 3, name: "Techstyles vs Studio Designer", item: "https://techstyles.ai/compare/studio-designer" },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://focuspilot.io" },
+      { "@type": "ListItem", position: 2, name: "Compare", item: "https://focuspilot.io/compare" },
+      { "@type": "ListItem", position: 3, name: "Techstyles vs Studio Designer", item: "https://focuspilot.io/compare/studio-designer" },
     ],
   }
 

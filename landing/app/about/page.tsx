@@ -6,7 +6,7 @@ import { CtaButton } from "@/components/cta-button"
 export const metadata: Metadata = {
   title: "About Techstyles | Our Story & Mission",
   description: "Learn about Techstyles - the team building AI-powered project management software for interior designers. Our mission is to give designers more time to design.",
-  alternates: { canonical: "https://techstyles.ai/about" },
+  alternates: { canonical: "https://focuspilot.io/about" },
 }
 
 export default function AboutPage() {

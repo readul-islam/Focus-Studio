@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       images: [post.featuredImage],
     },
     alternates: {
-      canonical: `https://techstyles.ai/blog/${post.slug}`,
+      canonical: `https://focuspilot.io/blog/${post.slug}`,
     },
   }
 }
@@ -53,19 +53,19 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const articleSchema = generateArticleSchema({
     title: post.title,
     description: post.excerpt,
-    url: `https://techstyles.ai/blog/${post.slug}`,
+    url: `https://focuspilot.io/blog/${post.slug}`,
     imageUrl: post.featuredImage.startsWith("http")
       ? post.featuredImage
-      : `https://techstyles.ai${post.featuredImage}`,
+      : `https://focuspilot.io${post.featuredImage}`,
     authorName: post.author.name,
     publishedTime: post.publishedAt,
     category: post.category,
   })
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: "Home", url: "https://techstyles.ai" },
-    { name: "Blog", url: "https://techstyles.ai/blog" },
-    { name: post.title, url: `https://techstyles.ai/blog/${post.slug}` },
+    { name: "Home", url: "https://focuspilot.io" },
+    { name: "Blog", url: "https://focuspilot.io/blog" },
+    { name: post.title, url: `https://focuspilot.io/blog/${post.slug}` },
   ])
 
   return (

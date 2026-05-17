@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "Interior Design Client Portal Software | Approvals & Payments | Techstyles",
     description:
       "Give clients a branded portal to approve selections, track deliveries & pay invoices. One-click approvals, real-time updates, integrated payments via Stripe. Try free.",
-    url: "https://techstyles.ai/platform/client-portal",
+    url: "https://focuspilot.io/platform/client-portal",
     type: "website",
     images: [
       {
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description: "Give clients a branded portal to approve selections, track deliveries & pay invoices. One-click approvals, real-time updates.",
   },
   alternates: {
-    canonical: "https://techstyles.ai/platform/client-portal",
+    canonical: "https://focuspilot.io/platform/client-portal",
   },
 }
 

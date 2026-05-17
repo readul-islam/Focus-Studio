@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Terms of Service | Techstyles",
   description: "Techstyles terms of service. Read our terms and conditions for using the platform.",
-  alternates: { canonical: "https://techstyles.ai/terms" },
+  alternates: { canonical: "https://focuspilot.io/terms" },
 }
 
 export default function TermsPage() {

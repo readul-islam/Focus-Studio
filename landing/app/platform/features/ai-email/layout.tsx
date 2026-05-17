@@ -16,11 +16,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AI Email & Communication Tools | Techstyles",
     description: "Unified inbox with AI-powered project routing for interior design studios.",
-    url: "https://techstyles.ai/platform/features/ai-email",
+    url: "https://focuspilot.io/platform/features/ai-email",
     type: "website",
   },
   alternates: {
-    canonical: "https://techstyles.ai/platform/features/ai-email",
+    canonical: "https://focuspilot.io/platform/features/ai-email",
   },
 }
 

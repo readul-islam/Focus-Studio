@@ -6,7 +6,7 @@ import { CtaButton } from "@/components/cta-button"
 export const metadata: Metadata = {
   title: "Contact Techstyles | Get in Touch",
   description: "Contact the Techstyles team. We'd love to hear from you - whether you have questions about our interior design software or want to book a demo.",
-  alternates: { canonical: "https://techstyles.ai/contact" },
+  alternates: { canonical: "https://focuspilot.io/contact" },
 }
 
 export default function ContactPage() {

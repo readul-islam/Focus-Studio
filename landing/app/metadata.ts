@@ -8,11 +8,11 @@ const jsonLd = {
   operatingSystem: "Web",
   description:
     "Interior design studio management software for project management, procurement, client collaboration, and finance.",
-  url: "https://techstyles.ai",
+  url: "https://focuspilot.io",
   author: {
     "@type": "Organization",
     name: "Techstyles",
-    url: "https://techstyles.ai",
+    url: "https://focuspilot.io",
   },
   offers: {
     "@type": "Offer",
@@ -36,7 +36,7 @@ const jsonLd = {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://techstyles.ai"),
+  metadataBase: new URL("https://focuspilot.io"),
   title: {
     default: "Techstyles - Interior Design Studio Management Software",
     template: "%s | Techstyles",
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://techstyles.ai",
+    url: "https://focuspilot.io",
     siteName: "Techstyles",
     title: "Techstyles - Interior Design Studio Management Software",
     description:
@@ -105,7 +105,7 @@ export const metadata: Metadata = {
     yahoo: "your-yahoo-verification-code",
   },
   alternates: {
-    canonical: "https://techstyles.ai",
+    canonical: "https://focuspilot.io",
   },
   category: "technology",
 }

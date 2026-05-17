@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     description:
       "Compare Techstyles vs Programa for interior design studios. See differences in AI features, UK pricing, Xero integration & client portals. Switch with free migration.",
     type: "article",
-    url: "https://techstyles.ai/compare/programa",
+    url: "https://focuspilot.io/compare/programa",
   },
   twitter: {
     card: "summary_large_image",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     description: "Compare Techstyles vs Programa for interior design studios. See differences in AI features, UK pricing, Xero integration & client portals.",
   },
   alternates: {
-    canonical: "https://techstyles.ai/compare/programa",
+    canonical: "https://focuspilot.io/compare/programa",
   },
 }
 

@@ -1,5 +1,5 @@
 import { UserInfo } from './topbar/UserInfo';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@/lib/navigation';
 import useUser from '@/hooks/userUser';
 import {
   DropdownMenu,

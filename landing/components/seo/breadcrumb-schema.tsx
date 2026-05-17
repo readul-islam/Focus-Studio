@@ -15,7 +15,7 @@ export function BreadcrumbSchema({ items }: BreadcrumbSchemaProps) {
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 }
 
-const BASE_URL = "https://techstyles.ai"
+const BASE_URL = "https://focuspilot.io"
 
 // Pre-defined breadcrumb paths for platform pages
 export const platformBreadcrumbs = {

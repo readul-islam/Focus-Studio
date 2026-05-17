@@ -2,7 +2,7 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { DashboardSidebar } from '@/components/DashboardSidebar';
 import { TopBar } from '@/components/TopBar';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@/lib/navigation';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;

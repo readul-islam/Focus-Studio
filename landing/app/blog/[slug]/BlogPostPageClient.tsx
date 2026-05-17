@@ -31,11 +31,11 @@ export function BlogPostPageClient({ params }: { params: { slug: string } }) {
     publisher: {
       "@type": "Organization",
       name: "Techstyles",
-      logo: { "@type": "ImageObject", url: "https://techstyles.ai/logo.png" },
+      logo: { "@type": "ImageObject", url: "https://focuspilot.io/logo.png" },
     },
   }
 
-  const shareUrl = `https://techstyles.ai/blog/${post.slug}`
+  const shareUrl = `https://focuspilot.io/blog/${post.slug}`
   const shareTitle = encodeURIComponent(post.title)
 
   return (

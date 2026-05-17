@@ -58,7 +58,7 @@ export function generateArticleSchema({
       name: "Techstyles",
       logo: {
         "@type": "ImageObject",
-        url: "https://techstyles.ai/images/techstyles-logo.png",
+        url: "https://focuspilot.io/images/techstyles-logo.png",
       },
     },
   }
@@ -69,8 +69,8 @@ export function generateOrganizationSchema() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Techstyles",
-    url: "https://techstyles.ai",
-    logo: "https://techstyles.ai/images/techstyles-logo.png",
+    url: "https://focuspilot.io",
+    logo: "https://focuspilot.io/images/techstyles-logo.png",
     sameAs: [
       "https://twitter.com/techstyles",
       "https://linkedin.com/company/techstyles",
