@@ -1,36 +1,19 @@
 """Shared Focuspilot logo + wordmark for HTML emails."""
 
-import functools
-from pathlib import Path
-
 from django.conf import settings
+
+DEFAULT_EMAIL_LOGO_URL = 'https://focuspilot.io/public/brand/email_logo.png'
 
 
 def email_logo_url() -> str:
     custom = (getattr(settings, 'EMAIL_LOGO_URL', None) or '').strip()
     if custom:
         return custom.rstrip('/')
-    base = (getattr(settings, 'FRONTEND_URL', None) or 'https://focuspilot.io').rstrip('/')
-    return f'{base}/brand/email_logo.png'
-
-
-@functools.lru_cache(maxsize=1)
-def email_logo_data_uri() -> str:
-    """Embedded logo so emails render before /brand/ is deployed on the frontend."""
-    b64_path = (
-        Path(settings.BASE_DIR).parent
-        / 'client'
-        / 'public'
-        / 'brand'
-        / 'email_logo.b64.txt'
-    )
-    if b64_path.is_file():
-        return f'data:image/png;base64,{b64_path.read_text(encoding="utf-8").strip()}'
-    return email_logo_url()
+    return DEFAULT_EMAIL_LOGO_URL
 
 
 def email_logo_img_html(*, size: int = 32) -> str:
-    src = email_logo_data_uri()
+    src = email_logo_url()
     return (
         f'<img src="{src}" alt="Focuspilot" width="{size}" height="{size}" '
         f'style="display:block;border:0;outline:none;text-decoration:none;'

@@ -1,15 +1,13 @@
 /** Shared Focuspilot logo + wordmark for HTML email templates (client-side previews). */
 
-import { EMAIL_LOGO_DATA_URI } from './email-logo-b64'
+const DEFAULT_EMAIL_LOGO_URL = 'https://focuspilot.io/public/brand/email_logo.png'
 
-const appBase =
-  (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_APP_URL) ||
-  'https://focuspilot.io'
-
-export const EMAIL_LOGO_URL = `${appBase.replace(/\/$/, '')}/brand/email_logo.png`
+export const EMAIL_LOGO_URL =
+  (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_EMAIL_LOGO_URL) ||
+  DEFAULT_EMAIL_LOGO_URL
 
 export function emailLogoImgHtml(size = 32): string {
-  return `<img src="${EMAIL_LOGO_DATA_URI}" alt="Focuspilot" width="${size}" height="${size}" style="display:block;border:0;outline:none;text-decoration:none;width:${size}px;height:${size}px;" />`
+  return `<img src="${EMAIL_LOGO_URL}" alt="Focuspilot" width="${size}" height="${size}" style="display:block;border:0;outline:none;text-decoration:none;width:${size}px;height:${size}px;" />`
 }
 
 export function emailLogoCellHtml(size = 32): string {
