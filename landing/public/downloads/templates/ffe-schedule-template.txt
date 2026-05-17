@@ -1,0 +1,12 @@
+FOCUSPILOT — FF&E SCHEDULE TEMPLATE
+===================================
+
+Project: _______________  |  Revision: ___  |  Date: _______
+
+| Ref | Room | Item | Qty | Dimensions | Material / finish | Supplier | SKU | Unit £ | Total £ | Lead (wks) | Status | Client OK |
+|-----|------|------|-----|------------|-------------------|----------|-----|--------|---------|------------|--------|-----------|
+| 001 |      |      |     |            |                   |          |     |        |         |            | Spec   |           |
+
+STATUS KEY: Spec → Quoted → Approved → Ordered → In transit → Delivered → Installed
+
+Notes column: alternates, site storage, trade coordination

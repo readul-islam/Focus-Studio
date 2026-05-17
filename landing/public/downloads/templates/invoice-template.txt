@@ -1,0 +1,30 @@
+FOCUSPILOT — INVOICE TEMPLATE (OUTLINE)
+=======================================
+
+[STUDIO NAME]
+[Address] | [Company no.] | [VAT no.]
+
+INVOICE #: [INV-0000]
+Date: [Date]
+Due: [Date]
+
+Bill to:
+[Client name]
+[Address]
+
+Project reference: [Project name]
+Milestone: [e.g. Concept design — 50% fee]
+
+| Description | Qty | Rate | Amount |
+|-------------|-----|------|--------|
+| Design services — [phase] | 1 | £X | £X |
+
+Subtotal: £________
+VAT ([20]%): £________
+TOTAL DUE: £________
+
+Payment terms: [14] days from invoice date
+Bank: [Name] | Sort: [00-00-00] | Account: [00000000]
+Reference: [INV-0000]
+
+Thank you for your business.

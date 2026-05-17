@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Free Templates for Interior Designers | Techstyles",
   description: "Download free templates for interior design projects: proposals, contracts, project briefs, and more. Professionally designed and ready to use.",
-  alternates: { canonical: "https://focuspilot.io/templates" },
+  alternates: { canonical: "https://focuspilot.io/resources/templates" },
 }
 
 export default function TemplatesLayout({

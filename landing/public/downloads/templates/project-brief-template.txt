@@ -1,0 +1,41 @@
+FOCUSPILOT — PROJECT BRIEF TEMPLATE
+=================================
+
+Project name: _______________________
+Client(s): ___________________________
+Site address: ________________________
+Target start / completion: ____________
+
+GOALS
+- Primary objective:
+- Success looks like:
+
+SPACE PROGRAM
+| Room / area | Approx. size | Priority | Notes |
+|-------------|--------------|----------|-------|
+|             |              |          |       |
+
+STYLE & REFERENCES
+- Keywords (e.g. warm minimal, gallery-like):
+- Brands / designers admired:
+- Must avoid:
+
+BUDGET
+- Overall budget band: £__________
+- Flexibility: fixed / flexible on key pieces
+- Procurement handled by: client / designer
+
+FUNCTIONAL REQUIREMENTS
+- Household profile (adults, children, pets):
+- Working from home:
+- Entertaining frequency:
+
+DECISION PROCESS
+- Primary decision-maker:
+- Approval cadence (weekly / per phase):
+- Preferred communication channel:
+
+CONSTRAINTS
+- Listed building / landlord rules:
+- Existing pieces to retain:
+- Site access limitations:

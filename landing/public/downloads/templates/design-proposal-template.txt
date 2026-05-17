@@ -1,0 +1,57 @@
+FOCUSPILOT — DESIGN PROPOSAL TEMPLATE (OUTLINE)
+================================================
+
+[STUDIO NAME] | [LOGO]
+[Address] | [Email] | [Phone]
+
+Prepared for: [Client name]
+Project: [Project name / address]
+Date: [Date]
+Valid until: [Date]
+
+---
+
+1. PROJECT OVERVIEW
+   - Design intent and objectives
+   - Spaces in scope
+   - Reference to client brief dated [date]
+
+2. SCOPE OF SERVICES
+   Concept Design
+   - Mood boards and spatial planning
+   - Material and colour direction
+   Design Development
+   - Detailed layouts, elevations, lighting concept
+   - FF&E selections and specifications
+   Procurement (optional)
+   - Sourcing, PO management, delivery coordination
+   Installation (optional)
+   - Site visits and styling
+
+3. DELIVERABLES BY PHASE
+   | Phase | Deliverables | Target date |
+   |-------|--------------|-------------|
+   | Concept | ... | ... |
+   | DD | ... | ... |
+
+4. FEES
+   Option A — Fixed fee: £[amount] (+ VAT)
+   Option B — Hourly cap: £[rate]/hr, estimated [hours]
+   Expenses: pass-through at cost + [X]% handling (if applicable)
+
+5. PAYMENT SCHEDULE
+   - [X]% deposit on signing
+   - [X]% at concept approval
+   - [X]% at DD approval
+   - Balance prior to procurement release (if applicable)
+
+6. ASSUMPTIONS & EXCLUSIONS
+   - Structural / MEP work by others
+   - Planning submissions not included unless stated
+   - Revisions: [N] rounds per phase included
+
+7. TERMS
+   - Agreement governed by Letter of Agreement dated [date]
+   - Timeline subject to timely client feedback
+
+Signature: _________________________  Date: __________

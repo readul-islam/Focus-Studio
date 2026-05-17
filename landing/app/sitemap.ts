@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next"
 import { getAllPosts } from "@/lib/blog-data"
+import { studioTemplates } from "@/lib/resources-data"
 
 const baseUrl = "https://focuspilot.io"
 
@@ -37,7 +38,8 @@ const staticRoutes: RouteConfig[] = [
   { path: "knowledge", changeFrequency: "weekly", priority: 0.5 },
   { path: "customers", changeFrequency: "monthly", priority: 0.5 },
   { path: "changelog", changeFrequency: "weekly", priority: 0.5 },
-  { path: "templates", changeFrequency: "monthly", priority: 0.5 },
+  { path: "resources/templates", changeFrequency: "monthly", priority: 0.5 },
+  { path: "resources/ai-playbook", changeFrequency: "monthly", priority: 0.55 },
   { path: "integrations", changeFrequency: "monthly", priority: 0.5 },
   { path: "about", changeFrequency: "monthly", priority: 0.5 },
   { path: "contact", changeFrequency: "yearly", priority: 0.5 },
@@ -69,5 +71,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.65,
   }))
 
-  return [...staticEntries, ...blogEntries]
+  const templateEntries: MetadataRoute.Sitemap = studioTemplates.map((template) => ({
+    url: `${baseUrl}/resources/templates/${template.slug}`,
+    lastModified: builtAt,
+    changeFrequency: "monthly",
+    priority: 0.5,
+  }))
+
+  return [...staticEntries, ...blogEntries, ...templateEntries]
 }

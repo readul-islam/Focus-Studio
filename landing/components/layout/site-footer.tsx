@@ -118,8 +118,13 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
-              <Link href="/templates" className="hover:text-stone-900">
-                Free Templates
+              <Link href="/resources/templates" className="hover:text-stone-900">
+                Templates
+              </Link>
+            </li>
+            <li>
+              <Link href="/resources/ai-playbook" className="hover:text-stone-900">
+                AI Playbook
               </Link>
             </li>
           </ul>

@@ -267,11 +267,25 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
                     Blog
                   </Link>
                   <Link
-                    href="/help"
+                    href="/knowledge"
                     className="block p-3 rounded-lg hover:bg-stone-50 text-stone-700"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Help Center
+                    Knowledge Centre
+                  </Link>
+                  <Link
+                    href="/resources/templates"
+                    className="block p-3 rounded-lg hover:bg-stone-50 text-stone-700"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Templates
+                  </Link>
+                  <Link
+                    href="/resources/ai-playbook"
+                    className="block p-3 rounded-lg hover:bg-stone-50 text-stone-700"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    AI Playbook
                   </Link>
                   <Link
                     href="/contact"
