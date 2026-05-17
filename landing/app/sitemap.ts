@@ -19,7 +19,6 @@ const staticRoutes: RouteConfig[] = [
   { path: "platform/finance", changeFrequency: "weekly", priority: 0.9 },
   { path: "platform/client-portal", changeFrequency: "weekly", priority: 0.9 },
   { path: "platform/crm", changeFrequency: "weekly", priority: 0.9 },
-  { path: "platform/ai", changeFrequency: "weekly", priority: 0.9 },
   { path: "platform/contractor-portal", changeFrequency: "monthly", priority: 0.7 },
   { path: "platform/features/library", changeFrequency: "monthly", priority: 0.7 },
   { path: "platform/features/ai-procurement", changeFrequency: "monthly", priority: 0.7 },
