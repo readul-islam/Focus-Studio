@@ -17,8 +17,9 @@ import { CtaButton } from "@/components/cta-button"
 import { LandingHeroBackground } from "@/components/landing-hero-background"
 
 const container = "mx-auto max-w-[1200px] px-6 sm:px-8"
-// H1: 30px mobile → 48px tablet → 56px desktop (was 60px) with medium weight for better readability
-const TITLE_H1 = "text-[30px] sm:text-5xl md:text-[56px] font-medium tracking-tight leading-[1.1]"
+// Hero headline — balanced size, semibold, tight tracking (aligned with Focuspilot client landing)
+const TITLE_H1 =
+  "text-[1.75rem] sm:text-[2.75rem] md:text-5xl lg:text-[3.25rem] font-semibold tracking-[-0.02em] leading-[1.12] text-balance text-stone-900"
 const TITLE_H2 = "text-2xl sm:text-[30px] md:text-4xl font-medium tracking-tight"
 
 function useParallax(speed = 0.05) {
@@ -103,13 +104,18 @@ function Hero() {
             <span className="sm:hidden">{"AI Project Management"}</span>
             <span className="hidden sm:inline">{"Projects • Procurement • Payments"}</span>
           </span>
-          <h1 className={cn("mt-5 text-center", TITLE_H1)}>
-            <span className="sm:hidden">{"AI-Powered Project Management"}</span>
+          <h1 id="landing-hero-heading" className={cn("mx-auto mt-6 max-w-5xl text-center", TITLE_H1)}>
+            <span className="sm:hidden">
+              AI-powered project management for{" "}
+              <span className="text-[#C96A4A]">interior designers</span>
+            </span>
             <span className="hidden sm:inline">
-              {"AI-Powered Project Management Software for Interior Designers"}
+              AI-powered project management software
+              <br />
+              for <span className="text-[#C96A4A]">interior designers</span>
             </span>
           </h1>
-          <p className="mt-4 text-center text-base sm:text-lg text-stone-600">
+          <p className="mx-auto mt-5 max-w-4xl text-center text-base leading-relaxed text-stone-600 sm:text-lg sm:leading-relaxed">
             <span className="sm:hidden">
               {"From first brief to final invoice - timelines, budgets, and approvals handled automatically."}
             </span>
@@ -131,7 +137,7 @@ function Hero() {
                 <div className="relative w-full">
                   <Image
                     src="/images/app/dashboard-projects-board.png"
-                    alt="Techstyles project management dashboard showing active interior design projects including Chelsea Penthouse, Cotswold Country Home, and Bath Boutique Hotel with progress tracking, budgets, and team assignments"
+                    alt="Focuspilot project management dashboard showing active interior design projects including Chelsea Penthouse, Cotswold Country Home, and Bath Boutique Hotel with progress tracking, budgets, and team assignments"
                     width={1600}
                     height={900}
                     priority={true}

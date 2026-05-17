@@ -9,6 +9,7 @@ import { useShowHeaderCta } from "@/hooks/use-show-header-cta"
 import { useIsMobile } from "@/hooks/use-mobile"
 import * as React from "react"
 import * as LucideReact from "lucide-react"
+import { AuthBrandMark } from "../auth/auth-brand-mark"
 
 const container = "mx-auto max-w-[1200px] px-4 sm:px-6 md:px-8" // Reduced mobile padding from 6 to 4
 
@@ -54,8 +55,9 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
           {" "}
           {/* Reduced mobile padding */}
           <Link href="/" className="group flex items-center gap-2">
-            <span className="text-sm sm:text-base font-semibold tracking-tight">Focuspilot</span>{" "}
+            {/* <span className="text-sm sm:text-base font-semibold tracking-tight">Focuspilot</span>{" "} */}
             {/* Fluid logo text */}
+            <AuthBrandMark />
           </Link>
           {/* Desktop Navigation - unchanged */}
           <nav className="hidden items-center gap-6 text-sm md:flex" aria-label="Primary">
@@ -77,7 +79,7 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
             </button>
 
             <div className="hidden md:flex md:items-center md:gap-2">
-              <CtaButton href="#login" variant="grey" label="Login" />
+              <CtaButton href="/login" variant="grey" label="Login" />
               <CtaButton href="/signup" variant="clay" label="Start for free" />
             </div>
           </div>
@@ -283,6 +285,7 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
 
               {/* Mobile CTA buttons */}
               <div className="pt-4 border-t border-stone-200 space-y-3">
+                <CtaButton href="/login" variant="grey" label="Login" className="w-full justify-center" />
                 <CtaButton href="/signup" variant="clay" label="Start for free" className="w-full justify-center" />
               </div>
             </div>

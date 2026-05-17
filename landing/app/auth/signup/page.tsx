@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import { AuthBrandMark } from "@/components/auth/auth-brand-mark"
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
@@ -37,7 +37,7 @@ export default function SignupPage() {
       {/* Left side - Form */}
       <div className="flex-1 flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-20 bg-white">
         {/* Logo */}
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <Link href="/" className="flex items-center gap-2">
             <Image
               src="/images/branding/techstyles-mark-grid-t.png"
@@ -49,7 +49,9 @@ export default function SignupPage() {
             />
             <span className="font-semibold tracking-tight">Techstyles</span>
           </Link>
-        </div>
+        </div> */}
+
+        <AuthBrandMark className="mb-10" />
 
         {/* Form Container */}
         <div className="w-full max-w-sm">

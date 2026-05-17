@@ -10,9 +10,9 @@ export function ClientLayout({ children }: { children: ReactNode }) {
 
   const isAuthPage =
     pathname?.startsWith("/signup") ||
-    pathname?.startsWith("/auth/signup") ||
+    pathname?.startsWith("/auth/") ||
     pathname?.startsWith("/login") ||
-    pathname?.startsWith("/auth/login")
+    pathname?.startsWith("/forgot-password")
 
   return (
     <>
