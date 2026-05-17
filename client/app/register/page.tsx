@@ -7,7 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-
+import { motion } from 'framer-motion';
 interface FormData {
   name: string;
   email: string;
@@ -146,17 +146,40 @@ export default function Register() {
       <div className="flex-1 flex flex-col justify-center px-8 sm:px-12 lg:px-20 bg-white overflow-y-auto">
         <div className="w-full max-w-sm mx-auto py-10">
           {/* Logo */}
-          <div className="flex items-center gap-2.5 mb-10">
+          <div className="flex items-center gap-2 mb-10">
             <Image
               src="/brand/Logo.png"
               alt="Focuspilot"
-              width={32}
-              height={32}
+              width={35}
+              height={35}
               className="object-contain"
             />
-            <span className="text-base font-semibold text-gray-900 tracking-tight">
-            Focuspilot
-            </span>
+            <motion.span
+              className="relative inline-flex flex-col items-stretch select-none pt-2"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <span className="text-[1.0625rem] font-semibold tracking-[-0.042em] leading-none text-gray-900">
+                Focus
+                <span className="font-medium text-gray-500">pilot</span>
+              </span>
+              <svg
+                className="mt-1 h-[5px] w-full shrink-0 text-clay-500/55"
+                viewBox="0 0 104 7"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden
+              >
+                <path
+                  d="M2 5.25C22 1.5 42 1.5 52 3.25C62 5 82 5 102 1.75"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </svg>
+            </motion.span>
           </div>
 
           <div className="mb-8">

@@ -2,6 +2,7 @@ node_modules
 node_modules
 
 .env
+.env.prod.example
 .DS_Store
 dist
 build
