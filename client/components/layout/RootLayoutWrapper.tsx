@@ -18,6 +18,7 @@ const PUBLIC_ROUTES = [
   '/forgot-password',
   '/accept-invitation',
   '/pricing',
+  '/auth/google/callback',
 ];
 const STANDALONE_ROUTES = [
   '/xeroredirect',

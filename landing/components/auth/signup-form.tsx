@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
+import { GoogleAuthButton } from "@/components/auth/google-auth-button"
 import { apiErrorMessage, fieldError, registerUser } from "@/lib/api"
 import {
   passwordStrength,
@@ -26,7 +27,6 @@ type SignupFormProps = {
 export function SignupForm({ loginHref = "/login" }: SignupFormProps) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
-  const [googleNotice, setGoogleNotice] = useState("")
   const [formData, setFormData] = useState<SignupForm>({
     name: "",
     email: "",
@@ -52,7 +52,6 @@ export function SignupForm({ loginHref = "/login" }: SignupFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setGoogleNotice("")
     const allTouched = { name: true, email: true, password: true, confirmPassword: true }
     setTouched(allTouched)
     const validation = validateSignup(formData)
@@ -103,21 +102,12 @@ export function SignupForm({ loginHref = "/login" }: SignupFormProps) {
       {errors.form ? (
         <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 mb-4">{errors.form}</p>
       ) : null}
-      {googleNotice ? (
-        <p className="text-sm text-stone-600 bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 mb-4">
-          {googleNotice}
-        </p>
-      ) : null}
-
       <form onSubmit={handleSubmit} className="space-y-5">
-        <Button
-          type="button"
-          variant="outline"
+        <GoogleAuthButton
+          mode="signup"
+          label="Sign up with Google"
           className="w-full h-12 lg:h-11 text-base lg:text-sm bg-transparent border-stone-300 hover:bg-stone-50"
-          onClick={() => setGoogleNotice("Google sign-up is coming soon. Use email and password for now.")}
-        >
-          Sign up with Google
-        </Button>
+        />
 
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">

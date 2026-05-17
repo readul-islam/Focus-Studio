@@ -242,15 +242,25 @@ USE_X_FORWARDED_HOST = True
 
 GMAIL_CLIENT_ID = _env('GMAIL_CLIENT_ID')
 GMAIL_CLIENT_SECRET = _env('GMAIL_CLIENT_SECRET')
-GMAIL_REDIRECT_URI = _env('GMAIL_REDIRECT_URI', 'http://127.0.0.1:8000/gmail/callback')
+GMAIL_REDIRECT_URI = _env('GMAIL_REDIRECT_URI', 'http://localhost:8000/gmail/callback')
 GMAIL_SCOPES = _env(
     'GMAIL_SCOPES',
     'https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/calendar',
 )
 
+# Google Sign-In (studio accounts) — can reuse GMAIL_* credentials with a separate redirect URI
+GOOGLE_AUTH_CLIENT_ID = _env('GOOGLE_AUTH_CLIENT_ID') or GMAIL_CLIENT_ID
+GOOGLE_AUTH_CLIENT_SECRET = _env('GOOGLE_AUTH_CLIENT_SECRET') or GMAIL_CLIENT_SECRET
+GOOGLE_AUTH_REDIRECT_URI = _env(
+    'GOOGLE_AUTH_REDIRECT_URI',
+    'http://localhost:8000/user/google/callback/',
+)
+GOOGLE_AUTH_SCOPES = _env('GOOGLE_AUTH_SCOPES', 'openid email profile')
+
 RESEND_API_KEY = _env('RESEND_API_KEY')
 
 FRONTEND_URL = _env('FRONTEND_URL', 'http://localhost:3000')
+MARKETING_URL = _env('MARKETING_URL', 'http://localhost:3005')
 
 # Absolute URL for email <img> (defaults to FRONTEND_URL/brand/email_logo.png)
 EMAIL_LOGO_URL = _env('EMAIL_LOGO_URL')

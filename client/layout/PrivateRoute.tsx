@@ -14,6 +14,7 @@ const PUBLIC_ROUTES = [
   '/forgot-password',
   '/accept-invitation',
   '/pricing',
+  '/auth/google/callback',
 ];
 
 export default function PrivateRoute({ children }: { children: React.ReactNode }) {

@@ -1,4 +1,5 @@
 from django.urls import path
+from .google_auth import google_auth_start, google_auth_callback, google_oauth_debug
 from .views import (
     RegisterView, CustomTokenObtainPairView, CustomTokenRefreshView, LogoutView,
     SendInvitationView, StudioCreateView, StudioUpdateView, get_studio_users,
@@ -18,6 +19,9 @@ from .views import (
 )
 
 urlpatterns = [
+    path('google/debug/', google_oauth_debug, name='google-oauth-debug'),
+    path('google/login/', google_auth_start, name='google-auth-start'),
+    path('google/callback/', google_auth_callback, name='google-auth-callback'),
     path('register/', RegisterView.as_view(), name='register'),
     path('otp-session/', OtpSessionView.as_view(), name='otp-session'),
     path('verify-otp/', VerifyOtpView.as_view(), name='verify-otp'),

@@ -1,8 +1,12 @@
 import axios from 'axios';
 
+function normalizeApiBase(url: string): string {
+  return url.replace(/\/$/, '').replace('127.0.0.1', 'localhost');
+}
+
 const baseURL = typeof window === 'undefined'
-  ? (process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || '')
-  : (process.env.NEXT_PUBLIC_API_URL || '');
+  ? normalizeApiBase(process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000')
+  : normalizeApiBase(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000');
 
 const api = axios.create({
   baseURL,
@@ -105,10 +109,11 @@ let refreshPromise: Promise<void> | null = null;
 let isRedirectingToLogin = false;
 
 function redirectToLogin() {
-  if (typeof window !== 'undefined' && !isRedirectingToLogin && !window.location.pathname.startsWith('/login')) {
-    isRedirectingToLogin = true;
-    window.location.href = '/login';
-  }
+  if (typeof window === 'undefined' || isRedirectingToLogin) return;
+  const path = window.location.pathname;
+  if (path.startsWith('/login') || path.startsWith('/auth/google/callback')) return;
+  isRedirectingToLogin = true;
+  window.location.href = '/login';
 }
 
 api.interceptors.response.use(
