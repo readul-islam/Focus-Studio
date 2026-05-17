@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { ArrowRight, ChevronRight, Copy, Check, Sparkles } from "lucide-react"
+import { ArrowRight, Copy, Check, Sparkles } from "lucide-react"
 import { CtaButton } from "@/components/cta-button"
 import { MarketingPageHero } from "@/components/marketing/marketing-page-hero"
 import { Reveal } from "@/components/marketing/reveal"
@@ -67,21 +67,6 @@ export default function AiPlaybookPage() {
   return (
     <main className="bg-white">
       <MarketingPageHero contentClassName={cn(container, "pb-12 pt-12 sm:pb-16 md:pt-16")}>
-        <nav aria-label="Breadcrumb" className="mb-8 text-sm text-stone-500">
-          <ol className="flex flex-wrap items-center gap-1.5">
-            <li>
-              <Link href="/" className="hover:text-stone-900">
-                Home
-              </Link>
-            </li>
-            <li aria-hidden>
-              <ChevronRight className="h-3.5 w-3.5" />
-            </li>
-            <li className="font-medium text-stone-900" aria-current="page">
-              AI Playbook
-            </li>
-          </ol>
-        </nav>
         <Reveal className="mx-auto max-w-3xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-stone-300/60 bg-white px-3 py-1 text-xs text-stone-700">
             <Sparkles className="h-3 w-3 text-[#C96A4A]" aria-hidden />

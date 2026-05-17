@@ -1,7 +1,5 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { notFound } from "next/navigation"
-import { ChevronRight } from "lucide-react"
 import { MarketingPageHero } from "@/components/marketing/marketing-page-hero"
 import { TemplateDetailClient } from "./template-detail-client"
 import { getTemplateBySlug, studioTemplates } from "@/lib/resources-data"
@@ -35,30 +33,6 @@ export default function TemplateDetailPage({ params }: { params: { slug: string 
         gridHeight="min(380px, 45vh)"
         contentClassName={cn(container, "pb-10 pt-10 sm:pb-14 sm:pt-12")}
       >
-        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-stone-500">
-          <ol className="flex flex-wrap items-center gap-1.5">
-            <li>
-              <Link href="/" className="hover:text-stone-900">
-                Home
-              </Link>
-            </li>
-            <li aria-hidden>
-              <ChevronRight className="h-3.5 w-3.5" />
-            </li>
-            <li>
-              <Link href="/resources/templates" className="hover:text-stone-900">
-                Templates
-              </Link>
-            </li>
-            <li aria-hidden>
-              <ChevronRight className="h-3.5 w-3.5" />
-            </li>
-            <li className="font-medium text-stone-900" aria-current="page">
-              {template.title}
-            </li>
-          </ol>
-        </nav>
-
         <div className="mx-auto max-w-3xl">
           <div className="inline-flex rounded-lg bg-stone-100 p-3">
             <Icon className="h-6 w-6 text-stone-600" aria-hidden />
