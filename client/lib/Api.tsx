@@ -99,6 +99,19 @@ export const patchFormData = async ({ url, data }: { url: string; data: FormData
   }
 };
 
+/** Multipart POST (e.g. profile picture upload to /user/self/update/). */
+export const postFormData = async ({ url, data }: { url: string; data: FormData }) => {
+  if (!url) throw new Error('No post URL provided');
+  try {
+    const response = await api.post(url, data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 export const loginUser = async ({ email, password }: { email: string; password: string }) => {
   const res = await api.post('/user/login/', { email, password });
   return res.data; // { user }  — tokens are now in httpOnly cookies

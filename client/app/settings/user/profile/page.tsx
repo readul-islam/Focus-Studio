@@ -59,7 +59,7 @@ export default function UserProfilePage() {
       });
     },
     onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: ['users', user?.email] });
+      queryClient.invalidateQueries({ queryKey: ['user/self/'] });
       toast.success('Profile Updated');
     },
     onError: error => {
@@ -150,14 +150,14 @@ const handleSubmit = (e: React.FormEvent) => {
               <img src={profilePic} alt="Profile preview" className="object-cover w-full h-full" />
             ) : (
               <div className="flex items-center justify-center w-full h-full">
-                {user?.profile_picture || user?.profile_picture ? (
-                  <img src={user?.profile_picture || user?.profile_picture} alt="Profile preview" className="object-cover w-full h-full" />
+                {user?.profile_picture ? (
+                  <img src={user.profile_picture} alt="Profile" className="object-cover w-full h-full" />
                 ) : (
-                  <div className="p-2 bg-stone-100 rounded-full">
-                   <Avatar>
-                     <AvatarFallback>{user?.name?.slice(0, 1)}</AvatarFallback>
-                   </Avatar>
-                  </div>
+                  <Avatar className="h-full w-full">
+                    <AvatarFallback className="text-2xl bg-stone-100">
+                      {user?.name?.slice(0, 1)?.toUpperCase() || '?'}
+                    </AvatarFallback>
+                  </Avatar>
                 )}
               </div>
             )}
@@ -206,7 +206,7 @@ const handleSubmit = (e: React.FormEvent) => {
                     });
                     setProfilePic(null);
                     setProfilePicFile(null);
-                    queryClient.refetchQueries({ queryKey: ['users', user?.email] });
+                    queryClient.invalidateQueries({ queryKey: ['user/self/'] });
                     toast.success('Profile picture removed');
                   } catch {
                     toast.error('Failed to remove profile picture');
@@ -284,7 +284,7 @@ const handleSubmit = (e: React.FormEvent) => {
 
                   setProfilePic(dataUrl);
                   setCurrentUser(prev => ({ ...(prev || {}), profile_picture: res.profile_picture }));
-                  queryClient.refetchQueries({ queryKey: ['users', user?.email] });
+                  queryClient.invalidateQueries({ queryKey: ['user/self/'] });
                   setShowCrop(false);
                   toast.success('Profile picture updated!');
                 } catch (err: any) {
