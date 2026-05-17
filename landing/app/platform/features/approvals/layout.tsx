@@ -1,0 +1,29 @@
+import type React from "react"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Client Approval Software for Interior Designers | Techstyles",
+  description:
+    "Streamline client sign-offs with beautiful approval workflows. Get faster decisions on selections, budgets, and design directions with Techstyles approval tools.",
+  keywords: [
+    "interior design approvals",
+    "client sign-off software",
+    "design approval workflow",
+    "selection approval system",
+    "interior design client approvals",
+    "design decision tracking",
+  ],
+  openGraph: {
+    title: "Client Approval Software | Techstyles",
+    description: "Streamline client sign-offs with beautiful approval workflows for interior design projects.",
+    url: "https://techstyles.ai/platform/features/approvals",
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://techstyles.ai/platform/features/approvals",
+  },
+}
+
+export default function ApprovalsLayout({ children }: { children: React.ReactNode }) {
+  return children
+}
