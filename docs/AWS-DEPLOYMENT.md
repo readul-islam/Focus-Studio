@@ -1,4 +1,4 @@
-# Focus-Studio / TechStyles — AWS Server Deployment Guide
+# Focus-Studio / Focuspilot — AWS Server Deployment Guide
 
 End-to-end guide for deploying the **Django API** (`server/`) to AWS with a CI/CD pipeline. The Next.js client can stay on Vercel — see **[VERCEL-DEPLOYMENT.md](./VERCEL-DEPLOYMENT.md)**. This document focuses on the backend.
 
@@ -41,7 +41,7 @@ End-to-end guide for deploying the **Django API** (`server/`) to AWS with a CI/C
 
 **Region:** `eu-west-2` (London) — matches your existing S3 bucket and UK-focused product.
 
-**API URL example:** `https://api.techstyles.ai` → ALB → ECS tasks on port `8000`.
+**API URL example:** `https://api.focuspilot.io` → ALB → ECS tasks on port `8000`.
 
 ---
 
@@ -68,7 +68,7 @@ flowchart TB
   end
 
   subgraph aws [AWS eu-west-2]
-    Route53[Route 53 api.techstyles.ai]
+    Route53[Route 53 api.focuspilot.io]
     ALB[Application Load Balancer HTTPS]
     ECS[ECS Fargate Service Django Gunicorn]
     RDS[(RDS PostgreSQL)]
@@ -182,10 +182,10 @@ else:
 |------|------------------|
 | `DEBUG` | `False` |
 | `SECRET_KEY` | Long random string in Secrets Manager only |
-| `ALLOWED_HOSTS` | `api.techstyles.ai,.elb.amazonaws.com` |
-| `CORS_ALLOWED_ORIGINS` | `https://app.techstyles.ai` (your real frontend URL) |
+| `ALLOWED_HOSTS` | `api.focuspilot.io,.elb.amazonaws.com` |
+| `CORS_ALLOWED_ORIGINS` | `https://app.focuspilot.io` (your real frontend URL) |
 | AWS keys | **IAM task role** for S3 — do not ship access keys in the image |
-| OAuth redirect URIs | Update Xero/Gmail to `https://api.techstyles.ai/...` |
+| OAuth redirect URIs | Update Xero/Gmail to `https://api.focuspilot.io/...` |
 
 Remove hardcoded fallback secrets from `settings.py` before going live.
 
@@ -259,7 +259,7 @@ aws ecr create-repository \
 
 ### 6.5 ACM certificate (HTTPS)
 
-Request certificate in **eu-west-2** for `api.techstyles.ai` (DNS validation in Route 53).
+Request certificate in **eu-west-2** for `api.focuspilot.io` (DNS validation in Route 53).
 
 > ALB certificates must be in the **same region** as the load balancer.
 
@@ -421,14 +421,14 @@ Store in **AWS Secrets Manager** as JSON `techstyles/prod/api`:
   "RESEND_API_KEY": "re_...",
   "XERO_CLIENT_ID": "...",
   "XERO_CLIENT_SECRET": "...",
-  "XERO_REDIRECT_URI": "https://api.techstyles.ai/xero/xero/callback/",
+  "XERO_REDIRECT_URI": "https://api.focuspilot.io/xero/xero/callback/",
   "GMAIL_CLIENT_ID": "...",
   "GMAIL_CLIENT_SECRET": "...",
-  "GMAIL_REDIRECT_URI": "https://api.techstyles.ai/gmail/callback",
+  "GMAIL_REDIRECT_URI": "https://api.focuspilot.io/gmail/callback",
   "OPENAI_API_KEY": "...",
-  "FRONTEND_URL": "https://app.techstyles.ai",
-  "CLIENT_PORTAL_URL": "https://clients.techstyles.ai",
-  "CONTRACTOR_PORTAL_URL": "https://contractors.techstyles.ai"
+  "FRONTEND_URL": "https://app.focuspilot.io",
+  "CLIENT_PORTAL_URL": "https://clients.focuspilot.io",
+  "CONTRACTOR_PORTAL_URL": "https://contractors.focuspilot.io"
 }
 ```
 
@@ -438,8 +438,8 @@ Reference in ECS task definition `secrets` block (each key → `valueFrom` ARN).
 
 ```env
 DEBUG=False
-ALLOWED_HOSTS=api.techstyles.ai
-CORS_ALLOWED_ORIGINS=https://app.techstyles.ai
+ALLOWED_HOSTS=api.focuspilot.io
+CORS_ALLOWED_ORIGINS=https://app.focuspilot.io
 AWS_STORAGE_BUCKET_NAME=techstyles
 AWS_S3_REGION_NAME=eu-west-2
 STRIPE_TRIAL_DAYS=14
@@ -461,7 +461,7 @@ STRIPE_TRIAL_DAYS=14
 
 ### Stripe
 
-- Dashboard → Webhooks → endpoint: `https://api.techstyles.ai/api/billing/webhook/` (confirm path in your `billing` URLs).
+- Dashboard → Webhooks → endpoint: `https://api.focuspilot.io/api/billing/webhook/` (confirm path in your `billing` URLs).
 - Use **live** signing secret in Secrets Manager for production.
 
 ---
@@ -611,14 +611,14 @@ CodePipeline and GitHub Actions achieve the same outcome; **GitHub Actions is us
 
 ## 13. DNS, HTTPS, and Stripe webhooks
 
-1. **Route 53** — A/AAAA alias record: `api.techstyles.ai` → ALB DNS name.
+1. **Route 53** — A/AAAA alias record: `api.focuspilot.io` → ALB DNS name.
 2. **ACM** — certificate attached to HTTPS listener.
-3. **Frontend** — set `NEXT_PUBLIC_API_URL=https://api.techstyles.ai` in Vercel/Amplify env.
+3. **Frontend** — set `NEXT_PUBLIC_API_URL=https://api.focuspilot.io` in Vercel/Amplify env.
 4. **CORS** — `CORS_ALLOWED_ORIGINS` must include the exact frontend origin (no trailing slash).
 5. **Stripe** — live webhook URL on production ALB; test with Stripe CLI against staging first:
 
 ```bash
-stripe listen --forward-to https://api-staging.techstyles.ai/api/billing/webhook/
+stripe listen --forward-to https://api-staging.focuspilot.io/api/billing/webhook/
 ```
 
 ---
@@ -698,7 +698,7 @@ Staging can run one Fargate task + `db.t4g.micro` for roughly half that.
 
 ### After deploy
 
-- [ ] `curl https://api.techstyles.ai/health/` returns 200
+- [ ] `curl https://api.focuspilot.io/health/` returns 200
 - [ ] Login/JWT flow works from production frontend
 - [ ] File upload hits S3
 - [ ] Stripe test checkout + webhook delivery OK

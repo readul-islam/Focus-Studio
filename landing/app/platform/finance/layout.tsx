@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Interior Design Invoicing & Accounting Software | Xero Integration | Techstyles",
+  title: "Interior Design Invoicing & Accounting Software | Xero Integration | Focuspilot",
   description:
     "Streamline interior design studio finances. Create invoices, track project profitability, sync with Xero & QuickBooks. Real-time budget vs actual tracking. Start free.",
   keywords: [
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "interior design financial management",
   ],
   openGraph: {
-    title: "Interior Design Invoicing & Accounting Software | Xero Integration | Techstyles",
+    title: "Interior Design Invoicing & Accounting Software | Xero Integration | Focuspilot",
     description:
       "Streamline interior design studio finances. Create invoices, track project profitability, sync with Xero & QuickBooks. Real-time budget vs actual tracking. Start free.",
     url: "https://focuspilot.io/platform/finance",
@@ -24,13 +24,13 @@ export const metadata: Metadata = {
         url: "/images/og-finance.png",
         width: 1200,
         height: 630,
-        alt: "Techstyles finance dashboard for interior design studios",
+        alt: "Focuspilot finance dashboard for interior design studios",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Interior Design Invoicing & Accounting Software | Xero Integration | Techstyles",
+    title: "Interior Design Invoicing & Accounting Software | Xero Integration | Focuspilot",
     description: "Streamline interior design studio finances. Create invoices, track project profitability, sync with Xero & QuickBooks.",
   },
   alternates: {

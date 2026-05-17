@@ -202,7 +202,7 @@ export function ContractorSidebar({
       {!isCollapsed && (
         <div className="px-4 py-3 border-t border-neutral-100">
           <p className="text-xs text-neutral-400">
-            Powered by <span className="font-medium text-neutral-500">TechStyles</span>
+            Powered by <span className="font-medium text-neutral-500">Focuspilot</span>
           </p>
         </div>
       )}

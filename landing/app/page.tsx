@@ -551,10 +551,10 @@ function Footer() {
     <footer className="border-t bg-white" role="contentinfo">
       <div className={cn(container, "grid grid-cols-1 gap-8 py-10 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5")}>
         <div className="space-y-3">
-          <Link href="/" className="flex items-center gap-2" aria-label="Techstyles Home">
+          <Link href="/" className="flex items-center gap-2" aria-label="Focuspilot Home">
             <Image
               src="/images/branding/techstyles-mark.png"
-              alt="Techstyles logo"
+              alt="Focuspilot logo"
               width={24}
               height={24}
               className="h-6 w-6 rounded-md object-cover"
@@ -701,28 +701,28 @@ function Footer() {
           </form>
           <div className="mt-4 flex gap-3">
             <a
-              href="https://facebook.com/techstyles"
+              href="https://facebook.com/focuspilot"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Follow Techstyles on Facebook"
+              aria-label="Follow Focuspilot on Facebook"
               className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 text-stone-900 ring-1 ring-stone-200 hover:bg-stone-200"
             >
               <LucideReact.Facebook className="h-5 w-5" aria-hidden="true" />
             </a>
             <a
-              href="https://twitter.com/techstyles"
+              href="https://twitter.com/focuspilot"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Follow Techstyles on Twitter"
+              aria-label="Follow Focuspilot on Twitter"
               className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 text-stone-900 ring-1 ring-stone-200 hover:bg-stone-200"
             >
               <LucideReact.Twitter className="h-5 w-5" aria-hidden="true" />
             </a>
             <a
-              href="https://instagram.com/techstyles"
+              href="https://instagram.com/focuspilot"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Follow Techstyles on Instagram"
+              aria-label="Follow Focuspilot on Instagram"
               className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 text-stone-900 ring-1 ring-stone-200 hover:bg-stone-200"
             >
               <LucideReact.Instagram className="h-5 w-5" aria-hidden="true" />
@@ -754,7 +754,7 @@ const homepageSchema = [
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": "https://focuspilot.io/#organization",
-    name: "Techstyles",
+    name: "Focuspilot",
     url: "https://focuspilot.io",
     logo: {
       "@type": "ImageObject",
@@ -765,14 +765,14 @@ const homepageSchema = [
     description: "AI-powered project management software for interior designers and architects.",
     foundingDate: "2024",
     sameAs: [
-      "https://twitter.com/techstyles",
-      "https://linkedin.com/company/techstyles",
-      "https://instagram.com/techstyles",
+        "https://twitter.com/focuspilot",
+      "https://linkedin.com/company/focuspilot",
+      "https://instagram.com/focuspilot",
     ],
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",
-      email: "hello@techstyles.ai",
+      email: "hello@focuspilot.io",
       availableLanguage: ["English"],
     },
   },
@@ -780,7 +780,7 @@ const homepageSchema = [
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "@id": "https://focuspilot.io/#software",
-    name: "Techstyles",
+    name: "Focuspilot",
     applicationCategory: "BusinessApplication",
     applicationSubCategory: "Project Management Software",
     operatingSystem: "Web",
@@ -816,7 +816,7 @@ const homepageSchema = [
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": "https://focuspilot.io/#website",
-    name: "Techstyles",
+      name: "Focuspilot",
     url: "https://focuspilot.io",
     publisher: { "@id": "https://focuspilot.io/#organization" },
     potentialAction: {

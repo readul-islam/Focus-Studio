@@ -479,7 +479,7 @@ function StepComplete({ onDone }: { onDone: () => void }) {
         transition={{ delay: 0.4, duration: 0.4 }}
       >
         <h1 className="text-2xl font-bold text-gray-900 mb-2">You're all set!</h1>
-        <p className="text-sm text-gray-500">Your TechStyles studio is ready to go.</p>
+        <p className="text-sm text-gray-500">Your Focuspilot studio is ready to go.</p>
       </motion.div>
 
       <motion.div

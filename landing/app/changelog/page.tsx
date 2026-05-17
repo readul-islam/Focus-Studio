@@ -139,7 +139,7 @@ function Hero() {
           </span>
           <h1 className={cn("mt-5 text-center", TITLE_H1)}>Changelog</h1>
           <p className="mt-4 text-center text-base sm:text-lg text-stone-600">
-            See what's new in Techstyles. We ship updates weekly to help you manage projects, procurement, and client relationships more efficiently.
+            See what's new in Focuspilot. We ship updates weekly to help you manage projects, procurement, and client relationships more efficiently.
           </p>
           <p className="mt-3 text-center text-sm text-stone-500">
             Subscribe to our newsletter to get updates delivered to your inbox.
@@ -200,7 +200,7 @@ function RelatedLinks() {
               Explore the platform
             </h2>
             <p className="mt-3 text-center text-stone-600">
-              Discover how Techstyles can transform your design studio workflow.
+              Discover how Focuspilot can transform your design studio workflow.
             </p>
           </Reveal>
           <Reveal delay={100}>
@@ -259,7 +259,7 @@ function FinalCTA() {
             Ready to transform your studio?
           </h2>
           <p className="mt-3 text-base sm:text-lg text-stone-300">
-            Join hundreds of interior designers who've simplified their workflow with Techstyles.
+            Join hundreds of interior designers who've simplified their workflow with Focuspilot.
           </p>
           <div className="mt-8 flex items-center justify-center">
             <CtaButton href="/signup" variant="white" label="Start for free" showArrow arrowVariant="black" />

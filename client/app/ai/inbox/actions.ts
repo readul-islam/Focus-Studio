@@ -144,7 +144,7 @@ const mockInboxEmails: EmailWithAnalysis[] = [
   },
   {
     id: 'inbox-006',
-    from: 'marcus.t@techstyles.ai',
+    from: 'colt@focuspilot.io',
     fromName: 'Marcus Thompson',
     subject: 'Site Update – Hampstead',
     snippet: 'Hi Sarah, just a quick update — the electricians are finishing first fix today. We are on track for plastering to start next Monday. The kitchen units delivery slot is still open so let me know once you have confirmed with Devol.',

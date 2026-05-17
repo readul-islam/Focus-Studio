@@ -21,7 +21,7 @@ export default function Dashboard() {
   return (
     <DashboardLayout>
       <Helmet>
-        <title>{`${dashboardData?.project_name ? dashboardData?.project_name : 'Dashboard'} | TechStyles`}</title>
+        <title>{`${dashboardData?.project_name ? dashboardData?.project_name : 'Dashboard'} | Focuspilot`}</title>
       </Helmet>
       <div className="space-y-6 ">
         {!dashboardLoading && (

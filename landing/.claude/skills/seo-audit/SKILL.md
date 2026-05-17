@@ -60,7 +60,7 @@ Analyze and optimize pages for search engine visibility through technical SEO, o
    - Check JSON-LD syntax validity
    - Verify schema types match page content
    - Test with Google Rich Results Test mentally
-   - Ensure URLs use correct domain (techstyles.ai)
+   - Ensure URLs use correct domain (focuspilot.io)
 
 4. **Internal Linking Audit**
    - Map out page relationships

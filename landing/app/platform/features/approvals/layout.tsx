@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Client Approval Software for Interior Designers | Techstyles",
+  title: "Client Approval Software for Interior Designers | Focuspilot",
   description:
     "Streamline client sign-offs with beautiful approval workflows. Get faster decisions on selections, budgets, and design directions with Techstyles approval tools.",
   keywords: [
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "design decision tracking",
   ],
   openGraph: {
-    title: "Client Approval Software | Techstyles",
+    title: "Client Approval Software | Focuspilot",
     description: "Streamline client sign-offs with beautiful approval workflows for interior design projects.",
     url: "https://focuspilot.io/platform/features/approvals",
     type: "website",

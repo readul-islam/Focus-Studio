@@ -13,27 +13,27 @@ const H2 = "text-2xl sm:text-[30px] md:text-4xl font-medium tracking-tight"
 const Lead = "text-base sm:text-lg text-stone-600"
 
 export const metadata: Metadata = {
-  title: "Techstyles vs DesignFiles | Interior Design Software Comparison 2025",
+  title: "Focuspilot vs DesignFiles | Interior Design Software Comparison 2025",
   description:
-    "Compare Techstyles vs DesignFiles for interior designers. See differences in AI features, procurement, finance tools, and scalability. Which is right for your studio?",
+    "Compare Focuspilot vs DesignFiles for interior designers. See differences in AI features, procurement, finance tools, and scalability. Which is right for your studio?",
   keywords: [
-    "Techstyles vs DesignFiles",
+    "Focuspilot vs DesignFiles",
     "DesignFiles alternative",
     "interior design software comparison",
     "DesignFiles alternative UK",
     "design project management software",
   ],
   openGraph: {
-    title: "Techstyles vs DesignFiles | Interior Design Software Comparison 2025",
+    title: "Focuspilot vs DesignFiles | Interior Design Software Comparison 2025",
     description:
-      "Compare Techstyles vs DesignFiles for interior designers. AI features, procurement, finance tools, and scalability comparison.",
+      "Compare Focuspilot vs DesignFiles for interior designers. AI features, procurement, finance tools, and scalability comparison.",
     type: "article",
     url: "https://focuspilot.io/compare/designfiles",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Techstyles vs DesignFiles | Interior Design Software Comparison",
-    description: "Compare Techstyles vs DesignFiles. See which scales better for growing studios.",
+    title: "Focuspilot vs DesignFiles | Interior Design Software Comparison",
+    description: "Compare Focuspilot vs DesignFiles. See which scales better for growing studios.",
   },
   alternates: {
     canonical: "https://focuspilot.io/compare/designfiles",
@@ -42,80 +42,80 @@ export const metadata: Metadata = {
 
 const comparisonData = [
   {
-    category: "AI & Automation",
+      category: "AI & Automation",
     features: [
-      { name: "AI email drafting", techstyles: true, designfiles: false },
-      { name: "AI product sourcing", techstyles: true, designfiles: false },
-      { name: "AI proposal generation", techstyles: true, designfiles: false },
-      { name: "Automated workflows", techstyles: true, designfiles: "partial" },
-      { name: "Smart data extraction", techstyles: true, designfiles: false },
+      { name: "AI email drafting", focuspilot: true, designfiles: false },
+      { name: "AI product sourcing", focuspilot: true, designfiles: false },
+      { name: "AI proposal generation", focuspilot: true, designfiles: false },
+      { name: "Automated workflows", focuspilot: true, designfiles: "partial" },
+      { name: "Smart data extraction", focuspilot: true, designfiles: false },
     ],
   },
   {
     category: "Procurement & FF&E",
     features: [
-      { name: "Product library", techstyles: true, designfiles: true },
-      { name: "Purchase order generation", techstyles: true, designfiles: "partial" },
-      { name: "Supplier management", techstyles: true, designfiles: "partial" },
-      { name: "Delivery tracking", techstyles: true, designfiles: false },
-      { name: "Trade pricing lookup", techstyles: true, designfiles: false },
+        { name: "Product library", focuspilot: true, designfiles: true },
+      { name: "Purchase order generation", focuspilot: true, designfiles: "partial" },
+      { name: "Supplier management", focuspilot: true, designfiles: "partial" },
+      { name: "Delivery tracking", focuspilot: true, designfiles: false },
+      { name: "Trade pricing lookup", focuspilot: true, designfiles: false },
     ],
   },
   {
     category: "Finance & Invoicing",
     features: [
-      { name: "Invoice generation", techstyles: true, designfiles: true },
-      { name: "Xero/QuickBooks sync", techstyles: true, designfiles: false },
-      { name: "Stripe payments", techstyles: true, designfiles: false },
-      { name: "Project profitability", techstyles: true, designfiles: "partial" },
-      { name: "Budget vs actual tracking", techstyles: true, designfiles: "partial" },
+      { name: "Invoice generation", focuspilot: true, designfiles: true },
+      { name: "Xero/QuickBooks sync", focuspilot: true, designfiles: false },
+      { name: "Stripe payments", focuspilot: true, designfiles: false },
+      { name: "Project profitability", focuspilot: true, designfiles: "partial" },
+      { name: "Budget vs actual tracking", focuspilot: true, designfiles: "partial" },
     ],
   },
   {
     category: "Client Management",
     features: [
-      { name: "Client portal", techstyles: true, designfiles: true },
-      { name: "Selection boards", techstyles: true, designfiles: true },
-      { name: "Approval workflows", techstyles: true, designfiles: "partial" },
-      { name: "In-portal payments", techstyles: true, designfiles: false },
-      { name: "Real-time collaboration", techstyles: true, designfiles: "partial" },
+        { name: "Client portal", focuspilot: true, designfiles: true },
+      { name: "Selection boards", focuspilot: true, designfiles: true },
+      { name: "Approval workflows", focuspilot: true, designfiles: "partial" },
+      { name: "In-portal payments", focuspilot: true, designfiles: false },
+      { name: "Real-time collaboration", focuspilot: true, designfiles: "partial" },
     ],
   },
   {
     category: "Scalability",
     features: [
-      { name: "Multi-user teams", techstyles: true, designfiles: true },
-      { name: "Role-based permissions", techstyles: true, designfiles: "partial" },
-      { name: "Multiple studios/brands", techstyles: true, designfiles: false },
-      { name: "Enterprise features", techstyles: true, designfiles: false },
-      { name: "API access", techstyles: true, designfiles: false },
+            { name: "Multi-user teams", focuspilot: true, designfiles: true },
+      { name: "Role-based permissions", focuspilot: true, designfiles: "partial" },
+      { name: "Multiple studios/brands", focuspilot: true, designfiles: false },
+      { name: "Enterprise features", focuspilot: true, designfiles: false },
+      { name: "API access", focuspilot: true, designfiles: false },
     ],
   },
 ]
 
 const faqs = [
   {
-    question: "What's the main difference between Techstyles and DesignFiles?",
+      question: "What's the main difference between Focuspilot and DesignFiles?",
     answer:
-      "DesignFiles is a simpler, more affordable tool for basic project management and client boards. Techstyles is a comprehensive platform with AI automation, full procurement management, accounting integration, and features that scale with your studio.",
+      "DesignFiles is a simpler, more affordable tool for basic project management and client boards. Focuspilot is a comprehensive platform with AI automation, full procurement management, accounting integration, and features that scale with your studio.",
   },
   {
-    question: "Is DesignFiles cheaper than Techstyles?",
+    question: "Is DesignFiles cheaper than Focuspilot?",
     answer:
-      "DesignFiles has a lower starting price, but Techstyles' AI features can save 10+ hours weekly in admin time. When you factor in time savings, Techstyles often provides better value, especially for studios doing £200k+ in projects annually.",
+      "DesignFiles has a lower starting price, but Focuspilot's AI features can save 10+ hours weekly in admin time. When you factor in time savings, Focuspilot often provides better value, especially for studios doing £200k+ in projects annually.",
   },
   {
     question: "Does DesignFiles have accounting integration?",
     answer:
-      "No, DesignFiles doesn't integrate with accounting software. Techstyles has native two-way sync with Xero and QuickBooks, automatically syncing invoices, payments, and expenses.",
+      "No, DesignFiles doesn't integrate with accounting software. Focuspilot has native two-way sync with Xero and QuickBooks, automatically syncing invoices, payments, and expenses.",
   },
   {
     question: "Which is better for a growing studio?",
     answer:
-      "Techstyles scales better with features like role-based permissions, multi-user collaboration, API access, and enterprise options. DesignFiles works well for solo designers but can feel limited as teams grow.",
+        "Focuspilot scales better with features like role-based permissions, multi-user collaboration, API access, and enterprise options. DesignFiles works well for solo designers but can feel limited as teams grow.",
   },
   {
-    question: "Can I migrate from DesignFiles to Techstyles?",
+    question: "Can I migrate from DesignFiles to Focuspilot?",
     answer:
       "Yes. We offer free migration assistance including project data, client contacts, and product library import. Most studios transition within a few days.",
   },
@@ -151,7 +151,7 @@ export default function TechstylesVsDesignFilesPage() {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: "https://focuspilot.io" },
       { "@type": "ListItem", position: 2, name: "Compare", item: "https://focuspilot.io/compare" },
-      { "@type": "ListItem", position: 3, name: "Techstyles vs DesignFiles", item: "https://focuspilot.io/compare/designfiles" },
+      { "@type": "ListItem", position: 3, name: "Focuspilot vs DesignFiles", item: "https://focuspilot.io/compare/designfiles" },
     ],
   }
 
@@ -167,7 +167,7 @@ export default function TechstylesVsDesignFilesPage() {
               <Badge variant="outline" className="mb-4 border-stone-300 text-stone-600">
                 Software Comparison
               </Badge>
-              <h1 className={cn(H1, "text-center")}>Techstyles vs DesignFiles</h1>
+              <h1 className={cn(H1, "text-center")}>Focuspilot vs DesignFiles</h1>
               <p className={cn(Lead, "mt-4 text-center")}>
                 Compare a comprehensive AI-powered platform with simpler project management.
                 See which tool fits your studio's current needs and growth plans.
@@ -183,7 +183,7 @@ export default function TechstylesVsDesignFilesPage() {
             <div className="grid gap-6 md:grid-cols-2">
               <Card className="border-2 border-stone-900">
                 <CardContent className="p-6 sm:p-8">
-                  <div className="mb-4 text-xl font-semibold">Choose Techstyles if you...</div>
+                  <div className="mb-4 text-xl font-semibold">Choose Focuspilot if you...</div>
                   <ul className="space-y-3 text-stone-600">
                     <li className="flex items-start gap-3">
                       <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />
@@ -244,7 +244,7 @@ export default function TechstylesVsDesignFilesPage() {
                 <thead>
                   <tr className="border-b border-stone-200">
                     <th className="py-4 px-4 text-left font-semibold text-stone-900">Feature</th>
-                    <th className="py-4 px-4 text-center font-semibold text-stone-900 w-32">Techstyles</th>
+                    <th className="py-4 px-4 text-center font-semibold text-stone-900 w-32">Focuspilot</th>
                     <th className="py-4 px-4 text-center font-semibold text-stone-900 w-32">DesignFiles</th>
                   </tr>
                 </thead>
@@ -261,12 +261,12 @@ export default function TechstylesVsDesignFilesPage() {
                           <td className="py-3 px-4 text-stone-700">{feature.name}</td>
                           <td className="py-3 px-4 text-center">
                             <div className="flex justify-center">
-                              <FeatureStatus status={feature.techstyles} />
+                              <FeatureStatus status={feature.focuspilot} />
                             </div>
                           </td>
                           <td className="py-3 px-4 text-center">
                             <div className="flex justify-center">
-                              <FeatureStatus status={feature.designfiles} />
+                              <FeatureStatus status={feature.focuspilot} />
                             </div>
                           </td>
                         </tr>
@@ -311,7 +311,7 @@ export default function TechstylesVsDesignFilesPage() {
         <section className="bg-stone-900 py-16 sm:py-20">
           <div className={container}>
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-2xl sm:text-[28px] md:text-[32px] font-medium tracking-tight text-white">Ready to try Techstyles?</h2>
+              <h2 className="text-2xl sm:text-[28px] md:text-[32px] font-medium tracking-tight text-white">Ready to try DesignFiles?</h2>
               <p className="mt-4 text-stone-300">
                 Start your free 3-month trial. No credit card required. Free migration from DesignFiles.
               </p>

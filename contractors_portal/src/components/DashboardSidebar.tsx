@@ -60,7 +60,7 @@ export function DashboardSidebar() {
         <div className="flex items-center gap-2">
           <img
             src="/techstyles-t-logo.png"
-            alt="Techstyles logo mark"
+            alt="Focuspilot logo mark"
             className={cn(isCollapsed ? "w-8 h-8 mx-auto" : "w-8 h-8", "block")}
           />
           {!isCollapsed && (

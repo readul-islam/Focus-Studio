@@ -91,7 +91,7 @@ function ApiPageContent() {
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="webhookUrl">Endpoint URL</Label>
-            <Input id="webhookUrl" placeholder="https://example.com/webhooks/techstyles" />
+            <Input id="webhookUrl" placeholder="https://example.com/webhooks/focuspilot" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="webhookSecret">Signing secret</Label>

@@ -12,9 +12,9 @@ const H2 = "text-2xl sm:text-[30px] md:text-4xl font-medium tracking-tight"
 const Lead = "text-base sm:text-lg text-stone-600"
 
 export const metadata: Metadata = {
-  title: "Compare Interior Design Software | Techstyles vs Competitors",
+  title: "Compare Interior Design Software | Focuspilot vs Competitors",
   description:
-    "Compare Techstyles with Programa, Houzz Pro, Studio Designer, DesignFiles and more. See why UK interior designers choose Techstyles for project management.",
+    "Compare Focuspilot with Programa, Houzz Pro, Studio Designer, DesignFiles and more. See why UK interior designers choose Focuspilot for project management.",
   keywords: [
     "interior design software comparison",
     "Programa alternative",
@@ -24,16 +24,16 @@ export const metadata: Metadata = {
     "best interior design software UK",
   ],
   openGraph: {
-    title: "Compare Interior Design Software | Techstyles vs Competitors",
+    title: "Compare Interior Design Software | Focuspilot vs Competitors",
     description:
-      "Compare Techstyles with Programa, Houzz Pro, Studio Designer, DesignFiles and more. See why UK interior designers choose Techstyles.",
+      "Compare Focuspilot with Programa, Houzz Pro, Studio Designer, DesignFiles and more. See why UK interior designers choose Focuspilot.",
     type: "website",
     url: "https://focuspilot.io/compare",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Compare Interior Design Software | Techstyles",
-    description: "Compare Techstyles with leading interior design software. See detailed feature comparisons.",
+    title: "Compare Interior Design Software | Focuspilot",
+    description: "Compare Focuspilot with leading interior design software. See detailed feature comparisons.",
   },
   alternates: {
     canonical: "https://focuspilot.io/compare",
@@ -46,35 +46,35 @@ const competitors = [
     slug: "programa",
     description: "Popular in the US for procurement and project management",
     strengths: ["Strong procurement", "Good client portal"],
-    techstylesAdvantage: "UK-focused with native Xero, AI features, and Stripe payments",
+    focuspilotAdvantage: "UK-focused with native Xero, AI features, and Stripe payments",
   },
   {
     name: "Design Manager",
     slug: "design-manager",
     description: "Legacy desktop software for interior designers",
     strengths: ["Established brand", "Comprehensive features"],
-    techstylesAdvantage: "Modern cloud-based, mobile-friendly, no installation required",
+    focuspilotAdvantage: "Modern cloud-based, mobile-friendly, no installation required",
   },
   {
     name: "Houzz Pro",
     slug: "houzz-pro",
     description: "All-in-one platform tied to Houzz marketplace",
     strengths: ["Houzz integration", "Lead generation"],
-    techstylesAdvantage: "Independent platform, better UK support, more flexible",
+    focuspilotAdvantage: "Independent platform, better UK support, more flexible",
   },
   {
     name: "Studio Designer",
     slug: "studio-designer",
     description: "Cloud-based design business management",
     strengths: ["Room planning", "Product library"],
-    techstylesAdvantage: "AI-powered features, better procurement, UK pricing",
+    focuspilotAdvantage: "AI-powered features, better procurement, UK pricing",
   },
   {
     name: "DesignFiles",
     slug: "designfiles",
     description: "Simple project management for designers",
     strengths: ["Easy to use", "Affordable"],
-    techstylesAdvantage: "More comprehensive features, AI automation, scales better",
+    focuspilotAdvantage: "More comprehensive features, AI automation, scales better",
   },
 ]
 
@@ -99,9 +99,9 @@ export default function ComparePage() {
               <Badge variant="outline" className="mb-4 border-stone-300 text-stone-600">
                 Software Comparisons
               </Badge>
-              <h1 className={cn(H1, "text-center")}>Compare Techstyles</h1>
+                  <h1 className={cn(H1, "text-center")}>Compare Focuspilot</h1>
               <p className={cn(Lead, "mt-4 text-center")}>
-                See how Techstyles compares to other interior design software. We believe in transparency –
+                See how Focuspilot compares to other interior design software. We believe in transparency –
                 find the right tool for your studio.
               </p>
             </div>
@@ -123,14 +123,14 @@ export default function ComparePage() {
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-lg font-semibold text-stone-900">
-                          Techstyles vs {competitor.name}
+                          Focuspilot vs {competitor.name}
                         </h3>
                         <ArrowRight className="h-5 w-5 text-stone-400 transition-transform group-hover:translate-x-1" />
                       </div>
                       <p className="text-sm text-stone-600 mb-4">{competitor.description}</p>
                       <div className="pt-4 border-t border-stone-100">
-                        <p className="text-xs font-medium text-stone-500 mb-2">Techstyles advantage:</p>
-                        <p className="text-sm text-stone-700">{competitor.techstylesAdvantage}</p>
+                        <p className="text-xs font-medium text-stone-500 mb-2">Focuspilot advantage:</p>
+                        <p className="text-sm text-stone-700">{competitor.focuspilotAdvantage}</p>
                       </div>
                     </CardContent>
                   </Card>
@@ -140,13 +140,13 @@ export default function ComparePage() {
           </div>
         </section>
 
-        {/* Why Techstyles */}
+                {/* Why Focuspilot */}
         <section className="bg-stone-50 py-16 sm:py-20">
           <div className={container}>
             <div className="mx-auto max-w-3xl text-center mb-12">
-              <h2 className={cn(H2)}>Why studios switch to Techstyles</h2>
+              <h2 className={cn(H2)}>Why studios switch to Focuspilot</h2>
               <p className={cn(Lead, "mt-4")}>
-                Common reasons interior designers choose Techstyles over alternatives
+                Common reasons interior designers choose Focuspilot over alternatives
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -196,9 +196,9 @@ export default function ComparePage() {
         <section className="py-16 sm:py-24">
           <div className={container}>
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className={cn(H2)}>Ready to see Techstyles in action?</h2>
+                <h2 className={cn(H2)}>Ready to see Focuspilot in action?</h2>
               <p className={cn(Lead, "mt-4")}>
-                Start your free 3-month trial and see why studios are switching to Techstyles.
+                Start your free 3-month trial and see why studios are switching to Focuspilot.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
                 <CtaButton href="/signup" >

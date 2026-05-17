@@ -501,4 +501,4 @@ vercel git connect
 
 ---
 
-*Last updated: May 2026 — Focus-Studio / TechStyles Vercel frontend deployment.*
+*Last updated: May 2026 — Focus-Studio / Focuspilot Vercel frontend deployment.*

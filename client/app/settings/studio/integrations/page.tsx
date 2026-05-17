@@ -13,7 +13,7 @@ function IntegrationsPageContent() {
     <div className="space-y-6 md:space-y-8">
       <div>
         <h1 className="text-base font-semibold text-gray-900">Integrations</h1>
-        <p className="text-sm text-gray-600 mt-0.5">Connect TechStyles Studio to your tools.</p>
+        <p className="text-sm text-gray-600 mt-0.5">Connect Focuspilot Studio to your tools.</p>
       </div>
 
       <Section title="Apps">

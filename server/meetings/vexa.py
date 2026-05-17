@@ -9,7 +9,7 @@ def _headers():
     return {'X-API-Key': VEXA_API_KEY, 'Content-Type': 'application/json'}
 
 
-def join_meeting(platform: str, native_meeting_id: str, bot_name: str = 'TechStyles Bot') -> dict:
+def join_meeting(platform: str, native_meeting_id: str, bot_name: str = 'Focuspilot Bot') -> dict:
     response = requests.post(
         f"{VEXA_API_BASE}/bots",
         headers=_headers(),

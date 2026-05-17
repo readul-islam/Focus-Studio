@@ -15,7 +15,7 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
       "style-src 'self' 'unsafe-inline'",
       // Dev traffic goes through /api proxy (same origin). Prod goes to be-stg directly.
-      `connect-src 'self' ${apiUrl} https://be-stg.techstyles.ai https://*.googleapis.com`,
+      `connect-src 'self' ${apiUrl} https://api.focuspilot.io, https://*.googleapis.com`,
       `img-src 'self' data: blob: https: ${apiUrl}`,
       "font-src 'self'",
       "frame-ancestors 'none'",

@@ -136,7 +136,7 @@ function StudioGeneralPageContent() {
           Studio settings
         </h1>
         <p className="text-sm text-gray-600">
-          Organisation-wide configuration for TechStyles Studio.
+          Organisation-wide configuration for Focuspilot Studio.
         </p>
       </div>
 
@@ -162,7 +162,7 @@ function StudioGeneralPageContent() {
               type="email"
               value={studioData.support_email}
               onChange={set("support_email")}
-              placeholder="support@techstyles.com"
+              placeholder="support@focuspilot.io"
             />
           </div>
 

@@ -90,7 +90,7 @@ function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
   } = useFetch(`projects/project-phases/?project_id=${params?.id}`, { enabled: !!params?.id });
 
   useEffect(() => {
-    document.title = `${projectData?.project_name || 'Project Overview'} | TechStyles`;
+    document.title = `${projectData?.project_name || 'Project Overview'} | Focuspilot`;
   }, [projectData]);
 
   // Initialize phase progress map from API data

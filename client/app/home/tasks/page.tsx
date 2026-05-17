@@ -643,7 +643,7 @@ export default function MyTasksPage() {
   };
 
   useEffect(() => {
-    document.title = 'My Task | TechStyles';
+    document.title = 'My Task | Focuspilot';
   }, []);
 
   const { mutate: removeTask, isPending: isDeleting } = useDeleteData({

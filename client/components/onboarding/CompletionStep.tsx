@@ -22,7 +22,7 @@ const CompletionStep = ({ clubData, onComplete }: CompletionStepProps) => {
         <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
           <CheckCircle className="w-10 h-10 text-green-600" />
         </div>
-        <CardTitle className="text-2xl">Welcome to TechStyles!</CardTitle>
+        <CardTitle className="text-2xl">Welcome to Focuspilot!</CardTitle>
         <p className="text-gray-600">Your studio has been successfully set up </p>
       </CardHeader>
       <CardContent className="space-y-6">

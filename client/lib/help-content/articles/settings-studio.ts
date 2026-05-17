@@ -580,7 +580,7 @@ For custom integrations:
 3. Copy API key
 4. Use in your custom integration
 
-See API documentation at docs.techstyles.com.
+See API documentation at docs.focuspilot.io.
 
 ## Webhook Setup
 

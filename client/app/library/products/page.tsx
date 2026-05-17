@@ -233,7 +233,7 @@ function ProductsPageContent() {
   });
 
   useEffect(() => {
-    document.title = 'Products | TechStyles';
+    document.title = 'Products | Focuspilot';
   }, []);
 
   function closeEditModal() {

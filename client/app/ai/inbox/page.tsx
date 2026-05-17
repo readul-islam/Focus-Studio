@@ -1107,7 +1107,7 @@ export default function MagicalInboxPage() {
     
 
   useEffect(() => {
-    document.title = 'AI Inbox | TechStyles';
+    document.title = 'AI Inbox | Focuspilot';
   }, []);
 
   // Fetch Gmail on mount

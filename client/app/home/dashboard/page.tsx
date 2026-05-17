@@ -127,7 +127,7 @@ export default function DashboardPage() {
   const [isRegenerating, setIsRegenerating] = useState(false);
 
   useEffect(() => {
-    document.title = 'Home | TechStyles';
+    document.title = 'Home | Focuspilot';
   }, []);
 
   

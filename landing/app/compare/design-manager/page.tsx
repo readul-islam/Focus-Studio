@@ -13,27 +13,27 @@ const H2 = "text-2xl sm:text-[30px] md:text-4xl font-medium tracking-tight"
 const Lead = "text-base sm:text-lg text-stone-600"
 
 export const metadata: Metadata = {
-  title: "Techstyles vs Design Manager | Modern Interior Design Software 2026",
+  title: "Focuspilot vs Design Manager | Modern Interior Design Software 2026",
   description:
-    "Compare Techstyles vs Design Manager. Modern cloud software vs legacy desktop. AI features, real-time collaboration, mobile access. Migrate free from Design Manager.",
+    "Compare Focuspilot vs Design Manager. Modern cloud software vs legacy desktop. AI features, real-time collaboration, mobile access. Migrate free from Design Manager.",
   keywords: [
-    "Techstyles vs Design Manager",
+    "Focuspilot vs Design Manager",
     "Design Manager alternative",
     "interior design software comparison",
     "modern design studio software",
     "UK interior design software",
   ],
   openGraph: {
-    title: "Techstyles vs Design Manager | Modern Interior Design Software 2026",
+    title: "Focuspilot vs Design Manager | Modern Interior Design Software 2026",
     description:
-      "Compare Techstyles vs Design Manager. Modern cloud software vs legacy desktop. AI features, real-time collaboration, mobile access. Migrate free from Design Manager.",
+      "Compare Focuspilot vs Design Manager. Modern cloud software vs legacy desktop. AI features, real-time collaboration, mobile access. Migrate free from Design Manager.",
     type: "article",
     url: "https://focuspilot.io/compare/design-manager",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Techstyles vs Design Manager | Modern Interior Design Software 2026",
-    description: "Compare Techstyles vs Design Manager. Modern cloud software vs legacy desktop. AI features, real-time collaboration, mobile access.",
+    title: "Focuspilot vs Design Manager | Modern Interior Design Software 2026",
+    description: "Compare Focuspilot vs Design Manager. Modern cloud software vs legacy desktop. AI features, real-time collaboration, mobile access.",
   },
   alternates: {
     canonical: "https://focuspilot.io/compare/design-manager",
@@ -44,86 +44,86 @@ const comparisonData = [
   {
     category: "User Experience",
     features: [
-      { name: "Modern cloud-based interface", techstyles: true, designManager: "partial" },
-      { name: "Mobile-responsive design", techstyles: true, designManager: false },
-      { name: "Real-time collaboration", techstyles: true, designManager: "partial" },
-      { name: "No installation required", techstyles: true, designManager: false },
-      { name: "Regular feature updates", techstyles: true, designManager: "partial" },
+      { name: "Modern cloud-based interface", focuspilot: true, designManager: "partial" },
+      { name: "Mobile-responsive design", focuspilot: true, designManager: false },
+      { name: "Real-time collaboration", focuspilot: true, designManager: "partial" },
+      { name: "No installation required", focuspilot: true, designManager: false },
+      { name: "Regular feature updates", focuspilot: true, designManager: "partial" },
     ],
   },
   {
     category: "AI & Automation",
     features: [
-      { name: "AI email drafting", techstyles: true, designManager: false },
-      { name: "AI product sourcing", techstyles: true, designManager: false },
-      { name: "Automated payment reminders", techstyles: true, designManager: "partial" },
-      { name: "Smart proposal generation", techstyles: true, designManager: false },
-      { name: "Workflow automation", techstyles: true, designManager: "partial" },
+      { name: "AI email drafting", focuspilot: true, designManager: false },
+      { name: "AI product sourcing", focuspilot: true, designManager: false },
+      { name: "Automated payment reminders", focuspilot: true, designManager: "partial" },
+      { name: "Smart proposal generation", focuspilot: true, designManager: false },
+      { name: "Workflow automation", focuspilot: true, designManager: "partial" },
     ],
   },
   {
     category: "Client Experience",
     features: [
-      { name: "Branded client portal", techstyles: true, designManager: true },
-      { name: "In-portal payments", techstyles: true, designManager: false },
-      { name: "Mobile client access", techstyles: true, designManager: false },
-      { name: "Real-time approval notifications", techstyles: true, designManager: "partial" },
-      { name: "Client comment threads", techstyles: true, designManager: true },
+      { name: "Branded client portal", focuspilot: true, designManager: true },
+      { name: "In-portal payments", focuspilot: true, designManager: false },
+      { name: "Mobile client access", focuspilot: true, designManager: false },
+      { name: "Real-time approval notifications", focuspilot: true, designManager: "partial" },
+      { name: "Client comment threads", focuspilot: true, designManager: true },
     ],
   },
   {
     category: "Financial Management",
     features: [
-      { name: "Project budgeting", techstyles: true, designManager: true },
-      { name: "Invoice generation", techstyles: true, designManager: true },
-      { name: "Xero integration", techstyles: true, designManager: "partial" },
-      { name: "Stripe payments", techstyles: true, designManager: false },
-      { name: "Profitability reporting", techstyles: true, designManager: true },
-      { name: "Purchase order management", techstyles: true, designManager: true },
+          { name: "Project budgeting", focuspilot: true, designManager: true },
+      { name: "Invoice generation", focuspilot: true, designManager: true },
+      { name: "Xero integration", focuspilot: true, designManager: "partial" },
+        { name: "Stripe payments", focuspilot: true, designManager: false },
+      { name: "Profitability reporting", focuspilot: true, designManager: true },
+      { name: "Purchase order management", focuspilot: true, designManager: true },
     ],
   },
   {
     category: "Procurement",
     features: [
-      { name: "Product library", techstyles: true, designManager: true },
-      { name: "Supplier database", techstyles: true, designManager: true },
-      { name: "Trade pricing management", techstyles: true, designManager: true },
-      { name: "AI alternative finder", techstyles: true, designManager: false },
-      { name: "Order tracking", techstyles: true, designManager: true },
+      { name: "Product library", focuspilot: true, designManager: true },
+      { name: "Supplier database", focuspilot: true, designManager: true },
+      { name: "Trade pricing management", focuspilot: true, designManager: true },
+      { name: "AI alternative finder", focuspilot: true, designManager: false },
+      { name: "Order tracking", focuspilot: true, designManager: true },
     ],
   },
 ]
 
 const faqs = [
   {
-    question: "How is Techstyles different from Design Manager?",
+    question: "How is Focuspilot different from Design Manager?",
     answer:
-      "Techstyles is a modern, cloud-native platform built for today's design studios. Unlike Design Manager's legacy desktop software, Techstyles offers AI-powered features, real-time collaboration, mobile access, and integrated client payments. It's designed for studios who want modern tools without the complexity of traditional software.",
+      "Focuspilot is a modern, cloud-native platform built for today's design studios. Unlike Design Manager's legacy desktop software, Focuspilot offers AI-powered features, real-time collaboration, mobile access, and integrated client payments. It's designed for studios who want modern tools without the complexity of traditional software.",
   },
   {
     question: "Is Design Manager better for larger studios?",
     answer:
-      "Design Manager has historically served larger studios, but Techstyles scales effectively from solo designers to 50+ person teams. Our AI features actually help smaller teams punch above their weight by automating admin tasks that would otherwise require additional staff.",
+      "Design Manager has historically served larger studios, but Focuspilot scales effectively from solo designers to 50+ person teams. Our AI features actually help smaller teams punch above their weight by automating admin tasks that would otherwise require additional staff.",
   },
   {
-    question: "Can I access Techstyles on mobile?",
+    question: "Can I access Focuspilot on mobile?",
     answer:
-      "Yes. Techstyles is fully responsive and works on any device with a browser. Your clients also get mobile-optimised portal access for approvals and payments. Design Manager requires desktop installation for full functionality.",
+      "Yes. Focuspilot is fully responsive and works on any device with a browser. Your clients also get mobile-optimised portal access for approvals and payments. Design Manager requires desktop installation for full functionality.",
   },
   {
     question: "Which has better accounting integration?",
     answer:
-      "Techstyles has native two-way sync with Xero and QuickBooks, with automatic invoice and payment reconciliation. Design Manager supports accounting exports but requires more manual work to keep systems in sync.",
+      "Focuspilot has native two-way sync with Xero and QuickBooks, with automatic invoice and payment reconciliation. Design Manager supports accounting exports but requires more manual work to keep systems in sync.",
   },
   {
-    question: "Is Techstyles suitable for commercial projects?",
+    question: "Is Focuspilot suitable for commercial projects?",
     answer:
-      "Absolutely. While Techstyles excels at residential projects, our procurement, approval, and financial tools handle commercial projects of any size. Multi-location projects, multiple stakeholder approvals, and complex budgeting are all supported.",
+      "Absolutely. While Focuspilot excels at residential projects, our procurement, approval, and financial tools handle commercial projects of any size. Multi-location projects, multiple stakeholder approvals, and complex budgeting are all supported.",
   },
   {
     question: "What about training and support?",
     answer:
-      "Techstyles is designed to be intuitive—most users are productive within hours, not weeks. We offer free onboarding calls, in-app guidance, and responsive support. Design Manager typically requires formal training sessions.",
+        "Focuspilot is designed to be intuitive—most users are productive within hours, not weeks. We offer free onboarding calls, in-app guidance, and responsive support. Design Manager typically requires formal training sessions.",
   },
 ]
 
@@ -157,13 +157,13 @@ export default function TechstylesVsDesignManagerPage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://techstyles.app" },
-      { "@type": "ListItem", position: 2, name: "Compare", item: "https://techstyles.app/compare" },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://focuspilot.io" },
+      { "@type": "ListItem", position: 2, name: "Compare", item: "https://focuspilot.io/compare" },
       {
         "@type": "ListItem",
         position: 3,
-        name: "Techstyles vs Design Manager",
-        item: "https://techstyles.app/compare/design-manager",
+        name: "Focuspilot vs Design Manager",
+        item: "https://focuspilot.io/compare/design-manager",
       },
     ],
   }
@@ -179,9 +179,9 @@ export default function TechstylesVsDesignManagerPage() {
             <Badge variant="outline" className="mb-4 border-stone-300 text-stone-600">
               Software Comparison
             </Badge>
-            <h1 className={cn(H1, "text-center")}>Techstyles vs Design Manager</h1>
+            <h1 className={cn(H1, "text-center")}>Focuspilot vs Design Manager</h1>
             <p className={cn(Lead, "mt-4 text-center")}>
-              Comparing modern cloud software with legacy desktop systems. See why studios are switching to Techstyles
+              Comparing modern cloud software with legacy desktop systems. See why studios are switching to Focuspilot
               for AI-powered workflows, mobile access, and integrated client payments.
             </p>
           </div>
@@ -195,7 +195,7 @@ export default function TechstylesVsDesignManagerPage() {
           <div className="grid gap-6 md:grid-cols-2">
             <Card className="border-2 border-stone-900">
               <CardContent className="p-6 sm:p-8">
-                <div className="mb-4 text-xl font-semibold">Choose Techstyles if you want...</div>
+                <div className="mb-4 text-xl font-semibold">Choose Focuspilot if you want...</div>
                 <ul className="space-y-3 text-stone-600">
                   <li className="flex items-start gap-3">
                     <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />
@@ -256,7 +256,7 @@ export default function TechstylesVsDesignManagerPage() {
               <thead>
                 <tr className="border-b border-stone-200">
                   <th className="py-4 text-left font-semibold">Feature</th>
-                  <th className="py-4 text-center font-semibold">Techstyles</th>
+                  <th className="py-4 text-center font-semibold">Focuspilot</th>
                   <th className="py-4 text-center font-semibold">Design Manager</th>
                 </tr>
               </thead>
@@ -273,11 +273,12 @@ export default function TechstylesVsDesignManagerPage() {
                         <td className="py-3 px-4 text-stone-700">{feature.name}</td>
                         <td className="py-3 text-center">
                           <div className="flex justify-center">
-                            <FeatureStatus status={feature.techstyles} />
+                              <FeatureStatus status={feature.focuspilot} />
                           </div>
                         </td>
                         <td className="py-3 text-center">
                           <div className="flex justify-center">
+                              <FeatureStatus status={feature.focuspilot} />
                             <FeatureStatus status={feature.designManager} />
                           </div>
                         </td>
@@ -424,7 +425,7 @@ export default function TechstylesVsDesignManagerPage() {
         <div className={container}>
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-2xl sm:text-[28px] md:text-[32px] font-medium tracking-tight text-stone-900">Experience modern design software</h2>
-            <p className="mt-3 text-base sm:text-lg text-stone-700">See why studios are moving from legacy systems to Techstyles.</p>
+            <p className="mt-3 text-base sm:text-lg text-stone-700">See why studios are moving from legacy systems to Focuspilot.</p>
             <div className="mt-8 flex justify-center">
               <CtaButton href="/signup" variant="slate" label="Start for free" showArrow arrowVariant="white" />
             </div>

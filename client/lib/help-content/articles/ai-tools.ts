@@ -117,7 +117,7 @@ Install the Focuspilot AI Clipper Chrome extension to start clipping products fr
 ## Requirements
 
 - **Google Chrome browser** (not supported in Safari, Firefox, or Edge)
-- **Focuspilot account** (sign up at techstyles.com if needed)
+- **Focuspilot account** (sign up at focuspilot.io if needed)
 
 ## Installation Steps
 
@@ -196,7 +196,7 @@ If the extension detects the product, you're all set.
 
 - Verify your Focuspilot credentials
 - Ensure you have an active Focuspilot account
-- Try logging in at techstyles.com first, then retry extension login
+- Try logging in at focuspilot.io first, then retry extension login
 
 ### Product Not Detected
 

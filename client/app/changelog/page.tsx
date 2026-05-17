@@ -140,7 +140,7 @@ export default function ChangelogPage() {
       <div className="space-y-2">
         <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Changelog</h1>
         <p className="text-base text-gray-500">
-          New features, improvements, and fixes to TechStyles.
+          New features, improvements, and fixes to Focuspilot.
         </p>
       </div>
 

@@ -357,7 +357,7 @@ const handleSubmit = (e: React.FormEvent) => {
           </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input disabled readOnly value={currentUser?.email} id="email" type="email" placeholder="jane@techstyles.com" />
+            <Input disabled readOnly value={currentUser?.email} id="email" type="email" placeholder="jane@focuspilot.io" />
             <p className="text-xs ml-2 opacity-70 text-muted-foreground">Email cannot be changed</p>
           </div>
           <div className="space-y-2">

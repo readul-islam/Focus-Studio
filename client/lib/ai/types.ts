@@ -1,4 +1,4 @@
-// TechStyles AI - TypeScript Type Definitions
+// Focuspilot AI - TypeScript Type Definitions
 
 export interface DailyBrief {
   id: string;

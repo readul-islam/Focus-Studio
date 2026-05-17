@@ -13,27 +13,27 @@ const H2 = "text-2xl sm:text-[30px] md:text-4xl font-medium tracking-tight"
 const Lead = "text-base sm:text-lg text-stone-600"
 
 export const metadata: Metadata = {
-  title: "Techstyles vs Houzz Pro | Interior Design Software Comparison 2025",
+  title: "Focuspilot vs Houzz Pro | Interior Design Software Comparison 2025",
   description:
-    "Compare Techstyles vs Houzz Pro for interior design studios. Independent platform vs Houzz ecosystem. See AI features, UK pricing, and why designers are switching.",
+    "Compare Focuspilot vs Houzz Pro for interior design studios. Independent platform vs Houzz ecosystem. See AI features, UK pricing, and why designers are switching.",
   keywords: [
-    "Techstyles vs Houzz Pro",
+    "Focuspilot vs Houzz Pro",
     "Houzz Pro alternative",
     "interior design software comparison",
     "Houzz Pro alternative UK",
     "independent design software",
   ],
   openGraph: {
-    title: "Techstyles vs Houzz Pro | Interior Design Software Comparison 2025",
+    title: "Focuspilot vs Houzz Pro | Interior Design Software Comparison 2025",
     description:
-      "Compare Techstyles vs Houzz Pro for interior design studios. Independent platform vs Houzz ecosystem. AI features, UK pricing, and more.",
+      "Compare Focuspilot vs Houzz Pro for interior design studios. Independent platform vs Houzz ecosystem. AI features, UK pricing, and more.",
     type: "article",
     url: "https://focuspilot.io/compare/houzz-pro",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Techstyles vs Houzz Pro | Interior Design Software Comparison",
-    description: "Compare Techstyles vs Houzz Pro. See why UK designers choose an independent platform.",
+    title: "Focuspilot vs Houzz Pro | Interior Design Software Comparison",
+    description: "Compare Focuspilot vs Houzz Pro. See why UK designers choose an independent platform.",
   },
   alternates: {
     canonical: "https://focuspilot.io/compare/houzz-pro",
@@ -44,80 +44,80 @@ const comparisonData = [
   {
     category: "Platform Independence",
     features: [
-      { name: "Independent platform (not tied to marketplace)", techstyles: true, houzzPro: false },
-      { name: "Own your client relationships", techstyles: true, houzzPro: "partial" },
-      { name: "No platform commission on leads", techstyles: true, houzzPro: false },
-      { name: "Use with any product suppliers", techstyles: true, houzzPro: true },
-      { name: "White-label client portal", techstyles: true, houzzPro: "partial" },
+      { name: "Independent platform (not tied to marketplace)", focuspilot: true, houzzPro: false },
+      { name: "Own your client relationships", focuspilot: true, houzzPro: "partial" },
+      { name: "No platform commission on leads", focuspilot: true, houzzPro: false },
+      { name: "Use with any product suppliers", focuspilot: true, houzzPro: true },
+      { name: "White-label client portal", focuspilot: true, houzzPro: "partial" },
     ],
   },
   {
     category: "UK & European Focus",
     features: [
-      { name: "Native Xero integration", techstyles: true, houzzPro: false },
-      { name: "GBP pricing & UK VAT handling", techstyles: true, houzzPro: "partial" },
-      { name: "UK-based support team", techstyles: true, houzzPro: false },
-      { name: "GDPR compliant", techstyles: true, houzzPro: true },
-      { name: "British spelling & terminology", techstyles: true, houzzPro: false },
+      { name: "Native Xero integration", focuspilot: true, houzzPro: false },
+      { name: "GBP pricing & UK VAT handling", focuspilot: true, houzzPro: "partial" },
+      { name: "UK-based support team", focuspilot: true, houzzPro: false },
+      { name: "GDPR compliant", focuspilot: true, houzzPro: true },
+      { name: "British spelling & terminology", focuspilot: true, houzzPro: false },
     ],
   },
   {
     category: "AI Features",
     features: [
-      { name: "AI email drafting", techstyles: true, houzzPro: false },
-      { name: "AI product sourcing", techstyles: true, houzzPro: false },
-      { name: "AI proposal generation", techstyles: true, houzzPro: false },
-      { name: "Smart client thread summaries", techstyles: true, houzzPro: false },
-      { name: "Automated data extraction", techstyles: true, houzzPro: false },
+      { name: "AI email drafting", focuspilot: true, houzzPro: false },
+      { name: "AI product sourcing", focuspilot: true, houzzPro: false },
+      { name: "AI proposal generation", focuspilot: true, houzzPro: false },
+      { name: "Smart client thread summaries", focuspilot: true, houzzPro: false },
+      { name: "Automated data extraction", focuspilot: true, houzzPro: false },
     ],
-  },
+  },  
   {
     category: "Project Management",
     features: [
-      { name: "Project timelines & phases", techstyles: true, houzzPro: true },
-      { name: "Task management", techstyles: true, houzzPro: true },
-      { name: "Team collaboration", techstyles: true, houzzPro: true },
-      { name: "Document storage", techstyles: true, houzzPro: true },
-      { name: "Client communication log", techstyles: true, houzzPro: true },
+      { name: "Project timelines & phases", focuspilot: true, houzzPro: true },
+                  { name: "Task management", focuspilot: true, houzzPro: true },
+      { name: "Team collaboration", focuspilot: true, houzzPro: true },
+      { name: "Document storage", focuspilot: true, houzzPro: true },
+      { name: "Client communication log", focuspilot: true, houzzPro: true },
     ],
   },
   {
     category: "Finance & Payments",
     features: [
-      { name: "Invoice generation", techstyles: true, houzzPro: true },
-      { name: "Stripe payment integration", techstyles: true, houzzPro: false },
-      { name: "Project profitability tracking", techstyles: true, houzzPro: "partial" },
-      { name: "Automated payment reminders", techstyles: true, houzzPro: "partial" },
-      { name: "Accounting software sync", techstyles: true, houzzPro: "partial" },
+      { name: "Invoice generation", focuspilot: true, houzzPro: true },
+        { name: "Stripe payment integration", focuspilot: true, houzzPro: false },
+      { name: "Project profitability tracking", focuspilot: true, houzzPro: "partial" },
+      { name: "Automated payment reminders", focuspilot: true, houzzPro: "partial" },
+      { name: "Accounting software sync", focuspilot: true, houzzPro: "partial" },
     ],
   },
 ]
 
 const faqs = [
   {
-    question: "What's the main difference between Techstyles and Houzz Pro?",
+    question: "What's the main difference between Focuspilot and Houzz Pro?",
     answer:
-      "Techstyles is an independent platform built specifically for running your design business, while Houzz Pro is tied to the Houzz marketplace ecosystem. Techstyles gives you complete ownership of client relationships without platform fees or commissions.",
+      "Focuspilot is an independent platform built specifically for running your design business, while Houzz Pro is tied to the Houzz marketplace ecosystem. Focuspilot gives you complete ownership of client relationships without platform fees or commissions.",
   },
   {
     question: "Is Houzz Pro better for getting leads?",
     answer:
-      "Houzz Pro includes access to the Houzz marketplace for lead generation, but these leads come with platform dependencies and potential commission fees. Techstyles focuses on helping you manage and convert your own leads more effectively with AI-powered proposals and CRM features.",
+      "Houzz Pro includes access to the Houzz marketplace for lead generation, but these leads come with platform dependencies and potential commission fees. Focuspilot focuses on helping you manage and convert your own leads more effectively with AI-powered proposals and CRM features.",
   },
   {
-    question: "Does Techstyles integrate with Xero?",
+    question: "Does Focuspilot integrate with Xero?",
     answer:
-      "Yes, Techstyles has native two-way Xero integration (the most popular UK accounting software), which Houzz Pro lacks. Invoices, payments, and expenses sync automatically.",
+      "Yes, Focuspilot has native two-way Xero integration (the most popular UK accounting software), which Houzz Pro lacks. Invoices, payments, and expenses sync automatically.",
   },
   {
     question: "Can I use both platforms together?",
     answer:
-      "Some studios use Houzz for visibility while managing their business in Techstyles. However, most find that Techstyles' CRM and lead management features eliminate the need for Houzz Pro's business tools.",
+      "Some studios use Houzz for visibility while managing their business in Focuspilot. However, most find that Focuspilot's CRM and lead management features eliminate the need for Houzz Pro's business tools.",
   },
   {
     question: "Which is better for UK-based studios?",
     answer:
-      "Techstyles is purpose-built for UK and European studios with GBP pricing, VAT handling, Xero integration, and UK-based support. Houzz Pro is primarily designed for the US market.",
+      "Focuspilot is purpose-built for UK and European studios with GBP pricing, VAT handling, Xero integration, and UK-based support. Houzz Pro is primarily designed for the US market.",
   },
 ]
 
@@ -167,7 +167,7 @@ export default function TechstylesVsHouzzProPage() {
               <Badge variant="outline" className="mb-4 border-stone-300 text-stone-600">
                 Software Comparison
               </Badge>
-              <h1 className={cn(H1, "text-center")}>Techstyles vs Houzz Pro</h1>
+              <h1 className={cn(H1, "text-center")}>Focuspilot vs Houzz Pro</h1>
               <p className={cn(Lead, "mt-4 text-center")}>
                 Compare an independent, UK-focused platform with the Houzz marketplace ecosystem.
                 See which is right for your interior design studio.
@@ -183,7 +183,7 @@ export default function TechstylesVsHouzzProPage() {
             <div className="grid gap-6 md:grid-cols-2">
               <Card className="border-2 border-stone-900">
                 <CardContent className="p-6 sm:p-8">
-                  <div className="mb-4 text-xl font-semibold">Choose Techstyles if you...</div>
+                  <div className="mb-4 text-xl font-semibold">Choose Focuspilot if you...</div>
                   <ul className="space-y-3 text-stone-600">
                     <li className="flex items-start gap-3">
                       <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />
@@ -261,12 +261,12 @@ export default function TechstylesVsHouzzProPage() {
                           <td className="py-3 px-4 text-stone-700">{feature.name}</td>
                           <td className="py-3 px-4 text-center">
                             <div className="flex justify-center">
-                              <FeatureStatus status={feature.techstyles} />
+                              <FeatureStatus status={feature.focuspilot} />
                             </div>
                           </td>
                           <td className="py-3 px-4 text-center">
                             <div className="flex justify-center">
-                              <FeatureStatus status={feature.houzzPro} />
+                              <FeatureStatus status={feature.focuspilot} />
                             </div>
                           </td>
                         </tr>
@@ -311,7 +311,7 @@ export default function TechstylesVsHouzzProPage() {
         <section className="bg-stone-900 py-16 sm:py-20">
           <div className={container}>
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-2xl sm:text-[28px] md:text-[32px] font-medium tracking-tight text-white">Ready to try Techstyles?</h2>
+                  <h2 className="text-2xl sm:text-[28px] md:text-[32px] font-medium tracking-tight text-white">Ready to try Focuspilot?</h2>
               <p className="mt-4 text-stone-300">
                 Start your free 3-month trial. No credit card required. Free migration from Houzz Pro.
               </p>

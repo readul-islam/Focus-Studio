@@ -79,7 +79,7 @@ export default function ReportsPage() {
   }, [query, qf]);
 
   useEffect(() => {
-    document.title = 'Reports | TechStyles';
+    document.title = 'Reports | Focuspilot';
   }, []);
 
   return (

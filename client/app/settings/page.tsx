@@ -55,7 +55,7 @@ export default function Page() {
                 <Label htmlFor="email" className="text-sm font-medium text-gray-700">
                   Email Address
                 </Label>
-                <Input id="email" type="email" defaultValue="jane@techstyles.com" className="mt-1" />
+                <Input id="email" type="email" defaultValue="jane@focuspilot.io" className="mt-1" />
               </div>
 
               <div>

@@ -18,9 +18,9 @@ VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'TechStyles Client',
-        short_name: 'TechStyles',
-        description: 'Client application for TechStyles platform.',
+        name: 'Focuspilot Client',
+        short_name: 'Focuspilot',
+        description: 'Client application for Focuspilot platform.',
         theme_color: '#000000',
         background_color: '#ffffff',
         display: 'standalone',

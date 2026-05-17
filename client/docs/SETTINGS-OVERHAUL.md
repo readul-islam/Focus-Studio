@@ -1,4 +1,4 @@
-# TechStyles Settings Overhaul — Plan & Reference
+# Focuspilot Settings Overhaul — Plan & Reference
 
 **Created:** 2 April 2026  
 **Branch to build on:** `fix/settings-overhaul` (to be created from `main`)  

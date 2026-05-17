@@ -1,7 +1,7 @@
 /**
  * Simple global nav event bus so only one menu is open at a time.
  */
-export const NAV_EVENT = "techstyles:nav-open"
+export const NAV_EVENT = "focuspilot:nav-open"
 
 export function notifyNavOpen(id: string) {
   if (typeof window === "undefined") return

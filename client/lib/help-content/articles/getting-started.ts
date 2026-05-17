@@ -2,7 +2,7 @@ import { HelpArticle } from '../types';
 
 export const gettingStartedArticles: HelpArticle[] = [
   {
-    slug: "welcome-to-techstyles",
+    slug: "welcome-to-focuspilot",
     title: "Welcome to Focuspilot",
     description:
       "An introduction to the Focuspilot platform and who it's designed for",
@@ -55,7 +55,7 @@ Ready to dive in? Here's where to start:
 
 ## Need Help?
 
-Browse articles by category in this help centre, or reach out to support@techstyles.com if you need assistance.
+Browse articles by category in this help centre, or reach out to support@focuspilot.io if you need assistance.
 
 Welcome to Focuspilot — let's build something great together.`,
     screenshots: ["getting-started/welcome.png"],
@@ -266,7 +266,7 @@ Your team is the heart of your studio — make sure everyone has the right acces
   {
     slug: "creating-first-project",
     title: "Creating Your First Project",
-    description: "Step-by-step guide to setting up a project in TechStyles",
+    description: "Step-by-step guide to setting up a project in Focuspilot",
     category: "getting-started",
     readTime: 6,
     lastUpdated: "2026-02-27",

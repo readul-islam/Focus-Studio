@@ -83,7 +83,7 @@ const AccountSetupStep = ({ data, onUpdate, onNext }: AccountSetupStepProps) => 
           <User className="w-5 h-5 mr-2 text-team-red" />
           Create Your Account
         </CardTitle>
-        <p className="text-sm text-gray-600">Let's start by setting up your administrator account for TechStyles.</p>
+        <p className="text-sm text-gray-600">Let's start by setting up your administrator account for Focuspilot.</p>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">

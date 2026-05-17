@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     description:
       "AI-powered project management for interior designers & architects. Manage projects, procurement, client approvals & invoicing in one workspace. Free 3-month trial.",
     images: ["/images/twitter-image.png"],
-    creator: "@techstyles",
+    creator: "@focuspilot",
   },
   robots: {
     index: true,
@@ -89,7 +89,7 @@ const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "@id": "https://focuspilot.io/#organization",
-  name: "Techstyles",
+  name: "Focuspilot",
   url: "https://focuspilot.io",
   logo: {
     "@type": "ImageObject",
@@ -100,14 +100,14 @@ const organizationSchema = {
   description: "The modern operating system for interior designers and architects.",
   foundingDate: "2024",
   sameAs: [
-    "https://twitter.com/techstyles",
-    "https://linkedin.com/company/techstyles",
-    "https://instagram.com/techstyles",
+    "https://twitter.com/focuspilot",
+    "https://linkedin.com/company/focuspilot",
+    "https://instagram.com/focuspilot",
   ],
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer service",
-    email: "hello@techstyles.com",
+    email: "hello@focuspilot.io",
     availableLanguage: ["English"],
   },
 }
@@ -116,7 +116,7 @@ const softwareApplicationSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "@id": "https://focuspilot.io/#software",
-  name: "Techstyles",
+  name: "Focuspilot",
   applicationCategory: "BusinessApplication",
   applicationSubCategory: "Project Management Software",
   operatingSystem: "Web",
@@ -155,7 +155,7 @@ const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "@id": "https://focuspilot.io/#website",
-  name: "Techstyles",
+  name: "Focuspilot",
   url: "https://focuspilot.io",
   publisher: {
     "@id": "https://focuspilot.io/#organization",

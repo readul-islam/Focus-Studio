@@ -126,7 +126,7 @@ const ClubInfoStep = ({ phone, onNext, onSkip }: ClubInfoStepProps) => {
                 type="text"
                 value={form.name}
                 onChange={e => handleInputChange('name', e.target.value)}
-                placeholder="eg: TechStyles"
+                placeholder="eg: Focuspilot"
                 className="mt-1"
               />
             </div>

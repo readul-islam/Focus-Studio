@@ -99,12 +99,12 @@ Ensure these are implemented and accessible:
 
 ```bash
 # Test generate endpoint
-curl -X POST https://be-stg.techstyles.ai/api/ai/daily-brief/generate \
+curl -X POST https://be-stg.focuspilot.io/api/ai/daily-brief/generate \
   -H "Authorization: Bearer YOUR_JWT_TOKEN" \
   -H "Content-Type: application/json"
 
 # Test latest endpoint
-curl https://be-stg.techstyles.ai/api/ai/daily-brief/latest \
+curl https://be-stg.focuspilot.io/api/ai/daily-brief/latest \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 

@@ -22,8 +22,8 @@ export default function ContactPage() {
             <Mail className="mx-auto h-8 w-8 text-stone-600" />
             <h2 className="mt-4 font-semibold text-stone-900">Email Us</h2>
             <p className="mt-2 text-sm text-stone-600">For general enquiries and support</p>
-            <a href="mailto:hello@techstyles.ai" className="mt-4 inline-block text-stone-900 underline hover:no-underline">
-              hello@techstyles.ai
+            <a href="mailto:hello@focuspilot.io" className="mt-4 inline-block text-stone-900 underline hover:no-underline">
+              hello@focuspilot.io
             </a>
           </div>
           <div className="rounded-xl border border-stone-200 p-6">

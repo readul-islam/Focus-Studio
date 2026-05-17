@@ -464,7 +464,7 @@ function FinancePageContent(params) {
   ];
 
   useEffect(() => {
-    document.title = 'Finance | TechStyles';
+    document.title = 'Finance | Focuspilot';
   }, []);
 
   const getStatusStyle = (status: string) => {

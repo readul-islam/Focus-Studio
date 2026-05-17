@@ -17,7 +17,7 @@ const config: Config = {
     },
     extend: {
       colors: {
-        // TechStyles brand stone (from v5 --arch-stone)
+        // Focuspilot brand stone (from v5 --arch-stone)
         stone: {
           DEFAULT: "#F8F4EC",
           50: "#F8F4EC",

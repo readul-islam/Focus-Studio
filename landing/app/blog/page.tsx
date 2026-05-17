@@ -6,11 +6,11 @@ import { getAllPosts } from "@/lib/blog-data"
 import SloganBanner from "@/components/sections/slogan-banner"
 
 export const metadata: Metadata = {
-  title: "Interior Design Studio Blog | Tips, Guides & Industry Insights | Techstyles",
+  title: "Interior Design Studio Blog | Tips, Guides & Industry Insights | Focuspilot",
   description:
     "Expert insights on interior design workflows, studio management & industry trends. Practical guides for running a successful design studio. Updated weekly.",
   openGraph: {
-    title: "Interior Design Studio Blog | Tips, Guides & Industry Insights | Techstyles",
+    title: "Interior Design Studio Blog | Tips, Guides & Industry Insights | Focuspilot",
     description:
       "Expert insights on interior design workflows, studio management & industry trends. Practical guides for running a successful design studio.",
     type: "website",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Interior Design Studio Blog | Tips, Guides & Industry Insights | Techstyles",
+    title: "Interior Design Studio Blog | Tips, Guides & Industry Insights | Focuspilot",
     description: "Expert insights on interior design workflows, studio management & industry trends. Practical guides for running a successful design studio.",
   },
   alternates: {

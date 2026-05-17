@@ -7,7 +7,7 @@
 
 ## Background & Problem
 
-Focuspilot has a separate contractor portal at `contractor.techstyles.ai` and a Contractors tab inside each project. Both exist but are incomplete and disconnected:
+Focuspilot has a separate contractor portal at `contractor.focuspilot.io` and a Contractors tab inside each project. Both exist but are incomplete and disconnected:
 
 - **Add Contractor** is mock-only — vanishes on refresh, not saved to DB
 - **Share Drawings/Documents** is mock-only — nothing hits the backend
@@ -32,7 +32,7 @@ Focuspilot has a separate contractor portal at `contractor.techstyles.ai` and a 
 ## Architecture Decision: QR + Access Code
 
 - **One permanent QR code per project** — generated at project creation, never changes
-- QR encodes: `contractor.techstyles.ai/project/{project_token}`
+- QR encodes: `contractor.focuspilot.io/project/{project_token}`
 - Landing page asks for **personal access code** (6-char, e.g. `JFLT-01`)
 - Each contractor gets their own code — sent via email when added
 - Code is permanent unless revoked
@@ -269,7 +269,7 @@ Studio can also share selectively (existing flow — share with specific contrac
 
 ## Tech Stack
 - **Frontend:** Next.js 14, TypeScript, Tailwind (existing stack)
-- **Contractor Portal:** Vite + React (existing, at `contractor.techstyles.ai`)
+- **Contractor Portal:** Vite + React (existing, at `contractor.focuspilot.io`)
 - **Backend:** Django + DRF (existing)
 - **QR:** `qrcode.react` (frontend) — no third-party service needed
 - **Email:** Resend (already integrated in backend)

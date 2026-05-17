@@ -1,4 +1,4 @@
-// TechStyles AI - British English Prompts
+// Focuspilot AI - British English Prompts
 
 /**
  * CRITICAL: All prompts use British English
@@ -17,7 +17,7 @@ interface UserContext {
   pastBriefs?: any[];
 }
 
-export const DAILY_BRIEF_PROMPT = (context: UserContext): string => `You are TechStyles AI. Write a personalised morning brief for ${context.name} (${context.role}).
+export const DAILY_BRIEF_PROMPT = (context: UserContext): string => `You are Focuspilot AI. Write a personalised morning brief for ${context.name} (${context.role}).
 
 Context:
 - Active projects: ${JSON.stringify(context.projects)}

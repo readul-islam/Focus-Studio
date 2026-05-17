@@ -11,7 +11,7 @@ export default function HelpLayout({ children }: { children: ReactNode }) {
         <div className="max-w-5xl mx-auto px-8 py-8 text-center">
           <p className="text-sm text-gray-400 mb-2">Can't find what you're looking for?</p>
           <a
-            href="mailto:support@techstyles.com"
+            href="mailto:support@focuspilot.io"
             className="text-sm font-medium text-gray-900 underline underline-offset-4 hover:text-gray-600 transition-colors"
           >
             Contact support

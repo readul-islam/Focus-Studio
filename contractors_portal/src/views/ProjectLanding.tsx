@@ -93,7 +93,7 @@ export default function ProjectLanding() {
         <CardHeader>
           <CardTitle>{projectName}</CardTitle>
           <CardDescription>
-            You have been invited to access this project on the TechStyles Contractor Portal
+            You have been invited to access this project on the Focuspilot Contractor Portal
           </CardDescription>
         </CardHeader>
         <CardContent>

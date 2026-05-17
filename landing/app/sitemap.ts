@@ -14,6 +14,7 @@ const staticRoutes: RouteConfig[] = [
   { path: "", changeFrequency: "weekly", priority: 1 },
   { path: "platform/projects", changeFrequency: "weekly", priority: 0.9 },
   { path: "platform/procurement", changeFrequency: "weekly", priority: 0.9 },
+  { path: "platform/ai", changeFrequency: "weekly", priority: 0.9 },
   { path: "platform/finance", changeFrequency: "weekly", priority: 0.9 },
   { path: "platform/client-portal", changeFrequency: "weekly", priority: 0.9 },
   { path: "platform/crm", changeFrequency: "weekly", priority: 0.9 },

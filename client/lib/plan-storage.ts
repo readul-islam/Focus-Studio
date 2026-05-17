@@ -33,7 +33,7 @@ export type PlanSnapshot = {
   milestones: Milestone[]
 }
 
-const key = (projectId: string) => `techstyles:plan:${projectId}`
+const key = (projectId: string) => `focuspilot:plan:${projectId}`
 
 export function savePlan(projectId: string, snapshot: PlanSnapshot): boolean {
   if (typeof window === "undefined") return false

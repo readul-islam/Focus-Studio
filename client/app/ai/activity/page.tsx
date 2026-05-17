@@ -242,7 +242,7 @@ export default function AIActivityPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    document.title = 'AI Activity | TechStyles';
+    document.title = 'AI Activity | Focuspilot';
     loadActivities();
   }, []);
 

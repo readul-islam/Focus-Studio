@@ -192,7 +192,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
   }, [data?.client_notes]);
 
   useEffect(() => {
-    if (data?.name) document.title = `${data.name} ${data.surname || ''} | Contacts | TechStyles`;
+    if (data?.name) document.title = `${data.name} ${data.surname || ''} | Contacts | Focuspilot`;
   }, [data?.name, data?.surname]);
 
   if (isLoading) {

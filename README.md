@@ -1,4 +1,4 @@
-# TechStyles — Project Management & Financial Operations Platform
+# Focuspilot — Project Management & Financial Operations Platform
 
 ## 📋 Table of Contents
 - [Overview](#overview)
@@ -16,7 +16,7 @@
 
 ## 🎯 Overview
 
-**TechStyles** is a comprehensive B2B SaaS platform designed specifically for architecture and design studios. It provides an integrated workspace to manage projects, teams, finances, procurement, clients, and contractors — all in one unified platform.
+**Focuspilot** is a comprehensive B2B SaaS platform designed specifically for architecture and design studios. It provides an integrated workspace to manage projects, teams, finances, procurement, clients, and contractors — all in one unified platform.
 
 The platform serves as the single source of truth for a design studio's operations, enabling streamlined workflows, better financial visibility, and improved team collaboration.
 
@@ -40,7 +40,7 @@ Design and architecture studios face significant operational challenges:
 8. **Client Communication** — Limited visibility for contractors on site vs clients in office
 
 ### Solution
-**TechStyles** unifies all operations into one platform, providing:
+**Focuspilot** unifies all operations into one platform, providing:
 - Real-time project visibility and profitability tracking
 - Integrated finance management with Xero
 - Contractor portal with QR-based site access
@@ -271,7 +271,7 @@ Design and architecture studios face significant operational challenges:
 
 4. **Contractor QR Code System**
    - Generate permanent QR per project
-   - QR encodes: `contractor.techstyles.ai/project/{project_token}`
+   - QR encodes: `contractor.focuspilot.io/project/{project_token}`
    - Landing: Personal access code entry
    - One code per contractor (permanent unless revoked)
 
@@ -724,14 +724,14 @@ See [CLAUDE.md](./client/CLAUDE.md) for detailed frontend standards (Next.js bes
 
 For questions or issues:
 - **Help Centre:** http://localhost:3000/help (when available)
-- **Email Support:** support@techstyles.ai (production)
+- **Email Support:** support@focuspilot.io (production)
 - **Bug Reports:** GitHub Issues (when repo is public)
 
 ---
 
 ## 📄 License
 
-Proprietary — All rights reserved. TechStyles © 2026.
+Proprietary — All rights reserved. Focuspilot © 2026.
 
 ---
 
@@ -759,4 +759,4 @@ Proprietary — All rights reserved. TechStyles © 2026.
 ---
 
 **Last Updated:** 15 May 2026  
-**Maintained By:** TechStyles Development Team
+**Maintained By:** Focuspilot Development Team

@@ -1,4 +1,4 @@
-# Techstyles SEO Audit & Implementation Checklist
+# Focuspilot SEO Audit & Implementation Checklist
 
 **Audit Date:** January 2026
 **Focus:** Technical SEO & On-Page SEO Only
@@ -12,7 +12,7 @@
 - [x] Fixed sitemap - removed 404 pages (`/platform`, `/about`, `/contact`, `/resources`)
 - [x] Updated all title tags per spec (11 pages)
 - [x] Updated all meta descriptions per spec (11 pages)
-- [x] Fixed schema URL inconsistencies (`techstyles.app` -> `techstyles.ai`)
+- [x] Fixed schema URL inconsistencies (`techstyles.app` -> `focuspilot.io`)
 - [x] Removed placeholder verification codes (commented out for you to add real codes)
 - [x] Updated H1 tags per spec (Homepage, Procurement, Finance, AI)
 - [x] Fixed breadcrumb URLs to be absolute (with `BASE_URL` constant)
@@ -31,7 +31,7 @@
 ## Executive Summary
 
 ### Current State (Post-Implementation)
-- **Domain:** techstyles.ai (correctly configured everywhere)
+- **Domain:** focuspilot.io (correctly configured everywhere)
 - **Global Schema:** Organization, SoftwareApplication, and WebSite schemas present in root layout
 - **Breadcrumbs:** Implemented with absolute URLs for platform pages
 - **FAQ Schemas:** Present on Pricing, Client Portal, CRM, and comparison pages
@@ -42,7 +42,7 @@
 1. ~~404 Pages in Sitemap~~ - FIXED: Removed `/platform`, `/about`, `/contact`, `/resources`
 2. ~~Inconsistent Title Tags~~ - FIXED: All pages updated per spec
 3. ~~Missing Canonical URLs~~ - FIXED: Added to key pages
-4. ~~Schema URLs Inconsistent~~ - FIXED: All now use `techstyles.ai`
+4. ~~Schema URLs Inconsistent~~ - FIXED: All now use `focuspilot.io`
 5. ~~Placeholder Verification Codes~~ - FIXED: Commented out (add real codes when ready)
 
 ---
@@ -75,50 +75,50 @@
 
 ## PHASE 3: MEDIUM PRIORITY (Future)
 
-### 3.1 Create New Comparison Pages
+### 3.1 Create New Comparison Pages         
 
 #### /compare/houzz-pro
 ```
-Title: Techstyles vs Houzz Pro | Interior Design Software Alternative 2026
-Meta: Looking for a Houzz Pro alternative? Compare Techstyles: better support, no contract lock-in, AI features, transparent pricing. Switch today with free migration.
-H1: Techstyles vs Houzz Pro: The Better Choice for UK Interior Designers
+Title: Focuspilot vs Houzz Pro | Interior Design Software Alternative 2026
+Meta: Looking for a Houzz Pro alternative? Compare focuspilot: better support, no contract lock-in, AI features, transparent pricing. Switch today with free migration.
+H1: Focuspilot vs Houzz Pro: The Better Choice for UK Interior Designers
 ```
 
 #### /compare/studio-designer
 ```
-Title: Techstyles vs Studio Designer | Modern Interior Design Software 2026
-Meta: Compare Techstyles vs Studio Designer. Modern cloud software vs 30-year-old legacy. Intuitive UX, AI automation, no learning curve. Migrate free today.
-H1: Techstyles vs Studio Designer: Modern Software for Modern Designers
+Title: Focuspilot vs Studio Designer | Modern Interior Design Software 2026
+Meta: Compare Focuspilot vs Studio Designer. Modern cloud software vs 30-year-old legacy. Intuitive UX, AI automation, no learning curve. Migrate free today.
+H1: Focuspilot vs Studio Designer: Modern Software for Modern Designers
 ```
 
 #### /compare/designfiles
 ```
-Title: Techstyles vs DesignFiles | Interior Design Software Comparison 2026
-Meta: Compare Techstyles vs DesignFiles for interior design studios. Stronger financials, AI features, better team pricing. Growing studios choose Techstyles.
-H1: Techstyles vs DesignFiles: Scale Your Studio with Confidence
+Title: Focuspilot vs DesignFiles | Interior Design Software Comparison 2026
+Meta: Compare Focuspilot vs DesignFiles for interior design studios. Stronger financials, AI features, better team pricing. Growing studios choose Focuspilot.
+H1: Focuspilot vs DesignFiles: Scale Your Studio with Confidence
 ```
 
 #### /compare/mydoma
 ```
-Title: Techstyles vs Mydoma Studio | Interior Design Software 2026
-Meta: Looking for a Mydoma alternative? Techstyles offers full data export, stable platform, modern UI. No acquisition uncertainty. Switch with free migration.
-H1: Techstyles vs Mydoma: Your Data, Your Choice, Always
+Title: Focuspilot vs Mydoma Studio | Interior Design Software 2026
+Meta: Looking for a Mydoma alternative? Focuspilot offers full data export, stable platform, modern UI. No acquisition uncertainty. Switch with free migration.
+H1: Focuspilot vs Mydoma: Your Data, Your Choice, Always
 ```
 
 ### 3.2 Create Migration Pages
 
 #### /migrate/from-spreadsheets
 ```
-Title: Migrate from Spreadsheets to Techstyles | Interior Design Software
-Meta: Stop managing projects in Excel. Techstyles automates what spreadsheets can't. Import your data, get organised in days. Free migration assistance for UK studios.
+Title: Migrate from Spreadsheets to Focuspilot | Interior Design Software
+Meta: Stop managing projects in Excel. Focuspilot automates what spreadsheets can't. Import your data, get organised in days. Free migration assistance for UK studios.
 H1: Finally Replace Your Spreadsheets with Software Built for Designers
 ```
 
 #### /migrate/from-programa
 ```
-Title: Switch from Programa to Techstyles | Free Migration Assistance
+Title: Switch from Programa to Focuspilot | Free Migration Assistance
 Meta: Switching from Programa? We'll migrate your projects, clients & products for free. Gain AI features, UK support, and Xero integration. Start your free trial.
-H1: Migrate from Programa to Techstyles
+H1: Migrate from Programa to Focuspilot
 ```
 
 ---

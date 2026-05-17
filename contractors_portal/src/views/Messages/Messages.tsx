@@ -112,7 +112,7 @@ export default function Messages() {
   return (
     <DashboardLayout>
       <Helmet>
-        <title>Messages | TechStyles</title>
+        <title>Messages | Focuspilot</title>
       </Helmet>
 
       <div className="flex-1 bg-gray-50 p-4 lg:p-6 h-[calc(100vh-64px)] flex flex-col">

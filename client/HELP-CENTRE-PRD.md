@@ -1,4 +1,4 @@
-# TechStyles Help Centre — PRD
+# Focuspilot Help Centre — PRD
 **Date:** 2026-02-27  
 **Priority:** CRITICAL — third request  
 **Owner:** Dennis  
@@ -9,7 +9,7 @@
 
 ## Vision
 
-Replace the current single-page AI Clipper page with a **world-class, Intercom-style help centre** that covers every page, feature, and button in the TechStyles platform — with screenshots.
+Replace the current single-page AI Clipper page with a **world-class, Intercom-style help centre** that covers every page, feature, and button in the Focuspilot platform — with screenshots.
 
 **Reference:** https://www.intercom.com/help  
 **Design bar:** Notion Help, Linear Docs, Intercom Help Centre
@@ -99,7 +99,7 @@ Layout:
 ## Articles to Write
 
 ### Getting Started
-1. **Welcome to TechStyles** — what the platform is, who it's for
+1. **Welcome to Focuspilot** — what the platform is, who it's for
 2. **Setting up your Studio** — company name, logo, branding, address
 3. **Inviting your team** — adding members, roles
 4. **Creating your first Project** — step by step

@@ -31,10 +31,10 @@ export function TopBar() {
         <div className="md:hidden flex items-center gap-2">
           <img
             src="/techstyles-t-logo.png"
-            alt="Techstyles logo"
+            alt="Focuspilot logo"
             className="w-8 h-8"
           />
-          <span className="font-semibold text-gray-900">Techstyles</span>
+          <span className="font-semibold text-gray-900">Focuspilot</span>
         </div>
 
         {/* Desktop: UserInfo */}

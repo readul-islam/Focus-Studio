@@ -323,7 +323,7 @@ export default function HomeTimePage() {
 
 
   useEffect(() => {
-    document.title = 'Time Tracker | TechStyles';
+    document.title = 'Time Tracker | Focuspilot';
   }, []);
 
   // Process task data when received

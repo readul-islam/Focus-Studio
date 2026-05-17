@@ -28,7 +28,7 @@ export default function Dashboard() {
       <Helmet>
         <title>{`${
           dashboardData?.project_name ? dashboardData?.project_name : "Dashboard"
-        } | TechStyles`}</title>
+        } | Focuspilot`}</title>
       </Helmet>
       <div className="space-y-6 ">
         {!dashboardLoading && (

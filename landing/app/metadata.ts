@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "Techstyles",
+  name: "Focuspilot",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   description:
@@ -11,7 +11,7 @@ const jsonLd = {
   url: "https://focuspilot.io",
   author: {
     "@type": "Organization",
-    name: "Techstyles",
+    name: "Focuspilot",
     url: "https://focuspilot.io",
   },
   offers: {
@@ -38,7 +38,7 @@ const jsonLd = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://focuspilot.io"),
   title: {
-    default: "Techstyles - Interior Design Studio Management Software",
+    default: "Focuspilot - Interior Design Studio Management Software",
     template: "%s | Techstyles",
   },
   description:
@@ -55,9 +55,9 @@ export const metadata: Metadata = {
     "interior design business software",
     "design project collaboration",
   ],
-  authors: [{ name: "Techstyles" }],
-  creator: "Techstyles",
-  publisher: "Techstyles",
+  authors: [{ name: "Focuspilot" }],
+  creator: "Focuspilot",
+  publisher: "Focuspilot",
   formatDetection: {
     email: false,
     address: false,
@@ -67,8 +67,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://focuspilot.io",
-    siteName: "Techstyles",
-    title: "Techstyles - Interior Design Studio Management Software",
+    siteName: "Focuspilot",
+    title: "Focuspilot - Interior Design Studio Management Software",
     description:
       "The modern operating system for interior designers and architects. Streamline projects, procurement, client collaboration, and finance in one beautiful workspace.",
     images: [
@@ -76,17 +76,17 @@ export const metadata: Metadata = {
         url: "/images/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Techstyles - Interior Design Studio Management Software",
+        alt: "Focuspilot - Interior Design Studio Management Software",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Techstyles - Interior Design Studio Management Software",
+    title: "Focuspilot - Interior Design Studio Management Software",
     description:
       "The modern operating system for interior designers and architects. Streamline projects, procurement, client collaboration, and finance in one beautiful workspace.",
     images: ["/images/twitter-image.png"],
-    creator: "@techstyles",
+    creator: "@focuspilot",
   },
   robots: {
     index: true,

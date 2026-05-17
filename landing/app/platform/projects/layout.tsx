@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Interior Design Project Management Software | Track Projects | Techstyles",
+  title: "Interior Design Project Management Software | Track Projects | Focuspilot",
   description:
     "Manage interior design projects from concept to completion. Track timelines, budgets, tasks & team collaboration. Purpose-built for UK design studios. Start free.",
   keywords: [
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "interior design timeline management",
   ],
   openGraph: {
-    title: "Interior Design Project Management Software | Track Projects | Techstyles",
+    title: "Interior Design Project Management Software | Track Projects | Focuspilot",
     description:
       "Manage interior design projects from concept to completion. Track timelines, budgets, tasks & team collaboration. Purpose-built for UK design studios. Start free.",
     url: "https://focuspilot.io/platform/projects",
@@ -24,13 +24,13 @@ export const metadata: Metadata = {
         url: "/images/og-projects.png",
         width: 1200,
         height: 630,
-        alt: "Techstyles project management dashboard for interior designers",
+        alt: "Focuspilot project management dashboard for interior designers",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Interior Design Project Management Software | Track Projects | Techstyles",
+    title: "Interior Design Project Management Software | Track Projects | Focuspilot",
     description: "Manage interior design projects from concept to completion. Track timelines, budgets, tasks & team collaboration. Purpose-built for UK design studios.",
   },
   alternates: {

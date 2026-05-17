@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Interior Design Client Portal Software | Approvals & Payments | Techstyles",
+  title: "Interior Design Client Portal Software | Approvals & Payments | Focuspilot",
   description:
     "Give clients a branded portal to approve selections, track deliveries & pay invoices. One-click approvals, real-time updates, integrated payments via Stripe. Try free.",
   keywords: [
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "client project portal",
   ],
   openGraph: {
-    title: "Interior Design Client Portal Software | Approvals & Payments | Techstyles",
+    title: "Interior Design Client Portal Software | Approvals & Payments | Focuspilot",
     description:
       "Give clients a branded portal to approve selections, track deliveries & pay invoices. One-click approvals, real-time updates, integrated payments via Stripe. Try free.",
     url: "https://focuspilot.io/platform/client-portal",
@@ -24,13 +24,13 @@ export const metadata: Metadata = {
         url: "/images/og-client-portal.png",
         width: 1200,
         height: 630,
-        alt: "Techstyles client portal for interior design approvals",
+        alt: "Focuspilot client portal for interior design approvals",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Interior Design Client Portal Software | Approvals & Payments | Techstyles",
+    title: "Interior Design Client Portal Software | Approvals & Payments | Focuspilot",
     description: "Give clients a branded portal to approve selections, track deliveries & pay invoices. One-click approvals, real-time updates.",
   },
   alternates: {

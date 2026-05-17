@@ -26,7 +26,7 @@ export default function ProjectsPage() {
   const canCreateProject = can('projects.edit');
 
   useEffect(() => {
-    document.title = 'Projects | TechStyles';
+    document.title = 'Projects | Focuspilot';
   }, []);
 
   useEffect(() => {

@@ -244,7 +244,7 @@ function ContactsPageContent() {
   const { data: contactData, isLoading, refetch, isFetching } = useFetch(queryUrl);
 
   useEffect(() => {
-    document.title = 'Contacts | TechStyles';
+    document.title = 'Contacts | Focuspilot';
   }, []);
 
   // Map contact data from API response

@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "AI Email & Communication Tools for Interior Designers | Techstyles",
+    title: "AI Email & Communication Tools for Interior Designers | Focuspilot",
   description:
     "Unified inbox with AI-powered project routing, smart replies, and automatic email categorization. Keep all client communication organized by project.",
   keywords: [
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "client communication software",
   ],
   openGraph: {
-    title: "AI Email & Communication Tools | Techstyles",
+                          title: "AI Email & Communication Tools | Focuspilot",
     description: "Unified inbox with AI-powered project routing for interior design studios.",
     url: "https://focuspilot.io/platform/features/ai-email",
     type: "website",

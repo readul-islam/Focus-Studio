@@ -250,7 +250,7 @@ export default function InboxPage() {
   const { mutate: sendReply, isPending: isSending } = usePost();
 
   useEffect(() => {
-    document.title = 'My Inbox | TechStyles';
+    document.title = 'My Inbox | Focuspilot';
   }, []);
 
   // Auto-scroll to bottom of conversation

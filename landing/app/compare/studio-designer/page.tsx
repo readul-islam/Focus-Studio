@@ -44,51 +44,51 @@ const comparisonData = [
   {
     category: "AI & Automation",
     features: [
-      { name: "AI email drafting", techstyles: true, studioDesigner: false },
-      { name: "AI product sourcing", techstyles: true, studioDesigner: false },
-      { name: "AI proposal generation", techstyles: true, studioDesigner: false },
-      { name: "Automated data extraction", techstyles: true, studioDesigner: false },
-      { name: "Smart reminders", techstyles: true, studioDesigner: "partial" },
+      { name: "AI email drafting", focuspilot: true, studioDesigner: false },
+      { name: "AI product sourcing", focuspilot: true, studioDesigner: false },
+      { name: "AI proposal generation", focuspilot: true, studioDesigner: false },
+      { name: "Automated data extraction", focuspilot: true, studioDesigner: false },
+      { name: "Smart reminders", focuspilot: true, studioDesigner: "partial" },
     ],
   },
   {
     category: "Procurement & Products",
     features: [
-      { name: "Product library", techstyles: true, studioDesigner: true },
-      { name: "Purchase order generation", techstyles: true, studioDesigner: true },
-      { name: "Supplier management", techstyles: true, studioDesigner: true },
-      { name: "Delivery tracking", techstyles: true, studioDesigner: "partial" },
-      { name: "Trade pricing integration", techstyles: true, studioDesigner: "partial" },
+      { name: "Product library", focuspilot: true, studioDesigner: true },
+      { name: "Purchase order generation", focuspilot: true, studioDesigner: true },
+      { name: "Supplier management", focuspilot: true, studioDesigner: true },
+      { name: "Delivery tracking", focuspilot: true, studioDesigner: "partial" },
+      { name: "Trade pricing integration", focuspilot: true, studioDesigner: "partial" },
     ],
   },
   {
     category: "UK Market Features",
     features: [
-      { name: "Native Xero integration", techstyles: true, studioDesigner: false },
-      { name: "GBP pricing throughout", techstyles: true, studioDesigner: "partial" },
-      { name: "UK VAT handling", techstyles: true, studioDesigner: "partial" },
-      { name: "UK-based support", techstyles: true, studioDesigner: false },
-      { name: "British English interface", techstyles: true, studioDesigner: false },
+      { name: "Native Xero integration", focuspilot: true, studioDesigner: false },
+      { name: "GBP pricing throughout", focuspilot: true, studioDesigner: "partial" },
+      { name: "UK VAT handling", focuspilot: true, studioDesigner: "partial" },
+      { name: "UK-based support", focuspilot: true, studioDesigner: false },
+      { name: "British English interface", focuspilot: true, studioDesigner: false },
     ],
   },
   {
     category: "Client Management",
     features: [
-      { name: "Client portal", techstyles: true, studioDesigner: true },
-      { name: "Selection approvals", techstyles: true, studioDesigner: true },
-      { name: "In-portal payments", techstyles: true, studioDesigner: false },
-      { name: "Real-time updates", techstyles: true, studioDesigner: "partial" },
-      { name: "White-label branding", techstyles: true, studioDesigner: true },
+      { name: "Client portal", focuspilot: true, studioDesigner: true },
+      { name: "Selection approvals", focuspilot: true, studioDesigner: true },
+      { name: "In-portal payments", focuspilot: true, studioDesigner: false },
+      { name: "Real-time updates", focuspilot: true, studioDesigner: "partial" },
+      { name: "White-label branding", focuspilot: true, studioDesigner: true },
     ],
   },
   {
     category: "Finance",
     features: [
-      { name: "Invoice generation", techstyles: true, studioDesigner: true },
-      { name: "Stripe payments", techstyles: true, studioDesigner: false },
-      { name: "Project profitability", techstyles: true, studioDesigner: true },
-      { name: "Budget tracking", techstyles: true, studioDesigner: true },
-      { name: "Accounting sync", techstyles: true, studioDesigner: "partial" },
+      { name: "Invoice generation", focuspilot: true, studioDesigner: true },
+      { name: "Stripe payments", focuspilot: true, studioDesigner: false },
+      { name: "Project profitability", focuspilot: true, studioDesigner: true },
+      { name: "Budget tracking", focuspilot: true, studioDesigner: true },
+      { name: "Accounting sync", focuspilot: true, studioDesigner: "partial" },
     ],
   },
 ]
@@ -167,7 +167,7 @@ export default function TechstylesVsStudioDesignerPage() {
               <Badge variant="outline" className="mb-4 border-stone-300 text-stone-600">
                 Software Comparison
               </Badge>
-              <h1 className={cn(H1, "text-center")}>Techstyles vs Studio Designer</h1>
+              <h1 className={cn(H1, "text-center")}>Focuspilot vs Studio Designer</h1>
               <p className={cn(Lead, "mt-4 text-center")}>
                 Compare AI-powered project management with traditional design business software.
                 See which platform fits your studio's needs.
@@ -183,7 +183,7 @@ export default function TechstylesVsStudioDesignerPage() {
             <div className="grid gap-6 md:grid-cols-2">
               <Card className="border-2 border-stone-900">
                 <CardContent className="p-6 sm:p-8">
-                  <div className="mb-4 text-xl font-semibold">Choose Techstyles if you...</div>
+                        <div className="mb-4 text-xl font-semibold">Choose Focuspilot if you...</div>
                   <ul className="space-y-3 text-stone-600">
                     <li className="flex items-start gap-3">
                       <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />
@@ -261,12 +261,12 @@ export default function TechstylesVsStudioDesignerPage() {
                           <td className="py-3 px-4 text-stone-700">{feature.name}</td>
                           <td className="py-3 px-4 text-center">
                             <div className="flex justify-center">
-                              <FeatureStatus status={feature.techstyles} />
+                              <FeatureStatus status={feature.focuspilot} />
                             </div>
                           </td>
                           <td className="py-3 px-4 text-center">
                             <div className="flex justify-center">
-                              <FeatureStatus status={feature.studioDesigner} />
+                              <FeatureStatus status={feature.focuspilot} />
                             </div>
                           </td>
                         </tr>

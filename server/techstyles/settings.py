@@ -211,8 +211,8 @@ SIMPLE_JWT = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'TechStyles Backend API',
-    'DESCRIPTION': 'API documentation for TechStyles project management system',
+    'TITLE': 'Focuspilot Backend API',
+    'DESCRIPTION': 'API documentation for Focuspilot project management system',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     'COMPONENT_SPLIT_REQUEST': True,

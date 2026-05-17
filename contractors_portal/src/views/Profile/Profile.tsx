@@ -183,7 +183,7 @@ export default function Profile() {
   return (
     <DashboardLayout>
       <Helmet>
-        <title>Profile | TechStyles</title>
+        <title>Profile | Focuspilot</title>
       </Helmet>
 
       <div className="max-w-7xl">

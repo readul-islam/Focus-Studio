@@ -125,7 +125,7 @@ export default function DailyBriefPage() {
       {/* Footer Info */}
       <div className="mt-6 text-xs text-muted-foreground text-center">
         <Sparkles className="inline h-3 w-3 mr-1" />
-        Powered by TechStyles AI
+        Powered by Focuspilot AI
       </div>
     </div>
   );

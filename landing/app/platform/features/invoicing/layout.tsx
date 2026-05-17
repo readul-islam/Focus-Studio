@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Proposals & Invoicing for Interior Designers | Techstyles",
+    title: "Proposals & Invoicing for Interior Designers | Focuspilot",
   description:
     "Create professional proposals, automate invoicing, and get paid faster. AI-powered pricing recommendations and branded PDF generation for interior design studios.",
   keywords: [
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "automated invoicing for designers",
   ],
   openGraph: {
-    title: "Proposals & Invoicing | Techstyles",
+    title: "Proposals & Invoicing | Focuspilot",
     description: "Create professional proposals and automate invoicing for your interior design studio.",
     url: "https://focuspilot.io/platform/features/invoicing",
     type: "website",
