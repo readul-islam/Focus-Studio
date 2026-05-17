@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { CtaButton } from "@/components/cta-button"
 import { cn } from "@/lib/utils"
-import { FloorPlanBg } from "@/components/graphics/floorplan-bg"
+import { LandingHeroBackground } from "@/components/landing-hero-background"
 import {
   Mail,
   Share2,
@@ -451,22 +451,9 @@ export default function AiEmailPage() {
   return (
     <main className="bg-white">
       {/* HERO */}
-      <section className="relative isolate overflow-hidden pb-10 pt-12 sm:pb-12 sm:pt-16 md:pt-20">
-        <FloorPlanBg mode="grid" tile={164} intensity={0.9} height="min(520px, 56vh)" fadeStop={0.5} />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{
-            background:
-              "radial-gradient(60% 50% at 50% 0%, rgba(75,89,96,0.08) 0%, rgba(217,213,204,0.16) 40%, transparent 70%)",
-          }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-20 opacity-[0.06]"
-          style={{ backgroundImage: "url('/textures/grain.png')", backgroundSize: "200px 200px" }}
-        />
-        <div className={cn(container)}>
+      <section className="relative isolate overflow-hidden bg-stone-50 pb-10 pt-12 sm:pb-12 sm:pt-16 md:pt-20">
+        <LandingHeroBackground gridHeight="min(520px, 56vh)" gridFadeStop={0.58} />
+        <div className={cn(container, "relative z-10")}>
           <div className="mx-auto max-w-3xl text-center">
             <Badge variant="outline" className="rounded-full border-stone-300 bg-stone-50 text-stone-700">
               Communication

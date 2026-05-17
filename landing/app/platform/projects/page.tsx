@@ -7,7 +7,7 @@ import * as LucideReact from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { CtaButton } from "@/components/cta-button"
 import { cn } from "@/lib/utils"
-import { FloorPlanBg } from "@/components/graphics/floorplan-bg"
+import { LandingHeroBackground } from "@/components/landing-hero-background"
 import { UniformFrame } from "@/components/media/uniform-frame"
 import { BreadcrumbSchema, platformBreadcrumbs } from "@/components/seo/breadcrumb-schema"
 
@@ -154,14 +154,9 @@ export default function ProjectManagementPage() {
 
       <main className="bg-white">
         {/* Hero */}
-        <section className="relative isolate overflow-hidden">
-          <FloorPlanBg mode="grid" tile={164} intensity={0.9} height="min(520px, 58vh)" fadeStop={0.5} />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 -z-10 opacity-[0.06]"
-            style={{ backgroundImage: "url('/textures/grain.png')", backgroundSize: "200px 200px" }}
-          />
-          <div className={cn(container, "pb-10 pt-10 sm:pb-14 sm:pt-12 md:pt-16")}>
+        <section className="relative isolate overflow-hidden bg-stone-50">
+          <LandingHeroBackground gridHeight="min(520px, 58vh)" gridFadeStop={0.58} />
+          <div className={cn(container, "relative z-10 pb-10 pt-10 sm:pb-14 sm:pt-12 md:pt-16")}>
             <div className="mx-auto max-w-3xl text-center">
               <Badge variant="outline" className="rounded-full border-stone-300 bg-stone-50 text-stone-700">
                 Project Management

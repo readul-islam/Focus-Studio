@@ -8,7 +8,7 @@ import { Star, Quote } from "lucide-react"
 import { CtaButton } from "@/components/cta-button"
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-import { FloorPlanBg } from "@/components/graphics/floorplan-bg"
+import { MarketingPageHero } from "@/components/marketing/marketing-page-hero"
 
 const container = "mx-auto max-w-[1200px] px-6 sm:px-8"
 const TITLE_H1 = "text-[30px] sm:text-5xl md:text-[56px] font-medium tracking-tight leading-[1.1]"
@@ -125,10 +125,7 @@ const stats = [
 
 function Hero() {
   return (
-    <section className="relative isolate overflow-hidden bg-white">
-      <FloorPlanBg mode="grid" tile={164} intensity={0.9} height="min(420px, 50vh)" fadeStop={0.5} className="" />
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10" />
-      <div className={cn(container, "pb-12 pt-12 sm:pb-16 md:pt-16")}>
+    <MarketingPageHero contentClassName={cn(container, "pb-12 pt-12 sm:pb-16 md:pt-16")}>
         <Reveal className="mx-auto max-w-3xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-stone-300/60 bg-white px-3 py-1 text-xs text-stone-700">
             <Quote className="h-3 w-3" aria-hidden="true" />
@@ -139,8 +136,7 @@ function Hero() {
             See how interior designers and architects use Techstyles to save time, delight clients, and focus on what they do best.
           </p>
         </Reveal>
-      </div>
-    </section>
+    </MarketingPageHero>
   )
 }
 

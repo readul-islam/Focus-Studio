@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Plus, Zap, Tag, FolderOpen, ShoppingCart } from "lucide-react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
-import { FloorPlanBg } from "@/components/graphics/floorplan-bg"
+import { MarketingPageHero } from "@/components/marketing/marketing-page-hero"
 import { CtaButton } from "@/components/cta-button"
 
 export const metadata: Metadata = {
@@ -77,15 +77,10 @@ export default function ProductLibraryPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative isolate overflow-hidden bg-white">
-        <FloorPlanBg mode="grid" tile={164} intensity={0.9} height="min(520px, 58vh)" fadeStop={0.5} className="" />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-0 right-0 top-0 -z-20"
-          style={{ opacity: 0.85 }}
-        />
-
-        <div className={cn(container, "pb-10 pt-8 sm:pb-16 sm:pt-12 md:pt-16")}>
+      <MarketingPageHero
+        gridHeight="min(520px, 58vh)"
+        contentClassName={cn(container, "pb-10 pt-8 sm:pb-16 sm:pt-12 md:pt-16")}
+      >
           <div className="mx-auto max-w-3xl text-center">
             <Badge variant="secondary" className="mb-6 bg-stone-100 text-stone-700">
               Product Library
@@ -106,8 +101,7 @@ export default function ProductLibraryPage() {
               />
             </div>
           </div>
-        </div>
-      </section>
+      </MarketingPageHero>
 
       {/* Product Grid Demo */}
       <section className="px-6 py-16">

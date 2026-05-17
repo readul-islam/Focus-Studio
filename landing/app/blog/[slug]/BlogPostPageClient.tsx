@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { Calendar, Clock, ArrowLeft, Twitter, Facebook, Linkedin, LinkIcon } from "lucide-react"
-import { getPostBySlug, getAllPosts } from "@/lib/blog-data"
+import { getPostBySlug, getAllPosts, getCategoryDisplay } from "@/lib/blog-data"
 import { CtaButton } from "@/components/cta-button"
 
 export function BlogPostPageClient({ params }: { params: { slug: string } }) {
@@ -57,7 +57,7 @@ export function BlogPostPageClient({ params }: { params: { slug: string } }) {
 
         <header className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
           <span className="inline-block rounded-full bg-stone-900 px-4 py-1.5 text-xs font-medium tracking-wide text-white">
-            {post.category}
+            {getCategoryDisplay(post)}
           </span>
 
           <h1 className="mt-6 text-center text-3xl font-medium leading-tight tracking-tight text-stone-900 sm:text-left sm:text-4xl sm:leading-tight lg:text-5xl lg:leading-tight">

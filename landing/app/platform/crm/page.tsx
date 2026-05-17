@@ -22,7 +22,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import { CtaButton } from "@/components/cta-button"
 import { cn } from "@/lib/utils"
-import { FloorPlanBg } from "@/components/graphics/floorplan-bg"
+import { MarketingPageHero } from "@/components/marketing/marketing-page-hero"
 import { BreadcrumbSchema, platformBreadcrumbs } from "@/components/seo/breadcrumb-schema"
 
 const container = "mx-auto max-w-[1200px] px-6 sm:px-8"
@@ -83,10 +83,11 @@ function Reveal({
 
 function Hero() {
   return (
-    <section id="overview" className="relative isolate overflow-hidden bg-white">
-      <FloorPlanBg mode="grid" tile={164} intensity={0.9} height="min(520px, 58vh)" fadeStop={0.5} className="" />
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10" />
-      <div className={cn(container, "pb-12 pt-12 sm:pb-16 md:pt-16")}>
+    <MarketingPageHero
+      id="overview"
+      gridHeight="min(520px, 58vh)"
+      contentClassName={cn(container, "pb-12 pt-12 sm:pb-16 md:pt-16")}
+    >
         <Reveal className="mx-auto max-w-3xl text-center">
           <span className="inline-flex items-center rounded-full border border-stone-300/60 bg-white px-3 py-1 text-xs text-stone-700">
             CRM for interior design studios
@@ -105,8 +106,7 @@ function Hero() {
             <CtaButton href="#leads" variant="grey"  label="Manage leads" />
           </div>
         </Reveal>
-      </div>
-    </section>
+    </MarketingPageHero>
   )
 }
 
