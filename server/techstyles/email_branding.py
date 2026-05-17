@@ -11,11 +11,16 @@ def email_logo_url() -> str:
     return f'{base}/brand/email_logo.png'
 
 
-def email_logo_img_html(*, width: int = 28, height: int = 28) -> str:
+def email_logo_bg_cell_html(*, size: int = 32) -> str:
     primary = email_logo_url()
     return (
-        f'<img src="{primary}" alt="Focuspilot" width="{width}" height="{height}" '
-        f'style="display:block;border:0;outline:none;text-decoration:none;" />'
+        f'<td width="{size}" height="{size}" style="width:{size}px;height:{size}px;'
+        f'vertical-align:middle;padding:0 12px 0 0;mso-line-height-rule:exactly;'
+        f'background-image:url({primary});background-repeat:no-repeat;'
+        f'background-position:center center;background-size:contain;">'
+        f'<span style="display:block;width:{size}px;height:{size}px;line-height:{size}px;'
+        f'font-size:0;overflow:hidden;mso-hide:all;">&nbsp;</span>'
+        f'</td>'
     )
 
 
@@ -23,13 +28,11 @@ def email_brand_row_html(*, align: str = 'left') -> str:
     """Inline logo + Focuspilot wordmark for dark (#111827) email headers."""
     margin = '0 auto' if align == 'center' else '0'
     text_align = 'center' if align == 'center' else 'left'
-    return f"""<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:{margin};">
+    return f"""<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:{margin};border-collapse:collapse;">
 <tr>
-<td style="vertical-align:middle;padding-right:10px;width:28px;height:28px;">
-{email_logo_img_html()}
-</td>
-<td style="vertical-align:middle;text-align:{text_align};">
-<span style="font-size:18px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;line-height:1;">Focuspilot</span>
+{email_logo_bg_cell_html()}
+<td style="vertical-align:middle;padding:0;text-align:{text_align};">
+<span style="font-size:18px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;line-height:32px;mso-line-height-rule:exactly;display:inline-block;">Focuspilot</span>
 </td>
 </tr>
 </table>"""

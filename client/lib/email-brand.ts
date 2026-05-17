@@ -6,21 +6,21 @@ const appBase =
 
 export const EMAIL_LOGO_URL = `${appBase.replace(/\/$/, '')}/brand/email_logo.png`
 
-export function emailLogoImgHtml(width = 28, height = 28): string {
-  return `<img src="${EMAIL_LOGO_URL}" alt="Focuspilot" width="${width}" height="${height}" style="display:block;border:0;outline:none;text-decoration:none;" />`
+export function emailLogoBgCellHtml(size = 32): string {
+  return `<td width="${size}" height="${size}" style="width:${size}px;height:${size}px;vertical-align:middle;padding:0 12px 0 0;mso-line-height-rule:exactly;background-image:url(${EMAIL_LOGO_URL});background-repeat:no-repeat;background-position:center center;background-size:contain;">
+<span style="display:block;width:${size}px;height:${size}px;line-height:${size}px;font-size:0;overflow:hidden;mso-hide:all;">&nbsp;</span>
+</td>`
 }
 
 /** Logo + "Focuspilot" row for dark (#111827) email headers. */
 export function emailBrandRowHtml(align: 'left' | 'center' = 'left'): string {
   const margin = align === 'center' ? '0 auto' : '0'
   const textAlign = align === 'center' ? 'center' : 'left'
-  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:${margin};">
+  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:${margin};border-collapse:collapse;">
 <tr>
-<td style="vertical-align:middle;padding-right:10px;width:28px;height:28px;">
-${emailLogoImgHtml()}
-</td>
-<td style="vertical-align:middle;text-align:${textAlign};">
-<span style="font-size:18px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;line-height:1;">Focuspilot</span>
+${emailLogoBgCellHtml()}
+<td style="vertical-align:middle;padding:0;text-align:${textAlign};">
+<span style="font-size:18px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;line-height:32px;mso-line-height-rule:exactly;display:inline-block;">Focuspilot</span>
 </td>
 </tr>
 </table>`
