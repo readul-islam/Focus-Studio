@@ -54,7 +54,7 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
           {" "}
           {/* Reduced mobile padding */}
           <Link href="/" className="group flex items-center gap-2">
-            <span className="text-sm sm:text-base font-semibold tracking-tight">Techstyles</span>{" "}
+            <span className="text-sm sm:text-base font-semibold tracking-tight">Focuspilot</span>{" "}
             {/* Fluid logo text */}
           </Link>
           {/* Desktop Navigation - unchanged */}
@@ -94,7 +94,7 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
             {/* Header with close button */}
             <div className={cn(container, "flex items-center justify-between py-3 border-b border-stone-100")}>
               <Link href="/" className="group flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
-                <span className="font-semibold tracking-tight">Techstyles</span>
+                <span className="font-semibold tracking-tight">Focuspilot</span>
               </Link>
 
               <button

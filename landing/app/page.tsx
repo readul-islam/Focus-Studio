@@ -115,7 +115,7 @@ function Hero() {
             </span>
             <span className="hidden sm:inline">
               {
-                "From first inquiry to final invoice, Techstyles transforms chaotic spreadsheets and endless emails into live timelines, real-time budgets, and one-click client approvals."
+                "From first inquiry to final invoice, Focuspilot transforms chaotic spreadsheets and endless emails into live timelines, real-time budgets, and one-click client approvals."
               }
             </span>
           </p>
@@ -252,7 +252,7 @@ function AiLayer() {
           </h2>
           <p className="mt-3 text-left sm:text-center text-base sm:text-lg text-stone-600">
             {
-              "Move beyond standard project tools. Techstyles is the first interior design platform with an intelligent AI layer that automates admin, anticipates needs, and frees you up to focus on creative work."
+              "Move beyond standard project tools. Focuspilot is the first interior design platform with an intelligent AI layer that automates admin, anticipates needs, and frees you up to focus on creative work."
             }
           </p>
         </div>
@@ -373,7 +373,7 @@ function DesignerTestimonials() {
         "/images/u5454174911-i-need-a-thumbnail-image-of-a-headshot-of-a-femai-25209f6b-0e97-4edd-95f6-51427c50486b-1.png",
       studioLogo: "/logos/studio-mind.png",
       quote:
-        "Techstyles transformed the way I manage my business. I can now focus more on creativity and less on admin!",
+        "Focuspilot transformed the way I manage my business. I can now focus more on creativity and less on admin!",
     },
     {
       name: "James",
@@ -527,7 +527,7 @@ function BigCTA() {
               {"Get visibility over your studio, team and projects."}
             </h2>
             <p className="mt-3 text-base sm:text-lg text-stone-300">
-              {"Wave goodbye to uncertainty with Techstyles - your AI-powered studio operating system"}
+              {"Wave goodbye to uncertainty with Focuspilot - your AI-powered studio operating system"}
             </p>
             <div className="mt-8 flex justify-center">
               <CtaButton href="/signup" variant="white" label="Start for free" showArrow arrowVariant="black" />
@@ -554,7 +554,7 @@ function Footer() {
               className="h-6 w-6 rounded-md object-cover"
               priority={false}
             />
-            <span className="font-semibold">Techstyles</span>
+            <span className="font-semibold">Focuspilot</span>
           </Link>
           <p className="text-sm text-stone-600">Calm, premium tools for interior design studios & architects.</p>
         </div>
@@ -619,12 +619,12 @@ function Footer() {
             </li>
             <li>
               <Link href="/compare/programa" className="hover:text-stone-900">
-                Techstyles vs Programa
+                Focuspilot vs Programa
               </Link>
             </li>
             <li>
               <Link href="/compare/design-manager" className="hover:text-stone-900">
-                Techstyles vs Design Manager
+                Focuspilot vs Design Manager
               </Link>
             </li>
             <li>
@@ -727,7 +727,7 @@ function Footer() {
 
       <div className="border-t py-4">
         <div className={cn(container, "flex items-center justify-between text-xs text-stone-500")}>
-          <div>©Copyright 2025 Techstyles. All rights reserved.</div>
+          <div>©Copyright 2025 Focuspilot. All rights reserved.</div>
           <div className="flex items-center gap-4">
             <Link href="/privacy" className="hover:text-stone-900">
               Privacy policy

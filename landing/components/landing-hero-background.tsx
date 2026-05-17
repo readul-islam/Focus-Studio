@@ -1,24 +1,17 @@
 import { cn } from "@/lib/utils"
-import { FloorPlanBg } from "@/components/graphics/floorplan-bg"
+import { HeroGrid } from "@/components/graphics/hero-grid"
 
 type LandingHeroBackgroundProps = {
   className?: string
-  /** Architectural grid + room rectangles */
-  showFloorPlan?: boolean
-  /** Fine film grain texture */
   showGrain?: boolean
-  /** Client-app dot grid (kept subtle when floor plan is on) */
-  showDotGrid?: boolean
 }
 
 /**
- * Hero background: client landing clay/navy washes + marketing floor-plan grid.
+ * Hero background: client landing washes + blueprint-style hero grid.
  */
 export function LandingHeroBackground({
   className,
-  showFloorPlan = true,
   showGrain = true,
-  showDotGrid = true,
 }: LandingHeroBackgroundProps) {
   return (
     <div className={cn("pointer-events-none absolute inset-0", className)} aria-hidden>
@@ -28,7 +21,7 @@ export function LandingHeroBackground({
         aria-hidden
       />
 
-      {/* Extra warm top glow — ties floor plan to terracotta brand */}
+      {/* Warm top glow */}
       <div
         className="absolute inset-0"
         style={{
@@ -38,38 +31,13 @@ export function LandingHeroBackground({
         aria-hidden
       />
 
-      {/* Floor-plan grid with rectangular room hints */}
-      {showFloorPlan && (
-        <FloorPlanBg
-          mode="grid"
-          tile={164}
-          intensity={0.85}
-          height="min(560px, 62vh)"
-          fadeStop={0.55}
-          className="z-[1] opacity-[0.92]"
-        />
-      )}
+      {/* Blueprint grid — terracotta major lines, fine minor grid, corner ticks */}
+      <HeroGrid className="z-[1] opacity-95" intensity={0.9} />
 
-      {/* Dot grid — lighter so it does not fight the floor plan */}
-      {showDotGrid && (
-        <div
-          className={cn(
-            "absolute inset-0 z-[2]",
-            showFloorPlan ? "opacity-[0.28]" : "opacity-[0.5]",
-          )}
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, rgb(15 23 42 / 0.05) 1px, transparent 0)",
-            backgroundSize: "32px 32px",
-          }}
-          aria-hidden
-        />
-      )}
-
-      {/* Subtle grain for depth */}
+      {/* Subtle grain */}
       {showGrain && (
         <div
-          className="absolute inset-0 z-[3] opacity-[0.05]"
+          className="absolute inset-0 z-[2] opacity-[0.05]"
           style={{
             backgroundImage: "url('/textures/grain.png')",
             backgroundSize: "200px 200px",

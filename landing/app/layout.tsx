@@ -14,7 +14,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://techstyles.ai"),
   title: {
-    default: "Interior Design Project Management Software UK | Techstyles",
+    default: "Interior Design Project Management Software UK | Focuspilot",
     template: "%s",
   },
   description:
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
     "interior design business software",
     "design project collaboration",
   ],
-  authors: [{ name: "Techstyles" }],
-  creator: "Techstyles",
-  publisher: "Techstyles",
+  authors: [{ name: "Focuspilot" }],
+  creator: "Focuspilot",
+  publisher: "Focuspilot",
   formatDetection: {
     email: false,
     address: false,
@@ -43,8 +43,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_GB",
     url: "https://techstyles.ai",
-    siteName: "Techstyles",
-    title: "Interior Design Project Management Software UK | Techstyles",
+    siteName: "Focuspilot",
+    title: "Interior Design Project Management Software UK | Focuspilot",
     description:
       "AI-powered project management for interior designers & architects. Manage projects, procurement, client approvals & invoicing in one workspace. Free 3-month trial.",
     images: [
@@ -52,13 +52,13 @@ export const metadata: Metadata = {
         url: "/images/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Interior Design Project Management Software UK | Techstyles",
+        alt: "Interior Design Project Management Software UK | Focuspilot",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Interior Design Project Management Software UK | Techstyles",
+    title: "Interior Design Project Management Software UK | Focuspilot",
     description:
       "AI-powered project management for interior designers & architects. Manage projects, procurement, client approvals & invoicing in one workspace. Free 3-month trial.",
     images: ["/images/twitter-image.png"],

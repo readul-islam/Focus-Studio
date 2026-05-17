@@ -14,7 +14,7 @@ export function SiteFooter() {
         {/* Brand */}
         <div className="space-y-3">
           <Link href="/" className="flex items-center gap-2">
-            <span className="font-semibold">Techstyles</span>
+            <span className="font-semibold">Focuspilot</span>
           </Link>
           <p className="text-sm text-stone-600">Calm, premium tools for interior design studios & architects.</p>
         </div>
@@ -212,7 +212,7 @@ export function SiteFooter() {
 
       <div className="border-t py-4">
         <div className={cn(container, "flex items-center justify-between text-xs text-stone-500")}>
-          <div>&copy; {new Date().getFullYear()} Techstyles. All rights reserved.</div>
+          <div>&copy; {new Date().getFullYear()} Focuspilot. All rights reserved.</div>
           <div className="flex items-center gap-4">
             <Link href="/privacy" className="hover:text-stone-900">
               Privacy Policy
