@@ -171,7 +171,7 @@ export function SiteFooter() {
           </div>
           <div className="mt-4 flex gap-3">
             <a
-              href="https://facebook.com/techstyles"
+              href=""
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Follow Techstyles on Facebook"
@@ -180,7 +180,7 @@ export function SiteFooter() {
               <Facebook className="h-5 w-5" aria-hidden="true" />
             </a>
             <a
-              href="https://twitter.com/techstyles"
+              href=""
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Follow Techstyles on Twitter"
@@ -189,7 +189,7 @@ export function SiteFooter() {
               <Twitter className="h-5 w-5" aria-hidden="true" />
             </a>
             <a
-              href="https://linkedin.com/company/techstyles"
+              href=""
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Follow Techstyles on LinkedIn"
@@ -198,7 +198,7 @@ export function SiteFooter() {
               <Linkedin className="h-5 w-5" aria-hidden="true" />
             </a>
             <a
-              href="https://instagram.com/techstyles"
+              href=""
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Follow Techstyles on Instagram"
