@@ -1,217 +1,72 @@
 import type { MetadataRoute } from "next"
+import { getAllPosts } from "@/lib/blog-data"
+
+const baseUrl = "https://focuspilot.io"
+
+type RouteConfig = {
+  path: string
+  changeFrequency: NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>
+  priority: number
+}
+
+/** Marketing pages we want indexed (auth/dev routes live in robots disallow). */
+const staticRoutes: RouteConfig[] = [
+  { path: "", changeFrequency: "weekly", priority: 1 },
+  { path: "platform/projects", changeFrequency: "weekly", priority: 0.9 },
+  { path: "platform/procurement", changeFrequency: "weekly", priority: 0.9 },
+  { path: "platform/finance", changeFrequency: "weekly", priority: 0.9 },
+  { path: "platform/client-portal", changeFrequency: "weekly", priority: 0.9 },
+  { path: "platform/crm", changeFrequency: "weekly", priority: 0.9 },
+  { path: "platform/ai", changeFrequency: "weekly", priority: 0.9 },
+  { path: "platform/contractor-portal", changeFrequency: "monthly", priority: 0.7 },
+  { path: "platform/features/library", changeFrequency: "monthly", priority: 0.7 },
+  { path: "platform/features/ai-procurement", changeFrequency: "monthly", priority: 0.7 },
+  { path: "platform/features/ai-email", changeFrequency: "monthly", priority: 0.7 },
+  { path: "platform/features/approvals", changeFrequency: "monthly", priority: 0.7 },
+  { path: "platform/features/invoicing", changeFrequency: "monthly", priority: 0.7 },
+  { path: "pricing", changeFrequency: "monthly", priority: 0.8 },
+  { path: "blog", changeFrequency: "weekly", priority: 0.6 },
+  { path: "compare", changeFrequency: "monthly", priority: 0.6 },
+  { path: "compare/programa", changeFrequency: "monthly", priority: 0.6 },
+  { path: "compare/design-manager", changeFrequency: "monthly", priority: 0.6 },
+  { path: "compare/houzz-pro", changeFrequency: "monthly", priority: 0.6 },
+  { path: "compare/studio-designer", changeFrequency: "monthly", priority: 0.6 },
+  { path: "compare/designfiles", changeFrequency: "monthly", priority: 0.6 },
+  { path: "signup", changeFrequency: "monthly", priority: 0.5 },
+  { path: "knowledge", changeFrequency: "weekly", priority: 0.5 },
+  { path: "customers", changeFrequency: "monthly", priority: 0.5 },
+  { path: "changelog", changeFrequency: "weekly", priority: 0.5 },
+  { path: "templates", changeFrequency: "monthly", priority: 0.5 },
+  { path: "integrations", changeFrequency: "monthly", priority: 0.5 },
+  { path: "about", changeFrequency: "monthly", priority: 0.5 },
+  { path: "contact", changeFrequency: "yearly", priority: 0.5 },
+  { path: "careers", changeFrequency: "monthly", priority: 0.4 },
+  { path: "privacy", changeFrequency: "yearly", priority: 0.3 },
+  { path: "terms", changeFrequency: "yearly", priority: 0.3 },
+]
+
+function toUrl(path: string): string {
+  return path ? `${baseUrl}/${path}` : baseUrl
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://focuspilot.io"
+  const builtAt = new Date()
 
-  return [
-    // Homepage
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    // Core Platform Pages
-    {
-      url: `${baseUrl}/platform/projects`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/platform/procurement`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/platform/finance`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/platform/client-portal`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/platform/crm`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/platform/ai`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    // Feature Pages
-    {
-      url: `${baseUrl}/platform/features/library`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/platform/features/ai-procurement`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/platform/features/ai-email`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/platform/features/approvals`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/platform/features/invoicing`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    // Pricing
-    {
-      url: `${baseUrl}/pricing`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    // Blog
-    {
-      url: `${baseUrl}/blog`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.6,
-    },
-    // Comparison Pages
-    {
-      url: `${baseUrl}/compare`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/compare/programa`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/compare/design-manager`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/compare/houzz-pro`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/compare/studio-designer`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/compare/designfiles`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    // Auth Pages (lower priority, but should be indexed)
-    {
-      url: `${baseUrl}/signup`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/login`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.4,
-    },
-    // Platform - Additional
-    {
-      url: `${baseUrl}/platform/contractor-portal`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    // Resources
-    {
-      url: `${baseUrl}/knowledge`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/customers`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/changelog`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/templates`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/integrations`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    // Company
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/careers`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.4,
-    },
-    // Legal Pages
-    {
-      url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/terms`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
-  ]
+  const staticEntries: MetadataRoute.Sitemap = staticRoutes.map(
+    ({ path, changeFrequency, priority }) => ({
+      url: toUrl(path),
+      lastModified: builtAt,
+      changeFrequency,
+      priority,
+    }),
+  )
+
+  const blogEntries: MetadataRoute.Sitemap = getAllPosts().map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: new Date(post.publishedAt),
+    changeFrequency: "monthly",
+    priority: 0.65,
+  }))
+
+  return [...staticEntries, ...blogEntries]
 }

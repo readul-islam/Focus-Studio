@@ -5,8 +5,19 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/private/", "/admin/", "/api/"],
+      disallow: [
+        "/api/",
+        "/admin/",
+        "/private/",
+        "/auth/",
+        "/login",
+        "/forgot-password",
+        "/verify-otp",
+        "/palette",
+        "/style-guide/",
+      ],
     },
     sitemap: "https://focuspilot.io/sitemap.xml",
+    host: "https://focuspilot.io",
   }
 }
