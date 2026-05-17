@@ -6,11 +6,8 @@ const appBase =
 
 export const EMAIL_LOGO_URL = `${appBase.replace(/\/$/, '')}/brand/email_logo.png`
 
-/** Hosted fallback when primary logo cannot be loaded (e.g. email client blocks domain). */
-export const EMAIL_LOGO_FALLBACK_URL = 'https://i.ibb.co/BVqBTSJx/email-logo.png'
-
 export function emailLogoImgHtml(width = 28, height = 28): string {
-  return `<img src="${EMAIL_LOGO_URL}" alt="Focuspilot" width="${width}" height="${height}" style="display:block;border:0;outline:none;text-decoration:none;" onerror="this.onerror=null;this.src='${EMAIL_LOGO_FALLBACK_URL}';" />`
+  return `<img src="${EMAIL_LOGO_URL}" alt="Focuspilot" width="${width}" height="${height}" style="display:block;border:0;outline:none;text-decoration:none;" />`
 }
 
 /** Logo + "Focuspilot" row for dark (#111827) email headers. */
@@ -19,7 +16,7 @@ export function emailBrandRowHtml(align: 'left' | 'center' = 'left'): string {
   const textAlign = align === 'center' ? 'center' : 'left'
   return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:${margin};">
 <tr>
-<td style="vertical-align:middle;padding-right:10px;width:28px;height:28px;background-image:url(${EMAIL_LOGO_FALLBACK_URL});background-repeat:no-repeat;background-position:center;background-size:28px 28px;">
+<td style="vertical-align:middle;padding-right:10px;width:28px;height:28px;">
 ${emailLogoImgHtml()}
 </td>
 <td style="vertical-align:middle;text-align:${textAlign};">

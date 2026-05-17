@@ -254,8 +254,6 @@ FRONTEND_URL = _env('FRONTEND_URL', 'http://localhost:3000')
 
 # Absolute URL for email <img> (defaults to FRONTEND_URL/brand/email_logo.png)
 EMAIL_LOGO_URL = _env('EMAIL_LOGO_URL')
-# Fallback when primary logo fails to load (img onerror / background)
-EMAIL_LOGO_FALLBACK_URL = _env('EMAIL_LOGO_FALLBACK_URL')
 
 # Stripe (SaaS subscriptions)
 STRIPE_SECRET_KEY = _env('STRIPE_SECRET_KEY')

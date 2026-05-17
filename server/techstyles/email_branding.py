@@ -2,8 +2,6 @@
 
 from django.conf import settings
 
-DEFAULT_EMAIL_LOGO_FALLBACK_URL = 'https://i.ibb.co/BVqBTSJx/email-logo.png'
-
 
 def email_logo_url() -> str:
     custom = (getattr(settings, 'EMAIL_LOGO_URL', None) or '').strip()
@@ -13,32 +11,21 @@ def email_logo_url() -> str:
     return f'{base}/brand/email_logo.png'
 
 
-def email_logo_fallback_url() -> str:
-    custom = (getattr(settings, 'EMAIL_LOGO_FALLBACK_URL', None) or '').strip()
-    if custom:
-        return custom.rstrip('/')
-    return DEFAULT_EMAIL_LOGO_FALLBACK_URL
-
-
 def email_logo_img_html(*, width: int = 28, height: int = 28) -> str:
-    """Logo img with CDN fallback (onerror + background for partial client support)."""
     primary = email_logo_url()
-    fallback = email_logo_fallback_url()
     return (
         f'<img src="{primary}" alt="Focuspilot" width="{width}" height="{height}" '
-        f'style="display:block;border:0;outline:none;text-decoration:none;" '
-        f'onerror="this.onerror=null;this.src=\'{fallback}\';" />'
+        f'style="display:block;border:0;outline:none;text-decoration:none;" />'
     )
 
 
 def email_brand_row_html(*, align: str = 'left') -> str:
     """Inline logo + Focuspilot wordmark for dark (#111827) email headers."""
-    fallback = email_logo_fallback_url()
     margin = '0 auto' if align == 'center' else '0'
     text_align = 'center' if align == 'center' else 'left'
     return f"""<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:{margin};">
 <tr>
-<td style="vertical-align:middle;padding-right:10px;width:28px;height:28px;background-image:url({fallback});background-repeat:no-repeat;background-position:center;background-size:28px 28px;">
+<td style="vertical-align:middle;padding-right:10px;width:28px;height:28px;">
 {email_logo_img_html()}
 </td>
 <td style="vertical-align:middle;text-align:{text_align};">
