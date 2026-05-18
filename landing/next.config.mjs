@@ -4,7 +4,8 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    optimize: true,
+    // unoptimized: false,
   },
   async redirects() {
     return [{ source: "/templates", destination: "/resources/templates", permanent: true }]
