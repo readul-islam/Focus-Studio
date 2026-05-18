@@ -2062,6 +2062,22 @@ def add_existing_contractor(request):
 # Contractor Profile CRUD endpoints (Phase 3)
 # ---------------------------------------------------------------------------
 
+def _get_studio_contractor_for_request(request, contractor_id):
+    studio = getattr(request.user, 'studio', None)
+    if not studio:
+        return None, Response(
+            {'error': 'Your account is not linked to a studio.'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    contractor = _studio_contractor(contractor_id, studio)
+    if not contractor:
+        return None, Response(
+            {'error': 'Contractor not found. Must be a contact with type CN in your studio.'},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+    return contractor, None
+
+
 @extend_schema(
     methods=['GET'],
     tags=['Contractor Portal - Profile Management'],
@@ -2080,7 +2096,7 @@ def add_existing_contractor(request):
     description=(
         'Updates contractor profile fields. '
         'Accepts: name, surname, company_name, email, phone, trade, insurance_expiry, '
-        'emergency_contact_name, emergency_contact_phone, notes. '
+        'emergency_contact_name, emergency_contact_phone, notes, insurance_document, trade_cert. '
         'Requires studio authentication.'
     ),
     request=ContractorProfileSerializer,
@@ -2092,36 +2108,29 @@ def contractor_profile(request, contractor_id):
     """
     Get or update contractor profile.
     GET: Returns full contractor profile.
-    PATCH: Updates contractor profile fields.
+    PATCH: Updates contractor profile fields (JSON or multipart for file uploads).
     Requires studio authentication.
     """
-    try:
-        contractor = Client.objects.get(id=contractor_id, contact_type='CN')
-    except Client.DoesNotExist:
-        return Response(
-            {'error': 'Contractor not found. Must be a contact with type CN.'},
-            status=status.HTTP_404_NOT_FOUND,
-        )
+    contractor, err = _get_studio_contractor_for_request(request, contractor_id)
+    if err:
+        return err
 
     if request.method == 'GET':
         serializer = ContractorProfileSerializer(contractor, context={'request': request})
         return Response(serializer.data)
 
-    elif request.method == 'PATCH':
-        # Only allow updating specific fields
-        allowed_fields = [
-            'name', 'surname', 'company_name', 'email', 'phone', 'trade',
-            'insurance_expiry', 'emergency_contact_name', 'emergency_contact_phone', 'notes'
-        ]
+    allowed_fields = [
+        'name', 'surname', 'company_name', 'email', 'phone', 'trade',
+        'insurance_expiry', 'emergency_contact_name', 'emergency_contact_phone', 'notes',
+    ]
+    update_data = {k: v for k, v in request.data.items() if k in allowed_fields}
 
-        # Filter out non-allowed fields
-        update_data = {k: v for k, v in request.data.items() if k in allowed_fields}
-
-        serializer = ContractorProfileSerializer(contractor, data=update_data, partial=True, context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data)
+    serializer = ContractorProfileSerializer(
+        contractor, data=update_data, partial=True, context={'request': request},
+    )
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(ContractorProfileSerializer(contractor, context={'request': request}).data)
 
 
 @extend_schema(
@@ -2148,13 +2157,9 @@ def regenerate_access_code(request, contractor_id):
     Generates a new code, updates access_code field, and sets password to new code.
     Requires studio authentication.
     """
-    try:
-        contractor = Client.objects.get(id=contractor_id, contact_type='CN')
-    except Client.DoesNotExist:
-        return Response(
-            {'error': 'Contractor not found. Must be a contact with type CN.'},
-            status=status.HTTP_404_NOT_FOUND,
-        )
+    contractor, err = _get_studio_contractor_for_request(request, contractor_id)
+    if err:
+        return err
 
     # Generate new access code
     new_access_code = _generate_access_code(contractor.surname or 'XXXX', contractor.studio_id)
@@ -2167,6 +2172,96 @@ def regenerate_access_code(request, contractor_id):
     contractor.save(update_fields=['password'])
 
     return Response({'access_code': new_access_code})
+
+
+@extend_schema(
+    tags=['Contractor Portal - Profile Management'],
+    summary='Remove contractor from project',
+    description='Unlinks a contractor from a project. Does not delete the contractor contact.',
+    request=inline_serializer(
+        name='RemoveContractorFromProjectRequest',
+        fields={'project_id': drf_serializers.IntegerField()},
+    ),
+    responses={
+        200: inline_serializer(
+            name='RemoveContractorFromProjectResponse',
+            fields={'message': drf_serializers.CharField()},
+        ),
+        400: OpenApiTypes.OBJECT,
+        404: OpenApiTypes.OBJECT,
+    },
+)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def remove_contractor_from_project(request, contractor_id):
+    """Remove ContractorProject link for this studio's project."""
+    contractor, err = _get_studio_contractor_for_request(request, contractor_id)
+    if err:
+        return err
+
+    project_id = request.data.get('project_id')
+    if not project_id:
+        return Response({'error': 'project_id is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    studio = request.user.studio
+    try:
+        project = Project.objects.get(id=project_id, studio=studio)
+    except Project.DoesNotExist:
+        return Response({'error': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    deleted, _ = ContractorProject.objects.filter(contractor=contractor, project=project).delete()
+    if not deleted:
+        return Response(
+            {'error': 'Contractor is not linked to this project'},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    return Response({'message': 'Contractor removed from project'})
+
+
+@extend_schema(
+    methods=['GET'],
+    tags=['Contractor Portal - Profile Management'],
+    summary='Get my contractor profile',
+    responses={200: ContractorProfileSerializer, 401: OpenApiTypes.OBJECT},
+)
+@extend_schema(
+    methods=['PATCH'],
+    tags=['Contractor Portal - Profile Management'],
+    summary='Update my contractor profile',
+    request=ContractorProfileSerializer,
+    responses={200: ContractorProfileSerializer, 401: OpenApiTypes.OBJECT},
+)
+@api_view(['GET', 'PATCH'])
+@permission_classes([AllowAny])
+def contractor_me_profile(request):
+    """
+    Contractor self-service profile (JWT with contractor_id claim).
+    """
+    auth = ContractorJWTAuthentication()
+    try:
+        result = auth.authenticate(request)
+    except Exception:
+        result = None
+    if not result:
+        return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+    contractor, _token = result
+
+    if request.method == 'GET':
+        serializer = ContractorProfileSerializer(contractor, context={'request': request})
+        return Response(serializer.data)
+
+    allowed_fields = [
+        'name', 'surname', 'company_name', 'email', 'phone', 'trade',
+        'insurance_expiry', 'emergency_contact_name', 'emergency_contact_phone', 'notes',
+    ]
+    update_data = {k: v for k, v in request.data.items() if k in allowed_fields}
+    serializer = ContractorProfileSerializer(
+        contractor, data=update_data, partial=True, context={'request': request},
+    )
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(ContractorProfileSerializer(contractor, context={'request': request}).data)
 
 
 # ---------------------------------------------------------------------------

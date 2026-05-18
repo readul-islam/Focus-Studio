@@ -7,7 +7,13 @@ from projects.models import Procurement, Project
 from finance.models import Invoice, InvoiceLineItem
 from library.models import ProductImage
 from crm.models import Client
-from .models import ContractorProject, ContractorSharedProcurement, ContractorSharedDocument, ContractorMessage
+from .models import (
+    ContractorProject,
+    ContractorProfile,
+    ContractorSharedProcurement,
+    ContractorSharedDocument,
+    ContractorMessage,
+)
 from documents.serializers import DocumentSerializer
 
 
@@ -359,6 +365,37 @@ class ContractorProfileSerializer(serializers.ModelSerializer):
     def get_shared_drawings_count(self, obj):
         return ContractorSharedDocument.objects.filter(contractor=obj).count()
 
+    def update(self, instance, validated_data):
+        """Persist Client fields and ContractorProfile fields (including file uploads)."""
+        request = self.context.get('request')
+        initial = getattr(self, 'initial_data', {}) or {}
+
+        profile_field_names = (
+            'trade', 'insurance_expiry', 'emergency_contact_name',
+            'emergency_contact_phone', 'notes',
+        )
+        profile, _ = ContractorProfile.objects.get_or_create(contractor=instance)
+
+        for field in profile_field_names:
+            if field in initial:
+                value = initial.get(field)
+                if value == '':
+                    value = None
+                setattr(profile, field, value)
+
+        if request and hasattr(request, 'FILES'):
+            if request.FILES.get('insurance_document'):
+                profile.insurance_document = request.FILES['insurance_document']
+            if request.FILES.get('trade_cert'):
+                profile.trade_cert = request.FILES['trade_cert']
+
+        profile.save()
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
+
 
 class ContractorViewSerializer(serializers.ModelSerializer):
     """Full contractor view serializer for the contractor detail panel."""
@@ -368,6 +405,9 @@ class ContractorViewSerializer(serializers.ModelSerializer):
     drawing_count = serializers.SerializerMethodField()
     confirmed_drawing_count = serializers.SerializerMethodField()
     insurance_warning = serializers.SerializerMethodField()
+    insurance_expiry = serializers.SerializerMethodField()
+    insurance_document = serializers.SerializerMethodField()
+    trade_cert = serializers.SerializerMethodField()
     trade = serializers.SerializerMethodField()
     access_code = serializers.SerializerMethodField()
 
@@ -387,6 +427,9 @@ class ContractorViewSerializer(serializers.ModelSerializer):
             'drawing_count',
             'confirmed_drawing_count',
             'insurance_warning',
+            'insurance_expiry',
+            'insurance_document',
+            'trade_cert',
             'shared_procurements',
             'shared_documents',
         ]
@@ -398,6 +441,30 @@ class ContractorViewSerializer(serializers.ModelSerializer):
     def get_access_code(self, obj):
         profile = getattr(obj, 'contractor_profile', None)
         return profile.access_code if profile else None
+
+    def get_insurance_expiry(self, obj):
+        profile = getattr(obj, 'contractor_profile', None)
+        return str(profile.insurance_expiry) if profile and profile.insurance_expiry else None
+
+    @extend_schema_field(OpenApiTypes.URI)
+    def get_insurance_document(self, obj):
+        profile = getattr(obj, 'contractor_profile', None)
+        if profile and profile.insurance_document:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(profile.insurance_document.url)
+            return profile.insurance_document.url
+        return None
+
+    @extend_schema_field(OpenApiTypes.URI)
+    def get_trade_cert(self, obj):
+        profile = getattr(obj, 'contractor_profile', None)
+        if profile and profile.trade_cert:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(profile.trade_cert.url)
+            return profile.trade_cert.url
+        return None
 
     def _get_project_id(self):
         # Allow project_id to be injected directly into context (e.g. from project_contractors view)

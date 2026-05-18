@@ -160,12 +160,18 @@ export interface ContractorShare {
   view_count: number;
 }
 
+export type InsuranceWarning = 'expired' | 'expiring_soon' | 'valid' | null;
+
 export interface ProjectContractor {
   id: string;
   name: string;
   trade: TradeType;
   trade_label?: string;
   access_code?: string;
+  insurance_expiry?: string;
+  insurance_warning?: InsuranceWarning;
+  insurance_document?: string;
+  trade_cert?: string;
   token: string;
   status: 'invited' | 'active' | 'inactive';
   created_at: string;

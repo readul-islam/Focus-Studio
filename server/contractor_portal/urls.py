@@ -24,6 +24,8 @@ from .views import (
     remove_shared_document,
     contractor_profile,
     regenerate_access_code,
+    remove_contractor_from_project,
+    contractor_me_profile,
     project_by_access_token,
     authenticate_with_access_code,
 )
@@ -55,8 +57,10 @@ urlpatterns = [
     path('view/<int:contractor_id>/', contractor_view, name='contractor-view'),
     path('project/<int:project_id>/contractors/', project_contractors, name='contractor-project-list'),
     # Profile Management (Phase 3)
+    path('me/', contractor_me_profile, name='contractor-me-profile'),
     path('contractor/<int:contractor_id>/', contractor_profile, name='contractor-profile'),
     path('contractor/<int:contractor_id>/regenerate-code/', regenerate_access_code, name='contractor-regenerate-code'),
+    path('contractor/<int:contractor_id>/remove-from-project/', remove_contractor_from_project, name='contractor-remove-from-project'),
     # QR Code Access (Phase 2)
     path('project/<uuid:access_token>/', project_by_access_token, name='project-by-access-token'),
     path('project/<uuid:access_token>/auth/', authenticate_with_access_code, name='authenticate-with-access-code'),

@@ -1,6 +1,10 @@
+from datetime import date, timedelta
 from unittest.mock import patch
+
 from rest_framework import status
 from rest_framework.test import APITestCase
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from users.models import User, Studio
 from crm.models import Client
 from projects.models import Project
@@ -38,6 +42,14 @@ def create_contractor(studio, email="contractor@example.com", name="John", surna
 
 def create_project(studio, name="Test Project"):
     return Project.objects.create(project_name=name, studio=studio)
+
+
+def contractor_auth_header(contractor):
+    refresh = RefreshToken()
+    refresh['contractor_id'] = contractor.id
+    refresh['email'] = contractor.email
+    refresh['type'] = 'contractor'
+    return f'Bearer {refresh.access_token}'
 
 
 class ContractorLoginTests(APITestCase):
@@ -307,20 +319,94 @@ class ContractorProfileTests(APITestCase):
     def setUp(self):
         self.studio = create_studio()
         self.user = create_user(studio=self.studio)
+        self.project = create_project(self.studio)
         self.contractor = create_contractor(self.studio)
+        ContractorProject.objects.create(contractor=self.contractor, project=self.project)
+        ContractorProfile.objects.create(
+            contractor=self.contractor,
+            trade='Plumbing',
+            access_code='DOE-01',
+        )
         self.client.force_authenticate(user=self.user)
 
     def test_get_contractor_profile(self):
         url = f'/contractor_portal/contractor/{self.contractor.id}/'
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['trade'], 'Plumbing')
 
-    def test_update_contractor_profile(self):
+    def test_update_contractor_profile_client_and_profile_fields(self):
         url = f'/contractor_portal/contractor/{self.contractor.id}/'
-        response = self.client.patch(url, {'name': 'Updated Name'}, format='json')
+        expiry = (date.today() + timedelta(days=60)).isoformat()
+        response = self.client.patch(
+            url,
+            {
+                'name': 'Updated Name',
+                'trade': 'Electrical',
+                'insurance_expiry': expiry,
+                'emergency_contact_name': 'Jane Doe',
+                'notes': 'Site contact only',
+            },
+            format='json',
+        )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.contractor.refresh_from_db()
         self.assertEqual(self.contractor.name, 'Updated Name')
+        profile = ContractorProfile.objects.get(contractor=self.contractor)
+        self.assertEqual(profile.trade, 'Electrical')
+        self.assertEqual(str(profile.insurance_expiry), expiry)
+        self.assertEqual(profile.emergency_contact_name, 'Jane Doe')
+        self.assertEqual(profile.notes, 'Site contact only')
+
+    def test_regenerate_access_code(self):
+        url = f'/contractor_portal/contractor/{self.contractor.id}/regenerate-code/'
+        response = self.client.post(url, {}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('access_code', response.data)
+        profile = ContractorProfile.objects.get(contractor=self.contractor)
+        self.assertEqual(profile.access_code, response.data['access_code'])
+        self.assertNotEqual(profile.access_code, 'DOE-01')
+
+    def test_remove_contractor_from_project(self):
+        url = f'/contractor_portal/contractor/{self.contractor.id}/remove-from-project/'
+        response = self.client.post(url, {'project_id': self.project.id}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(
+            ContractorProject.objects.filter(
+                contractor=self.contractor,
+                project=self.project,
+            ).exists()
+        )
+
+    def test_remove_contractor_requires_project_id(self):
+        url = f'/contractor_portal/contractor/{self.contractor.id}/remove-from-project/'
+        response = self.client.post(url, {}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_contractor_me_profile_get_and_patch(self):
+        self.client.force_authenticate(user=None)
+        auth = contractor_auth_header(self.contractor)
+        me_url = '/contractor_portal/me/'
+
+        get_response = self.client.get(me_url, HTTP_AUTHORIZATION=auth)
+        self.assertEqual(get_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(get_response.data['email'], self.contractor.email)
+
+        patch_response = self.client.patch(
+            me_url,
+            {'trade': 'Joinery', 'company_name': 'ACME Ltd'},
+            format='json',
+            HTTP_AUTHORIZATION=auth,
+        )
+        self.assertEqual(patch_response.status_code, status.HTTP_200_OK)
+        profile = ContractorProfile.objects.get(contractor=self.contractor)
+        self.assertEqual(profile.trade, 'Joinery')
+        self.contractor.refresh_from_db()
+        self.assertEqual(self.contractor.company_name, 'ACME Ltd')
+
+    def test_contractor_me_requires_auth(self):
+        response = self.client.get('/contractor_portal/me/')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_contractor_not_found(self):
         url = '/contractor_portal/contractor/9999/'

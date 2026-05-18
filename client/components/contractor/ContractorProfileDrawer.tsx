@@ -7,7 +7,9 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { X, Upload, FileText, AlertCircle, Loader2, RefreshCw, Trash2, Copy, Check } from 'lucide-react';
 import { gooeyToast as toast } from 'goey-toast';
-import usePatch from '@/hooks/usePatch';
+import useFetch from '@/hooks/useFetch';
+import { usePost } from '@/hooks/usePost';
+import { patchData, patchFormData } from '@/lib/Api';
 import { TRADE_OPTIONS } from '@/lib/contractor/types';
 
 interface ContractorProfileDrawerProps {
@@ -15,21 +17,6 @@ interface ContractorProfileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   onSaved?: () => void;
-  initialData?: {
-    name: string;
-    surname: string;
-    company_name: string;
-    email: string;
-    phone: string;
-    trade: string;
-    insurance_expiry?: string;
-    insurance_document?: string;
-    trade_cert?: string;
-    emergency_contact_name?: string;
-    emergency_contact_phone?: string;
-    notes?: string;
-    access_code?: string;
-  };
   projectId: string;
 }
 
@@ -80,7 +67,6 @@ export function ContractorProfileDrawer({
   isOpen,
   onClose,
   onSaved,
-  initialData,
   projectId,
 }: ContractorProfileDrawerProps) {
   const [formData, setFormData] = useState({
@@ -101,64 +87,104 @@ export function ContractorProfileDrawer({
   const [insuranceFile, setInsuranceFile] = useState<File | null>(null);
   const [tradeCertFile, setTradeCertFile] = useState<File | null>(null);
   const [accessCodeCopied, setAccessCodeCopied] = useState(false);
+  const [accessCode, setAccessCode] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
-  // Update form when initialData changes
+  const { data: profileApi, isLoading, refetch } = useFetch(
+    isOpen && contractorId ? `contractor_portal/contractor/${contractorId}/` : null,
+    { enabled: isOpen && !!contractorId }
+  );
+
   useEffect(() => {
-    if (initialData) {
-      setFormData({
-        name: initialData.name || '',
-        surname: initialData.surname || '',
-        company_name: initialData.company_name || '',
-        email: initialData.email || '',
-        phone: initialData.phone || '',
-        trade: initialData.trade || '',
-        insurance_expiry: initialData.insurance_expiry || '',
-        insurance_document: initialData.insurance_document || '',
-        trade_cert: initialData.trade_cert || '',
-        emergency_contact_name: initialData.emergency_contact_name || '',
-        emergency_contact_phone: initialData.emergency_contact_phone || '',
-        notes: initialData.notes || '',
-      });
-    }
-  }, [initialData]);
+    if (!profileApi) return;
+    const p = profileApi as Record<string, string | null>;
+    setFormData({
+      name: p.name || '',
+      surname: p.surname || '',
+      company_name: p.company_name || '',
+      email: p.email || '',
+      phone: p.phone || '',
+      trade: p.trade || '',
+      insurance_expiry: p.insurance_expiry || '',
+      insurance_document: p.insurance_document || '',
+      trade_cert: p.trade_cert || '',
+      emergency_contact_name: p.emergency_contact_name || '',
+      emergency_contact_phone: p.emergency_contact_phone || '',
+      notes: p.notes || '',
+    });
+    setAccessCode(p.access_code || '');
+    setInsuranceFile(null);
+    setTradeCertFile(null);
+  }, [profileApi]);
 
-  // Patch mutation
-  const { mutate: updateProfile, isPending: isSaving } = usePatch({
-    onSuccess: () => {
-      toast.success('Profile saved');
+  const { mutate: regenerateCode, isPending: isRegenerating } = usePost({
+    onSuccess: (data: { access_code?: string }) => {
+      setAccessCode(data?.access_code || '');
+      toast.success(`New access code: ${data?.access_code || ''}`);
       onSaved?.();
-      onClose();
     },
-    onError: (error: any) => {
-      toast.error(error?.message || 'Failed to save profile');
+    onError: (error: { message?: string }) => {
+      toast.error(error?.message || 'Failed to regenerate code');
     },
   });
 
-  const handleSave = () => {
+  const { mutate: removeFromProject, isPending: isRemoving } = usePost({
+    onSuccess: () => {
+      toast.success('Contractor removed from project');
+      onSaved?.();
+      onClose();
+    },
+    onError: (error: { message?: string }) => {
+      toast.error(error?.message || 'Failed to remove contractor');
+    },
+  });
+
+  const handleSave = async () => {
     if (!contractorId) return;
-
-    // For now, optimistically save - backend may not be ready
-    // In production, this would call: PATCH /contractor_portal/contractor/{id}/
-    updateProfile({
-      url: `contractor_portal/contractor/${contractorId}/`,
-      data: formData,
-    });
-  };
-
-  const handleRegenerateAccessCode = () => {
-    // Show toast for now - endpoint may not be ready
-    toast.info('Coming soon: Regenerate access code');
-  };
-
-  const handleRemoveFromProject = () => {
-    // Show confirmation - would call DELETE endpoint
-    if (confirm('Are you sure you want to remove this contractor from the project?')) {
-      toast.info('Coming soon: Remove contractor');
+    setIsSaving(true);
+    const url = `contractor_portal/contractor/${contractorId}/`;
+    try {
+      if (insuranceFile || tradeCertFile) {
+        const fd = new FormData();
+        Object.entries(formData).forEach(([key, value]) => fd.append(key, value ?? ''));
+        if (insuranceFile) fd.append('insurance_document', insuranceFile);
+        if (tradeCertFile) fd.append('trade_cert', tradeCertFile);
+        await patchFormData({ url, data: fd });
+      } else {
+        await patchData({ url, data: formData });
+      }
+      toast.success('Profile saved');
+      refetch();
+      onSaved?.();
+      onClose();
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : 'Failed to save profile');
+    } finally {
+      setIsSaving(false);
     }
   };
 
+  const handleRegenerateAccessCode = () => {
+    if (!contractorId) return;
+    regenerateCode({
+      url: `contractor_portal/contractor/${contractorId}/regenerate-code/`,
+      data: {},
+    });
+  };
+
+  const handleRemoveFromProject = () => {
+    if (!contractorId) return;
+    if (!confirm('Remove this contractor from the project? They will lose portal access to this project.')) {
+      return;
+    }
+    removeFromProject({
+      url: `contractor_portal/contractor/${contractorId}/remove-from-project/`,
+      data: { project_id: parseInt(projectId) },
+    });
+  };
+
   const handleCopyAccessCode = () => {
-    const code = initialData?.access_code || '';
+    const code = accessCode || '';
     if (code) {
       navigator.clipboard.writeText(code);
       setAccessCodeCopied(true);
@@ -199,6 +225,13 @@ export function ContractorProfileDrawer({
 
         {/* Content */}
         <div className="p-6 space-y-6">
+          {isLoading && (
+            <div className="flex justify-center py-8">
+              <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+            </div>
+          )}
+          {!isLoading && (
+          <>
           {/* Name Fields */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
@@ -343,10 +376,7 @@ export function ContractorProfileDrawer({
                 className="hidden"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) {
-                    setInsuranceFile(file);
-                    toast.info('File upload pending save');
-                  }
+                  if (file) setInsuranceFile(file);
                 }}
               />
               <p className="text-xs text-gray-500">PDF or image files only</p>
@@ -379,10 +409,7 @@ export function ContractorProfileDrawer({
                 className="hidden"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
-                  if (file) {
-                    setTradeCertFile(file);
-                    toast.info('File upload pending save');
-                  }
+                  if (file) setTradeCertFile(file);
                 }}
               />
               <p className="text-xs text-gray-500">PDF or image files only</p>
@@ -447,14 +474,14 @@ export function ContractorProfileDrawer({
             <h3 className="text-sm font-medium text-gray-900 mb-4">Access Code</h3>
             <div className="flex items-center gap-3">
               <div className="flex-1 p-3 bg-stone-50 rounded border border-gray-200 font-mono text-lg text-gray-900">
-                {initialData?.access_code || 'N/A'}
+                {accessCode || 'N/A'}
               </div>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleCopyAccessCode}
                 className="border-gray-200"
-                disabled={!initialData?.access_code}
+                disabled={!accessCode}
               >
                 {accessCodeCopied ? (
                   <Check className="w-4 h-4" />
@@ -466,9 +493,10 @@ export function ContractorProfileDrawer({
                 variant="outline"
                 size="sm"
                 onClick={handleRegenerateAccessCode}
+                disabled={isRegenerating}
                 className="border-gray-200"
               >
-                <RefreshCw className="w-4 h-4 mr-2" />
+                <RefreshCw className={`w-4 h-4 mr-2 ${isRegenerating ? 'animate-spin' : ''}`} />
                 Regenerate
               </Button>
             </div>
@@ -483,12 +511,15 @@ export function ContractorProfileDrawer({
             <Button
               variant="outline"
               onClick={handleRemoveFromProject}
+              disabled={isRemoving}
               className="w-full border-red-300 text-red-700 hover:bg-red-50"
             >
               <Trash2 className="w-4 h-4 mr-2" />
               Remove from Project
             </Button>
           </div>
+          </>
+          )}
         </div>
 
         {/* Footer */}

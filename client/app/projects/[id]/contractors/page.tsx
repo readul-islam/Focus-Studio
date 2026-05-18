@@ -48,6 +48,10 @@ interface ApiContractor {
   item_count: number;
   drawing_count: number;
   confirmed_drawing_count: number;
+  insurance_warning?: 'expired' | 'expiring_soon' | 'valid' | null;
+  insurance_expiry?: string | null;
+  insurance_document?: string | null;
+  trade_cert?: string | null;
   shared_procurements: Array<{
     id: number;
     procurement: number;
@@ -108,6 +112,10 @@ function mapApiContractorToProjectContractor(apiContractor: ApiContractor): Proj
     trade: 'General',
     trade_label: apiContractor.trade || undefined,
     access_code: apiContractor.access_code || undefined,
+    insurance_expiry: apiContractor.insurance_expiry || undefined,
+    insurance_warning: apiContractor.insurance_warning ?? undefined,
+    insurance_document: apiContractor.insurance_document || undefined,
+    trade_cert: apiContractor.trade_cert || undefined,
     token: `contractor-${apiContractor.id}`,
     status: 'active',
     created_at: new Date().toISOString(),
@@ -657,24 +665,7 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
           contractorId={profileContractor.id}
           isOpen={!!profileContractor}
           onClose={() => setProfileContractor(null)}
-          onSaved={() => {
-            refetch();
-          }}
-          initialData={{
-            name: apiData?.find((c: any) => c.id.toString() === profileContractor.id)?.name || '',
-            surname: apiData?.find((c: any) => c.id.toString() === profileContractor.id)?.surname || '',
-            company_name: apiData?.find((c: any) => c.id.toString() === profileContractor.id)?.company_name || '',
-            email: apiData?.find((c: any) => c.id.toString() === profileContractor.id)?.email || '',
-            phone: apiData?.find((c: any) => c.id.toString() === profileContractor.id)?.phone || '',
-            trade: profileContractor.trade,
-            insurance_expiry: (apiData?.find((c: any) => c.id.toString() === profileContractor.id) as any)?.insurance_expiry,
-            insurance_document: (apiData?.find((c: any) => c.id.toString() === profileContractor.id) as any)?.insurance_document,
-            trade_cert: (apiData?.find((c: any) => c.id.toString() === profileContractor.id) as any)?.trade_cert,
-            emergency_contact_name: (apiData?.find((c: any) => c.id.toString() === profileContractor.id) as any)?.emergency_contact_name,
-            emergency_contact_phone: (apiData?.find((c: any) => c.id.toString() === profileContractor.id) as any)?.emergency_contact_phone,
-            notes: (apiData?.find((c: any) => c.id.toString() === profileContractor.id) as any)?.notes,
-            access_code: (apiData?.find((c: any) => c.id.toString() === profileContractor.id) as any)?.access_code,
-          }}
+          onSaved={() => refetch()}
           projectId={params.id}
         />
       )}

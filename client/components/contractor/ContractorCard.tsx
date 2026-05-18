@@ -72,6 +72,35 @@ function formatRelativeTime(dateString?: string): string {
   return `Last access: ${date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`;
 }
 
+function getInsuranceStatusFromContractor(contractor: ProjectContractor): {
+  status: 'valid' | 'expiring' | 'expired' | 'not_uploaded';
+  label: string;
+  color: string;
+  dotColor: string;
+} {
+  const warning = contractor.insurance_warning;
+  if (warning === 'expired') {
+    return {
+      status: 'expired',
+      label: 'Expired',
+      color: 'text-red-700',
+      dotColor: 'bg-red-500',
+    };
+  }
+  if (warning === 'expiring_soon') {
+    return {
+      status: 'expiring',
+      label: 'Expiring soon',
+      color: 'text-amber-700',
+      dotColor: 'bg-amber-500',
+    };
+  }
+  if (warning === 'valid') {
+    return getInsuranceStatus(contractor.insurance_expiry);
+  }
+  return getInsuranceStatus(contractor.insurance_expiry);
+}
+
 // Calculate insurance status based on expiry date
 function getInsuranceStatus(insurance_expiry?: string): {
   status: 'valid' | 'expiring' | 'expired' | 'not_uploaded';
@@ -232,7 +261,7 @@ export function ContractorCard({
             <div className="flex items-center gap-3 mt-1 text-sm text-neutral-500 flex-wrap">
               {/* Insurance Status Badge */}
               {(() => {
-                const insurance = getInsuranceStatus((contractor as any).insurance_expiry);
+                const insurance = getInsuranceStatusFromContractor(contractor);
                 return (
                   <div className="flex items-center gap-1.5">
                     <div className={`w-2 h-2 rounded-full ${insurance.dotColor}`} />
