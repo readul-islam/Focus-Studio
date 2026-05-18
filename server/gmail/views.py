@@ -46,7 +46,9 @@ def gmail_callback(request):
     """Handle Gmail OAuth callback"""
     error = request.GET.get("error")
     if error:
-        return Response({"error": error}, status=400)
+        return HttpResponseRedirect(
+            f"{settings.FRONTEND_URL}/oauth/gmail/callback?status=error&reason={error}"
+        )
 
     code = request.GET.get("code")
     state = request.GET.get("state", "")

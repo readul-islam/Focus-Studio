@@ -10,7 +10,11 @@ function GmailCallbackContent() {
     const status = searchParams.get('status');
 
     if (status === 'error') {
-      window.opener?.postMessage({ type: 'OAUTH_CANCELLED' }, window.location.origin);
+      const reason = searchParams.get('reason');
+      window.opener?.postMessage(
+        { type: 'OAUTH_CANCELLED', reason: reason ?? 'unknown' },
+        window.location.origin
+      );
       window.close();
       return;
     }

@@ -637,9 +637,37 @@ SECRET_KEY=your-secret-key
 DEBUG=True
 ALLOWED_HOSTS=localhost,127.0.0.1
 DATABASE_URL=sqlite:///db.sqlite3
+FRONTEND_URL=http://localhost:3000
 XERO_CLIENT_ID=your-xero-id
 XERO_CLIENT_SECRET=your-xero-secret
+GMAIL_CLIENT_ID=your-google-oauth-client-id
+GMAIL_CLIENT_SECRET=your-google-oauth-client-secret
+GMAIL_REDIRECT_URI=http://localhost:8000/gmail/callback/
+GMAIL_SCOPES=https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/calendar
 ```
+
+### Gmail / Google OAuth (AI Inbox)
+
+The Inbox (`/ai/inbox`) and **Settings → Studio → Integrations** use the same Gmail OAuth flow.
+
+1. **Google Cloud Console** → [APIs & Services](https://console.cloud.google.com/apis/credentials)
+   - Create or select a project.
+   - Enable **Gmail API** and **Google Calendar API** (optional, for calendar features).
+2. **OAuth consent screen**
+   - User type: **External** (for real Gmail accounts) or Internal (Workspace only).
+   - Publishing status: **Testing** is fine for development.
+   - Add scopes: `gmail.modify`, `calendar` (or the full URLs in `GMAIL_SCOPES`).
+   - Under **Test users**, add every Google account that will connect (e.g. `dev.hero.us@gmail.com`).  
+     Without this, Google shows *Access blocked* / `403 access_denied`.
+3. **Credentials** → OAuth 2.0 Client ID → **Web application**
+   - **Authorized redirect URIs** must match `GMAIL_REDIRECT_URI` exactly, e.g.  
+     `http://localhost:8000/gmail/callback/` (trailing slash must match `.env`).
+   - Copy Client ID and Secret into `server/.env` as `GMAIL_CLIENT_ID` and `GMAIL_CLIENT_SECRET`.
+4. **Run stack**: API on `:8000`, client on `:3000` with `NEXT_PUBLIC_API_URL=http://localhost:8000`.
+5. **Connect**: Settings → Integrations → **Connect with Gmail**, or Inbox → **Connect Gmail**.  
+   After success, use **Sync** on Inbox to pull messages.
+
+For production, set `FRONTEND_URL`, `GMAIL_REDIRECT_URI` (e.g. `https://api.yourdomain.com/gmail/callback/`), and add that URI in Google Console. Submit the app for Google verification before allowing all users (non–test users).
 
 ---
 

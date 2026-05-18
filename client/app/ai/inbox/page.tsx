@@ -53,6 +53,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGmailSearchStore } from '@/store/useGmailSearchStore';
 import { useRouter } from 'next/navigation';
+import { openGmailOAuthPopup } from '@/lib/gmail-connect';
 
 dayjs.extend(relativeTime);
 
@@ -1076,26 +1077,23 @@ export default function MagicalInboxPage() {
   
   const handleGmailConnect = async () => {
     setIsConnecting(true);
-    const { data: responseData } = await getGmailAuthUrl();
-    const authUrl = typeof responseData === 'string' ? responseData : (responseData as any)?.auth_url;
-    if (!authUrl) { setIsConnecting(false); return; }
-    const popup = window.open(authUrl, 'GmailAuth', 'width=600,height=700');
-    if (!popup) { setIsConnecting(false); return; }
-    const cleanup = () => {
-      setIsConnecting(false);
+    const result = await openGmailOAuthPopup(getGmailAuthUrl);
+    setIsConnecting(false);
+
+    if (result === 'success') {
       queryClient.refetchQueries({ queryKey: ['user/integration-status/'] });
-      queryClient.refetchQueries({ queryKey: ['/gmail/threads/'] });
+      queryClient.refetchQueries({ queryKey: ['gmail/threads/'] });
       refetchThreads();
-      clearInterval(popupCheck);
-      window.removeEventListener('message', handleMsg);
-      popup?.close();
-    };
-    const handleMsg = (e: MessageEvent) => {
-      if (e.origin !== window.location.origin) return;
-      if (e.data?.type === 'OAUTH_SUCCESS') { cleanup(); window.location.reload(); }
-    };
-    const popupCheck = setInterval(() => { if (popup?.closed) cleanup(); }, 500);
-    window.addEventListener('message', handleMsg);
+      toast.success('Gmail connected.');
+      window.location.reload();
+      return;
+    }
+
+    if (result === 'access_denied') {
+      toast.error(
+        'Google blocked access. Add your email under OAuth consent screen → Test users in Google Cloud Console.'
+      );
+    }
   };
 
 
