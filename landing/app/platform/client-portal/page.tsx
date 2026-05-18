@@ -555,7 +555,7 @@ export default function ClientPortalPage() {
           <div className={cn(container)}>
             <div className="mx-auto max-w-3xl">
               <h2 className={cn("text-center", H2)}>Frequently asked questions</h2>
-              <p className="mt-3 text-center text-stone-600">Common questions about the Techstyles client portal.</p>
+              <p className="mt-3 text-center text-stone-600">Common questions about the Focuspilot client portal.</p>
               <div className="mt-10 space-y-6">
                 <div className="rounded-lg border border-stone-200 bg-white p-6">
                   <h3 className="text-lg font-semibold text-stone-900">Can I customise the portal with my branding?</h3>

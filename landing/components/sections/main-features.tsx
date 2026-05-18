@@ -74,10 +74,10 @@ export default function MainFeatures() {
           <Badge variant="outline" className="rounded-full border-stone-300 bg-stone-50 text-stone-700">
             {"Built for interior design studios & architects"}
           </Badge>
-          <h2 className={cn("mt-4", TITLE_H2)}>{"Why studios choose Techstyles"}</h2>
+          <h2 className={cn("mt-4", TITLE_H2)}>{"Why studios choose Focuspilot"}</h2>
           <p className="mx-auto mt-3 max-w-3xl text-lg text-stone-600">
             {
-              "Techstyles is the modern operating system for interior designers and architects—bringing CRM, projects, procurement, billing, and client collaboration into one beautiful workspace. Streamline operations, boost profitability, and deliver an elevated client experience."
+              "Focuspilot is the modern operating system for interior designers and architects—bringing CRM, projects, procurement, billing, and client collaboration into one beautiful workspace. Streamline operations, boost profitability, and deliver an elevated client experience."
             }
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">

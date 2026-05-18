@@ -13,7 +13,7 @@ export default function SloganBanner() {
           <div className="relative h-[420px] sm:h-[520px] lg:h-[560px]">
             <Image
               src="/images/slogan-hero.png"
-              alt="Modern interior design workspace showcasing Techstyles studio management platform benefits"
+              alt="Modern interior design workspace showcasing Focuspilot studio management platform benefits"
               fill
               priority={false}
               sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"

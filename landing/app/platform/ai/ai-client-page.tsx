@@ -113,7 +113,7 @@ const AIClientPage = () => {
           <div className="flex flex-col items-start gap-6 py-16 sm:py-20 md:py-24">
             <Badge className="bg-stone-900 text-white hover:bg-stone-900/90">
               <Sparkles className="mr-1.5 h-3.5 w-3.5" />
-              Techstyles AI
+              Focuspilot AI
             </Badge>
             <h1 className="max-w-3xl text-4xl font-medium tracking-tight text-stone-950 sm:text-5xl">
               AI that understands interior design workflows
@@ -171,7 +171,7 @@ const AIClientPage = () => {
         <SectionHeading
           id="capabilities"
           eyebrow="Capabilities"
-          title="Where AI shows up in Techstyles"
+          title="Where AI shows up in Focuspilot"
           desc="Focused automation across communication, procurement, approvals, and finance—built for studio reality."
         />
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -604,7 +604,7 @@ const AIClientPage = () => {
         {/* Bottom CTA */}
         <div className="mt-10 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-stone-200 bg-stone-50 p-6">
           <div>
-            <h3 className="text-lg font-semibold text-stone-900">See Techstyles AI in your studio’s flow</h3>
+            <h3 className="text-lg font-semibold text-stone-900">See Focuspilot AI in your studio’s flow</h3>
             <p className="text-sm text-stone-600">Share a typical week—we’ll tailor a 20‑minute walkthrough.</p>
           </div>
           <div className="flex gap-3">

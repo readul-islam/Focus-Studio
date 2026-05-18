@@ -131,7 +131,11 @@ export function SelectContractorDialog({
         await postMutate(
           {
             url: 'contractor_portal/bulk-share-documents/',
-            data: { contractor_id: contractor.id, document_ids: documentIds },
+            data: {
+              contractor_id: contractor.id,
+              document_ids: documentIds,
+              project_id: parseInt(projectId),
+            },
           },
           {
             onSuccess: () => {
@@ -152,7 +156,11 @@ export function SelectContractorDialog({
         await postMutate(
           {
             url: 'contractor_portal/share-document/',
-            data: { contractor_id: contractor.id, document_id: documentId },
+            data: {
+              contractor_id: contractor.id,
+              document_id: documentId,
+              project_id: parseInt(projectId),
+            },
           },
           {
             onSuccess: () => {

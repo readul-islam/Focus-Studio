@@ -447,15 +447,15 @@ export default function ProjectManagementPage() {
             <div className="mx-auto max-w-3xl">
               <h2 className={cn("text-center", H2)}>Frequently asked questions</h2>
               <p className="mt-3 text-center text-stone-600">
-                Common questions about Techstyles project management for interior designers.
+                Common questions about Focuspilot project management for interior designers.
               </p>
               <div className="mt-10 space-y-6">
                 <div className="rounded-lg border border-stone-200 bg-white p-6">
                   <h3 className="text-lg font-semibold text-stone-900">
-                    How is Techstyles different from Asana or Monday?
+                    How is Focuspilot different from Asana or Monday?
                   </h3>
                   <p className="mt-2 text-stone-600">
-                    Unlike generic project management tools, Techstyles is purpose-built for interior designers and
+                    Unlike generic project management tools, Focuspilot is purpose-built for interior designers and
                     architects. It includes procurement tracking, client approval workflows, product libraries, and
                     financial tools that Asana and Monday simply don't offer. Everything is designed around how design
                     studios actually work.
@@ -466,7 +466,7 @@ export default function ProjectManagementPage() {
                     Does it handle procurement and purchase orders?
                   </h3>
                   <p className="mt-2 text-stone-600">
-                    Yes. Techstyles includes full procurement management with product libraries, supplier tracking,
+                    Yes. Focuspilot includes full procurement management with product libraries, supplier tracking,
                     automated purchase orders, delivery scheduling, and client approval workflows. You can track every
                     item from specification to installation.
                   </p>
@@ -480,7 +480,7 @@ export default function ProjectManagementPage() {
                   </p>
                 </div>
                 <div className="rounded-lg border border-stone-200 bg-white p-6">
-                  <h3 className="text-lg font-semibold text-stone-900">Is Techstyles suitable for small studios?</h3>
+                  <h3 className="text-lg font-semibold text-stone-900">Is Focuspilot suitable for small studios?</h3>
                   <p className="mt-2 text-stone-600">
                     Yes, we're designed for studios of all sizes. Solo designers love having everything in one place,
                     while larger teams benefit from collaboration features and role-based permissions. Our pricing
@@ -500,7 +500,7 @@ export default function ProjectManagementPage() {
                 Connected to your entire workflow
               </h2>
               <p className="mt-3 text-center text-stone-600">
-                Projects integrates seamlessly with the rest of the Techstyles platform.
+                Projects integrates seamlessly with the rest of the Focuspilot platform.
               </p>
               <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <Link

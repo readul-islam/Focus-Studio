@@ -77,7 +77,7 @@ Optimize user journeys and conversion funnels through strategic design, compelli
 ### Value Proposition Template
 "[Product] helps [target audience] [achieve outcome] by [unique mechanism]"
 
-Example: "Techstyles helps interior designers manage projects effortlessly by connecting procurement, clients, and finances in one calm workspace"
+Example: "Focuspilot helps interior designers manage projects effortlessly by connecting procurement, clients, and finances in one calm workspace"
 
 ### CTA Variations to Test
 - Primary: "Start free trial" / "Get started free"

@@ -410,7 +410,7 @@ function CollaborationExplainer() {
                         </div>
                       </div>
                       <div className="rounded-lg bg-stone-50 p-3 ring-1 ring-stone-200">
-                        <div className="text-xs text-stone-600">From: Techstyles</div>
+                        <div className="text-xs text-stone-600">From: Focuspilot</div>
                         <div className="text-sm text-stone-900">
                           AI summary: Approve pendant lights; order fabric samples; confirm delivery window.
                         </div>
@@ -460,7 +460,7 @@ export default function AiEmailPage() {
             </Badge>
             <h1 className={cn("mt-4 text-center", H1)}>Unified inbox with project routing</h1>
             <p className={cn("mt-4 text-center", Lead)}>
-              Fully integrated with Gmail. Route project‑specific and supplier emails into Techstyles, then share to the
+              Fully integrated with Gmail. Route project‑specific and supplier emails into Focuspilot, then share to the
               project and team with GDPR‑aware controls.
             </p>
           </div>
@@ -559,7 +559,7 @@ export default function AiEmailPage() {
               Email that works like your studio does
             </h3>
             <p className="mt-3 text-lg text-stone-900/80">
-              Unified inbox, project routing, supplier tracking and GDPR‑aware sharing—only in Techstyles.
+              Unified inbox, project routing, supplier tracking and GDPR‑aware sharing—only in Focuspilot.
             </p>
             <div className="mt-6 flex justify-center">
               <CtaButton

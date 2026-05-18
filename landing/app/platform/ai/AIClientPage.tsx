@@ -55,7 +55,7 @@ function Hero() {
               Work faster with AI that understands interior design
             </h1>
             <p className="mt-4 text-lg text-stone-700">
-              From inbox to install—Techstyles AI triages messages, drafts replies, extracts product specs, generates
+              From inbox to install—Focuspilot AI triages messages, drafts replies, extracts product specs, generates
               approvals, and accelerates proposals and invoices. Calm, accurate, and studio‑ready.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
@@ -78,7 +78,7 @@ function Hero() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/placeholder.svg?height=480&width=720"
-                alt="Illustration of Techstyles AI features across inbox, approvals, products, and billing"
+                alt="Illustration of Focuspilot AI features across inbox, approvals, products, and billing"
                 className="h-auto w-full rounded-2xl border border-amber-200/60 shadow-sm"
               />
             </div>
@@ -398,7 +398,7 @@ function HowItHelps() {
   return (
     <div className="grid items-start gap-10 md:grid-cols-12">
       <div className="md:col-span-6">
-        <h2 className="text-2xl sm:text-[30px] md:text-4xl font-medium tracking-tight">What Techstyles AI does for designers</h2>
+        <h2 className="text-2xl sm:text-[30px] md:text-4xl font-medium tracking-tight">What Focuspilot AI does for designers</h2>
         <p className="mt-3 text-stone-700">
           AI that speaks your language. It works behind the scenes so you can keep momentum—with fewer spreadsheets and
           fewer late‑night follow‑ups.
@@ -431,7 +431,7 @@ function HowItHelps() {
           <CardContent>
             <Image
               src="/placeholder.svg?height=360&width=640"
-              alt="Techstyles AI extracting a supplier product link and generating a PO draft"
+              alt="Focuspilot AI extracting a supplier product link and generating a PO draft"
               width={640}
               height={360}
               className="h-auto w-full rounded-lg border"
@@ -620,7 +620,7 @@ export default function AIClientPage() {
       <Section id="demos">
         <h2 className="text-2xl sm:text-[30px] md:text-4xl font-medium tracking-tight">AI in action</h2>
         <p className="mt-3 max-w-3xl text-stone-700">
-          Three quick demos showing how Techstyles AI saves time in your daily flow.
+          Three quick demos showing how Focuspilot AI saves time in your daily flow.
         </p>
         <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <AIInboxDemo />
@@ -729,7 +729,7 @@ export default function AIClientPage() {
       <Section id="integrations" className="pt-0">
         <h2 className="text-2xl sm:text-[30px] md:text-4xl font-medium tracking-tight">Integrations</h2>
         <p className="mt-3 max-w-3xl text-stone-700">
-          Techstyles connects the dots—email, web clipper, PDFs and the tools your studio already uses.
+          Focuspilot connects the dots—email, web clipper, PDFs and the tools your studio already uses.
         </p>
         <div className="mt-6">
           <Integrations />

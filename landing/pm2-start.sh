@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# PM2 Start Script for Techstyles Landing Page
+# PM2 Start Script for Focuspilot Landing Page
 # Usage: ./pm2-start.sh [dev|prod|stop|restart|logs|status]
 
 APP_NAME="techstyles-landing"
@@ -36,7 +36,7 @@ case "$1" in
     pm2 status
     ;;
   *)
-    echo "Techstyles PM2 Manager"
+    echo "Focuspilot PM2 Manager"
     echo ""
     echo "Usage: ./pm2-start.sh [command]"
     echo ""

@@ -131,7 +131,7 @@ function FeatureStatus({ status }: { status: boolean | "partial" }) {
   return <X className="h-5 w-5 text-stone-300" />
 }
 
-export default function TechstylesVsDesignFilesPage() {
+export default function FocuspilotVsDesignFilesPage() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",

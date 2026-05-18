@@ -63,7 +63,7 @@ function Hero() {
               <div className="relative w-full">
                 <Image
                   src="/images/platform/projects/client-portal-overview.png"
-                  alt="Techstyles approval workflow showing client portal with pending approvals, comments, and real-time status updates"
+                  alt="Focuspilot approval workflow showing client portal with pending approvals, comments, and real-time status updates"
                   width={1600}
                   height={900}
                   priority={true}
@@ -116,7 +116,7 @@ function ApprovalFlow() {
     <section className="bg-white py-20 sm:py-24">
       <div className={container}>
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className={TITLE_H2}>How approvals work in Techstyles</h2>
+          <h2 className={TITLE_H2}>How approvals work in Focuspilot</h2>
           <p className="mt-3 text-lg text-stone-600">
             A simple, visual process that keeps everyone aligned and projects on track.
           </p>
@@ -340,7 +340,7 @@ function BenefitsGrid() {
     <section className="bg-white py-20 sm:py-24">
       <div className={container}>
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className={TITLE_H2}>Why designers love Techstyles approvals</h2>
+          <h2 className={TITLE_H2}>Why designers love Focuspilot approvals</h2>
           <p className="mt-3 text-lg text-stone-600">
             Transform client communication from chaos to clarity with features built for design professionals.
           </p>
@@ -389,7 +389,7 @@ function BigCTA() {
             Stop chasing approvals. Start designing.
           </h2>
           <p className="mt-3 text-base sm:text-lg text-stone-300">
-            Join hundreds of design studios using Techstyles to streamline client approvals and keep projects on track.
+            Join hundreds of design studios using Focuspilot to streamline client approvals and keep projects on track.
           </p>
           <div className="mt-8 flex justify-center">
             <CtaButton href="/signup" variant="white" label="Start for free" showArrow arrowVariant="black" />

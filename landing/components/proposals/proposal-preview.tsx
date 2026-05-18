@@ -27,7 +27,7 @@ export function ProposalPreview({
   date = "15 Aug 2025",
   number = "TS‑1184",
   from = {
-    name: "Techstyles Studio",
+    name: "Focuspilot Studio",
     address: "123 Interior Way, London",
     contact: "hello@techstyles.com · +44 20 7123 4567",
   },
@@ -36,7 +36,7 @@ export function ProposalPreview({
     address: "Bayswater, London",
     contact: "Attn: Sarah Johnson",
   },
-  summary = "We propose a modern, timeless interior for your Penthouse FF&E, balancing function and warmth. Techstyles coordinates design, sourcing, and installation with transparent costs and clear milestones.",
+  summary = "We propose a modern, timeless interior for your Penthouse FF&E, balancing function and warmth. Focuspilot coordinates design, sourcing, and installation with transparent costs and clear milestones.",
   scope = [
     "Concept and material palette",
     "FF&E selection and procurement",
@@ -51,7 +51,7 @@ export function ProposalPreview({
 }: ProposalPreviewProps) {
   return (
     <article
-      aria-label="Techstyles proposal template preview"
+      aria-label="Focuspilot proposal template preview"
       className={cn(
         "mx-auto w-full max-w-[720px] overflow-hidden rounded-md border border-stone-200 bg-white shadow-sm",
         // Compact default type scale for best-in-class density

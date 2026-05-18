@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "FF&E Procurement Software for Interior Designers | Techstyles",
+  title: "FF&E Procurement Software for Interior Designers | Focuspilot",
   description:
     "Streamline FF&E procurement with AI-powered product sourcing. Auto-generate POs, track deliveries, manage vendors. 94% on-time delivery rate. Try free for 3 months.",
   keywords: [
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "design studio procurement",
   ],
   openGraph: {
-    title: "FF&E Procurement Software for Interior Designers | Techstyles",
+    title: "FF&E Procurement Software for Interior Designers | Focuspilot",
     description:
       "Streamline FF&E procurement with AI-powered product sourcing. Auto-generate POs, track deliveries, manage vendors. 94% on-time delivery rate. Try free for 3 months.",
     url: "https://focuspilot.io/platform/procurement",
@@ -24,13 +24,13 @@ export const metadata: Metadata = {
         url: "/images/og-procurement.png",
         width: 1200,
         height: 630,
-        alt: "Techstyles procurement dashboard for interior designers",
+        alt: "Focuspilot procurement dashboard for interior designers",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "FF&E Procurement Software for Interior Designers | Techstyles",
+    title: "FF&E Procurement Software for Interior Designers | Focuspilot",
     description: "Streamline FF&E procurement with AI-powered product sourcing. Auto-generate POs, track deliveries, manage vendors.",
   },
   alternates: {

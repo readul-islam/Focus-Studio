@@ -13,27 +13,27 @@ const H2 = "text-2xl sm:text-[30px] md:text-4xl font-medium tracking-tight"
 const Lead = "text-base sm:text-lg text-stone-600"
 
 export const metadata: Metadata = {
-  title: "Techstyles vs Studio Designer | Interior Design Software Comparison 2025",
+  title: "Focuspilot vs Studio Designer | Interior Design Software Comparison 2025",
   description:
-    "Compare Techstyles vs Studio Designer for interior design firms. See differences in AI features, UK pricing, procurement, and client management. Free migration available.",
+    "Compare Focuspilot vs Studio Designer for interior design firms. See differences in AI features, UK pricing, procurement, and client management. Free migration available.",
   keywords: [
-    "Techstyles vs Studio Designer",
+    "Focuspilot vs Studio Designer",
     "Studio Designer alternative",
     "interior design software comparison",
     "Studio Designer alternative UK",
     "design business management software",
   ],
   openGraph: {
-    title: "Techstyles vs Studio Designer | Interior Design Software Comparison 2025",
+    title: "Focuspilot vs Studio Designer | Interior Design Software Comparison 2025",
     description:
-      "Compare Techstyles vs Studio Designer for interior design firms. AI features, UK pricing, and comprehensive feature comparison.",
+      "Compare Focuspilot vs Studio Designer for interior design firms. AI features, UK pricing, and comprehensive feature comparison.",
     type: "article",
     url: "https://focuspilot.io/compare/studio-designer",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Techstyles vs Studio Designer | Interior Design Software Comparison",
-    description: "Compare Techstyles vs Studio Designer. See why UK designers are switching.",
+    title: "Focuspilot vs Studio Designer | Interior Design Software Comparison",
+    description: "Compare Focuspilot vs Studio Designer. See why UK designers are switching.",
   },
   alternates: {
     canonical: "https://focuspilot.io/compare/studio-designer",
@@ -95,29 +95,29 @@ const comparisonData = [
 
 const faqs = [
   {
-    question: "What's the main difference between Techstyles and Studio Designer?",
+    question: "What's the main difference between Focuspilot and Studio Designer?",
     answer:
-      "Techstyles is built for UK/European studios with native Xero integration and includes AI-powered features for automation. Studio Designer is US-focused without UK accounting integration or AI capabilities.",
+      "Focuspilot is built for UK/European studios with native Xero integration and includes AI-powered features for automation. Studio Designer is US-focused without UK accounting integration or AI capabilities.",
   },
   {
     question: "Does Studio Designer have AI features?",
     answer:
-      "No, Studio Designer doesn't include AI features. Techstyles offers AI email drafting, AI product sourcing, AI proposal generation, and automated data extraction – features that can save 10+ hours weekly.",
+      "No, Studio Designer doesn't include AI features. Focuspilot offers AI email drafting, AI product sourcing, AI proposal generation, and automated data extraction – features that can save 10+ hours weekly.",
   },
   {
     question: "Which has better procurement features?",
     answer:
-      "Both have solid procurement foundations, but Techstyles adds AI-powered product sourcing that finds alternatives and trade pricing automatically, plus better delivery tracking and supplier management.",
+      "Both have solid procurement foundations, but Focuspilot adds AI-powered product sourcing that finds alternatives and trade pricing automatically, plus better delivery tracking and supplier management.",
   },
   {
-    question: "Can I migrate from Studio Designer to Techstyles?",
+    question: "Can I migrate from Studio Designer to Focuspilot?",
     answer:
       "Yes. We offer free migration assistance including product library import, client data transfer, and project history migration. Most studios are fully operational within one week.",
   },
   {
     question: "Which is better for UK-based studios?",
     answer:
-      "Techstyles is purpose-built for UK studios with Xero integration, GBP pricing, VAT handling, and UK-based support. Studio Designer is designed primarily for the US market.",
+      "Focuspilot is purpose-built for UK studios with Xero integration, GBP pricing, VAT handling, and UK-based support. Studio Designer is designed primarily for the US market.",
   },
 ]
 
@@ -131,7 +131,7 @@ function FeatureStatus({ status }: { status: boolean | "partial" }) {
   return <X className="h-5 w-5 text-stone-300" />
 }
 
-export default function TechstylesVsStudioDesignerPage() {
+export default function FocuspilotVsStudioDesignerPage() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -151,7 +151,7 @@ export default function TechstylesVsStudioDesignerPage() {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: "https://focuspilot.io" },
       { "@type": "ListItem", position: 2, name: "Compare", item: "https://focuspilot.io/compare" },
-      { "@type": "ListItem", position: 3, name: "Techstyles vs Studio Designer", item: "https://focuspilot.io/compare/studio-designer" },
+      { "@type": "ListItem", position: 3, name: "Focuspilot vs Studio Designer", item: "https://focuspilot.io/compare/studio-designer" },
     ],
   }
 
@@ -244,7 +244,7 @@ export default function TechstylesVsStudioDesignerPage() {
                 <thead>
                   <tr className="border-b border-stone-200">
                     <th className="py-4 px-4 text-left font-semibold text-stone-900">Feature</th>
-                    <th className="py-4 px-4 text-center font-semibold text-stone-900 w-32">Techstyles</th>
+                    <th className="py-4 px-4 text-center font-semibold text-stone-900 w-32">Focuspilot</th>
                     <th className="py-4 px-4 text-center font-semibold text-stone-900 w-32">Studio Designer</th>
                   </tr>
                 </thead>
@@ -311,7 +311,7 @@ export default function TechstylesVsStudioDesignerPage() {
         <section className="bg-stone-900 py-16 sm:py-20">
           <div className={container}>
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-2xl sm:text-[28px] md:text-[32px] font-medium tracking-tight text-white">Ready to try Techstyles?</h2>
+              <h2 className="text-2xl sm:text-[28px] md:text-[32px] font-medium tracking-tight text-white">Ready to try Focuspilot?</h2>
               <p className="mt-4 text-stone-300">
                 Start your free 3-month trial. No credit card required. Free migration from Studio Designer.
               </p>

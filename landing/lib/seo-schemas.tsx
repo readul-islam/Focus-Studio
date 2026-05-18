@@ -55,7 +55,7 @@ export function generateArticleSchema({
     },
     publisher: {
       "@type": "Organization",
-      name: "Techstyles",
+      name: "Focuspilot",
       logo: {
         "@type": "ImageObject",
         url: "https://focuspilot.io/images/techstyles-logo.png",
@@ -68,7 +68,7 @@ export function generateOrganizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Techstyles",
+    name: "Focuspilot",
     url: "https://focuspilot.io",
     logo: "https://focuspilot.io/images/techstyles-logo.png",
     sameAs: [
@@ -90,7 +90,7 @@ export function generateSoftwareApplicationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Techstyles",
+    name: "Focuspilot",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     offers: {

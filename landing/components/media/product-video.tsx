@@ -80,7 +80,7 @@ export function ProductVideo({
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={poster || "/placeholder.svg"}
-          alt="Techstyles product demo video preview showing interior design software interface"
+          alt="Focuspilot product demo video preview showing interior design software interface"
           className="absolute inset-0 h-full w-full rounded-xl object-cover"
         />
       ) : null}

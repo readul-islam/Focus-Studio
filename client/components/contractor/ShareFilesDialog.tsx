@@ -59,7 +59,7 @@ export function ShareFilesDialog({
 
   // Fetch project files
   const { data: filesResp, isLoading: filesLoading } = useFetch(
-    isOpen ? `/documents/documents/root_documents/?project_id=${projectId}` : null,
+    isOpen ? `contractor_portal/project/${projectId}/shareable-documents/` : null,
     { enabled: isOpen }
   );
 
@@ -109,9 +109,14 @@ export function ShareFilesDialog({
 
   // Share documents mutation
   const { mutate: shareDocuments, isPending: isLoading } = usePost({
-    onSuccess: () => {
-      const count = selectedIds.size;
-      toast.success(`Shared ${count} file${count > 1 ? 's' : ''} with ${contractorName}`);
+    onSuccess: (data: { created?: number; already_shared?: number }) => {
+      const created = data?.created ?? selectedIds.size;
+      const skipped = data?.already_shared ?? 0;
+      let message = `Shared ${created} file${created === 1 ? '' : 's'} with ${contractorName}`;
+      if (skipped > 0) {
+        message += ` (${skipped} already shared)`;
+      }
+      toast.success(message);
       setSelectedIds(new Set());
       onShareComplete();
       onClose();
@@ -132,6 +137,7 @@ export function ShareFilesDialog({
       data: {
         contractor_id: parseInt(contractorId),
         document_ids: documentIds,
+        project_id: parseInt(projectId),
       },
     });
   };

@@ -188,7 +188,7 @@ export default function AttentionBanner() {
               </h2>
               <p className="mx-auto mt-3 max-w-3xl text-base sm:text-lg text-stone-900/90">
                 {
-                  "Every email, call, client question and supplier update funnels into Techstyles — one calm command centre for your studio."
+                  "Every email, call, client question and supplier update funnels into Focuspilot — one calm command centre for your studio."
                 }
               </p>
             </div>

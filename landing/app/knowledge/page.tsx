@@ -79,7 +79,7 @@ const categories = [
   {
     title: "Features",
     icon: FileText,
-    description: "Deep dives into Techstyles features",
+    description: "Deep dives into Focuspilot features",
     articles: [
       { title: "Project management", time: "10 min" },
       { title: "Procurement & POs", time: "8 min" },
@@ -124,7 +124,7 @@ function Hero() {
           </span>
           <h1 className={cn("mt-5 text-center", TITLE_H1)}>Knowledge Centre</h1>
           <p className="mt-4 text-center text-base sm:text-lg text-stone-600">
-            Guides, tutorials, and answers to help you get the most from Techstyles.
+            Guides, tutorials, and answers to help you get the most from Focuspilot.
           </p>
           <div className="mt-8 mx-auto max-w-lg">
             <div className="relative">
@@ -230,7 +230,7 @@ function RelatedLinks() {
               Explore the platform
             </h2>
             <p className="mt-3 text-center text-stone-600">
-              Learn more about what Techstyles can do.
+              Learn more about what Focuspilot can do.
             </p>
           </Reveal>
           <Reveal delay={100}>

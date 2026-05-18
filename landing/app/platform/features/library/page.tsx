@@ -8,7 +8,7 @@ import { MarketingPageHero } from "@/components/marketing/marketing-page-hero"
 import { CtaButton } from "@/components/cta-button"
 
 export const metadata: Metadata = {
-  title: "Product Library for Interior Designers | AI-Powered Sourcing | Techstyles",
+  title: "Product Library for Interior Designers | AI-Powered Sourcing | Focuspilot",
   description:
     "Your studio's centralized product database. Save, organise, and instantly add products to any project with AI-powered sourcing. Build specs 10x faster.",
   keywords: [
@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     "product catalogue software",
   ],
   openGraph: {
-    title: "Product Library for Interior Designers | AI-Powered Sourcing | Techstyles",
+    title: "Product Library for Interior Designers | AI-Powered Sourcing | Focuspilot",
     description: "Your studio's centralized product database. Save, organise, and instantly add products to any project with AI-powered sourcing.",
     url: "https://focuspilot.io/platform/features/library",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Product Library for Interior Designers | Techstyles",
+    title: "Product Library for Interior Designers | Focuspilot",
     description: "Your studio's centralized product database with AI-powered sourcing.",
   },
   alternates: {

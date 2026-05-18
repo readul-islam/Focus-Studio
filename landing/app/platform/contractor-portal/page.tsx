@@ -10,7 +10,7 @@ const H2 = "text-2xl sm:text-[30px] md:text-4xl font-medium tracking-tight"
 const Lead = "text-base sm:text-lg text-stone-600"
 
 export const metadata: Metadata = {
-  title: "Contractor Portal for Interior Designers | Manage Trades | Techstyles",
+  title: "Contractor Portal for Interior Designers | Manage Trades | Focuspilot",
   description: "Give contractors access to project schedules, specifications, and documents. Streamline communication with trades on interior design projects.",
   keywords: [
     "interior design contractor portal",
@@ -20,14 +20,14 @@ export const metadata: Metadata = {
     "trade scheduling software",
   ],
   openGraph: {
-    title: "Contractor Portal for Interior Designers | Techstyles",
+    title: "Contractor Portal for Interior Designers | Focuspilot",
     description: "Give contractors access to project schedules, specifications, and documents. Streamline communication with trades.",
     url: "https://focuspilot.io/platform/contractor-portal",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contractor Portal | Techstyles",
+    title: "Contractor Portal | Focuspilot",
     description: "Streamline communication with contractors on interior design projects.",
   },
   alternates: {

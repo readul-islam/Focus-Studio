@@ -67,7 +67,7 @@ function Reveal({
 
 const testimonials = [
   {
-    quote: "Techstyles has transformed how we manage projects. The AI features alone save us 10+ hours a week on admin work that used to consume my evenings.",
+    quote: "Focuspilot has transformed how we manage projects. The AI features alone save us 10+ hours a week on admin work that used to consume my evenings.",
     author: "Sarah Mitchell",
     role: "Principal Designer",
     company: "Studio Mitchell",
@@ -133,7 +133,7 @@ function Hero() {
           </span>
           <h1 className={cn("mt-5 text-center", TITLE_H1)}>Loved by design studios</h1>
           <p className="mt-4 text-center text-base sm:text-lg text-stone-600">
-            See how interior designers and architects use Techstyles to save time, delight clients, and focus on what they do best.
+            See how interior designers and architects use Focuspilot to save time, delight clients, and focus on what they do best.
           </p>
         </Reveal>
     </MarketingPageHero>
@@ -265,7 +265,7 @@ function FinalCTA() {
             Join 500+ design studios
           </h2>
           <p className="mt-3 text-base sm:text-lg text-stone-300">
-            Start your free trial and see why designers love Techstyles.
+            Start your free trial and see why designers love Focuspilot.
           </p>
           <div className="mt-8 flex items-center justify-center">
             <CtaButton href="/signup" variant="white" label="Start for free" showArrow arrowVariant="black" />

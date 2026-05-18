@@ -49,9 +49,9 @@ export default function SelectProject() {
       {/* Header */}
       <div className="mb-8 text-center">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <img src="/techstyles-t-logo.png" alt="Techstyles" className="w-9 h-9" />
-          <span className="font-semibold text-gray-900 text-lg">Techstyles</span>
-        </div>
+          <img src="/brand/Logo.png" alt="Focuspilot" className="w-9 h-9" />
+          <span className="font-semibold text-gray-900 text-lg">Focuspilot</span>
+        </div>    
         <h1 className="text-2xl font-bold text-gray-900">Select a Project</h1>
         <p className="text-sm text-gray-500 mt-1">
           Welcome back, {user.name}. Choose a project to continue.

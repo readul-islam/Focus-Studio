@@ -18,8 +18,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 
   return {
-    title: `${post.title} | Techstyles Blog`,
-    description: post.excerpt,
+    title: `${post.title} | Focuspilot Blog`,
+    description: post.excerpt,    
     openGraph: {
       title: post.title,
       description: post.excerpt,

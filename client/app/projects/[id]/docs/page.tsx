@@ -1022,6 +1022,7 @@ const moveMutation = useMutation({
       data: {
         contractor_id: parseInt(shareWithContractor),
         document_ids: checkedItems.map(item => item.id),
+        project_id: parseInt(params.id as string),
       },
     });
   };

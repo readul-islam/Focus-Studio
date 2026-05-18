@@ -4,7 +4,7 @@ import type { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Client Approval Software for Interior Designers | Focuspilot",
   description:
-    "Streamline client sign-offs with beautiful approval workflows. Get faster decisions on selections, budgets, and design directions with Techstyles approval tools.",
+    "Streamline client sign-offs with beautiful approval workflows. Get faster decisions on selections, budgets, and design directions with Focuspilot approval tools.",
   keywords: [
     "interior design approvals",
     "client sign-off software",

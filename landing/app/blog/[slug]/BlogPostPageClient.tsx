@@ -30,7 +30,7 @@ export function BlogPostPageClient({ params }: { params: { slug: string } }) {
     author: { "@type": "Person", name: post.author.name, jobTitle: post.author.role },
     publisher: {
       "@type": "Organization",
-      name: "Techstyles",
+      name: "Focuspilot",
       logo: { "@type": "ImageObject", url: "https://focuspilot.io/logo.png" },
     },
   }
@@ -241,7 +241,7 @@ export function BlogPostPageClient({ params }: { params: { slug: string } }) {
               Ready to transform your studio?
             </h2>
             <p className="mt-4 text-base leading-relaxed text-stone-300 sm:text-lg">
-              Join thousands of designers streamlining their workflows with Techstyles.
+                  Join thousands of designers streamlining their workflows with Focuspilot.
             </p>
             <div className="mt-8 flex justify-center">
               <CtaButton href="/signup" variant="white" label="Start for free" showArrow arrowVariant="black" />

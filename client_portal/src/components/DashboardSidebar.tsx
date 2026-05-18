@@ -58,12 +58,12 @@ export function DashboardSidebar() {
       <div className={cn("p-4 bg-white", isCollapsed && "px-2")}>
         <div className="flex items-center gap-2">
           <img
-            src="/techstyles-t-logo.png"
+            src="/brand/Logo.png"
             alt="Focuspilot logo mark"
             className={cn(isCollapsed ? "w-8 h-8 mx-auto" : "w-8 h-8", "block")}
           />
           {!isCollapsed && (
-            <span className="font-semibold text-gray-900">Techstyles</span>
+            <span className="font-semibold text-gray-900">Focuspilot</span>
           )}
         </div>
       </div>

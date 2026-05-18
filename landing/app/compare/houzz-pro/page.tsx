@@ -131,7 +131,7 @@ function FeatureStatus({ status }: { status: boolean | "partial" }) {
   return <X className="h-5 w-5 text-stone-300" />
 }
 
-export default function TechstylesVsHouzzProPage() {
+export default function FocuspilotVsHouzzProPage() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -151,7 +151,7 @@ export default function TechstylesVsHouzzProPage() {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: "https://focuspilot.io" },
       { "@type": "ListItem", position: 2, name: "Compare", item: "https://focuspilot.io/compare" },
-      { "@type": "ListItem", position: 3, name: "Techstyles vs Houzz Pro", item: "https://focuspilot.io/compare/houzz-pro" },
+      { "@type": "ListItem", position: 3, name: "Focuspilot vs Houzz Pro", item: "https://focuspilot.io/compare/houzz-pro" },
     ],
   }
 
@@ -244,7 +244,7 @@ export default function TechstylesVsHouzzProPage() {
                 <thead>
                   <tr className="border-b border-stone-200">
                     <th className="py-4 px-4 text-left font-semibold text-stone-900">Feature</th>
-                    <th className="py-4 px-4 text-center font-semibold text-stone-900 w-32">Techstyles</th>
+                    <th className="py-4 px-4 text-center font-semibold text-stone-900 w-32">Focuspilot</th>
                     <th className="py-4 px-4 text-center font-semibold text-stone-900 w-32">Houzz Pro</th>
                   </tr>
                 </thead>

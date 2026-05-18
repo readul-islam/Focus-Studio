@@ -7,7 +7,7 @@ allowed-tools: Read, Grep, Glob
 # Landing Page Copywriting
 
 ## Overview
-Write compelling, conversion-focused copy for Techstyles landing pages targeting interior designers and architects in the UK market.
+Write compelling, conversion-focused copy for Focuspilot landing pages targeting interior designers and architects in the UK market.
 
 ## Brand Voice
 
@@ -44,14 +44,14 @@ Write compelling, conversion-focused copy for Techstyles landing pages targeting
 ### Value Proposition Template
 **Formula**: [Product] helps [audience] [achieve outcome] without [pain point]
 
-**Example**: "Techstyles helps interior design studios manage projects beautifully without the chaos of spreadsheets and scattered tools."
+**Example**: "Focuspilot helps interior design studios manage projects beautifully without the chaos of spreadsheets and scattered tools."
 
 ### Headline Formulas
 
 **Problem-Agitate-Solve**
 - Problem: "Tired of chasing procurement updates?"
 - Agitate: "Every hour spent on admin is an hour away from design."
-- Solve: "Techstyles keeps everything in one calm place."
+- Solve: "Focuspilot keeps everything in one calm place."
 
 **Benefit-First**
 - "Manage every project from enquiry to final install"
@@ -67,7 +67,7 @@ Write compelling, conversion-focused copy for Techstyles landing pages targeting
 **Primary CTAs (High commitment)**
 - Start free trial
 - Get started free
-- Try Techstyles free
+- Try Focuspilot free
 - Start your free trial
 
 **Secondary CTAs (Lower commitment)**
@@ -121,7 +121,7 @@ Write compelling, conversion-focused copy for Techstyles landing pages targeting
 - Clear winner statements where appropriate
 - Focus on fit, not "better/worse"
 - Acknowledge competitor strengths
-- End with clear Techstyles CTA
+- End with clear Focuspilot CTA
 
 ## Microcopy Guidelines
 
@@ -152,7 +152,7 @@ Write compelling, conversion-focused copy for Techstyles landing pages targeting
 - Helpful context
 - No redundancy with labels
 
-## Techstyles-Specific Messaging
+## Focuspilot-Specific Messaging
 
 ### Core Value Propositions
 1. **All-in-one**: "Everything your studio needs in one calm workspace"

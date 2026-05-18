@@ -132,7 +132,7 @@ function Hero() {
           </span>
           <h1 className={cn("mt-5 text-center", TITLE_H1)}>Integrations</h1>
           <p className="mt-4 text-center text-base sm:text-lg text-stone-600">
-            Connect Techstyles with the tools you already use. Automate your workflow and keep everything in sync.
+            Connect Focuspilot with the tools you already use. Automate your workflow and keep everything in sync.
           </p>
           <p className="mt-3 text-center text-sm text-stone-500">
             All integrations included on every plan.

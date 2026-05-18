@@ -820,7 +820,7 @@ export default function ProcurementPage() {
               Specification and purchasing, connected to your projects
             </h2>
             <p className="mt-3 text-lg text-stone-900/80">
-              No more manual spreadsheets or lost invoices. Techstyles ensures materials arrive on time, every time.
+              No more manual spreadsheets or lost invoices. Focuspilot ensures materials arrive on time, every time.
             </p>
             <div className="mt-8 flex justify-center">
               <CtaButton

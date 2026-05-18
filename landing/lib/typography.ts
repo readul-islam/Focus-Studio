@@ -1,5 +1,5 @@
 /**
- * Techstyles Typography System
+ * Focuspilot Typography System
  * Based on Perfect Fourth (1.333) scale
  * Inspired by Linear, Vercel, Stripe, Notion design systems
  *

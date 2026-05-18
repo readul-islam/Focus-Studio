@@ -187,7 +187,7 @@ export default function InvoicingPage() {
       <section className="bg-white py-16 sm:py-20">
         <div className={container}>
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className={H2}>How proposals and invoicing work in Techstyles</h2>
+            <h2 className={H2}>How proposals and invoicing work in Focuspilot</h2>
             <p className={cn("mt-3", Lead)}>
               A streamlined process that turns project briefs into professional proposals and seamless payment
               collection.
@@ -394,7 +394,7 @@ export default function InvoicingPage() {
       <section id="features" className="bg-white py-16 sm:py-20">
         <div className={container}>
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className={H2}>Why studios choose Techstyles for proposals and invoicing</h2>
+            <h2 className={H2}>Why studios choose Focuspilot for proposals and invoicing</h2>
             <p className={cn("mt-3", Lead)}>
               Professional tools that save time, improve cash flow, and delight clients.
             </p>
@@ -461,7 +461,7 @@ export default function InvoicingPage() {
               Professional proposals and faster payments start here
             </h3>
             <p className="mt-3 text-lg text-stone-300">
-              Join studios using Techstyles to streamline their proposal and invoicing workflows.
+              Join studios using Focuspilot to streamline their proposal and invoicing workflows.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <CtaButton

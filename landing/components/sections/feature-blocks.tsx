@@ -45,7 +45,7 @@ const BLOCKS: Block[] = [
     image: {
       // Fallback only (first block renders PmComposite)
       src: "/images/overlays/designer-hero.png",
-      alt: "Designer working with Techstyles across task, approvals and products",
+      alt: "Designer working with Focuspilot across task, approvals and products",
       width: 1280,
       height: 840,
     },
@@ -55,7 +55,7 @@ const BLOCKS: Block[] = [
     labelIcon: LucideReact.ShoppingCart,
     title: "Procure Smarter. Deliver Faster.",
     kicker: "Sourcing, ordering, and tracking materials shouldn't be a headache.",
-    body: "No more manual spreadsheets or lost invoices. Techstyles ensures materials arrive on time, every time.",
+    body: "No more manual spreadsheets or lost invoices. Focuspilot ensures materials arrive on time, every time.",
     bullets: [
       "Organise products by room, project, or supplier.",
       "Track deliveries and install dates on your project calendar.",

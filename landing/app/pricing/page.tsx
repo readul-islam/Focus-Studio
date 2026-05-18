@@ -2,18 +2,18 @@ import type { Metadata } from "next"
 import { CtaButton } from "@/components/cta-button"
 
 export const metadata: Metadata = {
-  title: "Techstyles Pricing | Interior Design Software from £49/user | Free Trial",
+  title: "Focuspilot Pricing | Interior Design Software from £49/user | Free Trial",
   description:
     "Simple, transparent pricing for interior design studios. Free 3-month beta or £49/user/month Professional. All AI features included. No setup fees. Start free today.",
   openGraph: {
-    title: "Techstyles Pricing | Interior Design Software from £49/user | Free Trial",
+    title: "Focuspilot Pricing | Interior Design Software from £49/user | Free Trial",
     description: "Simple, transparent pricing for interior design studios. Free 3-month beta or £49/user/month Professional. All AI features included. No setup fees.",
     type: "website",
     url: "https://focuspilot.io/pricing",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Techstyles Pricing | Interior Design Software from £49/user | Free Trial",
+    title: "Focuspilot Pricing | Interior Design Software from £49/user | Free Trial",
     description: "Simple, transparent pricing for interior design studios. Free 3-month beta or £49/user/month Professional. All AI features included.",
   },
   alternates: {
@@ -79,11 +79,11 @@ const faqSchema = {
 const pricingSchema = {
   "@context": "https://schema.org",
   "@type": "Product",
-  name: "Techstyles Professional",
+  name: "Focuspilot Professional",
   description: "Interior design studio management software with AI-powered features",
   brand: {
     "@type": "Brand",
-    name: "Techstyles",
+    name: "Focuspilot",
   },
   offers: [
     {
@@ -411,7 +411,7 @@ export default function PricingPage() {
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-2xl sm:text-[28px] md:text-[32px] font-medium tracking-tight text-white">Ready to transform your studio?</h2>
             <p className="mt-3 text-base sm:text-lg text-stone-300">
-              Join design studios already using Techstyles to save time, reduce admin, and deliver better client
+              Join design studios already using Focuspilot to save time, reduce admin, and deliver better client
               experiences.
             </p>
             <div className="mt-8 flex justify-center">

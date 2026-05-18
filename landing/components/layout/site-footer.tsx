@@ -179,7 +179,7 @@ export function SiteFooter() {
               href=""
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Follow Techstyles on Facebook"
+              aria-label="Follow Focuspilot on Facebook"
               className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 text-stone-900 ring-1 ring-stone-200 hover:bg-stone-200"
             >
               <Facebook className="h-5 w-5" aria-hidden="true" />
@@ -188,7 +188,7 @@ export function SiteFooter() {
               href=""
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Follow Techstyles on Twitter"
+              aria-label="Follow Focuspilot on Twitter"
               className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 text-stone-900 ring-1 ring-stone-200 hover:bg-stone-200"
             >
               <Twitter className="h-5 w-5" aria-hidden="true" />
@@ -197,7 +197,7 @@ export function SiteFooter() {
               href=""
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Follow Techstyles on LinkedIn"
+              aria-label="Follow Focuspilot on LinkedIn"
               className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 text-stone-900 ring-1 ring-stone-200 hover:bg-stone-200"
             >
               <Linkedin className="h-5 w-5" aria-hidden="true" />
@@ -206,7 +206,7 @@ export function SiteFooter() {
               href=""
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Follow Techstyles on Instagram"
+              aria-label="Follow Focuspilot on Instagram"
               className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 text-stone-900 ring-1 ring-stone-200 hover:bg-stone-200"
             >
               <Instagram className="h-5 w-5" aria-hidden="true" />

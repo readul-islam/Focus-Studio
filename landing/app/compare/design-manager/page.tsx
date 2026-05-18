@@ -137,7 +137,7 @@ function FeatureStatus({ status }: { status: boolean | "partial" }) {
   return <X className="h-5 w-5 text-stone-300" />
 }
 
-export default function TechstylesVsDesignManagerPage() {
+export default function FocuspilotVsDesignManagerPage() {
   // FAQ Schema
   const faqSchema = {
     "@context": "https://schema.org",
@@ -384,7 +384,7 @@ export default function TechstylesVsDesignManagerPage() {
       {/* Internal Links */}
       <section className="py-16 sm:py-20">
         <div className={container}>
-          <h2 className={cn(H2, "text-center mb-10")}>Discover what Techstyles can do</h2>
+          <h2 className={cn(H2, "text-center mb-10")}>Discover what Focuspilot can do</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <Link
               href="/platform/projects"

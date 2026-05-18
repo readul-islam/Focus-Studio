@@ -288,7 +288,7 @@ const faqSchema = {
       name: "How is this different from HubSpot or Salesforce?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Generic CRMs require extensive customisation to work for design studios. Techstyles CRM is built specifically for interior designers with pipeline stages, contact types, and proposal tools that match how design businesses actually operate. No complex setup required.",
+        text: "Generic CRMs require extensive customisation to work for design studios. Focuspilot CRM is built specifically for interior designers with pipeline stages, contact types, and proposal tools that match how design businesses actually operate. No complex setup required.",
       },
     },
     {
@@ -312,7 +312,7 @@ const faqSchema = {
       name: "Can I track where my leads come from?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. Techstyles tracks lead sources automatically—whether from your website, Instagram, referrals, or events. See which channels bring your best clients and focus your marketing efforts accordingly.",
+        text: "Yes. Focuspilot tracks lead sources automatically—whether from your website, Instagram, referrals, or events. See which channels bring your best clients and focus your marketing efforts accordingly.",
       },
     },
   ],
@@ -331,7 +331,7 @@ export default function CRMPage() {
           id="leads"
           icon={Mail}
           title="Lead capture that fits your studio"
-          body="Plug inquiries from your website, Instagram, referrals, or events straight into Techstyles. Qualify faster with
+          body="Plug inquiries from your website, Instagram, referrals, or events straight into Focuspilot. Qualify faster with
       clear statuses, sources, and scores so your team knows where to focus."
           bullets={[
             "Single inbox for new inquiries with source tracking.",
@@ -484,7 +484,7 @@ export default function CRMPage() {
                   Frequently asked questions
                 </h2>
                 <p className="mt-3 text-center text-stone-600">
-                  Common questions about Techstyles CRM for interior designers.
+                  Common questions about Focuspilot CRM for interior designers.
                 </p>
               </Reveal>
               <div className="mt-10 space-y-6">
@@ -494,7 +494,7 @@ export default function CRMPage() {
                       How is this different from HubSpot or Salesforce?
                     </h3>
                     <p className="mt-2 text-stone-600">
-                      Generic CRMs require extensive customisation to work for design studios. Techstyles CRM is built
+                      Generic CRMs require extensive customisation to work for design studios. Focuspilot CRM is built
                       specifically for interior designers with pipeline stages, contact types, and proposal tools that
                       match how design businesses actually operate. No complex setup required.
                     </p>
@@ -524,7 +524,7 @@ export default function CRMPage() {
                   <div className="rounded-lg border border-stone-200 bg-stone-50 p-6">
                     <h3 className="text-lg font-semibold text-stone-900">Can I track where my leads come from?</h3>
                     <p className="mt-2 text-stone-600">
-                      Yes. Techstyles tracks lead sources automatically—whether from your website, Instagram, referrals,
+                      Yes. Focuspilot tracks lead sources automatically—whether from your website, Instagram, referrals,
                       or events. See which channels bring your best clients and focus your marketing efforts
                       accordingly.
                     </p>

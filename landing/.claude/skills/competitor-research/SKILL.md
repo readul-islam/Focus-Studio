@@ -31,16 +31,16 @@ Research competitor interior design software and create compelling comparison pa
 ## Comparison Page Template
 
 ### SEO Requirements
-- Title: "[Competitor] Alternative for Interior Designers | Techstyles vs [Competitor]"
-- H1: "Techstyles vs [Competitor]: Which Interior Design Software is Right for You?"
-- Meta description: "Compare Techstyles and [Competitor] for interior design project management. See features, pricing, and why UK designers choose Techstyles. Free trial available."
+- Title: "[Competitor] Alternative for Interior Designers | Focuspilot vs [Competitor]"
+- H1: "Focuspilot vs [Competitor]: Which Interior Design Software is Right for You?"
+- Meta description: "Compare Focuspilot and [Competitor] for interior design project management. See features, pricing, and why UK designers choose Focuspilot. Free trial available."
 
 ### Page Structure
 ```
 1. Hero Section
    - Clear comparison headline
    - Quick verdict/summary
-   - CTA to try Techstyles
+   - CTA to try Focuspilot
 
 2. Quick Comparison Table
    - Key features side-by-side
@@ -57,11 +57,11 @@ Research competitor interior design software and create compelling comparison pa
 
 4. Pricing Breakdown
    - Competitor pricing tiers
-   - Techstyles pricing
+   - Focuspilot pricing
    - Value comparison
 
 5. Who Should Choose What
-   - Best for [use case]: Techstyles
+   - Best for [use case]: Focuspilot
    - Best for [use case]: Competitor
    - Honest positioning
 
@@ -79,7 +79,7 @@ Research competitor interior design software and create compelling comparison pa
    - Structured data for rich snippets
 
 9. Final CTA
-   - Try Techstyles free
+   - Try Focuspilot free
    - Book demo
 ```
 
@@ -99,7 +99,7 @@ Research competitor interior design software and create compelling comparison pa
    - Contract requirements
 
 3. **Feature Gaps**
-   - What Techstyles does better
+   - What Focuspilot does better
    - What competitor does better
    - Feature parity areas
 
@@ -129,7 +129,7 @@ Research competitor interior design software and create compelling comparison pa
 
 ### Honesty Framework
 ```
-"[Competitor] is excellent for [use case], but Techstyles
+"[Competitor] is excellent for [use case], but Focuspilot
 is purpose-built for [different use case] with features like..."
 ```
 
@@ -151,11 +151,11 @@ is purpose-built for [different use case] with features like..."
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "Techstyles vs [Competitor]",
+  "headline": "Focuspilot vs [Competitor]",
   "description": "Detailed comparison...",
   "author": {
     "@type": "Organization",
-    "name": "Techstyles"
+    "name": "Focuspilot"
   },
   "datePublished": "2025-01-08",
   "dateModified": "2025-01-08"

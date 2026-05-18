@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://focuspilot.io"),
   title: {
     default: "Focuspilot - Interior Design Studio Management Software",
-    template: "%s | Techstyles",
+    template: "%s | Focuspilot",  
   },
   description:
     "The modern operating system for interior designers and architects. Streamline projects, procurement, client collaboration, and finance in one beautiful workspace.",
