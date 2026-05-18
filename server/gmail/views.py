@@ -119,11 +119,12 @@ def fetch_emails(request):
     if not user.gmail:
         return Response({'error': 'User has no gmail connected'}, status=400)
         
-    result = fetch_gmail_messages(user)
-    
+    force_full = bool(request.data.get('force_full', False))
+    result = fetch_gmail_messages(user, force_full=force_full)
+
     if "error" in result:
         return Response(result, status=400)
-        
+
     return Response(result)
 
 @api_view(['POST'])
@@ -567,14 +568,8 @@ def get_all_threads(request):
     page_size = min(100, max(1, int(request.query_params.get('page_size', 50))))
     offset = (page - 1) * page_size
 
-    # Get all unique thread IDs where the user is a participant
-    # Use contains (case-sensitive) instead of icontains — email addresses are lowercase
-    # and icontains causes a full table scan (LIKE '%...%' with no index)
-    base_qs = Email.objects.filter(
-        studio=user.studio
-    ).filter(
-        Q(recipient__contains=user.email) | Q(sender__contains=user.email)
-    )
+    # All mail synced for this studio (Gmail inbox import)
+    base_qs = Email.objects.filter(studio=user.studio)
     total_threads = base_qs.values('thread_id').distinct().count()
     thread_ids_with_dates = base_qs.values('thread_id').annotate(
         last_received=Max('received_at')
@@ -585,7 +580,15 @@ def get_all_threads(request):
     _t1 = time.perf_counter()
 
     if not thread_ids:
-        return Response([])
+        return Response({
+            "results": [],
+            "pagination": {
+                "page": page,
+                "page_size": page_size,
+                "total": 0,
+                "total_pages": 0,
+            },
+        })
 
     # Subquery to get the ID of the latest email for each thread
     latest_emails_ids = Email.objects.filter(
@@ -780,11 +783,7 @@ def search_emails(request):
         Q(body__icontains=query)
     )
 
-    base_qs = Email.objects.filter(
-        studio=user.studio
-    ).filter(
-        Q(recipient__contains=user.email) | Q(sender__contains=user.email)
-    ).filter(search_filter)
+    base_qs = Email.objects.filter(studio=user.studio).filter(search_filter)
 
     total = base_qs.count()
 

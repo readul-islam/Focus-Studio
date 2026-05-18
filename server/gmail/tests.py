@@ -39,8 +39,9 @@ class GmailConnectTests(APITestCase):
 class GmailCallbackTests(APITestCase):
     def test_gmail_callback_error(self):
         response = self.client.get('/gmail/callback/', {'error': 'access_denied'})
-        self.assertEqual(response.status_code, 400)
-        self.assertIn('error', response.data)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/oauth/gmail/callback', response.url)
+        self.assertIn('reason=access_denied', response.url)
 
     def test_gmail_callback_no_code(self):
         response = self.client.get('/gmail/callback/')

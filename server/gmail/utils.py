@@ -147,7 +147,23 @@ def get_today_meetings(user):
         print(f"Error fetching meetings: {e}")
         return []
 
-def fetch_gmail_messages(user):
+def _list_recent_gmail_message_ids(service, query='newer_than:15d'):
+    """Paginate through Gmail message list (up to 15 days of mail)."""
+    message_ids = []
+    page_token = None
+    while True:
+        kwargs = {'userId': 'me', 'q': query, 'maxResults': 500}
+        if page_token:
+            kwargs['pageToken'] = page_token
+        results = service.users().messages().list(**kwargs).execute()
+        message_ids.extend(m['id'] for m in results.get('messages', []))
+        page_token = results.get('nextPageToken')
+        if not page_token:
+            break
+    return message_ids
+
+
+def fetch_gmail_messages(user, force_full=False):
     service = get_gmail_service(user)
     if not service:
         return {"error": "Gmail not connected"}
@@ -155,7 +171,7 @@ def fetch_gmail_messages(user):
     if not user.studio:
         return {"error": "User does not belong to a studio"}
 
-    # Pre-load all clients into a dict for O(1) lookup — avoids one DB hit per message
+    # Pre-load CRM clients for optional linking (not required to import mail)
     clients = {
         c.email.lower(): c
         for c in Client.objects.filter(studio=user.studio)
@@ -167,6 +183,11 @@ def fetch_gmail_messages(user):
         token = GmailToken.objects.get(user=user)
         message_ids = []
         new_history_id = None
+
+        studio_has_emails = Email.objects.filter(studio=user.studio).exists()
+        if force_full or not studio_has_emails:
+            token.history_id = None
+            token.save(update_fields=['history_id'])
 
         # ── Incremental sync (fast path) ──────────────────────────────────────
         if token.history_id:
@@ -186,19 +207,15 @@ def fetch_gmail_messages(user):
 
         # ── Full sync (first run or after historyId expiry) ───────────────────
         if not token.history_id:
-            results = service.users().messages().list(
-                userId='me', q='newer_than:15d'
-            ).execute()
-            message_ids = [m['id'] for m in results.get('messages', [])]
-            # Store current historyId so next call uses incremental sync
+            message_ids = _list_recent_gmail_message_ids(service)
             profile = service.users().getProfile(userId='me', fields='historyId').execute()
             new_history_id = profile.get('historyId')
 
         if not message_ids:
-            if new_history_id:
+            if new_history_id and studio_has_emails:
                 token.history_id = str(new_history_id)
                 token.save(update_fields=['history_id'])
-            return {"fetched": 0}
+            return {"fetched": 0, "listed": 0}
 
         # Skip messages already in the DB (single query instead of one per message)
         existing_ids = set(
@@ -254,8 +271,6 @@ def fetch_gmail_messages(user):
                 (clients[addr.lower()] for addr in all_addrs if addr.lower() in clients),
                 None,
             )
-            if not related_client:
-                continue
 
             body = _get_body_from_payload(txt.get('payload', {}))
 
@@ -299,7 +314,11 @@ def fetch_gmail_messages(user):
             token.history_id = str(new_history_id)
             token.save(update_fields=['history_id'])
 
-        return {"fetched": len(emails_to_create)}
+        return {
+            "fetched": len(emails_to_create),
+            "listed": len(message_ids),
+            "skipped_existing": len(message_ids) - len(new_ids),
+        }
 
     except Exception as e:
         return {"error": str(e)}

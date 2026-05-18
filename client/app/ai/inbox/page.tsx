@@ -1110,9 +1110,10 @@ export default function MagicalInboxPage() {
 
   // Fetch Gmail on mount
   useEffect(() => {
+    if (!isGmailConnected) return;
     fetchGmail({
       url: '/gmail/fetch/',
-      data: {}
+      data: { force_full: !threads?.length }
     }, {
       onSuccess: (e) => {
         if (e.fetched > 0) {
@@ -1203,10 +1204,11 @@ export default function MagicalInboxPage() {
     setSyncing(true);
     fetchGmail({
       url: '/gmail/fetch/',
-      data: {}
+      data: { force_full: true }
     }, {
       onSuccess: (e) => {
-        toast.success(`Synced ${e.fetched || 0} new emails`);
+        const n = e.fetched ?? 0;
+        toast.success(n > 0 ? `Synced ${n} emails` : 'Sync complete — no new emails in the last 15 days');
         refetchThreads();
         setSyncing(false);
       },
