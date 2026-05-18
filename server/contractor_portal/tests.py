@@ -82,19 +82,26 @@ class AddContractorTests(APITestCase):
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    @patch('contractor_portal.views.send_contractor_portal_welcome_email')
+    @patch('contractor_portal.views.send_contractor_invite_email')
     def test_add_contractor_success(self, mock_email):
         data = {
             'project_id': self.project.id,
             'name': 'Alice',
             'surname': 'Smith',
             'email': 'alice@example.com',
+            'trade': 'Builder',
         }
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(Client.objects.filter(email='alice@example.com', contact_type='CN').exists())
+        self.assertEqual(response.data['access_code'], 'SMIT-01')
+        self.assertTrue(response.data['invite_sent'])
+        self.assertIn('/project/', response.data['portal_url'])
+        mock_email.assert_called_once()
+        plain_message = mock_email.call_args[0][4]
+        self.assertIn('SMIT-01', plain_message)
 
-    @patch('contractor_portal.views.send_contractor_portal_welcome_email')
+    @patch('contractor_portal.views.send_contractor_invite_email')
     def test_add_contractor_duplicate_email(self, mock_email):
         create_contractor(self.studio, email='dup@example.com')
         data = {

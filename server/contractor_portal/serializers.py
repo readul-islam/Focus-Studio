@@ -368,6 +368,8 @@ class ContractorViewSerializer(serializers.ModelSerializer):
     drawing_count = serializers.SerializerMethodField()
     confirmed_drawing_count = serializers.SerializerMethodField()
     insurance_warning = serializers.SerializerMethodField()
+    trade = serializers.SerializerMethodField()
+    access_code = serializers.SerializerMethodField()
 
     class Meta:
         model = Client
@@ -378,6 +380,8 @@ class ContractorViewSerializer(serializers.ModelSerializer):
             'company_name',
             'email',
             'phone',
+            'trade',
+            'access_code',
             'last_login',
             'item_count',
             'drawing_count',
@@ -386,6 +390,14 @@ class ContractorViewSerializer(serializers.ModelSerializer):
             'shared_procurements',
             'shared_documents',
         ]
+
+    def get_trade(self, obj):
+        profile = getattr(obj, 'contractor_profile', None)
+        return profile.trade if profile else None
+
+    def get_access_code(self, obj):
+        profile = getattr(obj, 'contractor_profile', None)
+        return profile.access_code if profile else None
 
     def _get_project_id(self):
         # Allow project_id to be injected directly into context (e.g. from project_contractors view)

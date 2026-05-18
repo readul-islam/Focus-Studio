@@ -5,6 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState, type ReactNode } from 'react'
+import { HelmetProvider } from 'react-helmet-async'
 import { Toaster } from 'sonner'
 
 export function Providers({ children }: { children: ReactNode }) {
@@ -21,11 +22,12 @@ export function Providers({ children }: { children: ReactNode }) {
   )
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <AuthProvider>
-          {children}
-          <Toaster
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <AuthProvider>
+            {children}
+            <Toaster
             duration={900}
             toastOptions={{
               classNames: {
@@ -33,9 +35,10 @@ export function Providers({ children }: { children: ReactNode }) {
               },
             }}
             className="max-sm:!top-0 max-sm:!bottom-auto max-sm:!mx-auto"
-          />
-        </AuthProvider>
-      </LocalizationProvider>
-    </QueryClientProvider>
+            />
+          </AuthProvider>
+        </LocalizationProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   )
 }

@@ -19,6 +19,7 @@ import useFetch from '@/hooks/useFetch';
 import { usePost } from '@/hooks/usePost';
 import { DeleteDialog } from '@/components/DeleteDialog';
 import { usePermissions } from '@/hooks/usePermissions';
+import { getProjectPortalUrl } from '@/lib/contractor-portal-url';
 
 interface StudioContractor {
   id: number;
@@ -41,6 +42,8 @@ interface ApiContractor {
   company_name: string;
   email: string;
   phone: string;
+  trade?: string;
+  access_code?: string;
   last_login: string | null;
   item_count: number;
   drawing_count: number;
@@ -102,8 +105,10 @@ function mapApiContractorToProjectContractor(apiContractor: ApiContractor): Proj
   return {
     id: apiContractor.id.toString(),
     name: fullName || apiContractor.company_name,
-    trade: 'General', // Default trade, can be updated based on your needs
-    token: `contractor-${apiContractor.id}`, // Generate token
+    trade: 'General',
+    trade_label: apiContractor.trade || undefined,
+    access_code: apiContractor.access_code || undefined,
+    token: `contractor-${apiContractor.id}`,
     status: 'active',
     created_at: new Date().toISOString(),
     last_accessed: apiContractor.last_login || undefined,
@@ -155,6 +160,11 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
     `contractor_portal/project/${params.id}/contractors/`
   );
 
+  const { data: projectData } = useFetch(`projects/projects/${params.id}/`);
+  const projectPortalUrl = projectData?.access_token
+    ? getProjectPortalUrl(projectData.access_token)
+    : '';
+
   // Map API data to contractors
   useEffect(() => {
     if (apiData && Array.isArray(apiData)) {
@@ -186,7 +196,11 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
   const { mutate: addContractor, isPending: isAdding } = usePost({
     onSuccess: (data: any) => {
       const accessCode = data?.access_code || 'N/A';
-      toast.success(`Contractor added. Access code: ${accessCode}`);
+      if (data?.invite_sent === false) {
+        toast.warning(`Contractor added (access code: ${accessCode}). Invite email could not be sent.`);
+      } else {
+        toast.success(`Contractor added. Invite sent — access code: ${accessCode}`);
+      }
       refetch();
       closeAddDialog();
     },
@@ -216,13 +230,14 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
   };
 
   const handleAddContractor = () => {
+    const surname = newContractor.surname.trim() || newContractor.name.trim().split(' ').slice(-1)[0] || 'USER';
     if (!newContractor.name || !newContractor.email || !newContractor.trade) return;
     addContractor({
       url: 'contractor_portal/add/',
       data: {
         project_id: parseInt(params.id),
         name: newContractor.name,
-        surname: newContractor.surname,
+        surname,
         company_name: newContractor.company_name,
         email: newContractor.email,
         phone: newContractor.phone,
@@ -239,17 +254,21 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
     });
   };
 
-  // Copy link
-  const handleCopyLink = (contractor: ProjectContractor) => {
-    const link = `${window.location.origin}/contractor/${params.id}/${contractor.token}?trade=${contractor.trade}`;
-    navigator.clipboard.writeText(link);
-    toast.success('Link copied to clipboard');
+  const handleCopyLink = () => {
+    if (!projectPortalUrl) {
+      toast.error('Project portal link is not available yet');
+      return;
+    }
+    navigator.clipboard.writeText(projectPortalUrl);
+    toast.success('Project portal link copied');
   };
 
-  // Open portal
-  const handleOpenPortal = (contractor: ProjectContractor) => {
-    const link = `/contractor/${params.id}/${contractor.token}?trade=${contractor.trade}`;
-    window.open(link, '_blank');
+  const handleOpenPortal = () => {
+    if (!projectPortalUrl) {
+      toast.error('Project portal link is not available yet');
+      return;
+    }
+    window.open(projectPortalUrl, '_blank');
   };
 
   // Delete mutations using POST
@@ -412,7 +431,9 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <Label htmlFor="surname" className="text-sm text-neutral-700">Surname</Label>
+                        <Label htmlFor="surname" className="text-sm text-neutral-700">
+                          Surname <span className="text-neutral-400 font-normal">(for access code)</span>
+                        </Label>
                         <Input
                           id="surname"
                           placeholder="e.g. Fletcher"
@@ -573,8 +594,8 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                 key={contractor.id}
                 contractor={contractor}
                 projectId={params.id}
-                onCopyLink={() => handleCopyLink(contractor)}
-                onOpenPortal={() => handleOpenPortal(contractor)}
+                onCopyLink={handleCopyLink}
+                onOpenPortal={handleOpenPortal}
                 onRemoveShare={shareId => handleRemoveShare(contractor.id, shareId)}
                 onMessage={() => setMessageContractor(contractor)}
                 onShareFiles={() => setShareFilesContractor(contractor)}

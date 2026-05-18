@@ -164,6 +164,8 @@ export interface ProjectContractor {
   id: string;
   name: string;
   trade: TradeType;
+  trade_label?: string;
+  access_code?: string;
   token: string;
   status: 'invited' | 'active' | 'inactive';
   created_at: string;

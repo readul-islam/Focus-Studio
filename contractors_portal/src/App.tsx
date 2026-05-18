@@ -17,7 +17,7 @@ const DocumentFolder = lazy(() => import('./pages/Documents/DocumentFolder'));
 const Invoice = lazy(() => import('./pages/finance/Invoice'));
 const Messages = lazy(() => import('./pages/Messages/Messages'));
 const Profile = lazy(() => import('./pages/Profile/Profile'));
-const ProjectLanding = lazy(() => import('./pages/ProjectLanding'));
+const ProjectLanding = lazy(() => import('./views/ProjectLanding'));
 const SelectProject = lazy(() => import('./pages/SelectProject'));
 
 

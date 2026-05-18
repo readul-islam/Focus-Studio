@@ -218,9 +218,14 @@ export function ContractorCard({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <h3 className="font-medium text-neutral-900">{contractor.name}</h3>
-              {contractor.trade && (
+              {(contractor.trade_label || contractor.trade) && (
                 <Badge variant="outline" className="text-xs">
-                  {contractor.trade === 'General' ? 'Builder' : contractor.trade}
+                  {contractor.trade_label || (contractor.trade === 'General' ? 'Builder' : contractor.trade)}
+                </Badge>
+              )}
+              {contractor.access_code && (
+                <Badge variant="secondary" className="text-xs font-mono">
+                  {contractor.access_code}
                 </Badge>
               )}
             </div>

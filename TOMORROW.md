@@ -27,6 +27,10 @@
   - `manifest.json` / `grain.png` issues addressed
   - Smoke-tested: `/resources/templates`, `/resources/ai-playbook`, `/platform/ai`
 
+### Marketing — AI platform page (19 May)
+
+- [x] **`/platform/ai`** rebuilt with `MarketingPageHero`, feature grid, how-it-works, AI Playbook strip, signup CTA
+
 ---
 
 ## Next up
@@ -38,21 +42,7 @@
 
 ---
 
-### Priority 2 — Header “AI” marketing page (≈ 2–4 hours)
-
-**Goal:** `/platform/ai` is a full marketing page — not a stub.
-
-1. Hero — “AI built for design studios”
-2. Feature grid — Daily brief, email routing, procurement assist, proposals (link to feature subpages)
-3. How it works — 3 steps (project context → draft → human approve)
-4. Link to **AI Playbook** (`/resources/ai-playbook`)
-5. CTA → `/signup`
-
-Use `MarketingPageHero` + same design system as CRM / Projects pages.
-
----
-
-### Priority 3 — Product roadmap (pick one focus block)
+### Priority 2 — Product roadmap (pick one focus block)
 
 From [README.md](README.md) — **May 2026** goals:
 
@@ -103,4 +93,4 @@ Decisions needed:
 
 ---
 
-*Last updated: Monday, 18 May 2026*
+*Last updated: Tuesday, 19 May 2026*

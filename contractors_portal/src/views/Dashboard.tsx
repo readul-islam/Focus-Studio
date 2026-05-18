@@ -11,10 +11,13 @@ import useFetch from '@/hooks/useFetch';
 export default function Dashboard() {
   const { user, project: projectData } = useUser();
 
+  const contractorId = user?.id;
   const { data: dashboardData, isLoading: dashboardLoading } = useFetch(
-    `contractor_portal/dashboard/?project_id=${projectData?.project_id}`,
+    projectData?.project_id && contractorId
+      ? `contractor_portal/dashboard/?project_id=${projectData.project_id}&contractor_id=${contractorId}`
+      : null,
     {
-      enabled: !!projectData?.project_id,
+      enabled: !!projectData?.project_id && !!contractorId,
     },
   );
 

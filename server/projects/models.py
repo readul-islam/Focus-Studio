@@ -150,6 +150,7 @@ class Project(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='projects_updated', null=True, blank=True)
     project_banner = models.ImageField(upload_to='project_banners/', null=True, blank=True)
+    access_token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
 
     def __str__(self):
         return f"{self.project_name}-{self.client}"

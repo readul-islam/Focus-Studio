@@ -116,6 +116,22 @@ def send_contractor_portal_welcome_email(to_email: str, studio_name: str, html_m
     )
 
 
+def send_contractor_invite_email(
+    to_email: str,
+    project_name: str,
+    studio_name: str,
+    html_message: str,
+    plain_message: str,
+) -> dict:
+    return _send(
+        subject=f"{project_name} — your contractor access",
+        from_email=FROM_EMAIL,
+        to=[to_email],
+        html=html_message,
+        plain=plain_message,
+    )
+
+
 def send_purchase_order_email(
     to_emails: list[str],
     cc_emails: list[str],

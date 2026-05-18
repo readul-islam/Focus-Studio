@@ -7,6 +7,7 @@ from django.db.models import Sum, Q
 from django.conf import settings
 from techstyles.resend_utils import (
     send_contractor_portal_welcome_email,
+    send_contractor_invite_email,
     send_contractor_notification_email,
 )
 from techstyles.email_branding import email_brand_row_html, email_header_inner_html
@@ -393,6 +394,126 @@ def _generate_access_code(surname, studio_id):
     return f"{surname_part}-{next_seq:02d}"
 
 
+def _project_portal_url(project):
+    base = settings.CONTRACTOR_PORTAL_URL.rstrip('/')
+    return f"{base}/project/{project.access_token}"
+
+
+def _get_contractor_invite_plain_message(project, contractor, access_code, portal_url, studio_name, trade=''):
+    login_url = f"{settings.CONTRACTOR_PORTAL_URL.rstrip('/')}/login"
+    trade_line = f"\nTrade: {trade}\n" if trade else ''
+    return f"""Hello {contractor.name},
+
+You've been added to the contractor portal for: {project.project_name}
+
+Studio: {studio_name}
+{trade_line}
+Your personal access code: {access_code}
+
+On site — scan the project QR code, or open:
+{portal_url}
+
+Enter your access code when prompted.
+
+You can also sign in at {login_url}
+Email: {contractor.email}
+Password: {access_code}
+
+Best regards,
+{studio_name}
+"""
+
+
+def _get_contractor_invite_email_html(project, contractor, access_code, portal_url, studio_name, trade=''):
+    trade_block = ''
+    if trade:
+        trade_block = f"""
+              <p style="margin: 0 0 4px; color: #6b7280; font-size: 13px;">
+                Trade: <strong style="color: #374151;">{trade}</strong>
+              </p>"""
+
+    return f"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contractor Portal Access</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f3f4f6;">
+    <tr>
+      <td style="padding: 40px 20px;">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); overflow: hidden;">
+          <tr>
+            <td style="padding: 40px 32px; text-align: center; background-color: #111827;">
+              {email_header_inner_html(title=studio_name, subtitle=project.project_name, align='center')}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 32px 32px 24px;">
+              <h2 style="margin: 0 0 8px; color: #111827; font-size: 22px; font-weight: 600;">
+                Hello {contractor.name}
+              </h2>
+              <p style="margin: 0; color: #6b7280; font-size: 15px; line-height: 1.5;">
+                You've been invited to the contractor portal for this project. Use your personal access code below.
+              </p>
+              {trade_block}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 0 32px 24px;">
+              <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;text-align:center;">
+                <p style="margin: 0 0 8px; color: #6b7280; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                  Your access code
+                </p>
+                <p style="margin: 0; color: #111827; font-size: 32px; font-weight: 700; letter-spacing: 4px; font-family: monospace;">
+                  {access_code}
+                </p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 0 32px 32px;">
+              <p style="margin: 0 0 16px; color: #374151; font-size: 14px; line-height: 1.5;">
+                On site, scan the project QR code or open the link below, then enter your access code.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td style="text-align: center;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto;">
+                      <tr>
+                        <td style="border-radius: 6px; background-color: #111827;">
+                          <a href="{portal_url}" style="display: block; padding: 14px 40px; background-color: #111827; color: #ffffff !important; text-decoration: none; border-radius: 6px; font-size: 15px; font-weight: 500;">
+                            Open project portal
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin: 16px 0 0; color: #9ca3af; font-size: 12px; word-break: break-all; text-align: center;">
+                {portal_url}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 24px 32px; background-color: #f9fafb; border-top: 1px solid #e5e7eb;">
+              <p style="margin: 0; color: #9ca3af; font-size: 13px; text-align: center;">
+                © Focuspilot · {studio_name}
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+"""
+
+
 @extend_schema(
     tags=['Contractor Portal - Management'],
     summary='Add contractor to project',
@@ -427,6 +548,8 @@ def _generate_access_code(surname, studio_id):
                 'access_code': drf_serializers.CharField(),
                 'project_id': drf_serializers.IntegerField(),
                 'project_name': drf_serializers.CharField(),
+                'portal_url': drf_serializers.CharField(),
+                'invite_sent': drf_serializers.BooleanField(),
             },
         ),
         400: OpenApiTypes.OBJECT,
@@ -500,8 +623,29 @@ def add_contractor(request):
         project=project,
     )
 
-    # TODO: Send invite email via Resend (implement when Resend is configured)
-    # For now, just return the data
+    trade = request.data.get('trade', '')
+    studio_name = studio.name if studio else 'Focuspilot'
+    portal_url = _project_portal_url(project)
+    invite_sent = False
+
+    plain_message = _get_contractor_invite_plain_message(
+        project, contractor, access_code, portal_url, studio_name, trade=trade,
+    )
+    html_message = _get_contractor_invite_email_html(
+        project, contractor, access_code, portal_url, studio_name, trade=trade,
+    )
+
+    try:
+        send_contractor_invite_email(
+            contractor.email,
+            project.project_name or 'Project',
+            studio_name,
+            html_message,
+            plain_message,
+        )
+        invite_sent = True
+    except Exception as e:
+        print(f"Error sending contractor invite to {contractor.email}: {str(e)}")
 
     return Response({
         'id': contractor.id,
@@ -510,10 +654,12 @@ def add_contractor(request):
         'company_name': contractor.company_name,
         'email': contractor.email,
         'phone': contractor.phone,
-        'trade': request.data.get('trade', ''),
+        'trade': trade,
         'access_code': access_code,
         'project_id': project.id,
         'project_name': project.project_name,
+        'portal_url': portal_url,
+        'invite_sent': invite_sent,
     }, status=status.HTTP_201_CREATED)
 
 
@@ -559,6 +705,8 @@ class ContractorLoginView(APIView):
         contractor = serializer.validated_data['contractor']
 
         return Response({
+            'access': serializer.validated_data['access'],
+            'refresh': serializer.validated_data['refresh'],
             'contractor': {
                 'id': contractor.id,
                 'name': contractor.name,
@@ -1591,7 +1739,7 @@ def project_contractors(request, project_id):
         Q(contractor_portal_projects__project_id=project_id) |
         Q(shared_procurements__procurement__project_id=project_id),
         contact_type='CN',
-    ).distinct()
+    ).select_related('contractor_profile').distinct()
 
     serializer = ContractorViewSerializer(
         contractors,

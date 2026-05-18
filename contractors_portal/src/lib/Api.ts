@@ -1,18 +1,20 @@
 import axios from 'axios';
+import { getApiBaseUrl } from '@/lib/api-config';
 
-const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
+const api = axios.create();
+
+api.interceptors.request.use(config => {
+  if (!config.baseURL) {
+    config.baseURL = getApiBaseUrl();
+  }
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('access');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+  return config;
 });
-
-// api.interceptors.request.use(config => {
-//   if (typeof window !== 'undefined') {
-//     const token = localStorage.getItem('access');
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-//   }
-//   return config;
-// });
 
 const handleError = error => {
   throw new Error(error.response ? `HTTP error! status: ${error.response.status}` : error.message);
@@ -86,8 +88,25 @@ export const loginUser = async ({ email, password }: { email: string; password: 
   return res.data; // { access, refresh, user }
 };
 
-export const loginWithCode = async ({ login_code }: { login_code: string }) => {
-  const res = await api.post("contractor_portal/login-with-code/", { login_code });
+export const fetchProjectByAccessToken = async (accessToken: string) => {
+  const res = await api.get(`contractor_portal/project/${accessToken}/`);
+  return res.data as {
+    project_name: string;
+    studio_name: string;
+    requires_code: boolean;
+  };
+};
+
+export const authenticateProjectAccess = async ({
+  accessToken,
+  accessCode,
+}: {
+  accessToken: string;
+  accessCode: string;
+}) => {
+  const res = await api.post(`contractor_portal/project/${accessToken}/auth/`, {
+    access_code: accessCode.trim().toUpperCase(),
+  });
   return res.data;
 };
 
@@ -104,15 +123,30 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // Handle expired access → try refresh ONCE
+    // Handle expired access → try refresh ONCE (studio sessions only)
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
+      const isContractor = localStorage.getItem('session_type') === 'contractor';
       const refresh = localStorage.getItem('refresh');
       if (!refresh) {
         localStorage.clear();
         window.location.href = '/login';
         return Promise.reject(error);
+      }
+
+      if (isContractor) {
+        try {
+          const res = await api.post('/user/refresh/', { refresh });
+          const newAccess = res.data.access;
+          localStorage.setItem('access', newAccess);
+          originalRequest.headers['Authorization'] = 'Bearer ' + newAccess;
+          return api(originalRequest);
+        } catch {
+          localStorage.clear();
+          window.location.href = '/login';
+          return Promise.reject(error);
+        }
       }
 
       try {
@@ -124,7 +158,6 @@ api.interceptors.response.use(
 
         return api(originalRequest);
       } catch (refreshError) {
-        // If refresh fails → logout gracefully
         localStorage.clear();
         window.location.href = '/login';
         return Promise.reject(refreshError);

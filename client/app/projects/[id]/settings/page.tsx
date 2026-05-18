@@ -65,6 +65,7 @@ import useDeleteData from '@/hooks/useDelete';
 import { InviteClientDialog } from '@/components/InviteClientDialog';
 import { InviteContractorDialog } from '@/components/InviteContractorDialog';
 import { usePermissions } from '@/hooks/usePermissions';
+import { getProjectPortalUrl } from '@/lib/contractor-portal-url';
 
 
 // Format Date to YYYY-MM-DD in local timezone (not UTC)
@@ -1981,7 +1982,7 @@ function ContractorAccessSection({ projectData }: { projectData: any }) {
   // Please ensure GET /projects/projects/{id}/ returns access_token for QR code generation.
   const accessToken = projectData?.access_token;
   const contractorPortalUrl = accessToken
-    ? `https://contractor.focuspilot.io/project/${accessToken}`
+    ? getProjectPortalUrl(accessToken)
     : '';
 
   const handleDownloadQR = () => {

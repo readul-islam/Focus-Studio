@@ -19,9 +19,12 @@ export function TopBar() {
   const { user, project, projects, setSelectedProject } = useUser();
 
   const handleLogoutClick = () => {
+    localStorage.removeItem('session_type');
     localStorage.removeItem('user');
     localStorage.removeItem('access');
     localStorage.removeItem('refresh');
+    localStorage.removeItem('project');
+    localStorage.removeItem('selectedProject');
     navigate('/login');
   };
 
@@ -30,12 +33,12 @@ export function TopBar() {
       <div className="flex items-center justify-between">
         {/* Mobile: Logo + Project switcher on left */}
         <div className="md:hidden flex items-center gap-2 min-w-0">
-          <img src="/techstyles-t-logo.png" alt="Techstyles logo" className="w-8 h-8 flex-shrink-0" />
+          <img src="/brand/Logo.png" alt="Focuspilot" className="w-8 h-8 flex-shrink-0 object-contain" />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1 focus:outline-none min-w-0">
                 <span className="font-semibold text-gray-900 text-sm truncate max-w-[140px]">
-                  {project?.project_name ?? 'Techstyles'}
+                  {project?.project_name ?? 'Focuspilot'}
                 </span>
                 <ChevronsUpDown className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
               </button>

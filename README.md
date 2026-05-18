@@ -215,7 +215,9 @@ Design and architecture studios face significant operational challenges:
 - ✅ AI Clipper (smart document summarization)
 - ✅ Daily Brief (AI-generated work summary)
 - ✅ Prompt library
-- ⏳ AI-powered proposal generation
+- ✅ **Marketing:** AI platform page ([focuspilot.io/platform/ai](https://focuspilot.io/platform/ai)) — hero, feature grid, how-it-works, AI Playbook link
+- ✅ **Resources:** AI Playbook ([focuspilot.io/resources/ai-playbook](https://focuspilot.io/resources/ai-playbook))
+- ⏳ AI-powered proposal generation (in-app)
 - ⏳ Intelligent task recommendations
 
 ### 11. **Settings & Integrations** (Partial)
@@ -532,7 +534,8 @@ Design and architecture studios face significant operational challenges:
 | Contractor Portal | V1 Complete | 50% |
 | Reports | Redesign | 30% |
 | Help Centre | Planned | 10% |
-| AI Tools | Partial | 50% |
+| AI Tools | Partial | 60% |
+| Landing / Marketing (AI page, Resources) | Core pages live | 75% |
 | **Polish & Maintenance** | Ongoing | 20% |
 | Settings Overhaul | Planned | 10% |
 | Performance Optimization | Ongoing | 40% |
@@ -542,6 +545,9 @@ Design and architecture studios face significant operational challenges:
 ### Timeline (Next 6 Months)
 
 #### May 2026 (Current)
+- [x] Landing: `/platform/ai` marketing page (Focuspilot design system)
+- [x] Landing: Resources — Templates + AI Playbook
+- [x] Google Sign-In (landing + studio app)
 - [ ] Contractor Portal V2 finalization
 - [ ] Reports rebuild (Phase 1–3)
 - [ ] Settings overhaul
