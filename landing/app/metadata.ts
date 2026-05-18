@@ -20,11 +20,6 @@ const jsonLd = {
     priceCurrency: "USD",
     description: "Free trial available",
   },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.8",
-    reviewCount: "127",
-  },
   featureList: [
     "Project Management",
     "CRM for Design Studios",

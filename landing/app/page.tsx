@@ -748,92 +748,9 @@ function Footer() {
   )
 }
 
-// JSON-LD structured data for homepage
-const homepageSchema = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": "https://focuspilot.io/#organization",
-    name: "Focuspilot",
-    url: "https://focuspilot.io",
-    logo: {
-      "@type": "ImageObject",
-      url: "https://focuspilot.io/images/logo.png",
-      width: 200,
-      height: 60,
-    },
-    description: "AI-powered project management software for interior designers and architects.",
-    foundingDate: "2024",
-    sameAs: [
-        "https://twitter.com/focuspilot",
-      "https://linkedin.com/company/focuspilot",
-      "https://instagram.com/focuspilot",
-    ],
-    contactPoint: {
-      "@type": "ContactPoint",
-      contactType: "customer service",
-      email: "hello@focuspilot.io",
-      availableLanguage: ["English"],
-    },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "@id": "https://focuspilot.io/#software",
-    name: "Focuspilot",
-    applicationCategory: "BusinessApplication",
-    applicationSubCategory: "Project Management Software",
-    operatingSystem: "Web",
-    description:
-      "Interior design studio management software for project management, procurement, client collaboration, and finance.",
-    url: "https://focuspilot.io",
-    author: { "@id": "https://focuspilot.io/#organization" },
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "GBP",
-      description: "Free 3-month beta access available",
-      availability: "https://schema.org/InStock",
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.9",
-      reviewCount: "150",
-      bestRating: "5",
-      worstRating: "1",
-    },
-    featureList: [
-      "Project Management",
-      "CRM for Design Studios",
-      "AI-Powered Procurement",
-      "Client Portal & Approvals",
-      "Finance & Invoicing",
-      "Product Library Management",
-    ],
-    screenshot: "https://focuspilot.io/images/og-image.png",
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "@id": "https://focuspilot.io/#website",
-      name: "Focuspilot",
-    url: "https://focuspilot.io",
-    publisher: { "@id": "https://focuspilot.io/#organization" },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: "https://focuspilot.io/blog?q={search_term_string}",
-      "query-input": "required name=search_term_string",
-    },
-  },
-]
-
 export default function Page() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageSchema) }}
-      />
       <Hero />
       <LogoCloud />
       <AttentionBanner />

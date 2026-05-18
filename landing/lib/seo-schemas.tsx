@@ -58,7 +58,7 @@ export function generateArticleSchema({
       name: "Focuspilot",
       logo: {
         "@type": "ImageObject",
-        url: "https://focuspilot.io/images/techstyles-logo.png",
+        url: "https://focuspilot.io/images/logo.png",
       },
     },
   }
@@ -70,11 +70,11 @@ export function generateOrganizationSchema() {
     "@type": "Organization",
     name: "Focuspilot",
     url: "https://focuspilot.io",
-    logo: "https://focuspilot.io/images/techstyles-logo.png",
+    logo: "https://focuspilot.io/images/logo.png",
     sameAs: [
-      "https://twitter.com/techstyles",
-      "https://linkedin.com/company/techstyles",
-      "https://instagram.com/techstyles",
+      "https://twitter.com/focuspilot",
+      "https://linkedin.com/company/focuspilot",
+      "https://instagram.com/focuspilot",
     ],
     contactPoint: {
       "@type": "ContactPoint",
@@ -97,11 +97,6 @@ export function generateSoftwareApplicationSchema() {
       "@type": "Offer",
       price: "49",
       priceCurrency: "GBP",
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.9",
-      ratingCount: "150",
     },
   }
 }
