@@ -17,6 +17,7 @@ from .views import (
     bulk_share_procurement_with_contractor,
     share_document_with_contractor,
     bulk_share_document_with_contractor,
+    project_shareable_documents,
     contractor_view,
     project_contractors,
     remove_shared_procurement,
@@ -46,6 +47,7 @@ urlpatterns = [
     # Shared items
     path('share-procurement/', share_procurement_with_contractor, name='contractor-share-procurement'),
     path('bulk-share-procurements/', bulk_share_procurement_with_contractor, name='contractor-bulk-share-procurements'),
+    path('project/<int:project_id>/shareable-documents/', project_shareable_documents, name='contractor-project-shareable-documents'),
     path('share-document/', share_document_with_contractor, name='contractor-share-document'),
     path('bulk-share-documents/', bulk_share_document_with_contractor, name='contractor-bulk-share-documents'),
     path('remove-shared-procurement/', remove_shared_procurement, name='contractor-remove-shared-procurement'),

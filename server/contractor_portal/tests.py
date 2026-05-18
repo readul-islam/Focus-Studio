@@ -4,7 +4,8 @@ from rest_framework.test import APITestCase
 from users.models import User, Studio
 from crm.models import Client
 from projects.models import Project
-from .models import ContractorProfile, ContractorProject
+from documents.models import Document
+from .models import ContractorProfile, ContractorProject, ContractorSharedDocument
 
 
 def create_studio(name="Test Studio"):
@@ -189,6 +190,117 @@ class ContractorDashboardTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('total_paid_invoice', response.data)
         self.assertIn('total_due_invoice', response.data)
+
+
+class ShareDocumentTests(APITestCase):
+    def setUp(self):
+        self.studio = create_studio()
+        self.user = create_user(studio=self.studio)
+        self.project = create_project(self.studio)
+        self.contractor = create_contractor(self.studio)
+        ContractorProject.objects.create(contractor=self.contractor, project=self.project)
+        self.root_file = Document.objects.create(
+            name='Floor Plan.pdf',
+            type='FILE',
+            project=self.project,
+            studio=self.studio,
+        )
+        folder = Document.objects.create(
+            name='Drawings',
+            type='FOLDER',
+            project=self.project,
+            studio=self.studio,
+        )
+        self.nested_file = Document.objects.create(
+            name='Elevation.pdf',
+            type='FILE',
+            project=self.project,
+            studio=self.studio,
+            parent=folder,
+        )
+        self.client.force_authenticate(user=self.user)
+
+    def test_shareable_documents_lists_nested_files(self):
+        url = f'/contractor_portal/project/{self.project.id}/shareable-documents/'
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        names = {item['name'] for item in response.data}
+        self.assertIn('Floor Plan.pdf', names)
+        self.assertIn('Elevation.pdf', names)
+        self.assertNotIn('Drawings', names)
+
+    @patch('contractor_portal.views._send_document_notification_email')
+    def test_bulk_share_documents(self, mock_email):
+        response = self.client.post(
+            '/contractor_portal/bulk-share-documents/',
+            {
+                'contractor_id': self.contractor.id,
+                'document_ids': [self.root_file.id, self.nested_file.id],
+                'project_id': self.project.id,
+            },
+            format='json',
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['created'], 2)
+        self.assertEqual(
+            ContractorSharedDocument.objects.filter(contractor=self.contractor).count(),
+            2,
+        )
+        self.root_file.refresh_from_db()
+        self.assertTrue(self.root_file.contractor_access)
+        mock_email.assert_called_once()
+
+    def test_contractor_portal_root_documents_after_share(self):
+        ContractorSharedDocument.objects.create(
+            contractor=self.contractor,
+            document=self.nested_file,
+        )
+        url = (
+            f'/contractor_portal/documents/root_documents/'
+            f'?project_id={self.project.id}&contractor_id={self.contractor.id}'
+        )
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        names = {item['name'] for item in response.data}
+        self.assertIn('Drawings', names)
+
+    def test_remove_shared_document_clears_access_flag(self):
+        ContractorSharedDocument.objects.create(
+            contractor=self.contractor,
+            document=self.root_file,
+        )
+        self.root_file.contractor_access = True
+        self.root_file.save(update_fields=['contractor_access'])
+        response = self.client.post(
+            '/contractor_portal/remove-shared-document/',
+            {
+                'contractor_id': self.contractor.id,
+                'document_id': self.root_file.id,
+            },
+            format='json',
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.root_file.refresh_from_db()
+        self.assertFalse(self.root_file.contractor_access)
+
+    def test_bulk_share_rejects_wrong_project(self):
+        other_project = create_project(self.studio, name='Other')
+        other_file = Document.objects.create(
+            name='Other.pdf',
+            type='FILE',
+            project=other_project,
+            studio=self.studio,
+        )
+        response = self.client.post(
+            '/contractor_portal/bulk-share-documents/',
+            {
+                'contractor_id': self.contractor.id,
+                'document_ids': [other_file.id],
+                'project_id': self.project.id,
+            },
+            format='json',
+        )
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
 class ContractorProfileTests(APITestCase):

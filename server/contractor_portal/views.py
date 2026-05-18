@@ -38,6 +38,76 @@ from rest_framework.views import APIView
 from .authentication import ContractorJWTAuthentication
 
 
+def _studio_contractor(contractor_id, studio):
+    """Return CN contractor in this studio, or None."""
+    if not studio:
+        return None
+    return Client.objects.filter(id=contractor_id, contact_type='CN', studio=studio).first()
+
+
+def _contractor_on_project(contractor, project_id):
+    return ContractorProject.objects.filter(contractor=contractor, project_id=project_id).exists()
+
+
+def _validate_share_targets(request, contractor_id, document_ids, project_id=None):
+    """
+    Ensure the studio user can share these documents with this contractor.
+    Returns (contractor, documents_qs, error_response).
+    """
+    studio = getattr(request.user, 'studio', None)
+    if not studio:
+        return None, None, Response(
+            {'error': 'Your account is not linked to a studio.'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    contractor = _studio_contractor(contractor_id, studio)
+    if not contractor:
+        return None, None, Response(
+            {'error': 'Contractor not found. Must be a contact with type CN in your studio.'},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    if project_id is not None:
+        try:
+            project = Project.objects.get(id=project_id, studio=studio)
+        except Project.DoesNotExist:
+            return None, None, Response({'error': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
+        if not _contractor_on_project(contractor, project.id):
+            return None, None, Response(
+                {'error': 'This contractor is not linked to the project.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+    documents = Document.objects.filter(id__in=document_ids, studio=studio)
+    if project_id is not None:
+        documents = documents.filter(project_id=project_id)
+
+    found_ids = set(documents.values_list('id', flat=True))
+    missing = [did for did in document_ids if did not in found_ids]
+    if missing:
+        return None, None, Response(
+            {'error': 'One or more documents were not found for this project.', 'not_found': missing},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    for doc in documents:
+        if doc.project_id and not _contractor_on_project(contractor, doc.project_id):
+            return None, None, Response(
+                {'error': f'Contractor is not linked to the project for "{doc.name}".'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+    return contractor, documents, None
+
+
+def _sync_document_contractor_access(document_id):
+    """Clear contractor_access when no shares remain for this document."""
+    still_shared = ContractorSharedDocument.objects.filter(document_id=document_id).exists()
+    if not still_shared:
+        Document.objects.filter(id=document_id, contractor_access=True).update(contractor_access=False)
+
+
 @extend_schema_view(
     list=extend_schema(
         tags=['Contractor Portal - Documents'],
@@ -1297,6 +1367,40 @@ def bulk_share_procurement_with_contractor(request):
 
 @extend_schema(
     tags=['Contractor Portal - Shared Items'],
+    summary='List project files available to share',
+    description=(
+        'Returns all files and links in a project (including inside folders) for the '
+        'studio share-files dialog. Folders are omitted.'
+    ),
+    parameters=[
+        OpenApiParameter(name='project_id', description='Project ID', required=True, type=int, location=OpenApiParameter.PATH),
+    ],
+    responses={200: DocumentSerializer(many=True)},
+)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def project_shareable_documents(request, project_id):
+    """Flat list of FILE/LINK documents in a project for the share dialog."""
+    studio = getattr(request.user, 'studio', None)
+    if not studio:
+        return Response({'error': 'Your account is not linked to a studio.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        Project.objects.get(id=project_id, studio=studio)
+    except Project.DoesNotExist:
+        return Response({'error': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    queryset = Document.objects.filter(
+        project_id=project_id,
+        studio=studio,
+        type__in=('FILE', 'LINK'),
+    ).order_by('name')
+    serializer = DocumentSerializer(queryset, many=True, context={'request': request})
+    return Response(serializer.data)
+
+
+@extend_schema(
+    tags=['Contractor Portal - Shared Items'],
     summary='Share a document with a contractor',
     description=(
         'Links a document/drawing to a contractor (CN contact type). '
@@ -1330,6 +1434,7 @@ def share_document_with_contractor(request):
     """
     contractor_id = request.data.get('contractor_id')
     document_id = request.data.get('document_id')
+    project_id = request.data.get('project_id')
 
     if not contractor_id or not document_id:
         return Response(
@@ -1337,18 +1442,12 @@ def share_document_with_contractor(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
-    try:
-        contractor = Client.objects.get(id=contractor_id, contact_type='CN')
-    except Client.DoesNotExist:
-        return Response(
-            {'error': 'Contractor not found. Must be a contact with type CN.'},
-            status=status.HTTP_404_NOT_FOUND,
-        )
-
-    try:
-        document = Document.objects.get(id=document_id)
-    except Document.DoesNotExist:
-        return Response({'error': 'Document not found'}, status=status.HTTP_404_NOT_FOUND)
+    contractor, documents, err = _validate_share_targets(
+        request, contractor_id, [int(document_id)], project_id=project_id,
+    )
+    if err:
+        return err
+    document = documents.first()
 
     shared, created = ContractorSharedDocument.objects.get_or_create(
         contractor=contractor,
@@ -1411,6 +1510,7 @@ def bulk_share_document_with_contractor(request):
     """
     contractor_id = request.data.get('contractor_id')
     document_ids = request.data.get('document_ids', [])
+    project_id = request.data.get('project_id')
 
     if not contractor_id:
         return Response({'error': 'contractor_id is required'}, status=status.HTTP_400_BAD_REQUEST)
@@ -1418,16 +1518,17 @@ def bulk_share_document_with_contractor(request):
         return Response({'error': 'document_ids must be a non-empty list'}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
-        contractor = Client.objects.get(id=contractor_id, contact_type='CN')
-    except Client.DoesNotExist:
-        return Response(
-            {'error': 'Contractor not found. Must be a contact with type CN.'},
-            status=status.HTTP_404_NOT_FOUND,
-        )
+        document_ids = [int(d) for d in document_ids]
+    except (TypeError, ValueError):
+        return Response({'error': 'document_ids must be integers'}, status=status.HTTP_400_BAD_REQUEST)
 
-    existing_documents = Document.objects.filter(id__in=document_ids)
-    found_ids = set(existing_documents.values_list('id', flat=True))
-    not_found_ids = [did for did in document_ids if did not in found_ids]
+    contractor, existing_documents, err = _validate_share_targets(
+        request, contractor_id, document_ids, project_id=project_id,
+    )
+    if err:
+        return err
+
+    not_found_ids = []
 
     created_count = 0
     already_shared_count = 0
@@ -1838,13 +1939,23 @@ def remove_shared_document(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
 
+    studio = getattr(request.user, 'studio', None)
+    if not studio:
+        return Response({'error': 'Your account is not linked to a studio.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if not _studio_contractor(contractor_id, studio):
+        return Response({'error': 'Contractor not found'}, status=status.HTTP_404_NOT_FOUND)
+
     deleted, _ = ContractorSharedDocument.objects.filter(
         contractor_id=contractor_id,
         document_id=document_id,
+        document__studio=studio,
     ).delete()
 
     if not deleted:
         return Response({'error': 'Shared document not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    _sync_document_contractor_access(int(document_id))
 
     return Response({'message': 'Document removed from contractor shared items'})
 
