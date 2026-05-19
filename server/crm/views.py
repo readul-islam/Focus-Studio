@@ -57,6 +57,17 @@ class ClientViewSet(StudioScopedMixin, viewsets.ModelViewSet):
         request=ClientSerializer,
         responses={201: ClientSerializer},
     )
+    def perform_create(self, serializer):
+        client = serializer.save(
+            studio=self.request.user.studio,
+            created_by=self.request.user,
+        )
+        try:
+            from integrations.events import notify_client_created
+            notify_client_created(self.request.user.studio, client)
+        except Exception:
+            pass
+
     def create(self, request, *args, **kwargs):
         return super().create(request, *args, **kwargs)
 

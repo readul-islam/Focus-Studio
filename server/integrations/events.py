@@ -34,3 +34,33 @@ def emit_studio_event(studio, event_type: str, data: dict) -> None:
                 event_type,
                 result.get('error'),
             )
+
+
+def notify_client_created(studio, client) -> None:
+    emit_studio_event(
+        studio,
+        EVENT_CLIENT_CREATED,
+        {
+            'id': client.id,
+            'contact_type': client.contact_type,
+            'company_name': client.company_name,
+            'name': client.name,
+            'surname': client.surname,
+            'email': client.email,
+        },
+    )
+
+
+def notify_invoice_created(studio, invoice) -> None:
+    emit_studio_event(
+        studio,
+        EVENT_INVOICE_CREATED,
+        {
+            'id': invoice.id,
+            'status': invoice.status,
+            'total_amount': str(invoice.total_amount) if invoice.total_amount is not None else None,
+            'currency': invoice.currency,
+            'client_id': invoice.client_id,
+            'project_id': invoice.project_id,
+        },
+    )

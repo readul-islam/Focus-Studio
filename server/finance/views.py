@@ -432,6 +432,12 @@ class InvoiceViewSet(StudioScopedMixin, viewsets.ModelViewSet):
                 invoice.xero_sync_error = sync_result['error']
             
             invoice.save()
+
+        try:
+            from integrations.events import notify_invoice_created
+            notify_invoice_created(invoice.studio, invoice)
+        except Exception:
+            pass
         
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
@@ -861,6 +867,12 @@ class CreateInvoiceView(viewsets.ViewSet):
             ]
         else:
             trade_invoices = []
+
+        try:
+            from integrations.events import notify_invoice_created
+            notify_invoice_created(request.user.studio, invoice)
+        except Exception:
+            pass
 
         serializer = InvoiceSerializer(invoice)
         data = serializer.data
