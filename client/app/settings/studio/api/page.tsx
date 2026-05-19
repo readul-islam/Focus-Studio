@@ -24,7 +24,8 @@ import {
 } from '@/components/ui/dialog';
 import useFetch from '@/hooks/useFetch';
 import { usePost } from '@/hooks/usePost';
-import { deleteData, postData } from '@/lib/Api';
+import { deleteData, patchData, postData } from '@/lib/Api';
+import { Checkbox } from '@/components/ui/checkbox';
 import { gooeyToast as toast } from 'goey-toast';
 import { Copy, Loader2 } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -47,6 +48,70 @@ type WebhookRow = {
   created_at: string;
 };
 
+const DEFAULT_EVENT_LABELS: Record<string, string> = {
+  'project.created': 'New project',
+  'client.created': 'New client',
+  'invoice.created': 'New invoice',
+};
+
+function eventLabel(event: string, labels: Record<string, string>) {
+  if (event === '*') return 'All events';
+  return labels[event] || event;
+}
+
+function WebhookEventPicker({
+  eventTypes,
+  labels,
+  selected,
+  onChange,
+}: {
+  eventTypes: string[];
+  labels: Record<string, string>;
+  selected: string[];
+  onChange: (events: string[]) => void;
+}) {
+  const allEvents = selected.includes('*');
+
+  return (
+    <div className="space-y-3 rounded-lg border border-stone-200 bg-stone-50 p-3">
+      <label className="flex items-center gap-2 text-sm cursor-pointer">
+        <Checkbox
+          checked={allEvents}
+          onCheckedChange={(checked) => onChange(checked ? ['*'] : [])}
+        />
+        <span className="font-medium text-gray-900">All events</span>
+      </label>
+      <div className="border-t border-stone-200 pt-2 space-y-2">
+        {eventTypes.map((event) => {
+          const checked = allEvents || selected.includes(event);
+          return (
+            <label
+              key={event}
+              className="flex items-center gap-2 text-sm cursor-pointer text-gray-700"
+            >
+              <Checkbox
+                checked={checked}
+                disabled={allEvents}
+                onCheckedChange={(isChecked) => {
+                  if (allEvents) return;
+                  if (isChecked) {
+                    onChange([...selected.filter((e) => e !== '*'), event]);
+                  } else {
+                    const next = selected.filter((e) => e !== event);
+                    onChange(next.length ? next : ['*']);
+                  }
+                }}
+              />
+              <span>{eventLabel(event, labels)}</span>
+              <span className="text-xs text-stone-400 font-mono">{event}</span>
+            </label>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function ApiPageContent() {
   const queryClient = useQueryClient();
   const { data: keys = [], isLoading: keysLoading, refetch: refetchKeys } = useFetch(
@@ -60,8 +125,12 @@ function ApiPageContent() {
 
   const [newKeyToken, setNewKeyToken] = useState<string | null>(null);
   const [webhookUrl, setWebhookUrl] = useState('');
+  const [newWebhookEvents, setNewWebhookEvents] = useState<string[]>(['*']);
   const [creatingHook, setCreatingHook] = useState(false);
   const [testingId, setTestingId] = useState<number | null>(null);
+  const [editingHook, setEditingHook] = useState<WebhookRow | null>(null);
+  const [editEvents, setEditEvents] = useState<string[]>(['*']);
+  const [savingEvents, setSavingEvents] = useState(false);
 
   const apiBase = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/$/, '');
 
@@ -98,13 +167,18 @@ function ApiPageContent() {
       toast.error('Enter a webhook URL.');
       return;
     }
+    const events =
+      newWebhookEvents.includes('*') || newWebhookEvents.length === 0
+        ? ['*']
+        : newWebhookEvents;
     setCreatingHook(true);
     try {
       await postData({
         url: 'integrations/webhooks/',
-        data: { url, events: ['*'] },
+        data: { url, events },
       });
       setWebhookUrl('');
+      setNewWebhookEvents(['*']);
       refetchHooks();
       queryClient.refetchQueries({ queryKey: ['user/integration-status/'] });
       toast.success('Webhook created. Copy the signing secret from the list.');
@@ -145,6 +219,31 @@ function ApiPageContent() {
     }
   }
 
+  function openEditEvents(hook: WebhookRow) {
+    setEditingHook(hook);
+    setEditEvents(hook.events?.length ? [...hook.events] : ['*']);
+  }
+
+  async function handleSaveEvents() {
+    if (!editingHook) return;
+    const events =
+      editEvents.includes('*') || editEvents.length === 0 ? ['*'] : editEvents;
+    setSavingEvents(true);
+    try {
+      await patchData({
+        url: `integrations/webhooks/${editingHook.id}/`,
+        data: { events },
+      });
+      refetchHooks();
+      setEditingHook(null);
+      toast.success('Webhook events updated.');
+    } catch {
+      toast.error('Could not update events.');
+    } finally {
+      setSavingEvents(false);
+    }
+  }
+
   function copyText(text: string, label: string) {
     navigator.clipboard.writeText(text).then(
       () => toast.success(`${label} copied.`),
@@ -152,7 +251,11 @@ function ApiPageContent() {
     );
   }
 
-  const eventTypes: string[] = eventTypesData?.events ?? [];
+  const eventTypes: string[] = eventTypesData?.events ?? Object.keys(DEFAULT_EVENT_LABELS);
+  const eventLabels: Record<string, string> = {
+    ...DEFAULT_EVENT_LABELS,
+    ...(eventTypesData?.labels ?? {}),
+  };
 
   return (
     <div className="space-y-6 md:space-y-8">
@@ -167,9 +270,19 @@ function ApiPageContent() {
         title="Zapier / REST API"
         description="Use Bearer auth with your API key. Base URL for automation triggers:"
       >
-        <code className="block text-xs bg-stone-100 border border-stone-200 rounded-lg px-3 py-2 mb-4 break-all">
+        <code className="block text-xs bg-stone-100 border border-stone-200 rounded-lg px-3 py-2 mb-2 break-all">
           {apiBase}/integrations/v1/
         </code>
+        <ul className="text-xs text-stone-600 mb-4 list-disc pl-5 space-y-1">
+          <li>
+            <code>GET /integrations/v1/projects/</code> ·{' '}
+            <code>POST /integrations/v1/projects/create/</code>
+          </li>
+          <li>
+            <code>GET /integrations/v1/clients/</code> ·{' '}
+            <code>POST /integrations/v1/clients/create/</code>
+          </li>
+        </ul>
         <div className="flex justify-end">
           <Button onClick={handleCreateKey} disabled={creatingKey}>
             {creatingKey && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -223,12 +336,7 @@ function ApiPageContent() {
         title="Outbound webhooks"
         description="Focuspilot signs payloads with HMAC-SHA256 in X-Focuspilot-Signature."
       >
-        {eventTypes.length > 0 ? (
-          <p className="text-xs text-stone-500 mb-3">
-            Events: {eventTypes.join(', ')}
-          </p>
-        ) : null}
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4">
           <div className="space-y-2">
             <Label htmlFor="webhookUrl">Endpoint URL</Label>
             <Input
@@ -236,6 +344,15 @@ function ApiPageContent() {
               value={webhookUrl}
               onChange={(e) => setWebhookUrl(e.target.value)}
               placeholder="https://hooks.zapier.com/hooks/catch/..."
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Events to send</Label>
+            <WebhookEventPicker
+              eventTypes={eventTypes}
+              labels={eventLabels}
+              selected={newWebhookEvents}
+              onChange={setNewWebhookEvents}
             />
           </div>
         </div>
@@ -271,8 +388,15 @@ function ApiPageContent() {
                       Copy
                     </Button>
                   </TableCell>
-                  <TableCell className="text-xs">{h.events?.join(', ') || '*'}</TableCell>
+                  <TableCell className="text-xs max-w-[140px]">
+                    {(h.events?.includes('*') ? ['*'] : h.events || ['*'])
+                      .map((e) => eventLabel(e, eventLabels))
+                      .join(', ')}
+                  </TableCell>
                   <TableCell className="text-right space-x-1">
+                    <Button variant="outline" size="sm" onClick={() => openEditEvents(h)}>
+                      Events
+                    </Button>
                     <Button
                       variant="outline"
                       size="sm"
@@ -298,6 +422,35 @@ function ApiPageContent() {
           </Table>
         </div>
       </Section>
+
+      <Dialog
+        open={!!editingHook}
+        onOpenChange={(open) => {
+          if (!open) setEditingHook(null);
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Webhook events</DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-gray-600 truncate">{editingHook?.url}</p>
+          <WebhookEventPicker
+            eventTypes={eventTypes}
+            labels={eventLabels}
+            selected={editEvents}
+            onChange={setEditEvents}
+          />
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditingHook(null)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSaveEvents} disabled={savingEvents}>
+              {savingEvents && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Save
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={!!newKeyToken} onOpenChange={(open) => !open && setNewKeyToken(null)}>
         <DialogContent>

@@ -128,7 +128,9 @@ def notion_databases(request):
         return Response({'error': 'Notion not connected'}, status=400)
 
     query = request.GET.get('q', '')
-    results = search_databases(token.access_token, query)
+    results, error = search_databases(token.access_token, query)
+    if error:
+        return Response({'error': error}, status=502)
     return Response([
         {
             'id': db.get('id'),
@@ -139,10 +141,36 @@ def notion_databases(request):
     ])
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def notion_status(request):
+    if not request.user.studio_id:
+        return Response({'error': 'User does not belong to a studio'}, status=400)
+    try:
+        token = NotionToken.objects.get(studio=request.user.studio)
+    except NotionToken.DoesNotExist:
+        return Response({'connected': False})
+
+    return Response({
+        'connected': is_notion_connected(request.user.studio),
+        'workspace_name': token.workspace_name or '',
+    })
+
+
 def _database_title(db: dict) -> str:
-    title_parts = db.get('title') or []
-    if title_parts and isinstance(title_parts[0], dict):
-        return title_parts[0].get('plain_text', 'Untitled')
+    for key in ('title', 'name'):
+        parts = db.get(key)
+        if isinstance(parts, str) and parts.strip():
+            return parts.strip()
+        if isinstance(parts, list) and parts:
+            first = parts[0]
+            if isinstance(first, dict):
+                plain = first.get('plain_text')
+                if plain:
+                    return plain
+                text = first.get('text')
+                if isinstance(text, dict) and text.get('content'):
+                    return text['content']
     return 'Untitled'
 
 

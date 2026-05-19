@@ -11,4 +11,6 @@ urlpatterns = [
     path('webhooks/<int:hook_id>/test/', views.webhooks_test, name='integrations-webhooks-test'),
     path('v1/projects/', views.v1_list_projects, name='integrations-v1-projects'),
     path('v1/projects/create/', views.v1_create_project, name='integrations-v1-projects-create'),
+    path('v1/clients/', views.v1_list_clients, name='integrations-v1-clients'),
+    path('v1/clients/create/', views.v1_create_client, name='integrations-v1-clients-create'),
 ]

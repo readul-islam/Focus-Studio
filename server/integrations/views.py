@@ -6,7 +6,14 @@ from rest_framework.response import Response
 
 from users.models import Studio
 from .auth import StudioApiKeyAuthentication
-from .events import ALL_EVENTS, EVENT_PROJECT_CREATED, emit_studio_event
+from .events import (
+    ALL_EVENTS,
+    EVENT_LABELS,
+    EVENT_PROJECT_CREATED,
+    emit_studio_event,
+    normalize_webhook_events,
+    notify_client_created,
+)
 from .models import StudioApiKey, WebhookEndpoint
 from .utils import deliver_webhook, generate_api_key
 
@@ -105,9 +112,9 @@ def webhooks_list_create(request):
     if not url:
         return Response({'error': 'url is required'}, status=400)
 
-    events = request.data.get('events') or ['*']
-    if not isinstance(events, list):
-        return Response({'error': 'events must be a list'}, status=400)
+    events = normalize_webhook_events(request.data.get('events') or ['*'])
+    if events is None:
+        return Response({'error': 'events must include valid types or *'}, status=400)
 
     hook = WebhookEndpoint.objects.create(
         studio=studio,
@@ -143,8 +150,11 @@ def webhooks_detail(request, hook_id):
 
     if 'url' in request.data:
         hook.url = request.data['url'].strip()
-    if 'events' in request.data and isinstance(request.data['events'], list):
-        hook.events = request.data['events']
+    if 'events' in request.data:
+        events = normalize_webhook_events(request.data['events'])
+        if events is None:
+            return Response({'error': 'events must include valid types or *'}, status=400)
+        hook.events = events
     if 'is_active' in request.data:
         hook.is_active = bool(request.data['is_active'])
     hook.save()
@@ -181,10 +191,20 @@ def webhooks_test(request, hook_id):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def webhook_event_types(request):
-    return Response({'events': ALL_EVENTS})
+    return Response({
+        'events': ALL_EVENTS,
+        'labels': EVENT_LABELS,
+    })
 
 
 # --- Zapier / automation REST (API key) ---
+
+
+def _studio_from_api_key(request):
+    studio = getattr(request, 'studio', None)
+    if studio is None:
+        return None, Response({'error': 'Valid API key required'}, status=status.HTTP_401_UNAUTHORIZED)
+    return studio, None
 
 
 @api_view(['GET'])
@@ -193,7 +213,9 @@ def webhook_event_types(request):
 def v1_list_projects(request):
     from projects.models import Project
 
-    studio = request.studio
+    studio, err = _studio_from_api_key(request)
+    if err:
+        return err
     projects = Project.objects.filter(studio=studio).order_by('-id')[:100]
     return Response([
         {
@@ -212,7 +234,9 @@ def v1_list_projects(request):
 def v1_create_project(request):
     from projects.models import Project
 
-    studio = request.studio
+    studio, err = _studio_from_api_key(request)
+    if err:
+        return err
     name = (request.data.get('project_name') or request.data.get('name') or '').strip()
     if not name:
         return Response({'error': 'project_name is required'}, status=400)
@@ -232,3 +256,71 @@ def v1_create_project(request):
         {'id': project.id, 'project_name': project.project_name},
         status=status.HTTP_201_CREATED,
     )
+
+
+def _serialize_client(client) -> dict:
+    return {
+        'id': client.id,
+        'contact_type': client.contact_type,
+        'company_name': client.company_name,
+        'name': client.name,
+        'surname': client.surname,
+        'email': client.email,
+        'phone': client.phone,
+        'status': client.status,
+        'created_at': client.created_at.isoformat() if client.created_at else None,
+    }
+
+
+@api_view(['GET'])
+@authentication_classes([StudioApiKeyAuthentication])
+@permission_classes([AllowAny])
+def v1_list_clients(request):
+    from crm.models import Client
+
+    studio, err = _studio_from_api_key(request)
+    if err:
+        return err
+    qs = Client.objects.filter(studio=studio).order_by('-id')
+    contact_type = (request.GET.get('contact_type') or '').strip().upper()
+    if contact_type:
+        qs = qs.filter(contact_type=contact_type)
+    return Response([_serialize_client(c) for c in qs[:100]])
+
+
+@api_view(['POST'])
+@authentication_classes([StudioApiKeyAuthentication])
+@permission_classes([AllowAny])
+def v1_create_client(request):
+    from crm.models import Client
+
+    studio, err = _studio_from_api_key(request)
+    if err:
+        return err
+    name = (request.data.get('name') or '').strip() or None
+    company_name = (request.data.get('company_name') or '').strip() or None
+    if not name and not company_name:
+        return Response(
+            {'error': 'name or company_name is required'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    contact_type = (request.data.get('contact_type') or 'CL').strip().upper()
+    if contact_type not in ('CL', 'SP', 'CN'):
+        return Response(
+            {'error': 'contact_type must be CL, SP, or CN'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    client = Client.objects.create(
+        studio=studio,
+        contact_type=contact_type,
+        name=name,
+        surname=(request.data.get('surname') or '').strip() or None,
+        company_name=company_name,
+        email=(request.data.get('email') or '').strip() or None,
+        phone=(request.data.get('phone') or '').strip() or None,
+        status=(request.data.get('status') or 'NE').strip().upper() or 'NE',
+    )
+    notify_client_created(studio, client)
+    return Response(_serialize_client(client), status=status.HTTP_201_CREATED)

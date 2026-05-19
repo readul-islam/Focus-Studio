@@ -9,12 +9,67 @@
 | # | Task | Est. | Status |
 |---|------|------|--------|
 | **1** | Emit `client.created` + `invoice.created` webhooks | 1h | ✅ Done |
-| **2** | Landing: Zapier (+ Notion) → Available on focuspilot.io/integrations | 30m | ☐ |
-| **3** | Zapier API: `GET/POST /integrations/v1/clients/` | 2h | ☐ |
-| **4** | Webhook UI: pick event types per endpoint | 1h | ☐ |
-| **5** | Notion **Light**: Browse databases in Settings | 2h | ☐ |
+| **2** | Landing: Zapier (+ Notion) → Available on focuspilot.io/integrations | 30m | ✅ Done |
+| **3** | Zapier API: `GET/POST /integrations/v1/clients/` | 2h | ✅ Done |
+| **4** | Webhook UI: pick event types per endpoint | 1h | ✅ Done |
+| **5** | Notion **Light**: Browse databases in Settings | 2h | ✅ Done |
 
 **Defer (not today):** Official Zapier marketplace app · Notion Medium/Heavy sync · Contractor V2 · Help Centre · Stripe
+
+---
+
+## Task 5 — Test guide (Notion databases)
+
+1. **Settings → Studio → Integrations** → Notion must show **Connected**
+2. Click **Browse databases**
+3. Search for a database name you shared in Notion
+4. **Copy** database ID or **Open in Notion** (external link)
+5. If empty: in Notion → database → **•••** → **Connect to** → **Focuspilot**
+
+---
+
+## Task 4 — Test guide (webhook event types)
+
+1. **Settings → Studio → API & webhooks**
+2. When adding a webhook, uncheck **All events** → select only **New client**
+3. **Add webhook** → create a **project** → Zap should **not** run
+4. Create a **client** → Zap **should** run
+5. Click **Events** on an existing webhook → change selection → **Save**
+
+---
+
+## Task 3 — Test guide (clients API)
+
+**Prereq:** API key (`fp_live_…`) from Settings → API & webhooks.
+
+### curl
+
+```bash
+# List
+curl -s -H "Authorization: Bearer fp_live_YOUR_KEY" http://localhost:8000/integrations/v1/clients/
+
+# Create
+curl -s -X POST -H "Authorization: Bearer fp_live_YOUR_KEY" -H "Content-Type: application/json" \
+  -d "{\"name\":\"Zap Test\",\"company_name\":\"Zap Co\",\"email\":\"zap@test.com\"}" \
+  http://localhost:8000/integrations/v1/clients/create/
+```
+
+### Zapier
+
+1. Action → **Webhooks by Zapier → POST**
+2. URL: `https://api.focuspilot.io/integrations/v1/clients/create/`
+3. JSON body with `name`, `company_name`, `email`
+4. Header: `Authorization: Bearer fp_live_...`
+5. Check **CRM → Contacts** in Focuspilot; Zap may also get `client.created` webhook
+
+---
+
+## Task 2 — Test guide (landing integrations)
+
+1. Local: `cd landing && pnpm dev` → open http://localhost:3005/integrations (or your marketing port)
+2. Confirm **Zapier** and **Notion** appear under **Available integrations** with green **Available** badge
+3. Confirm **Coming soon** no longer lists Zapier (Slack, Sage, FreeAgent still there)
+4. Production: deploy landing → https://focuspilot.io/integrations
 
 ---
 

@@ -171,6 +171,39 @@ Response: array of up to 100 recent projects with `id`, `project_name`, `project
 
 ---
 
+## Part 4b — Zapier creates or lists clients (REST API)
+
+### Create client (POST)
+
+| Field | Value |
+|-------|--------|
+| **URL** | `{BASE_URL}/integrations/v1/clients/create/` |
+| **Body** | `name` and/or `company_name` (at least one required) |
+| | `email`, `phone`, `surname` (optional) |
+| | `contact_type` = `CL` (client), `SP` (supplier), or `CN` (contractor) — default `CL` |
+
+```json
+{
+  "name": "Alex",
+  "company_name": "Alex Interiors",
+  "email": "alex@example.com",
+  "contact_type": "CL"
+}
+```
+
+Triggers `client.created` webhook if configured.
+
+### List clients (GET)
+
+| Field | Value |
+|-------|--------|
+| **URL** | `{BASE_URL}/integrations/v1/clients/` |
+| **Query** | `contact_type=CL` (optional filter) |
+
+Response: up to 100 clients with `id`, `name`, `company_name`, `email`, `contact_type`, `created_at`.
+
+---
+
 ## Part 5 — Example Zaps
 
 ### New Focuspilot project → Slack message

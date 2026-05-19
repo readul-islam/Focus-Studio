@@ -16,6 +16,25 @@ ALL_EVENTS = [
     EVENT_INVOICE_CREATED,
 ]
 
+EVENT_LABELS = {
+    EVENT_PROJECT_CREATED: 'New project',
+    EVENT_CLIENT_CREATED: 'New client',
+    EVENT_INVOICE_CREATED: 'New invoice',
+}
+
+
+def normalize_webhook_events(events) -> list | None:
+    """Return normalized event list, or None if invalid."""
+    if not isinstance(events, list) or not events:
+        return ['*']
+    if '*' in events:
+        return ['*']
+    allowed = set(ALL_EVENTS)
+    filtered = [e for e in events if e in allowed]
+    if not filtered:
+        return None
+    return filtered
+
 
 def emit_studio_event(studio, event_type: str, data: dict) -> None:
     """Send payload to all active webhook endpoints for this studio."""

@@ -3,7 +3,7 @@
 import type React from "react"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
-import { Plug, Check, Calendar, Mail, CreditCard, Calculator, ArrowRight } from "lucide-react"
+import { Plug, Check, Calendar, Mail, CreditCard, Calculator, ArrowRight, Zap, BookOpen } from "lucide-react"
 import { CtaButton } from "@/components/cta-button"
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
@@ -113,12 +113,29 @@ const integrations = [
     icon: Mail,
     popular: false,
   },
+  {
+    name: "Zapier",
+    category: "Automation",
+    description:
+      "Connect Focuspilot to 5,000+ apps with studio API keys and signed webhooks. Automate projects, clients, and invoices.",
+    available: true,
+    icon: Zap,
+    popular: true,
+  },
+  {
+    name: "Notion",
+    category: "Productivity",
+    description:
+      "Link your Notion workspace to Focuspilot. Connect once and use pages and databases in your automations.",
+    available: true,
+    icon: BookOpen,
+    popular: false,
+  },
 ]
 
 const comingSoon = [
   { name: "Sage", category: "Accounting" },
   { name: "FreeAgent", category: "Accounting" },
-  { name: "Zapier", category: "Automation" },
   { name: "Slack", category: "Communication" },
 ]
 
