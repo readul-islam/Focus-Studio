@@ -133,13 +133,6 @@ const softwareApplicationSchema = {
     description: "Free beta access available",
     availability: "https://schema.org/InStock",
   },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.8",
-    reviewCount: "127",
-    bestRating: "5",
-    worstRating: "1",
-  },
   featureList: [
     "Project Management",
     "CRM for Design Studios",

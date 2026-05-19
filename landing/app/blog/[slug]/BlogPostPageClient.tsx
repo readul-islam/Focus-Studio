@@ -20,28 +20,11 @@ export function BlogPostPageClient({ params }: { params: { slug: string } }) {
     )
     .slice(0, 3)
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    description: post.excerpt,
-    image: post.featuredImage,
-    datePublished: post.publishedAt,
-    author: { "@type": "Person", name: post.author.name, jobTitle: post.author.role },
-    publisher: {
-      "@type": "Organization",
-      name: "Focuspilot",
-      logo: { "@type": "ImageObject", url: "https://focuspilot.io/logo.png" },
-    },
-  }
-
   const shareUrl = `https://focuspilot.io/blog/${post.slug}`
   const shareTitle = encodeURIComponent(post.title)
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-
       <article className="bg-white">
         <nav className="border-b py-4" aria-label="Breadcrumb">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

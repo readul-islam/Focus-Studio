@@ -54,12 +54,11 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     title: post.title,
     description: post.excerpt,
     url: `https://focuspilot.io/blog/${post.slug}`,
-    imageUrl: post.featuredImage.startsWith("http")
+    image: post.featuredImage.startsWith("http")
       ? post.featuredImage
       : `https://focuspilot.io${post.featuredImage}`,
-    authorName: post.author.name,
+    author: post.author.name,
     publishedTime: post.publishedAt,
-    category: post.category,
   })
 
   const breadcrumbSchema = generateBreadcrumbSchema([
