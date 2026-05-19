@@ -3,11 +3,12 @@
 import type React from "react"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
-import { Plug, Check, Calendar, Mail, CreditCard, Calculator, ArrowRight, Zap, BookOpen } from "lucide-react"
+import { Plug, Check, Calendar, CreditCard, Calculator, ArrowRight, Zap, BookOpen } from "lucide-react"
 import { CtaButton } from "@/components/cta-button"
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { MarketingPageHero } from "@/components/marketing/marketing-page-hero"
+import { GmailIcon } from "@/components/icons/GmailIcon"
 
 const container = "mx-auto max-w-[1200px] px-6 sm:px-8"
 const TITLE_H1 = "text-[30px] sm:text-5xl md:text-[56px] font-medium tracking-tight leading-[1.1]"
@@ -108,16 +109,17 @@ const integrations = [
   {
     name: "Gmail",
     category: "Email",
-    description: "Unified inbox with AI categorisation. Route emails to projects automatically.",
+    description:
+      "Connect Gmail in Studio Integrations for AI Inbox — categorised email, summaries, and suggested actions in one workspace.",
     available: true,
-    icon: Mail,
-    popular: false,
+    icon: GmailIcon,
+    popular: true,
   },
   {
     name: "Zapier",
     category: "Automation",
     description:
-      "Connect Focuspilot to 5,000+ apps with studio API keys and signed webhooks. Automate projects, clients, and invoices.",
+      "Studio API keys, signed webhooks, and REST endpoints for projects and clients. Trigger Zaps on new projects, clients, and invoices.",
     available: true,
     icon: Zap,
     popular: true,
@@ -126,7 +128,7 @@ const integrations = [
     name: "Notion",
     category: "Productivity",
     description:
-      "Link your Notion workspace to Focuspilot. Connect once and use pages and databases in your automations.",
+      "Connect your Notion workspace, browse shared databases, and sync rows into Focuspilot projects — names and status stay up to date.",
     available: true,
     icon: BookOpen,
     popular: false,
@@ -171,6 +173,7 @@ function IntegrationGrid() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {integrations.map((integration, index) => {
             const Icon = integration.icon
+            const isGmail = integration.icon === GmailIcon
             return (
               <Reveal key={integration.name} delay={index * 50}>
                 <Card className="h-full border-stone-200 bg-white transition-all hover:shadow-md">
@@ -178,7 +181,10 @@ function IntegrationGrid() {
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
                         <div className="rounded-lg bg-stone-100 p-2.5">
-                          <Icon className="h-5 w-5 text-stone-600" aria-hidden="true" />
+                          <Icon
+                            className={isGmail ? "h-5 w-5" : "h-5 w-5 text-stone-600"}
+                            aria-hidden="true"
+                          />
                         </div>
                         <div>
                           <h3 className="font-semibold text-stone-900">{integration.name}</h3>

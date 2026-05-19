@@ -71,6 +71,30 @@ function Reveal({
 const updates = [
   {
     date: "May 2026",
+    version: "2.6",
+    changes: [
+      {
+        type: "new",
+        title: "Zapier & Studio API",
+        description:
+          "Create API keys and signed webhooks in Settings → API & webhooks. REST endpoints for projects and clients, with events for new projects, clients, and invoices.",
+      },
+      {
+        type: "new",
+        title: "Notion Integration",
+        description:
+          "Connect Notion in Studio Integrations — browse shared databases, map a database to project sync, and pull rows into Focuspilot projects.",
+      },
+      {
+        type: "improvement",
+        title: "Integrations Settings",
+        description:
+          "Cleaner integration cards with connect/disconnect on each app and a settings panel for Notion (browse, mapping, and sync).",
+      },
+    ],
+  },
+  {
+    date: "May 2026",
     version: "2.5",
     changes: [
       {
