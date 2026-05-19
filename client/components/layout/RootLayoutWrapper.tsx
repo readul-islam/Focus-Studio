@@ -23,6 +23,7 @@ const PUBLIC_ROUTES = [
 const STANDALONE_ROUTES = [
   '/xeroredirect',
   '/oauth/gmail/callback',
+  '/oauth/notion/callback',
   '/onboarding',
   '/billing/success',
   '/billing/cancel',

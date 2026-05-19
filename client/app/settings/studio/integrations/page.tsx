@@ -5,11 +5,14 @@ import { PermissionGuard } from '@/components/PermissionGuard';
 import XeroIntegration from '@/components/settings/XeroIntegration';
 import GmailIntegration from '@/components/settings/GmailIntegration';
 import GoogleCalendarIntegration from '@/components/settings/GoogleCalendarIntegration';
+import NotionIntegration from '@/components/settings/NotionIntegration';
+import ZapierIntegration from '@/components/settings/ZapierIntegration';
 import useFetch from '@/hooks/useFetch';
-import { Puzzle } from 'lucide-react';
 
 function IntegrationsPageContent() {
-  const { data: integrations, isLoading: integrationsLoading ,refetch } = useFetch('user/integration-status/');
+  const { data: integrations, isLoading: integrationsLoading, refetch } = useFetch(
+    'user/integration-status/'
+  );
 
   return (
     <div className="space-y-6 md:space-y-8">
@@ -37,14 +40,15 @@ function IntegrationsPageContent() {
             gmailConnected={integrations?.gmail_connected}
           />
 
-          {/* Placeholder */}
-          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 bg-stone-50 p-8 text-center">
-            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-stone-100">
-              <Puzzle className="h-4 w-4 text-stone-400" />
-            </div>
-            <p className="text-xs font-medium text-stone-500">More integrations coming soon</p>
-            <p className="mt-1 text-xs text-stone-400">QuickBooks, Notion, Zapier and more.</p>
-          </div>
+          <NotionIntegration
+            isLoading={integrationsLoading}
+            isConnected={integrations?.notion_connected}
+          />
+
+          <ZapierIntegration
+            isLoading={integrationsLoading}
+            isConfigured={integrations?.zapier_configured}
+          />
         </div>
       </Section>
     </div>

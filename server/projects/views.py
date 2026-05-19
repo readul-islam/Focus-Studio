@@ -199,6 +199,19 @@ class ProjectViewSet(StudioScopedMixin, viewsets.ModelViewSet):
         """
         from users.models import ProjectTemplate
         project = serializer.save()
+        try:
+            from integrations.events import EVENT_PROJECT_CREATED, emit_studio_event
+            emit_studio_event(
+                self.request.user.studio,
+                EVENT_PROJECT_CREATED,
+                {
+                    'id': project.id,
+                    'project_name': project.project_name,
+                    'project_status': project.project_status,
+                },
+            )
+        except Exception:
+            pass
         template_id = self.request.data.get('template_id')
         if not template_id:
             return

@@ -1265,10 +1265,25 @@ def get_integration_status(request):
     from gmail.utils import is_google_calendar_connected
     calendar_connected = is_google_calendar_connected(user) if gmail_connected else False
 
+    notion_connected = False
+    if getattr(user.studio, 'notion', False):
+        from notion.views import is_notion_connected
+        notion_connected = is_notion_connected(user.studio)
+
+    zapier_configured = False
+    if user.studio:
+        from integrations.models import StudioApiKey, WebhookEndpoint
+        zapier_configured = (
+            StudioApiKey.objects.filter(studio=user.studio, revoked_at__isnull=True).exists()
+            or WebhookEndpoint.objects.filter(studio=user.studio, is_active=True).exists()
+        )
+
     return Response({
         'xero_connected': xero_connected,
         'gmail_connected': gmail_connected,
         'calendar_connected': calendar_connected,
+        'notion_connected': notion_connected,
+        'zapier_configured': zapier_configured,
     }, status=status.HTTP_200_OK)
 
 

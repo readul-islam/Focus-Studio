@@ -228,7 +228,7 @@ Design and architecture studios face significant operational challenges:
 - ✅ Gmail integration (basic OAuth)
 - ✅ Default project templates — hidden in nav
 - ⏳ Stripe payment integration (stub only)
-- ⏳ Zapier/webhooks support
+- ✅ Zapier / API keys & webhooks — see [docs/ZAPIER.md](docs/ZAPIER.md)
 
 ### 12. **Authentication & Onboarding** (Core)
 - ✅ User registration and email verification
@@ -677,6 +677,34 @@ Uses the **same Google OAuth client** as Gmail (`GMAIL_*` env vars). Calendar sc
 4. Create events via **Add event** (posts to `gmail/calendar/create-event/`).
 
 For production, set `FRONTEND_URL`, `GMAIL_REDIRECT_URI` (e.g. `https://api.yourdomain.com/gmail/callback/`), and add that URI in Google Console. Submit the app for Google verification before allowing all users (non–test users).
+
+### Notion
+
+Studio-scoped OAuth (like Xero). Configure in [Notion Developers → Connections](https://www.notion.so/my-integrations).
+
+1. Create a **Connection** (public integration).
+2. **Redirect URIs:** `http://localhost:8000/notion/callback/` and `https://api.focuspilot.io/notion/callback/`
+3. Copy **Client ID** and **Client secret** into `server/.env`:
+
+```env
+NOTION_CLIENT_ID=
+NOTION_CLIENT_SECRET=
+NOTION_REDIRECT_URI=http://localhost:8000/notion/callback/
+```
+
+4. Restart API → **Settings → Studio → Integrations → Connect Notion**.
+
+You do **not** need to copy the Authorization URL from Notion — the app builds it automatically.
+
+### Zapier & automation
+
+Full setup and test walkthrough: **[docs/ZAPIER.md](docs/ZAPIER.md)**
+
+Quick path:
+
+1. **Settings → Studio → API & webhooks** → create API key (`fp_live_…`)
+2. Add a Zapier **Catch Hook** URL as a webhook → **Test**
+3. In Zapier, use **Webhooks → POST** to `{API_URL}/integrations/v1/projects/create/` with `Authorization: Bearer fp_live_…`
 
 ---
 
