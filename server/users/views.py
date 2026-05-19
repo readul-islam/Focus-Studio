@@ -1257,10 +1257,18 @@ def get_integration_status(request):
             
     # Check Gmail status
     gmail_connected = user.gmail
-    
+    if gmail_connected:
+        from gmail.models import GmailToken
+        if not GmailToken.objects.filter(user=user).exists():
+            gmail_connected = False
+
+    from gmail.utils import is_google_calendar_connected
+    calendar_connected = is_google_calendar_connected(user) if gmail_connected else False
+
     return Response({
         'xero_connected': xero_connected,
-        'gmail_connected': gmail_connected
+        'gmail_connected': gmail_connected,
+        'calendar_connected': calendar_connected,
     }, status=status.HTTP_200_OK)
 
 

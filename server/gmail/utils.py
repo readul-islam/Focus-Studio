@@ -111,6 +111,20 @@ def get_calendar_service(user):
         print(f"Error building Calendar service: {e}")
         return None
 
+
+def is_google_calendar_connected(user) -> bool:
+    """True when the user has a Google token with working Calendar API access."""
+    if not getattr(user, 'gmail', False):
+        return False
+    service = get_calendar_service(user)
+    if not service:
+        return False
+    try:
+        service.calendarList().list(maxResults=1).execute()
+        return True
+    except Exception:
+        return False
+
 def get_today_meetings(user):
     service = get_calendar_service(user)
     if not service:

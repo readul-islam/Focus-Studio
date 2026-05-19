@@ -27,11 +27,12 @@ import {
     isSameDay,
     addMonths,
     subMonths,
+    addDays,
+    subDays,
     format,
     isWithinInterval,
     parseISO,
     differenceInDays,
-    addDays,
     startOfDay,
     endOfDay,
     addWeeks,
@@ -39,6 +40,15 @@ import {
 } from 'date-fns';
 import AddEventDialog from './studio/AddEventDialog';
 import Link from 'next/link';
+import { openGmailOAuthPopup } from '@/lib/gmail-connect';
+import { parseCalendarDate } from '@/lib/calendar-dates';
+import { gooeyToast as toast } from 'goey-toast';
+
+const phaseOverlapsDay = (phase: { startDate: Date; endDate: Date }, day: Date) =>
+    isWithinInterval(startOfDay(day), {
+        start: startOfDay(phase.startDate),
+        end: endOfDay(phase.endDate),
+    });
 
 export default function UnifiedCalendarPage() {
 
@@ -54,39 +64,45 @@ export default function UnifiedCalendarPage() {
 
     const queryClient = useQueryClient();
     const { refetch: getCalendarAuthUrl } = useFetch('gmail/connect/', { enabled: false });
+    const { data: integrationStatus } = useFetch('user/integration-status/');
 
     const handleGoogleCalendarConnect = async () => {
         setIsConnecting(true);
-        const { data: responseData } = await getCalendarAuthUrl();
-        const authUrl = typeof responseData === 'string' ? responseData : (responseData as any)?.auth_url;
-        if (!authUrl) { setIsConnecting(false); return; }
-        const popup = window.open(authUrl, 'GmailAuth', 'width=600,height=700');
-        if (!popup) { setIsConnecting(false); return; }
-        const cleanup = () => {
-            setIsConnecting(false);
+        const result = await openGmailOAuthPopup(getCalendarAuthUrl);
+        setIsConnecting(false);
+        if (result === 'success') {
+            queryClient.refetchQueries({ queryKey: ['user/integration-status/'] });
             queryClient.refetchQueries({ queryKey: ['gmail/calendar/events/'] });
-            clearInterval(popupCheck);
-            window.removeEventListener('message', handleMsg);
-            popup?.close();
-        };
-        const handleMsg = (e: MessageEvent) => {
-            if (e.origin !== window.location.origin) return;
-            if (e.data?.type === 'OAUTH_SUCCESS') { cleanup(); }
-        };
-        const popupCheck = setInterval(() => { if (popup?.closed) cleanup(); }, 500);
-        window.addEventListener('message', handleMsg);
+            toast.success('Google Calendar connected.');
+            window.location.reload();
+            return;
+        }
+        if (result === 'access_denied') {
+            toast.error('Google blocked access. Add your email as a test user in Google Cloud Console.');
+        }
     };
 
     // Fetch available projects for scope selector
     const { data: projectsData } = useFetch('projects/user-projects/');
 
-    // Fetch Google Calendar events when toggle is on
-    const { data: googleEventsData } = useFetch(showMyCalendar ? 'gmail/calendar/events/' : null);
+    // Fetch Google Calendar for visible month (+ padding) when My Calendar is on
+    const googleEventsUrl = useMemo(() => {
+        if (!showMyCalendar) return null;
+        const rangeStart = subDays(startOfMonth(currentDate), 7);
+        const rangeEnd = addDays(endOfMonth(currentDate), 7);
+        const timeMin = encodeURIComponent(rangeStart.toISOString());
+        const timeMax = encodeURIComponent(rangeEnd.toISOString());
+        return `gmail/calendar/events/?time_min=${timeMin}&time_max=${timeMax}&max_results=250`;
+    }, [showMyCalendar, currentDate]);
+
+    const { data: googleEventsData, refetch: refetchGoogleEvents, isFetching: googleEventsFetching } =
+        useFetch(googleEventsUrl);
 
     // Fetch Phases and Delivery Dates — studio-wide or project-scoped
-    const { data: phasesData, isLoading: phasesLoading } = useFetch(
-        selectedProjectId ? `projects/project-phases/?project_id=${selectedProjectId}` : 'projects/studio-phases/'
-    );
+    const phasesUrl = selectedProjectId
+        ? `projects/project-phases/?project_id=${selectedProjectId}`
+        : 'projects/studio-phases/';
+    const { data: phasesData, isLoading: phasesLoading, refetch: refetchPhases } = useFetch(phasesUrl);
     const { data: deliveryDatesData, isLoading: deliveryLoading } = useFetch(
         selectedProjectId ? `projects/project-delivery-dates/?project_id=${selectedProjectId}` : 'projects/studio-delivery-dates/'
     );
@@ -110,24 +126,28 @@ export default function UnifiedCalendarPage() {
     }, [googleEventsData, showMyCalendar]);
 
 
+    const selectedProjectName = useMemo(() => {
+        if (!selectedProjectId || !Array.isArray(projectsData)) return null;
+        return (projectsData as any[]).find((p: any) => String(p.id) === selectedProjectId)?.project_name ?? null;
+    }, [selectedProjectId, projectsData]);
+
     // Parse phases
     const phases = useMemo(() => {
         if (!Array.isArray(phasesData)) return [];
 
-        // First map and filter
         const parsed = phasesData.map((phase: any) => ({
             ...phase,
-            // Parse as local date by taking just the YYYY-MM-DD part
-            startDate: phase.start_date ? parseISO(phase.start_date.toString().substring(0, 10)) : null,
-            endDate: phase.end_date ? parseISO(phase.end_date.toString().substring(0, 10)) : null,
+            startDate: parseCalendarDate(phase.start_date),
+            endDate: parseCalendarDate(phase.end_date),
+            project_name: phase.project_name || selectedProjectName || 'Project',
         })).filter((p: any) => p.startDate && p.endDate);
 
-        // Then assign sequential color index
         return parsed.map((p: any, i: number) => ({
             ...p,
-            colorIndex: i
+            colorIndex: i,
+            isSingleDay: differenceInDays(p.endDate, p.startDate) === 0,
         }));
-    }, [phasesData]);
+    }, [phasesData, selectedProjectName]);
 
     // Parse delivery dates
     const deliveryDates = useMemo(() => {
@@ -136,7 +156,7 @@ export default function UnifiedCalendarPage() {
         return deliveryDatesData.map((delivery: any, i: number) => ({
             ...delivery,
             // Parse ETA as local date
-            deliveryDate: delivery.ETA ? parseISO(delivery.ETA.toString().substring(0, 10)) : null,
+            deliveryDate: parseCalendarDate(delivery.ETA),
             colorIndex: i
         })).filter((d: any) => d.deliveryDate);
     }, [deliveryDatesData]);
@@ -151,9 +171,7 @@ export default function UnifiedCalendarPage() {
     }, [phases, searchQuery]);
 
     const phasesForSelectedDate = useMemo(() => {
-        return filteredPhases.filter((p: any) =>
-            isWithinInterval(selectedDate, { start: startOfDay(p.startDate), end: endOfDay(p.endDate) })
-        );
+        return filteredPhases.filter((p: any) => phaseOverlapsDay(p, selectedDate));
     }, [filteredPhases, selectedDate]);
 
     // Handlers
@@ -259,18 +277,41 @@ export default function UnifiedCalendarPage() {
         return colors[id % colors.length];
     };
 
+    const EVENT_CHIP_BASE =
+        'block w-full max-w-full text-[10px] font-medium px-1.5 py-0.5 rounded-[8px] border truncate overflow-hidden text-ellipsis whitespace-nowrap pointer-events-auto cursor-default';
+
+    const GOOGLE_EVENT_CHIP = 'bg-sky-100 text-sky-700 border-sky-200';
+
+    const getPhaseEventLabel = (phase: { project_name?: string; name?: string }) => {
+        const title = phase.name || 'Event';
+        return phase.project_name ? `${phase.project_name} - ${title}` : title;
+    };
+
+    const renderEventChip = (
+        key: string | number,
+        label: string,
+        chipClass: string,
+        tooltip: React.ReactNode,
+    ) => (
+        <Tooltip key={key} delayDuration={150}>
+            <TooltipTrigger asChild>
+                <div
+                    role="presentation"
+                    className={`${EVENT_CHIP_BASE} ${chipClass}`}
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    {label}
+                </div>
+            </TooltipTrigger>
+            <TooltipContent side="top" align="start" className={`max-w-xs border shadow-md ${chipClass}`}>
+                <div className="text-xs space-y-1 break-words">{tooltip}</div>
+            </TooltipContent>
+        </Tooltip>
+    );
+
     // -- VIEWS --
 
     const renderGrid = (days: Date[], isMonthView: boolean) => {
-        const start = days[0];
-        const end = days[days.length - 1];
-
-        // In week view, filtering just by range might miss items spanning ACROSS the week but starting/ending outside
-        // But the logic below (startDate <= end AND endDate >= start) handles spans correctly.
-        const phasesInRange = filteredPhases.filter((p: any) =>
-            (p.startDate <= endOfDay(end) && p.endDate >= startOfDay(start))
-        );
-
         // Group days into weeks for row rendering
         const weeks = [];
         let currentWeek: Date[] = [];
@@ -296,19 +337,6 @@ export default function UnifiedCalendarPage() {
 
                 <div className="flex-1 flex flex-col">
                     {weeks.map((weekDays, weekIdx) => {
-                        const weekStart = weekDays[0];
-                        const weekEnd = weekDays[weekDays.length - 1];
-
-                        // Get rows for this specific week row
-                        const allRows = getLayoutRows(phasesInRange, weekStart, weekEnd);
-                        let visibleRows = allRows.slice(0, 3);
-
-                        if (filterType === 'delivery') {
-                            visibleRows = [];
-                        }
-
-                        const hiddenPhases = allRows.slice(3).flat();
-
                         return (
                             <div key={weekIdx} className={`border-b border-gray-100 relative group ${isMonthView ? 'h-[240px]' : 'h-[400px]'}`}>
                                 {/* Background Grid */}
@@ -339,6 +367,46 @@ export default function UnifiedCalendarPage() {
                                                     </span>
                                                 </div>
 
+                                                {/* Project schedule — per-day chips, truncated; full title on hover */}
+                                                {!showMyCalendar && (filterType === 'all' || filterType === 'phases') && (() => {
+                                                    const dayPhases = filteredPhases.filter((p: any) => phaseOverlapsDay(p, d));
+                                                    if (dayPhases.length === 0) return null;
+
+                                                    const maxVisible = 2;
+                                                    const visible = dayPhases.slice(0, maxVisible);
+                                                    const hiddenCount = dayPhases.length - maxVisible;
+
+                                                    return (
+                                                        <TooltipProvider>
+                                                            <div className="mt-1 flex flex-col gap-0.5 min-w-0">
+                                                                {visible.map((phase: any) => {
+                                                                    const label = getPhaseEventLabel(phase);
+                                                                    return renderEventChip(
+                                                                        phase.id,
+                                                                        label,
+                                                                        getPhaseLightColor(phase.colorIndex),
+                                                                        <>
+                                                                            <p className="font-semibold text-sm">{label}</p>
+                                                                            <p className="opacity-80">
+                                                                                {format(phase.startDate, 'MMM d, yyyy')}
+                                                                                {!phase.isSingleDay && ` – ${format(phase.endDate, 'MMM d, yyyy')}`}
+                                                                            </p>
+                                                                            {phase.description && (
+                                                                                <p className="opacity-80 line-clamp-4 whitespace-pre-wrap">{phase.description}</p>
+                                                                            )}
+                                                                        </>,
+                                                                    );
+                                                                })}
+                                                                {hiddenCount > 0 && (
+                                                                    <span className="text-[9px] font-semibold text-gray-500 px-1 truncate">
+                                                                        +{hiddenCount} more
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                        </TooltipProvider>
+                                                    );
+                                                })()}
+
                                                 {/* Delivery Dates - Full width pills, positioned above the +N phases indicator */}
                                                 {(filterType === 'all' || filterType === 'delivery') && (() => {
                                                     const dayDeliveries = deliveryDates.filter((del: any) => isSameDay(del.deliveryDate, d));
@@ -348,10 +416,13 @@ export default function UnifiedCalendarPage() {
                                                     const visibleDeliveries = dayDeliveries.slice(0, maxVisible);
                                                     const hiddenCount = dayDeliveries.length - maxVisible;
 
-                                                    // Check if there are hidden phases for this day
-                                                    const hiddenPhasesCount = filterType !== 'delivery' ? hiddenPhases.filter((p: any) =>
-                                                        (p.startDate <= endOfDay(d) && p.endDate >= startOfDay(d))
-                                                    ).length : 0;
+                                                    const hiddenPhasesCount =
+                                                        filterType !== 'delivery'
+                                                            ? Math.max(
+                                                                0,
+                                                                filteredPhases.filter((p: any) => phaseOverlapsDay(p, d)).length - 2,
+                                                            )
+                                                            : 0;
 
                                                     return (
                                                         <TooltipProvider>
@@ -403,61 +474,54 @@ export default function UnifiedCalendarPage() {
                                                         </TooltipProvider>
                                                     );
                                                 })()}
-                                                {/* Google Calendar Events */}
-                                                {showMyCalendar && googleEvents.filter((e: any) => isSameDay(e.eventDate, d)).map((e: any) => (
-                                                    <TooltipProvider key={e.id}>
-                                                        <Tooltip>
-                                                            <TooltipTrigger asChild>
-                                                                <div className="mt-1 bg-sky-100 border border-sky-200 text-sky-700 text-[11px] px-1 py-0.5 rounded-[8px] truncate capitalize text-center">
-                                                                    {e.summary || 'Event'}
-                                                                </div>
-                                                            </TooltipTrigger>
-                                                            <TooltipContent className="max-w-xs">
-                                                                <div className="space-y-1.5">
-                                                                    <p className="capitalize font-semibold">{e.summary || 'Event'}</p>
-                                                                    {e.description && <p className="text-xs text-gray-600">{e.description}</p>}
-                                                                    {e.location && (
-                                                                        <p className="text-xs text-gray-500 flex items-center gap-1">
-                                                                            <span className="font-semibold">Location:</span> {e.location}
-                                                                        </p>
-                                                                    )}
-                                                                    <p className="text-xs text-gray-500">
-                                                                        <span className="font-semibold">Time:</span> {format(parseISO(e.start), 'MMM d, yyyy h:mm a')} - {format(parseISO(e.end), 'MMM d, yyyy h:mm a')}
-                                                                    </p>
-                                                                    {e.attendees && e.attendees.length > 0 && (
-                                                                        <div className="text-xs text-gray-500">
-                                                                            <span className="font-semibold">Attendees:</span>
-                                                                            <div className="mt-0.5 flex flex-wrap gap-1">
-                                                                                {e.attendees.map((attendee: string, idx: number) => (
-                                                                                    <span key={idx} className="bg-stone-100 px-1.5 py-0.5 rounded text-[10px]">{attendee}</span>
-                                                                                ))}
-                                                                            </div>
-                                                                        </div>
-                                                                    )}
-                                                                    {e.status && (
-                                                                        <p className="text-xs">
-                                                                            <span className="font-semibold">Status:</span>{' '}
-                                                                            <span className={e.status === 'Confirmed' ? 'text-green-700 capitalize' : 'text-gray-600 capitalize'}>{e.status}</span>
-                                                                        </p>
-                                                                    )}
-                                                                    {e.link && (
-                                                                        <Link href={e.link} target="_blank" rel="noopener noreferrer" className="text-xs  hover:underline block mt-1">
-                                                                            Open in Google Calendar
-                                                                        </Link>
-                                                                    )}
-                                                                </div>
-                                                            </TooltipContent>
-                                                        </Tooltip>
-                                                    </TooltipProvider>
-                                                ))}
-
+                                                {/* Google Calendar — chip + ellipsis; hover shows full event */}
+                                                {showMyCalendar && (() => {
+                                                    const dayEvents = googleEvents.filter((e: any) => isSameDay(e.eventDate, d));
+                                                    if (dayEvents.length === 0) return null;
+                                                    return (
+                                                        <TooltipProvider>
+                                                            <div className="mt-1 flex flex-col gap-0.5 min-w-0">
+                                                                {dayEvents.map((e: any) => {
+                                                                    const label = e.summary || 'Event';
+                                                                    return renderEventChip(
+                                                                        e.id,
+                                                                        label,
+                                                                        GOOGLE_EVENT_CHIP,
+                                                                        <>
+                                                                            <p className="font-semibold text-sm capitalize">{label}</p>
+                                                                            {e.description && <p className="opacity-80">{e.description}</p>}
+                                                                            {e.location && (
+                                                                                <p className="opacity-80">
+                                                                                    <span className="font-semibold">Location:</span> {e.location}
+                                                                                </p>
+                                                                            )}
+                                                                            <p className="opacity-80">
+                                                                                {format(parseISO(e.start), 'MMM d, yyyy h:mm a')} – {format(parseISO(e.end), 'MMM d, yyyy h:mm a')}
+                                                                            </p>
+                                                                            {e.attendees?.length > 0 && (
+                                                                                <p className="opacity-80 break-words">{e.attendees.join(', ')}</p>
+                                                                            )}
+                                                                            {e.status && <p className="opacity-80 capitalize">Status: {e.status}</p>}
+                                                                            {e.link && (
+                                                                                <Link href={e.link} target="_blank" rel="noopener noreferrer" className="underline block mt-1">
+                                                                                    Open in Google Calendar
+                                                                                </Link>
+                                                                            )}
+                                                                        </>,
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        </TooltipProvider>
+                                                    );
+                                                })()}
                                                 {(() => {
                                                     // Hide the +{n} indicator when only deliveries are selected
                                                     if (filterType === 'delivery') return null;
 
-                                                    const hiddenCount = hiddenPhases.filter((p: any) =>
-                                                        (p.startDate <= endOfDay(d) && p.endDate >= startOfDay(d))
-                                                    ).length;
+                                                    const hiddenCount = Math.max(
+                                                        0,
+                                                        filteredPhases.filter((p: any) => phaseOverlapsDay(p, d)).length - 2,
+                                                    );
 
                                                     if (hiddenCount > 0) {
                                                         return (
@@ -473,56 +537,7 @@ export default function UnifiedCalendarPage() {
                                     })}
                                 </div>
 
-                                {/* Bars */}
-                                <div className="relative z-10 w-[98%] mx-auto  mt-10 pointer-events-none">
-                                    {visibleRows.map((rowItems, rowIdx) => (
-                                        <div key={rowIdx} className="relative h-7 mb-1 w-full text-xs">
-                                            {rowItems.map((phase: any) => {
-                                                const phaseStartDay = phase.startDate < weekStart ? weekStart : phase.startDate;
-                                                // If week is partial (e.g. end of month), ensure we don't overflow
-                                                const phaseEndDay = phase.endDate > weekEnd ? weekEnd : phase.endDate;
 
-                                                const startOffset = differenceInDays(phaseStartDay, weekStart);
-                                                const duration = differenceInDays(phaseEndDay, phaseStartDay) + 1;
-
-                                                // Only render if visible in this week row
-                                                if (startOffset < 0 && (startOffset + duration) <= 0) return null;
-
-                                                return (
-                                                    <TooltipProvider key={phase.id}>
-                                                        <Tooltip>
-                                                            <TooltipTrigger asChild>
-                                                                <div
-                                                                    className={`
-                                                                    absolute h-6 rounded-sm px-2 flex items-center truncate text-white pointer-events-auto cursor-pointer transition-all hover:opacity-90
-                                                                    ${getPhaseColor(phase.colorIndex, rowIdx)}
-                                                                `}
-                                                                    style={{
-                                                                        left: `${(startOffset / 7) * 100}%`,
-                                                                        width: `calc(${(duration / 7) * 100}% - 0px)`,
-                                                                        marginLeft: '0px',
-                                                                        marginRight: '0px',
-                                                                    }}
-                                                                >
-                                                                    {(phase.startDate >= weekStart || weekIdx === 0) && `${phase.project_name} - ${phase.name}`}
-                                                                </div>
-                                                            </TooltipTrigger>
-                                                            <TooltipContent>
-                                                                <div className="font-semibold">{phase.project_name}</div>
-                                                                <div className="text-sm">{phase.name}</div>
-                                                                <div className="text-xs text-gray-500">{format(phase.startDate, 'MMM d')} - {format(phase.endDate, 'MMM d')}</div>
-                                                                <div className="text-xs mt-1">Progress: {phase.progress}%</div>
-                                                            </TooltipContent>
-                                                        </Tooltip>
-                                                    </TooltipProvider>
-                                                );
-                                            })}
-                                        </div>
-                                    ))}
-                                    <div className='relative h-6 mb-1 w-full text-xs'>
-
-                                    </div>
-                                </div>
                             </div>
                         );
                     })}
@@ -548,9 +563,9 @@ export default function UnifiedCalendarPage() {
     };
 
     const renderDayView = () => {
-        const activePhases = (filterType === 'all' || filterType === 'phases') ? phases.filter((p: any) =>
-            isWithinInterval(currentDate, { start: startOfDay(p.startDate), end: endOfDay(p.endDate) })
-        ) : [];
+        const activePhases = (filterType === 'all' || filterType === 'phases')
+            ? filteredPhases.filter((p: any) => phaseOverlapsDay(p, currentDate))
+            : [];
 
         const dayDeliveries = (filterType === 'all' || filterType === 'delivery') ? deliveryDates.filter((del: any) =>
             isSameDay(del.deliveryDate, currentDate)
@@ -647,7 +662,7 @@ export default function UnifiedCalendarPage() {
 
 
     const renderMyCalendarView = () => {
-        const gmailConnected = Array.isArray((googleEventsData as any)?.events);
+        const gmailConnected = Boolean(integrationStatus?.calendar_connected);
         const hasEvents = googleEvents.length > 0;
 
         const emptyCard = (title: string, body: string, action?: React.ReactNode) => (
@@ -666,26 +681,28 @@ export default function UnifiedCalendarPage() {
         if (!gmailConnected) {
             return emptyCard(
                 'Connect Google Calendar',
-                'Link your Gmail account to see your personal events, meetings and appointments here alongside your studio schedule.',
+                'Link your Google account to see your personal events, meetings and appointments here alongside your studio schedule.',
                 <button
                     onClick={handleGoogleCalendarConnect}
                     disabled={isConnecting}
                     className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-md hover:bg-gray-700 transition-colors disabled:opacity-60"
                 >
-                    {isConnecting ? <><Loader2 className="w-4 h-4 animate-spin" />Connecting...</> : 'Connect Gmail'}
+                    {isConnecting ? <><Loader2 className="w-4 h-4 animate-spin" />Connecting...</> : 'Connect Google Calendar'}
                 </button>
             );
         }
 
-        if (!hasEvents) {
-            return emptyCard(
-                'No upcoming events',
-                'Your Google Calendar is connected but has no events to show in this period.'
-            );
-        }
-
-        // Has events — render month view (Google events already overlay on the grid)
-        return renderMonthView();
+        return (
+            <div className="flex flex-col flex-1 min-h-0 gap-2">
+                {!hasEvents && !googleEventsFetching && (
+                    <div className="shrink-0 rounded-lg border border-sky-100 bg-sky-50 px-4 py-2.5 text-sm text-sky-800">
+                        No Google events this month yet. Use <strong>Add Event</strong> above — it will appear here and in
+                        your Google Calendar app.
+                    </div>
+                )}
+                {renderMonthView()}
+            </div>
+        );
     };
 
     const renderCurrentView = () => {
@@ -741,6 +758,10 @@ export default function UnifiedCalendarPage() {
                             projects={Array.isArray(projectsData)
                                 ? (projectsData as any[]).map((p: any) => ({ id: p.id, project_name: p.project_name || `Project ${p.id}` }))
                                 : []}
+                            onEventCreated={() => {
+                                refetchGoogleEvents();
+                                refetchPhases();
+                            }}
                         />
                     </div>
 
@@ -825,17 +846,29 @@ export default function UnifiedCalendarPage() {
                                 {/* Phases Section */}
                                 {(filterType === 'all' || filterType === 'phases') && phasesForSelectedDate.length > 0 && (
                                     <div className="space-y-3">
-                                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Active Phases</h3>
+                                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Schedule</h3>
                                         {phasesForSelectedDate.map((phase: any) => (
                                             <div key={phase.id} className={`p-3 rounded-lg border ${getPhaseLightColor(phase.colorIndex)}`}>
-                                                <h3 className="font-medium text-sm">{phase.project_name}</h3>
-                                                <p className="text-xs mt-1 opacity-80 line-clamp-2">{phase.name}</p>
+                                                <h3 className="font-medium text-sm">{phase.name}</h3>
+                                                <p className="text-xs mt-1 opacity-80">{phase.project_name}</p>
+                                                {phase.description && (
+                                                    <p className="text-xs mt-2 opacity-80 line-clamp-4 whitespace-pre-wrap">{phase.description}</p>
+                                                )}
+                                                <p className="text-xs mt-2 opacity-70">
+                                                    {format(phase.startDate, 'MMM d, yyyy')}
+                                                    {!phase.isSingleDay && ` – ${format(phase.endDate, 'MMM d, yyyy')}`}
+                                                </p>
                                                 <div className="mt-3 flex items-center justify-between text-xs">
-                                                    <span className="font-medium">{phase.progress}% Done</span>
-                                                    <span className="opacity-70">{format(phase.endDate, 'MMM d')}</span>
+                                                    <span className="font-medium">{phase.progress ?? 0}% Done</span>
+                                                    {!phase.isSingleDay && (
+                                                        <span className="opacity-70">Ends {format(phase.endDate, 'MMM d')}</span>
+                                                    )}
                                                 </div>
                                                 <div className="w-full bg-white/60 h-1.5 rounded-full mt-2 overflow-hidden">
-                                                    <div className="h-full bg-current opacity-40 rounded-full" style={{ width: `${phase.progress}%` }} />
+                                                    <div
+                                                        className="h-full bg-current opacity-40 rounded-full"
+                                                        style={{ width: `${phase.progress ?? 0}%` }}
+                                                    />
                                                 </div>
                                             </div>
                                         ))}

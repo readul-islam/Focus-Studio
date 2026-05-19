@@ -16,9 +16,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DateTimePicker } from '@/components/ui/datetime-picker';
 import { Plus, Loader2 } from 'lucide-react';
+import { format } from 'date-fns';
 import { usePost } from '@/hooks/usePost';
+import useUser from '@/hooks/useUser';
+import { fetchData, patchData, postData } from '@/lib/Api';
 import { gooeyToast as toast } from 'goey-toast';
 import { useQueryClient } from '@tanstack/react-query';
+import { getUserTimezone, toGoogleCalendarDateTime } from '@/lib/google-calendar';
 
 type CalendarMode = 'all-projects' | 'single-project' | 'my-calendar';
 
@@ -45,8 +49,9 @@ export default function AddEventDialog({
     const [endTime, setEndTime] = useState<Date | undefined>(undefined);
     const [attendees, setAttendees] = useState('');
     const [selectedProject, setSelectedProject] = useState<string>(projectId ? String(projectId) : '');
-    const queryClient = useQueryClient()
-
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const queryClient = useQueryClient();
+    const { user } = useUser();
     const { mutate, isPending } = usePost();
 
     const reset = () => {
@@ -79,40 +84,115 @@ export default function AddEventDialog({
 
         const attendeesList = attendees.split(',').map(a => a.trim()).filter(a => a);
 
+        const googleEventPayload = {
+            summary,
+            location,
+            description,
+            start_time: toGoogleCalendarDateTime(startTime),
+            end_time: toGoogleCalendarDateTime(endTime),
+            timezone: getUserTimezone(),
+            attendees: attendeesList,
+        };
+
+        const refetchGoogleEvents = () => {
+            queryClient.invalidateQueries({
+                predicate: (q) =>
+                    typeof q.queryKey[0] === 'string' && String(q.queryKey[0]).includes('gmail/calendar/events'),
+            });
+        };
+
+        const refetchProjectCalendar = (pid: string | number) => {
+            queryClient.invalidateQueries({ queryKey: ['projects/studio-phases/'] });
+            queryClient.invalidateQueries({ queryKey: [`projects/project-phases/?project_id=${pid}`] });
+        };
+
+        const dateOnly = (d: Date) => format(d, 'yyyy-MM-dd');
+
         // My Calendar — post to Google Calendar
         if (mode === 'my-calendar') {
             mutate({
                 url: 'gmail/calendar/create-event/',
-                data: { summary, location, description, start_time: startTime.toISOString(), end_time: endTime.toISOString(), attendees: attendeesList }
+                data: googleEventPayload,
             }, {
-                onSuccess: () => { toast.success('Event added to your calendar!'); setOpen(false); reset(); 
-                    queryClient.refetchQueries({ queryKey: ['gmail/calendar/events/'] });
-                onEventCreated?.(); },
-                onError: (error: any) => toast.error(error?.response?.data?.message || 'Failed to create event.')
+                onSuccess: (res: { link?: string }) => {
+                    toast.success(
+                        res?.link
+                            ? 'Event added — check Google Calendar or refresh the grid.'
+                            : 'Event added to Google Calendar.'
+                    );
+                    setOpen(false);
+                    reset();
+                    refetchGoogleEvents();
+                    onEventCreated?.();
+                },
+                onError: (error: any) => {
+                    const msg =
+                        error?.response?.data?.error ||
+                        error?.response?.data?.message ||
+                        'Failed to create event.';
+                    toast.error(msg);
+                },
             });
             return;
         }
 
-        // Project calendar — post as a phase/event on the project
+        // Project calendar — create a phase on the project (shown in All Projects / project filter views)
         const pid = mode === 'single-project' ? projectId : selectedProject;
-        mutate({
-            url: 'projects/calendar-events/',
-            data: { summary, location, description, start_time: startTime.toISOString(), end_time: endTime.toISOString(), project_id: pid, attendees: attendeesList }
-        }, {
-            onSuccess: () => { toast.success('Event added to project calendar!'); setOpen(false); reset(); onEventCreated?.(); },
-            onError: (error: any) => {
-                // Fallback to Google Calendar if project endpoint doesn't exist yet
-                mutate({
-                    url: 'gmail/calendar/create-event/',
-                    data: { summary, location, description, start_time: startTime.toISOString(), end_time: endTime.toISOString(), attendees: attendeesList }
-                }, {
-                    onSuccess: () => { toast.success('Event created!'); setOpen(false); reset(); 
-                        queryClient.refetchQueries({ queryKey: ['gmail/calendar/events/'] });
-                    onEventCreated?.(); },
-                    onError: () => toast.error('Failed to create event.')
-                });
+        if (!pid) {
+            toast.warning('Please select a project.');
+            return;
+        }
+
+        const notes = [description, location && `Location: ${location}`].filter(Boolean).join('\n\n');
+
+        setIsSubmitting(true);
+        try {
+            const phase = await postData({
+                url: 'projects/phases/',
+                data: {
+                    name: summary,
+                    description: notes || '',
+                    progress: 0,
+                    start_date: dateOnly(startTime),
+                    end_date: dateOnly(endTime),
+                    studio: user?.studio?.id,
+                    created_by: user?.id,
+                    updated_by: user?.id,
+                },
+            });
+
+            if (!phase?.id) {
+                throw new Error('Phase was not created');
             }
-        });
+
+            const project = await fetchData(`projects/projects/${pid}/`);
+            const existingIds: number[] = Array.isArray(project?.phases)
+                ? project.phases.map((p: number | { id: number }) =>
+                    typeof p === 'object' && p !== null ? p.id : Number(p)
+                )
+                : [];
+
+            await patchData({
+                url: `projects/projects/${pid}/`,
+                data: { phases: [...existingIds, phase.id] },
+            });
+
+            toast.success('Event added to project calendar.');
+            setOpen(false);
+            reset();
+            refetchProjectCalendar(pid);
+            onEventCreated?.();
+        } catch (error: any) {
+            const msg =
+                error?.response?.data?.error ||
+                error?.response?.data?.detail ||
+                error?.response?.data?.message ||
+                error?.message ||
+                'Failed to add event to project calendar.';
+            toast.error(typeof msg === 'string' ? msg : 'Failed to add event to project calendar.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const dialogTitle = mode === 'my-calendar'
@@ -124,8 +204,8 @@ export default function AddEventDialog({
     const dialogDesc = mode === 'my-calendar'
         ? 'Creates an event on your personal Google Calendar.'
         : mode === 'single-project'
-        ? `Creates an event for ${projectName || 'this project'}.`
-        : 'Creates an event for a project.';
+        ? `Adds a schedule entry for ${projectName || 'this project'} (visible when My Calendar is off).`
+        : 'Adds a schedule entry to the selected project (visible in All Projects and project filters).';
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -194,8 +274,8 @@ export default function AddEventDialog({
 
                     <DialogFooter>
                         <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-                        <Button type="submit" disabled={isPending}>
-                            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        <Button type="submit" disabled={isPending || isSubmitting}>
+                            {(isPending || isSubmitting) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             Create
                         </Button>
                     </DialogFooter>

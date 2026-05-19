@@ -4,6 +4,7 @@ import { Section } from '@/components/settings/section';
 import { PermissionGuard } from '@/components/PermissionGuard';
 import XeroIntegration from '@/components/settings/XeroIntegration';
 import GmailIntegration from '@/components/settings/GmailIntegration';
+import GoogleCalendarIntegration from '@/components/settings/GoogleCalendarIntegration';
 import useFetch from '@/hooks/useFetch';
 import { Puzzle } from 'lucide-react';
 
@@ -28,6 +29,12 @@ function IntegrationsPageContent() {
           <GmailIntegration
             isLoading={integrationsLoading}
             isConnected={integrations?.gmail_connected}
+          />
+
+          <GoogleCalendarIntegration
+            isLoading={integrationsLoading}
+            isConnected={integrations?.calendar_connected}
+            gmailConnected={integrations?.gmail_connected}
           />
 
           {/* Placeholder */}

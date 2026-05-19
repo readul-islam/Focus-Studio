@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle2, Loader2, Mail, RefreshCw } from 'lucide-react';
+import { Calendar, CheckCircle2, Loader2, RefreshCw } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import useFetch from '@/hooks/useFetch';
@@ -8,13 +8,17 @@ import { useQueryClient } from '@tanstack/react-query';
 import { openGmailOAuthPopup } from '@/lib/gmail-connect';
 import { gooeyToast as toast } from 'goey-toast';
 
-type GmailIntegrationProps = {
+type GoogleCalendarIntegrationProps = {
   isConnected: boolean;
   isLoading: boolean;
-  compact?: boolean;
+  gmailConnected?: boolean;
 };
 
-const GmailIntegration = ({ isConnected, isLoading: stateLoading, compact }: GmailIntegrationProps) => {
+const GoogleCalendarIntegration = ({
+  isConnected,
+  isLoading: stateLoading,
+  gmailConnected = false,
+}: GoogleCalendarIntegrationProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDisconnectDialogOpen, setIsDisconnectDialogOpen] = useState(false);
@@ -25,7 +29,8 @@ const GmailIntegration = ({ isConnected, isLoading: stateLoading, compact }: Gma
 
   const refreshIntegrationState = () => {
     queryClient.refetchQueries({ queryKey: ['user/integration-status/'] });
-    queryClient.refetchQueries({ queryKey: ['gmail/threads/'] });
+    queryClient.refetchQueries({ queryKey: ['gmail/calendar/events/'] });
+    queryClient.refetchQueries({ queryKey: ['user/dashboard/'] });
   };
 
   const handleConnect = async () => {
@@ -38,7 +43,7 @@ const GmailIntegration = ({ isConnected, isLoading: stateLoading, compact }: Gma
     if (result === 'success') {
       refreshIntegrationState();
       setShowReloadTip(true);
-      toast.success('Gmail connected.');
+      toast.success('Google Calendar connected.');
       return;
     }
 
@@ -50,7 +55,7 @@ const GmailIntegration = ({ isConnected, isLoading: stateLoading, compact }: Gma
     }
 
     if (result === 'error') {
-      toast.error('Could not connect Gmail. Check server GMAIL_* env vars.');
+      toast.error('Could not connect Google Calendar. Check server GMAIL_* env vars.');
     }
   };
 
@@ -64,24 +69,11 @@ const GmailIntegration = ({ isConnected, isLoading: stateLoading, compact }: Gma
           refreshIntegrationState();
           window.location.reload();
         },
-        onError: () => toast.error('Failed to disconnect Gmail.'),
+        onError: () => toast.error('Failed to disconnect.'),
       }
     );
     setIsLoading(false);
   };
-
-  if (compact) {
-    if (stateLoading) {
-      return <div className="h-7 w-20 rounded bg-stone-200 animate-pulse" />;
-    }
-    if (isConnected) return null;
-    return (
-      <Button size="sm" className="h-7 text-xs flex-shrink-0" onClick={handleConnect} disabled={isLoading}>
-        {isLoading && <Loader2 className="mr-1 h-3 w-3 animate-spin" />}
-        {isLoading ? 'Connecting...' : 'Connect'}
-      </Button>
-    );
-  }
 
   if (stateLoading) {
     return (
@@ -97,13 +89,15 @@ const GmailIntegration = ({ isConnected, isLoading: stateLoading, compact }: Gma
     return (
       <div className="rounded-xl border border-gray-200 bg-white p-5">
         <div className="flex items-center justify-between mb-1">
-          <span className="text-sm font-semibold text-gray-900">Gmail</span>
+          <span className="text-sm font-semibold text-gray-900">Google Calendar</span>
           <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-50 border border-green-200 px-2 py-0.5">
             <CheckCircle2 className="h-3 w-3" />
             Connected
           </span>
         </div>
-        <p className="text-xs text-stone-500 mb-4">Your inbox is syncing for AI summaries and categorisation.</p>
+        <p className="text-xs text-stone-500 mb-4">
+          Your schedule syncs to Calendar and Daily Brief. Create events from Focuspilot.
+        </p>
         <Dialog open={isDisconnectDialogOpen} onOpenChange={setIsDisconnectDialogOpen}>
           <DialogTrigger asChild>
             <Button
@@ -116,10 +110,10 @@ const GmailIntegration = ({ isConnected, isLoading: stateLoading, compact }: Gma
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Disconnect Gmail?</DialogTitle>
+              <DialogTitle>Disconnect Google Calendar?</DialogTitle>
             </DialogHeader>
             <p className="text-sm text-gray-600">
-              This will stop syncing your emails. You can reconnect from Settings or Inbox.
+              This disconnects your Google account and also turns off Gmail Inbox sync (same OAuth connection).
             </p>
             <DialogFooter>
               <Button variant="outline" onClick={() => setIsDisconnectDialogOpen(false)}>
@@ -138,14 +132,19 @@ const GmailIntegration = ({ isConnected, isLoading: stateLoading, compact }: Gma
 
   return (
     <div className="rounded-xl border border-gray-200 bg-stone-50 p-5">
-      <span className="text-sm font-semibold text-gray-900">Gmail</span>
+      <span className="text-sm font-semibold text-gray-900">Google Calendar</span>
       <p className="text-xs text-stone-500 mt-1 mb-4">
-        Connect Gmail to power the AI Inbox — categorised emails, summaries, and suggested actions.
+        Sync meetings and deadlines with your Google Calendar. Shown on the studio Calendar page and Daily Brief.
       </p>
+      {gmailConnected && !isConnected && (
+        <p className="mb-4 rounded-lg border border-amber-100 bg-amber-50 px-3 py-2 text-xs text-amber-900">
+          Gmail is connected but Calendar access is missing. Reconnect and allow Calendar permissions.
+        </p>
+      )}
       {showReloadTip && (
         <div className="mb-4 flex items-center gap-2.5 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2.5">
           <RefreshCw className="h-3.5 w-3.5 shrink-0 text-blue-500" />
-          <p className="text-xs text-blue-700 flex-1">Connection complete. Reload to refresh your inbox.</p>
+          <p className="text-xs text-blue-700 flex-1">Connection complete. Reload to refresh Calendar.</p>
           <button
             type="button"
             onClick={() => window.location.reload()}
@@ -159,21 +158,24 @@ const GmailIntegration = ({ isConnected, isLoading: stateLoading, compact }: Gma
         <DialogTrigger asChild>
           <Button size="sm" disabled={isLoading || stateLoading}>
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isLoading ? 'Connecting...' : 'Connect with Gmail'}
+            {isLoading ? 'Connecting...' : 'Connect with Google Calendar'}
           </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Mail className="h-5 w-5 text-gray-600" />
-              Connect Gmail
+              <Calendar className="h-5 w-5 text-gray-600" />
+              Connect Google Calendar
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-3 text-sm text-gray-600">
-            <p>Sign in with Google and allow access to Gmail. Connect Google Calendar separately under Integrations if needed.</p>
+            <p>
+              Sign in with Google and allow Calendar access. Gmail Inbox uses the same Google account if you connect it
+              separately.
+            </p>
             <p className="rounded-lg border border-amber-100 bg-amber-50 px-3 py-2 text-xs text-amber-900">
-              If Google shows &quot;Access blocked&quot; (403), add your account under OAuth consent screen → Test users
-              in Google Cloud Console.
+              Enable the Google Calendar API in Cloud Console. If the app is in Testing mode, add your account under
+              Test users.
             </p>
           </div>
           <DialogFooter>
@@ -191,4 +193,4 @@ const GmailIntegration = ({ isConnected, isLoading: stateLoading, compact }: Gma
   );
 };
 
-export default GmailIntegration;
+export default GoogleCalendarIntegration;

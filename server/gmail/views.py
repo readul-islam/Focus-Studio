@@ -1061,25 +1061,29 @@ def create_calendar_event(request):
         return Response({'error': 'summary, start_time, and end_time are required'}, status=400)
     
     # Format attendees for Google API
-    attendees_emails = request.data.get('attendees', [])
-    attendees = [{'email': email} for email in attendees_emails]
-    
+    attendees_emails = request.data.get('attendees', []) or []
+    attendees = [{'email': email} for email in attendees_emails if email]
+
+    # Strip Z suffix so Google uses timeZone as wall-clock (client sends local parts + IANA tz)
+    def _normalize_dt(value: str) -> str:
+        return value.replace('Z', '').split('+')[0].split('.')[0]
+
     event_data = {
         'summary': summary,
         'location': request.data.get('location', ''),
         'description': request.data.get('description', ''),
         'start': {
-            'dateTime': start_time,
+            'dateTime': _normalize_dt(start_time),
             'timeZone': time_zone,
         },
         'end': {
-            'dateTime': end_time,
+            'dateTime': _normalize_dt(end_time),
             'timeZone': time_zone,
         },
-        'attendees': attendees,
     }
+    if attendees:
+        event_data['attendees'] = attendees
 
-    
     result = create_google_calendar_event(user, event_data)
     
     if "error" in result:
@@ -1104,12 +1108,19 @@ def get_calendar_events(request):
         return Response({'error': 'Google Calendar not connected. Please connect Gmail/Calendar first.'}, status=400)
 
     try:
-        days = int(request.query_params.get('days', 7))
-        max_results = int(request.query_params.get('max_results', 50))
+        max_results = min(250, max(1, int(request.query_params.get('max_results', 100))))
 
-        now = timezone.now()
-        time_min = now.isoformat()
-        time_max = (now + timedelta(days=days)).isoformat()
+        time_min_param = request.query_params.get('time_min')
+        time_max_param = request.query_params.get('time_max')
+
+        if time_min_param and time_max_param:
+            time_min = time_min_param
+            time_max = time_max_param
+        else:
+            days = int(request.query_params.get('days', 42))
+            now = timezone.now()
+            time_min = now.isoformat()
+            time_max = (now + timedelta(days=days)).isoformat()
 
         events_result = service.events().list(
             calendarId='primary',

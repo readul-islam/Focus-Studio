@@ -667,6 +667,15 @@ The Inbox (`/ai/inbox`) and **Settings → Studio → Integrations** use the sam
 5. **Connect**: Settings → Integrations → **Connect with Gmail**, or Inbox → **Connect Gmail**.  
    After success, use **Sync** on Inbox to pull messages.
 
+### Google Calendar
+
+Uses the **same Google OAuth client** as Gmail (`GMAIL_*` env vars). Calendar scope is included in `GMAIL_SCOPES`.
+
+1. Enable **Google Calendar API** in Google Cloud Console (same project as Gmail).
+2. **Settings → Studio → Integrations** → **Connect with Google Calendar** (or **Calendar** page → toggle “My calendar”).
+3. After connect, open **Calendar** in the app and enable **My calendar** to overlay Google events.
+4. Create events via **Add event** (posts to `gmail/calendar/create-event/`).
+
 For production, set `FRONTEND_URL`, `GMAIL_REDIRECT_URI` (e.g. `https://api.yourdomain.com/gmail/callback/`), and add that URI in Google Console. Submit the app for Google verification before allowing all users (non–test users).
 
 ---
