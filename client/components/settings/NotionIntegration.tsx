@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { BookOpen, CheckCircle2, Copy, ExternalLink, Loader2, Search } from 'lucide-react';
+import { BookOpen, Copy, ExternalLink, Loader2, RefreshCw, Search } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   Dialog,
   DialogContent,
@@ -10,10 +18,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
+import { IntegrationCard } from './IntegrationCard';
 import useFetch from '@/hooks/useFetch';
 import { usePost } from '@/hooks/usePost';
 import { useQueryClient } from '@tanstack/react-query';
 import { openNotionOAuthPopup } from '@/lib/notion-connect';
+import { putData, postData } from '@/lib/Api';
 import { gooeyToast as toast } from 'goey-toast';
 
 type Props = {
@@ -27,13 +37,40 @@ type NotionDatabase = {
   url?: string;
 };
 
+type NotionMapping = {
+  database_id: string;
+  database_title: string;
+  title_property: string;
+  status_property?: string;
+  is_enabled: boolean;
+  last_synced_at?: string | null;
+};
+
+type SyncResult = {
+  created: number;
+  updated: number;
+  skipped: number;
+  total_pages?: number;
+  last_synced_at?: string;
+  error?: string;
+};
+
 const NotionIntegration = ({ isConnected, isLoading: stateLoading }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [isDisconnectDialogOpen, setIsDisconnectDialogOpen] = useState(false);
+  const [isConnectDialogOpen, setIsConnectDialogOpen] = useState(false);
   const [browseOpen, setBrowseOpen] = useState(false);
+  const [mappingOpen, setMappingOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [selectedDbId, setSelectedDbId] = useState('');
+  const [selectedDbTitle, setSelectedDbTitle] = useState('');
+  const [titleProperty, setTitleProperty] = useState('Name');
+  const [statusProperty, setStatusProperty] = useState('');
+  const [savingMapping, setSavingMapping] = useState(false);
+  const [syncing, setSyncing] = useState(false);
+  const [lastSyncResult, setLastSyncResult] = useState<SyncResult | null>(null);
 
   const { refetch: getNotionAuthUrl } = useFetch('notion/connect/', { enabled: false });
   const { data: notionStatus } = useFetch(isConnected ? 'notion/status/' : null);
@@ -66,14 +103,25 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading }: Props) => {
 
   const dbList: NotionDatabase[] = Array.isArray(databases) ? databases : [];
 
+  const pickerDbsUrl = mappingOpen ? 'notion/databases/' : null;
+  const { data: pickerDatabases = [] } = useFetch(pickerDbsUrl);
+  const pickerDbList: NotionDatabase[] = Array.isArray(pickerDatabases) ? pickerDatabases : [];
+
+  const schemaUrl = selectedDbId ? `notion/databases/${selectedDbId}/schema/` : null;
+  const { data: schemaData } = useFetch(schemaUrl);
+
+  const titleProperties: string[] = schemaData?.title_properties ?? [];
+  const statusProperties: string[] = schemaData?.status_properties ?? [];
+
   const refreshState = () => {
     queryClient.refetchQueries({ queryKey: ['user/integration-status/'] });
     queryClient.refetchQueries({ queryKey: ['notion/status/'] });
+    queryClient.refetchQueries({ queryKey: ['notion/mapping/'] });
   };
 
   const handleConnect = async () => {
     setIsLoading(true);
-    setIsDialogOpen(false);
+    setIsConnectDialogOpen(false);
     const result = await openNotionOAuthPopup(getNotionAuthUrl);
     setIsLoading(false);
 
@@ -94,6 +142,7 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading }: Props) => {
       {
         onSuccess: () => {
           setIsDisconnectDialogOpen(false);
+          setSettingsOpen(false);
           refreshState();
           toast.success('Notion disconnected.');
         },
@@ -116,189 +165,403 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading }: Props) => {
     setBrowseOpen(true);
   }
 
-  if (stateLoading) {
-    return (
-      <div className="rounded-xl border border-gray-200 bg-white p-5 animate-pulse">
-        <div className="h-4 w-16 rounded bg-stone-200 mb-2" />
-        <div className="h-3 w-40 rounded bg-stone-100 mb-5" />
-        <div className="h-8 w-24 rounded bg-stone-200" />
-      </div>
-    );
+  function openMapping(existing?: NotionMapping) {
+    if (existing) {
+      setSelectedDbId(existing.database_id);
+      setSelectedDbTitle(existing.database_title);
+      setTitleProperty(existing.title_property || 'Name');
+      setStatusProperty(existing.status_property || '');
+    } else {
+      setSelectedDbId('');
+      setSelectedDbTitle('');
+      setTitleProperty('Name');
+      setStatusProperty('');
+    }
+    setMappingOpen(true);
   }
 
-  if (isConnected) {
-    const workspace = notionStatus?.workspace_name;
-
-    return (
-      <div className="rounded-xl border border-gray-200 bg-white p-5">
-        <div className="flex items-center justify-between mb-1">
-          <span className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-            <BookOpen className="h-4 w-4 text-stone-500" />
-            Notion
-          </span>
-          <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-50 border border-green-200 px-2 py-0.5">
-            <CheckCircle2 className="h-3 w-3" />
-            Connected
-          </span>
-        </div>
-        <p className="text-xs text-stone-500 mb-4">
-          {workspace
-            ? `Workspace: ${workspace}. Browse databases shared with Focuspilot.`
-            : 'Browse databases shared with your Notion integration.'}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          <Button variant="outline" size="sm" onClick={openBrowse}>
-            Browse databases
-          </Button>
-          <Dialog open={isDisconnectDialogOpen} onOpenChange={setIsDisconnectDialogOpen}>
-            <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-red-600 border-gray-200 hover:bg-red-50 hover:border-red-200"
-              >
-                Disconnect
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Disconnect Notion?</DialogTitle>
-              </DialogHeader>
-              <p className="text-sm text-gray-600">
-                Focuspilot will lose access to your Notion workspace. You can reconnect anytime.
-              </p>
-              <DialogFooter>
-                <Button variant="outline" onClick={() => setIsDisconnectDialogOpen(false)}>
-                  Cancel
-                </Button>
-                <Button variant="destructive" onClick={handleDisconnect} disabled={isLoading}>
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {isLoading ? 'Disconnecting...' : 'Disconnect'}
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        <Dialog open={browseOpen} onOpenChange={setBrowseOpen}>
-          <DialogContent className="max-w-lg max-h-[85vh] flex flex-col">
-            <DialogHeader>
-              <DialogTitle>Notion databases</DialogTitle>
-            </DialogHeader>
-            <p className="text-xs text-stone-500 -mt-2">
-              Only databases you shared when connecting Notion appear here. Copy an ID for Zapier or
-              open in Notion.
-            </p>
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-stone-400" />
-              <Input
-                className="pl-9"
-                placeholder="Search databases..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
-            <div className="flex-1 min-h-[200px] max-h-[50vh] overflow-y-auto rounded-lg border border-stone-200 divide-y divide-stone-100">
-              {databasesLoading ? (
-                <div className="flex items-center justify-center py-12 text-sm text-stone-500">
-                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  Loading...
-                </div>
-              ) : databasesError ? (
-                <div className="p-4 text-sm text-red-600 text-center space-y-2">
-                  <p>Could not load databases from Notion.</p>
-                  {databasesApiError ? (
-                    <p className="text-xs font-mono text-red-500 break-all">{databasesApiError}</p>
-                  ) : null}
-                  <p className="text-xs text-stone-600">
-                    Reconnect Notion on this environment (localhost uses its own token).
-                  </p>
-                </div>
-              ) : dbList.length === 0 ? (
-                <p className="p-4 text-sm text-stone-500 text-center">
-                  No databases found. In Notion, open a database → ••• → Connect to → your
-                  Focuspilot integration.
-                </p>
-              ) : (
-                dbList.map((db) => (
-                  <div
-                    key={db.id}
-                    className="flex items-center justify-between gap-2 px-3 py-2.5 hover:bg-stone-50"
-                  >
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-gray-900 truncate">{db.title}</p>
-                      <p className="text-xs text-stone-400 font-mono truncate">{db.id}</p>
-                    </div>
-                    <div className="flex shrink-0 gap-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 px-2"
-                        onClick={() => copyId(db.id)}
-                        title="Copy database ID"
-                      >
-                        <Copy className="h-3.5 w-3.5" />
-                      </Button>
-                      {db.url ? (
-                        <Button variant="ghost" size="sm" className="h-8 px-2" asChild>
-                          <a href={db.url} target="_blank" rel="noopener noreferrer" title="Open in Notion">
-                            <ExternalLink className="h-3.5 w-3.5" />
-                          </a>
-                        </Button>
-                      ) : null}
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => refetchDatabases()}>
-                Refresh
-              </Button>
-              <Button onClick={() => setBrowseOpen(false)}>Done</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
-    );
+  function pickDatabaseForSync(db: NotionDatabase) {
+    setSelectedDbId(db.id);
+    setSelectedDbTitle(db.title);
+    setBrowseOpen(false);
+    setMappingOpen(true);
   }
+
+  useEffect(() => {
+    if (schemaData?.default_title_property && selectedDbId) {
+      setTitleProperty((prev) =>
+        prev === 'Name' || !titleProperties.includes(prev)
+          ? schemaData.default_title_property
+          : prev
+      );
+    }
+  }, [schemaData, selectedDbId, titleProperties]);
+
+  async function handleSaveMapping() {
+    if (!selectedDbId) {
+      toast.error('Select a database first.');
+      return;
+    }
+    setSavingMapping(true);
+    try {
+      await putData({
+        url: 'notion/mapping/',
+        data: {
+          database_id: selectedDbId,
+          database_title: selectedDbTitle,
+          title_property: titleProperty,
+          status_property: statusProperty || '',
+          is_enabled: true,
+        },
+      });
+      setMappingOpen(false);
+      refreshState();
+      toast.success('Project sync configured.');
+    } catch {
+      toast.error('Could not save mapping.');
+    } finally {
+      setSavingMapping(false);
+    }
+  }
+
+  async function handleSyncProjects() {
+    setSyncing(true);
+    try {
+      const result = (await postData({
+        url: 'notion/mapping/sync/',
+        data: {},
+      })) as SyncResult;
+      setLastSyncResult(result);
+      refreshState();
+      if (result.error && !result.created && !result.updated) {
+        toast.error(result.error);
+      } else {
+        toast.success(
+          `Sync done: ${result.created} created, ${result.updated} updated, ${result.skipped} unchanged.`
+        );
+        queryClient.invalidateQueries({ queryKey: ['projects'] });
+      }
+    } catch {
+      toast.error('Sync failed.');
+    } finally {
+      setSyncing(false);
+    }
+  }
+
+  const workspace = notionStatus?.workspace_name;
+  const mapping = notionStatus?.mapping as NotionMapping | undefined;
+
+  const cardDescription = isConnected
+    ? mapping?.database_title
+      ? `Project sync: ${mapping.database_title}${workspace ? ` · ${workspace}` : ''}`
+      : workspace
+        ? `Workspace: ${workspace}. Use settings to browse databases and sync projects.`
+        : 'Use settings to browse databases and sync projects.'
+    : 'Connect your Notion workspace to browse databases and sync projects.';
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-stone-50 p-5">
-      <span className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-        <BookOpen className="h-4 w-4 text-stone-500" />
-        Notion
-      </span>
-      <p className="text-xs text-stone-500 mt-1 mb-4">
-        Connect your Notion workspace to browse databases and use them in automations.
-      </p>
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogTrigger asChild>
-          <Button size="sm" disabled={isLoading}>
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isLoading ? 'Connecting...' : 'Connect Notion'}
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
+    <>
+      <IntegrationCard
+        icon={<BookOpen className="h-4 w-4 text-stone-500" />}
+        title="Notion"
+        description={cardDescription}
+        isLoading={stateLoading}
+        status={isConnected ? 'connected' : null}
+        showSettings={isConnected}
+        settingsOpen={settingsOpen}
+        onSettingsOpenChange={setSettingsOpen}
+        settingsTitle="Notion settings"
+        settingsChildren={
+          isConnected ? (
+          <>
+            <p className="text-sm text-gray-600">
+              Sync pulls from Notion into Focuspilot Projects (Notion is not edited by sync).
+              {workspace ? ` Workspace: ${workspace}.` : ''}
+            </p>
+            {mapping ? (
+              <p className="text-xs text-stone-500">
+                Mapped database: <span className="font-medium">{mapping.database_title}</span>
+                {mapping.last_synced_at
+                  ? ` · Last sync ${new Date(mapping.last_synced_at).toLocaleString()}`
+                  : ''}
+              </p>
+            ) : (
+              <p className="text-xs text-stone-500">
+                Map a Notion database (e.g. Tasks Tracker) to create and update Focuspilot projects.
+              </p>
+            )}
+            {lastSyncResult && !lastSyncResult.error ? (
+              <p className="text-xs text-stone-500">
+                Last run: {lastSyncResult.created} created, {lastSyncResult.updated} updated
+                {lastSyncResult.total_pages != null
+                  ? ` (${lastSyncResult.total_pages} rows in Notion)`
+                  : ''}
+                .
+              </p>
+            ) : null}
+            <div className="flex flex-col gap-2">
+              <Button variant="outline" className="justify-start" onClick={openBrowse}>
+                Browse databases
+              </Button>
+              <Button variant="outline" className="justify-start" onClick={() => openMapping(mapping)}>
+                {mapping ? 'Edit project sync mapping' : 'Set up project sync'}
+              </Button>
+              <Button
+                className="justify-start"
+                onClick={handleSyncProjects}
+                disabled={!mapping || syncing}
+              >
+                {syncing ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Syncing...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="mr-2 h-4 w-4" />
+                    Sync projects now
+                  </>
+                )}
+              </Button>
+            </div>
+          </>
+          ) : null
+        }
+        footer={
+          isConnected ? (
+            <Dialog open={isDisconnectDialogOpen} onOpenChange={setIsDisconnectDialogOpen}>
+              <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-red-600 border-gray-200 hover:bg-red-50 hover:border-red-200"
+                >
+                  Disconnect
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Disconnect Notion?</DialogTitle>
+                </DialogHeader>
+                <p className="text-sm text-gray-600">
+                  Focuspilot will lose access to your Notion workspace. You can reconnect anytime.
+                </p>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setIsDisconnectDialogOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button variant="destructive" onClick={handleDisconnect} disabled={isLoading}>
+                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {isLoading ? 'Disconnecting...' : 'Disconnect'}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          ) : (
+            <Dialog open={isConnectDialogOpen} onOpenChange={setIsConnectDialogOpen}>
+              <DialogTrigger asChild>
+                <Button size="sm" disabled={isLoading || stateLoading}>
+                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {isLoading ? 'Connecting...' : 'Connect Notion'}
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Connect Notion</DialogTitle>
+                </DialogHeader>
+                <p className="text-sm text-gray-600">
+                  Authorize Focuspilot in Notion and share the databases you want to use.
+                </p>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setIsConnectDialogOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button onClick={handleConnect} disabled={isLoading}>
+                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {isLoading ? 'Connecting...' : 'Continue'}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          )
+        }
+      />
+
+      <Dialog open={mappingOpen} onOpenChange={setMappingOpen}>
+        <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Connect Notion</DialogTitle>
+            <DialogTitle>Map Notion database → projects</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-gray-600">
-            You will authorize Focuspilot in Notion. Choose the pages and databases you want to share
-            with the integration.
+          <p className="text-xs text-stone-500">
+            Each row in the database becomes a Focuspilot project. Re-sync updates names and
+            status.
           </p>
+          <div className="space-y-3">
+            <div className="space-y-2">
+              <Label>Database</Label>
+              <Select
+                value={selectedDbId}
+                onValueChange={(id) => {
+                  const db = pickerDbList.find((d) => d.id === id);
+                  setSelectedDbId(id);
+                  setSelectedDbTitle(db?.title || '');
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Choose database" />
+                </SelectTrigger>
+                <SelectContent>
+                  {pickerDbList.map((db) => (
+                    <SelectItem key={db.id} value={db.id}>
+                      {db.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            {selectedDbId ? (
+              <>
+                <div className="space-y-2">
+                  <Label>Name field (title column)</Label>
+                  <Select value={titleProperty} onValueChange={setTitleProperty}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {(titleProperties.length ? titleProperties : [titleProperty]).map((p) => (
+                        <SelectItem key={p} value={p}>
+                          {p}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Status field (optional)</Label>
+                  <Select
+                    value={statusProperty || '__none__'}
+                    onValueChange={(v) => setStatusProperty(v === '__none__' ? '' : v)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="None" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="__none__">None</SelectItem>
+                      {statusProperties.map((p) => (
+                        <SelectItem key={p} value={p}>
+                          {p}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-stone-500">
+                    Done/Complete → Completed · In progress → Active
+                  </p>
+                </div>
+              </>
+            ) : null}
+          </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+            <Button variant="outline" onClick={() => setMappingOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleConnect} disabled={isLoading}>
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isLoading ? 'Connecting...' : 'Continue'}
+            <Button onClick={handleSaveMapping} disabled={savingMapping || !selectedDbId}>
+              {savingMapping && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Save
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+
+      <Dialog open={browseOpen} onOpenChange={setBrowseOpen}>
+        <DialogContent className="max-w-lg max-h-[85vh] flex flex-col">
+          <DialogHeader>
+            <DialogTitle>Notion databases</DialogTitle>
+          </DialogHeader>
+          <p className="text-xs text-stone-500 -mt-2">
+            Only databases you shared when connecting Notion appear here. Copy an ID for Zapier or
+            open in Notion.
+          </p>
+          <div className="relative">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-stone-400" />
+            <Input
+              className="pl-9"
+              placeholder="Search databases..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <div className="flex-1 min-h-[200px] max-h-[50vh] overflow-y-auto rounded-lg border border-stone-200 divide-y divide-stone-100">
+            {databasesLoading ? (
+              <div className="flex items-center justify-center py-12 text-sm text-stone-500">
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                Loading...
+              </div>
+            ) : databasesError ? (
+              <div className="p-4 text-sm text-red-600 text-center space-y-2">
+                <p>Could not load databases from Notion.</p>
+                {databasesApiError ? (
+                  <p className="text-xs font-mono text-red-500 break-all">{databasesApiError}</p>
+                ) : null}
+                <p className="text-xs text-stone-600">
+                  Reconnect Notion on this environment (localhost uses its own token).
+                </p>
+              </div>
+            ) : dbList.length === 0 ? (
+              <p className="p-4 text-sm text-stone-500 text-center">
+                No databases found. In Notion, open a database → ••• → Connect to → your Focuspilot
+                integration.
+              </p>
+            ) : (
+              dbList.map((db) => (
+                <div
+                  key={db.id}
+                  className="flex items-center justify-between gap-2 px-3 py-2.5 hover:bg-stone-50"
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-gray-900 truncate">{db.title}</p>
+                    <p className="text-xs text-stone-400 font-mono truncate">{db.id}</p>
+                  </div>
+                  <div className="flex shrink-0 gap-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-2 text-xs"
+                      onClick={() => pickDatabaseForSync(db)}
+                      title="Use for project sync"
+                    >
+                      Sync
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 px-2"
+                      onClick={() => copyId(db.id)}
+                      title="Copy database ID"
+                    >
+                      <Copy className="h-3.5 w-3.5" />
+                    </Button>
+                    {db.url ? (
+                      <Button variant="ghost" size="sm" className="h-8 px-2" asChild>
+                        <a href={db.url} target="_blank" rel="noopener noreferrer" title="Open in Notion">
+                          <ExternalLink className="h-3.5 w-3.5" />
+                        </a>
+                      </Button>
+                    ) : null}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => refetchDatabases()}>
+              Refresh
+            </Button>
+            <Button onClick={() => setBrowseOpen(false)}>Done</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

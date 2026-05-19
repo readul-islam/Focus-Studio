@@ -14,7 +14,16 @@
 | **4** | Webhook UI: pick event types per endpoint | 1h | ✅ Done |
 | **5** | Notion **Light**: Browse databases in Settings | 2h | ✅ Done |
 
-**Defer (not today):** Official Zapier marketplace app · Notion Medium/Heavy sync · Contractor V2 · Help Centre · Stripe
+**Defer:** Official Zapier marketplace app · Notion two-way sync · Contractor V2 · Help Centre · Stripe
+
+### Notion Medium — project sync ✅
+
+| Step | Action |
+|------|--------|
+| 1 | Integrations → **Set up project sync** (or Browse → **Sync** on Tasks Tracker) |
+| 2 | Pick database, **Task name** as title, **Status** optional → **Save** |
+| 3 | **Sync projects now** → check **Projects** in app |
+| 4 | Edit a row in Notion → sync again → project name/status updates |
 
 ---
 

@@ -10,7 +10,7 @@ import ZapierIntegration from '@/components/settings/ZapierIntegration';
 import useFetch from '@/hooks/useFetch';
 
 function IntegrationsPageContent() {
-  const { data: integrations, isLoading: integrationsLoading, refetch } = useFetch(
+  const { data: integrations, isLoading: integrationsLoading } = useFetch(
     'user/integration-status/'
   );
 
@@ -26,7 +26,6 @@ function IntegrationsPageContent() {
           <XeroIntegration
             isLoading={integrationsLoading}
             isConnected={integrations?.xero_connected}
-            refetch={refetch}
           />
 
           <GmailIntegration
