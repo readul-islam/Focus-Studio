@@ -70,6 +70,42 @@ function Reveal({
 
 const updates = [
   {
+    date: "May 2026",
+    version: "2.5",
+    changes: [
+      {
+        type: "new",
+        title: "Gmail Integration",
+        description:
+          "Connect Gmail in Settings → Studio → Integrations to sync messages into AI Inbox and keep client email in one workspace.",
+      },
+      {
+        type: "new",
+        title: "Google Calendar Connection",
+        description:
+          "Link Google Calendar from Studio Integrations and toggle My Calendar on the studio calendar to view and add personal Google events.",
+      },
+      {
+        type: "new",
+        title: "Project Calendar Events",
+        description:
+          "Add events to a specific project or browse All Projects — schedule entries show on the grid and in the day detail panel.",
+      },
+      {
+        type: "improvement",
+        title: "Calendar Event Display",
+        description:
+          "Event chips use matching text and background colors, truncate long titles with ellipsis, and show the full event on hover without bleeding into other dates.",
+      },
+      {
+        type: "fix",
+        title: "Project Calendar Filtering",
+        description:
+          "Fixed date handling and project filters so events appear on the correct day in All Projects and single-project views.",
+      },
+    ],
+  },
+  {
     date: "January 2025",
     version: "2.4",
     changes: [
