@@ -113,7 +113,16 @@ Design and architecture studios face significant operational challenges:
 - **AI/ML:** OpenAI, Ollama (local LLM support)
 - **Time Tracking:** Time tracker module (internal)
 - **Analytics:** Custom reporting engine
-- **Payments:** Stripe (planned)
+- **Payments:** Stripe (SaaS billing — checkout, webhooks, customer portal when configured)
+- **Productivity:** Notion API (OAuth, database mapping)
+
+### Monorepo Apps
+| App | Path | Purpose |
+|-----|------|---------|
+| Studio (main) | `client/` | Next.js studio app |
+| Marketing | `landing/` | focuspilot.io marketing site |
+| Contractor portal | `contractors_portal/` | On-site contractor PWA |
+| Client portal | `client_portal/` | Client-facing portal |
 
 ### Deployment
 - **Backend:** Django + Gunicorn on EC2 ([docs/EC2-DEPLOYMENT.md](docs/EC2-DEPLOYMENT.md)) or ECS ([docs/AWS-DEPLOYMENT.md](docs/AWS-DEPLOYMENT.md))
@@ -139,8 +148,8 @@ Design and architecture studios face significant operational challenges:
 - ✅ Role-based access control (Admin, Manager, Member)
 - ✅ User profile management
 - ✅ Team member directory
-- ✅ Permissions matrix (hidden/incomplete)
-- ✅ Notification preferences (hidden/incomplete)
+- ✅ Permissions matrix (`/settings/studio/roles`)
+- ✅ Notification preferences (`/settings/user/notifications`)
 - ⏳ Real-time collaboration features
 
 ### 3. **Finance & Invoicing** (Core)
@@ -167,7 +176,7 @@ Design and architecture studios face significant operational challenges:
 - ✅ Contact database (clients, leads, contractors)
 - ✅ Contact type classification
 - ✅ Contact details (email, phone, address)
-- ✅ Lead pipeline (mock)
+- ✅ Lead pipeline (CRM API + pipeline UI)
 - ✅ Proposal management (basic)
 - ✅ Communication history (email integration pending)
 - ⏳ Advanced lead scoring
@@ -181,15 +190,16 @@ Design and architecture studios face significant operational challenges:
 - ✅ Search functionality
 - ⏳ Advanced permission management
 
-### 7. **Contractor Portal** (Partial — V1)
-- ✅ Contractor dashboard
+### 7. **Contractor Portal** (V2 — Core Complete)
+- ✅ Contractor dashboard (`contractors_portal` app)
 - ✅ Procurement visibility for contractors
-- ✅ Document access (basic)
-- ⏳ QR code generation and scanning
-- ⏳ Personal access codes (6-char codes like JFLT-01)
-- ⏳ Insurance and certification tracking
-- ⏳ Contractor profile (trade, company, emergency contact)
-- ⏳ Email invite system
+- ✅ Document sharing (`share-document/`, `bulk-share-documents/`)
+- ✅ QR code generation (project settings — `qrcode.react` + `access_token`)
+- ✅ Personal access codes (6-char codes, e.g. `JFLT-01` via `POST /contractor_portal/add/`)
+- ✅ Insurance and certification tracking (expiry, upload, status badges)
+- ✅ Contractor profile (trade, company, emergency contact)
+- ✅ Email invite system (Resend)
+- ✅ Add Contractor dialog (studio app → real API)
 
 ### 8. **Time Tracking & Reporting** (Partial)
 - ✅ Time entry logging
@@ -200,14 +210,14 @@ Design and architecture studios face significant operational challenges:
 - ⏳ Automatic tracking via browser/desktop app
 - ⏳ Mobile time entry
 
-### 9. **Reports & Analytics** (Partial — Being Rebuilt)
-- ✅ Overview dashboard (summary KPIs)
-- ✅ Project profitability reports
-- ✅ Team utilization and capacity reports
-- ✅ Finance reports (revenue, costs, margins)
+### 9. **Reports & Analytics** (Rebuild — Core Complete)
+- ✅ Reports hub with 6 pages (Overview, Projects, Team, Finance, Procurement, Revenue & P&L)
+- ✅ Team page: Hours, Utilisation, and Timesheet tabs (utilisation merged from standalone page)
+- ✅ Shared infrastructure: `ReportBreadcrumb`, `KpiCard`, `ReportFilterBar`, period filters
+- ✅ Project profitability and budget burn views
+- ✅ Finance reports (revenue, costs, margins, invoice aging)
 - ✅ Procurement spend breakdown
-- ✅ Invoice aging reports
-- ✅ PDF export capability
+- ⏳ PDF export wired on all pages (`ExportPDF` component exists; print styles partial)
 - ⏳ Advanced report builder
 - ⏳ Scheduled report delivery
 
@@ -220,39 +230,56 @@ Design and architecture studios face significant operational challenges:
 - ⏳ AI-powered proposal generation (in-app)
 - ⏳ Intelligent task recommendations
 
-### 11. **Settings & Integrations** (Partial)
-- ✅ Studio branding (logo upload) — hidden in nav
-- ✅ User security settings — hidden in nav
-- ✅ Appearance/theme preferences — hidden in nav
+### 11. **Settings & Integrations** (Mostly Complete)
+- ✅ Studio general settings (logo/branding merged into `/settings/studio/general`)
+- ✅ User security settings (`/settings/user/security`)
+- ✅ Appearance/theme (`/settings/user/appearance` — light/dark/system, density, accent; synced via API + `next-themes`)
 - ✅ Xero integration setup
-- ✅ Gmail integration (basic OAuth)
-- ✅ Default project templates — hidden in nav
-- ⏳ Stripe payment integration (stub only)
+- ✅ Gmail integration (OAuth; connect banner on Inbox)
+- ✅ Google Calendar integration
+- ✅ Notion integration (OAuth + database mapping)
+- ✅ Default project templates (`/settings/studio/templates`)
+- ✅ Stripe SaaS billing (`/settings/studio/billing` — checkout, portal, webhooks when configured)
 - ✅ Zapier / API keys & webhooks — see [docs/ZAPIER.md](docs/ZAPIER.md)
+- ✅ Admin gate on studio settings (`settings.edit` permission)
 
 ### 12. **Authentication & Onboarding** (Core)
 - ✅ User registration and email verification
 - ✅ Password reset flow
 - ✅ OAuth integrations (Gmail, Xero)
-- ✅ Two-factor authentication (2FA) — hidden in nav
+- ⏳ Two-factor authentication (2FA) — UI scaffolded, not enabled
 - ✅ Studio onboarding wizard
 - ✅ Team invitation flow
 
-### 13. **Help Centre** (Planned — PRD Complete)
-- ⏳ World-class documentation (Intercom-style)
-- ⏳ Search across all articles
-- ⏳ Category-based organization (Projects, CRM, Finance, etc.)
-- ⏳ Screenshots and visual guides
-- ⏳ Popular articles and quick links
-- ⏳ Feedback tracking ("Was this helpful?")
+### 13. **Help Centre** (Core Complete)
+- ✅ Homepage (`/help`) with search and category cards
+- ✅ Category pages (`/help/[category]`)
+- ✅ Article pages (`/help/[category]/[slug]`) with markdown rendering
+- ✅ 58 in-app articles across 10 categories (Getting Started, Projects, CRM, Finance, etc.)
+- ✅ Popular articles and related-article links
+- ⏳ Article feedback ("Was this helpful?")
+- ⏳ Screenshot galleries on all articles
+
+### 14. **Landing & Marketing** (Core)
+- ✅ Marketing site (`landing/`) — platform pages, pricing, integrations
+- ✅ AI platform page + AI Playbook resources
+- ✅ Competitor compare pages (Programa, Studio Designer, Design Manager, Houzz Pro, Design Files)
+- ✅ Google Sign-In on landing auth flows
+- ✅ Changelog and knowledge base pages
+- ✅ Client portal marketing page
+
+### 15. **Client Portal** (Partial)
+- ✅ Separate `client_portal` app (finance, procurement, documents)
+- ✅ Backend `server/client_portal` API
+- ⏳ Stripe in-portal client payments (marketing copy; full payment flow TBD)
 
 ---
 
 ## 🚀 Features in Progress
 
 ### Phase 1: Contractor Portal V2 (High Priority)
-**Status:** PRD Complete, Development In-Progress  
-**Timeline:** Days 1–2 (estimated)
+**Status:** ✅ Core complete — polish & edge cases remaining  
+**Timeline:** Completed (May 2026)
 
 #### Scope
 1. **Backend: Add Contractor API**
@@ -283,18 +310,18 @@ Design and architecture studios face significant operational challenges:
    - Expiry alerts
 
 #### Deliverables
-- [ ] `POST /contractor_portal/add/` endpoint (Django)
-- [ ] Contractor invite email template
-- [ ] Add Contractor dialog (React component)
-- [ ] QR code generation and display
-- [ ] Access code validation
-- [ ] Insurance upload flow
+- [x] `POST /contractor_portal/add/` endpoint (Django)
+- [x] Contractor invite email template (Resend)
+- [x] Add Contractor dialog (React component)
+- [x] QR code generation and display (project settings)
+- [x] Access code validation (`POST …/project/{access_token}/auth/`)
+- [x] Insurance upload flow (studio + contractor portal profile)
 
 ---
 
 ### Phase 2: Help Centre (Critical — Third Priority)
-**Status:** PRD Complete, Design In-Progress  
-**Timeline:** Estimated 3–5 days  
+**Status:** ✅ Core live — content & feedback polish remaining  
+**Timeline:** ~58 articles shipped; feedback UI TBD  
 **Reference:** Intercom, Linear Docs, Notion Help
 
 #### Scope
@@ -328,18 +355,19 @@ Design and architecture studios face significant operational challenges:
    - Settings
 
 #### Deliverables
-- [ ] Homepage design + implementation
-- [ ] Dynamic article routing
-- [ ] Search functionality (client-side or API)
-- [ ] Article database/CMS (TBD)
+- [x] Homepage design + implementation
+- [x] Dynamic article routing
+- [x] Search functionality (client-side)
+- [x] Article content (static TS modules — 58 articles)
 - [ ] Screenshot galleries
-- [ ] 50+ articles with screenshots
+- [x] 50+ articles (text); screenshots still pending
+- [ ] Feedback tracking ("Was this helpful?")
 
 ---
 
 ### Phase 3: Reports Rebuild (High Priority)
-**Status:** PRD Complete, Development In-Progress  
-**Branch:** `feature/reports-redesign`
+**Status:** ✅ Core complete — PDF export polish remaining  
+**Branch:** Merged / on main
 
 #### Scope
 1. **Consolidation**: Reduce from 8 report pages to 6
@@ -347,10 +375,10 @@ Design and architecture studios face significant operational challenges:
    - Delete: productivity, sales, cost, profitability, utilisation (standalone)
 
 2. **Infrastructure**
-   - [ ] Add breadcrumb component (`ReportBreadcrumb.tsx`)
-   - [ ] Upgrade KPI cards with period comparison (vs. last month)
-   - [ ] Add PDF export button with `@media print` styles
-   - [ ] Consistent header + filter bar on every page
+   - [x] Add breadcrumb component (`ReportBreadcrumb.tsx`)
+   - [x] KPI cards + period filter bar on report pages
+   - [ ] PDF export button wired on all pages (`ExportPDF.tsx` exists)
+   - [x] Consistent header + filter bar on every page
 
 3. **6 Report Pages**
 
@@ -401,52 +429,49 @@ Design and architecture studios face significant operational challenges:
    - Period comparison KPIs
 
 #### Deliverables
-- [ ] Delete old standalone report pages
-- [ ] Update hub page with 6 cards only
-- [ ] Build all 6 report pages with design system compliance
-- [ ] Consistent KPI cards + filter bars
-- [ ] PDF export functionality
-- [ ] Loading skeletons + empty states
+- [x] Old standalone report pages removed (hub shows 6 cards only)
+- [x] Update hub page with 6 cards only
+- [x] Build all 6 report pages with design system compliance
+- [x] Consistent KPI cards + filter bars
+- [ ] PDF export functionality (component ready; not on all pages)
+- [x] Loading skeletons + empty states (per page)
 
 ---
 
 ### Phase 4: Settings Overhaul (Medium Priority)
-**Status:** PRD Complete  
-**Branch:** `fix/settings-overhaul` (to be created)
+**Status:** Mostly complete — optional dedicated Branding page remaining  
+**Branch:** Ongoing on main
 
 #### Scope
 1. **Visibility Changes** — Unhide currently hidden pages
-   - [ ] Branding (studio logo upload)
-   - [ ] Team management
-   - [ ] Roles & permissions
-   - [ ] Templates (default phases/tasks)
-   - [ ] Security (password, 2FA)
-   - [ ] Notifications preferences
-   - [ ] Appearance/theme
+   - [x] Branding (merged into Studio → General)
+   - [x] Team management
+   - [x] Roles & permissions
+   - [x] Templates (default phases/tasks)
+   - [x] Security (password; 2FA scaffold only)
+   - [x] Notifications preferences
+   - [x] Appearance/theme (`/settings/user/appearance` in sidebar; live preview + save)
 
 2. **Admin Gate**
-   - [ ] Apply `isAdmin` check to Studio settings section
-   - [ ] Only admins see: Team, Roles, Branding, Finance, Templates
+   - [x] Permission gate on Studio settings (`settings.edit` / `PermissionGuard`)
+   - [x] Non-admins see User settings only
 
 3. **Gmail Integration Move**
-   - [ ] Remove Gmail section from User Profile
-   - [ ] Add Gmail connect banner to `/app/inbox/`
-   - [ ] Shows "Connect Gmail" when disconnected
-   - [ ] Shows "Gmail connected" indicator when active
+   - [x] Gmail connect banner on Inbox (`/home/inbox`)
+   - [x] Connect / connected states
+   - [x] Gmail still available on Integrations page
 
 4. **Integrations Page Redesign**
-   - [ ] Connected card style: green left border, green "Connected" badge
-   - [ ] Disconnected card style: stone bg, muted text, "Connect" CTA
-   - [ ] Remove Stripe (fake, not wired)
-   - [ ] Keep Xero (real, wired)
-   - [ ] Remove Gmail (moved to Inbox)
+   - [x] Integration cards (Xero, Gmail, Calendar, Notion, Zapier)
+   - [x] Stripe moved to dedicated Billing page (real checkout when configured)
 
 #### Deliverables
-- [ ] Sidebar nav uncommented
-- [ ] Admin gate implemented
-- [ ] Gmail moved to Inbox with connect flow
-- [ ] Integrations page redesigned
-- [ ] All hidden pages functional and visible
+- [x] Settings sidebar with Team, Roles, Templates, Security, Notifications
+- [x] Admin gate implemented
+- [x] Gmail connect flow on Inbox
+- [x] Integrations page with live connectors
+- [x] Appearance link in sidebar (`Settings → User → Appearance`)
+- [ ] Optional dedicated Branding page (logo currently under Studio → General)
 
 ---
 
@@ -525,21 +550,23 @@ Design and architecture studios face significant operational challenges:
 
 | Category | Status | Progress |
 |----------|--------|----------|
-| **Core Features** | MVP Ready | 70% |
+| **Core Features** | MVP Ready | 80% |
 | Project Management | Complete | 85% |
-| Finance & Invoicing | Core Done | 75% |
-| CRM | Core Done | 70% |
-| Team Management | Partial | 60% |
-| **Advanced Features** | In Progress | 40% |
-| Contractor Portal | V1 Complete | 50% |
-| Reports | Redesign | 30% |
-| Help Centre | Planned | 10% |
-| AI Tools | Partial | 60% |
-| Landing / Marketing (AI page, Resources) | Core pages live | 75% |
-| **Polish & Maintenance** | Ongoing | 20% |
-| Settings Overhaul | Planned | 10% |
+| Finance & Invoicing | Core Done | 80% |
+| CRM | Core Done | 75% |
+| Team Management | Core Done | 75% |
+| **Advanced Features** | In Progress | 65% |
+| Contractor Portal | V2 Core Done | 85% |
+| Reports | Rebuild Core Done | 85% |
+| Help Centre | Core Live (58 articles) | 75% |
+| AI Tools | Partial | 65% |
+| Landing / Marketing | Core pages live | 85% |
+| Client Portal | Partial | 50% |
+| **Polish & Maintenance** | Ongoing | 35% |
+| Settings Overhaul | Mostly Done | 90% |
+| Stripe Billing | Wired (env-dependent) | 70% |
 | Performance Optimization | Ongoing | 40% |
-| Documentation | Ongoing | 30% |
+| Documentation (in-app help) | Ongoing | 75% |
 | Mobile Responsiveness | Ongoing | 60% |
 
 ### Timeline (Next 6 Months)
@@ -547,15 +574,22 @@ Design and architecture studios face significant operational challenges:
 #### May 2026 (Current)
 - [x] Landing: `/platform/ai` marketing page (Focuspilot design system)
 - [x] Landing: Resources — Templates + AI Playbook
+- [x] Landing: Competitor compare pages (`/compare/*`)
 - [x] Google Sign-In (landing + studio app)
-- [ ] Contractor Portal V2 finalization
-- [ ] Reports rebuild (Phase 1–3)
-- [ ] Settings overhaul
+- [x] Contractor Portal V2 (add API, QR, access codes, insurance, invites)
+- [x] Reports rebuild (6-page hub + Team utilisation tabs)
+- [x] Help Centre core (`/help`, 58 articles, search)
+- [x] Settings overhaul (sidebar, integrations, admin gate, Inbox Gmail)
+- [x] Stripe SaaS billing module (`server/billing`)
+- [x] Notion + Zapier integrations
+- [ ] Reports PDF export on all pages
+- [ ] Help Centre feedback + screenshots
+- [ ] 2FA enablement
 - [x] Initial .gitignore setup
 
 #### June 2026
-- [ ] Help Centre launch
-- [ ] Contractor portal QR codes + insurance tracking
+- [ ] Help Centre polish (screenshots, feedback widget)
+- [ ] Client portal Stripe payments
 - [ ] Mobile optimization push
 
 #### July–August 2026
@@ -720,7 +754,7 @@ client/
 │   ├── crm/               # Contact management
 │   ├── reports/           # Analytics & reports
 │   ├── settings/          # User & studio settings
-│   ├── help/              # Help centre (planned)
+│   ├── help/              # Help centre (58 articles)
 │   └── [other modules]
 ├── components/            # Reusable React components
 │   ├── ui/               # shadcn/ui components
@@ -748,6 +782,10 @@ server/
 ├── notifications/       # Notifications app
 ├── xero/                # Xero integration app
 ├── gmail/               # Gmail integration app
+├── notion/              # Notion integration app
+├── billing/             # Stripe SaaS subscriptions
+├── integrations/        # Zapier / public API (fp_live_ keys)
+├── client_portal/       # Client portal API
 ├── documents/           # Document library app
 ├── library/             # Product/material library app
 └── manage.py            # Django management CLI
@@ -758,7 +796,9 @@ server/
 ```
 Frontend (Next.js) ←→ Django REST API ←→ External Services
                         (JWT Auth)    ├─ Xero
-                                      ├─ Gmail
+                                      ├─ Gmail / Calendar
+                                      ├─ Notion
+                                      ├─ Stripe
                                       ├─ OpenAI
                                       └─ AWS S3
 ```
@@ -794,7 +834,7 @@ See [CLAUDE.md](./client/CLAUDE.md) for detailed frontend standards (Next.js bes
 ## 📞 Support & Contact
 
 For questions or issues:
-- **Help Centre:** http://localhost:3000/help (when available)
+- **Help Centre:** http://localhost:3000/help
 - **Email Support:** support@focuspilot.io (production)
 - **Bug Reports:** GitHub Issues (when repo is public)
 
@@ -829,5 +869,5 @@ Proprietary — All rights reserved. Focuspilot © 2026.
 
 ---
 
-**Last Updated:** 15 May 2026  
+**Last Updated:** 20 May 2026  
 **Maintained By:** Focuspilot Development Team

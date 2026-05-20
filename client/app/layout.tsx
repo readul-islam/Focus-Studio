@@ -7,6 +7,7 @@ import GoeyToasterClient from '@/components/GoeyToasterClient';
 import UserbackWidget from '@/components/userBack/UserbackWidget';
 import { RootLayoutWrapper } from '@/components/layout/RootLayoutWrapper';
 import { AppUpdateChecker } from '@/components/app-update-checker';
+import { ThemeScript } from '@/components/theme-script';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,8 +18,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-white min-h-screen text-gray-900 antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
+      <body className={`${inter.className} min-h-screen bg-background text-foreground antialiased`}>
         <UserbackWidget />
         <AppUpdateChecker />
         <GoeyToasterClient />

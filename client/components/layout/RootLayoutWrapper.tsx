@@ -60,11 +60,11 @@ export function RootLayoutWrapper({ children }: { children: ReactNode }) {
     <PrivateRoute>
       <SubscriptionGate>
         <SidebarProvider defaultOpen={true}>
-          <div className="flex min-h-screen w-full bg-white">
+          <div className="flex min-h-screen w-full bg-background">
             <AppSidebar />
-            <div className="flex-1 h-screen flex flex-col min-w-0 bg-white">
+            <div className="flex-1 h-screen flex flex-col min-w-0 bg-background">
               <TopBar />
-              <main className="flex-1 bg-stone-50 overflow-auto">{children}</main>
+              <main className="flex-1 bg-muted/30 overflow-auto">{children}</main>
             </div>
           </div>
         </SidebarProvider>

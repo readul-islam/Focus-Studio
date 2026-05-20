@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { usePermissions } from '@/hooks/usePermissions';
-import { User, Clock, Settings, DollarSign, Puzzle, Users, LucideIcon, Shield, Bell, FileText, ShieldCheck, CreditCard, Webhook } from 'lucide-react';
+import { User, Clock, Settings, DollarSign, Puzzle, Users, LucideIcon, Shield, Bell, FileText, ShieldCheck, CreditCard, Webhook, Palette } from 'lucide-react';
 
 type Item = {
   label: string;
@@ -16,6 +16,7 @@ const userItems: Item[] = [
   { label: 'Profile', href: '/settings/user/profile', icon: User },
   { label: 'Security', href: '/settings/user/security', icon: Shield },
   { label: 'Notifications', href: '/settings/user/notifications', icon: Bell },
+  { label: 'Appearance', href: '/settings/user/appearance', icon: Palette },
   { label: 'Time Tracking', href: '/settings/user/time-tracking', icon: Clock },
 ];
 
@@ -44,7 +45,7 @@ function Section({ title, items }: { title: string; items: Item[] }) {
               href={item.href}
               className={cn(
                 'flex items-center gap-2 px-3 py-2 text-sm rounded-md transition-colors',
-                active ? 'bg-stone-100 text-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-stone-50'
+                active ? 'bg-accent text-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
               )}
               aria-current={active ? 'page' : undefined}
             >
@@ -92,7 +93,7 @@ export default function SettingsSidebar() {
   return (
     <>
       {/* Mobile / tablet: horizontal scrollable tab bar */}
-      <div className="lg:hidden w-full overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] border-b border-gray-100 bg-white rounded-lg">
+      <div className="lg:hidden w-full overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] border-b border-border bg-card rounded-lg">
         <div className="flex items-center gap-1 p-2">
           {allItems.map(item => (
             <TabItem key={item.href} item={item} />

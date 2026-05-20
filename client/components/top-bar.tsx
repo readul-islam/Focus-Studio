@@ -8,7 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { AlertCircle, Play, Pause, Square, Plus, Search, Command, Clock, X, ExternalLink, ClipboardCheck, Calendar, Sparkles, Package, ChevronDown, User, LogOut } from 'lucide-react';
+import { AlertCircle, Play, Pause, Square, Plus, Search, Command, Clock, X, ExternalLink, ClipboardCheck, Calendar, Sparkles, Package, ChevronDown, User, LogOut, Sun } from 'lucide-react';
 import { Switch } from './ui/switch';
 import { Label } from '@/components/ui/label';
 import { gooeyToast as toast } from 'goey-toast';
@@ -38,6 +38,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenuGroup, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { useRouter, usePathname } from 'next/navigation';
 import { useGmailSearchStore } from '@/store/useGmailSearchStore';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { usePermissions } from '@/hooks/usePermissions';
 import { CommandPalette } from '@/components/command-palette';
 
@@ -462,7 +463,7 @@ export function TopBar() {
 
   // ── Render ──────────────────────────────────────────────────────────────
   return (
-    <header className="h-14 bg-white gap-3 flex items-center justify-between px-4 lg:px-6 border-b border-gray-200">
+    <header className="h-14 bg-background gap-3 flex items-center justify-between px-4 lg:px-6 border-b border-border">
       <div className="flex items-center gap-6 flex-1">
         <div className="lg:block hidden"><BreadcrumbBar /></div>
 
@@ -473,7 +474,7 @@ export function TopBar() {
                 <button
                   type="button"
                   onClick={() => setCommandOpen(true)}
-                  className="relative w-full flex items-center h-9 px-3 gap-2 rounded-md border border-input bg-white text-sm text-gray-400 hover:bg-gray-50 transition-colors cursor-pointer"
+                  className="relative w-full flex items-center h-9 px-3 gap-2 rounded-md border border-input bg-background text-sm text-muted-foreground hover:bg-accent transition-colors cursor-pointer"
                 >
                   <Search className="w-4 h-4 flex-shrink-0 text-gray-400" />
                   <span className="flex-1 text-left text-gray-400 text-sm">Search or ask AI...</span>
@@ -688,6 +689,8 @@ export function TopBar() {
             </DropdownMenuContent>
           </DropdownMenu>
 
+          <ThemeToggle />
+
           {/* User avatar */}
           <DropdownMenu>
             <Tooltip>
@@ -705,7 +708,7 @@ export function TopBar() {
               </TooltipTrigger>
               <TooltipContent><p>Account</p></TooltipContent>
             </Tooltip>
-            <DropdownMenuContent className="min-w-56 bg-white rounded-lg shadow-xl" align="end" sideOffset={8}>
+            <DropdownMenuContent className="min-w-56 bg-popover rounded-lg shadow-xl" align="end" sideOffset={8}>
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="h-8 w-8 rounded-lg">
@@ -727,6 +730,9 @@ export function TopBar() {
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => window.location.href = '/settings/user/time-tracking'} className="cursor-pointer">
                   <Clock className="w-4 h-4 mr-2" /> Time Tracking
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => window.location.href = '/settings/user/appearance'} className="cursor-pointer">
+                  <Sun className="w-4 h-4 mr-2" /> Appearance
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />

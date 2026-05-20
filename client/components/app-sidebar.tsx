@@ -148,15 +148,15 @@ function NavItem({ item, isActive, isCollapsed }: { item: Item; isActive: boolea
       href={item.href}
       className={cn(
         'relative flex  items-center py-2 rounded-md text-sm font-medium h-9 px-[8px] transition-colors duration-150',
-        !isActive && 'hover:bg-stone-50',
-        !isCollapsed && isActive && 'bg-stone-100',
+        !isActive && 'hover:bg-sidebar-accent',
+        !isCollapsed && isActive && 'bg-sidebar-accent',
       )}
     >
       {/* Animated active background - only when collapsed */}
       {isCollapsed && isActive && (
         <motion.span
           layoutId="sidebar-nav-active"
-          className="absolute inset-0 bg-stone-100 rounded-md"
+          className="absolute inset-0 bg-sidebar-accent rounded-md"
           transition={{ type: 'spring', stiffness: 400, damping: 30 }}
         />
       )}
@@ -164,7 +164,7 @@ function NavItem({ item, isActive, isCollapsed }: { item: Item; isActive: boolea
       <div
         className={cn(
           'relative z-10 w-5 h-5 flex items-center justify-center flex-shrink-0 transition-colors duration-150',
-          isActive ? 'text-gray-900' : 'text-gray-600',
+          isActive ? 'text-sidebar-accent-foreground' : 'text-muted-foreground',
         )}
       >
         <Icon className="w-5 h-5" />
@@ -176,7 +176,7 @@ function NavItem({ item, isActive, isCollapsed }: { item: Item; isActive: boolea
         animate={isCollapsed ? 'collapsed' : 'expanded'}
         className={cn(
           'relative z-10 whitespace-nowrap overflow-hidden transition-colors duration-150',
-          isActive ? 'text-gray-900' : 'text-gray-600',
+          isActive ? 'text-sidebar-accent-foreground' : 'text-muted-foreground',
         )}
       >
         {item.label}
@@ -307,14 +307,14 @@ export function AppSidebar() {
         initial={false}
         animate={isCollapsed ? "collapsed" : "expanded"}
         className={cn(
-          "border-r border-gray-200 h-screen flex flex-col bg-white overflow-hidden",
+          "border-r border-sidebar-border h-screen flex flex-col bg-sidebar text-sidebar-foreground overflow-hidden",
           isTablet ? "fixed inset-y-0 left-0 z-50" : "",
           isTablet && !isCollapsed ? "shadow-2xl" : "",
           !hasMounted && "opacity-0",
         )}
       >
         {/* Logo Section */}
-        <div className="p-3 bg-white relative">
+        <div className="p-3 bg-sidebar relative">
           <div className="flex items-center h-11">
             <div className="flex items-center flex-1 min-w-0">
               <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
@@ -330,7 +330,7 @@ export function AppSidebar() {
                 variants={logoTextVariants}
                 initial={false}
                 animate={isCollapsed ? "collapsed" : "expanded"}
-                className="font-semibold text-gray-900 whitespace-nowrap overflow-hidden ml-3"
+                className="font-semibold text-sidebar-foreground whitespace-nowrap overflow-hidden ml-3"
               >
                 Focuspilot
               </motion.span>
@@ -352,7 +352,7 @@ export function AppSidebar() {
         </div>
 
         {/* Navigation Area */}
-        <nav className="flex-1 px-3.5 space-y-1 bg-white overflow-hidden">
+        <nav className="flex-1 px-3.5 space-y-1 bg-sidebar overflow-hidden">
           {/* Personal Group */}
           <div className="space-y-0">
             {allowedPersonalItems.map((item, index) => (
@@ -478,7 +478,7 @@ export function AppSidebar() {
         </nav>
 
         {/* Footer */}
-        <div className="px-3.5 pb-3 bg-white space-y-0">
+        <div className="px-3.5 pb-3 bg-sidebar space-y-0">
           {extraSidebarItems.map((item, index) => (
             <NavItem
               key={`extra-${index}`}
