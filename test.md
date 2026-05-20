@@ -1211,8 +1211,9 @@ Copy for each new feature:
 
 | Feature | Status |
 |---------|--------|
-| 2FA | UI only — not fully enabled |
-| PDF export on all report pages | Partial |
+| 2FA | Enabled — Settings → Security; login redirects to `/verify-2fa` |
+| PDF export on all report pages | Export PDF on all 6 report hub pages (browser print → Save as PDF) |
+| Help feedback + screenshots | Feedback widget live; screenshots show placeholder until files added under `client/public/help-screenshots/` |
 | Client portal Stripe payments | Marketing only |
 | WebSockets for Team chat | Polling ~5s (not instant) |
 | Gantt on `/projects/{id}/plan` | May be partial |

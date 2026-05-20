@@ -10,8 +10,10 @@ interface ExportPDFProps {
 
 export function ExportPDF({ title, className }: ExportPDFProps) {
   const handlePrint = () => {
-    // Use browser's print dialog which can save as PDF
+    const previousTitle = document.title;
+    document.title = `${title} — Focuspilot`;
     window.print();
+    document.title = previousTitle;
   };
 
   return (

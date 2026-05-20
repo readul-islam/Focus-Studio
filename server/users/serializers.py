@@ -22,10 +22,18 @@ class StudioSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     studio = StudioSerializer(read_only=True)
+    is_2fa_enabled = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'name', 'studio', 'role', 'phone_number', 'title', 'pay_per_hour', 'hours_per_week', 'profile_picture']
+        fields = [
+            'id', 'email', 'name', 'studio', 'role', 'phone_number', 'title',
+            'pay_per_hour', 'hours_per_week', 'profile_picture', 'is_2fa_enabled',
+        ]
+
+    def get_is_2fa_enabled(self, obj):
+        tf = getattr(obj, 'two_factor', None)
+        return bool(tf and tf.is_enabled)
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)

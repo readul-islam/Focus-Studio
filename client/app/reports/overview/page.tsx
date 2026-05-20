@@ -12,7 +12,8 @@ import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Clock, DollarSign, AlertCircle, ArrowRight, TrendingUp } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { ReportInsights, ReportPageLayout } from '@/components/reports/ReportInsights';
+import { ReportPageLayout } from '@/components/reports/ReportInsights';
+import { ReportPageHeader } from '@/components/reports/ReportPageHeader';
 
 const C = '£';
 
@@ -147,16 +148,13 @@ function OverviewPageContent() {
 
   return (
     <ReportPageLayout>
-      <div className="mx-auto max-w-7xl space-y-6">
+      <div className="report-print-area mx-auto max-w-7xl space-y-6">
 
-        {/* Header */}
-        <div className="flex flex-wrap items-center gap-3 justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-900">Studio Overview</h1>
-            <p className="text-sm text-gray-500 mt-1">High-level snapshot of your studio's performance</p>
-          </div>
-          <ReportInsights />
-        </div>
+        <ReportPageHeader
+          title="Studio Overview"
+          subtitle="High-level snapshot of your studio's performance"
+          printTitle="Studio Overview Report"
+        />
 
         <ReportFilterBar period={period} onPeriodChange={setPeriod} onCustomRange={setCustomRange} customFrom={customRange?.from} customTo={customRange?.to} />
 

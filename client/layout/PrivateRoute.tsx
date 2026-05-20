@@ -1,30 +1,15 @@
 'use client';
 
 import useUser from '@/hooks/useUser';
+import { isPublicAppRoute } from '@/lib/auth-routes';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
-const PUBLIC_ROUTES = [
-  '/',
-  '/login',
-  '/register',
-  '/verify-otp',
-  '/verify-email',
-  '/reset-password',
-  '/forgot-password',
-  '/accept-invitation',
-  '/pricing',
-  '/auth/google/callback',
-];
-
 export default function PrivateRoute({ children }: { children: React.ReactNode }) {
-  const { user, isLoading } = useUser();
   const router = useRouter();
   const pathname = usePathname();
-
-  const isPublic =
-    !!pathname &&
-    PUBLIC_ROUTES.some((r) => pathname === r || pathname.startsWith(`${r}/`));
+  const isPublic = isPublicAppRoute(pathname);
+  const { user, isLoading } = useUser({ enabled: !isPublic });
   const isOnboarding = pathname === '/onboarding';
 
   useEffect(() => {

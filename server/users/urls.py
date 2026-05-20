@@ -1,5 +1,13 @@
 from django.urls import path
 from .google_auth import google_auth_start, google_auth_callback, google_oauth_debug
+from .two_factor_views import (
+    two_factor_status,
+    two_factor_setup,
+    two_factor_confirm,
+    two_factor_disable,
+    two_factor_session,
+    verify_two_factor_login,
+)
 from .views import (
     RegisterView, CustomTokenObtainPairView, CustomTokenRefreshView, LogoutView,
     SendInvitationView, StudioCreateView, StudioUpdateView, get_studio_users,
@@ -26,6 +34,12 @@ urlpatterns = [
     path('otp-session/', OtpSessionView.as_view(), name='otp-session'),
     path('verify-otp/', VerifyOtpView.as_view(), name='verify-otp'),
     path('resend-otp/', ResendOtpView.as_view(), name='resend-otp'),
+    path('2fa/status/', two_factor_status, name='2fa-status'),
+    path('2fa/setup/', two_factor_setup, name='2fa-setup'),
+    path('2fa/confirm/', two_factor_confirm, name='2fa-confirm'),
+    path('2fa/disable/', two_factor_disable, name='2fa-disable'),
+    path('2fa-session/', two_factor_session, name='2fa-session'),
+    path('verify-2fa/', verify_two_factor_login, name='verify-2fa'),
     path('login/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
     path('logout/', LogoutView.as_view(), name='logout'),

@@ -26,6 +26,23 @@ function LoginContent() {
 
   const { mutate: login, isPending } = useLogin();
 
+  /** Auth-step paths must not be used as post-login destination unless 2FA is required. */
+  const resolvePostLoginPath = (requires2fa: boolean) => {
+    const next = searchParams.get('next');
+    const authSteps = ['/verify-2fa', '/verify-otp', '/verify-email'];
+    if (requires2fa) {
+      const after2fa =
+        next && next.startsWith('/') && !authSteps.includes(next) ? next : '/home/dashboard';
+      const q =
+        after2fa !== '/home/dashboard' ? `?next=${encodeURIComponent(after2fa)}` : '';
+      return `/verify-2fa${q}`;
+    }
+    if (next && next.startsWith('/') && !authSteps.includes(next)) {
+      return next;
+    }
+    return '/home/dashboard';
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormError('');
@@ -33,9 +50,8 @@ function LoginContent() {
     login(
       { email, password },
       {
-        onSuccess: () => {
-          const next = searchParams.get('next');
-          router.push(next && next.startsWith('/') ? next : '/home/dashboard');
+        onSuccess: (data: { requires_2fa?: boolean }) => {
+          router.push(resolvePostLoginPath(!!data?.requires_2fa));
         },
         onError: () => {
           setFormError('Invalid email or password. Please try again.');

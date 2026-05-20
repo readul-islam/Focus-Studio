@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { isPublicApiAuthPath, isPublicAppRoute } from '@/lib/auth-routes';
 
 function normalizeApiBase(url: string): string {
   return url.replace(/\/$/, '').replace('127.0.0.1', 'localhost');
@@ -13,21 +14,8 @@ const api = axios.create({
   withCredentials: true, // send httpOnly cookies on every request
 });
 
-// Endpoints that must never receive an Authorization header
-const PUBLIC_AUTH_ENDPOINTS = [
-  '/user/login/',
-  '/user/register/',
-  '/user/refresh/',
-  '/user/logout/',
-  '/user/password-reset/',
-  '/user/password-reset-confirm/',
-  '/user/otp-session/',
-  '/user/verify-otp/',
-  '/user/resend-otp/',
-];
-
 // No request interceptor needed — cookies are sent automatically by the browser.
-// The PUBLIC_AUTH_ENDPOINTS list is kept for the response interceptor below.
+// Public API paths: see auth-routes.ts (isPublicApiAuthPath).
 
 const handleError = (error: any) => {
   const err: any = new Error(error.response ? `HTTP error! status: ${error.response.status}` : error.message);
@@ -124,7 +112,8 @@ let isRedirectingToLogin = false;
 function redirectToLogin() {
   if (typeof window === 'undefined' || isRedirectingToLogin) return;
   const path = window.location.pathname;
-  if (path.startsWith('/login') || path.startsWith('/auth/google/callback')) return;
+  // Stay on signup, OTP, password reset, etc. — do not bounce to login
+  if (isPublicAppRoute(path)) return;
   isRedirectingToLogin = true;
   window.location.href = '/login';
 }
@@ -140,11 +129,18 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    const isPublicAuthRequest = PUBLIC_AUTH_ENDPOINTS.some(p =>
-      (originalRequest.url || '').includes(p)
-    );
+    const isPublicAuthRequest = isPublicApiAuthPath(originalRequest.url);
 
-    if (error.response?.status === 401 && !originalRequest._retry && !isPublicAuthRequest) {
+    // On public app pages, never attempt refresh (stale cookies from a prior session)
+    const onPublicPage =
+      typeof window !== 'undefined' && isPublicAppRoute(window.location.pathname);
+
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !isPublicAuthRequest &&
+      !onPublicPage
+    ) {
       originalRequest._retry = true;
 
       try {

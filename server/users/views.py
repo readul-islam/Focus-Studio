@@ -74,14 +74,24 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
     def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        if response.status_code == 200:
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.user
+
+        tf = getattr(user, 'two_factor', None)
+        if tf and tf.is_enabled:
             secure = not settings.DEBUG
             cookie = _cookie_settings(secure)
-            access = response.data.pop('access')
-            refresh = response.data.pop('refresh')
-            response.set_cookie('access', access, max_age=86400, **cookie)
-            response.set_cookie('refresh', refresh, max_age=86400, **cookie)
+            response = Response({'requires_2fa': True}, status=status.HTTP_200_OK)
+            response.set_cookie('pending_2fa', user.email, max_age=60 * 10, **cookie)
+            return response
+
+        refresh = RefreshToken.for_user(user)
+        secure = not settings.DEBUG
+        cookie = _cookie_settings(secure)
+        response = Response({'user': UserSerializer(user).data}, status=status.HTTP_200_OK)
+        response.set_cookie('access', str(refresh.access_token), max_age=86400, **cookie)
+        response.set_cookie('refresh', str(refresh), max_age=86400, **cookie)
         return response
 
 
@@ -128,6 +138,7 @@ class LogoutView(APIView):
         response.delete_cookie('access', path='/', domain=domain)
         response.delete_cookie('refresh', path='/', domain=domain)
         response.delete_cookie('pending_email', path='/', domain=domain)
+        response.delete_cookie('pending_2fa', path='/', domain=domain)
         return response
 
 class RegisterView(generics.CreateAPIView):

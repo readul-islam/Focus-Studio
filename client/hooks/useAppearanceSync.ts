@@ -18,8 +18,8 @@ const APPEARANCE_URL = '/user/self/appearance/';
  * Syncs theme with next-themes (localStorage + html.dark) and density/accent on document.
  * API is source of truth on first load; user changes update both instantly.
  */
-export function useAppearanceSync() {
-  const { user, isLoading: userLoading } = useUser();
+export function useAppearanceSync({ enabled = true }: { enabled?: boolean } = {}) {
+  const { user, isLoading: userLoading } = useUser({ enabled });
   const { theme, setTheme, resolvedTheme } = useTheme();
   const syncedFromApi = useRef(false);
   const { data } = useFetch(user?.email ? APPEARANCE_URL : null, {

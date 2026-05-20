@@ -15,7 +15,8 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Users, Clock, Target, Calendar } from 'lucide-react';
-import { ReportInsights, ReportPageLayout } from '@/components/reports/ReportInsights';
+import { ReportPageLayout } from '@/components/reports/ReportInsights';
+import { ReportPageHeader } from '@/components/reports/ReportPageHeader';
 
 const C = '£';
 
@@ -65,15 +66,13 @@ function TeamPageContent() {
 
   return (
     <ReportPageLayout>
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="report-print-area max-w-7xl mx-auto space-y-6">
 
-        <div className="flex flex-wrap items-center gap-3 justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-900">Team</h1>
-            <p className="text-sm text-gray-500 mt-1">Hours, utilisation and timesheet management</p>
-          </div>
-          <ReportInsights />
-        </div>
+        <ReportPageHeader
+          title="Team"
+          subtitle="Hours, utilisation and timesheet management"
+          printTitle="Team Report"
+        />
 
         <ReportFilterBar
           period={period}

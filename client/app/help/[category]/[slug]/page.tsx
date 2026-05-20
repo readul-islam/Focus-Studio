@@ -1,8 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ChevronRight, Clock, Calendar } from 'lucide-react';
-import { getArticleBySlug, getCategoryBySlug, getRelatedArticles, ALL_ARTICLES, HELP_CATEGORIES } from '@/lib/help-content';
+import { Clock, Calendar } from 'lucide-react';
+import { getArticleBySlug, getCategoryBySlug, getRelatedArticles, ALL_ARTICLES } from '@/lib/help-content';
+import { HelpArticleScreenshots } from '@/components/help/HelpArticleScreenshots';
+import { HelpArticleFeedback } from '@/components/help/HelpArticleFeedback';
 
 export function generateStaticParams() {
   return ALL_ARTICLES.map((article) => ({
@@ -114,6 +116,10 @@ export default function ArticlePage({ params }: { params: { category: string; sl
       <div className="prose prose-lg max-w-none mb-12">
         {renderMarkdown(article.content)}
       </div>
+
+      <HelpArticleScreenshots screenshots={article.screenshots} title={article.title} />
+
+      <HelpArticleFeedback category={params.category} articleSlug={params.slug} />
 
       {/* Related Articles */}
       {relatedArticles.length > 0 && (

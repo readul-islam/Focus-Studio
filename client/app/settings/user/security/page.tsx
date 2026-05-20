@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Section } from '@/components/settings/section';
+import { TwoFactorSection } from '@/components/settings/TwoFactorSection';
 import { Eye, EyeOff } from 'lucide-react';
 import { gooeyToast as toast } from 'goey-toast';
 import { usePost } from '@/hooks/usePost';
@@ -94,35 +95,7 @@ export default function UserSecurityPage() {
         </form>
       </Section>
 
-      {/* ---------- 2FA Section ---------- */}
-      {/* <Section title="Two-factor authentication" description="Add an extra layer of security to your account.">
-        <form
-          action={async fd => {
-            fd.set('section', 'Two-factor authentication');
-            const res = await (formAction as any)(fd);
-            if (res?.success) toast({ title: 'Saved', description: '2FA preference updated.' });
-          }}
-          className="space-y-4"
-        >
-          <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4">
-            <div>
-              <div className="font-medium text-gray-900">Authenticator app</div>
-              <div className="text-sm text-gray-600">Use an app to generate verification codes.</div>
-            </div>
-            <Switch name="auth_app" />
-          </div>
-          <div className="flex items-center justify-between rounded-lg border border-gray-200 p-4">
-            <div>
-              <div className="font-medium text-gray-900">SMS backup codes</div>
-              <div className="text-sm text-gray-600">Send codes to your phone if you lose access.</div>
-            </div>
-            <Switch name="sms_backup" />
-          </div>
-          <div className="flex justify-end">
-            <Button disabled={pending}>{pending ? 'Saving...' : 'Save 2FA settings'}</Button>
-          </div>
-        </form>
-      </Section> */}
+      <TwoFactorSection />
 
       {/* ---------- Active Sessions Section ---------- */}
       {/* <Section title="Active sessions" description="Sign out devices you don’t recognize.">

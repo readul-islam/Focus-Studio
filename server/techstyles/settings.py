@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'meetings',
     'notifications',
     'changelog',
+    'help_center',
     'billing',
     'integrations',
     'notion',

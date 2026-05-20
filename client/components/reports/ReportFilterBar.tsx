@@ -27,7 +27,7 @@ export function ReportFilterBar({
   extra,
 }: ReportFilterBarProps) {
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <div className="no-print flex flex-wrap items-center gap-3">
       {/* Period toggle */}
       <div className="flex items-center gap-1 bg-stone-100 rounded-lg p-1">
         {QUICK_PERIODS.map(p => (

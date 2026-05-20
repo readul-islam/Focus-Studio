@@ -10,6 +10,7 @@ const PUBLIC_ROUTES = [
   '/accept-invitation',
   '/verify-email',
   '/verify-otp',
+  '/verify-2fa',
   '/pricing',
 ];
 
@@ -39,6 +40,7 @@ export function middleware(request: NextRequest) {
 
   const hasSession = !!request.cookies.get('access')?.value || !!request.cookies.get('refresh')?.value;
   const hasPendingEmail = !!request.cookies.get('pending_email')?.value;
+  const hasPending2fa = !!request.cookies.get('pending_2fa')?.value;
 
   // Logged-in users skip marketing home
   if (hasSession && pathname === '/') {
@@ -58,8 +60,26 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/verify-otp', request.url));
   }
 
+  // Mid-login 2FA: pending_2fa cookie set after password, before TOTP
+  if (hasPending2fa && !hasSession) {
+    if (pathname === '/verify-2fa' || pathname === '/login') {
+      return NextResponse.next();
+    }
+    return NextResponse.redirect(new URL('/verify-2fa', request.url));
+  }
+
+  // Already signed in — skip 2FA page
+  if (hasSession && pathname === '/verify-2fa') {
+    return NextResponse.redirect(new URL('/home/dashboard', request.url));
+  }
+
   // No session, no pending_email → /verify-otp or /verify-email → send to login
-  if (!hasSession && !hasPendingEmail && (pathname === '/verify-otp' || pathname === '/verify-email')) {
+  if (!hasSession && !hasPendingEmail && !hasPending2fa && (pathname === '/verify-otp' || pathname === '/verify-email')) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  // No session, no pending_2fa → /verify-2fa → send to login
+  if (!hasSession && !hasPending2fa && pathname === '/verify-2fa') {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 

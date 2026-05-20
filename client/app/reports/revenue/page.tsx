@@ -9,7 +9,8 @@ import { KpiCard } from '@/components/reports/KpiCard';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TrendingUp, TrendingDown, DollarSign, Percent } from 'lucide-react';
-import { ReportInsights, ReportPageLayout } from '@/components/reports/ReportInsights';
+import { ReportPageLayout } from '@/components/reports/ReportInsights';
+import { ReportPageHeader } from '@/components/reports/ReportPageHeader';
 import { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine, Cell } from 'recharts';
 
 const C = '£';
@@ -57,15 +58,13 @@ function RevenuePLPageContent() {
 
   return (
     <ReportPageLayout>
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="report-print-area max-w-7xl mx-auto space-y-6">
 
-        <div className="flex flex-wrap items-center gap-3 justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-900">Revenue & P&L</h1>
-            <p className="text-sm text-gray-500 mt-1">Studio profitability from invoices, purchase orders and staff costs</p>
-          </div>
-          <ReportInsights />
-        </div>
+        <ReportPageHeader
+          title="Revenue & P&L"
+          subtitle="Studio profitability from invoices, purchase orders and staff costs"
+          printTitle="Revenue and P&L Report"
+        />
 
         <ReportFilterBar period={period} onPeriodChange={setPeriod} onCustomRange={setCustomRange} customFrom={customRange?.from} customTo={customRange?.to} />
 

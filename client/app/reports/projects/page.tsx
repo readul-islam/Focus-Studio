@@ -11,7 +11,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ChevronDown, ChevronRight, FolderOpen, Timer, DollarSign } from 'lucide-react';
-import { ReportInsights, ReportPageLayout } from '@/components/reports/ReportInsights';
+import { ReportPageLayout } from '@/components/reports/ReportInsights';
+import { ReportPageHeader } from '@/components/reports/ReportPageHeader';
 import { useCurrency } from '@/lib/getCurrencySymbol';
 import ExportButton from '@/components/ui/ExportButton';
 import { KpiCard } from '@/components/reports/KpiCard';
@@ -135,16 +136,13 @@ const ProjectReport = () => {
 
   return (
     <ReportPageLayout>
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="report-print-area max-w-7xl mx-auto space-y-6">
 
-
-        <div className="flex flex-wrap items-center gap-3 justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-900">Projects</h1>
-            <p className="text-sm text-gray-500 mt-1">Track hours, budget burn and fee spend per project and phase</p>
-          </div>
-          <ReportInsights />
-        </div>
+        <ReportPageHeader
+          title="Projects"
+          subtitle="Track hours, budget burn and fee spend per project and phase"
+          printTitle="Projects Report"
+        />
 
         <ReportFilterBar
           period={period}

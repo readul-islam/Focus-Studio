@@ -260,3 +260,16 @@ class OtpVerification(models.Model):
 
     def __str__(self):
         return f"OTP for {self.user.email} (expires {self.expires_at})"
+
+
+class UserTwoFactor(models.Model):
+    """Authenticator-app TOTP for studio users."""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='two_factor')
+    totp_secret_signed = models.TextField(blank=True, default='')
+    is_enabled = models.BooleanField(default=False)
+    backup_codes_hashes = models.JSONField(default=list, blank=True)
+    enabled_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        state = 'enabled' if self.is_enabled else 'disabled'
+        return f'2FA ({state}) for {self.user.email}'

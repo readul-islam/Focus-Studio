@@ -41,6 +41,7 @@ urlpatterns = [
     path('meetings/', include('meetings.urls')),
     path('notifications/', include('notifications.urls')),
     path('changelog/', include('changelog.urls')),
+    path('help/', include('help_center.urls')),
     path('billing/', include('billing.urls')),
     path('integrations/', include('integrations.urls')),
     path('notion/', include('notion.urls')),

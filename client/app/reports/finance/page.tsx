@@ -9,7 +9,8 @@ import { KpiCard } from '@/components/reports/KpiCard';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { TrendingUp, CheckCircle, AlertCircle, ShoppingCart } from 'lucide-react';
-import { ReportInsights, ReportPageLayout } from '@/components/reports/ReportInsights';
+import { ReportPageLayout } from '@/components/reports/ReportInsights';
+import { ReportPageHeader } from '@/components/reports/ReportPageHeader';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 const C = '£';
@@ -79,16 +80,13 @@ function FinancePageContent() {
 
   return (
     <ReportPageLayout>
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="report-print-area max-w-7xl mx-auto space-y-6">
 
-
-        <div className="flex flex-wrap items-center gap-3 justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-900">Finance</h1>
-            <p className="text-sm text-gray-500 mt-1">Revenue, cash flow and outstanding fees</p>
-          </div>
-          <ReportInsights />
-        </div>
+        <ReportPageHeader
+          title="Finance"
+          subtitle="Revenue, cash flow and outstanding fees"
+          printTitle="Finance Report"
+        />
 
         <ReportFilterBar period={period} onPeriodChange={setPeriod} onCustomRange={setCustomRange} customFrom={customRange?.from} customTo={customRange?.to} />
 
