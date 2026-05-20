@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     "Focuspilot vs DesignFiles",
     "DesignFiles alternative",
     "interior design software comparison",
-    "DesignFiles alternative UK",
+    "DesignFiles alternative",
     "design project management software",
   ],
   openGraph: {

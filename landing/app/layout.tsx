@@ -14,7 +14,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://focuspilot.io"),
   title: {
-    default: "Interior Design Project Management Software UK | Focuspilot",
+    default: "Interior Design Project Management Software | Focuspilot",
     template: "%s",
   },
   description:
@@ -41,10 +41,10 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_GB",
+    locale: "en_US",
     url: "https://focuspilot.io",
     siteName: "Focuspilot",
-    title: "Interior Design Project Management Software UK | Focuspilot",
+    title: "Interior Design Project Management Software | Focuspilot",
     description:
       "AI-powered project management for interior designers & architects. Manage projects, procurement, client approvals & invoicing in one workspace. Free 3-month trial.",
     images: [
@@ -52,13 +52,13 @@ export const metadata: Metadata = {
         url: "/images/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Interior Design Project Management Software UK | Focuspilot",
+        alt: "Interior Design Project Management Software | Focuspilot",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Interior Design Project Management Software UK | Focuspilot",
+    title: "Interior Design Project Management Software | Focuspilot",
     description:
       "AI-powered project management for interior designers & architects. Manage projects, procurement, client approvals & invoicing in one workspace. Free 3-month trial.",
     images: ["/images/twitter-image.png"],

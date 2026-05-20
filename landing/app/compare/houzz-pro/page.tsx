@@ -15,25 +15,25 @@ const Lead = "text-base sm:text-lg text-stone-600"
 export const metadata: Metadata = {
   title: "Focuspilot vs Houzz Pro | Interior Design Software Comparison 2025",
   description:
-    "Compare Focuspilot vs Houzz Pro for interior design studios. Independent platform vs Houzz ecosystem. See AI features, UK pricing, and why designers are switching.",
+    "Compare Focuspilot vs Houzz Pro for interior design studios. Independent platform vs Houzz ecosystem. See AI features, transparent pricing, and why designers are switching.",
   keywords: [
     "Focuspilot vs Houzz Pro",
     "Houzz Pro alternative",
     "interior design software comparison",
-    "Houzz Pro alternative UK",
+    "Houzz Pro alternative",
     "independent design software",
   ],
   openGraph: {
     title: "Focuspilot vs Houzz Pro | Interior Design Software Comparison 2025",
     description:
-      "Compare Focuspilot vs Houzz Pro for interior design studios. Independent platform vs Houzz ecosystem. AI features, UK pricing, and more.",
+      "Compare Focuspilot vs Houzz Pro for interior design studios. Independent platform vs Houzz ecosystem. AI features, transparent pricing, and more.",
     type: "article",
     url: "https://focuspilot.io/compare/houzz-pro",
   },
   twitter: {
     card: "summary_large_image",
     title: "Focuspilot vs Houzz Pro | Interior Design Software Comparison",
-    description: "Compare Focuspilot vs Houzz Pro. See why UK designers choose an independent platform.",
+    description: "Compare Focuspilot vs Houzz Pro. See why designers choose an independent platform.",
   },
   alternates: {
     canonical: "https://focuspilot.io/compare/houzz-pro",
@@ -52,11 +52,11 @@ const comparisonData = [
     ],
   },
   {
-    category: "UK & European Focus",
+    category: "Finance & compliance",
     features: [
       { name: "Native Xero integration", focuspilot: true, houzzPro: false },
-      { name: "GBP pricing & UK VAT handling", focuspilot: true, houzzPro: "partial" },
-      { name: "UK-based support team", focuspilot: true, houzzPro: false },
+      { name: "Multi-currency pricing & VAT handling", focuspilot: true, houzzPro: "partial" },
+      { name: "Dedicated support team", focuspilot: true, houzzPro: false },
       { name: "GDPR compliant", focuspilot: true, houzzPro: true },
       { name: "British spelling & terminology", focuspilot: true, houzzPro: false },
     ],
@@ -107,7 +107,7 @@ const faqs = [
   {
     question: "Does Focuspilot integrate with Xero?",
     answer:
-      "Yes, Focuspilot has native two-way Xero integration (the most popular UK accounting software), which Houzz Pro lacks. Invoices, payments, and expenses sync automatically.",
+      "Yes, Focuspilot has native two-way Xero integration, which Houzz Pro lacks. Invoices, payments, and expenses sync automatically.",
   },
   {
     question: "Can I use both platforms together?",
@@ -115,9 +115,9 @@ const faqs = [
       "Some studios use Houzz for visibility while managing their business in Focuspilot. However, most find that Focuspilot's CRM and lead management features eliminate the need for Houzz Pro's business tools.",
   },
   {
-    question: "Which is better for UK-based studios?",
+    question: "Which is better for studios outside the US?",
     answer:
-      "Focuspilot is purpose-built for UK and European studios with GBP pricing, VAT handling, Xero integration, and UK-based support. Houzz Pro is primarily designed for the US market.",
+      "Focuspilot supports international studios with multi-currency pricing, VAT handling, Xero integration, and dedicated support. Houzz Pro is primarily designed for the US market.",
   },
 ]
 
@@ -169,7 +169,7 @@ export default function FocuspilotVsHouzzProPage() {
               </Badge>
               <h1 className={cn(H1, "text-center")}>Focuspilot vs Houzz Pro</h1>
               <p className={cn(Lead, "mt-4 text-center")}>
-                Compare an independent, UK-focused platform with the Houzz marketplace ecosystem.
+                Compare an independent, global-ready platform with the Houzz marketplace ecosystem.
                 See which is right for your interior design studio.
               </p>
             </div>
@@ -191,7 +191,7 @@ export default function FocuspilotVsHouzzProPage() {
                     </li>
                     <li className="flex items-start gap-3">
                       <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />
-                      <span>Need native UK accounting integration (Xero)</span>
+                      <span>Need native Xero accounting integration</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />
@@ -203,7 +203,7 @@ export default function FocuspilotVsHouzzProPage() {
                     </li>
                     <li className="flex items-start gap-3">
                       <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />
-                      <span>Are based in the UK or Europe</span>
+                      <span>Work internationally and need multi-currency support</span>
                     </li>
                   </ul>
                 </CardContent>

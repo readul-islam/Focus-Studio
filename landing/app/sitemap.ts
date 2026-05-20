@@ -4,6 +4,12 @@ import { studioTemplates } from "@/lib/resources-data"
 
 const baseUrl = "https://focuspilot.io"
 
+/** Regional SEO articles (also listed via getAllPosts() — no duplicate static paths). */
+const REGIONAL_SEO_BLOG_SLUGS = new Set([
+  "best-interior-design-software-uk",
+  "best-interior-design-software-us",
+])
+
 type RouteConfig = {
   path: string
   changeFrequency: NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>
@@ -67,7 +73,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: new Date(post.publishedAt),
     changeFrequency: "monthly",
-    priority: 0.65,
+    priority: REGIONAL_SEO_BLOG_SLUGS.has(post.slug) ? 0.72 : 0.65,
   }))
 
   const templateEntries: MetadataRoute.Sitemap = studioTemplates.map((template) => ({

@@ -15,25 +15,25 @@ const Lead = "text-base sm:text-lg text-stone-600"
 export const metadata: Metadata = {
   title: "Focuspilot vs Studio Designer | Interior Design Software Comparison 2025",
   description:
-    "Compare Focuspilot vs Studio Designer for interior design firms. See differences in AI features, UK pricing, procurement, and client management. Free migration available.",
+    "Compare Focuspilot vs Studio Designer for interior design firms. See differences in AI features, transparent pricing, procurement, and client management. Free migration available.",
   keywords: [
     "Focuspilot vs Studio Designer",
     "Studio Designer alternative",
     "interior design software comparison",
-    "Studio Designer alternative UK",
+    "Studio Designer alternative",
     "design business management software",
   ],
   openGraph: {
     title: "Focuspilot vs Studio Designer | Interior Design Software Comparison 2025",
     description:
-      "Compare Focuspilot vs Studio Designer for interior design firms. AI features, UK pricing, and comprehensive feature comparison.",
+      "Compare Focuspilot vs Studio Designer for interior design firms. AI features, transparent pricing, and comprehensive feature comparison.",
     type: "article",
     url: "https://focuspilot.io/compare/studio-designer",
   },
   twitter: {
     card: "summary_large_image",
     title: "Focuspilot vs Studio Designer | Interior Design Software Comparison",
-    description: "Compare Focuspilot vs Studio Designer. See why UK designers are switching.",
+    description: "Compare Focuspilot vs Studio Designer. See why designers are switching.",
   },
   alternates: {
     canonical: "https://focuspilot.io/compare/studio-designer",
@@ -62,12 +62,12 @@ const comparisonData = [
     ],
   },
   {
-    category: "UK Market Features",
+    category: "Finance & compliance",
     features: [
       { name: "Native Xero integration", focuspilot: true, studioDesigner: false },
-      { name: "GBP pricing throughout", focuspilot: true, studioDesigner: "partial" },
-      { name: "UK VAT handling", focuspilot: true, studioDesigner: "partial" },
-      { name: "UK-based support", focuspilot: true, studioDesigner: false },
+      { name: "Multi-currency pricing", focuspilot: true, studioDesigner: "partial" },
+      { name: "VAT & tax handling", focuspilot: true, studioDesigner: "partial" },
+      { name: "Dedicated support", focuspilot: true, studioDesigner: false },
       { name: "British English interface", focuspilot: true, studioDesigner: false },
     ],
   },
@@ -97,7 +97,7 @@ const faqs = [
   {
     question: "What's the main difference between Focuspilot and Studio Designer?",
     answer:
-      "Focuspilot is built for UK/European studios with native Xero integration and includes AI-powered features for automation. Studio Designer is US-focused without UK accounting integration or AI capabilities.",
+      "Focuspilot is built for studios worldwide with native Xero integration and includes AI-powered features for automation. Studio Designer is US-focused without the same accounting integrations or AI capabilities.",
   },
   {
     question: "Does Studio Designer have AI features?",
@@ -115,9 +115,9 @@ const faqs = [
       "Yes. We offer free migration assistance including product library import, client data transfer, and project history migration. Most studios are fully operational within one week.",
   },
   {
-    question: "Which is better for UK-based studios?",
+    question: "Which is better for international studios?",
     answer:
-      "Focuspilot is purpose-built for UK studios with Xero integration, GBP pricing, VAT handling, and UK-based support. Studio Designer is designed primarily for the US market.",
+      "Focuspilot supports global studios with Xero integration, multi-currency pricing, VAT handling, and dedicated support. Studio Designer is designed primarily for the US market.",
   },
 ]
 
@@ -191,7 +191,7 @@ export default function FocuspilotVsStudioDesignerPage() {
                     </li>
                     <li className="flex items-start gap-3">
                       <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />
-                      <span>Need native UK accounting integration (Xero)</span>
+                      <span>Need native Xero accounting integration</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />
@@ -203,7 +203,7 @@ export default function FocuspilotVsStudioDesignerPage() {
                     </li>
                     <li className="flex items-start gap-3">
                       <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />
-                      <span>Are based in the UK or Europe</span>
+                      <span>Work across regions and need multi-currency support</span>
                     </li>
                   </ul>
                 </CardContent>

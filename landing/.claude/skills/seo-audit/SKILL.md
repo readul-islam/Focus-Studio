@@ -78,7 +78,7 @@ Analyze and optimize pages for search engine visibility through technical SEO, o
 
 ## Best Practices
 - Keep meta descriptions action-oriented with CTA
-- Use location keywords for UK market ("UK", "British")
+- Use global positioning; avoid geo-locking titles/meta to a single country unless creating locale-specific pages
 - Include pricing signals ("Free trial", "Start free")
 - Test changes with Google Search Console
 - Monitor Core Web Vitals impact on rankings

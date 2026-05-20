@@ -62,7 +62,7 @@ export const studioTemplates: StudioTemplate[] = [
     slug: "letter-of-agreement",
     title: "Letter of Agreement",
     description:
-      "Contract template covering services, fees, revisions, liability, and termination—structured for UK interior design studios.",
+      "Contract template covering services, fees, revisions, liability, and termination—structured for interior design studios.",
     category: "Contracts",
     icon: FileCheck,
     popular: true,

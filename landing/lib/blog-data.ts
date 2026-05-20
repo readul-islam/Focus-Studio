@@ -31,6 +31,119 @@ const AUTHORS = {
 }
 
 export const blogPosts: BlogPost[] = [
+  // —— Regional SEO (UK & US) ——
+  {
+    slug: "best-interior-design-software-uk",
+    title: "Best Interior Design Project Management Software for UK Studios (2026)",
+    excerpt:
+      "What UK interior designers should look for in studio software: Xero sync, VAT-ready invoicing, RIBA-friendly phases, client portals, and procurement—without spreadsheet chaos.",
+    category: "studio-management",
+    tags: ["UK", "Interior Design Software UK", "Xero", "VAT", "RIBA", "Studio Management"],
+    publishedAt: "2026-05-20",
+    readTime: "10 min",
+    featured: true,
+    featuredImage: "/blog/studio-financial-visibility.jpg",
+    author: AUTHORS.james,
+    content: `
+      <p>British interior design studios operate in a specific commercial context: VAT on fees and FF&E, client expectations shaped by RIBA-aligned delivery, and accounting that often runs through <strong>Xero</strong>. Generic project tools rarely reflect that reality—so "UK interior design software" is not just a search phrase; it describes a real gap in the market.</p>
+      <p>This guide explains what to prioritise when you evaluate <strong>interior design project management software in the UK</strong>, and how a connected workspace like Focuspilot supports residential and commercial practices from first brief to final invoice.</p>
+      <h2>Why UK studios need more than a task board</h2>
+      <p>Most design practices juggle the same pressure points: fragmented email threads, procurement spreadsheets, client approval delays, and finance data that lives in a different system from the project plan. A tool built only for tasks leaves VAT, purchase orders, and client sign-off as manual side projects.</p>
+      <p>Strong UK-focused studio software should connect:</p>
+      <ul>
+        <li><strong>Project phases and tasks</strong> aligned to how you actually deliver (concept, design development, procurement, install)</li>
+        <li><strong>FF&E and procurement</strong> with lead times, suppliers, and status visible to the team and client</li>
+        <li><strong>Client approvals</strong> in a branded portal—not buried in email attachments</li>
+        <li><strong>Invoicing and profitability</strong> with figures that sync to your accountant's system</li>
+      </ul>
+      <h2>Xero integration is non-negotiable for many UK firms</h2>
+      <p>Xero dominates small and mid-size UK creative businesses. If your project tool cannot push invoices and payment status into Xero automatically, your studio pays for double entry every month.</p>
+      <p>Look for two-way sync: project-level invoices created in the studio system, payments reconciled, and expenses visible without CSV exports. That is how you keep cash flow honest while designers stay focused on delivery—not bookkeeping archaeology.</p>
+      <h2>VAT, deposits, and client-facing clarity</h2>
+      <p>UK projects often mix design fees, procurement mark-ups, and pass-through costs. Your software should support clear line items, staged invoices, and documentation clients can understand. When approvals and financial milestones sit beside selections in one portal, "just checking the VAT" emails decrease sharply.</p>
+      <h2>Procurement and long-lead items</h2>
+      <p>Custom joinery, stone, and lighting frequently define the critical path on UK installs. Timeline software that treats procurement as equal to design tasks—not an afterthought spreadsheet—prevents the classic bank-holiday slip that compresses snagging into one weekend.</p>
+      <p>Studios that track supplier status, delivery dates, and alternates in the same system they use for tasks report fewer site surprises and calmer client conversations.</p>
+      <h2>Client portal and professional presentation</h2>
+      <p>High-end residential and boutique commercial clients in the UK expect polish. A white-label portal for approvals, documents, and messages signals organisation without forcing clients into generic file-sharing links. That presentation layer is part of why studios outgrow email-only workflows.</p>
+      <h2>AI that respects how UK studios communicate</h2>
+      <p>Email remains central to UK client relationships. Tools that summarise threads, draft replies in your tone, and surface decisions as tasks reduce the risk of missing a scope change buried in paragraph four—without replacing human judgment.</p>
+      <h2>How to evaluate vendors in practice</h2>
+      <p>When you shortlist <strong>interior design software for UK studios</strong>, run a two-week pilot on a live project:</p>
+      <ol>
+        <li>Import or recreate one active job with real phases and FF&E</li>
+        <li>Send one client approval through the portal</li>
+        <li>Raise a deposit or stage invoice and confirm it appears in Xero</li>
+        <li>Ask your team whether they would willingly open the tool daily</li>
+      </ol>
+      <p>If any step fails, the tool is not "almost there"—it will become another abandoned login.</p>
+      <h2>Where Focuspilot fits UK studios</h2>
+      <p><a href="https://focuspilot.io">Focuspilot</a> is built for interior designers and architects who need projects, procurement, client collaboration, and finance in one workspace—with native Xero integration, multi-currency support, VAT-ready workflows, and AI assistance for email and sourcing. It is used by growing UK practices that want an operating system, not a patchwork of spreadsheets and inbox threads.</p>
+      <p>Explore <a href="https://focuspilot.io/compare/programa">how Focuspilot compares to Programa</a>, <a href="https://focuspilot.io/compare/houzz-pro">Houzz Pro</a>, and other tools, or start a free trial and map your next live project inside the platform.</p>
+    `,
+  },
+  {
+    slug: "best-interior-design-software-us",
+    title: "Best Interior Design Project Management Software for US Firms (2026)",
+    excerpt:
+      "A practical guide for US interior design studios: QuickBooks-ready workflows, client portals, procurement, profitability tracking, and software that scales from solo to multi-office teams.",
+    category: "studio-management",
+    tags: ["US", "Interior Design Software", "QuickBooks", "FF&E", "Client Portal", "Studio Management"],
+    publishedAt: "2026-05-18",
+    readTime: "10 min",
+    featured: true,
+    featuredImage: "/blog/studio-operating-system.jpg",
+    author: AUTHORS.maya,
+    content: `
+      <p>American interior design firms face a familiar stack: QuickBooks or similar for books, email for client decisions, spreadsheets for FF&E, and a project tool that never quite connects to how work really flows. Searching for <strong>interior design project management software in the US</strong> is usually the moment a studio admits the patchwork is costing margin—not just time.</p>
+      <p>Here is what US design businesses should demand from modern studio software, and how to choose a platform that supports residential, hospitality, and commercial work without forcing you into generic construction PM tools.</p>
+      <h2>What US studios actually need from software</h2>
+      <p>US firms range from solo designers to multi-city teams with dedicated procurement staff. Regardless of size, the operational spine is similar:</p>
+      <ul>
+        <li><strong>Clear project phases</strong> from concept through install close-out</li>
+        <li><strong>FF&E specification and ordering</strong> with vendor lead times and client approvals</li>
+        <li><strong>Document control</strong> for drawings, finishes, and contracts</li>
+        <li><strong>Financial visibility</strong> per project—fees, COGS, mark-ups, and cash timing</li>
+        <li><strong>Client experience</strong> that feels premium, not like a generic ticket system</li>
+      </ul>
+      <p>Software marketed only to "creative agencies" often lacks procurement depth. Software built for builders often overwhelms designers with RFIs and submittals you will never use. The right fit sits in the middle: <strong>design-native project management</strong>.</p>
+      <h2>Accounting integration: QuickBooks and beyond</h2>
+      <p>Many US studios run on <strong>QuickBooks Online</strong>. Your project platform should create invoices, track payments, and align project profitability with what finance sees—without weekly CSV rituals.</p>
+      <p>Also confirm support for <strong>Stripe</strong> if you collect deposits or approval-related payments through a client portal. US clients increasingly expect card options; reconciling those payments manually defeats the purpose of integrated software.</p>
+      <h2>Procurement and vendor management at US scale</h2>
+      <p>US projects often pull from national vendors, trade accounts, and custom fabricators across time zones. Your system should track:</p>
+      <ul>
+        <li>Specification status and alternates</li>
+        <li>Purchase orders and deposits</li>
+        <li>Freight and delivery windows</li>
+        <li>Install sequencing dependencies</li>
+      </ul>
+      <p>When procurement lives in email, the PM becomes the human integration layer—expensive and error-prone. Centralising status in the same tool as design tasks is how multi-project studios protect margin.</p>
+      <h2>Client portal and approvals</h2>
+      <p>US clients may tolerate email at small scale; they rarely tolerate chaos at $200k+ FF&E scope. A branded portal for selections, approvals, and files reduces "just circling back" loops and creates a defensible record when scope shifts.</p>
+      <p>Look for mobile-friendly portals, comment threads on selections, and clear approval timestamps—essential when disputes arise about who signed off on what.</p>
+      <h2>Team collaboration across offices and time zones</h2>
+      <p>Growing US firms split work between design, procurement, and project management. Role-based access, @mentions, and activity on the project record beat scattered Slack channels that lose context after ninety days.</p>
+      <p>Per-user pricing that scales fairly matters: studios should not be punished for adding a procurement coordinator mid-year.</p>
+      <h2>AI for email volume and specification work</h2>
+      <p>US inboxes are high-volume. AI-assisted drafting, thread summaries, and product sourcing suggestions save hours weekly when humans stay in the loop for final sends and spec decisions. The goal is faster throughput, not autopilot client communication.</p>
+      <h2>Compliance and documentation (practical, not legal advice)</h2>
+      <p>While this is not legal guidance, US studios routinely need organised contracts, change-order trails, and approval logs. Software that attaches decisions to the project timeline supports cleaner close-out and fewer "we never approved that" conversations.</p>
+      <h2>Evaluation checklist for US firms</h2>
+      <p>When comparing <strong>interior design software for US studios</strong>, test against a real active project:</p>
+      <ol>
+        <li>Build phases and assign owners with due dates</li>
+        <li>Run one FF&E approval cycle through the client portal</li>
+        <li>Issue a progress invoice and confirm accounting sync</li>
+        <li>Review project P&amp;L or budget vs actual in the same UI</li>
+      </ol>
+      <p>Adoption fails when designers keep shadow spreadsheets "just in case." If the pilot does not replace those sheets, keep looking.</p>
+      <h2>How Focuspilot supports US design businesses</h2>
+      <p><a href="https://focuspilot.io">Focuspilot</a> unifies CRM, projects, procurement, client portal, and finance for interior designers and architects—with QuickBooks and Xero integration, Stripe payments, AI email and sourcing tools, and workflows built for design delivery rather than generic task lists.</p>
+      <p>See <a href="https://focuspilot.io/compare/programa">Focuspilot vs Programa</a> and other comparisons, or start a free trial and run your next US project end-to-end in one workspace.</p>
+    `,
+  },
+
   // —— Workflow ——
   {
     slug: "brief-to-task-map-in-minutes",

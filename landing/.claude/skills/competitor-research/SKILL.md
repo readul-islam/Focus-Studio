@@ -33,7 +33,7 @@ Research competitor interior design software and create compelling comparison pa
 ### SEO Requirements
 - Title: "[Competitor] Alternative for Interior Designers | Focuspilot vs [Competitor]"
 - H1: "Focuspilot vs [Competitor]: Which Interior Design Software is Right for You?"
-- Meta description: "Compare Focuspilot and [Competitor] for interior design project management. See features, pricing, and why UK designers choose Focuspilot. Free trial available."
+- Meta description: "Compare Focuspilot and [Competitor] for interior design project management. See features, pricing, and why designers choose Focuspilot. Free trial available."
 
 ### Page Structure
 ```

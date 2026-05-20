@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "Design Manager alternative",
     "interior design software comparison",
     "modern design studio software",
-    "UK interior design software",
+    "interior design software",
   ],
   openGraph: {
     title: "Focuspilot vs Design Manager | Modern Interior Design Software 2026",

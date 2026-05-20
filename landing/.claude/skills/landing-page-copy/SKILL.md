@@ -7,7 +7,7 @@ allowed-tools: Read, Grep, Glob
 # Landing Page Copywriting
 
 ## Overview
-Write compelling, conversion-focused copy for Focuspilot landing pages targeting interior designers and architects in the UK market.
+Write compelling, conversion-focused copy for Focuspilot landing pages targeting interior designers and architects globally (initial GTM: UK & US).
 
 ## Brand Voice
 
@@ -162,7 +162,7 @@ Write compelling, conversion-focused copy for Focuspilot landing pages targeting
 
 ### Key Differentiators to Emphasize
 - Built specifically for interior design (not generic PM)
-- UK-focused with British spelling and VAT support
+- Global positioning with British spelling and VAT/multi-currency support where relevant
 - Modern, beautiful interface (not dated software)
 - AI-powered features (procurement, proposals)
 - Connects CRM → Projects → Procurement → Finance

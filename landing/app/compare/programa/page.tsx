@@ -15,7 +15,7 @@ const Lead = "text-base sm:text-lg text-stone-600"
 export const metadata: Metadata = {
   title: "Focuspilot vs Programa | Interior Design Software Comparison 2026",
   description:
-    "Compare Focuspilot vs Programa for interior design studios. See differences in AI features, UK pricing, Xero integration & client portals. Switch with free migration.",
+    "Compare Focuspilot vs Programa for interior design studios. See differences in AI features, transparent pricing, Xero integration & client portals. Switch with free migration.",
   keywords: [
     "Focuspilot vs Programa",
     "Programa alternative",
@@ -26,14 +26,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Focuspilot vs Programa | Interior Design Software Comparison 2026",
     description:
-      "Compare Focuspilot vs Programa for interior design studios. See differences in AI features, UK pricing, Xero integration & client portals. Switch with free migration.",
+      "Compare Focuspilot vs Programa for interior design studios. See differences in AI features, transparent pricing, Xero integration & client portals. Switch with free migration.",
     type: "article",
     url: "https://focuspilot.io/compare/programa",
   },
   twitter: {
     card: "summary_large_image",
     title: "Focuspilot vs Programa | Interior Design Software Comparison 2026",
-    description: "Compare Focuspilot vs Programa for interior design studios. See differences in AI features, UK pricing, Xero integration & client portals.",
+    description: "Compare Focuspilot vs Programa for interior design studios. See differences in AI features, transparent pricing, Xero integration & client portals.",
   },
   alternates: {
     canonical: "https://focuspilot.io/compare/programa",
@@ -100,7 +100,7 @@ const faqs = [
   {
     question: "What's the main difference between Focuspilot and Programa?",
     answer:
-      "Focuspilot is built specifically for UK and European interior design studios with native Xero integration, Stripe payments, and AI-powered features like email drafting and product sourcing. Programa is US-focused with QuickBooks integration. Focuspilot also includes in-portal client payments and automated invoicing that Programa lacks.",
+      "Focuspilot is built for interior design studios worldwide with native Xero and QuickBooks integration, Stripe payments, and AI-powered features like email drafting and product sourcing. Programa is US-focused with QuickBooks integration. Focuspilot also includes in-portal client payments and automated invoicing that Programa lacks.",
   },    
   {
     question: "Is Focuspilot better for small studios or larger teams?",
@@ -113,9 +113,9 @@ const faqs = [
       "Yes. We offer free migration assistance including: product library import, client contact transfer, and project history migration. Most studios are fully operational on Focuspilot within one week.",
   },
   {
-    question: "Does Focuspilot work with UK accounting software?",
+    question: "Does Focuspilot work with accounting software?",
     answer:
-      "Absolutely. Focuspilot has native two-way sync with Xero (the most popular UK accounting software) and QuickBooks. Invoices, payments, and expenses sync automatically.",
+      "Absolutely. Focuspilot has native two-way sync with Xero and QuickBooks. Invoices, payments, and expenses sync automatically.",
   },
   {
     question: "Which has better procurement features?",
@@ -198,7 +198,7 @@ function FeatureStatus({ status }: { status: boolean | "partial" }) {
                   <ul className="space-y-3 text-stone-600">
                     <li className="flex items-start gap-3">
                       <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />
-                      <span>Are based in the UK or Europe and use Xero</span>
+                      <span>Use Xero or QuickBooks and want native accounting sync</span>
                     </li>
                     <li className="flex items-start gap-3">
                       <Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600" />

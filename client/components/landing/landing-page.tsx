@@ -390,7 +390,7 @@ export function LandingPage() {
                 </p>
                 <footer className="mt-6 text-sm text-gray-600">
                   <cite className="not-italic font-medium text-gray-800">Principal designer</cite>
-                  <span className="text-gray-400"> · Multi-residential studio, UK</span>
+                  <span className="text-gray-400"> · Multi-residential design studio</span>
                 </footer>
               </blockquote>
             </div>

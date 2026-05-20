@@ -14,19 +14,19 @@ const Lead = "text-base sm:text-lg text-stone-600"
 export const metadata: Metadata = {
   title: "Compare Interior Design Software | Focuspilot vs Competitors",
   description:
-    "Compare Focuspilot with Programa, Houzz Pro, Studio Designer, DesignFiles and more. See why UK interior designers choose Focuspilot for project management.",
+    "Compare Focuspilot with Programa, Houzz Pro, Studio Designer, DesignFiles and more. See why interior designers choose Focuspilot for project management.",
   keywords: [
     "interior design software comparison",
     "Programa alternative",
     "Houzz Pro alternative",
     "Studio Designer alternative",
     "DesignFiles alternative",
-    "best interior design software UK",
+    "best interior design software",
   ],
   openGraph: {
     title: "Compare Interior Design Software | Focuspilot vs Competitors",
     description:
-      "Compare Focuspilot with Programa, Houzz Pro, Studio Designer, DesignFiles and more. See why UK interior designers choose Focuspilot.",
+      "Compare Focuspilot with Programa, Houzz Pro, Studio Designer, DesignFiles and more. See why interior designers choose Focuspilot.",
     type: "website",
     url: "https://focuspilot.io/compare",
   },
@@ -46,7 +46,7 @@ const competitors = [
     slug: "programa",
     description: "Popular in the US for procurement and project management",
     strengths: ["Strong procurement", "Good client portal"],
-    focuspilotAdvantage: "UK-focused with native Xero, AI features, and Stripe payments",
+    focuspilotAdvantage: "Global-ready with native Xero, AI features, and Stripe payments",
   },
   {
     name: "Design Manager",
@@ -60,14 +60,14 @@ const competitors = [
     slug: "houzz-pro",
     description: "All-in-one platform tied to Houzz marketplace",
     strengths: ["Houzz integration", "Lead generation"],
-    focuspilotAdvantage: "Independent platform, better UK support, more flexible",
+    focuspilotAdvantage: "Independent platform, dedicated support, more flexible",
   },
   {
     name: "Studio Designer",
     slug: "studio-designer",
     description: "Cloud-based design business management",
     strengths: ["Room planning", "Product library"],
-    focuspilotAdvantage: "AI-powered features, better procurement, UK pricing",
+    focuspilotAdvantage: "AI-powered features, better procurement, multi-currency pricing",
   },
   {
     name: "DesignFiles",
@@ -152,8 +152,8 @@ export default function ComparePage() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {[
                 {
-                  title: "Built for UK Studios",
-                  description: "Native Xero integration, GBP pricing, VAT handling, and UK-based support.",
+                  title: "Built for design studios worldwide",
+                  description: "Native Xero integration, multi-currency support, VAT handling, and dedicated support.",
                 },
                 {
                   title: "AI-Powered Automation",
