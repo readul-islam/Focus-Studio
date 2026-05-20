@@ -295,7 +295,7 @@ const handleRegenerateBrief = async () => {
       <div className="max-w-7xl mx-auto space-y-6">
 
         {/* AI Daily Brief Hero Section */}
-        <section>
+        <section data-tour="dashboard-brief">
           <DailyBriefHero
             brief={dailyBrief?.daily_brief}
             userName={dashboardInfo?.greeting?.name || user?.name || 'there'}
@@ -315,7 +315,7 @@ const handleRegenerateBrief = async () => {
         )}
 
         {/* Dashboard Cards */}
-        <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        <section data-tour="dashboard-cards" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           <Card className="p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow h-80">
             <TodaysMeetingsCard scope={scope} userRole={user?.role} meetings={dashboardInfo?.today_meetings} />
           </Card>

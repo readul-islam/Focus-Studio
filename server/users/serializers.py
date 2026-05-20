@@ -171,7 +171,7 @@ class UserNotificationPreferencesSerializer(serializers.ModelSerializer):
 class UserAppearancePreferencesSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAppearancePreferences
-        fields = ['theme', 'density', 'accent_color']
+        fields = ['theme', 'density', 'accent_color', 'product_tours_completed']
 
 
 class ChangePasswordSerializer(serializers.Serializer):

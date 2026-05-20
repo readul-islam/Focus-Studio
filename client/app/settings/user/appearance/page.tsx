@@ -10,7 +10,9 @@ import usePatch from '@/hooks/usePatch';
 import { gooeyToast as toast } from 'goey-toast';
 import { useTheme } from 'next-themes';
 import { useQueryClient } from '@tanstack/react-query';
-import { Monitor, Moon, Sun, RotateCcw } from 'lucide-react';
+import { Monitor, Moon, Sun, RotateCcw, Compass } from 'lucide-react';
+import { useProductTour } from '@/hooks/useProductTour';
+import { MAIN_APP_TOUR_ID } from '@/lib/product-tour';
 import {
   applyAppearanceToDocument,
   DEFAULT_APPEARANCE,
@@ -36,6 +38,7 @@ const DENSITY_OPTIONS: { value: AppearanceDensity; label: string; description: s
 const ACCENT_PRESETS = ['#111827', '#1e3a2f', '#7c2d12', '#1e40af', '#6b21a8'];
 
 export default function UserAppearancePage() {
+  const { restartTour } = useProductTour(MAIN_APP_TOUR_ID);
   const queryClient = useQueryClient();
   const { theme: activeTheme, setTheme } = useTheme();
   const { data, isLoading } = useFetch(APPEARANCE_URL);
@@ -208,6 +211,23 @@ export default function UserAppearancePage() {
             Reset accent to default
           </Button>
         </div>
+      </Section>
+
+      <Section
+        title="Product tour"
+        description="Replay the guided walkthrough of navigation, search, and your dashboard."
+      >
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => {
+            restartTour();
+            toast.success('Tour started — go to Home dashboard if steps do not appear.');
+          }}
+        >
+          <Compass className="size-4 mr-2" />
+          Restart guided tour
+        </Button>
       </Section>
 
       <div className="flex flex-wrap items-center justify-end gap-3 pt-2">

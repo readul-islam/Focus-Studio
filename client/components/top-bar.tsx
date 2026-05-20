@@ -473,6 +473,7 @@ export function TopBar() {
               <TooltipTrigger asChild>
                 <button
                   type="button"
+                  data-tour="top-search"
                   onClick={() => setCommandOpen(true)}
                   className="relative w-full flex items-center h-9 px-3 gap-2 rounded-md border border-input bg-background text-sm text-muted-foreground hover:bg-accent transition-colors cursor-pointer"
                 >

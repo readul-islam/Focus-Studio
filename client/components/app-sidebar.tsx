@@ -43,20 +43,21 @@ type Item = {
   href: string;
   basePath: string;
   permission?: string; // permission key from /user/studio/roles/ — if set, item is hidden when user lacks it
+  tourId?: string;
 };
 
 // Personal section item
 const personalSidebarItems: Item[] = [
-  { label: 'Home',     icon: Home,        href: '/home/dashboard', basePath: '/home/dashboard' },
-  { label: 'Inbox',    icon: Mail,        href: '/ai/inbox',       basePath: '/ai/inbox' },
+  { label: 'Home',     icon: Home,        href: '/home/dashboard', basePath: '/home/dashboard', tourId: 'nav-home' },
+  { label: 'Inbox',    icon: Mail,        href: '/ai/inbox',       basePath: '/ai/inbox',       tourId: 'nav-inbox' },
   { label: 'My Tasks', icon: CheckSquare, href: '/home/tasks',     basePath: '/home/tasks',  permission: 'tasks.view' },
   { label: 'Calendar', icon: Calendar,    href: '/calendar',       basePath: '/calendar' },
-  { label: 'Projects', icon: FolderOpen,  href: '/projects',       basePath: '/projects',    permission: 'projects.view' },
+  { label: 'Projects', icon: FolderOpen,  href: '/projects',       basePath: '/projects',    permission: 'projects.view', tourId: 'nav-projects' },
 ];
 
 // Studio section items
 const studioSidebarItems: Item[] = [
-  { label: 'CRM',         icon: Users,     href: '/crm/contacts', basePath: '/crm',        permission: 'clients.view' },
+  { label: 'CRM',         icon: Users,     href: '/crm/contacts', basePath: '/crm',        permission: 'clients.view', tourId: 'nav-crm' },
   { label: 'Library',     icon: BookOpen,  href: '/library/products',      basePath: '/library/products',    permission: 'library.view' },
   { label: 'Team',        icon: Users2,    href: '/teams',        basePath: '/teams',      permission: 'team.view' },
   { label: 'Finance',     icon: DollarSign,href: '/finance',      basePath: '/finance',    permission: 'finance.view' },
@@ -83,6 +84,7 @@ const extraSidebarItems = [
     label: 'Settings',
     href: '/settings/user/profile',
     icon: Settings,
+    tourId: 'nav-settings',
   },
 ];
 
@@ -146,6 +148,7 @@ function NavItem({ item, isActive, isCollapsed }: { item: Item; isActive: boolea
   const linkContent = (
     <Link
       href={item.href}
+      data-tour={item.tourId}
       className={cn(
         'relative flex  items-center py-2 rounded-md text-sm font-medium h-9 px-[8px] transition-colors duration-150',
         !isActive && 'hover:bg-sidebar-accent',

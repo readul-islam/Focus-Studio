@@ -6,6 +6,7 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
 import { TopBar } from '@/components/top-bar';
 import { SubscriptionGate } from '@/components/billing/subscription-gate';
+import { MainAppTour } from '@/components/product-tour/MainAppTour';
 import PrivateRoute from '@/layout/PrivateRoute';
 
 const PUBLIC_ROUTES = [
@@ -69,6 +70,7 @@ export function RootLayoutWrapper({ children }: { children: ReactNode }) {
             </div>
           </div>
         </SidebarProvider>
+        <MainAppTour />
       </SubscriptionGate>
     </PrivateRoute>
   );
