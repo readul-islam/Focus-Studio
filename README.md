@@ -217,7 +217,7 @@ Design and architecture studios face significant operational challenges:
 - ✅ Project profitability and budget burn views
 - ✅ Finance reports (revenue, costs, margins, invoice aging)
 - ✅ Procurement spend breakdown
-- ⏳ PDF export wired on all pages (`ExportPDF` component exists; print styles partial)
+- ✅ PDF export on all 6 report pages (`ExportPDF` via `ReportPageHeader`, print styles)
 - ⏳ Advanced report builder
 - ⏳ Scheduled report delivery
 
@@ -247,7 +247,7 @@ Design and architecture studios face significant operational challenges:
 - ✅ User registration and email verification
 - ✅ Password reset flow
 - ✅ OAuth integrations (Gmail, Xero)
-- ⏳ Two-factor authentication (2FA) — UI scaffolded, not enabled
+- ✅ Two-factor authentication (2FA) — TOTP setup, verify login, disable flow
 - ✅ Studio onboarding wizard
 - ✅ Team invitation flow
 
@@ -257,8 +257,8 @@ Design and architecture studios face significant operational challenges:
 - ✅ Article pages (`/help/[category]/[slug]`) with markdown rendering
 - ✅ 58 in-app articles across 10 categories (Getting Started, Projects, CRM, Finance, etc.)
 - ✅ Popular articles and related-article links
-- ⏳ Article feedback ("Was this helpful?")
-- ⏳ Screenshot galleries on all articles
+- ✅ Article feedback (`HelpArticleFeedback` — thumbs up/down + optional comment)
+- ✅ Screenshot galleries (`HelpArticleScreenshots` on articles with `screenshots` paths)
 
 ### 14. **Landing & Marketing** (Core)
 - ✅ Marketing site (`landing/`) — platform pages, pricing, integrations
@@ -320,8 +320,8 @@ Design and architecture studios face significant operational challenges:
 ---
 
 ### Phase 2: Help Centre (Critical — Third Priority)
-**Status:** ✅ Core live — content & feedback polish remaining  
-**Timeline:** ~58 articles shipped; feedback UI TBD  
+**Status:** ✅ Complete (May 2026)  
+**Timeline:** 58 articles; feedback + screenshots shipped  
 **Reference:** Intercom, Linear Docs, Notion Help
 
 #### Scope
@@ -359,14 +359,14 @@ Design and architecture studios face significant operational challenges:
 - [x] Dynamic article routing
 - [x] Search functionality (client-side)
 - [x] Article content (static TS modules — 58 articles)
-- [ ] Screenshot galleries
-- [x] 50+ articles (text); screenshots still pending
-- [ ] Feedback tracking ("Was this helpful?")
+- [x] Screenshot galleries (`HelpArticleScreenshots`)
+- [x] 58 articles with screenshots on key flows
+- [x] Feedback tracking (`HelpArticleFeedback` + `/help/feedback/` API)
 
 ---
 
 ### Phase 3: Reports Rebuild (High Priority)
-**Status:** ✅ Core complete — PDF export polish remaining  
+**Status:** ✅ Complete (May 2026)  
 **Branch:** Merged / on main
 
 #### Scope
@@ -377,7 +377,7 @@ Design and architecture studios face significant operational challenges:
 2. **Infrastructure**
    - [x] Add breadcrumb component (`ReportBreadcrumb.tsx`)
    - [x] KPI cards + period filter bar on report pages
-   - [ ] PDF export button wired on all pages (`ExportPDF.tsx` exists)
+   - [x] PDF export button wired on all pages (`ExportPDF.tsx` via `ReportPageHeader`)
    - [x] Consistent header + filter bar on every page
 
 3. **6 Report Pages**
@@ -433,7 +433,7 @@ Design and architecture studios face significant operational challenges:
 - [x] Update hub page with 6 cards only
 - [x] Build all 6 report pages with design system compliance
 - [x] Consistent KPI cards + filter bars
-- [ ] PDF export functionality (component ready; not on all pages)
+- [x] PDF export functionality (all 6 report pages)
 - [x] Loading skeletons + empty states (per page)
 
 ---
@@ -448,7 +448,7 @@ Design and architecture studios face significant operational challenges:
    - [x] Team management
    - [x] Roles & permissions
    - [x] Templates (default phases/tasks)
-   - [x] Security (password; 2FA scaffold only)
+   - [x] Security (password + 2FA TOTP enable/disable)
    - [x] Notifications preferences
    - [x] Appearance/theme (`/settings/user/appearance` in sidebar; live preview + save)
 
@@ -557,16 +557,16 @@ Design and architecture studios face significant operational challenges:
 | Team Management | Core Done | 75% |
 | **Advanced Features** | In Progress | 65% |
 | Contractor Portal | V2 Core Done | 85% |
-| Reports | Rebuild Core Done | 85% |
-| Help Centre | Core Live (58 articles) | 75% |
+| Reports | Complete | 95% |
+| Help Centre | Complete (58 articles) | 90% |
 | AI Tools | Partial | 65% |
 | Landing / Marketing | Core pages live | 85% |
 | Client Portal | Partial | 50% |
-| **Polish & Maintenance** | Ongoing | 35% |
-| Settings Overhaul | Mostly Done | 90% |
+| **Polish & Maintenance** | Ongoing | 50% |
+| Settings Overhaul | Complete | 95% |
 | Stripe Billing | Wired (env-dependent) | 70% |
 | Performance Optimization | Ongoing | 40% |
-| Documentation (in-app help) | Ongoing | 75% |
+| Documentation (in-app help) | Complete | 90% |
 | Mobile Responsiveness | Ongoing | 60% |
 
 ### Timeline (Next 6 Months)
@@ -582,13 +582,13 @@ Design and architecture studios face significant operational challenges:
 - [x] Settings overhaul (sidebar, integrations, admin gate, Inbox Gmail)
 - [x] Stripe SaaS billing module (`server/billing`)
 - [x] Notion + Zapier integrations
-- [ ] Reports PDF export on all pages
-- [ ] Help Centre feedback + screenshots
-- [ ] 2FA enablement
+- [x] Reports PDF export on all pages
+- [x] Help Centre feedback + screenshots
+- [x] 2FA enablement
 - [x] Initial .gitignore setup
 
 #### June 2026
-- [ ] Help Centre polish (screenshots, feedback widget)
+- [x] Help Centre polish (screenshots, feedback widget) — shipped May 2026
 - [ ] Client portal Stripe payments
 - [ ] Mobile optimization push
 

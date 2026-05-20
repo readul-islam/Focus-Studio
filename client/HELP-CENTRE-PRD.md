@@ -1,5 +1,6 @@
 # Focuspilot Help Centre — PRD
 **Date:** 2026-02-27  
+**Status:** ✅ Shipped (May 2026) — 58 articles, `HelpArticleFeedback`, `HelpArticleScreenshots`  
 **Priority:** CRITICAL — third request  
 **Owner:** Dennis  
 **Repo:** `techStyleFrontEnd-prod`, branch `design/ui-tightening-squashed`  

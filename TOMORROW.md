@@ -93,4 +93,12 @@ Decisions needed:
 
 ---
 
-*Last updated: Tuesday, 19 May 2026*
+### May polish (done)
+
+- [x] Reports PDF export on all 6 report pages
+- [x] Help Centre feedback + screenshots
+- [x] 2FA enablement (TOTP + `/verify-2fa`)
+
+---
+
+*Last updated: Wednesday, 20 May 2026*

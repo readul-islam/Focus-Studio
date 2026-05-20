@@ -14,7 +14,9 @@
 | **4** | Webhook UI: pick event types per endpoint | 1h | ✅ Done |
 | **5** | Notion **Light**: Browse databases in Settings | 2h | ✅ Done |
 
-**Defer:** Official Zapier marketplace app · Notion two-way sync · Contractor V2 · Help Centre · Stripe
+**Defer:** Official Zapier marketplace app · Notion two-way sync · Stripe
+
+**Done (May polish):** Reports PDF export · Help Centre feedback + screenshots · 2FA
 
 ### Notion Medium — project sync ✅
 
@@ -113,4 +115,4 @@ curl -s -X POST -H "Authorization: Bearer fp_live_YOUR_KEY" -H "Content-Type: ap
 
 ## Broader product (later)
 
-Contractor Portal V2 · Help Centre · Reports · Stripe · QuickBooks fix · AI proposals
+Stripe · Client portal payments · Mobile optimization · QuickBooks fix · AI proposals

@@ -30,7 +30,7 @@
 - [ ] Add breadcrumb component (`components/reports/ReportBreadcrumb.tsx`)
 - [ ] Add breadcrumbs to every report sub-page
 - [ ] Upgrade `KpiCard` — add `prevValue` prop for period comparison (arrow + % change)
-- [ ] Add PDF export button component (`components/reports/ExportPDF.tsx`) — uses browser print with `@media print` styles
+- [x] Add PDF export button component (`components/reports/ExportPDF.tsx`) — uses browser print with `@media print` styles
 - [ ] Ensure every page has consistent: header (title + description), filter bar, content area
 
 ## Phase 2: Overview Page
@@ -61,7 +61,7 @@
 - [ ] Drill-down: click person → `/reports/team/[id]` with project breakdown + time entries
 - [ ] All tabs share the same filter bar + date range
 - [ ] CSV export works from any tab
-- [ ] PDF export for timesheet view
+- [x] PDF export for timesheet view (via shared `ReportPageHeader` / `ExportPDF` on Team page)
 
 ## Phase 5: Finance Page
 
