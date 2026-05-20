@@ -38,7 +38,7 @@ export function BlogPostPageClient({ params }: { params: { slug: string } }) {
           </div>
         </nav>
 
-        <header className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
+        <header className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
           <span className="inline-block rounded-full bg-stone-900 px-4 py-1.5 text-xs font-medium tracking-wide text-white">
             {getCategoryDisplay(post)}
           </span>
@@ -99,8 +99,8 @@ export function BlogPostPageClient({ params }: { params: { slug: string } }) {
           </div>
         </div>
 
-        <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
-          <div className="mb-12 flex flex-wrap items-center gap-3 border-b border-stone-200 pb-8">
+        <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
+          <div className="mb-10 flex flex-wrap items-center gap-3 border-b border-stone-200 pb-8">
             <span className="text-sm font-medium text-stone-700">Share this article:</span>
             <a
               href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}`}
@@ -141,15 +141,7 @@ export function BlogPostPageClient({ params }: { params: { slug: string } }) {
           </div>
 
           <div
-            className="prose prose-stone max-w-none
-              prose-headings:font-semibold prose-headings:tracking-tight
-              prose-h2:mb-6 prose-h2:mt-14 prose-h2:text-[26px] prose-h2:leading-tight sm:prose-h2:text-3xl
-              prose-h3:mb-4 prose-h3:mt-10 prose-h3:text-xl sm:prose-h3:text-2xl
-              prose-p:mb-6 prose-p:text-base prose-p:leading-relaxed prose-p:text-stone-700 sm:prose-p:text-lg
-              prose-a:font-medium prose-a:text-stone-900 prose-a:underline prose-a:decoration-stone-300 prose-a:underline-offset-2 hover:prose-a:decoration-stone-500
-              prose-strong:font-semibold prose-strong:text-stone-900
-              prose-ul:my-8 prose-ul:space-y-3 prose-li:text-base sm:prose-li:text-lg
-              prose-img:my-12 prose-img:rounded-2xl"
+            className="blog-article-content"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
