@@ -45,4 +45,6 @@ urlpatterns = [
     path('integrations/', include('integrations.urls')),
     path('notion/', include('notion.urls')),
     path('collaboration/', include('collaboration.urls')),
+    path('public_profiles/', include('public_profiles.urls')),
 ]
+# Public studio pages: landing /studio/{slug} → GET /public_profiles/public/{slug}/

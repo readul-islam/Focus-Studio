@@ -9,3 +9,10 @@ export function getApiUrl(): string {
 export function getAppUrl(): string {
   return process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") || "http://localhost:3000"
 }
+
+/** Marketing / landing site (public studio profiles, blog, etc.) */
+export function getMarketingUrl(): string {
+  const raw =
+    process.env.NEXT_PUBLIC_MARKETING_URL?.replace(/\/$/, "") || "http://localhost:3005"
+  return raw.replace("127.0.0.1", "localhost")
+}

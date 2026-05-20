@@ -760,6 +760,33 @@ Each project has two communication surfaces:
 6. **@mention** — A posts `@UserB` in team chat or task comment → B gets an in-app notification.
 7. **Regression** — Contractor messages dialog and studio Inbox are unchanged.
 
+### Public studio profile
+
+Studio owners can publish a **LinkedIn-style public page** (portfolio, reviews, team, contact) at `https://focuspilot.io/studio/{slug}` — no login required for visitors.
+
+| Surface | Location |
+|---------|----------|
+| **Editor** | App → **Settings → Studio → Public profile** |
+| **Live page** | Marketing site → `/studio/{slug}` |
+
+**API:**
+
+- `GET /public_profiles/public/{slug}/` — public read (`AllowAny`, only when `is_published`)
+- `GET/PATCH /public_profiles/me/` — manage profile (requires `settings.edit`)
+- `POST /public_profiles/me/publish/` — publish / unpublish
+- `GET/POST /public_profiles/me/portfolio/` — portfolio items
+- `POST /public_profiles/me/import-projects/` — import completed/archived projects
+- `GET/POST /public_profiles/me/reviews/` — client testimonials
+
+**Migrations:**
+
+```powershell
+cd server
+.\.venv\Scripts\python.exe manage.py migrate public_profiles projects
+```
+
+**Manual test:** Fill headline + about → Save → Import a completed project → Add a review → Publish → open public URL in a private window.
+
 ### Zapier & automation
 
 Full setup and test walkthrough: **[docs/ZAPIER.md](docs/ZAPIER.md)**

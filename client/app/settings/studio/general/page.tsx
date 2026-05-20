@@ -116,6 +116,7 @@ function StudioGeneralPageContent() {
     mutationFn: (data: StudioData) => patchData({ url: 'user/studios/update/', data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users', user?.email] });
+      queryClient.invalidateQueries({ queryKey: ['/public_profiles/me/'] });
       toast.success('Studio settings updated.');
     },
     onError: () => toast.error('Failed to save. Please try again.'),

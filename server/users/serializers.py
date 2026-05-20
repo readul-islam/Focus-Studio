@@ -66,6 +66,18 @@ class StudioBrandingSerializer(serializers.ModelSerializer):
         model = Studio
         fields = ['primary_logo', 'monochrome_logo', 'primary_color', 'secondary_color']
 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        request = self.context.get('request')
+        for key in ('primary_logo', 'monochrome_logo'):
+            field = getattr(instance, key, None)
+            if field:
+                url = field.url
+                data[key] = request.build_absolute_uri(url) if request else url
+            else:
+                data[key] = None
+        return data
+
 
 class RolePermissionSerializer(serializers.ModelSerializer):
     class Meta:

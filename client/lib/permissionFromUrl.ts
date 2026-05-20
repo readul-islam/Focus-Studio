@@ -5,7 +5,7 @@ const editRules: [RegExp, string][] = [
   [/crm\/|clients?\//, 'clients.edit'],
   [/library\/|products?\//, 'library.edit'],
   [/documents?\/|folders?\/|links?\//, 'documents.edit'],
-  [/user\/studio\/|user\/invite|user\/self\/update/, 'settings.edit'],
+  [/user\/studio\/|user\/invite|user\/self\/update|public_profiles\/me/, 'settings.edit'],
   [/team|members?\//, 'team.edit'],
   [/projects?\//, 'projects.edit'],
 ];

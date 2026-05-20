@@ -84,6 +84,7 @@ INSTALLED_APPS = [
     'integrations',
     'notion',
     'collaboration',
+    'public_profiles',
 ]
 
 # Notion OAuth (https://www.notion.so/my-integrations)
@@ -270,6 +271,14 @@ RESEND_API_KEY = _env('RESEND_API_KEY')
 
 FRONTEND_URL = _env('FRONTEND_URL', 'http://localhost:3000')
 MARKETING_URL = _env('MARKETING_URL', 'http://localhost:3005')
+
+# Public studio profiles live on the marketing site (/studio/{slug})
+_public_profile_base = _env('PUBLIC_PROFILE_BASE_URL')
+PUBLIC_PROFILE_BASE_URL = (
+    _public_profile_base.rstrip('/')
+    if _public_profile_base
+    else f'{MARKETING_URL.rstrip("/")}/studio'
+)
 
 # Absolute URL for email <img> (defaults to FRONTEND_URL/brand/email_logo.png)
 EMAIL_LOGO_URL = _env('EMAIL_LOGO_URL')

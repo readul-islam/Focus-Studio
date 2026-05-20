@@ -151,6 +151,12 @@ class Project(models.Model):
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='projects_updated', null=True, blank=True)
     project_banner = models.ImageField(upload_to='project_banners/', null=True, blank=True)
     access_token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    # Public studio profile / portfolio
+    portfolio_featured = models.BooleanField(default=False)
+    portfolio_title = models.CharField(max_length=200, null=True, blank=True)
+    portfolio_summary = models.TextField(null=True, blank=True)
+    portfolio_order = models.PositiveIntegerField(default=0)
+    hide_client_on_profile = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.project_name}-{self.client}"
