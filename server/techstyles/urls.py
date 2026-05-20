@@ -44,4 +44,5 @@ urlpatterns = [
     path('billing/', include('billing.urls')),
     path('integrations/', include('integrations.urls')),
     path('notion/', include('notion.urls')),
+    path('collaboration/', include('collaboration.urls')),
 ]

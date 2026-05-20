@@ -3,6 +3,7 @@ from .models import SubTask, Task
 from projects.serializers import ProjectGetSerializer
 from time_tracker.models import TimeLog
 from users.serializers import UserSerializer
+from comment.serializers import CommentGetSerializer
 
 class SubTaskSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,6 +20,7 @@ class TaskGetSerializer(serializers.ModelSerializer):
     time_tracker = serializers.SerializerMethodField()
     project = ProjectGetSerializer()
     assignees = UserSerializer(many=True)
+    comments = CommentGetSerializer(many=True, read_only=True)
 
     class Meta:
         model = Task

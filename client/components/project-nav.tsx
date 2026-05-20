@@ -7,7 +7,8 @@ import { usePermissions } from '@/hooks/usePermissions';
 const navItems = [
   { label: 'Overview',     href: '',             permission: null },
   { label: 'Tasks',        href: '/tasks',       permission: 'tasks.view' },
-  { label: 'Messages',     href: '/messages',    permission: null },
+  { label: 'Email',        href: '/messages',    permission: null },
+  { label: 'Team',         href: '/team',        permission: null },
   { label: 'Procurement',  href: '/procurement', permission: 'procurement.view' },
   { label: 'Finance',      href: '/finance',     permission: 'finance.view' },
   { label: 'Files',        href: '/docs',        permission: 'documents.view' },

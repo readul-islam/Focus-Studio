@@ -27,6 +27,9 @@ const POLLING_INTERVAL = 2 * 60 * 1000;
 const NOTIFICATION_TYPE_LABELS: Record<string, string> = {
   task_assigned: 'Task Assigned',
   project_assigned: 'Project Assigned',
+  team_message: 'Team Message',
+  comment_mention: 'Mention',
+  subtask_assigned: 'Subtask Assigned',
 };
 
 function getNotificationTitle(type: string): string {

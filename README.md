@@ -150,7 +150,7 @@ Design and architecture studios face significant operational challenges:
 - ✅ Team member directory
 - ✅ Permissions matrix (`/settings/studio/roles`)
 - ✅ Notification preferences (`/settings/user/notifications`)
-- ⏳ Real-time collaboration features
+- ✅ Real-time collaboration (Team chat, presence, live task comments — polling v1)
 
 ### 3. **Finance & Invoicing** (Core)
 - ✅ Invoice creation and management
@@ -730,6 +730,36 @@ NOTION_REDIRECT_URI=http://localhost:8000/notion/callback/
 
 You do **not** need to copy the Authorization URL from Notion — the app builds it automatically.
 
+### Real-time collaboration (Team vs Email)
+
+Each project has two communication surfaces:
+
+| Tab | Route | Purpose |
+|-----|-------|---------|
+| **Email** | `/projects/{id}/messages` | Gmail threads linked to the project (client/external email) |
+| **Team** | `/projects/{id}/team` | Internal studio team chat |
+
+**v1 transport:** React Query polling (~5s for messages/comments, ~30s presence heartbeat). WebSockets (Django Channels + Redis) are planned for sub-second updates in multi-instance deployments.
+
+**API endpoints** (JWT):
+
+- `GET/POST /collaboration/messages/?project_id={id}`
+- `POST /collaboration/presence/heartbeat/` — body: `{ "project_id": "…" }`
+- `GET /collaboration/presence/?project_id={id}`
+- `POST /collaboration/notify-mention/` — task comment @mentions
+
+#### Manual test guide
+
+**Prerequisites:** Two browsers or profiles (User A, User B), same studio, same project with Gmail connected (for Email regression only).
+
+1. **Navigation** — Open a project → tabs show **Email** and **Team** (not a single “Messages” tab).
+2. **Email (unchanged)** — Email tab loads Gmail threads; reply and unlink still work.
+3. **Team chat** — User A sends a message on Team tab → User B sees it within ~5s without refresh.
+4. **Presence** — User A stays on any project tab → User B sees A under “Viewing now” within ~30s; A disappears ~60s after leaving.
+5. **Task comments** — Both open the same task → A adds a comment → B sees it within ~5s in the task modal.
+6. **@mention** — A posts `@UserB` in team chat or task comment → B gets an in-app notification.
+7. **Regression** — Contractor messages dialog and studio Inbox are unchanged.
+
 ### Zapier & automation
 
 Full setup and test walkthrough: **[docs/ZAPIER.md](docs/ZAPIER.md)**
@@ -785,6 +815,7 @@ server/
 ├── notion/              # Notion integration app
 ├── billing/             # Stripe SaaS subscriptions
 ├── integrations/        # Zapier / public API (fp_live_ keys)
+├── collaboration/       # Team chat & project presence
 ├── client_portal/       # Client portal API
 ├── documents/           # Document library app
 ├── library/             # Product/material library app

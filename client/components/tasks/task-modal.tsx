@@ -61,6 +61,7 @@ import { useTaskModalStore } from '@/store/useTaskModalStore';
 import { DeleteDialog } from '@/components/DeleteDialog';
 import { useEditGuard } from '@/hooks/useEditGuard';
 import { usePermissions } from '@/hooks/usePermissions';
+import { TaskComments } from '@/components/tasks/TaskComments';
 
 const PhaseSelect = React.memo(function PhaseSelect({ projectId, selectedPhase, onSelect }: { projectId: string; selectedPhase: string | number | null | undefined; onSelect: (value: any) => void }) {
   type PhaseItem = { id: string | number; name: string };
@@ -1305,6 +1306,14 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
                 canEdit={canEdit}
               />
             </Labeled>
+
+            {taskValues?.id && (
+              <TaskComments
+                taskId={taskValues.id}
+                projectId={String(taskValues.projectID || projectId || '')}
+                teamMembers={teamMembers.map(m => ({ id: Number(m.id), name: m.name }))}
+              />
+            )}
           </div>
 
           {/* Comments & Activity with rounded segmented tabs */}

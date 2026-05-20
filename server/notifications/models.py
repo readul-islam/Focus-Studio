@@ -5,6 +5,8 @@ NOTIFICATION_TYPES = [
     ('project_assigned', 'Assigned to Project'),
     ('task_assigned', 'Assigned to Task'),
     ('subtask_assigned', 'Assigned to Subtask'),
+    ('team_message', 'Team Message'),
+    ('comment_mention', 'Comment Mention'),
 ]
 
 

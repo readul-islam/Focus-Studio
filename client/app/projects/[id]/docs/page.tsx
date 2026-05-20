@@ -33,6 +33,7 @@ import {
   FolderInput,
   LayoutGrid,
   List,
+  MessageSquare,
   Check,
   ChevronRight,
   FileSpreadsheet,
@@ -116,6 +117,25 @@ type DerivedFile = {
   url?: string;
   lastModified?: string;
   client_access?: boolean | null;
+};
+
+/** Team chat attachments listed under Files (API: collaboration/chat-attachments/) */
+type TeamChatLibraryAttachment = {
+  id: number;
+  file_name: string;
+  file_size: number;
+  content_type: string;
+  file_type: string;
+  file_url: string | null;
+  created_at: string;
+  message_id: number;
+  shared_by: {
+    id: number;
+    name: string;
+    email?: string;
+    profile_picture?: string | null;
+  } | null;
+  message_sent_at: string;
 };
 
 function getFileIcon(fileName: string) {
@@ -288,6 +308,21 @@ function ProjectDocsPageContent({ params }: { params: { id: string } }) {
   } = useFetch(`documents/documents/root_documents/?project_id=${params.id}`, {
     enabled: !!params.id,
   });
+
+  const { data: chatAttachmentsRaw } = useFetch(
+    params.id ? `collaboration/chat-attachments/?project_id=${params.id}` : null,
+    { enabled: !!params.id }
+  );
+
+  const teamChatFiles = React.useMemo<TeamChatLibraryAttachment[]>(() => {
+    if (!chatAttachmentsRaw) return [];
+    if (Array.isArray(chatAttachmentsRaw)) {
+      return chatAttachmentsRaw as TeamChatLibraryAttachment[];
+    }
+    const r = chatAttachmentsRaw as { results?: TeamChatLibraryAttachment[] };
+    if (r.results && Array.isArray(r.results)) return r.results;
+    return [];
+  }, [chatAttachmentsRaw]);
 
   const { mutate: sendToClient } = usePost();
 
@@ -1277,6 +1312,68 @@ const moveMutation = useMutation({
             </DropdownMenu> }
           </div>
         </div>
+
+        {/* Team chat — same files as attachments in project team chat */}
+        {teamChatFiles.length > 0 && (
+          <Card className="border border-neutral-200 overflow-hidden shadow-sm">
+            <div className="px-4 py-3 border-b border-neutral-100 flex flex-wrap items-center gap-3 justify-between bg-gradient-to-r from-stone-50 to-white">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-900 text-white flex-shrink-0">
+                  <MessageSquare className="w-4 h-4" aria-hidden />
+                </span>
+                <div className="min-w-0">
+                  <h2 className="text-sm font-semibold text-neutral-900">Team chat library</h2>
+                  <p className="text-xs text-neutral-500 truncate">
+                    Files shared in team chat — newest first ({teamChatFiles.length})
+                  </p>
+                </div>
+              </div>
+              <Link
+                href={`/projects/${params.id}/team`}
+                className="text-xs font-medium text-neutral-700 hover:text-neutral-900 underline underline-offset-2 whitespace-nowrap"
+              >
+                Open team chat
+              </Link>
+            </div>
+            <CardContent className="p-4 pt-3">
+              <div className="flex gap-3 overflow-x-auto pb-1 [scrollbar-width:thin]">
+                {teamChatFiles.map((att: TeamChatLibraryAttachment) => {
+                  const by = att.shared_by?.name || 'Team member';
+                  const isImg = att.file_type === 'image' && att.file_url;
+                  return (
+                    <a
+                      key={att.id}
+                      href={att.file_url || '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-shrink-0 w-[160px] rounded-xl border border-neutral-200 bg-white p-2 hover:border-neutral-300 hover:shadow-sm transition-shadow"
+                    >
+                      <div className="aspect-[4/3] rounded-lg bg-stone-100 flex items-center justify-center overflow-hidden mb-2">
+                        {isImg ? (
+                          <img
+                            src={att.file_url!}
+                            alt=""
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <span className="scale-150 text-neutral-400 [&_svg]:h-8 [&_svg]:w-8">
+                            {getFileIcon(att.file_name)}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs font-medium text-neutral-900 truncate" title={att.file_name}>
+                        {att.file_name}
+                      </p>
+                      <p className="text-[10px] text-neutral-500 truncate" title={by}>
+                        {by} · {formatDistanceToNow(new Date(att.message_sent_at || att.created_at), { addSuffix: true })}
+                      </p>
+                    </a>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Folders Grid */}
         <div

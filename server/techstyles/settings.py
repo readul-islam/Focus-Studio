@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     'billing',
     'integrations',
     'notion',
+    'collaboration',
 ]
 
 # Notion OAuth (https://www.notion.so/my-integrations)
