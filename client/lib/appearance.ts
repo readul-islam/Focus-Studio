@@ -13,7 +13,19 @@ export const DEFAULT_APPEARANCE: AppearancePrefs = {
   accent_color: null,
 };
 
-const ACCENT_CSS_VARS = ['--primary', '--ring', '--sidebar-primary'] as const;
+/** Color Hunt dark palette defaults */
+export const DARK_PALETTE = {
+  background: '#37353E',
+  surface: '#44444E',
+  primary: '#715A5A',
+  text: '#D3DAD9',
+} as const;
+
+const ACCENT_VARS = {
+  primary: ['--primary', '--primary-foreground'] as const,
+  sidebar: ['--sidebar-primary', '--sidebar-primary-foreground'] as const,
+  ring: ['--ring'] as const,
+};
 
 /** Convert #rrggbb to space-separated HSL components for `hsl(var(--primary))`. */
 export function hexToHslComponents(hex: string): string | null {
@@ -48,25 +60,59 @@ export function hexToHslComponents(hex: string): string | null {
   return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
 }
 
+/** WCAG-style relative luminance (0–1). */
+export function getRelativeLuminance(hex: string): number {
+  const normalized = hex.trim().replace(/^#/, '');
+  if (!/^[0-9a-fA-F]{6}$/.test(normalized)) return 0;
+
+  const channels = [0, 2, 4].map(i => {
+    const c = parseInt(normalized.slice(i, i + 2), 16) / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  });
+
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+
+/** Pick readable text on top of a fill color (light or dark). */
+export function getContrastForegroundHex(backgroundHex: string): string {
+  return getRelativeLuminance(backgroundHex) > 0.45 ? DARK_PALETTE.background : DARK_PALETTE.text;
+}
+
+function setPair(root: HTMLElement, bgVar: string, fgVar: string, bgHex: string) {
+  const bgHsl = hexToHslComponents(bgHex);
+  const fgHsl = hexToHslComponents(getContrastForegroundHex(bgHex));
+  if (!bgHsl) return;
+  root.style.setProperty(bgVar, bgHsl);
+  if (fgHsl) root.style.setProperty(fgVar, fgHsl);
+}
+
+function clearVars(root: HTMLElement, vars: readonly string[]) {
+  for (const v of vars) root.style.removeProperty(v);
+}
+
 export function applyAppearanceToDocument(prefs: AppearancePrefs) {
   if (typeof document === 'undefined') return;
 
   const root = document.documentElement;
   root.setAttribute('data-density', prefs.density);
 
+  const allAccentVars = [
+    ...ACCENT_VARS.primary,
+    ...ACCENT_VARS.sidebar,
+    ...ACCENT_VARS.ring,
+  ];
+
   if (prefs.accent_color) {
     const hsl = hexToHslComponents(prefs.accent_color);
     if (hsl) {
-      for (const variable of ACCENT_CSS_VARS) {
-        root.style.setProperty(variable, hsl);
-      }
+      setPair(root, '--primary', '--primary-foreground', prefs.accent_color);
+      setPair(root, '--sidebar-primary', '--sidebar-primary-foreground', prefs.accent_color);
+      root.style.setProperty('--ring', hsl);
       return;
     }
   }
 
-  for (const variable of ACCENT_CSS_VARS) {
-    root.style.removeProperty(variable);
-  }
+  clearVars(root, allAccentVars);
 }
 
 export function clearAppearanceFromDocument() {

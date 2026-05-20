@@ -53,6 +53,7 @@ import { useRouter } from 'next/navigation';
 import useUser from '@/hooks/useUser';
 import { usePermissions } from '@/hooks/usePermissions';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { pageShellClassName } from '@/components/layout/page-shell';
 
 type UITask = any; // keep your own type here if you have one
 
@@ -281,7 +282,7 @@ const DroppableColumn = React.memo(function DroppableColumnInner({
   return (
     <div
       ref={setNodeRef}
-      className={`bg-white  border border-gray-200 rounded-xl p-4 shadow-sm transition-all ${
+      className={`bg-card border border-border rounded-xl p-4 shadow-sm transition-all ${
         isDraggingOver ? '!border-gray-500  !border-1 border-dashed !bg-[#f9f8f6]' : ''
       }`}
     >
@@ -679,7 +680,7 @@ export default function MyTasksPage() {
   // console.log(activeTask)
 
   return (
-    <div className="flex-1 bg-stone-50 p-4 sm:p-6">
+    <div className={pageShellClassName}>
       <div className="max-w-7xl  mx-auto space-y-6">
         {/* <HomeNav /> */}
         <DataCardsGrid items={dataCards} />
@@ -735,7 +736,7 @@ export default function MyTasksPage() {
         >
           <div className="grid animate-in fade-in slide-in-from-bottom-3 duration-500 grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             {!taskLoading && tasks?.every((col: any) => col.items?.length === 0) ? (
-              <div className="col-span-full bg-white border border-gray-200 rounded-xl p-20 flex flex-col items-center justify-center text-center">
+              <div className="col-span-full bg-card border border-border rounded-xl p-20 flex flex-col items-center justify-center text-center">
                 <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4">
                   <CheckCircle2 className="w-8 h-8 text-gray-400" />
                 </div>

@@ -247,9 +247,9 @@ export default function CalendarStudioPage() {
 
         return (
 
-            <div className="flex flex-col h-full border border-gray-200 rounded-lg overflow-y-scroll bg-white ">
+            <div className="flex flex-col h-full border border-border rounded-lg overflow-y-scroll bg-white ">
                 {/* Header */}
-                <div className="grid grid-cols-7 border-b border-gray-200 bg-white">
+                <div className="grid grid-cols-7 border-b border-border bg-white">
                     {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
                         <div key={d} className="py-2 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
                             {d}
@@ -400,7 +400,7 @@ export default function CalendarStudioPage() {
 
 
         return (
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm h-full flex flex-col p-6">
+            <div className="bg-card border border-border rounded-lg shadow-sm h-full flex flex-col p-6">
                 <div className="flex items-center justify-between mb-6">
                     <div>
                         <h2 className="text-2xl font-bold text-gray-900">{format(currentDate, 'EEEE')}</h2>
@@ -422,7 +422,7 @@ export default function CalendarStudioPage() {
                             // Get dynamic style config based on status
                             const styleConfig = getStatusConfig(task.status);
                             return (
-                                <div key={task.id} className="p-4 rounded-xl border border-gray-100 bg-white hover:bg-white hover:shadow-sm transition-all">
+                                <div key={task.id} className="p-4 rounded-xl border border-border bg-white hover:bg-white hover:shadow-sm transition-all">
                                     <div className="flex items-start justify-between">
                                         <div>
                                             <h3 className="font-medium text-gray-900">{task.project_name} - {task.title}</h3>
@@ -465,7 +465,7 @@ export default function CalendarStudioPage() {
             <div className="max-w-7xl w-full mx-auto flex flex-col h-full gap-6">
                 {/* <HomeNav /> */}
                 {/* Top Toolbar */}
-                <div className="flex flex-col lg:flex-row gap-4 items-center justify-between bg-white py-4 lg:py-2 px-2 rounded-xl border border-gray-200 shadow-sm shrink-0">
+                <div className="surface-panel flex flex-col lg:flex-row gap-4 items-center justify-between py-4 lg:py-2 px-2 shrink-0">
                     {/* <div className="flex items-center gap-4">
                         <div className="flex items-center  border-gray-200">
                             <div className="bg-stone-100 p-1 rounded-lg border border-stone-200 flex items-center gap-1">
@@ -568,7 +568,7 @@ export default function CalendarStudioPage() {
                     <div className="flex-1 h-full min-w-0">
                         {renderCurrentView()}
                         {/* Legend */}
-                        <div className="bg-white shadow-sm p-3 rounded-xl mt-5 border border-gray-200 shadow-sm flex items-center gap-6 text-xs text-gray-600">
+                        <div className="surface-panel p-3 mt-5 flex items-center gap-6 text-xs text-muted-foreground">
                             {/* <span className="font-semibold text-gray-900">Legend:</span> */}
                             {['D', 'IR', 'TD', 'IP'].map((status) => {
                                 const config = getStatusConfig(status);
@@ -584,8 +584,8 @@ export default function CalendarStudioPage() {
 
                     {/* Sidebar (Day Details) - Only show in Month/Week view for context */}
                     {view !== 'day' && (
-                        <div className="lg:w-80 bg-white border border-gray-200 rounded-xl shadow-sm flex flex-col shrink-0 h-full">
-                            <div className="p-4 border-b border-gray-100">
+                        <div className="lg:w-80 bg-card border border-border rounded-xl shadow-sm flex flex-col shrink-0 h-full">
+                            <div className="p-4 border-b border-border">
                                 <h2 className="font-semibold text-lg">{format(selectedDate, 'EEEE, MMM do')}</h2>
                                 <p className="text-sm text-gray-500">
                                     {tasksForSelectedDate.length} active tasks
@@ -593,7 +593,7 @@ export default function CalendarStudioPage() {
                             </div>
                             <div className="flex-1 overflow-y-auto p-4 space-y-4">
                                 {tasksForSelectedDate.length === 0 ? (
-                                    <div className="text-center py-10 bg-white rounded-lg border border-dashed border-gray-200">
+                                    <div className="text-center py-10 bg-white rounded-lg border border-dashed border-border">
                                         <Clock className="w-8 h-8 text-gray-300 mx-auto mb-2" />
                                         <p className="text-sm text-gray-500">No active tasks for this date.</p>
                                     </div>

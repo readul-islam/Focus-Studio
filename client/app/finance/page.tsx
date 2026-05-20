@@ -526,7 +526,7 @@ function FinancePageContent() {
           {financeStats.map(stat => {
             const Icon = stat.icon;
             return (
-              <div key={stat.title} className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+              <div key={stat.title} className="bg-card border border-border rounded-xl p-4 shadow-sm">
                 <div className="flex items-center gap-3">
                   <Icon className="w-4 h-4 text-gray-500" aria-hidden="true" />
                   <div className="flex-1 min-w-0">
@@ -654,7 +654,7 @@ function FinancePageContent() {
 
         {/* Finance Table */}
         {!financeLoading && filteredPurchaseOrders.length === 0 && filteredInvoices.length === 0 ? (
-          <div className="bg-white border border-gray-200 rounded-xl p-16 flex flex-col items-center justify-center text-center">
+          <div className="bg-card border border-border rounded-xl p-16 flex flex-col items-center justify-center text-center">
             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4">
               <FileText className="w-8 h-8 " />
             </div>
@@ -674,11 +674,11 @@ function FinancePageContent() {
             </div>
           </div>
         ) : (
-          <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+          <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
             <div className="overflow-x-auto scrollbar scrollbar-thin">
               <table className="w-full table-fixed" style={{ minWidth: '1040px' }}>
                 {/* Sticky header, Title Case, no ALL CAPS */}
-                <thead className="bg-white border-b border-gray-200 sticky top-0 z-10">
+                <thead className="bg-white border-b border-border sticky top-0 z-10">
                   <tr>
                     <th className="px-3 py-3 text-left w-12">
                       <span className="sr-only">{'Select row'}</span>

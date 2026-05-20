@@ -116,7 +116,7 @@ const MessageBlock = ({ msg }: { msg: MessageItem }) => {
 
         <div className={`rounded-2xl p-4 text-sm w-full ${msg.is_sent
           ? 'bg-stone-50 text-gray-900 rounded-tr-sm'
-          : 'bg-white border border-gray-100 text-gray-900 rounded-tl-sm'
+          : 'bg-card border border-border text-gray-900 rounded-tl-sm'
           }`}>
           {/* Main Content */}
           <div
@@ -388,7 +388,7 @@ export default function InboxPage() {
               </Button>
             </div>
 
-            <div className="bg-white border mt-5 border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col flex-1 min-h-0">
+            <div className="surface-panel mt-5 overflow-hidden flex flex-col flex-1 min-h-0">
               {/* Gmail connect banner — shown when not connected */}
               {!integrationStatusLoading && !integrationStatus?.gmail_connected && (
                 <div className="border-b border-stone-200 bg-stone-50 px-4 py-3 flex items-center justify-between gap-3">
@@ -400,7 +400,7 @@ export default function InboxPage() {
                 </div>
               )}
 
-              <div className="p-4 border-b border-gray-100 flex-shrink-0">
+              <div className="p-4 border-b border-border flex-shrink-0">
                 <h3 className="text-sm font-medium text-gray-900">Recent Messages</h3>
               </div>
 
@@ -519,7 +519,7 @@ export default function InboxPage() {
             </div>
             
             {/* Email View */}
-            <div className=' bg-white border border-gray-200 flex-1 min-h-0 mt-5 rounded-xl shadow-sm overflow-hidden flex flex-col'>
+            <div className="surface-panel flex-1 min-h-0 mt-5 overflow-hidden flex flex-col">
               {!selectedThreadId ? (
                 gmailDisconnected ? (
                   <div className="h-full flex flex-col items-center justify-center px-6">
@@ -530,7 +530,7 @@ export default function InboxPage() {
                     <p className="text-sm text-gray-500 text-center max-w-xs mb-6">
                       Connect your Gmail account to see emails automatically from your client and supplier from CRM.
                     </p>
-                    {/* <div className="bg-white border border-gray-200 rounded-xl p-4 w-full max-w-lg space-y-3 mb-6">
+                    {/* <div className="bg-card border border-border rounded-xl p-4 w-full max-w-lg space-y-3 mb-6">
                       <div className="flex items-center gap-3">
                         <AlertCircle className="w-4 h-4 text-orange-500" />
                         <span className="text-sm text-gray-700">Action required emails highlighted</span>
@@ -562,7 +562,7 @@ export default function InboxPage() {
               ) : (
                 <>
                   {/* Conversation Header */}
-                  <div className="p-4 border-b border-gray-100 bg-white flex-shrink-0 flex justify-between items-center">
+                  <div className="p-4 border-b border-border bg-white flex-shrink-0 flex justify-between items-center">
                     <div className="max-w-[90%]">
                       <h2 className="text-lg font-semibold text-gray-900 truncate w-full">
                         {messages?.[0]?.subject || (filteredThreads.find(t => t.thread_id === selectedThreadId)?.subject) || 'Conversation'}

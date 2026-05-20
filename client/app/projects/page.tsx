@@ -12,6 +12,7 @@ import ProjectCard from '@/components/project/ProjectCard';
 import ProjectCardTable from '@/components/project/ProjectCardTable';
 import { Input } from '@/components/ui/input';
 import { usePermissions } from '@/hooks/usePermissions';
+import { pageShellClassName } from '@/components/layout/page-shell';
 
 
 export default function ProjectsPage() {
@@ -117,7 +118,7 @@ export default function ProjectsPage() {
   }, [data]);
 
   return (
-    <div className="flex-1 space-y-6 p-4 sm:p-6">
+    <div className={pageShellClassName}>
       {/* Header */}
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -225,3 +226,4 @@ export default function ProjectsPage() {
     </div>
   );
 }
+

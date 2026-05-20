@@ -33,7 +33,7 @@ const DENSITY_OPTIONS: { value: AppearanceDensity; label: string; description: s
   { value: 'spacious', label: 'Spacious', description: 'Extra breathing room' },
 ];
 
-const ACCENT_PRESETS = ['#111827', '#1e3a2f', '#7c2d12', '#1e40af', '#6b21a8'];
+const ACCENT_PRESETS = ['#715A5A', '#44444E', '#37353E', '#1e3a2f', '#1e40af'];
 
 export default function UserAppearancePage() {
   const queryClient = useQueryClient();
@@ -118,8 +118,8 @@ export default function UserAppearancePage() {
               className={cn(
                 'flex flex-col items-center gap-2 rounded-xl border p-4 text-sm transition-colors',
                 selectedTheme === value
-                  ? 'border-primary bg-primary/5 text-foreground ring-2 ring-primary/20'
-                  : 'border-border bg-card text-muted-foreground hover:border-primary/40 hover:bg-accent/50'
+                  ? 'border-border bg-muted text-foreground'
+                  : 'border-border bg-card text-muted-foreground hover:bg-muted/60'
               )}
             >
               <Icon className="size-5" />
@@ -140,8 +140,8 @@ export default function UserAppearancePage() {
               className={cn(
                 'flex-1 rounded-xl border px-4 py-3 text-left transition-colors',
                 prefs.density === value
-                  ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                  : 'border-border bg-card hover:border-primary/40 hover:bg-accent/50'
+                  ? 'border-border bg-muted'
+                  : 'border-border bg-card hover:bg-muted/60'
               )}
             >
               <div className="font-medium text-foreground">{label}</div>
@@ -162,16 +162,17 @@ export default function UserAppearancePage() {
                 aria-label={`Accent ${color}`}
                 onClick={() => update('accent_color', color)}
                 className={cn(
-                  'size-9 rounded-full border-2 transition-transform hover:scale-105',
-                  prefs.accent_color === color ? 'border-foreground scale-110' : 'border-transparent'
+                  'size-9 rounded-full border border-border/80 transition-transform hover:scale-105',
+                  prefs.accent_color === color &&
+                    'ring-1 ring-foreground/20 ring-offset-2 ring-offset-background'
                 )}
                 style={{ backgroundColor: color }}
               />
             ))}
             <label
               className={cn(
-                'relative flex size-9 cursor-pointer items-center justify-center rounded-full border-2 border-dashed border-border',
-                !prefs.accent_color && 'border-primary'
+                'relative flex size-9 cursor-pointer items-center justify-center rounded-full border border-dashed border-border',
+                !prefs.accent_color && 'bg-muted'
               )}
             >
               <span className="text-[10px] font-medium text-muted-foreground">Custom</span>

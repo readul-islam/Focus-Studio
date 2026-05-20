@@ -244,9 +244,9 @@ export default function CalendarStudioPage() {
 
         return (
 
-            <div className="flex animate-in fade-in slide-in-from-bottom-2 duration-200 flex-col h-full border border-gray-200 rounded-lg overflow-y-scroll bg-white shadow-sm">
+            <div className="flex animate-in fade-in slide-in-from-bottom-2 duration-200 flex-col h-full border border-border rounded-lg overflow-y-scroll bg-white shadow-sm">
                 {/* Header */}
-                <div className="grid grid-cols-7 border-b border-gray-200 bg-white">
+                <div className="grid grid-cols-7 border-b border-border bg-white">
                     {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
                         <div key={d} className="py-2 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
                             {d}
@@ -425,7 +425,7 @@ export default function CalendarStudioPage() {
 
 
         return (
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm h-full flex flex-col p-6">
+            <div className="bg-card border border-border rounded-lg shadow-sm h-full flex flex-col p-6">
                 <div className="flex items-center justify-between mb-6">
                     <div>
                         <h2 className="text-2xl font-bold text-gray-900">{format(currentDate, 'EEEE')}</h2>
@@ -444,7 +444,7 @@ export default function CalendarStudioPage() {
                 ) : (
                     <div className="space-y-3">
                         {activePhases.map((phase: any, index: number) => (
-                            <div key={phase.id} className="p-4 rounded-xl border border-gray-100 bg-white hover:bg-white hover:shadow-sm transition-all">
+                            <div key={phase.id} className="p-4 rounded-xl border border-border bg-white hover:bg-white hover:shadow-sm transition-all">
                                 <div className="flex items-start justify-between">
                                     <div>
                                         <h3 className="font-medium text-gray-900">{phase.project_name} - {phase.name}</h3>
@@ -598,16 +598,16 @@ export default function CalendarStudioPage() {
         const MEMBER_COL_WIDTH = 260; // Fixed width for sticky sidebar
 
         return (
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col  h-full overflow-hidden">
+            <div className="bg-card border border-border rounded-lg shadow-sm flex flex-col  h-full overflow-hidden">
                 {/* Unified Scroll Container */}
                 <div className="flex-1 overflow-auto scrollbar-thin scrollbar relative">
                     <div style={{ minWidth: `${totalGridWidth + MEMBER_COL_WIDTH}px` }}>
 
                         {/* Sticky Header Group */}
-                        <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex h-14 shadow-sm">
+                        <div className="sticky top-0 z-40 bg-white border-b border-border flex h-14 shadow-sm">
                             {/* Sticky Top-Left Corner */}
                             <div
-                                className="sticky left-0 z-50 bg-white border-r border-gray-200 flex items-center px-4 font-semibold text-sm text-gray-700 shadow-sm"
+                                className="sticky left-0 z-50 bg-white border-r border-border flex items-center px-4 font-semibold text-sm text-gray-700 shadow-sm"
                                 style={{ width: `${MEMBER_COL_WIDTH}px`, minWidth: `${MEMBER_COL_WIDTH}px` }}
                             >
                                 Studio Members
@@ -623,7 +623,7 @@ export default function CalendarStudioPage() {
                                     return (
                                         <div
                                             key={i}
-                                            className={`border-r border-gray-100 flex items-center justify-center ${isCurrent ? 'bg-[#fffaf3]' : 'bg-stone-50'}`}
+                                            className={`border-r border-border flex items-center justify-center ${isCurrent ? 'bg-[#fffaf3]' : 'bg-stone-50'}`}
                                             style={{ width: col.width }}
                                         >
                                             {col.label}
@@ -641,10 +641,10 @@ export default function CalendarStudioPage() {
                             const totalRowHeight = Math.max(contentHeight + 24, rowMinHeight); // padding 12px top/bot
 
                             return (
-                                <div key={member.id} className="flex border-b border-gray-100 group hover:bg-stone-50/50 transition-colors">
+                                <div key={member.id} className="flex border-b border-border group hover:bg-stone-50/50 transition-colors">
                                     {/* Sticky Left Sidebar (Member Info) */}
                                     <div
-                                        className="sticky left-0 z-30 bg-white border-r border-gray-200 px-4 flex items-center gap-3 transition-colors group-hover:bg-stone-50"
+                                        className="sticky left-0 z-30 bg-white border-r border-border px-4 flex items-center gap-3 transition-colors group-hover:bg-stone-50"
                                         style={{ width: `${MEMBER_COL_WIDTH}px`, minWidth: `${MEMBER_COL_WIDTH}px`, height: `${totalRowHeight}px` }}
                                     >
                                         {/* <div className="w-9 h-9 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs shrink-0 ring-1 ring-blue-100">
@@ -670,7 +670,7 @@ export default function CalendarStudioPage() {
                                                 else isCurrent = isSameMonth(col.date, now);
 
                                                 return (
-                                                    <div key={i} className={`border-r border-gray-100 h-full flex-shrink-0 ${isCurrent ? 'bg-[#fffaf3]' : ''}`} style={{ width: col.width }} />
+                                                    <div key={i} className={`border-r border-border h-full flex-shrink-0 ${isCurrent ? 'bg-[#fffaf3]' : ''}`} style={{ width: col.width }} />
                                                 );
                                             })}
                                         </div>
@@ -905,8 +905,8 @@ export default function CalendarStudioPage() {
                     {/* Sidebar (Day Details) - Only show in Month/Week view for context */}
                     {/* Sidebar (Day Details) - Only show in Month/Week view for context */}
                     {mode === 'calendar' && view !== 'day' && (
-                        <div className="w-80 bg-white border border-gray-200 rounded-xl shadow-sm flex flex-col shrink-0 h-full">
-                            <div className="p-4 border-b border-gray-100">
+                        <div className="w-80 bg-card border border-border rounded-xl shadow-sm flex flex-col shrink-0 h-full">
+                            <div className="p-4 border-b border-border">
                                 <h2 className="font-semibold text-lg">{format(selectedDate, 'EEEE, MMM do')}</h2>
                                 <div className="flex gap-2 text-sm text-gray-500">
                                     {(filterType === 'all' || filterType === 'phases') && (
@@ -961,7 +961,7 @@ export default function CalendarStudioPage() {
                                 {((filterType === 'phases' && phasesForSelectedDate.length === 0) ||
                                     (filterType === 'delivery' && deliveryDates.filter((d: any) => isSameDay(d.deliveryDate, selectedDate)).length === 0) ||
                                     (filterType === 'all' && phasesForSelectedDate.length === 0 && deliveryDates.filter((d: any) => isSameDay(d.deliveryDate, selectedDate)).length === 0)) && (
-                                        <div className="text-center py-10 bg-white rounded-lg border border-dashed border-gray-200">
+                                        <div className="text-center py-10 bg-white rounded-lg border border-dashed border-border">
                                             <Clock className="w-8 h-8 text-gray-300 mx-auto mb-2" />
                                             <p className="text-sm text-gray-500">No events for this date.</p>
                                         </div>

@@ -325,9 +325,9 @@ export default function UnifiedCalendarPage() {
 
         return (
 
-            <div className="flex animate-in fade-in slide-in-from-bottom-2 duration-200 flex-col h-full border border-gray-200 rounded-lg overflow-y-scroll bg-white shadow-sm">
+            <div className="flex animate-in fade-in slide-in-from-bottom-2 duration-200 flex-col h-full border border-border rounded-lg overflow-y-scroll bg-white shadow-sm">
                 {/* Header */}
-                <div className="grid grid-cols-7 border-b border-gray-200 bg-white">
+                <div className="grid grid-cols-7 border-b border-border bg-white">
                     {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
                         <div key={d} className="py-2 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
                             {d}
@@ -338,7 +338,7 @@ export default function UnifiedCalendarPage() {
                 <div className="flex-1 flex flex-col">
                     {weeks.map((weekDays, weekIdx) => {
                         return (
-                            <div key={weekIdx} className={`border-b border-gray-100 relative group ${isMonthView ? 'h-[240px]' : 'h-[400px]'}`}>
+                            <div key={weekIdx} className={`border-b border-border relative group ${isMonthView ? 'h-[240px]' : 'h-[400px]'}`}>
                                 {/* Background Grid */}
                                 <div className="absolute inset-0  grid grid-cols-7 z-0 pointer-events-none">
                                     {weekDays.map((d) => {
@@ -446,10 +446,10 @@ export default function UnifiedCalendarPage() {
                                                                 </TooltipTrigger>
                                                                 <TooltipContent
                                                                     side="right"
-                                                                    className="p-0 bg-white border border-gray-100 shadow-lg rounded-xl overflow-hidden w-[380px]"
+                                                                    className="p-0 bg-card border border-border shadow-lg rounded-xl overflow-hidden w-[380px]"
                                                                     sideOffset={12}
                                                                 >
-                                                                    <div className="px-4 py-3 border-b border-gray-100">
+                                                                    <div className="px-4 py-3 border-b border-border">
                                                                         <div className="flex items-center justify-between">
                                                                             <span className="text-[11px] font-medium text-gray-400 uppercase tracking-wide">Deliveries</span>
                                                                             <span className="text-[11px] font-medium text-gray-900 bg-stone-100 px-2 py-0.5 rounded-full">{dayDeliveries.length}</span>
@@ -574,7 +574,7 @@ export default function UnifiedCalendarPage() {
         const hasContent = activePhases.length > 0 || dayDeliveries.length > 0;
 
         return (
-            <div className="bg-white border border-gray-200 rounded-lg shadow-sm h-full flex flex-col p-6 overflow-y-auto">
+            <div className="bg-card border border-border rounded-lg shadow-sm h-full flex flex-col p-6 overflow-y-auto">
                 <div className="flex items-center justify-between mb-6">
                     <div>
                         <h2 className="text-2xl font-bold text-gray-900">{format(currentDate, 'EEEE')}</h2>
@@ -606,7 +606,7 @@ export default function UnifiedCalendarPage() {
                             <div className="space-y-3">
                                 <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Active Phases</h3>
                                 {activePhases.map((phase: any, index: number) => (
-                                    <div key={phase.id} className="p-4 rounded-xl border border-gray-100 bg-white hover:bg-white hover:shadow-sm transition-all">
+                                    <div key={phase.id} className="p-4 rounded-xl border border-border bg-white hover:bg-white hover:shadow-sm transition-all">
                                         <div className="flex items-start justify-between">
                                             <div>
                                                 <h3 className="font-medium text-gray-900">{phase.project_name} - {phase.name}</h3>
@@ -666,7 +666,7 @@ export default function UnifiedCalendarPage() {
         const hasEvents = googleEvents.length > 0;
 
         const emptyCard = (title: string, body: string, action?: React.ReactNode) => (
-            <div className="w-full h-full min-h-[400px] bg-white border border-gray-200 rounded-xl flex items-center justify-center">
+            <div className="w-full h-full min-h-[400px] bg-card border border-border rounded-xl flex items-center justify-center">
                 <div className="text-center max-w-sm px-8">
                     <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center mx-auto mb-5">
                         <CalendarIcon className="w-7 h-7 text-gray-400" />
@@ -716,7 +716,7 @@ export default function UnifiedCalendarPage() {
         <div className="flex-1 bg-stone-50 p-6 flex flex-col overflow-hidden">
             <div className="max-w-7xl w-full mx-auto flex flex-col h-full gap-4">
                 {/* Top Toolbar */}
-                <div className="flex items-center justify-between bg-white p-2 rounded-xl border border-gray-200 shadow-sm shrink-0">
+                <div className="surface-panel flex items-center justify-between p-2 shrink-0">
                     <div className="flex items-center gap-4">
                         {/* View dropdown */}
                         {(
@@ -830,8 +830,8 @@ export default function UnifiedCalendarPage() {
                     {/* Sidebar (Day Details) - Only show in Month/Week view for context */}
                     {/* Sidebar (Day Details) - Only show in Month/Week view for context */}
                     {!showMyCalendar && view !== 'day' && (
-                        <div className="w-80 bg-white border border-gray-200 rounded-xl shadow-sm flex flex-col shrink-0 h-screen overflow-scroll">
-                            <div className="p-4 border-b border-gray-100">
+                        <div className="w-80 bg-card border border-border rounded-xl shadow-sm flex flex-col shrink-0 h-screen overflow-scroll">
+                            <div className="p-4 border-b border-border">
                                 <h2 className="font-semibold text-lg">{format(selectedDate, 'EEEE, MMM do')}</h2>
                                 <div className="flex gap-2 text-sm text-gray-500">
                                     {(filterType === 'all' || filterType === 'phases') && (
@@ -943,7 +943,7 @@ export default function UnifiedCalendarPage() {
                                 {((filterType === 'phases' && phasesForSelectedDate.length === 0) ||
                                     (filterType === 'delivery' && deliveryDates.filter((d: any) => isSameDay(d.deliveryDate, selectedDate)).length === 0) ||
                                     (filterType === 'all' && phasesForSelectedDate.length === 0 && deliveryDates.filter((d: any) => isSameDay(d.deliveryDate, selectedDate)).length === 0 && (!showMyCalendar || googleEvents.filter((e: any) => isSameDay(e.eventDate, selectedDate)).length === 0))) && (
-                                        <div className="text-center py-10 bg-white rounded-lg border border-dashed border-gray-200">
+                                        <div className="text-center py-10 bg-white rounded-lg border border-dashed border-border">
                                             <Clock className="w-8 h-8 text-gray-300 mx-auto mb-2" />
                                             <p className="text-sm text-gray-500">No events for this date.</p>
                                         </div>

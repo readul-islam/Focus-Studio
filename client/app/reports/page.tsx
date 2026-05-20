@@ -106,7 +106,7 @@ function ReportsPageContent() {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
             {reportCategories.map((category) => (
               <Link key={category.id} href={category.href}>
-                <Card className="h-full cursor-pointer border-gray-200 bg-white transition-all hover:border-gray-300 hover:shadow-sm group">
+                <Card className="h-full cursor-pointer border-border bg-card transition-all hover:bg-accent/40 hover:shadow-sm group">
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between mb-2">
                       <div className={`w-10 h-10 rounded-lg ${category.color} flex items-center justify-center`}>

@@ -337,7 +337,7 @@ export function AppSidebar() {
             </div>
             <button
               onClick={() => setIsCollapsed((prev) => !prev)}
-              className="py-1.5 text-gray-400 hover:text-gray-600 hover:bg-stone-50 rounded-lg transition-colors flex-shrink-0 ml-7"
+              className="py-1.5 text-muted-foreground hover:text-foreground hover:bg-sidebar-accent rounded-lg transition-colors flex-shrink-0 ml-7"
               title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             >
               <motion.div
@@ -375,7 +375,7 @@ export function AppSidebar() {
                   animate={{ opacity: 1, width: "100%" }}
                   exit={{ opacity: 0, width: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="h-px bg-stone-200"
+                  className="h-px bg-sidebar-border"
                 />
               ) : (
                 <motion.span
@@ -383,7 +383,7 @@ export function AppSidebar() {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -10 }}
-                  className="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
+                  className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest whitespace-nowrap"
                 >
                   Studio
                 </motion.span>
@@ -411,14 +411,14 @@ export function AppSidebar() {
                         className={cn(
                           "flex items-center rounded-md text-sm font-medium transition-colors duration-150 w-full h-10 px-3.5",
                           isMoreActive
-                            ? "bg-white text-gray-900"
-                            : "text-gray-600 hover:text-gray-900 hover:bg-stone-50",
+                            ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                            : "text-muted-foreground hover:text-foreground hover:bg-sidebar-accent",
                         )}
                       >
                         {isCollapsed && isMoreActive && (
                           <motion.span
                             layoutId="sidebar-nav-active"
-                            className="absolute inset-0 bg-white rounded-md"
+                            className="absolute inset-0 bg-sidebar-accent rounded-md"
                             transition={{
                               type: "spring",
                               stiffness: 400,
@@ -450,7 +450,7 @@ export function AppSidebar() {
                 <DropdownMenuContent
                   align="start"
                   side="right"
-                  className="w-56 bg-white"
+                  className="w-56 bg-popover text-popover-foreground"
                   sideOffset={8}
                 >
                   {overflowItems.map((item, index) => {
@@ -462,7 +462,7 @@ export function AppSidebar() {
                           href={item.href}
                           className={cn(
                             "flex w-full items-center gap-2 cursor-pointer",
-                            isActive && "bg-stone-100",
+                            isActive && "bg-accent",
                           )}
                         >
                           <Icon className="w-4 h-4" />

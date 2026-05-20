@@ -64,7 +64,11 @@ export function RootLayoutWrapper({ children }: { children: ReactNode }) {
             <AppSidebar />
             <div className="flex-1 h-screen flex flex-col min-w-0 bg-background">
               <TopBar />
-              <main className="flex-1 bg-muted/30 overflow-auto">{children}</main>
+              <main className="flex-1 min-h-0 overflow-auto bg-stone-50 dark:bg-background">
+                <div className="min-h-[calc(100vh-var(--topbar-height,3.5rem))] w-full">
+                  {children}
+                </div>
+              </main>
             </div>
           </div>
         </SidebarProvider>

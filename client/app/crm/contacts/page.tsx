@@ -420,7 +420,7 @@ const handleCheckAll = (checked: boolean) => {
         <div className="bg-white animate-in fade-in slide-in-from-bottom-4 duration-500 rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="overflow-x-auto scrollbar scrollbar-thin">
             <table className="w-full table-fixed">
-              <thead className="bg-white border-b border-gray-200 sticky top-0 z-10">
+              <thead className="bg-white border-b border-border sticky top-0 z-10">
                 <tr>
                   <th className="px-4 text-left text-sm font-medium text-gray-600" style={{ width: 48 }}>
                     <Checkbox
@@ -484,7 +484,7 @@ const handleCheckAll = (checked: boolean) => {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="border-t border-gray-200 px-4 py-3 flex items-center justify-between">
+            <div className="border-t border-border px-4 py-3 flex items-center justify-between">
               {/* <p className="text-sm text-gray-600">
                 Showing {(currentPage - 1) * PAGE_SIZE + 1} to {Math.min(currentPage * PAGE_SIZE, totalCount)} of {totalCount} contacts
               </p> */}

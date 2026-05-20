@@ -213,7 +213,7 @@ function EmailRow({
   return (
     <div
       onClick={onClick}
-      className={`group flex items-start gap-3 p-3 border-b border-gray-100 cursor-pointer transition-colors ${
+      className={`group flex items-start gap-3 p-3 border-b border-border cursor-pointer transition-colors ${
         isSelected
           ? 'bg-stone-100 border-l-2 border-l-gray-900'
           : !email.isRead
@@ -304,7 +304,7 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
     <div className="h-full flex flex-col bg-white">
       {/* AI Analysis Section - Top */}
       {email.analysis && (
-        <div className="flex-shrink-0 p-4 bg-gradient-to-br from-sage-50/50 via-gray-50 to-clay-50/30 border-b border-gray-200">
+        <div className="flex-shrink-0 p-4 bg-gradient-to-br from-sage-50/50 via-gray-50 to-clay-50/30 border-b border-border">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Sparkle className="w-4 h-4 text-[#748971]" />
@@ -366,7 +366,7 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
       )}
 
       {/* Email Header */}
-      <div className="flex-shrink-0 p-4 border-b border-gray-200 bg-white">
+      <div className="flex-shrink-0 p-4 border-b border-border bg-white">
         <h2 className="text-lg font-semibold text-gray-900 leading-tight mb-2">{email.subject}</h2>
         <div className="flex items-center gap-2 text-sm">
           <span className="font-medium text-gray-900">{email.fromName}</span>
@@ -385,7 +385,7 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
       <div className="flex-1 p-4 overflow-y-auto bg-white">
         <div className="prose prose-sm max-w-none">
           <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{email.snippet}</p>
-          <div className="p-4 bg-white rounded-lg border border-gray-100">
+          <div className="p-4 bg-white rounded-lg border border-border">
             <p className="text-xs text-gray-400 italic m-0">
               Full email thread will be displayed here when connected to Gmail.
             </p>
@@ -394,7 +394,7 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
       </div>
 
       {/* Action Bar - Fixed at bottom */}
-      <div className="flex-shrink-0 p-4 border-t border-gray-200 bg-white">
+      <div className="flex-shrink-0 p-4 border-t border-border bg-white">
         <div className="flex items-center justify-between gap-3">
           {/* Primary Actions */}
           <div className="flex items-center gap-2">
@@ -501,7 +501,7 @@ function MessageBlock({ msg, suggestedTasks, onAddTask, onViewTask, isCreatingTa
 
         <div className={`rounded-2xl p-4 text-sm w-full ${msg.is_sent
           ? 'bg-stone-50 text-gray-900 rounded-tr-sm'
-          : 'bg-white border border-gray-100 text-gray-900 rounded-tl-sm'
+          : 'bg-card border border-border text-gray-900 rounded-tl-sm'
         }`}>
           <div
             className="prose prose-sm max-w-none [&_img]:max-w-full [&_img]:h-auto [&_img]:mx-auto [&_img]:inline-block"
@@ -626,7 +626,7 @@ function EmailDetailPanelWithMessages({
       <div className="flex-1 overflow-y-auto bg-white flex flex-col" ref={scrollContainerRef}>
 
       {/* AI Summary */}
-      <div className="flex-shrink-0 p-4 border-b border-gray-200 bg-white">
+      <div className="flex-shrink-0 p-4 border-b border-border bg-white">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <Sparkle className="w-4 h-4 text-[#748971]" />
@@ -719,7 +719,7 @@ function EmailDetailPanelWithMessages({
       </div>
 
       {/* Email Header */}
-      <div className="flex-shrink-0 border-b border-gray-200 bg-white">
+      <div className="flex-shrink-0 border-b border-border bg-white">
         <button
           onClick={() => setHeaderCollapsed(prev => !prev)}
           className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors text-left"
@@ -832,7 +832,7 @@ function EmailDetailPanelWithMessages({
 
       {/* Reply Input Area */}
       {showReplyInput && (
-        <div className="flex-shrink-0 p-4 border-t border-gray-100 bg-white">
+        <div className="flex-shrink-0 p-4 border-t border-border bg-white">
           <div className="flex gap-4 bg-white p-2 rounded-lg border border-gray-200 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all">
             <Textarea
               value={replyBody}
@@ -859,7 +859,7 @@ function EmailDetailPanelWithMessages({
       )}
 
       {/* Action Bar - Always at bottom */}
-      <div className="flex-shrink-0 p-4 border-t border-gray-200 bg-white">
+      <div className="flex-shrink-0 p-4 border-t border-border bg-white">
         <div className="flex items-center justify-between gap-3">
           {/* Primary Actions */}
           <div className="flex items-center gap-2">
@@ -900,14 +900,14 @@ function EmptyDetailPanel({ hasEmails, isDisconnected }: { hasEmails: boolean, i
   if (isDisconnected) {
     return (
       <div className="h-full flex flex-col items-center justify-center text-center p-8 bg-gradient-to-br from-sage-50/30 via-gray-50 to-clay-50/20">
-        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm border border-gray-100">
+        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm border border-border">
           <Mail className="w-10 h-10 text-sage-400" />
         </div>
         <h3 className="text-lg font-semibold text-gray-800 mb-2">Connect your Gmail</h3>
         <p className="text-sm text-gray-500 max-w-sm mb-6">
           Connect your Gmail account to see emails automatically categorised by AI, with summaries and suggested actions.
         </p>
-        <div className="flex flex-col gap-3 text-left text-sm text-gray-600 bg-white/80 rounded-lg p-4 border border-gray-100">
+        <div className="flex flex-col gap-3 text-left text-sm text-gray-600 bg-white/80 rounded-lg p-4 border border-border">
           <div className="flex items-start gap-2">
             <AlertCircle className="w-4 h-4 text-terracotta-500 mt-0.5 flex-shrink-0" />
             <span>Action required emails highlighted</span>
@@ -1527,9 +1527,9 @@ export default function MagicalInboxPage() {
       </div>
 
       {/* Two-Panel Layout */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-6 min-h-0 mx-4 sm:mx-6 mb-0 sm:mb-0 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="surface-panel flex-1 grid grid-cols-1 lg:grid-cols-6 min-h-0 mx-4 sm:mx-6 mb-0 sm:mb-0 overflow-hidden">
         {/* Left Panel: Email List — hidden on mobile when a thread is open */}
-        <div className={`lg:col-span-2 border-r border-gray-200 h-[calc(100vh-140px)] overflow-y-auto scrollbar-thin bg-white ${selectedThreadId ? 'hidden lg:block' : 'block'}`}>
+        <div className={`lg:col-span-2 border-r border-border h-[calc(100vh-var(--topbar-height,3.5rem)-8rem)] overflow-y-auto scrollbar-thin bg-card ${selectedThreadId ? 'hidden lg:block' : 'block'}`}>
           {loading ? (
             <div className="flex items-center justify-center py-12">
               <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
@@ -1600,7 +1600,7 @@ export default function MagicalInboxPage() {
         </div>
 
         {/* Right Panel: Email Detail + AI Summary — full width on mobile when thread open */}
-        <div className={`lg:col-span-4 h-[calc(100vh-145px)] overflow-y-auto scrollbar-thin bg-stone-50 relative ${selectedThreadId ? 'col-span-1' : 'hidden lg:block'}`}>
+        <div className={`lg:col-span-4 h-[calc(100vh-var(--topbar-height,3.5rem)-8rem)] overflow-y-auto scrollbar-thin bg-muted/30 relative ${selectedThreadId ? 'col-span-1' : 'hidden lg:block'}`}>
           {selectedEmail ? (
             <EmailDetailPanelWithMessages
               email={selectedEmail}

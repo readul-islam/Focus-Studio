@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { pageShellClassName } from '@/components/layout/page-shell';
 import { getAIActivities, type AIActivity } from './actions';
 
 // Types for AI Activity
@@ -258,13 +259,13 @@ export default function AIActivityPage() {
   const groupedActivities = groupActivitiesByDate(activities);
 
   return (
-    <div className="flex-1 bg-stone-50 p-4 sm:p-6">
+    <div className={pageShellClassName}>
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-semibold text-neutral-900">AI Activity</h1>
-            <p className="text-sm text-neutral-500 mt-1">
+            <h1 className="text-xl font-semibold text-foreground">AI Activity</h1>
+            <p className="text-sm text-muted-foreground mt-1">
               Track what your AI assistant has been doing
             </p>
           </div>

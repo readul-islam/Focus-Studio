@@ -297,9 +297,9 @@ export default function TeamsPage() {
                 {/* Summary Dashboard */}
                 <TeamSummaryDashboard teamMembers={teamWorkload} />
                 {/* Team Table */}
-                <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
                     {/* Header */}
-                    <div className="flex items-center justify-between p-4 border-b border-gray-100">
+                    <div className="flex items-center justify-between p-4 border-b border-border">
                         <h3 className="text-sm font-semibold text-gray-900">Team Members</h3>
                         <div className="relative">
                             
@@ -355,7 +355,7 @@ export default function TeamsPage() {
                     </div>
 
                     {/* Table Header — hidden on mobile */}
-                    <div className="hidden md:grid md:grid-cols-12 gap-3 px-4 py-3 bg-white border-b border-gray-100 text-sm font-medium text-gray-600">
+                    <div className="hidden md:grid md:grid-cols-12 gap-3 px-4 py-3 bg-white border-b border-border text-sm font-medium text-gray-600">
                         <div className="col-span-4">Team Member</div>
                         <div className="col-span-2">
                             <TooltipProvider>
@@ -622,13 +622,13 @@ export default function TeamsPage() {
         const MEMBER_COL_WIDTH = 200;
 
         return (
-            <div className="bg-white border border-gray-200 rounded-xl shadow-sm flex flex-col h-full overflow-hidden">
+            <div className="bg-card border border-border rounded-xl shadow-sm flex flex-col h-full overflow-hidden">
                 <div className="flex-1 overflow-auto relative">
                     <div style={{ minWidth: `${totalGridWidth + MEMBER_COL_WIDTH}px` }}>
                         {/* Header */}
-                        <div className="sticky top-0 z-40 bg-white border-b border-gray-200 flex h-14 shadow-sm">
+                        <div className="sticky top-0 z-40 bg-white border-b border-border flex h-14 shadow-sm">
                             <div
-                                className="sticky left-0 z-50 bg-white border-r border-gray-200 flex items-center px-4 font-semibold text-sm text-gray-700 shadow-sm"
+                                className="sticky left-0 z-50 bg-white border-r border-border flex items-center px-4 font-semibold text-sm text-gray-700 shadow-sm"
                                 style={{ width: `${MEMBER_COL_WIDTH}px`, minWidth: `${MEMBER_COL_WIDTH}px` }}
                             >
                                 Team Members
@@ -643,7 +643,7 @@ export default function TeamsPage() {
                                     return (
                                         <div
                                             key={i}
-                                            className={`border-r border-gray-100 flex items-center justify-center ${isCurrent ? 'bg-[#8fa58f]/10' : 'bg-white'}`}
+                                            className={`border-r border-border flex items-center justify-center ${isCurrent ? 'bg-[#8fa58f]/10' : 'bg-white'}`}
                                             style={{ width: col.width }}
                                         >
                                             {col.label}
@@ -661,9 +661,9 @@ export default function TeamsPage() {
                             const totalRowHeight = Math.max(contentHeight + 24, rowMinHeight);
 
                             return (
-                                <div key={member.id} className="flex border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <div key={member.id} className="flex border-b border-border group hover:bg-gray-50/50 transition-colors">
                                     <div
-                                        className="sticky left-0 z-30 bg-white border-r border-gray-200 px-4 flex items-center gap-3 transition-colors group-hover:bg-gray-50"
+                                        className="sticky left-0 z-30 bg-white border-r border-border px-4 flex items-center gap-3 transition-colors group-hover:bg-gray-50"
                                         style={{ width: `${MEMBER_COL_WIDTH}px`, minWidth: `${MEMBER_COL_WIDTH}px`, height: `${totalRowHeight}px` }}
                                     >
                                         <Avatar className="h-9 w-9">
@@ -684,7 +684,7 @@ export default function TeamsPage() {
                                                 else isCurrent = isSameMonth(col.date, now);
 
                                                 return (
-                                                    <div key={i} className={`border-r border-gray-100 h-full flex-shrink-0 ${isCurrent ? 'bg-[#8fa58f]/5' : ''}`} style={{ width: col.width }} />
+                                                    <div key={i} className={`border-r border-border h-full flex-shrink-0 ${isCurrent ? 'bg-[#8fa58f]/5' : ''}`} style={{ width: col.width }} />
                                                 );
                                             })}
                                         </div>
@@ -812,7 +812,7 @@ export default function TeamsPage() {
                 <div className="flex flex-wrap items-center justify-between gap-2 bg-white p-2 rounded-xl border border-gray-200 shadow-sm shrink-0">
                     <div className="flex items-center gap-2 flex-wrap">
                         {/* Mode Toggle */}
-                        <div className="bg-white border border-gray-200 p-1 rounded-lg flex items-center gap-1">
+                        <div className="bg-card border border-border p-1 rounded-lg flex items-center gap-1">
                             <Button
                                 variant="ghost"
                                 size="sm"
@@ -835,7 +835,7 @@ export default function TeamsPage() {
 
                         {/* View Buttons - Only show in Timeline mode */}
                         {mode === 'timeline' && (
-                            <div className="bg-white border border-gray-200 p-1 rounded-lg flex items-center gap-1">
+                            <div className="bg-card border border-border p-1 rounded-lg flex items-center gap-1">
                                 <Button
                                     variant="ghost"
                                     size="sm"
