@@ -16,9 +16,22 @@ export type DesignMessage = {
   id: number;
   role: 'user' | 'assistant';
   content: string;
+  sketch_url?: string | null;
   image_url: string | null;
   asset_id: number | null;
   created_at: string;
+};
+
+export type DesignGenerateResponse = {
+  reply: string;
+  asset_id: number;
+  image_url: string;
+  messages: DesignMessage[];
+};
+
+export type DesignChatResponse = {
+  reply: string;
+  messages: DesignMessage[];
 };
 
 const SESSIONS_KEY = ['design/sessions/'];
@@ -54,6 +67,10 @@ export function useDesignMessages(sessionId: number | null) {
   });
 }
 
+function messagesQueryKey(sessionId: number) {
+  return ['design/sessions', sessionId, 'messages'] as const;
+}
+
 export function useDesignChat(sessionId: number | null) {
   const queryClient = useQueryClient();
 
@@ -62,10 +79,10 @@ export function useDesignChat(sessionId: number | null) {
       postData({
         url: '/design/chat/',
         data: { session_id: sessionId, message },
-      }),
-    onSuccess: () => {
-      if (sessionId) {
-        queryClient.invalidateQueries({ queryKey: ['design/sessions', sessionId, 'messages'] });
+      }) as Promise<DesignChatResponse>,
+    onSuccess: (data) => {
+      if (sessionId && data?.messages) {
+        queryClient.setQueryData(messagesQueryKey(sessionId), data.messages);
         queryClient.invalidateQueries({ queryKey: SESSIONS_KEY });
       }
     },
@@ -86,11 +103,11 @@ export function useDesignGenerate(sessionId: number | null) {
       formData.append('prompt', params.prompt);
       formData.append('design_type', params.design_type);
       params.files.forEach(f => formData.append('files', f));
-      return postFormData({ url: '/design/generate/', data: formData });
+      return postFormData({ url: '/design/generate/', data: formData }) as Promise<DesignGenerateResponse>;
     },
-    onSuccess: () => {
-      if (sessionId) {
-        queryClient.invalidateQueries({ queryKey: ['design/sessions', sessionId, 'messages'] });
+    onSuccess: (data) => {
+      if (sessionId && data?.messages) {
+        queryClient.setQueryData(messagesQueryKey(sessionId), data.messages);
         queryClient.invalidateQueries({ queryKey: SESSIONS_KEY });
       }
     },

@@ -153,17 +153,13 @@ def chat_followup(session_messages: list[dict], message: str, design_type: str) 
     return (response.choices[0].message.content or '').strip()
 
 
-def save_generated_image(session, image_bytes: bytes, prompt: str, sketch_file=None):
-    """Persist DesignAsset and return (asset, assistant_text)."""
+def save_generated_image(session, image_bytes: bytes, prompt: str):
+    """Persist DesignAsset to default storage (S3) and return (asset, assistant_text)."""
     from .models import DesignAsset, DesignMessage
 
     asset = DesignAsset(session=session, prompt=prompt)
     filename = f'design_{session.id}_{DesignAsset.objects.count() + 1}.png'
-    asset.file.save(filename, ContentFile(image_bytes), save=False)
-    if sketch_file:
-        sketch_name = f'sketch_{session.id}_{sketch_file.name or "upload.png"}'
-        asset.source_sketch.save(sketch_name, sketch_file, save=False)
-    asset.save()
+    asset.file.save(filename, ContentFile(image_bytes, name=filename), save=True)
 
     summary = prompt[:500] if len(prompt) > 500 else prompt
     assistant_text = f'Here is your generated {session.design_type} design render.'

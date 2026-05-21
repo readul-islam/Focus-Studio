@@ -32,6 +32,7 @@ class DesignMessage(models.Model):
     session = models.ForeignKey(DesignSession, on_delete=models.CASCADE, related_name='messages')
     role = models.CharField(max_length=20, choices=MESSAGE_ROLE_CHOICES)
     content = models.TextField()
+    sketch = models.ImageField(upload_to='design_sketches/%Y/%m/', null=True, blank=True)
     asset = models.ForeignKey(
         'DesignAsset',
         on_delete=models.SET_NULL,

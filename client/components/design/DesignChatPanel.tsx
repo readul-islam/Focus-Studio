@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import Image from 'next/image';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import {
   Send,
   RotateCcw,
@@ -30,8 +29,16 @@ import {
   formatFileSize,
 } from '@/lib/team-chat-file-utils';
 import { DesignShareDialog } from '@/components/design/DesignShareDialog';
-import { cn } from '@/lib/utils';
+import {
+  useDesignImageLightbox,
+  DesignClickableImage,
+  type DesignLightboxSlide,
+} from '@/components/design/DesignImageLightbox';
 import { gooeyToast as toast } from 'goey-toast';
+
+function makeOptimisticId() {
+  return -Math.floor(Math.random() * 1_000_000_000);
+}
 
 const SUGGESTED_PROMPTS = [
   'Modern minimalist living room with natural light',
@@ -100,20 +107,21 @@ function GeneratedImageBlock({
   imageUrl,
   assetId,
   onShare,
+  onOpenFullscreen,
 }: {
   imageUrl: string;
   assetId: number;
   onShare: () => void;
+  onOpenFullscreen: () => void;
 }) {
   return (
     <div className="space-y-2 max-w-md">
       <div className="relative rounded-xl overflow-hidden border border-gray-200 bg-gray-50 aspect-square">
-        <Image
+        <DesignClickableImage
           src={imageUrl}
           alt="Generated design render"
-          fill
-          className="object-cover"
-          unoptimized
+          className="absolute inset-0 w-full h-full"
+          onOpen={onOpenFullscreen}
         />
       </div>
       <div className="flex flex-wrap gap-2">
@@ -155,6 +163,8 @@ export function DesignChatPanel({
 }: Props) {
   const [input, setInput] = useState('');
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
+  const [pendingPreviews, setPendingPreviews] = useState<string[]>([]);
+  const [optimisticMessages, setOptimisticMessages] = useState<DesignMessage[]>([]);
   const [shareTarget, setShareTarget] = useState<{ imageUrl: string; assetId: number } | null>(null);
   const [generatePhase, setGeneratePhase] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -167,13 +177,37 @@ export function DesignChatPanel({
 
   const isPending = chatMutation.isPending || generateMutation.isPending;
 
+  const displayMessages = [...messages, ...optimisticMessages];
+
+  const { openImage, LightboxModal } = useDesignImageLightbox();
+
+  const sessionImageGallery = useMemo((): DesignLightboxSlide[] => {
+    const slides: DesignLightboxSlide[] = [];
+    for (const msg of displayMessages) {
+      if (msg.sketch_url) {
+        slides.push({ src: msg.sketch_url, alt: 'Uploaded sketch' });
+      }
+      if (msg.image_url) {
+        slides.push({ src: msg.image_url, alt: 'Generated design' });
+      }
+    }
+    return slides;
+  }, [displayMessages]);
+
   const scrollBottom = useCallback(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
   useEffect(() => {
     scrollBottom();
-  }, [messages, isPending, scrollBottom]);
+  }, [displayMessages, isPending, scrollBottom]);
+
+  // Object URLs for pending file thumbnails
+  useEffect(() => {
+    const urls = pendingFiles.map(f => URL.createObjectURL(f));
+    setPendingPreviews(urls);
+    return () => urls.forEach(u => URL.revokeObjectURL(u));
+  }, [pendingFiles]);
 
   const addFiles = (files: FileList | File[]) => {
     const next: File[] = [];
@@ -205,18 +239,36 @@ export function DesignChatPanel({
       toast.error('Add a prompt or upload a sketch');
       return;
     }
+
+    const sketchPreview = pendingPreviews[0] ?? null;
+    setOptimisticMessages([
+      {
+        id: makeOptimisticId(),
+        role: 'user',
+        content: trimmed || 'Generate a design from the uploaded sketch.',
+        sketch_url: sketchPreview,
+        image_url: null,
+        asset_id: null,
+        created_at: new Date().toISOString(),
+      },
+    ]);
+
     setGeneratePhase('Analyzing sketch…');
-    setTimeout(() => setGeneratePhase('Rendering design…'), 3000);
+    const phaseTimer = setTimeout(() => setGeneratePhase('Rendering design…'), 3000);
+
     generateMutation.mutate(
-      { prompt: trimmed, design_type: designType, files: pendingFiles },
+      { prompt: trimmed, design_type: designType, files: [...pendingFiles] },
       {
         onSuccess: () => {
+          clearTimeout(phaseTimer);
           setInput('');
           setPendingFiles([]);
+          setOptimisticMessages([]);
           setGeneratePhase(null);
-          refetch();
         },
         onError: (err: { response?: { data?: { error?: string } }; message?: string }) => {
+          clearTimeout(phaseTimer);
+          setOptimisticMessages([]);
           setGeneratePhase(null);
           const msg =
             err?.response?.data?.error || err?.message || 'Generation failed';
@@ -233,10 +285,24 @@ export function DesignChatPanel({
       toast.error("You don't have permission to chat");
       return;
     }
+
+    setOptimisticMessages([
+      {
+        id: makeOptimisticId(),
+        role: 'user',
+        content: trimmed,
+        sketch_url: null,
+        image_url: null,
+        asset_id: null,
+        created_at: new Date().toISOString(),
+      },
+    ]);
     setInput('');
+
     chatMutation.mutate(trimmed, {
-      onSuccess: () => refetch(),
+      onSuccess: () => setOptimisticMessages([]),
       onError: (err: { response?: { data?: { error?: string } }; message?: string }) => {
+        setOptimisticMessages([]);
         toast.error(err?.response?.data?.error || 'Chat failed');
       },
     });
@@ -250,7 +316,8 @@ export function DesignChatPanel({
     }
   };
 
-  const isEmpty = messages.length === 0 && !isPending && !messagesLoading;
+  const isEmpty =
+    displayMessages.length === 0 && !isPending && !messagesLoading;
 
   return (
     <div className="flex flex-col h-full bg-white min-w-0">
@@ -308,11 +375,14 @@ export function DesignChatPanel({
       {!isEmpty && (
         <div className="flex-1 overflow-y-auto px-4 py-3 space-y-5 min-h-0">
           {messagesLoading && <ThinkingSkeleton />}
-          {messages.map((msg: DesignMessage) => (
+          {displayMessages.map((msg: DesignMessage) => (
             <MessageBubble
               key={msg.id}
               msg={msg}
               onShare={(url, id) => setShareTarget({ imageUrl: url, assetId: id })}
+              onOpenImage={(src, alt) =>
+                openImage(src, { alt, gallery: sessionImageGallery })
+              }
             />
           ))}
           {isPending && (
@@ -326,18 +396,37 @@ export function DesignChatPanel({
 
       <div className="px-4 pb-4 pt-2 shrink-0 border-t border-gray-100">
         {pendingFiles.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-2">
+          <div className="flex flex-wrap gap-2 mb-2 justify-end">
             {pendingFiles.map((f, i) => (
               <div
                 key={`${f.name}-${i}`}
-                className="flex items-center gap-1.5 bg-gray-100 rounded-lg px-2 py-1 text-xs text-gray-700"
+                className="relative group rounded-lg overflow-hidden border border-gray-200 bg-gray-50 w-20 h-20 shrink-0"
               >
-                <Paperclip className="w-3 h-3" />
-                <span className="truncate max-w-[120px]">{f.name}</span>
+                {pendingPreviews[i] ? (
+                  <DesignClickableImage
+                    src={pendingPreviews[i]}
+                    alt={f.name}
+                    className="w-full h-full"
+                    onOpen={() =>
+                      openImage(pendingPreviews[i], {
+                        alt: f.name,
+                        gallery: pendingPreviews.map((src, j) => ({
+                          src,
+                          alt: pendingFiles[j]?.name ?? 'Sketch',
+                        })),
+                      })
+                    }
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400">
+                    <Paperclip className="w-4 h-4" />
+                  </div>
+                )}
                 <button
                   type="button"
                   onClick={() => setPendingFiles(prev => prev.filter((_, j) => j !== i))}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="absolute top-0.5 right-0.5 p-0.5 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                  aria-label={`Remove ${f.name}`}
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -391,11 +480,11 @@ export function DesignChatPanel({
               </span>
             </div>
             <div className="flex items-center gap-1.5">
-              {pendingFiles.length > 0 && (
+              {(pendingFiles.length > 0 || input.trim()) && (
                 <button
                   type="button"
                   onClick={handleGenerate}
-                  disabled={isPending || !canEdit}
+                  disabled={isPending || !canEdit || (!input.trim() && pendingFiles.length === 0)}
                   className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-[#748971] text-white text-xs font-medium hover:bg-[#5f7560] disabled:opacity-40"
                 >
                   {generateMutation.isPending ? (
@@ -431,6 +520,8 @@ export function DesignChatPanel({
           assetId={shareTarget.assetId}
         />
       )}
+
+      <LightboxModal />
     </div>
   );
 }
@@ -438,18 +529,32 @@ export function DesignChatPanel({
 function MessageBubble({
   msg,
   onShare,
+  onOpenImage,
 }: {
   msg: DesignMessage;
   onShare: (url: string, assetId: number) => void;
+  onOpenImage: (src: string, alt: string) => void;
 }) {
   const [copied, setCopied] = useState(false);
 
   if (msg.role === 'user') {
     return (
-      <div className="flex justify-end">
-        <div className="max-w-[82%] bg-gray-100 text-gray-800 rounded-2xl rounded-br-md px-4 py-2.5 text-[13px] leading-relaxed">
-          {msg.content}
-        </div>
+      <div className="flex flex-col items-end gap-2 max-w-[85%] ml-auto">
+        {msg.sketch_url && (
+          <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+            <DesignClickableImage
+              src={msg.sketch_url}
+              alt="Uploaded sketch"
+              className="w-full h-full"
+              onOpen={() => onOpenImage(msg.sketch_url!, 'Uploaded sketch')}
+            />
+          </div>
+        )}
+        {msg.content ? (
+          <div className="bg-gray-100 text-gray-800 rounded-2xl rounded-br-md px-4 py-2.5 text-[13px] leading-relaxed">
+            {msg.content}
+          </div>
+        ) : null}
       </div>
     );
   }
@@ -462,6 +567,7 @@ function MessageBubble({
           imageUrl={msg.image_url}
           assetId={msg.asset_id}
           onShare={() => onShare(msg.image_url!, msg.asset_id!)}
+          onOpenFullscreen={() => onOpenImage(msg.image_url!, 'Generated design')}
         />
       ) : null}
       {msg.content && <MarkdownContent content={msg.content} />}

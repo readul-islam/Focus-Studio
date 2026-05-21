@@ -122,7 +122,12 @@ def design_chat(request):
     DesignMessage.objects.create(session=session, role='assistant', content=reply)
     session.save(update_fields=['updated_at'])
 
-    return Response({'reply': reply})
+    all_messages = session.messages.select_related('asset').order_by('created_at')
+    messages_data = DesignMessageSerializer(
+        all_messages, many=True, context={'request': request}
+    ).data
+
+    return Response({'reply': reply, 'messages': messages_data})
 
 
 @api_view(['POST'])
@@ -162,7 +167,19 @@ def design_generate(request):
     files = valid_files or []
 
     user_content = prompt or 'Generate a design from the uploaded sketch.'
-    DesignMessage.objects.create(session=session, role='user', content=user_content)
+    user_message = DesignMessage.objects.create(
+        session=session,
+        role='user',
+        content=user_content,
+    )
+
+    # Persist uploaded sketch on the user message (S3 via default storage) for chat display.
+    if files:
+        sketch_upload = files[0]
+        sketch_upload.seek(0)
+        sketch_name = sketch_upload.name or 'sketch.png'
+        user_message.sketch.save(f'user_{session.id}_{sketch_name}', sketch_upload, save=True)
+        sketch_upload.seek(0)
 
     try:
         if files:
@@ -173,15 +190,10 @@ def design_generate(request):
         image_prompt = ai.build_image_prompt(brief, design_type, prompt)
         image_bytes = ai.generate_design_image(image_prompt)
 
-        sketch_for_save = files[0] if files else None
-        if sketch_for_save:
-            sketch_for_save.seek(0)
-
         asset, assistant_text = ai.save_generated_image(
             session,
             image_bytes,
             image_prompt,
-            sketch_file=sketch_for_save,
         )
     except ValueError as e:
         return Response({'error': str(e)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
@@ -197,11 +209,16 @@ def design_generate(request):
     session.save(update_fields=['design_type', 'updated_at'])
 
     asset_data = DesignAssetSerializer(asset, context={'request': request}).data
+    all_messages = session.messages.select_related('asset').order_by('created_at')
+    messages_data = DesignMessageSerializer(
+        all_messages, many=True, context={'request': request}
+    ).data
 
     return Response({
         'reply': assistant_text,
         'asset_id': asset.id,
         'image_url': asset_data.get('image_url'),
+        'messages': messages_data,
     })
 
 
