@@ -630,7 +630,7 @@ The **Design** tab in the studio sidebar is an AI workspace for architecture and
 4. Click **Generate 3D** — wait 1–3 minutes (faster in test mode)
 5. Rotate the model in the viewer; click **fullscreen** or **Share or attach**
 
-Set `MESHY_API_KEY` in server `.env`. Use the test key for development (no credits consumed).
+Set \`MESHY_API_KEY\` in server \`.env\`. Use the test key for development (no credits consumed).
 
 ## Permissions
 
