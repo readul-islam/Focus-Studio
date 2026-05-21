@@ -23,7 +23,7 @@ function DesignPageContent() {
   const { can } = usePermissions();
   const canEdit = can('design.edit');
 
-  const { sessionsQuery, createSession, deleteSession } = useDesignSessions();
+  const { sessionsQuery, createSession, deleteSession, renameSession } = useDesignSessions();
   const sessions = Array.isArray(sessionsQuery.data) ? sessionsQuery.data : [];
 
   useEffect(() => {
@@ -65,6 +65,15 @@ function DesignPageContent() {
       },
       onError: () => toast.error('Failed to delete session'),
     });
+  };
+
+  const handleRenameSession = (id: number, title: string) => {
+    renameSession.mutate(
+      { id, title },
+      {
+        onError: () => toast.error('Failed to rename session'),
+      }
+    );
   };
 
   return (
@@ -136,7 +145,9 @@ function DesignPageContent() {
                   onSelect={handleSelectSession}
                   onNew={handleNewSession}
                   onDelete={canEdit ? handleDeleteSession : undefined}
+                  onRename={canEdit ? handleRenameSession : undefined}
                   isCreating={createSession.isPending}
+                  isRenaming={renameSession.isPending}
                 />
               </div>
               {!activeSessionId ? (
@@ -194,7 +205,9 @@ function DesignPageContent() {
                   onSelect={handleSelectSession}
                   onNew={handleNewSession}
                   onDelete={canEdit ? handleDeleteSession : undefined}
+                  onRename={canEdit ? handleRenameSession : undefined}
                   isCreating={createSession.isPending}
+                  isRenaming={renameSession.isPending}
                 />
               </div>
               <div className="flex-1 min-w-0">

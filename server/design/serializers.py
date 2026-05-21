@@ -120,6 +120,14 @@ class DesignSessionSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['created_at', 'updated_at']
 
+    def validate_title(self, value):
+        title = (value or '').strip()
+        if not title:
+            raise serializers.ValidationError('Title cannot be empty.')
+        if len(title) > 255:
+            raise serializers.ValidationError('Title must be 255 characters or fewer.')
+        return title
+
     def get_message_count(self, obj):
         return obj.messages.count()
 

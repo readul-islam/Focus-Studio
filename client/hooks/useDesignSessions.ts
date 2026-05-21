@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchData, postData, postFormData, deleteData } from '@/lib/Api';
+import { fetchData, postData, postFormData, deleteData, patchData } from '@/lib/Api';
 
 export type DesignSession = {
   id: number;
@@ -67,7 +67,16 @@ export function useDesignSessions() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: SESSIONS_KEY }),
   });
 
-  return { sessionsQuery, createSession, deleteSession, SESSIONS_KEY };
+  const renameSession = useMutation({
+    mutationFn: ({ id, title }: { id: number; title: string }) =>
+      patchData({
+        url: `/design/sessions/${id}/`,
+        data: { title: title.trim() },
+      }) as Promise<DesignSession>,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: SESSIONS_KEY }),
+  });
+
+  return { sessionsQuery, createSession, deleteSession, renameSession, SESSIONS_KEY };
 }
 
 export function useDesignMessages(sessionId: number | null) {
