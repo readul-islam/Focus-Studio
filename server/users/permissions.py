@@ -107,3 +107,10 @@ class ReportsViewPermission(_ModulePermission):
     """Controls access to the Reports module (view only; write and delete are not permitted)."""
     read_permission = 'reports.view'
     write_permission = None
+
+
+class DesignViewPermission(_ModulePermission):
+    """Controls access to the Design AI workspace (view / edit)."""
+    read_permission = 'design.view'
+    write_permission = 'design.edit'
+    delete_permission = None

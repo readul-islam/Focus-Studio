@@ -1,0 +1,2 @@
+We wanna build a Design tab in the sidebar when user will click on it there will show a chatbox like chatgpt and user can put their diagram or screct to build the design of entorir design aslo put a option for 3d design right now make it coming soon .
+after generating the image from design tab the user can share it or attach it a specific project also can share team member or contaactor. so act as senior software enginner to better ui and make it start to end . good luck for you

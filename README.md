@@ -224,6 +224,7 @@ Design and architecture studios face significant operational challenges:
 ### 10. **AI Tools** (Partial)
 - ✅ AI Clipper (smart document summarization)
 - ✅ Daily Brief (AI-generated work summary)
+- ✅ **Design Studio** (`/design` — sketch upload, OpenAI vision + image generation, attach/share to projects, team, contractors; 3D mode coming soon)
 - ✅ Prompt library
 - ✅ **Marketing:** AI platform page ([focuspilot.io/platform/ai](https://focuspilot.io/platform/ai)) — hero, feature grid, how-it-works, AI Playbook link
 - ✅ **Resources:** AI Playbook ([focuspilot.io/resources/ai-playbook](https://focuspilot.io/resources/ai-playbook))

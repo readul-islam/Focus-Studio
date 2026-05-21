@@ -8,6 +8,7 @@ const editRules: [RegExp, string][] = [
   [/user\/studio\/|user\/invite|user\/self\/update|public_profiles\/me/, 'settings.edit'],
   [/team|members?\//, 'team.edit'],
   [/projects?\//, 'projects.edit'],
+  [/design\//, 'design.edit'],
 ];
 
 const viewRules: [RegExp, string][] = [
@@ -18,6 +19,7 @@ const viewRules: [RegExp, string][] = [
   [/library\/|products?\//, 'library.view'],
   [/documents?\/|folders?\/|links?\//, 'documents.view'],
   [/reports\//, 'reports.view'],
+  [/design\//, 'design.view'],
   [/contractor_portal\/|contractor-portal\//, 'procurement.view'],
   [/projects\//, 'projects.view'],
 ];

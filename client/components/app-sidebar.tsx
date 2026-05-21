@@ -17,6 +17,7 @@ import {
   Home,
   Mail,
   MoreHorizontal,
+  Palette,
   Settings,
   Users,
   Users2
@@ -62,6 +63,7 @@ const studioSidebarItems: Item[] = [
   { label: 'Team',        icon: Users2,    href: '/teams',        basePath: '/teams',      permission: 'team.view' },
   { label: 'Finance',     icon: DollarSign,href: '/finance',      basePath: '/finance',    permission: 'finance.view' },
   { label: 'Reports',     icon: BarChart3, href: '/reports',      basePath: '/reports',    permission: 'reports.view' },
+  { label: 'Design',      icon: Palette,   href: '/design',       basePath: '/design',     permission: 'design.view', tourId: 'nav-design' },
   { label: 'AI Activity', icon: Activity,  href: '/ai/activity',  basePath: '/ai/activity' },
 ];
 

@@ -60,6 +60,8 @@ PERMISSION_CHOICES = [
     ('documents.edit', 'Documents • edit'),
     ('documents.delete', 'Documents • delete'),
     ('reports.view', 'Reports • view'),
+    ('design.view', 'Design • view'),
+    ('design.edit', 'Design • edit'),
     ('team.view', 'Team • view'),
     ('team.edit', 'Team • edit'),
     ('team.delete', 'Team • delete'),

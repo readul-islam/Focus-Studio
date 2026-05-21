@@ -592,4 +592,54 @@ AI Activity keeps Focuspilot transparent — you're always in control.`,
     screenshots: ["ai-tools/ai-activity.png", "ai-tools/activity-detail.png"],
     related: ["ai-daily-brief", "ai-clipper-overview"],
   },
+  {
+    slug: "design-studio",
+    title: "Design Studio",
+    description: "Generate interior and exterior design renders from sketches with AI",
+    category: "ai-tools",
+    readTime: 5,
+    lastUpdated: "2026-05-21",
+    content: `# Design Studio
+
+The **Design** tab in the studio sidebar is an AI workspace for architecture and interior design teams.
+
+## What you can do
+
+- Upload **sketches, diagrams, or reference photos**
+- Choose **Interior** or **Exterior** design mode
+- Describe style, materials, and layout in natural language
+- **Generate** photorealistic design renders (OpenAI vision + image generation)
+- **Attach** renders to a project's Files tab
+- **Share** with project team chat or contractors (after attaching to a project)
+
+## Getting started
+
+1. Open **Design** from the sidebar (requires Design • view permission).
+2. Click **New design** to start a session.
+3. Upload a sketch (optional) and enter a prompt, or pick a suggested prompt.
+4. Click **Generate** when you have sketches attached, or press Enter to chat for advice.
+5. Use **Share or attach** on any generated image to send it to a project or team.
+
+## 3D design
+
+**3D Design** is marked **Coming soon** — spatial walkthroughs and 3D models are planned for a future release.
+
+## Permissions
+
+- **Design • view** — access the Design tab and view sessions
+- **Design • edit** — generate images and share outputs
+
+Configure these under **Settings** → **Studio** → **Roles & permissions**.
+
+## Requirements
+
+Your studio must have a valid \`OPENAI_API_KEY\` configured on the server. Without it, generation will return an error.
+
+## Tips
+
+- Combine a clear sketch with a detailed written brief for best results
+- Review AI renders before client presentations
+- Attach to a project before sharing with contractors (portal requires a project file)`,
+    related: ["ai-daily-brief", "ai-activity"],
+  },
 ];

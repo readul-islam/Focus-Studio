@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import {
   LayoutDashboard, Inbox, CheckSquare, Calendar, FolderOpen,
-  Users, BookOpen, DollarSign, BarChart2, Zap, HelpCircle,
+  Users, BookOpen, DollarSign, BarChart2, Zap, HelpCircle, Palette,
   Settings, Contact, GitBranch, FileText, Package, Clock,
   User, Shield, Bell, Receipt, ShoppingCart, Activity,
   Search, ArrowRight, Hash,
@@ -46,6 +46,7 @@ const NAV_COMMANDS: CommandItem[] = [
   { id: 'finance',          label: 'Finance',                  description: 'Finance overview',     shortcut: 'fi', icon: <DollarSign className="w-4 h-4" />,    group: 'Studio', href: '/finance',              permission: 'finance.view' },
   { id: 'finance-invoices', label: 'Finance · Invoices',       description: 'Manage invoices',      shortcut: 'fv', icon: <Receipt className="w-4 h-4" />,       group: 'Studio', href: '/finance/invoices',    permission: 'finance.view' },
   { id: 'finance-po',       label: 'Finance · Purchase Orders',description: 'Purchase orders',      shortcut: 'fp', icon: <ShoppingCart className="w-4 h-4" />,  group: 'Studio', href: '/finance/purchase-order', permission: 'finance.view' },
+  { id: 'design',           label: 'Design',                   description: 'AI interior & exterior design', shortcut: 'ds', icon: <Palette className="w-4 h-4" />, group: 'Studio', href: '/design',              permission: 'design.view' },
   { id: 'reports',          label: 'Reports',                  description: 'Analytics & reports',  shortcut: 're', icon: <BarChart2 className="w-4 h-4" />,     group: 'Studio', href: '/reports/overview',    permission: 'reports.view' },
   { id: 'reports-projects', label: 'Reports · Projects',       description: 'Project reports',      shortcut: 'rp', icon: <FolderOpen className="w-4 h-4" />,    group: 'Studio', href: '/reports/projects',    permission: 'reports.view' },
   { id: 'reports-team',     label: 'Reports · Team',           description: 'Team performance',     shortcut: 'rt', icon: <Users className="w-4 h-4" />,          group: 'Studio', href: '/reports/team',        permission: 'reports.view' },

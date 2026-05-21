@@ -33,6 +33,7 @@ const resources: Resource[] = [
   { key: "team",      label: "Team",      desc: "Member management and roles" },
   { key: "documents", label: "Documents", desc: "Project files, folders and notes" },
   { key: "reports",   label: "Reports",   desc: "Studio analytics and exports", viewOnly: true },
+  { key: "design",    label: "Design",    desc: "AI design workspace and image generation", noDelete: true },
   { key: "settings",  label: "Settings",  desc: "Studio-wide settings and configuration", editOnly: true, lockedFor: ["admin"] },
 ]
 

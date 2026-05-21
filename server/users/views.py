@@ -1390,6 +1390,7 @@ def _seed_role_permissions(studio):
         'procurement.view',
         'documents.view', 'documents.edit',
         'reports.view',
+        'design.view', 'design.edit',
         'team.view',
     }
     member_defaults = {
@@ -1398,6 +1399,7 @@ def _seed_role_permissions(studio):
         'clients.view',
         'library.view',
         'documents.view',
+        'design.view',
     }
     defaults_map = {'admin': admin_always_on, 'manager': manager_defaults, 'member': member_defaults}
 

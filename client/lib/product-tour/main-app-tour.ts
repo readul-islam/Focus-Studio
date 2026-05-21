@@ -32,6 +32,13 @@ export const mainAppTourSteps: ProductTourStepConfig[] = [
     placement: 'right',
   },
   {
+    target: '[data-tour="nav-design"]',
+    title: 'Design Studio',
+    description:
+      'Upload sketches and generate interior or exterior design renders with AI — then attach to projects or share with your team.',
+    placement: 'right',
+  },
+  {
     target: '[data-tour="top-search"]',
     title: 'Search & command palette',
     description: 'Press ⌘K (or Ctrl+K) to jump anywhere — projects, settings, tasks, and more.',
