@@ -165,7 +165,11 @@ export function DesignChatPanel({
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [pendingPreviews, setPendingPreviews] = useState<string[]>([]);
   const [optimisticMessages, setOptimisticMessages] = useState<DesignMessage[]>([]);
-  const [shareTarget, setShareTarget] = useState<{ imageUrl: string; assetId: number } | null>(null);
+  const [shareTarget, setShareTarget] = useState<{
+    fileUrl: string;
+    assetId: number;
+    downloadFilename: string;
+  } | null>(null);
   const [generatePhase, setGeneratePhase] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -379,7 +383,13 @@ export function DesignChatPanel({
             <MessageBubble
               key={msg.id}
               msg={msg}
-              onShare={(url, id) => setShareTarget({ imageUrl: url, assetId: id })}
+              onShare={(url, id) =>
+                setShareTarget({
+                  fileUrl: url,
+                  assetId: id,
+                  downloadFilename: `design-render-${id}.png`,
+                })
+              }
               onOpenImage={(src, alt) =>
                 openImage(src, { alt, gallery: sessionImageGallery })
               }
@@ -516,8 +526,9 @@ export function DesignChatPanel({
         <DesignShareDialog
           open={!!shareTarget}
           onClose={() => setShareTarget(null)}
-          imageUrl={shareTarget.imageUrl}
+          fileUrl={shareTarget.fileUrl}
           assetId={shareTarget.assetId}
+          downloadFilename={shareTarget.downloadFilename}
         />
       )}
 

@@ -9,7 +9,7 @@ const baseURL = typeof window === 'undefined'
   ? normalizeApiBase(process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000')
   : normalizeApiBase(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000');
 
-const api = axios.create({
+export const api = axios.create({
   baseURL,
   withCredentials: true, // send httpOnly cookies on every request
 });

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { PermissionGuard } from '@/components/PermissionGuard';
 import { DesignSessionList } from '@/components/design/DesignSessionList';
 import { DesignChatPanel } from '@/components/design/DesignChatPanel';
+import { Design3DChatPanel } from '@/components/design/Design3DChatPanel';
 import { useDesignSessions } from '@/hooks/useDesignSessions';
 import { usePermissions } from '@/hooks/usePermissions';
 import { useMediaQuery } from '@/hooks/use-media-query';
@@ -107,34 +108,12 @@ function DesignPageContent() {
             >
               <Box className="w-4 h-4" />
               3D Design
-              <span className="text-[10px] font-semibold uppercase tracking-wide text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded">
-                Soon
-              </span>
             </button>
           </div>
         </div>
       </header>
 
-      {mode === '3d' ? (
-        <div className="flex-1 flex flex-col items-center justify-center px-6 text-center bg-muted/20">
-          <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-6">
-            <Box className="w-8 h-8 text-gray-400" />
-          </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">3D design — coming soon</h2>
-          <p className="text-sm text-gray-500 max-w-md mb-6">
-            Walkthrough-ready 3D models and spatial previews are on the roadmap. Use 2D Design
-            today to generate photorealistic renders from your sketches.
-          </p>
-          <button
-            type="button"
-            onClick={() => setMode('2d')}
-            className="px-4 py-2 rounded-lg bg-[#748971] text-white text-sm font-medium hover:bg-[#5f7560]"
-          >
-            Go to 2D Design
-          </button>
-        </div>
-      ) : (
-        <div className="flex-1 flex min-h-0 overflow-hidden">
+      <div className="flex-1 flex min-h-0 overflow-hidden">
           {isMobile ? (
             <>
               {mobileSessionsOpen && (
@@ -187,12 +166,21 @@ function DesignPageContent() {
                   >
                     ← Sessions
                   </button>
-                  <DesignChatPanel
-                    sessionId={activeSessionId}
-                    designType={designType}
-                    onDesignTypeChange={setDesignType}
-                    canEdit={canEdit}
-                  />
+                  {mode === '3d' ? (
+                    <Design3DChatPanel
+                      sessionId={activeSessionId}
+                      designType={designType}
+                      onDesignTypeChange={setDesignType}
+                      canEdit={canEdit}
+                    />
+                  ) : (
+                    <DesignChatPanel
+                      sessionId={activeSessionId}
+                      designType={designType}
+                      onDesignTypeChange={setDesignType}
+                      canEdit={canEdit}
+                    />
+                  )}
                 </div>
               )}
             </>
@@ -211,12 +199,21 @@ function DesignPageContent() {
               </div>
               <div className="flex-1 min-w-0">
                 {activeSessionId ? (
-                  <DesignChatPanel
-                    sessionId={activeSessionId}
-                    designType={designType}
-                    onDesignTypeChange={setDesignType}
-                    canEdit={canEdit}
-                  />
+                  mode === '3d' ? (
+                    <Design3DChatPanel
+                      sessionId={activeSessionId}
+                      designType={designType}
+                      onDesignTypeChange={setDesignType}
+                      canEdit={canEdit}
+                    />
+                  ) : (
+                    <DesignChatPanel
+                      sessionId={activeSessionId}
+                      designType={designType}
+                      onDesignTypeChange={setDesignType}
+                      canEdit={canEdit}
+                    />
+                  )
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full text-center px-6">
                     <DesignStarPlaceholder />
@@ -237,7 +234,6 @@ function DesignPageContent() {
             </>
           )}
         </div>
-      )}
     </div>
   );
 }

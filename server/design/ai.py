@@ -157,7 +157,7 @@ def save_generated_image(session, image_bytes: bytes, prompt: str):
     """Persist DesignAsset to default storage (S3) and return (asset, assistant_text)."""
     from .models import DesignAsset, DesignMessage
 
-    asset = DesignAsset(session=session, prompt=prompt)
+    asset = DesignAsset(session=session, prompt=prompt, asset_type='image')
     filename = f'design_{session.id}_{DesignAsset.objects.count() + 1}.png'
     asset.file.save(filename, ContentFile(image_bytes, name=filename), save=True)
 

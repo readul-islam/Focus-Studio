@@ -620,9 +620,17 @@ The **Design** tab in the studio sidebar is an AI workspace for architecture and
 4. Click **Generate** when you have sketches attached, or press Enter to chat for advice.
 5. Use **Share or attach** on any generated image to send it to a project or team.
 
-## 3D design
+## 3D design (Meshy)
 
-**3D Design** is marked **Coming soon** — spatial walkthroughs and 3D models are planned for a future release.
+**3D Design** turns sketches into rotatable **GLB models** via the Meshy API.
+
+1. Open the **3D Design** tab
+2. Upload a sketch (required)
+3. Optionally describe materials and style
+4. Click **Generate 3D** — wait 1–3 minutes (faster in test mode)
+5. Rotate the model in the viewer; click **fullscreen** or **Share or attach**
+
+Set `MESHY_API_KEY` in server `.env`. Use the test key for development (no credits consumed).
 
 ## Permissions
 

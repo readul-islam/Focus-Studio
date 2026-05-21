@@ -45,6 +45,7 @@ XERO_SCOPE = _env(
 XERO_REDIRECT_URI = _env('XERO_REDIRECT_URI', 'http://localhost:8000/xero/xero/callback/')
 
 OPENAI_API_KEY = _env('OPENAI_API_KEY')
+MESHY_API_KEY = _env('MESHY_API_KEY', 'msy_dummy_api_key_for_test_mode_12345678')
 
 # Application definition
 

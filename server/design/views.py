@@ -1,6 +1,9 @@
 import logging
 
 import openai
+import requests
+from django.core.files.base import ContentFile
+from django.http import FileResponse, Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
@@ -21,6 +24,8 @@ from .serializers import (
     DesignAssetSerializer,
 )
 from . import ai
+from . import meshy_client
+from .models import DesignAsset
 
 logger = logging.getLogger(__name__)
 
@@ -222,6 +227,130 @@ def design_generate(request):
     })
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def design_generate_3d(request):
+    """Generate a 3D GLB model from a sketch via Meshy Image-to-3D."""
+    if not check_role_permission(request.user, 'design.edit'):
+        return Response({'error': 'You do not have permission to generate 3D designs.'}, status=status.HTTP_403_FORBIDDEN)
+
+    studio = _require_studio(request.user)
+    if not studio:
+        return Response({'error': 'No studio found.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    session_id = request.data.get('session_id')
+    prompt = (request.data.get('prompt') or '').strip()
+    design_type = request.data.get('design_type', 'interior')
+    if design_type not in ('interior', 'exterior'):
+        design_type = 'interior'
+
+    if not session_id:
+        return Response({'error': 'session_id is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    session = get_object_or_404(
+        DesignSession,
+        id=session_id,
+        studio=studio,
+        user=request.user,
+    )
+
+    files = request.FILES.getlist('files') or request.FILES.getlist('files[]')
+    if not files:
+        return Response({'error': 'Upload a sketch image to generate 3D.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    valid_files, err = _validate_sketch_files(files)
+    if err:
+        return Response({'error': err}, status=status.HTTP_400_BAD_REQUEST)
+    sketch = valid_files[0]
+
+    user_content = prompt or 'Generate a 3D model from this sketch.'
+    user_message = DesignMessage.objects.create(
+        session=session,
+        role='user',
+        content=user_content,
+    )
+    sketch.seek(0)
+    user_message.sketch.save(
+        f'user3d_{session.id}_{sketch.name or "sketch.png"}',
+        sketch,
+        save=True,
+    )
+    sketch.seek(0)
+
+    try:
+        glb_bytes, meshy_task_id = meshy_client.generate_3d_from_image_file(
+            sketch,
+            prompt=prompt,
+            design_type=design_type,
+        )
+    except TimeoutError as e:
+        return Response({'error': str(e)}, status=status.HTTP_504_GATEWAY_TIMEOUT)
+    except requests.HTTPError as e:
+        logger.exception('design_generate_3d Meshy HTTP error')
+        detail = ''
+        if e.response is not None:
+            try:
+                detail = e.response.json().get('message', e.response.text[:200])
+            except Exception:
+                detail = e.response.text[:200] if e.response.text else ''
+        return Response(
+            {'error': f'Meshy API error: {detail or str(e)}'},
+            status=status.HTTP_503_SERVICE_UNAVAILABLE,
+        )
+    except ValueError as e:
+        return Response({'error': str(e)}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+    except Exception:
+        logger.exception('design_generate_3d failed')
+        return Response({'error': '3D generation failed. Please try again.'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+    asset = DesignAsset(
+        session=session,
+        asset_type='model_3d',
+        prompt=prompt or user_content,
+        meshy_task_id=meshy_task_id,
+    )
+    glb_name = f'design3d_{session.id}_{DesignAsset.objects.count() + 1}.glb'
+    asset.model_file.save(glb_name, ContentFile(glb_bytes, name=glb_name), save=True)
+
+    assistant_text = f'Here is your generated 3D {design_type} model. Drag to rotate, scroll to zoom.'
+    DesignMessage.objects.create(
+        session=session,
+        role='assistant',
+        content=assistant_text,
+        asset=asset,
+    )
+
+    session.design_type = design_type
+    session.save(update_fields=['design_type', 'updated_at'])
+
+    asset_data = DesignAssetSerializer(asset, context={'request': request}).data
+    all_messages = session.messages.select_related('asset').order_by('created_at')
+    messages_data = DesignMessageSerializer(
+        all_messages, many=True, context={'request': request}
+    ).data
+
+    return Response({
+        'reply': assistant_text,
+        'asset_id': asset.id,
+        'model_url': asset_data.get('model_url'),
+        'meshy_task_id': meshy_task_id,
+        'test_mode': meshy_client.is_test_mode(),
+        'messages': messages_data,
+    })
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def design_meshy_status(request):
+    """Return whether Meshy is in test mode (for UI badge)."""
+    from django.conf import settings as django_settings
+    key = (getattr(django_settings, 'MESHY_API_KEY', '') or '').strip()
+    return Response({
+        'test_mode': meshy_client.is_test_mode(),
+        'configured': bool(key),
+    })
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def design_asset_detail(request, asset_id):
@@ -233,7 +362,6 @@ def design_asset_detail(request, asset_id):
     if not studio:
         return Response({'error': 'No studio found.'}, status=status.HTTP_400_BAD_REQUEST)
 
-    from .models import DesignAsset
     asset = get_object_or_404(
         DesignAsset,
         id=asset_id,
@@ -241,3 +369,31 @@ def design_asset_detail(request, asset_id):
         session__user=request.user,
     )
     return Response(DesignAssetSerializer(asset, context={'request': request}).data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def design_asset_model(request, asset_id):
+    """Stream GLB through the API so browsers can load it without S3 CORS."""
+    if not check_role_permission(request.user, 'design.view'):
+        return Response({'error': 'Permission denied.'}, status=status.HTTP_403_FORBIDDEN)
+
+    studio = _require_studio(request.user)
+    if not studio:
+        return Response({'error': 'No studio found.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    asset = get_object_or_404(
+        DesignAsset,
+        id=asset_id,
+        session__studio=studio,
+        session__user=request.user,
+        asset_type='model_3d',
+    )
+    if not asset.model_file:
+        raise Http404('Model file not found')
+
+    filename = asset.model_file.name.split('/')[-1] or 'model.glb'
+    file_handle = asset.model_file.open('rb')
+    response = FileResponse(file_handle, content_type='model/gltf-binary')
+    response['Content-Disposition'] = f'inline; filename="{filename}"'
+    return response

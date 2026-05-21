@@ -22,7 +22,7 @@ import { Loader2, FolderOpen, Users, HardHat } from 'lucide-react';
 import useFetch from '@/hooks/useFetch';
 import { postFormData } from '@/lib/Api';
 import { createDocument } from '@/services/documentService';
-import { imageUrlToFile } from '@/hooks/useDesignSessions';
+import { urlToFile } from '@/hooks/useDesignSessions';
 import { SelectContractorDialog } from '@/components/contractor/SelectContractorDialog';
 import { gooeyToast as toast } from 'goey-toast';
 import Link from 'next/link';
@@ -35,11 +35,19 @@ type ProjectOption = {
 type Props = {
   open: boolean;
   onClose: () => void;
-  imageUrl: string;
+  fileUrl: string;
   assetId: number;
+  /** e.g. design-render.png or design-model.glb */
+  downloadFilename?: string;
 };
 
-export function DesignShareDialog({ open, onClose, imageUrl, assetId }: Props) {
+export function DesignShareDialog({
+  open,
+  onClose,
+  fileUrl,
+  assetId,
+  downloadFilename = 'design-asset.png',
+}: Props) {
   const [tab, setTab] = useState('project');
   const [projectId, setProjectId] = useState<string>('');
   const [teamMessage, setTeamMessage] = useState('');
@@ -69,7 +77,7 @@ export function DesignShareDialog({ open, onClose, imageUrl, assetId }: Props) {
     onClose();
   };
 
-  const getFile = async () => imageUrlToFile(imageUrl, `design-render-${assetId}.png`);
+  const getFile = async () => urlToFile(fileUrl, downloadFilename, assetId);
 
   const handleAttachToProject = async () => {
     if (!projectId) {

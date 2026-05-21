@@ -12,6 +12,11 @@ MESSAGE_ROLE_CHOICES = [
     ('assistant', 'Assistant'),
 ]
 
+ASSET_TYPE_CHOICES = [
+    ('image', '2D Image'),
+    ('model_3d', '3D Model'),
+]
+
 
 class DesignSession(models.Model):
     studio = models.ForeignKey(Studio, on_delete=models.CASCADE, related_name='design_sessions')
@@ -51,8 +56,11 @@ class DesignMessage(models.Model):
 
 class DesignAsset(models.Model):
     session = models.ForeignKey(DesignSession, on_delete=models.CASCADE, related_name='assets')
-    file = models.ImageField(upload_to='design_assets/%Y/%m/')
+    asset_type = models.CharField(max_length=20, choices=ASSET_TYPE_CHOICES, default='image')
+    file = models.ImageField(upload_to='design_assets/%Y/%m/', null=True, blank=True)
+    model_file = models.FileField(upload_to='design_models/%Y/%m/', null=True, blank=True)
     prompt = models.TextField(blank=True)
+    meshy_task_id = models.CharField(max_length=64, blank=True)
     source_sketch = models.ImageField(upload_to='design_sketches/%Y/%m/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

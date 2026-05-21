@@ -1,5 +1,12 @@
+from django.urls import reverse
 from rest_framework import serializers
 from .models import DesignSession, DesignMessage, DesignAsset
+
+
+def design_asset_model_proxy_url(request, asset_id: int) -> str:
+    """Same-origin GLB URL so model-viewer can load without S3 CORS."""
+    path = reverse('design-asset-model', kwargs={'asset_id': asset_id})
+    return request.build_absolute_uri(path)
 
 
 def _absolute_media_url(file_field, request):
@@ -21,33 +28,86 @@ def _absolute_media_url(file_field, request):
 
 class DesignAssetSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
+    model_url = serializers.SerializerMethodField()
+    model_view_url = serializers.SerializerMethodField()
 
     class Meta:
         model = DesignAsset
-        fields = ['id', 'image_url', 'prompt', 'created_at']
+        fields = ['id', 'asset_type', 'image_url', 'model_url', 'model_view_url', 'prompt', 'created_at']
 
     def get_image_url(self, obj):
+        if obj.asset_type != 'image':
+            return None
         return _absolute_media_url(obj.file, self.context.get('request'))
+
+    def get_model_url(self, obj):
+        if obj.asset_type != 'model_3d':
+            return None
+        return _absolute_media_url(obj.model_file, self.context.get('request'))
+
+    def get_model_view_url(self, obj):
+        if obj.asset_type != 'model_3d':
+            return None
+        request = self.context.get('request')
+        if request:
+            return design_asset_model_proxy_url(request, obj.id)
+        return self.get_model_url(obj)
 
 
 class DesignMessageSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
+    model_url = serializers.SerializerMethodField()
+    model_view_url = serializers.SerializerMethodField()
     sketch_url = serializers.SerializerMethodField()
     asset_id = serializers.IntegerField(read_only=True, allow_null=True)
+    asset_type = serializers.SerializerMethodField()
 
     class Meta:
         model = DesignMessage
         fields = [
-            'id', 'role', 'content', 'sketch_url', 'image_url', 'asset_id', 'created_at',
+            'id',
+            'role',
+            'content',
+            'sketch_url',
+            'image_url',
+            'model_url',
+            'model_view_url',
+            'asset_id',
+            'asset_type',
+            'created_at',
         ]
 
     def get_sketch_url(self, obj):
         return _absolute_media_url(obj.sketch, self.context.get('request'))
 
-    def get_image_url(self, obj):
+    def _asset_urls(self, obj):
         if not obj.asset:
+            return None, None, None
+        asset = obj.asset
+        request = self.context.get('request')
+        if asset.asset_type == 'model_3d':
+            return None, _absolute_media_url(asset.model_file, request), asset.asset_type
+        return _absolute_media_url(asset.file, request), None, asset.asset_type
+
+    def get_image_url(self, obj):
+        image_url, _, _ = self._asset_urls(obj)
+        return image_url
+
+    def get_model_url(self, obj):
+        _, model_url, _ = self._asset_urls(obj)
+        return model_url
+
+    def get_model_view_url(self, obj):
+        if not obj.asset or obj.asset.asset_type != 'model_3d':
             return None
-        return _absolute_media_url(obj.asset.file, self.context.get('request'))
+        request = self.context.get('request')
+        if request:
+            return design_asset_model_proxy_url(request, obj.asset.id)
+        return self.get_model_url(obj)
+
+    def get_asset_type(self, obj):
+        _, _, asset_type = self._asset_urls(obj)
+        return asset_type
 
 
 class DesignSessionSerializer(serializers.ModelSerializer):
