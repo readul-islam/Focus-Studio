@@ -524,6 +524,42 @@ def fetch_gmail_messages(user):
     except Exception as e:
         return {"error": str(e)}
 
+def _looks_like_html(body: str) -> bool:
+    s = (body or '').strip()
+    return bool(re.search(r'<[a-z][\s\S]*>', s, re.I))
+
+
+def _strip_html_to_text(html: str) -> str:
+    text = re.sub(r'<br\s*/?>', '\n', html, flags=re.I)
+    text = re.sub(r'</p>', '\n', text, flags=re.I)
+    text = re.sub(r'<li[^>]*>', '- ', text, flags=re.I)
+    text = re.sub(r'<[^>]+>', '', text)
+    from html import unescape
+    text = unescape(text)
+    return re.sub(r'\n{3,}', '\n\n', text).strip()
+
+
+def _sanitize_outbound_html(html: str) -> str:
+    """Remove scripts and event handlers from compose HTML."""
+    cleaned = re.sub(r'<script[^>]*>.*?</script>', '', html, flags=re.I | re.S)
+    cleaned = re.sub(r'<style[^>]*>.*?</style>', '', cleaned, flags=re.I | re.S)
+    cleaned = re.sub(r'\s+on\w+="[^"]*"', '', cleaned, flags=re.I)
+    cleaned = re.sub(r"\s+on\w+='[^']*'", '', cleaned, flags=re.I)
+    return cleaned.strip()
+
+
+def _prepare_email_body(body: str) -> tuple[str, str | None]:
+    """Return (plain_text, html_body or None) for multipart Gmail messages."""
+    raw = str(body or '').strip()
+    if not raw:
+        return '', None
+    if _looks_like_html(raw):
+        html = _sanitize_outbound_html(raw)
+        plain = _strip_html_to_text(html)
+        return plain or '(no content)', html
+    return raw, None
+
+
 def _mime_parts(filename: str, content_type: str | None = None) -> tuple[str, str]:
     if content_type and '/' in content_type:
         main, sub = content_type.split('/', 1)
@@ -544,8 +580,9 @@ def send_gmail_message(user, to_email, subject, body, thread_id=None, attachment
         return {"error": "Invalid recipient email address"}
 
     attachments = attachments or []
-    body_str = str(body or '').strip()
-    if not body_str and not attachments:
+    body_raw = str(body or '').strip()
+    plain_body, html_body = _prepare_email_body(body_raw)
+    if not plain_body and not html_body and not attachments:
         return {"error": "Message body or attachment is required"}
 
     try:
@@ -556,7 +593,11 @@ def send_gmail_message(user, to_email, subject, body, thread_id=None, attachment
             from_header = formataddr((user.name, user.email))
 
         message = EmailMessage()
-        message.set_content(body_str or '(See attachment)')
+        if html_body:
+            message.set_content(plain_body or '(See attachment)', subtype='plain', charset='utf-8')
+            message.add_alternative(html_body, subtype='html', charset='utf-8')
+        else:
+            message.set_content(plain_body or '(See attachment)')
         for att in attachments:
             filename = att.get('filename') or 'attachment'
             maintype, subtype = _mime_parts(filename, att.get('content_type'))
@@ -629,7 +670,10 @@ def send_gmail_message(user, to_email, subject, body, thread_id=None, attachment
         except Exception as exc:
             logger.warning('Could not load sent Message-ID: %s', exc)
 
-        snippet_source = body_str or ' '.join(a.get('filename', '') for a in attachments)
+        stored_body = html_body or plain_body or '(See attachment)'
+        snippet_source = plain_body or _strip_html_to_text(stored_body) or ' '.join(
+            a.get('filename', '') for a in attachments
+        )
         snippet = ' '.join(snippet_source.split())[:100]
         if len(snippet) == 100:
             snippet += '...'
@@ -661,7 +705,7 @@ def send_gmail_message(user, to_email, subject, body, thread_id=None, attachment
                 'sender': from_header,
                 'recipient': to_clean,
                 'subject': message['Subject'],
-                'body': body_str or '(See attachment)',
+                'body': stored_body,
                 'snippet': snippet,
                 'attachments': sent_attachments,
                 'received_at': timezone.now(),

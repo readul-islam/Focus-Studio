@@ -1,5 +1,8 @@
+import logging
 import secrets
 from django.conf import settings
+
+logger = logging.getLogger(__name__)
 from django.core.cache import cache
 from django.http import HttpResponseRedirect
 from django.utils import timezone
@@ -152,7 +155,11 @@ def send_email(request):
     thread_id = request.data.get('thread_id')  # Optional, for threading replies
     uploaded_files = request.FILES.getlist('attachments')
 
-    if not str(body or '').strip() and not uploaded_files:
+    from .utils import _looks_like_html, _strip_html_to_text
+
+    body_raw = str(body or '').strip()
+    body_plain = _strip_html_to_text(body_raw) if _looks_like_html(body_raw) else body_raw
+    if not body_plain and not uploaded_files:
         return Response({'error': 'body or attachment is required'}, status=400)
 
     MAX_ATTACHMENT_BYTES = 25 * 1024 * 1024
@@ -188,13 +195,69 @@ def send_email(request):
         return Response({'error': 'subject is required for new emails'}, status=400)
 
     result = send_gmail_message(
-        user, to_email, subject, body, thread_id, attachments=attachment_payloads
+        user, to_email, subject, body_raw, thread_id, attachments=attachment_payloads
     )
     
     if "error" in result:
         return Response(result, status=400)
         
     return Response(result)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def polish_reply(request):
+    """Improve inbox reply draft: grammar, clarity, and structure (OpenAI)."""
+    from django.conf import settings as django_settings
+    from .ai import polish_reply_draft
+    from .models import Email
+    from .utils import _looks_like_html, _strip_html_to_text
+
+    user = request.user
+    if not user.gmail:
+        return Response({'error': 'User has no gmail connected'}, status=400)
+
+    if not django_settings.OPENAI_API_KEY:
+        return Response({'error': 'AI assistant is not configured'}, status=503)
+
+    body = request.data.get('body', '')
+    body_plain = _strip_html_to_text(body) if _looks_like_html(str(body)) else str(body or '').strip()
+    if not body_plain:
+        return Response({'error': 'Write a reply before using the AI assistant'}, status=400)
+
+    subject = (request.data.get('subject') or '').strip()
+    thread_id = (request.data.get('thread_id') or '').strip()
+
+    thread_context = None
+    if thread_id and user.studio:
+        recent = list(
+            Email.objects.filter(studio=user.studio, thread_id=thread_id)
+            .order_by('-received_at')[:4]
+        )
+        recent.reverse()
+        chunks = []
+        for em in recent:
+            em_body = em.body or ''
+            if len(em_body) > 800:
+                em_body = em_body[:800] + '…'
+            chunks.append(f"From: {em.sender}\n{em_body}")
+        if chunks:
+            thread_context = '\n\n---\n\n'.join(chunks)
+
+    try:
+        polished_html = polish_reply_draft(
+            str(body),
+            subject=subject or None,
+            thread_context=thread_context,
+        )
+    except ValueError as exc:
+        return Response({'error': str(exc)}, status=400)
+    except Exception as exc:
+        logger.exception('polish_reply failed')
+        return Response({'error': f'AI assistant failed: {exc}'}, status=500)
+
+    return Response({'body': polished_html})
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

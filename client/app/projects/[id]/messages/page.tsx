@@ -32,6 +32,8 @@ import { messageIsSentByUser, resolveReplyToEmail } from '@/lib/gmail-reply';
 import { EmailAttachments, type EmailAttachmentMeta } from '@/components/inbox/EmailAttachments';
 import { InboxReplyComposer } from '@/components/inbox/InboxReplyComposer';
 import { postFormData } from '@/lib/Api';
+import { htmlHasContent } from '@/lib/html-content';
+import { sanitizeComposeHtml } from '@/lib/sanitize-html';
 import { getApiErrorMessage } from '@/lib/api-error';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { motion } from 'framer-motion';
@@ -236,7 +238,8 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
   };
 
   const handleSendReply = async (attachmentFiles: File[] = []) => {
-    if ((!replyBody.trim() && !attachmentFiles.length) || !selectedThreadId || !messages?.length) return;
+    const bodyHtml = sanitizeComposeHtml(replyBody);
+    if ((!htmlHasContent(bodyHtml) && !attachmentFiles.length) || !selectedThreadId || !messages?.length) return;
 
     const toEmail = resolveReplyToEmail(messages, user?.email);
     const subject =
@@ -252,7 +255,7 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
     const formData = new FormData();
     formData.append('to_email', toEmail);
     formData.append('subject', subject);
-    formData.append('body', replyBody.trim());
+    formData.append('body', bodyHtml);
     formData.append('thread_id', selectedThreadId);
     attachmentFiles.forEach((f) => formData.append('attachments', f));
 
@@ -535,6 +538,11 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
                         setReplyBody={setReplyBody}
                         onSend={handleSendReply}
                         isSending={isSending}
+                        threadId={selectedThreadId}
+                        subject={
+                          (Array.isArray(messages) && messages.find((m) => m.subject)?.subject) ||
+                          undefined
+                        }
                       />
                     </div>
                   ) : (

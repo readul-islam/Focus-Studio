@@ -41,6 +41,8 @@ import { messageIsSentByUser, resolveReplyToEmail } from '@/lib/gmail-reply';
 import { EmailAttachments, type EmailAttachmentMeta } from '@/components/inbox/EmailAttachments';
 import { InboxReplyComposer } from '@/components/inbox/InboxReplyComposer';
 import { postFormData } from '@/lib/Api';
+import { htmlHasContent } from '@/lib/html-content';
+import { sanitizeComposeHtml } from '@/lib/sanitize-html';
 import { useQueryClient } from '@tanstack/react-query';
 import { TaskModal } from '@/components/tasks/task-modal';
 import { useTaskModalStore } from '@/store/useTaskModalStore';
@@ -858,6 +860,8 @@ function EmailDetailPanelWithMessages({
           setReplyBody={setReplyBody}
           onSend={onSendReply}
           isSending={isSending}
+          threadId={email.id}
+          subject={email.subject}
         />
       )}
 
@@ -1254,7 +1258,8 @@ export default function MagicalInboxPage() {
   }
 
   async function handleSendReply(attachmentFiles: File[] = []) {
-    if ((!replyBody.trim() && !attachmentFiles.length) || !selectedThreadId || !messages?.length) {
+    const bodyHtml = sanitizeComposeHtml(replyBody);
+    if ((!htmlHasContent(bodyHtml) && !attachmentFiles.length) || !selectedThreadId || !messages?.length) {
       return;
     }
 
@@ -1272,7 +1277,7 @@ export default function MagicalInboxPage() {
     const formData = new FormData();
     formData.append('to_email', toEmail);
     formData.append('subject', subject);
-    formData.append('body', replyBody.trim());
+    formData.append('body', bodyHtml);
     formData.append('thread_id', selectedThreadId);
     attachmentFiles.forEach((file) => formData.append('attachments', file));
 
