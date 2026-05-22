@@ -371,9 +371,25 @@ def push_project_to_notion(project: Project, user: User | None = None) -> None:
 
 def get_or_create_task_database(sync: NotionProjectSync, project: Project, token: NotionToken) -> str | None:
     if sync.notion_tasks_database_id:
+        from .utils import get_database_data_source_id
+
+        if not sync.notion_tasks_data_source_id:
+            data_source_id, _ = get_database_data_source_id(
+                token.access_token, sync.notion_tasks_database_id
+            )
+            if data_source_id:
+                sync.notion_tasks_data_source_id = data_source_id
+                sync.save(update_fields=['notion_tasks_data_source_id', 'updated_at'])
+
         ensure_task_database_attachments_property(
             token.access_token, sync.notion_tasks_database_id
         )
+        try:
+            from .views_setup import ensure_task_database_workflow_views
+
+            ensure_task_database_workflow_views(token.access_token, sync.notion_tasks_database_id)
+        except Exception as exc:
+            logger.warning('Notion task database views setup failed: %s', exc)
         return sync.notion_tasks_database_id
 
     db_data, error = create_notion_task_database(
@@ -391,10 +407,31 @@ def get_or_create_task_database(sync: NotionProjectSync, project: Project, token
     if not db_id:
         return None
 
+    from .utils import get_database_data_source_id
+
+    data_source_id, _ = get_database_data_source_id(token.access_token, db_id)
+
     sync.notion_tasks_database_id = db_id
+    sync.notion_tasks_data_source_id = data_source_id or ''
     sync.last_pushed_at = timezone.now()
     sync.last_error = ''
-    sync.save(update_fields=['notion_tasks_database_id', 'last_pushed_at', 'last_error', 'updated_at'])
+    sync.save(
+        update_fields=[
+            'notion_tasks_database_id',
+            'notion_tasks_data_source_id',
+            'last_pushed_at',
+            'last_error',
+            'updated_at',
+        ]
+    )
+
+    try:
+        from .views_setup import ensure_task_database_workflow_views
+
+        ensure_task_database_workflow_views(token.access_token, db_id)
+    except Exception as exc:
+        logger.warning('Notion task database views setup failed: %s', exc)
+
     return db_id
 
 

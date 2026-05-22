@@ -72,6 +72,7 @@ Task ডিলিট → Notion row archive
 2. Phase, Status, তারিখ, Priority ইত্যাদি পূরণ → Save
 3. Notion-এ:
    - প্রজেক্ট পেজের ভিতর **Tasks** ডাটাবেস তৈরি (প্রথমবার)
+   - তিনটি ভিউ অটো যোগ হয়: **All Projects** (টেবিল), **By Status** (বোর্ড), **Gantt** (টাইমলাইন)
    - একটি row — ফিল্ড ম্যাপিং:
 
 | Notion column | Focuspilot Task |
@@ -105,7 +106,20 @@ Task modal থেকে এডিট → Save → Notion row **PATCH** হয়
 
 ### টাস্ক (নতুন)
 
-Focuspilot থেকে Notion-এ পাঠানো টাস্ক (`NotionTaskLink` আছে) — Notion-এ **Status**, নাম, তারিখ ইত্যাদি বদলালে:
+Focuspilot থেকে Notion-এ পাঠানো টাস্ক (`NotionTaskLink` আছে) — Notion-এ যেকোনো ম্যাপড ফিল্ড বদলালে FP-তেও আপডেট হয়:
+
+| Notion column | Focuspilot Task |
+|---------------|-----------------|
+| Task Name | `title` |
+| description | `description` |
+| Status | `status` |
+| Start date / Due date | `start_date` / `end_date` |
+| Priority | `priority` |
+| Team | `phase` (প্রজেক্টের phase নাম মিলে) |
+| Assignee | `assignees` (নাম/ইমেইল মিলে) |
+| Attachments / Attach file | `TaskAttachment` (ডাউনলোড) |
+
+Notion-এ **Status**, নাম, তারিখ ইত্যাদি বদলালে:
 
 - **Home → Tasks** বা **Project → Tasks** পেজ খুললে অটো `POST /notion/tasks/sync/` চলে (ট্যাব ফোকাসে আবার)
 - **Sync projects now** চালালেও টাস্ক আপডেট হয়
@@ -138,8 +152,9 @@ Focuspilot থেকে Notion-এ পাঠানো টাস্ক (`NotionTa
 
 ## সীমাবদ্ধতা (MVP)
 
+- **Task views** — নতুন প্রজেক্টের Tasks DB-তে তিন ভিউ অটো বানায়; পুরনো DB-তে প্রথম টাস্ক সিঙ্ক/পুশের সময় চেষ্টা করে (`NOTION_VIEWS_API_VERSION` ≥ `2025-09-03` লাগে)
 - **Assignee** — Notion `people` নয়; নাম rich text হিসেবে
-- **Attachments** — Notion-এ ফাইল আপলোড এখনো নয়
+- **Attachments** — Notion-এ ফাইল লিংক (পাবলিক URL)
 - **Subtasks** — Notion row-এ নয়
 - Notion API ব্যর্থ হলে FP সেভ **ব্লক হয় না** — লগে warning
 

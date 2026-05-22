@@ -10,7 +10,11 @@ from notion.outbound import (
     push_project_to_notion,
     upsert_project_sync_from_link,
 )
-from notion.sync import map_notion_status_to_project_status, map_notion_status_to_task_status
+from notion.sync import (
+    _resolve_assignee_ids,
+    map_notion_status_to_project_status,
+    map_notion_status_to_task_status,
+)
 from notion.utils import extract_page_title
 
 
@@ -23,6 +27,20 @@ class NotionSyncHelpersTest(TestCase):
         self.assertEqual(map_notion_status_to_task_status('Not started'), 'TD')
         self.assertEqual(map_notion_status_to_task_status('In progress'), 'IP')
         self.assertEqual(map_notion_status_to_task_status('Done'), 'D')
+
+    def test_resolve_assignee_ids_by_name(self):
+        from users.models import Studio, User
+
+        studio = Studio.objects.create(name='Assignee Studio')
+        user = User.objects.create_user(
+            email='dev@assignee.test',
+            password='pass1234!',
+            name='Alex Dev',
+        )
+        user.studio = studio
+        user.save()
+        ids = _resolve_assignee_ids(studio, ['Alex Dev', 'unknown'])
+        self.assertEqual(ids, [user.id])
 
     def test_extract_title(self):
         page = {
@@ -69,6 +87,40 @@ class NotionOutboundHelpersTest(TestCase):
         self.assertIn('Status', props)
         self.assertIn('Attachments', props)
         self.assertEqual(props['Status']['status']['name'], 'In progress')
+
+
+class NotionTaskViewsSetupTest(TestCase):
+    @patch('notion.views_setup._create_database_view')
+    @patch('notion.views_setup._rename_view')
+    @patch('notion.views_setup._retrieve_view')
+    @patch('notion.views_setup._list_database_views')
+    @patch('notion.views_setup._get_data_source_id')
+    def test_ensure_views_creates_board_and_gantt(
+        self,
+        mock_data_source,
+        mock_list,
+        mock_retrieve,
+        mock_rename,
+        mock_create,
+    ):
+        from notion.views_setup import ensure_task_database_workflow_views
+
+        mock_data_source.return_value = ('ds-1', None)
+        mock_list.return_value = ([{'id': 'view-table-1'}], None)
+        mock_retrieve.return_value = (
+            {'id': 'view-table-1', 'name': 'Table', 'type': 'table'},
+            None,
+        )
+        mock_rename.return_value = None
+        mock_create.return_value = None
+
+        ensure_task_database_workflow_views('token', 'db-1')
+
+        mock_rename.assert_called_once()
+        self.assertEqual(mock_create.call_count, 2)
+        created_names = [call.args[3] for call in mock_create.call_args_list]
+        self.assertIn('By Status', created_names)
+        self.assertIn('Gantt', created_names)
 
 
 class NotionOutboundPushTest(TestCase):

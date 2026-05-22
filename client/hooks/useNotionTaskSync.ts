@@ -1,42 +1,70 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { postData } from '@/lib/Api';
-import useUser from '@/hooks/useUser';
+import useFetch from '@/hooks/useFetch';
+
+const SYNC_INTERVAL_MS = 45_000;
 
 /**
- * Pull task updates from Notion when the tasks UI is open (and on tab focus).
- * Only runs when the studio has Notion enabled.
+ * Pull task updates from Notion when the tasks UI is open.
+ * Waits for sync to finish before refreshing task queries (fixes stale UI).
  */
 export function useNotionTaskSync(enabled = true) {
-  const { user } = useUser();
   const queryClient = useQueryClient();
-  const notionEnabled = enabled && Boolean(user?.studio?.notion);
+  const syncingRef = useRef(false);
+
+  const { data: notionStatus } = useFetch(enabled ? 'notion/status/' : null);
+  const notionConnected = Boolean(
+    enabled && (notionStatus as { connected?: boolean } | undefined)?.connected
+  );
 
   useEffect(() => {
-    if (!notionEnabled) return;
+    if (!notionConnected) return;
 
-    const invalidateTaskQueries = () => {
-      queryClient.invalidateQueries({ queryKey: ['task/user-tasks/'] });
-      queryClient.invalidateQueries({ queryKey: ['task/task-datacards/'] });
-      queryClient.invalidateQueries({
+    const invalidateTaskQueries = async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['task/user-tasks/'],
+        refetchType: 'active',
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ['task/task-datacards/'],
+        refetchType: 'active',
+      });
+      await queryClient.invalidateQueries({
         predicate: query =>
           typeof query.queryKey[0] === 'string' &&
           query.queryKey[0].startsWith('task/user-tasks-project'),
+        refetchType: 'active',
       });
     };
 
-    const runSync = () => {
-      postData({ url: 'notion/tasks/sync/', data: {} })
-        .then(invalidateTaskQueries)
-        .catch(() => {});
+    const runSync = async () => {
+      if (syncingRef.current) return;
+      syncingRef.current = true;
+      try {
+        await postData({ url: 'notion/tasks/sync/', data: {} });
+        await invalidateTaskQueries();
+      } catch {
+        /* backend may return 400 when Notion disconnected */
+      } finally {
+        syncingRef.current = false;
+      }
     };
 
-    runSync();
+    void runSync();
 
     const onVisible = () => {
-      if (document.visibilityState === 'visible') runSync();
+      if (document.visibilityState === 'visible') void runSync();
     };
     document.addEventListener('visibilitychange', onVisible);
-    return () => document.removeEventListener('visibilitychange', onVisible);
-  }, [notionEnabled, queryClient]);
+
+    const interval = window.setInterval(() => {
+      void runSync();
+    }, SYNC_INTERVAL_MS);
+
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible);
+      window.clearInterval(interval);
+    };
+  }, [notionConnected, queryClient]);
 }

@@ -83,6 +83,12 @@ class NotionProjectSync(models.Model):
     )
     notion_project_page_id = models.CharField(max_length=64)
     notion_tasks_database_id = models.CharField(max_length=64, blank=True, default='')
+    notion_tasks_data_source_id = models.CharField(
+        max_length=64,
+        blank=True,
+        default='',
+        help_text='Notion data source id for querying task rows (API 2025-09-03+).',
+    )
     last_pushed_at = models.DateTimeField(null=True, blank=True)
     last_error = models.TextField(blank=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)

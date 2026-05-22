@@ -95,6 +95,8 @@ NOTION_CLIENT_ID = _env('NOTION_CLIENT_ID')
 NOTION_CLIENT_SECRET = _env('NOTION_CLIENT_SECRET')
 NOTION_REDIRECT_URI = _env('NOTION_REDIRECT_URI', 'http://localhost:8000/notion/callback/')
 NOTION_API_VERSION = _env('NOTION_API_VERSION', '2022-06-28')
+# Views API (board / timeline / Gantt) requires 2025-09-03 or later
+NOTION_VIEWS_API_VERSION = _env('NOTION_VIEWS_API_VERSION', '2025-09-03')
 
 VEXA_API_KEY = _env('VEXA_API_KEY')
 VEXA_API_BASE = _env('VEXA_API_BASE', 'https://gateway.vexa.ai')

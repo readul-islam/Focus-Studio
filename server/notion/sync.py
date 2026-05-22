@@ -1,25 +1,40 @@
+import logging
+import re
+
+import requests
+from django.core.files.base import ContentFile
 from django.utils import timezone
 
 from integrations.events import EVENT_PROJECT_CREATED, emit_studio_event
 from projects.models import Project
 from projects.phase_defaults import seed_default_phases_for_project
-from task.models import Task
+from task.models import Task, TaskAttachment
+from users.models import User
 
 from .models import NotionProjectLink, NotionProjectMapping, NotionProjectSync, NotionTaskLink
 from .outbound import (
+    NOTION_ATTACHMENTS_PROPERTY,
     NOTION_STATUS_DONE,
     NOTION_STATUS_IN_PROGRESS,
     NOTION_STATUS_TODO,
     upsert_project_sync_from_link,
 )
 from .utils import (
+    extract_page_assignee_labels,
     extract_page_date,
+    extract_page_file_entries,
     extract_page_rich_text,
-    extract_page_select,
-    extract_page_status,
+    extract_page_select_flexible,
     extract_page_title,
+    extract_task_page_status,
+    notion_headers,
     query_database_pages,
+    query_task_database_pages,
 )
+
+logger = logging.getLogger(__name__)
+
+MAX_NOTION_ATTACHMENT_BYTES = 5 * 1024 * 1024
 
 
 def map_notion_status_to_project_status(notion_status: str) -> str:
@@ -37,6 +52,8 @@ NOTION_TASK_DESCRIPTION_PROPERTY = 'description'
 NOTION_TASK_START_DATE_PROPERTY = 'Start date'
 NOTION_TASK_DUE_DATE_PROPERTY = 'Due date'
 NOTION_TASK_PRIORITY_PROPERTY = 'Priority'
+NOTION_TASK_ASSIGNEE_PROPERTY = 'Assignee'
+NOTION_TASK_TEAM_PROPERTY = 'Team'
 
 
 def map_notion_status_to_task_status(notion_status: str) -> str | None:
@@ -50,7 +67,7 @@ def map_notion_status_to_task_status(notion_status: str) -> str | None:
         NOTION_STATUS_TODO.lower(),
     ):
         return 'TD'
-    if normalized in ('in review', 'review', 'ir'):
+    if normalized in ('in review', 'in-review', 'review', 'ir'):
         return 'IR'
     if normalized in (
         'in progress',
@@ -75,44 +92,164 @@ def map_notion_priority_to_task(priority: str) -> str | None:
     return None
 
 
-def _apply_notion_page_to_task(task: Task, page: dict, user=None) -> bool:
-    """Update a linked Focuspilot task from a Notion row. Returns True if saved."""
-    title = extract_page_title(page, NOTION_TASK_TITLE_PROPERTY)
-    notion_status = extract_page_status(page, NOTION_TASK_STATUS_PROPERTY)
+def _resolve_phase_id(project: Project | None, team_name: str) -> int | None:
+    if not project or not (team_name or '').strip():
+        return None
+    normalized = team_name.strip().lower()
+    for phase in project.phases.all():
+        if (phase.name or '').strip().lower() == normalized:
+            return phase.id
+    return None
+
+
+def _resolve_assignee_ids(studio, assignee_labels: list[str]) -> list[int]:
+    if not studio or not assignee_labels:
+        return []
+    users = list(User.objects.filter(studio=studio))
+    resolved: list[int] = []
+    for label in assignee_labels:
+        key = label.strip().lower()
+        if not key:
+            continue
+        for user in users:
+            name = (user.name or '').strip().lower()
+            email = (user.email or '').strip().lower()
+            if key == name or key == email:
+                resolved.append(user.id)
+                break
+    return list(dict.fromkeys(resolved))
+
+
+def _download_notion_attachment(url: str, access_token: str | None) -> tuple[bytes | None, str | None]:
+    headers = notion_headers(access_token) if access_token and 'notion' in url.lower() else {}
+    try:
+        response = requests.get(url, headers=headers, timeout=45)
+    except requests.RequestException as exc:
+        return None, str(exc)
+    if response.status_code != 200:
+        return None, f'HTTP {response.status_code}'
+    content = response.content
+    if len(content) > MAX_NOTION_ATTACHMENT_BYTES:
+        return None, 'File exceeds 5MB'
+    return content, None
+
+
+def _sync_task_attachments_from_notion(
+    task: Task, page: dict, access_token: str | None
+) -> bool:
+    """Import Notion file properties into TaskAttachment rows."""
+    notion_files = extract_page_file_entries(
+        page, NOTION_ATTACHMENTS_PROPERTY, 'Attach file', 'Attachments'
+    )
+    existing_by_name = {a.file_name: a for a in task.attachments.all()}
+    notion_names = {f['name'] for f in notion_files}
+    changed = False
+
+    for entry in notion_files:
+        name = entry['name']
+        if name in existing_by_name:
+            continue
+        content, error = _download_notion_attachment(entry['url'], access_token)
+        if error or not content:
+            logger.warning('Notion attachment download skipped for task %s: %s', task.id, error)
+            continue
+        safe_name = re.sub(r'[^\w.\- ]', '_', name)[:255] or 'file'
+        attachment = TaskAttachment(
+            task=task,
+            file_name=safe_name,
+            file_size=len(content),
+            content_type='',
+        )
+        attachment.file.save(safe_name, ContentFile(content), save=False)
+        attachment.save()
+        changed = True
+
+    for file_name, attachment in list(existing_by_name.items()):
+        if file_name not in notion_names:
+            if attachment.file:
+                attachment.file.delete(save=False)
+            attachment.delete()
+            changed = True
+
+    return changed
+
+
+def _apply_notion_page_to_task(
+    task: Task,
+    page: dict,
+    user=None,
+    studio=None,
+    access_token: str | None = None,
+) -> bool:
+    """Update all mapped Focuspilot task fields from a Notion row."""
+    task = (
+        Task.objects.select_related('project', 'phase')
+        .prefetch_related('assignees', 'attachments', 'project__phases')
+        .get(pk=task.pk)
+    )
+
+    new_title = extract_page_title(page, NOTION_TASK_TITLE_PROPERTY)
+    notion_status = extract_task_page_status(page, NOTION_TASK_STATUS_PROPERTY)
     fp_status = map_notion_status_to_task_status(notion_status) if notion_status else None
-    description = extract_page_rich_text(page, NOTION_TASK_DESCRIPTION_PROPERTY)
-    start_date = extract_page_date(page, NOTION_TASK_START_DATE_PROPERTY)
-    due_date = extract_page_date(page, NOTION_TASK_DUE_DATE_PROPERTY)
-    notion_priority = extract_page_select(page, NOTION_TASK_PRIORITY_PROPERTY)
+    new_description = extract_page_rich_text(page, NOTION_TASK_DESCRIPTION_PROPERTY)
+    new_start = extract_page_date(page, NOTION_TASK_START_DATE_PROPERTY)
+    new_due = extract_page_date(page, NOTION_TASK_DUE_DATE_PROPERTY)
+    notion_priority = extract_page_select_flexible(page, NOTION_TASK_PRIORITY_PROPERTY)
     fp_priority = map_notion_priority_to_task(notion_priority) if notion_priority else None
+    team_name = extract_page_select_flexible(page, NOTION_TASK_TEAM_PROPERTY)
+    new_phase_id = _resolve_phase_id(task.project, team_name)
+    assignee_labels = extract_page_assignee_labels(page, NOTION_TASK_ASSIGNEE_PROPERTY)
+    new_assignee_ids = _resolve_assignee_ids(studio or task.studio, assignee_labels)
 
     updates: dict = {}
-    if title and task.title != title:
-        updates['title'] = title
-    if fp_status and task.status != fp_status:
+
+    if (task.title or '') != (new_title or ''):
+        updates['title'] = new_title or ''
+
+    if fp_status is not None and task.status != fp_status:
         updates['status'] = fp_status
-    if description is not None and (task.description or '') != description:
-        updates['description'] = description
-    if start_date != task.start_date:
-        updates['start_date'] = start_date
-    if due_date != task.end_date:
-        updates['end_date'] = due_date
-    if fp_priority and task.priority != fp_priority:
+
+    if (task.description or '') != (new_description or ''):
+        updates['description'] = new_description or ''
+
+    if task.start_date != new_start:
+        updates['start_date'] = new_start
+
+    if task.end_date != new_due:
+        updates['end_date'] = new_due
+
+    if fp_priority is not None and task.priority != fp_priority:
         updates['priority'] = fp_priority
+
+    current_phase_id = task.phase_id
+    if current_phase_id != new_phase_id:
+        updates['phase_id'] = new_phase_id
 
     if page.get('archived') and task.state != 'ARC':
         updates['state'] = 'ARC'
     elif not page.get('archived') and task.state == 'ARC':
         updates['state'] = 'AC'
 
-    if not updates:
+    current_assignee_ids = sorted(task.assignees.values_list('id', flat=True))
+    if sorted(new_assignee_ids) != current_assignee_ids:
+        assignees_changed = True
+    else:
+        assignees_changed = False
+
+    attachments_changed = _sync_task_attachments_from_notion(task, page, access_token)
+
+    if not updates and not assignees_changed and not attachments_changed:
         return False
 
-    updates['updated_at'] = timezone.now()
-    if user:
-        updates['updated_by_id'] = user.id
+    if updates:
+        updates['updated_at'] = timezone.now()
+        if user:
+            updates['updated_by_id'] = user.id
+        Task.objects.filter(pk=task.pk).update(**updates)
 
-    Task.objects.filter(pk=task.pk).update(**updates)
+    if assignees_changed:
+        task.assignees.set(new_assignee_ids)
+
     return True
 
 
@@ -144,7 +281,14 @@ def sync_notion_tasks(studio, user=None) -> dict:
 
     for project_sync in syncs:
         db_id = project_sync.notion_tasks_database_id
-        pages, error = query_database_pages(token.access_token, db_id)
+        stored_ds_id = getattr(project_sync, 'notion_tasks_data_source_id', '') or ''
+        pages, error, resolved_ds_id = query_task_database_pages(
+            token.access_token, db_id, stored_ds_id or None
+        )
+        if resolved_ds_id and resolved_ds_id != stored_ds_id:
+            NotionProjectSync.objects.filter(pk=project_sync.pk).update(
+                notion_tasks_data_source_id=resolved_ds_id
+            )
         if error:
             errors.append({'database_id': db_id, 'project_id': project_sync.project_id, 'error': error})
             continue
@@ -169,7 +313,13 @@ def sync_notion_tasks(studio, user=None) -> dict:
                 continue
 
             try:
-                if _apply_notion_page_to_task(task, page, user=user):
+                if _apply_notion_page_to_task(
+                    task,
+                    page,
+                    user=user,
+                    studio=studio,
+                    access_token=token.access_token,
+                ):
                     updated += 1
                 else:
                     skipped += 1
