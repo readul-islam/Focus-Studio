@@ -258,8 +258,8 @@ export default function AIActivityPage() {
   const groupedActivities = groupActivitiesByDate(activities);
 
   return (
-    <div className="flex-1 bg-stone-50 p-4 sm:p-6">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div  className="flex flex-col h-[calc(100svh-3.5rem)] min-h-0 bg-stone-50 p-4 sm:p-6">
+      <div className="max-w-7xl mx-auto w-full flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-500 flex-1 min-h-0 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>

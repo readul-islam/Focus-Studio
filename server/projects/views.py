@@ -990,6 +990,42 @@ def get_project_phases(request):
     serializer = PhaseSerializer(phases, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, ProjectsViewPermission])
+def seed_project_default_phases(request):
+    """
+    Add standard phases to a project that has none (e.g. created via Notion sync).
+    Query: project_id (required)
+    """
+    from .phase_defaults import seed_default_phases_for_project
+
+    project_id = request.query_params.get('project_id')
+    if not project_id:
+        return Response(
+            {'error': 'project_id query parameter is required'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    try:
+        project = Project.objects.get(id=project_id, studio=request.user.studio)
+    except Project.DoesNotExist:
+        return Response({'error': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    created = seed_default_phases_for_project(
+        project, request.user.studio, user=request.user
+    )
+    phases = project.phases.all().order_by('start_date')
+    serializer = PhaseSerializer(phases, many=True)
+    return Response(
+        {
+            'created_count': len(created),
+            'phases': serializer.data,
+        },
+        status=status.HTTP_200_OK,
+    )
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, ProjectsViewPermission])
 def get_default_phases(request):

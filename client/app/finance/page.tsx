@@ -519,8 +519,9 @@ function FinancePageContent() {
 
 
   return (
-    <div  className="flex-1 bg-stone-50 p-6 ">
-      <div className="max-w-7xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div  className="flex flex-col h-[calc(100svh-3.5rem)] min-h-0 bg-stone-50 p-4 sm:p-6">
+      <div className="max-w-7xl mx-auto w-full flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-500 flex-1 min-h-0 space-y-6">
+
         {/* Finance Stats (restored inline cards) */}
         <div className="grid  grid-cols-1 md:grid-cols-2 gap-4">
           {financeStats.map(stat => {

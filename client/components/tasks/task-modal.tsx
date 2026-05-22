@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -50,7 +51,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import useFetch from '@/hooks/useFetch';
 import { usePost } from '@/hooks/usePost';
-import { patchData, deleteData } from '@/lib/Api';
+import { patchData, deleteData, postData } from '@/lib/Api';
 import { gooeyToast as toast } from 'goey-toast';
 import DraggableSubtasks2 from './DraggableSubtasks2';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -63,32 +64,111 @@ import { useEditGuard } from '@/hooks/useEditGuard';
 import { usePermissions } from '@/hooks/usePermissions';
 import { TaskComments } from '@/components/tasks/TaskComments';
 
-const PhaseSelect = React.memo(function PhaseSelect({ projectId, selectedPhase, onSelect }: { projectId: string; selectedPhase: string | number | null | undefined; onSelect: (value: any) => void }) {
+const PhaseSelect = React.memo(function PhaseSelect({
+  projectId,
+  selectedPhase,
+  onSelect,
+}: {
+  projectId: string | number;
+  selectedPhase: string | number | null | undefined;
+  onSelect: (value: { id: string | number; name: string } | null) => void;
+}) {
   type PhaseItem = { id: string | number; name: string };
-  const { data: phases = [], isLoading, error } = useFetch(`projects/project-phases?project_id=${projectId}`, { enabled: !!projectId });
+  const pid = String(projectId);
+  const phasesUrl = pid ? `projects/project-phases/?project_id=${pid}` : null;
+  const { data: phases = [], isLoading, error, refetch } = useFetch(phasesUrl, {
+    enabled: !!pid,
+  });
+  const [seeding, setSeeding] = useState(false);
+  const seedAttempted = useRef(false);
+  const autoSelected = useRef(false);
 
-  const phaseList: PhaseItem[] = (phases as PhaseItem[]) || [];
+  const phaseList: PhaseItem[] = Array.isArray(phases) ? phases : [];
 
-  if (isLoading) {
+  useEffect(() => {
+    seedAttempted.current = false;
+    autoSelected.current = false;
+  }, [pid]);
+
+  useEffect(() => {
+    if (!pid || isLoading || error || phaseList.length > 0 || seedAttempted.current) return;
+    seedAttempted.current = true;
+    setSeeding(true);
+    postData({
+      url: `projects/project-phases/seed-defaults/?project_id=${pid}`,
+      data: {},
+    })
+      .then((res: { phases?: PhaseItem[] }) => {
+        refetch();
+        const first = res?.phases?.[0];
+        if (first && selectedPhase == null && !autoSelected.current) {
+          autoSelected.current = true;
+          onSelect(first);
+        }
+      })
+      .catch(() => {
+        seedAttempted.current = false;
+      })
+      .finally(() => setSeeding(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- onSelect is unstable; auto-select runs once per project
+  }, [pid, isLoading, error, phaseList.length, refetch, selectedPhase]);
+
+  if (isLoading || seeding) {
     return <div className="text-sm text-gray-500">Loading phases...</div>;
   }
   if (error) {
     return <div className="text-sm text-red-500">Failed to load phases</div>;
   }
 
-  // Convert selectedPhase to string for comparison, handle null/undefined
+  if (phaseList.length === 0) {
+    return (
+      <div className="space-y-2">
+        <p className="text-xs text-gray-500">This project has no phases yet.</p>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="h-8 text-xs"
+          disabled={seeding}
+          onClick={async () => {
+            setSeeding(true);
+            try {
+              const res = (await postData({
+                url: `projects/project-phases/seed-defaults/?project_id=${pid}`,
+                data: {},
+              })) as { phases?: PhaseItem[] };
+              await refetch();
+              const first = res?.phases?.[0];
+              if (first) onSelect(first);
+              toast.success('Default phases added');
+            } catch {
+              toast.error('Could not add phases');
+            } finally {
+              setSeeding(false);
+            }
+          }}
+        >
+          Add default phases
+        </Button>
+      </div>
+    );
+  }
+
   const selectedPhaseValue = selectedPhase != null ? String(selectedPhase) : undefined;
 
   return (
-    <Select value={selectedPhaseValue} onValueChange={(val) => {
-      const selected = phaseList.find(p => String(p.id) === val);
-      onSelect(selected);
-    }}>
+    <Select
+      value={selectedPhaseValue}
+      onValueChange={(val) => {
+        const selected = phaseList.find((p) => String(p.id) === val);
+        onSelect(selected ?? null);
+      }}
+    >
       <SelectTrigger className="w-full bg-white h-9 text-sm rounded-xl">
         <SelectValue placeholder="Select phase">
           {(() => {
             if (selectedPhase == null) return 'Select phase';
-            const selected = phaseList.find(p => String(p.id) === String(selectedPhase));
+            const selected = phaseList.find((p) => String(p.id) === String(selectedPhase));
             return selected?.name || 'Select phase';
           })()}
         </SelectValue>

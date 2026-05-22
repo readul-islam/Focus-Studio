@@ -212,14 +212,366 @@ Phase 1 এ **`/ai/inbox`** দিয়ে টেস্ট করুন (সা
 
 ---
 
+## Phase 2: Notion (ইন্টিগ্রেশন + প্রজেক্ট সিঙ্ক)
+
+### এই ফিচার কী করে? (সংক্ষেপে)
+
+**Notion** Focuspilot-এ **স্টুডিও প্রতি** (একটা workspace) কানেক্ট হয়। বর্তমানে দুটো কাজ আছে:
+
+| স্তর | কী হয় | কী হয় না |
+|------|--------|-----------|
+| **Light** | Settings থেকে Notion **ডাটাবেস ব্রাউজ**, ID কপি, Notion-এ খোলা | — |
+| **Medium (Project sync)** | Notion ডাটাবেসের **প্রতিটি row** → Focuspilot-এ **একটি Project** তৈরি/আপডেট | Focuspilot **Task** সরাসরি Notion থেকে আসে না |
+
+**গুরুত্বপূর্ণ বোঝা:**
+
+- Notion-এ আপনি **Tasks Tracker** বা **Projects** ডাটাবেস রাখতে পারেন — Focuspilot সেই টেবিলের **প্রতিটি লাইন**কে **Project** হিসেবে দেখে।
+- Focuspilot-এর ভিতরের **Task** (টাস্ক বোর্ড, ফেজ, অ্যাসাইনি) আলাদা — সেগুলো **এখনো Notion-এর সাথে দ্বিমুখী সিঙ্ক হয় না** (ভবিষ্যতে “Heavy” প্ল্যান ছিল)।
+- সিঙ্ক দিক: **Notion → Focuspilot** (একমুখী)। Notion-এ row এডিট করলে পরের **Sync projects now**-এ Focuspilot আপডেট হয়; Focuspilot থেকে Notion row এডিট হয় না।
+
+**কানেকশন স্কোপ:** Gmail-এর মতো **স্টুডিও** — Owner (Readul) কানেক্ট করলে পুরো স্টুডিওতে Notion টোকেন থাকে; Akash একই স্টুডিওতে থাকলে (পারমিশন থাকলে) একই ম্যাপিং ও সিঙ্ক ব্যবহার করতে পারে।
+
+---
+
+### পুরো ওয়ার্কফ্লো (Notion + লোকাল লাইভ ডেটা)
+
+নিচের ফ্লো **লোকাল** (`localhost:3000` + `localhost:8000`) এ **আসল Notion workspace** দিয়ে চালান।
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  ধাপ ০: Notion Developers + server/.env সেট                              │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  ধাপ ১: Focuspilot → Settings → Integrations → Connect Notion (OAuth)   │
+│          → টোকেন স্টুডিওতে সেভ (NotionToken)                              │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  ধাপ ২: Notion অ্যাপে → প্রতিটি ডাটাবেস → ••• → Connect to → Focuspilot │
+│          (শেয়ার না করলে Browse databases খালি)                          │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                    ┌───────────────┴───────────────┐
+                    ▼                               ▼
+        ┌───────────────────┐           ┌───────────────────────────┐
+        │ Light: Browse DB   │           │ Medium: Project sync map   │
+        │ Search, Copy ID,   │           │ Database + Name col +      │
+        │ Open in Notion     │           │ Status col (optional)      │
+        └───────────────────┘           └─────────────┬─────────────┘
+                                                      ▼
+                                        ┌───────────────────────────┐
+                                        │ Sync projects now          │
+                                        │ POST notion/mapping/sync/  │
+                                        └─────────────┬─────────────┘
+                                                      ▼
+                                        ┌───────────────────────────┐
+                                        │ Focuspilot → Projects      │
+                                        │ নতুন row = নতুন Project    │
+                                        │ পুরনো row = name/status    │
+                                        │ আপডেট (NotionProjectLink)   │
+                                        └───────────────────────────┘
+```
+
+#### ধাপ ০ — Notion Integration তৈরি (একবার)
+
+1. যান: https://www.notion.so/my-integrations  
+2. **New integration** / **Public integration** (Connection) তৈরি করুন — নাম যেমন `Focuspilot Local`  
+3. **Redirect URI** যোগ করুন:
+   - `http://localhost:8000/notion/callback/`
+   - (প্রোডে) `https://api.focuspilot.io/notion/callback/`
+4. **Client ID** ও **Client secret** কপি করুন
+
+`server/.env`:
+
+```env
+FRONTEND_URL=http://localhost:3000
+NOTION_CLIENT_ID=আপনার-notion-client-id
+NOTION_CLIENT_SECRET=আপনার-notion-secret
+NOTION_REDIRECT_URI=http://localhost:8000/notion/callback/
+NOTION_API_VERSION=2022-06-28
+```
+
+সার্ভার **রিস্টার্ট** করুন (`python manage.py runserver`)।
+
+#### ধাপ ১ — Focuspilot-এ কানেক্ট (লাইভ OAuth)
+
+1. লগইন: http://localhost:3000/login (**Readul** — Studio Owner)  
+2. যান: http://localhost:3000/settings/studio/integrations  
+3. **Notion** কার্ড → **Connect Notion** → **Continue** → পপআপে Notion-এ **Allow access**  
+4. সফল হলে কার্ডে **Connected** + সেটিংস (গিয়ার) খুলবে  
+5. OAuth শেষে URL: `http://localhost:3000/oauth/notion/callback?status=success`
+
+**লাইভ ডেটা চেক (Network F12):**
+
+| রিকোয়েস্ট | প্রত্যাশিত |
+|------------|-------------|
+| `GET notion/connect/` | `{ "auth_url": "https://api.notion.com/v1/oauth/authorize?..." }` |
+| ব্রাউজার → `GET /notion/callback/?code=...` | রিডাইরেক্ট success |
+| `GET user/integration-status/` | `notion_connected: true` |
+| `GET notion/status/` | `connected: true`, `workspace_name` |
+
+#### ধাপ ২ — Notion-এ ডাটাবেস শেয়ার (অবশ্যই)
+
+Focuspilot শুধু **যে ডাটাবেস Integration-এর সাথে Connect** সেগুলো দেখে।
+
+1. Notion ওয়েব/ডেস্কটপে আপনার **Tasks Tracker** (বা Projects টেবিল) খুলুন  
+2. উপরে **•••** (মেনু) → **Connections** / **Connect to**  
+3. তালিকায় **Focuspilot Local** (আপনার integration নাম) সিলেক্ট → **Confirm**  
+4. অন্য ডাটাবেস লাগলে একইভাবে প্রতিটিতে Connect করুন
+
+**টেস্ট ডেটা (Notion-এ লাইভ row):**
+
+| Task name (Title) | Status (উদাহরণ) | Focuspilot-এ প্রত্যাশা |
+|-------------------|------------------|-------------------------|
+| `Kitchen Reno — Smith` | In progress | Project **Active** (`AC`) |
+| `Bathroom Fit-out` | Done | Project **Completed** (`COM`) |
+| `Archive Old Lead` | Archived | Project **Archived** (`ARC`) |
+
+> কলামের নাম আপনার Notion-এ যা আছে (যেমন `Task name`, `Status`) — ম্যাপিংয়ে সেটাই বেছে নেবেন।
+
+#### ধাপ ৩ — Light: ডাটাবেস ব্রাউজ (লাইভ লিস্ট)
+
+1. Integrations → Notion → **Settings** (গিয়ার) → **Browse databases**  
+2. সার্চ বক্সে `Tasks` লিখুন — শেয়ার করা DB দেখা উচিত  
+3. **Copy** — Database ID ক্লিপবোর্ডে (Zapier/API-তে লাগতে পারে)  
+4. **Open in Notion** — একই DB Notion-এ খুলবে  
+5. লাইনে **Sync** — সরাসরি Project sync ম্যাপিং ডায়ালগ খুলে
+
+**API (লোকাল, লগইন কুকি সহ ব্রাউজার সেশন বা JWT):**
+
+```http
+GET http://localhost:8000/notion/databases/?q=Tasks
+```
+
+খালি `[]` এলে → ধাপ ২ (Connect to) আবার করুন।
+
+#### ধাপ ৪ — Medium: প্রজেক্ট সিঙ্ক ম্যাপিং
+
+1. Notion settings → **Set up project sync** (বা Browse → **Sync**)  
+2. **Database:** `Tasks Tracker` (বা আপনার টেবিল)  
+3. **Name field:** Notion-এর **Title** কলাম (যেমন `Task name`)  
+4. **Status field (optional):** `Status` — থাকলে স্ট্যাটাস ম্যাপ হয়  
+5. **Save**
+
+**স্ট্যাটাস ম্যাপিং (সার্ভার লজিক):**
+
+| Notion Status (উদাহরণ) | Focuspilot `project_status` |
+|-------------------------|-----------------------------|
+| Done, Complete, Completed, Won | **Completed** (`COM`) |
+| Archive, Archived, Cancelled | **Archived** (`ARC`) |
+| In progress, অন্য যেকোনো | **Active** (`AC`) |
+
+**API:**
+
+```http
+PUT http://localhost:8000/notion/mapping/
+Content-Type: application/json
+
+{
+  "database_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "database_title": "Tasks Tracker",
+  "title_property": "Task name",
+  "status_property": "Status",
+  "is_enabled": true
+}
+```
+
+#### ধাপ ৫ — লাইভ সিঙ্ক → Projects পেজে ডেটা
+
+1. Notion settings → **Sync projects now**  
+2. টোস্ট: `Sync done: X created, Y updated, Z unchanged`  
+3. যান: http://localhost:3000/projects  
+4. Notion-এর প্রতিটি row-এর নামে **Project** দেখা উচিত  
+5. Notion-এ একটি row-এর **নাম বা Status** বদলান → আবার **Sync projects now** → Focuspilot-এ **আপডেট** হবে
+
+**API:**
+
+```http
+POST http://localhost:8000/notion/mapping/sync/
+```
+
+উদাহরণ রেসপন্স (লাইভ):
+
+```json
+{
+  "created": 2,
+  "updated": 1,
+  "skipped": 0,
+  "total_pages": 3,
+  "last_synced_at": "2026-05-22T12:00:00+00:00"
+}
+```
+
+**ডাটাবেসে কী সেভ হয় (লোকাল PostgreSQL):**
+
+| টেবিল | কী |
+|--------|-----|
+| `notion_notiontoken` | স্টুডিওর access_token, workspace_name |
+| `notion_notionprojectmapping` | কোন DB, কোন কলাম, last_synced_at |
+| `notion_notionprojectlink` | `notion_page_id` ↔ `projects_project.id` |
+| `projects_project` | `project_name`, `project_status`, `project_description` (= Notion URL) |
+
+#### ধাপ ৬ — “টাস্ক” ম্যানেজমেন্ট বোঝা (Notion vs Focuspilot)
+
+| কাজ করতে চান | কোথায় করবেন (বর্তমান প্রোডাক্ট) |
+|--------------|-----------------------------------|
+| প্রজেক্ট লিস্ট / স্ট্যাটাস ট্র্যাক | **Notion ডাটাবেস** → সিঙ্ক → **Focuspilot Projects** |
+| টাস্ক, সাবটাস্ক, ফেজ, ডেডলাইন | **Focuspilot** প্রজেক্টের ভিতর (Task board) — Notion থেকে **আসে না** |
+| টিম চ্যাট | প্রজেক্ট → **Team** ট্যাব |
+| ক্লায়েন্ট ইমেইল | প্রজেক্ট → **Email** / Inbox লিংক (Phase 1) |
+| নতুন ক্লায়েন্ট CRM | Focuspilot CRM বা Zapier webhook (আলাদা ইন্টিগ্রেশন) |
+
+**প্র্যাকটিস ওয়ার্কফ্লো (রিকমেন্ডেড):**
+
+1. Notion = **হাই-লেভেল জব/প্রজেক্ট ট্র্যাকার** (এক row = এক প্রজেক্ট)  
+2. Focuspilot = **ডেলিভারি** — সেই প্রজেক্ট খুলে ফেজ, টাস্ক, টিম, ফাইন্যান্স  
+3. সপ্তাহে একবার বা প্রজেক্ট মিটিংয়ের আগে **Sync projects now**  
+4. নতুন Notion row যোগ → সিঙ্ক → Focuspilot-এ নতুন Project → ভিতরে টাস্ক বানান
+
+#### ধাপ ৭ — Disconnect (পরিষ্কার টেস্ট)
+
+1. Notion → **Disconnect**  
+2. `notion_connected: false`, ম্যাপিং মুছে যায় (টোকেন ডিলিট)  
+3. আগে তৈরি **Projects** থেকে যায় (লিংক টেবিল ক্লিয়ার; প্রজেক্ট ডিলিট হয় না)
+
+---
+
+### লোকালি চালানোর আগে (Phase 2)
+
+Phase 1-এর মতোই সার্ভার + ক্লায়েন্ট চালু থাকতে হবে। অতিরিক্ত শুধু Notion `.env` (উপরে)।
+
+```powershell
+# টার্মিনাল ১
+cd server
+.\.venv\Scripts\Activate.ps1
+python manage.py migrate
+python manage.py runserver
+
+# টার্মিনাল ২
+cd client
+pnpm dev
+```
+
+---
+
+### টেস্ট ইউজার (Phase 2)
+
+| ভূমিকা | কে | কী টেস্ট করবেন |
+|--------|-----|----------------|
+| **Owner** | Readul | Notion OAuth, DB শেয়ার, ম্যাপিং, সিঙ্ক, Projects ভেরিফাই |
+| **Member** | Akash | একই স্টুডিও; Integrations দেখা/সিঙ্ক (রোল অনুযায়ী); Owner-এর ম্যাপিং শেয়ার |
+
+---
+
+## Owner (Readul) — Notion টেস্ট ধাপ
+
+### ধাপ ১: কানেক্ট + স্ট্যাটাস
+
+- [ ] `NOTION_*` `.env` সেট + সার্ভার রিস্টার্ট  
+- [ ] Integrations → **Connect Notion** → Connected  
+- [ ] `GET notion/status/` → workspace_name আসে  
+
+### ধাপ ২: Notion-এ DB কানেক্ট
+
+- [ ] Tasks Tracker (বা টেস্ট DB) → **Connect to** → Focuspilot integration  
+- [ ] Browse databases → টেবিল দেখা যায়  
+
+### ধাপ ৩: ম্যাপিং
+
+- [ ] Set up project sync → DB + Task name + Status  
+- [ ] Save → “Project sync configured” টোস্ট  
+
+### ধাপ ৪: প্রথম সিঙ্ক (লাইভ)
+
+- [ ] Sync projects now → `created` ≥ 1 (নতুন row থাকলে)  
+- [ ] `/projects` → নামগুলো Notion-এর মতো  
+
+### ধাপ ৫: আপডেট লুপ
+
+- [ ] Notion-এ একটি প্রজেক্টের নাম বদলান → আবার সিঙ্ক → `updated` ≥ 1  
+- [ ] Focuspilot-এ নাম আপডেট হয়েছে  
+
+### ধাপ ৬ (ঐচ্ছিক): Status
+
+- [ ] Notion Status → Done → সিঙ্ক → Project **Completed**  
+- [ ] In progress → **Active**  
+
+---
+
+## টিম মেম্বার (Akash) — Notion টেস্ট
+
+1. একই স্টুডিওতে লগইন  
+2. **Settings → Integrations** খোলা যায় কিনা (`settings.edit` / admin নয় হলে নাও খুলতে পারে)  
+3. Owner যদি আগে কানেক্ট করে থাকে → Notion **Connected** দেখা; নিজে Disconnect না করলে Owner-এর টোকেন থাকে  
+4. Owner **Sync** করলে Akash **Projects**-এ একই নতুন প্রজেক্ট দেখবে (স্টুডিও ডেটা)  
+5. Akash নিজে Browse/Sync চালাতে পারলে → একই ফলাফল  
+
+---
+
+## দ্রুত চেকলিস্ট (Phase 2 — Notion)
+
+### Readul (Owner)
+
+- [ ] Notion integration + redirect URI লোকাল  
+- [ ] Connect Notion সফল  
+- [ ] Notion DB → Connect to integration  
+- [ ] Browse → DB লিস্ট + Copy ID  
+- [ ] Project sync mapping সেভ  
+- [ ] Sync → Projects লাইভ ডেটা  
+- [ ] Notion এডিট → পুনরায় সিঙ্ক → আপডেট  
+
+### Akash (Member)
+
+- [ ] স্টুডিও একই  
+- [ ] Projects-এ সিঙ্ক করা প্রজেক্ট দেখা  
+- [ ] (ঐচ্ছিক) নিজে Integrations অ্যাক্সেস  
+
+---
+
+## Phase 2 — সাধারণ সমস্যা
+
+| সমস্যা | কারণ | সমাধান |
+|--------|------|--------|
+| Browse databases খালি | DB integration-এ Connect হয়নি | Notion → ••• → Connect to → Focuspilot |
+| `Notion OAuth is not configured` | `.env` খালি | `NOTION_CLIENT_ID/SECRET` + রিস্টার্ট |
+| `503` / connect error | Redirect URI মিলছে না | Notion dev → `http://localhost:8000/notion/callback/` |
+| Sync: `No database mapped` | ম্যাপিং সেভ হয়নি | Set up project sync → Save |
+| `created: 0` কিন্তু row আছে | Title কলাম ভুল | ম্যাপিংয়ে সঠিক **Name field** |
+| সব row `skipped` | আগেই সিঙ্ক হয়েছে, কিছু বদলায়নি | Notion-এ নাম/status বদলে আবার সিঙ্ক |
+| Production vs local ভিন্ন | টোকেন আলাদা | লোকালে আলাদা Connect; প্রোড DB শেয়ার নয় |
+| Focuspilot Task Notion-এ যায় না | ডিজাইন | শুধু **Project** সিঙ্ক; টাস্ক Focuspilot-এ ম্যানুয়াল |
+
+---
+
+## API রেফারেন্স (লোকাল ডিবাগ)
+
+| মেথড | URL | কাজ |
+|--------|-----|-----|
+| GET | `/notion/connect/` | OAuth URL |
+| GET | `/notion/callback/` | OAuth callback (ব্রাউজার) |
+| POST | `/notion/disconnect/` | কাটা |
+| GET | `/notion/status/` | workspace + mapping |
+| GET | `/notion/databases/?q=` | DB লিস্ট (লাইভ Notion API) |
+| GET | `/notion/databases/{id}/schema/` | Title/Status কলাম |
+| GET/PUT | `/notion/mapping/` | ম্যাপিং পড়া/সেভ |
+| POST | `/notion/mapping/sync/` | **লাইভ সিঙ্ক** |
+| GET | `/user/integration-status/` | `notion_connected` |
+
+---
+
 ## পরবর্তী ফেজ (খসড়া)
 
 | Phase | বিষয় |
 |-------|--------|
-| Phase 2 | Calendar + Daily Brief |
-| Phase 3 | Integrations (Notion, Xero) |
+| Phase 1 | Inbox (Gmail) — উপরে |
+| Phase 2 | **Notion** (ব্রাউজ + প্রজেক্ট সিঙ্ক) — এই সেকশন |
+| Phase 3 | Calendar + Daily Brief |
 | Phase 4 | Billing / Plan / Product Tour |
-| Phase 5 | Projects + CRM ইনবক্স লিংক E2E |
+| Phase 5 | Xero + Zapier E2E |
+| Phase 6 | Projects + CRM + Notion পূর্ণ E2E |
 
 ---
 
@@ -231,8 +583,11 @@ Phase 1 এ **`/ai/inbox`** দিয়ে টেস্ট করুন (সা
 | AI Inbox | http://localhost:3000/ai/inbox |
 | Home Inbox | http://localhost:3000/home/inbox |
 | Integrations | http://localhost:3000/settings/studio/integrations |
+| Projects | http://localhost:3000/projects |
+| Notion OAuth callback (ফ্রন্ট) | http://localhost:3000/oauth/notion/callback |
 | API (লোকাল) | http://localhost:8000 |
+| Notion integrations | https://www.notion.so/my-integrations |
 
 ---
 
-*সর্বশেষ আপডেট: Phase 1 — Inbox (Readul + Akash, লোকাল টেস্ট)*
+*সর্বশেষ আপডেট: Phase 1 (Inbox) + Phase 2 (Notion — লোকাল লাইভ ওয়ার্কফ্লো, বাংলা)*

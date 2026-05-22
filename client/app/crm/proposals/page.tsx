@@ -158,8 +158,8 @@ function ProposalsPageContent() {
   };
 
   return (
-    <div className="flex-1 bg-stone-50 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="flex flex-col h-[calc(100svh-3.5rem)] min-h-0 bg-stone-50 p-4 sm:p-6">
+      <div className="max-w-7xl mx-auto w-full flex flex-col flex-1 min-h-0 space-y-6">
         <CrmNav />
 
         {/* Toolbar */}

@@ -2,6 +2,7 @@ from django.utils import timezone
 
 from integrations.events import EVENT_PROJECT_CREATED, emit_studio_event
 from projects.models import Project
+from projects.phase_defaults import seed_default_phases_for_project
 
 from .models import NotionProjectLink, NotionProjectMapping
 from .utils import extract_page_status, extract_page_title, query_database_pages
@@ -106,6 +107,7 @@ def sync_notion_projects(studio, user=None) -> dict:
                 notion_page_id=page_id,
                 project=project,
             )
+            seed_default_phases_for_project(project, studio, user=user)
             created += 1
             try:
                 emit_studio_event(

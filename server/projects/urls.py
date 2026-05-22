@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PhaseViewSet, RoomViewSet, ProjectViewSet, ProcurementViewSet, get_studio_projects, get_user_projects, get_project_procurements, get_project_rooms, get_project_phases, get_default_phases, get_studio_phases, get_project_overview, get_studio_members_phases, get_project_phases_tasks, client_access, get_studio_delivery_dates, get_project_delivery_dates, accept_project_proposal
+from .views import PhaseViewSet, RoomViewSet, ProjectViewSet, ProcurementViewSet, get_studio_projects, get_user_projects, get_project_procurements, get_project_rooms, get_project_phases, seed_project_default_phases, get_default_phases, get_studio_phases, get_project_overview, get_studio_members_phases, get_project_phases_tasks, client_access, get_studio_delivery_dates, get_project_delivery_dates, accept_project_proposal
 router = DefaultRouter()
 router.register(r'phases', PhaseViewSet)
 router.register(r'rooms', RoomViewSet)
@@ -14,6 +14,7 @@ urlpatterns = [
     path('project-procurements/', get_project_procurements, name='project-procurements'),
     path('project-rooms/', get_project_rooms, name='project-rooms'),
     path('project-phases/', get_project_phases, name='project-phases'),
+    path('project-phases/seed-defaults/', seed_project_default_phases, name='project-phases-seed-defaults'),
     path('default-phases/', get_default_phases, name='default-phases'),
     path('studio-phases/', get_studio_phases, name='studio_phases'),
     path('project-overview/', get_project_overview, name='project-overview'),

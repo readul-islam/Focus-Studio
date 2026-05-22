@@ -291,11 +291,11 @@ const handleRegenerateBrief = async () => {
   });
 
   return (
-    <div className="flex-1 bg-stone-50 p-4 sm:p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="flex flex-col h-[calc(100svh-3.5rem)] min-h-0 bg-stone-50 p-4 sm:p-6">
+      <div className="max-w-7xl mx-auto w-full flex flex-col flex-1 min-h-0 space-y-6">
 
         {/* AI Daily Brief Hero Section */}
-        <section data-tour="dashboard-brief">
+        <section>
           <DailyBriefHero
             brief={dailyBrief?.daily_brief}
             userName={dashboardInfo?.greeting?.name || user?.name || 'there'}
@@ -315,7 +315,7 @@ const handleRegenerateBrief = async () => {
         )}
 
         {/* Dashboard Cards */}
-        <section data-tour="dashboard-cards" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           <Card className="p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow h-80">
             <TodaysMeetingsCard scope={scope} userRole={user?.role} meetings={dashboardInfo?.today_meetings} />
           </Card>

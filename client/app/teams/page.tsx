@@ -806,8 +806,8 @@ export default function TeamsPage() {
     // }
 
     return (
-        <div className="flex-1 bg-stone-50 p-6 flex flex-col overflow-hidden">
-            <div className="max-w-7xl w-full mx-auto flex flex-col h-full gap-4">
+        <div className="flex flex-col h-[calc(100svh-3.5rem)] min-h-0 bg-stone-50 p-4 sm:p-6">
+      <div className="max-w-7xl mx-auto w-full flex flex-col flex-1 min-h-0 space-y-6">
                 {/* Top Toolbar */}
                 <div className="flex flex-wrap items-center justify-between gap-2 bg-white p-2 rounded-xl border border-gray-200 shadow-sm shrink-0">
                     <div className="flex items-center gap-2 flex-wrap">

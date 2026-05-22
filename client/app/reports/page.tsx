@@ -95,8 +95,8 @@ const reportCategories = [
 
 function ReportsPageContent() {
   return (
-    <main className="flex-1 bg-stone-50 p-4 sm:p-6">
-      <div className="mx-auto max-w-7xl space-y-6">
+    <main  className="flex flex-col h-[calc(100svh-3.5rem)] min-h-0 bg-stone-50 p-4 sm:p-6">
+      <div className="max-w-7xl mx-auto w-full flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-500 flex-1 min-h-0 space-y-6">
         <div>
           <h1 className="text-xl font-semibold text-gray-900">Reports</h1>
           <p className="text-sm text-gray-500 mt-1">All reports are live data from your studio</p>
