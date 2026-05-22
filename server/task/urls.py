@@ -7,7 +7,10 @@ router = DefaultRouter()
 router.register(r'subtasks', SubTaskViewSet)
 router.register(r'tasks', TaskViewSet)
 
+task_move = TaskViewSet.as_view({'patch': 'move'})
+
 urlpatterns = [
+    path('tasks/<int:pk>/move/', task_move, name='task-move'),
     path('', include(router.urls)),
     path('user-tasks-project/', get_user_tasks_in_project, name='user-tasks-in-project'),
     path('user-tasks/', get_user_tasks, name='user-tasks'),

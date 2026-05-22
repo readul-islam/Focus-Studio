@@ -1,9 +1,12 @@
 import logging
 import re
+from datetime import datetime, timezone as dt_timezone
 
 import requests
+from django.core.cache import cache
 from django.core.files.base import ContentFile
 from django.utils import timezone
+from django.utils.dateparse import parse_datetime
 
 from integrations.events import EVENT_PROJECT_CREATED, emit_studio_event
 from projects.models import Project
@@ -90,6 +93,31 @@ def map_notion_priority_to_task(priority: str) -> str | None:
     if normalized == 'high':
         return 'H'
     return None
+
+
+def _parse_notion_datetime(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    parsed = parse_datetime(value.replace('Z', '+00:00'))
+    if not parsed:
+        return None
+    if timezone.is_naive(parsed):
+        return timezone.make_aware(parsed, dt_timezone.utc)
+    return parsed
+
+
+def _notion_page_is_stale_for_task(page: dict, task: Task) -> bool:
+    """
+    True when Focuspilot has newer changes than this Notion row (e.g. kanban drag).
+    Skip inbound apply so we do not overwrite FP and push old status back to Notion.
+    """
+    notion_edited = _parse_notion_datetime(page.get('last_edited_time'))
+    task_updated = task.updated_at
+    if not notion_edited or not task_updated:
+        return False
+    if timezone.is_naive(task_updated):
+        task_updated = timezone.make_aware(task_updated, dt_timezone.utc)
+    return notion_edited <= task_updated
 
 
 def _resolve_phase_id(project: Project | None, team_name: str) -> int | None:
@@ -187,6 +215,12 @@ def _apply_notion_page_to_task(
         .prefetch_related('assignees', 'attachments', 'project__phases')
         .get(pk=task.pk)
     )
+
+    if cache.get(f'notion_inbound_pause_{task.pk}'):
+        return False
+
+    if _notion_page_is_stale_for_task(page, task):
+        return False
 
     new_title = extract_page_title(page, NOTION_TASK_TITLE_PROPERTY)
     notion_status = extract_task_page_status(page, NOTION_TASK_STATUS_PROPERTY)

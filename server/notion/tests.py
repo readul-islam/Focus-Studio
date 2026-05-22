@@ -10,11 +10,15 @@ from notion.outbound import (
     push_project_to_notion,
     upsert_project_sync_from_link,
 )
+from django.utils import timezone
+
 from notion.sync import (
+    _notion_page_is_stale_for_task,
     _resolve_assignee_ids,
     map_notion_status_to_project_status,
     map_notion_status_to_task_status,
 )
+from task.models import Task
 from notion.utils import extract_page_title
 
 
@@ -27,6 +31,16 @@ class NotionSyncHelpersTest(TestCase):
         self.assertEqual(map_notion_status_to_task_status('Not started'), 'TD')
         self.assertEqual(map_notion_status_to_task_status('In progress'), 'IP')
         self.assertEqual(map_notion_status_to_task_status('Done'), 'D')
+
+    def test_notion_page_stale_when_task_newer(self):
+        task = Task.objects.create(title='Drag test', status='D', updated_by=None)
+        Task.objects.filter(pk=task.pk).update(updated_at=timezone.now())
+        task.refresh_from_db()
+        page = {
+            'last_edited_time': '2020-01-01T00:00:00.000Z',
+            'properties': {},
+        }
+        self.assertTrue(_notion_page_is_stale_for_task(page, task))
 
     def test_resolve_assignee_ids_by_name(self):
         from users.models import Studio, User

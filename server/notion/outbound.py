@@ -497,6 +497,16 @@ def push_task_to_notion(task: Task, user: User | None = None) -> None:
     )
 
 
+def _patch_notion_task_status(access_token: str, page_id: str, task: Task) -> tuple[dict | None, str | None]:
+    status_name = map_task_status_to_notion(task.status)
+    body = {
+        'properties': {
+            'Status': {'status': {'name': status_name}},
+        },
+    }
+    return _notion_request('PATCH', f'https://api.notion.com/v1/pages/{page_id}', access_token, body)
+
+
 def update_task_in_notion(task: Task) -> None:
     task = _load_task_for_notion(task)
     try:
@@ -514,7 +524,17 @@ def update_task_in_notion(task: Task) -> None:
 
     _, error = update_notion_task_page(token.access_token, link.notion_page_id, task)
     if error:
-        logger.warning('Notion task update failed: %s', error)
+        _, status_error = _patch_notion_task_status(
+            token.access_token, link.notion_page_id, task
+        )
+        if status_error:
+            logger.warning(
+                'Notion task update failed (task %s, status %s): %s; status-only: %s',
+                task.pk,
+                task.status,
+                error,
+                status_error,
+            )
 
 
 def archive_task_in_notion(task: Task) -> None:

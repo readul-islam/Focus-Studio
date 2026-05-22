@@ -1,5 +1,10 @@
+import logging
+
+from django.core.cache import cache
+from django.db import transaction
+from django.utils import timezone
 from rest_framework import viewsets, status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from datetime import date
@@ -8,6 +13,14 @@ from .models import SubTask, Task
 from .serializers import SubTaskSerializer, TaskSerializer, TaskGetSerializer, UserTaskSummarySerializer
 from users.permissions import TasksViewPermission
 from techstyles.mixins import StudioScopedMixin
+
+logger = logging.getLogger(__name__)
+
+NOTION_INBOUND_PAUSE_SECONDS = 8
+
+
+def _pause_notion_inbound_for_task(task_id: int) -> None:
+    cache.set(f'notion_inbound_pause_{task_id}', True, timeout=NOTION_INBOUND_PAUSE_SECONDS)
 
 class SubTaskViewSet(StudioScopedMixin, viewsets.ModelViewSet):
     queryset = SubTask.objects.all()
@@ -36,11 +49,41 @@ class TaskViewSet(StudioScopedMixin, viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         task = serializer.save()
+        task_id = task.pk
+        if 'status' in serializer.validated_data:
+            _pause_notion_inbound_for_task(task_id)
+            # Status changes: push Notion immediately (on_commit runs too late vs inbound sync)
+            self._push_task_to_notion_after_save(task_id)
+        else:
+            transaction.on_commit(lambda: self._push_task_to_notion_after_save(task_id))
+
+    @action(detail=True, methods=['patch'], url_path='move')
+    def move(self, request, pk=None):
+        """Kanban drag-and-drop: update status and sync to Notion immediately."""
+        task = self.get_object()
+        new_status = (request.data.get('status') or '').strip()
+        if not new_status:
+            return Response({'error': 'status is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        task.status = new_status
+        task.updated_at = timezone.now()
+        task.save(update_fields=['status', 'updated_at'])
+        _pause_notion_inbound_for_task(task.pk)
+        self._push_task_to_notion_after_save(task.pk)
+        return Response(TaskSerializer(task).data)
+
+    def _push_task_to_notion_after_save(self, task_id: int) -> None:
         try:
             from notion.outbound import update_task_in_notion
+
+            task = (
+                Task.objects.select_related('project', 'phase', 'studio')
+                .prefetch_related('assignees')
+                .get(pk=task_id)
+            )
             update_task_in_notion(task)
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning('Notion push after task update failed (task %s): %s', task_id, exc)
 
     def perform_destroy(self, instance):
         try:

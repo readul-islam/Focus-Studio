@@ -407,6 +407,9 @@ export default function MyTasksPage() {
 
   const [activeID, setActiveId] = useState<string | null>(null);
   const [overID, setOverId] = useState<string | null>(null);
+  const dragStartColumnRef = React.useRef<string | null>(null);
+  /** Latest column hovered during drag (state updates lag behind dragEnd). */
+  const dragEndColumnRef = React.useRef<string | null>(null);
   const { user } = useUser();
   const queryClient = useQueryClient();
 
@@ -473,11 +476,16 @@ export default function MyTasksPage() {
     // handled elsewhere (DB-driven)
   }
 
-  const { mutate, error: deleteError } = useMutation({
-    mutationFn: (data: any) => patchData({ url: `task/tasks/${data.id}/`, data }),
+  const { mutateAsync: updateTaskStatus, error: deleteError } = useMutation({
+    mutationFn: ({ id, status }: { id: string | number; status: string }) =>
+      patchData({ url: `task/tasks/${id}/move/`, data: { status } }),
     onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: ['task/tasks/'] }),
-      queryClient.refetchQueries({ queryKey: [`task/task-datacards/`] });
+      queryClient.invalidateQueries({ queryKey: ['task/user-tasks/'], refetchType: 'active' });
+      queryClient.invalidateQueries({ queryKey: ['task/task-datacards/'], refetchType: 'active' });
+    },
+    onError: () => {
+      toast.error('Failed to update task status');
+      queryClient.invalidateQueries({ queryKey: ['task/user-tasks/'], refetchType: 'active' });
     },
   });
 
@@ -556,22 +564,41 @@ export default function MyTasksPage() {
     },
   ];
 
+  const findContainer = React.useCallback(
+    (id: string) => {
+      const normalized = String(id);
+      if (tasks.some(col => col.id === normalized)) {
+        return normalized;
+      }
+      const column = tasks.find(col =>
+        col.items?.some((item: any) => String(item.id) === normalized)
+      );
+      return column?.id ?? null;
+    },
+    [tasks]
+  );
+
   const handleDragStart = (event: DragStartEvent) => {
-    setActiveId(event.active.id as string);
+    const activeId = String(event.active.id);
+    setActiveId(activeId);
+    dragStartColumnRef.current = findContainer(activeId);
+    dragEndColumnRef.current = dragStartColumnRef.current;
   };
 
   const handleDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
     if (!over) return;
 
-    const activeId = active.id;
-    const overId = over.id;
+    const activeId = String(active.id);
+    const overId = String(over.id);
 
-    // Find the containers
-    const activeContainer = findContainer(activeId as string);
-    const overContainer = findContainer(overId as string);
+    const activeContainer = findContainer(activeId);
+    const overContainer = findContainer(overId);
 
     setOverId(overContainer);
+    if (overContainer) {
+      dragEndColumnRef.current = overContainer;
+    }
 
     if (!activeContainer || !overContainer) return;
     if (activeContainer === overContainer) return;
@@ -583,8 +610,8 @@ export default function MyTasksPage() {
       const overCol = prevClone.find(col => col.id === overContainer);
       if (!activeCol || !overCol) return prev;
 
-      const activeIndex = activeCol.items.findIndex(item => item.id === activeId);
-      const overIndex = overCol.items.findIndex(item => item.id === overId);
+      const activeIndex = activeCol.items.findIndex(item => String(item.id) === activeId);
+      const overIndex = overCol.items.findIndex(item => String(item.id) === overId);
       if (activeIndex === -1) return prev;
 
       const activeItem = activeCol.items[activeIndex];
@@ -603,20 +630,28 @@ export default function MyTasksPage() {
     });
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const startColumn = dragStartColumnRef.current;
+    const endColumnFromDrag = dragEndColumnRef.current;
+    dragStartColumnRef.current = null;
+    dragEndColumnRef.current = null;
     setActiveId(null);
     setOverId(null);
-    if (!over) return;
 
-    const activeId = active.id as string;
-    const overId = over.id as string;
-    if (activeId == overID) return;
+    const activeId = String(event.active.id);
+    if (!startColumn) return;
 
-    const overContainer = findContainer(overId);
-    if (!overContainer) return;
-
-    const nextStatus = overContainer as 'todo' | 'in-progress' | 'in-review' | 'done';
+    // Refs are updated synchronously in dragOver; React `tasks` may still be stale here
+    let endColumn = endColumnFromDrag;
+    if (!endColumn && event.over) {
+      endColumn = findContainer(String(event.over.id));
+    }
+    if (!endColumn) {
+      endColumn = findContainer(activeId);
+    }
+    if (!endColumn || startColumn === endColumn) {
+      return;
+    }
 
     const statusMapReverse: Record<string, string> = {
       todo: 'TD',
@@ -625,24 +660,15 @@ export default function MyTasksPage() {
       done: 'D',
     };
 
-    const apiStatus = statusMapReverse[nextStatus] || 'TD';
+    const apiStatus = statusMapReverse[endColumn] || 'TD';
 
-    const payload = {
-      id: activeId,
-      status: apiStatus,
-    };
-
-    mutate(payload);
-    toast.success(`Task moved to ${updatedColName[overContainer]}`);
-  };
-
-  const findContainer = (id: string) => {
-    if (tasks.some(col => col.id === id)) {
-      return id;
+    try {
+      await updateTaskStatus({ id: activeId, status: apiStatus });
+      toast.success(`Task moved to ${updatedColName[endColumn as keyof typeof updatedColName]}`);
+    } catch {
+      toast.error('Failed to update task status');
+      queryClient.invalidateQueries({ queryKey: ['task/user-tasks/'], refetchType: 'active' });
     }
-
-    const column = tasks.find(col => col.items.some(item => item.id === id));
-    return column?.id;
   };
 
   useEffect(() => {
