@@ -34,10 +34,13 @@ def get_fast_snippet(html_body):
     return clean_text[:100] + '...' if len(clean_text) > 100 else clean_text
 
 # Partial fields string — Google only returns what we ask for, cutting payload by ~90%
-_MSG_FIELDS = (
-    'id,threadId,snippet,'
-    'payload(headers,body(data),parts(mimeType,body(data),parts(mimeType,body(data))))'
+_MSG_PART_FIELDS = (
+    'mimeType,filename,headers,body(data,attachmentId,size),'
+    'parts(mimeType,filename,headers,body(data,attachmentId,size),'
+    'parts(mimeType,filename,headers,body(data,attachmentId,size),'
+    'parts(mimeType,filename,headers,body(data,attachmentId,size))))'
 )
+_MSG_FIELDS = f'id,threadId,snippet,payload(headers,body(data),parts({_MSG_PART_FIELDS}))'
 
 _EMAIL_RE = re.compile(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+')
 
@@ -167,6 +170,78 @@ def resolve_reply_recipient(last_sender: str, last_recipient: str, last_is_sent:
     if candidate and candidate != user_email:
         return candidate
     return ''
+
+
+def _header_value(headers, name: str) -> str:
+    name_lower = name.lower()
+    for h in headers or []:
+        if h.get('name', '').lower() == name_lower:
+            return h.get('value', '')
+    return ''
+
+
+def _filename_from_part(part: dict) -> str:
+    filename = (part.get('filename') or '').strip()
+    if filename:
+        return filename
+    disp = _header_value(part.get('headers'), 'Content-Disposition')
+    if disp:
+        match = re.search(
+            r"filename\*?=(?:UTF-8''|utf-8'')?[\"']?([^\"';\n]+)",
+            disp,
+            re.IGNORECASE,
+        )
+        if match:
+            return match.group(1).strip()
+    mime = part.get('mimeType', '')
+    if mime.startswith('image/'):
+        return f'image.{mime.split("/")[-1]}'
+    return 'attachment'
+
+
+def _extract_attachments_from_payload(payload) -> list[dict]:
+    """Collect Gmail attachment metadata from a message payload tree."""
+    found: list[dict] = []
+
+    def walk(node):
+        if not node:
+            return
+        body = node.get('body') or {}
+        attachment_id = body.get('attachmentId')
+        mime = node.get('mimeType', '') or ''
+        if attachment_id and mime not in ('text/plain', 'text/html', 'multipart/alternative', 'multipart/mixed', 'multipart/related'):
+            found.append({
+                'attachment_id': attachment_id,
+                'filename': _filename_from_part(node),
+                'mime_type': mime,
+                'size': body.get('size') or 0,
+            })
+        for child in node.get('parts') or []:
+            walk(child)
+
+    walk(payload or {})
+    return found
+
+
+def ensure_email_attachments(email, user, service=None) -> list:
+    """Load attachment metadata from Gmail when missing (e.g. older synced emails)."""
+    if email.attachments:
+        return email.attachments
+    if service is None:
+        service = get_gmail_service(user)
+    if not service:
+        return []
+    try:
+        txt = service.users().messages().get(
+            userId='me', id=email.message_id, format='full', fields=_MSG_FIELDS
+        ).execute()
+        atts = _extract_attachments_from_payload(txt.get('payload', {}))
+        email.attachments = atts
+        email.save(update_fields=['attachments'])
+        return atts
+    except Exception as exc:
+        logger.warning('Failed to load attachments for message %s: %s', email.message_id, exc)
+        return []
 
 
 def _get_body_from_payload(payload):
@@ -417,6 +492,7 @@ def fetch_gmail_messages(user):
             snippet = html.unescape(txt.get('snippet') or get_fast_snippet(body))
 
             is_sent = message_is_sent_by_user(sender_full, user)
+            attachments = _extract_attachments_from_payload(txt.get('payload', {}))
 
             emails_to_create.append(Email(
                 studio=user.studio,
@@ -426,6 +502,7 @@ def fetch_gmail_messages(user):
                 subject=subject,
                 body=body,
                 snippet=snippet,
+                attachments=attachments,
                 received_at=received_at,
                 message_id=mid,
                 thread_id=txt.get('threadId', ''),

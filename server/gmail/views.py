@@ -7,7 +7,9 @@ from .models import Email, GmailToken
 from .utils import (
     client_display_name,
     email_sender_label,
+    ensure_email_attachments,
     fetch_gmail_messages,
+    get_gmail_service,
     send_gmail_message,
     create_google_calendar_event,
     get_calendar_service,
@@ -196,7 +198,7 @@ def get_thread(request, thread_id):
     from .models import Email
 
 
-    emails = (
+    emails = list(
         Email.objects.filter(studio=user.studio, thread_id=thread_id)
         .select_related('client')
         .order_by('received_at')
@@ -205,20 +207,79 @@ def get_thread(request, thread_id):
     # Security check: Ensure user is a participant in this thread
     # if not emails.filter(recipient__icontains=user.email).exists():
     #     return Response({'error': 'You do not have permission to view this thread'}, status=403)
-    
-    data = [{
-        "id": email.id,
-        "sender": email.sender,
-        "sender_label": email_sender_label(email, user),
-        "recipient": email.recipient,
-        "subject": email.subject,
-        "body": email.body,
-        "received_at": email.received_at,
-        "is_sent": message_is_sent_by_user(email.sender, user),
-        "thread_id": email.thread_id,
-    } for email in emails]
+
+    gmail_service = get_gmail_service(user) if user.gmail else None
+    data = []
+    for email in emails:
+        attachments = email.attachments or []
+        if not attachments and gmail_service:
+            attachments = ensure_email_attachments(email, user, gmail_service)
+        data.append({
+            "id": email.id,
+            "sender": email.sender,
+            "sender_label": email_sender_label(email, user),
+            "recipient": email.recipient,
+            "subject": email.subject,
+            "body": email.body,
+            "received_at": email.received_at,
+            "is_sent": message_is_sent_by_user(email.sender, user),
+            "thread_id": email.thread_id,
+            "attachments": attachments,
+            "has_attachment": bool(attachments),
+        })
     
     return Response(data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_email_attachment(request, email_id, attachment_id):
+    """Stream a Gmail attachment for an email the user can access."""
+    import base64
+    from django.http import HttpResponse
+
+    user = request.user
+    if not user.gmail:
+        return Response({'error': 'User has no gmail connected'}, status=400)
+    if not user.studio:
+        return Response({'error': 'User has no studio'}, status=400)
+
+    email = Email.objects.filter(id=email_id, studio=user.studio).first()
+    if not email:
+        return Response({'error': 'Email not found'}, status=404)
+
+    attachments = email.attachments or []
+    if not attachments:
+        attachments = ensure_email_attachments(email, user)
+    meta = next(
+        (a for a in attachments if a.get('attachment_id') == attachment_id),
+        None,
+    )
+    if not meta:
+        return Response({'error': 'Attachment not found'}, status=404)
+
+    service = get_gmail_service(user)
+    if not service:
+        return Response({'error': 'Gmail not connected'}, status=400)
+
+    try:
+        att = service.users().messages().attachments().get(
+            userId='me',
+            messageId=email.message_id,
+            id=attachment_id,
+        ).execute()
+        raw = att.get('data', '')
+        binary = base64.urlsafe_b64decode(raw.encode('utf-8'))
+    except Exception as exc:
+        return Response({'error': str(exc)}, status=400)
+
+    mime_type = meta.get('mime_type') or 'application/octet-stream'
+    filename = meta.get('filename') or 'attachment'
+    disposition = 'inline' if mime_type.startswith('image/') else 'attachment'
+    response = HttpResponse(binary, content_type=mime_type)
+    response['Content-Disposition'] = f'{disposition}; filename="{filename}"'
+    response['Content-Length'] = len(binary)
+    return response
 
 
 @api_view(['GET'])
@@ -710,6 +771,7 @@ def get_all_threads(request):
             "snippet": current_snippet,
             "sender": sender_display,
             "received_at": email.received_at,
+            "has_attachment": bool(email.attachments),
             "project": project_data,
             "projects": projects_data
         })

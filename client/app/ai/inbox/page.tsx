@@ -38,6 +38,7 @@ import useFetch from '@/hooks/useFetch';
 import { getApiErrorMessage } from '@/lib/api-error';
 import useUser from '@/hooks/useUser';
 import { messageIsSentByUser, resolveReplyToEmail } from '@/lib/gmail-reply';
+import { EmailAttachments, type EmailAttachmentMeta } from '@/components/inbox/EmailAttachments';
 import { useQueryClient } from '@tanstack/react-query';
 import { TaskModal } from '@/components/tasks/task-modal';
 import { useTaskModalStore } from '@/store/useTaskModalStore';
@@ -66,6 +67,7 @@ type ThreadItem = {
   snippet: string;
   sender: string;
   received_at: string;
+  has_attachment?: boolean;
   project: any;
   projects?: any[];
 };
@@ -92,6 +94,8 @@ type MessageItem = {
   received_at: string;
   is_sent: boolean;
   thread_id: string;
+  attachments?: EmailAttachmentMeta[];
+  has_attachment?: boolean;
 };
 
 type SuggestedTask = {
@@ -542,6 +546,10 @@ function MessageBlock({ msg, userEmail, suggestedTasks, onAddTask, onViewTask, i
                 </>
               )}
             </div>
+          )}
+
+          {msg.attachments && msg.attachments.length > 0 && (
+            <EmailAttachments emailId={msg.id} attachments={msg.attachments} />
           )}
         </div>
 
@@ -1076,7 +1084,7 @@ export default function MagicalInboxPage() {
       snippet: thread.snippet || '',
       date: thread.received_at,
       isRead: true, // API doesn't provide this, default to true
-      hasAttachment: false, // API doesn't provide this
+      hasAttachment: Boolean(thread.has_attachment),
       analysis: thread.project ? {
         category: 'fyi' as const,
         project: thread.project?.name || thread.project,

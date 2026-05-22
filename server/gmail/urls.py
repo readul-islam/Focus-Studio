@@ -5,6 +5,7 @@ from .views import (
     fetch_emails,
     send_email,
     get_thread,
+    get_email_attachment,
     get_thread_summary,
     get_all_threads,
     disconnect_gmail,
@@ -26,6 +27,7 @@ urlpatterns = [
     path('calendar/events/', get_calendar_events, name='calendar-events'),
     path('calendar/create-event/', create_calendar_event, name='calendar-create-event'),
     path('thread/<str:thread_id>/', get_thread, name='gmail-thread'),
+    path('emails/<int:email_id>/attachments/<str:attachment_id>/', get_email_attachment, name='gmail-email-attachment'),
     path('thread/<str:thread_id>/summary/', get_thread_summary, name='gmail-thread-summary'),
 
     path('threads/', get_all_threads, name='gmail-threads-list'),

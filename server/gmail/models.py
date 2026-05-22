@@ -31,6 +31,7 @@ class Email(models.Model):
     smtp_message_id = models.CharField(max_length=255, blank=True, null=True) # SMTP Message-ID header
     is_sent = models.BooleanField(default=False)  # True if sent from the system (reply), False if received
     suggested_tasks = models.JSONField(null=True, blank=True)  # AI-generated tasks for this individual email
+    attachments = models.JSONField(default=list, blank=True)  # [{attachment_id, filename, mime_type, size}]
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

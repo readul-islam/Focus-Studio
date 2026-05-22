@@ -31,6 +31,7 @@ import useFetch from '@/hooks/useFetch';
 import { getApiErrorMessage } from '@/lib/api-error';
 import useUser from '@/hooks/useUser';
 import { messageIsSentByUser, resolveReplyToEmail } from '@/lib/gmail-reply';
+import { EmailAttachments, type EmailAttachmentMeta } from '@/components/inbox/EmailAttachments';
 import {
   Dialog,
   DialogContent,
@@ -62,6 +63,7 @@ type MessageItem = {
   received_at: string;
   is_sent: boolean;
   thread_id: string;
+  attachments?: EmailAttachmentMeta[];
 };
 
 export function extractLatestEmail(html: string) {
@@ -158,6 +160,10 @@ const MessageBlock = ({ msg, userEmail }: { msg: MessageItem; userEmail?: string
                 </>
               )}
             </div>
+          )}
+
+          {msg.attachments && msg.attachments.length > 0 && (
+            <EmailAttachments emailId={msg.id} attachments={msg.attachments} />
           )}
         </div>
       </div>
