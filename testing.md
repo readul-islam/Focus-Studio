@@ -628,6 +628,7 @@ Focuspilot → Notion: নতুন **Project** = Notion পেজ; **Task** = �
 | Notion OAuth callback (ফ্রন্ট) | http://localhost:3000/oauth/notion/callback |
 | API (লোকাল) | http://localhost:8000 |
 | Notion integrations | https://www.notion.so/my-integrations |
+| এক প্রজেক্ট — পূর্ণ পাইপলাইন (Studio + Contractor + Client) | [oneProjectfullworkflow.md](oneProjectfullworkflow.md) |
 
 ---
 
