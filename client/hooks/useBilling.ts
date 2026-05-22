@@ -28,6 +28,16 @@ export function useBilling({ enabled = true }: { enabled?: boolean } = {}) {
     },
   });
 
+  const activatePlanMutation = useMutation({
+    mutationFn: (planTier: PlanTier) =>
+      postData({ url: 'billing/activate/', data: { plan_tier: planTier } }) as Promise<{
+        subscription: BillingStatusResponse['subscription'];
+      }>,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: BILLING_KEY });
+    },
+  });
+
   const portalMutation = useMutation({
     mutationFn: () =>
       postData({ url: 'billing/portal/', data: {} }) as Promise<{ portal_url: string }>,
@@ -56,6 +66,7 @@ export function useBilling({ enabled = true }: { enabled?: boolean } = {}) {
     stripeConfigured: query.data?.stripe_configured ?? false,
     trialDays: query.data?.trial_days ?? 14,
     checkout: checkoutMutation,
+    activatePlan: activatePlanMutation,
     portal: portalMutation,
     verifySession: verifyMutation,
     invalidate,

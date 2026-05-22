@@ -108,9 +108,25 @@ def _sync_stripe_product_display(price_id: str, plan: dict) -> None:
     stripe.Price.modify(price_id, nickname=nickname)
 
 
+def activate_plan_without_payment(*, studio: Studio, plan_tier: str) -> StudioSubscription:
+    """Activate a plan that does not require Stripe Checkout (e.g. beta access)."""
+    plan = get_plan(plan_tier)
+    if not plan.get('no_payment_required'):
+        raise ValueError(f'Plan "{plan_tier}" requires checkout.')
+
+    sub = get_or_create_subscription(studio)
+    sub.plan_tier = plan_tier
+    sub.status = 'active'
+    sub.trial_ends_at = None
+    sub.save(update_fields=['plan_tier', 'status', 'trial_ends_at', 'updated_at'])
+    return sub
+
+
 def create_checkout_session(*, studio: Studio, user, plan_tier: str) -> str:
     _ensure_stripe()
     plan = get_plan(plan_tier)
+    if plan.get('no_payment_required'):
+        raise ValueError(f'Plan "{plan_tier}" does not use checkout. Use activate instead.')
     price_id = plan.get('stripe_price_id')
     if not price_id:
         raise ValueError(f'Checkout is not available for plan "{plan_tier}". Configure STRIPE_PRICE_* env vars.')

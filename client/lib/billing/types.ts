@@ -1,4 +1,4 @@
-export type PlanTier = 'starter' | 'professional' | 'enterprise';
+export type PlanTier = 'beta' | 'starter' | 'professional' | 'enterprise';
 
 export type SubscriptionStatus =
   | 'incomplete'
@@ -22,6 +22,7 @@ export interface BillingPlan {
   emphasis: boolean;
   badge?: string;
   contact_sales?: boolean;
+  no_payment_required?: boolean;
   checkout_available: boolean;
 }
 

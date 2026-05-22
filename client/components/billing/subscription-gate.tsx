@@ -11,11 +11,12 @@ import {
 } from '@/components/ui/dialog';
 import useUser from '@/hooks/useUser';
 import { useBilling } from '@/hooks/useBilling';
-import type { PlanTier } from '@/lib/billing/types';
+import type { BillingPlan, PlanTier } from '@/lib/billing/types';
+import { markProductTourPendingAfterPlan } from '@/lib/product-tour/pending-after-plan';
 import { gooeyToast as toast } from 'goey-toast';
 import { CreditCard, Loader2, Sparkles } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
 const BILLING_EXEMPT_PREFIXES = [
@@ -33,6 +34,7 @@ function isExemptPath(pathname: string | null): boolean {
 
 export function SubscriptionGate({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const { user, isLoading: userLoading } = useUser();
   const exempt = isExemptPath(pathname);
 
@@ -43,12 +45,19 @@ export function SubscriptionGate({ children }: { children: React.ReactNode }) {
     stripeConfigured,
     trialDays,
     checkout,
+    activatePlan,
+    invalidate,
   } = useBilling({
     enabled: !!user?.studio && !exempt,
   });
 
   const [loadingTier, setLoadingTier] = useState<PlanTier | null>(null);
   const isAdmin = user?.role === 'admin';
+
+  const planByTier = useCallback(
+    (tier: PlanTier) => plans.find((p: BillingPlan) => p.id === tier),
+    [plans]
+  );
 
   const needsPlan =
     !!user?.studio &&
@@ -62,22 +71,35 @@ export function SubscriptionGate({ children }: { children: React.ReactNode }) {
         toast.error('Only studio admins can choose a subscription plan.');
         return;
       }
-      if (!stripeConfigured) {
+
+      const plan = planByTier(tier);
+      const noPayment = plan?.no_payment_required === true;
+
+      if (!noPayment && !stripeConfigured) {
         toast.error('Billing is not configured. Contact support.');
         return;
       }
+
       setLoadingTier(tier);
       try {
-        await checkout.mutateAsync(tier);
+        if (noPayment) {
+          await activatePlan.mutateAsync(tier);
+          invalidate();
+          markProductTourPendingAfterPlan();
+          toast.success('Beta access activated.');
+          router.replace('/home/dashboard');
+        } else {
+          await checkout.mutateAsync(tier);
+        }
       } catch (err: unknown) {
         const msg =
           (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-          'Could not start checkout.';
+          (noPayment ? 'Could not activate plan.' : 'Could not start checkout.');
         toast.error(msg);
         setLoadingTier(null);
       }
     },
-    [checkout, isAdmin, stripeConfigured]
+    [activatePlan, checkout, invalidate, isAdmin, planByTier, router, stripeConfigured]
   );
 
   if (userLoading || (user?.studio && billingLoading && !exempt)) {
@@ -107,14 +129,14 @@ export function SubscriptionGate({ children }: { children: React.ReactNode }) {
             <DialogHeader className="relative space-y-2 text-left">
               <div className="inline-flex items-center gap-2 rounded-full border border-clay-200/80 bg-white/90 px-3 py-1 text-xs font-medium text-clay-800">
                 <Sparkles className="size-3.5" />
-                {trialDays}-day free trial on all plans
+                Beta access is free — paid plans include a {trialDays}-day trial
               </div>
               <DialogTitle className="text-2xl font-bold text-gray-900">
                 Choose your studio plan
               </DialogTitle>
               <DialogDescription className="text-base text-gray-600">
                 {isAdmin
-                  ? 'Select a plan to unlock Focuspilot. You will not be charged until your trial ends.'
+                  ? 'Select a plan to unlock Focuspilot. Beta access requires no card; paid plans are not charged until your trial ends.'
                   : 'Your studio needs an active subscription. Please ask a studio admin to choose a plan.'}
               </DialogDescription>
             </DialogHeader>
@@ -133,7 +155,11 @@ export function SubscriptionGate({ children }: { children: React.ReactNode }) {
                 plans={plans}
                 loadingTier={loadingTier}
                 onSelect={handleSelect}
-                disabled={!stripeConfigured || checkout.isPending}
+                disabled={
+                  checkout.isPending ||
+                  activatePlan.isPending ||
+                  (!stripeConfigured && !plans.some((p) => p.no_payment_required))
+                }
                 compact
                 trialLabel={`Start ${trialDays}-day trial`}
               />

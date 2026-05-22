@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from users.permissions import check_role_permission
 
 from .plans import list_plans_for_api
-from .serializers import CheckoutSerializer, VerifySessionSerializer
+from .serializers import ActivatePlanSerializer, CheckoutSerializer, VerifySessionSerializer
 from . import services
 
 logger = logging.getLogger(__name__)
@@ -52,6 +52,31 @@ def billing_plans(request):
         'plans': list_plans_for_api(),
         'stripe_configured': services.stripe_configured(),
     })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def activate_plan(request):
+    """Activate a plan without Stripe Checkout (beta access)."""
+    denied = _require_studio_admin(request.user)
+    if denied:
+        return denied
+
+    serializer = ActivatePlanSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    plan_tier = serializer.validated_data['plan_tier']
+
+    try:
+        sub = services.activate_plan_without_payment(
+            studio=request.user.studio,
+            plan_tier=plan_tier,
+        )
+        return Response({'subscription': services.subscription_payload(sub)})
+    except ValueError as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except Exception:
+        logger.exception('Plan activation failed')
+        return Response({'error': 'Could not activate plan.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['POST'])

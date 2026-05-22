@@ -2,9 +2,35 @@
 
 from django.conf import settings
 
-PLAN_TIERS = ('starter', 'professional', 'enterprise')
+PLAN_TIERS = ('starter', 'beta', 'professional', 'enterprise')
+
+# Plans shown in the app (Starter hidden until launch).
+PUBLIC_PLAN_TIERS = ('beta', 'professional', 'enterprise')
 
 PLAN_DEFINITIONS = {
+    'beta': {
+        'id': 'beta',
+        'name': 'Beta Access',
+        'tagline': 'Full platform access during beta',
+        'stripe_name': 'Focuspilot Beta Access',
+        'stripe_description': (
+            'Join the beta program — unlimited access with no payment required during the beta period.'
+        ),
+        'price_display': 'Free',
+        'price_note': 'during beta',
+        'ideal_for': 'Early adopters, design studios',
+        'features': [
+            'Unlimited users during beta',
+            'All AI features included',
+            'Project management & CRM',
+            'Client portal & approvals',
+            'AI procurement & library',
+            'Priority support & feedback',
+        ],
+        'emphasis': False,
+        'badge': 'Limited spots',
+        'no_payment_required': True,
+    },
     'starter': {
         'id': 'starter',
         'name': 'Starter',
@@ -92,7 +118,7 @@ def get_plan(tier: str) -> dict:
 def list_plans_for_api() -> list[dict]:
     """Public plan list for the client (no secrets)."""
     out = []
-    for tier in PLAN_TIERS:
+    for tier in PUBLIC_PLAN_TIERS:
         p = PLAN_DEFINITIONS[tier]
         out.append({
             'id': p['id'],
@@ -105,6 +131,7 @@ def list_plans_for_api() -> list[dict]:
             'emphasis': p.get('emphasis', False),
             'badge': p.get('badge'),
             'contact_sales': p.get('contact_sales', False),
+            'no_payment_required': p.get('no_payment_required', False),
             'checkout_available': bool(p.get('stripe_price_id')),
         })
     return out

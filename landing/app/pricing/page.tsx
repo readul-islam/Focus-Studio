@@ -108,6 +108,12 @@ const pricingSchema = {
       description: "First 5 users at £49/month, additional users at £39/month",
       availability: "https://schema.org/InStock",
     },
+    {
+      "@type": "Offer",
+      name: "Enterprise Plan",
+      description: "Custom pricing for studios with 20+ users — SSO, API access, and dedicated support",
+      availability: "https://schema.org/InStock",
+    },
   ],
 }
 
@@ -144,7 +150,7 @@ export default function PricingPage() {
         {/* Pricing Cards */}
         <section className="py-12 sm:py-20 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid gap-6 sm:gap-8 lg:grid-cols-2 max-w-5xl mx-auto">
+            <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
               {/* Beta Plan */}
               <div className="relative rounded-2xl border-2 border-stone-200 bg-white p-6 sm:p-8 shadow-sm hover:shadow-lg transition-shadow">
                 <div className="mb-6">
@@ -328,6 +334,104 @@ export default function PricingPage() {
                   className="block w-full rounded-lg bg-white px-4 py-3 text-center text-sm sm:text-base font-medium text-stone-900 hover:bg-stone-100 transition-colors"
                 >
                   Start free trial
+                </a>
+              </div>
+
+              {/* Enterprise Plan */}
+              <div className="relative rounded-2xl border-2 border-stone-200 bg-white p-6 sm:p-8 shadow-sm hover:shadow-lg transition-shadow md:col-span-2 lg:col-span-1">
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl sm:text-2xl font-medium text-stone-900">Enterprise</h2>
+                    <span className="rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-xs font-medium text-stone-600">
+                      20+ users
+                    </span>
+                  </div>
+                  <div className="flex items-baseline gap-2 mb-2">
+                    <span className="text-4xl sm:text-5xl font-bold text-stone-900">Custom</span>
+                  </div>
+                  <p className="text-sm sm:text-base text-stone-600">Tailored pricing for large studios & networks</p>
+                </div>
+
+                <ul className="space-y-3 sm:space-y-4 mb-8">
+                  <li className="flex items-start gap-3">
+                    <svg
+                      className="h-5 w-5 flex-shrink-0 mt-0.5"
+                      style={{ color: "#8FA58F" }}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm sm:text-base text-stone-700">Everything in Professional</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg
+                      className="h-5 w-5 flex-shrink-0 mt-0.5"
+                      style={{ color: "#8FA58F" }}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm sm:text-base text-stone-700">Unlimited users & projects</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg
+                      className="h-5 w-5 flex-shrink-0 mt-0.5"
+                      style={{ color: "#8FA58F" }}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm sm:text-base text-stone-700">SSO & advanced security</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg
+                      className="h-5 w-5 flex-shrink-0 mt-0.5"
+                      style={{ color: "#8FA58F" }}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm sm:text-base text-stone-700">API access & custom integrations</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg
+                      className="h-5 w-5 flex-shrink-0 mt-0.5"
+                      style={{ color: "#8FA58F" }}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm sm:text-base text-stone-700">Dedicated account manager</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <svg
+                      className="h-5 w-5 flex-shrink-0 mt-0.5"
+                      style={{ color: "#8FA58F" }}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm sm:text-base text-stone-700">Annual billing & invoicing options</span>
+                  </li>
+                </ul>
+
+                <a
+                  href="mailto:sales@focuspilot.io?subject=Enterprise%20plan"
+                  className="block w-full rounded-lg border-2 border-stone-900 bg-white px-4 py-3 text-center text-sm sm:text-base font-medium text-stone-900 hover:bg-stone-50 transition-colors"
+                >
+                  Contact sales
                 </a>
               </div>
             </div>

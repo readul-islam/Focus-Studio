@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useBilling } from '@/hooks/useBilling';
+import { markProductTourPendingAfterPlan } from '@/lib/product-tour/pending-after-plan';
 import { CheckCircle2, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -23,6 +24,7 @@ function BillingSuccessContent() {
       .mutateAsync(sessionId)
       .then(() => {
         invalidate();
+        markProductTourPendingAfterPlan();
         setTimeout(() => router.replace('/home/dashboard'), 2000);
       })
       .catch(() => {

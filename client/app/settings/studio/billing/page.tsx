@@ -5,12 +5,15 @@ import { PermissionGuard } from '@/components/PermissionGuard';
 import { Section } from '@/components/settings/section';
 import { Button } from '@/components/ui/button';
 import { useBilling } from '@/hooks/useBilling';
-import type { PlanTier } from '@/lib/billing/types';
+import type { BillingPlan, PlanTier } from '@/lib/billing/types';
+import { markProductTourPendingAfterPlan } from '@/lib/product-tour/pending-after-plan';
 import { gooeyToast as toast } from 'goey-toast';
 import { CreditCard, ExternalLink, Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
 
 function BillingSettingsContent() {
+  const router = useRouter();
   const {
     subscription,
     plans,
@@ -18,10 +21,17 @@ function BillingSettingsContent() {
     stripeConfigured,
     trialDays,
     checkout,
+    activatePlan,
+    invalidate,
     portal,
   } = useBilling();
 
   const [loadingTier, setLoadingTier] = useState<PlanTier | null>(null);
+
+  const planByTier = useCallback(
+    (tier: PlanTier) => plans.find((p: BillingPlan) => p.id === tier),
+    [plans]
+  );
 
   const currentPlan = plans.find((p) => p.id === subscription?.plan_tier);
   const hasActive = subscription?.is_active;
@@ -29,22 +39,47 @@ function BillingSettingsContent() {
   const handleSelect = useCallback(
     async (tier: PlanTier) => {
       if (tier === subscription?.plan_tier) return;
-      if (!stripeConfigured) {
+
+      const plan = planByTier(tier);
+      const noPayment = plan?.no_payment_required === true;
+
+      if (!noPayment && !stripeConfigured) {
         toast.error('Billing is not configured.');
         return;
       }
+
       setLoadingTier(tier);
       try {
-        await checkout.mutateAsync(tier);
+        if (noPayment) {
+          await activatePlan.mutateAsync(tier);
+          invalidate();
+          if (!subscription?.is_active) {
+            markProductTourPendingAfterPlan();
+            router.replace('/home/dashboard');
+          } else {
+            toast.success('Beta access activated.');
+          }
+        } else {
+          await checkout.mutateAsync(tier);
+        }
       } catch (err: unknown) {
         const msg =
           (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-          'Checkout failed.';
+          (noPayment ? 'Activation failed.' : 'Checkout failed.');
         toast.error(msg);
         setLoadingTier(null);
       }
     },
-    [checkout, stripeConfigured, subscription?.plan_tier]
+    [
+      activatePlan,
+      checkout,
+      invalidate,
+      planByTier,
+      router,
+      stripeConfigured,
+      subscription?.is_active,
+      subscription?.plan_tier,
+    ]
   );
 
   const openPortal = async () => {
@@ -125,7 +160,11 @@ function BillingSettingsContent() {
           currentTier={subscription?.plan_tier ?? null}
           loadingTier={loadingTier}
           onSelect={handleSelect}
-          disabled={!stripeConfigured || checkout.isPending}
+          disabled={
+            checkout.isPending ||
+            activatePlan.isPending ||
+            (!stripeConfigured && !plans.some((p) => p.no_payment_required))
+          }
           trialLabel={`Start ${trialDays}-day trial`}
         />
       </Section>

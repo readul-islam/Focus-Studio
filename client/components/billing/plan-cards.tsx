@@ -133,17 +133,25 @@ export function PlanCards({
                 <Button
                   className={cn('w-full rounded-lg', plan.emphasis && 'shadow-sm')}
                   variant={plan.emphasis ? 'default' : 'outline'}
-                  disabled={disabled || isLoading || !plan.checkout_available}
+                  disabled={
+                    disabled ||
+                    isLoading ||
+                    (!plan.no_payment_required && !plan.checkout_available)
+                  }
                   onClick={() => onSelect(plan.id)}
                 >
                   {isLoading ? (
                     <>
                       <Loader2 className="size-4 animate-spin" />
-                      Redirecting…
+                      {plan.no_payment_required ? 'Activating…' : 'Redirecting…'}
                     </>
                   ) : (
                     <>
-                      {currentTier ? 'Upgrade' : trialLabel}
+                      {currentTier
+                        ? 'Upgrade'
+                        : plan.no_payment_required
+                          ? 'Activate beta access'
+                          : trialLabel}
                       <ArrowRight className="size-4" />
                     </>
                   )}

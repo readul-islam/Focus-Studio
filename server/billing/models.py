@@ -18,6 +18,7 @@ class StudioSubscription(models.Model):
     ]
 
     PLAN_CHOICES = [
+        ('beta', 'Beta Access'),
         ('starter', 'Starter'),
         ('professional', 'Professional'),
         ('enterprise', 'Enterprise'),
