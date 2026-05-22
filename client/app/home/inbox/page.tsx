@@ -28,6 +28,9 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { usePost } from '@/hooks/usePost';
 import useFetch from '@/hooks/useFetch';
+import { getApiErrorMessage } from '@/lib/api-error';
+import useUser from '@/hooks/useUser';
+import { messageIsSentByUser, resolveReplyToEmail } from '@/lib/gmail-reply';
 import {
   Dialog,
   DialogContent,
@@ -52,6 +55,7 @@ type ThreadItem = {
 type MessageItem = {
   id: number;
   sender: string;
+  sender_label?: string;
   recipient: string;
   subject: string;
   body: string;
@@ -90,31 +94,33 @@ export function splitGmailEmail(html: string) {
   };
 }
 
-const MessageBlock = ({ msg }: { msg: MessageItem }) => {
+const MessageBlock = ({ msg, userEmail }: { msg: MessageItem; userEmail?: string | null }) => {
   const [expanded, setExpanded] = useState(false);
-  // Memoize parsing to avoid re-parsing on every render
   const { main, quoted } = useMemo(() => splitGmailEmail(msg.body), [msg.body]);
-  
+  const sentByMe = messageIsSentByUser(msg.sender, userEmail);
+  const senderLabel =
+    msg.sender_label ||
+    (sentByMe ? 'You' : msg.sender?.split('<')[0]?.trim().replace(/^["']|["']$/g, '') || 'Unknown');
 
   return (
     <div className={`flex gap-4 `}>
       <Avatar className="w-8 h-8 flex-shrink-0 mt-1">
-        <AvatarFallback className={msg.is_sent ? 'bg-black text-white' : 'bg-stone-200'}>
-          {msg?.sender?.charAt(0).toUpperCase()}
+        <AvatarFallback className={sentByMe ? 'bg-black text-white' : 'bg-stone-200'}>
+          {senderLabel.charAt(0).toUpperCase()}
         </AvatarFallback>
       </Avatar>
 
       <div className={`flex flex-col max-w-[99%]`}>
         <div className="flex items-center gap-2 mb-2 px-1">
           <span className="text-xs font-medium text-gray-900">
-            {msg.is_sent ? 'You' : msg.sender?.split('<')[0]}
+            {senderLabel}
           </span>
           <span className="text-xs text-gray-500">
             {dayjs(msg.received_at).format('MMM D, h:mm A')}
           </span>
         </div>
 
-        <div className={`rounded-2xl p-4 text-sm w-full ${msg.is_sent
+        <div className={`rounded-2xl p-4 text-sm w-full ${sentByMe
           ? 'bg-stone-50 text-gray-900 rounded-tr-sm'
           : 'bg-white border border-gray-100 text-gray-900 rounded-tl-sm'
           }`}>
@@ -162,6 +168,7 @@ const MessageBlock = ({ msg }: { msg: MessageItem }) => {
 
 
 export default function InboxPage() {
+  const { user } = useUser();
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [replyBody, setReplyBody] = useState('');
   const [searchText, setSearchText] = useState('');
@@ -267,41 +274,40 @@ export default function InboxPage() {
 
   const handleSendReply = () => {
     if (!replyBody.trim() || !selectedThreadId || !messages?.length) return;
-    const lastMsg = messages[messages.length - 1];
 
-    let toEmail = '';
-    // Extract email from "Name <email@example.com>" format
-    const extractEmail = (str: string) => {
-      const match = str.match(/<([^>]+)>/);
-      return match ? match[1] : str;
-    };
+    const toEmail = resolveReplyToEmail(messages, user?.email);
+    const subject =
+      messages.find((m) => m.subject)?.subject ||
+      messages[messages.length - 1]?.subject ||
+      '(No Subject)';
 
-    if (lastMsg.is_sent) {
-      toEmail = extractEmail(lastMsg.recipient);
-    } else {
-      toEmail = extractEmail(lastMsg.sender);
+    if (!toEmail) {
+      toast.error('Could not determine who to reply to.');
+      return;
     }
 
-    const payload = {
-      to_email: toEmail,
-      subject: lastMsg.subject, 
-      body: replyBody,
-      thread_id: selectedThreadId
-    };
-
-    sendReply({
-      url: '/gmail/send/',
-      data: payload
-    }, {
-      onSuccess: () => {
-        toast.success('Reply sent successfully');
-        setReplyBody('');
-        refetchMessages(); // Refresh conversation
+    sendReply(
+      {
+        url: 'gmail/send/',
+        data: {
+          to_email: toEmail,
+          subject,
+          body: replyBody.trim(),
+          thread_id: selectedThreadId,
+        },
       },
-      onError: (err: any) => {
-        toast.error('Failed to send reply: ' + (err.message || 'Unknown error'));
+      {
+        onSuccess: () => {
+          toast.success('Reply sent successfully');
+          setReplyBody('');
+          refetchMessages();
+          refetchThreads();
+        },
+        onError: (err: unknown) => {
+          toast.error(`Failed to send reply: ${getApiErrorMessage(err, 'Unknown error')}`);
+        },
       }
-    });
+    );
   };
 
   // Filter threads based on search
@@ -588,12 +594,12 @@ export default function InboxPage() {
                       <>
                         {(!messages || messages.length <= 3 || messagesExpanded) ? (
                             messages?.map((msg: MessageItem) => (
-                              <MessageBlock key={msg.id} msg={msg} />
+                              <MessageBlock key={msg.id} msg={msg} userEmail={user?.email} />
                             ))
                         ) : (
                           <>
                             {/* First Message */}
-                            {messages.length > 0 && <MessageBlock msg={messages[0]} />}
+                            {messages.length > 0 && <MessageBlock msg={messages[0]} userEmail={user?.email} />}
 
                             {/* Divider / Expander */}
                             <div className="relative py-2 flex items-center justify-start pl-4 cursor-pointer group" onClick={() => setMessagesExpanded(true)}>
@@ -607,7 +613,7 @@ export default function InboxPage() {
 
                             {/* Last Two Messages */}
                             {messages.slice(-2).map((msg: MessageItem) => (
-                              <MessageBlock key={msg.id} msg={msg} />
+                              <MessageBlock key={msg.id} msg={msg} userEmail={user?.email} />
                             ))}
                           </>
                         )}

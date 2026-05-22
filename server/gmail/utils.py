@@ -7,7 +7,11 @@ import base64
 import html
 from datetime import datetime, time
 from email.message import EmailMessage
+from email.utils import parseaddr, formataddr
 import re
+import logging
+
+logger = logging.getLogger(__name__)
 
 def get_fast_snippet(html_body):
     """Fast, non-BeautifulSoup way to extract a plain text snippet from HTML"""
@@ -36,6 +40,133 @@ _MSG_FIELDS = (
 )
 
 _EMAIL_RE = re.compile(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+')
+
+
+def normalize_email_address(value: str | None) -> str:
+    """Extract a bare email from 'Name <user@host>' or plain address."""
+    if not value:
+        return ''
+    _, addr = parseaddr(value.strip())
+    return (addr or value.strip()).strip().lower()
+
+
+def _mailbox_owner_addresses(user) -> set[str]:
+    """Addresses for the logged-in user's Gmail account (From = me)."""
+    addrs: set[str] = set()
+    if getattr(user, 'email', None):
+        addrs.add(normalize_email_address(user.email))
+    addrs.discard('')
+    return addrs
+
+
+def _user_email_addresses(user) -> set[str]:
+    """Addresses to treat as 'self' when choosing reply recipients."""
+    addrs = set(_mailbox_owner_addresses(user))
+    studio = getattr(user, 'studio', None)
+    if studio and getattr(studio, 'support_email', None):
+        addrs.add(normalize_email_address(studio.support_email))
+    return addrs
+
+
+def message_is_sent_by_user(sender_full: str, user) -> bool:
+    """True when the Gmail From address is the current user (not substring matching)."""
+    sender_addr = normalize_email_address(sender_full)
+    if not sender_addr:
+        return False
+    return sender_addr in _mailbox_owner_addresses(user)
+
+
+def client_display_name(client) -> str:
+    if not client:
+        return ''
+    company = getattr(client, 'company_name', None)
+    if company and str(company).strip():
+        return str(company).strip()
+    parts = [
+        getattr(client, 'name', None) or '',
+        getattr(client, 'surname', None) or '',
+    ]
+    return ' '.join(p.strip() for p in parts if p and str(p).strip()).strip()
+
+
+def email_sender_label(email, user) -> str:
+    """Short sender name for inbox bubbles (CRM client / studio / You)."""
+    if message_is_sent_by_user(email.sender, user):
+        return 'You'
+    name = client_display_name(getattr(email, 'client', None))
+    if name:
+        return name
+    display, addr = parseaddr(email.sender or '')
+    display = (display or '').strip().strip('"\'')
+    if display and normalize_email_address(display) != normalize_email_address(addr or display):
+        return display
+    if display:
+        return display
+    return addr or 'Unknown'
+
+
+def _external_addresses_from_field(field: str | None, user_addrs: set[str]) -> list[str]:
+    """All non-user emails mentioned in a From/To/Cc header string."""
+    if not field:
+        return []
+    seen: set[str] = set()
+    ordered: list[str] = []
+    for raw in _EMAIL_RE.findall(field):
+        norm = normalize_email_address(raw)
+        if norm and norm not in user_addrs and norm not in seen:
+            seen.add(norm)
+            ordered.append(norm)
+    norm = normalize_email_address(field)
+    if norm and norm not in user_addrs and norm not in seen:
+        ordered.append(norm)
+    return ordered
+
+
+def resolve_thread_reply_to(user, thread_id: str, studio) -> str:
+    """
+    Determine the correct reply recipient for a thread.
+    Never returns the user's own address (fixes replies emailed to yourself).
+    """
+    user_addrs = _user_email_addresses(user)
+    emails = list(
+        Email.objects.filter(thread_id=thread_id, studio=studio).order_by('-received_at')
+    )
+    if not emails:
+        return ''
+
+    # Prefer latest inbound sender (recompute from headers — DB is_sent can be stale)
+    for em in emails:
+        if message_is_sent_by_user(em.sender, user):
+            continue
+        addr = normalize_email_address(em.sender)
+        if addr and addr not in user_addrs:
+            return addr
+
+    # Newest message whose From is someone other than the user
+    for em in emails:
+        addr = normalize_email_address(em.sender)
+        if addr and addr not in user_addrs:
+            return addr
+
+    # Scan all participants (handles threads where every row was mis-flagged is_sent)
+    for em in emails:
+        for field in (em.sender, em.recipient):
+            for addr in _external_addresses_from_field(field, user_addrs):
+                return addr
+
+    return ''
+
+
+def resolve_reply_recipient(last_sender: str, last_recipient: str, last_is_sent: bool, user_email: str) -> str:
+    """Pick who to address when replying to the latest message in a thread."""
+    user_email = normalize_email_address(user_email)
+    if last_is_sent:
+        candidate = normalize_email_address(last_recipient)
+    else:
+        candidate = normalize_email_address(last_sender)
+    if candidate and candidate != user_email:
+        return candidate
+    return ''
 
 
 def _get_body_from_payload(payload):
@@ -285,10 +416,7 @@ def fetch_gmail_messages(user):
             # Use Google's pre-computed snippet — avoids HTML parsing entirely
             snippet = html.unescape(txt.get('snippet') or get_fast_snippet(body))
 
-            is_sent = (
-                (bool(user.studio.support_email) and user.studio.support_email in sender_full)
-                or user.email in sender_full
-            )
+            is_sent = message_is_sent_by_user(sender_full, user)
 
             emails_to_create.append(Email(
                 studio=user.studio,
@@ -322,82 +450,111 @@ def send_gmail_message(user, to_email, subject, body, thread_id=None):
     service = get_gmail_service(user)
     if not service:
         return {"error": "Gmail not connected"}
-        
+
+    to_clean = normalize_email_address(to_email)
+    if not to_clean:
+        return {"error": "Invalid recipient email address"}
+
+    if not body or not str(body).strip():
+        return {"error": "Message body is required"}
+
     try:
+        subject_line = (subject or '').strip() or '(No Subject)'
+
+        from_header = user.email
+        if getattr(user, 'name', None) and user.email:
+            from_header = formataddr((user.name, user.email))
+
         message = EmailMessage()
-        message.set_content(body)
-        message['To'] = to_email
-        message['Subject'] = subject
-        
-        create_message = {}
-        
+        message.set_content(str(body).strip())
+        message['To'] = to_clean
+        message['From'] = from_header
+        message['Subject'] = subject_line
+
+        create_message: dict = {}
+
         if thread_id:
             create_message['threadId'] = thread_id
-            
-            # Find the latest email in this thread to reply to
-            parent_email = Email.objects.filter(thread_id=thread_id, studio=user.studio).order_by('-received_at').first()
+
+            parent_email = (
+                Email.objects.filter(thread_id=thread_id, studio=user.studio)
+                .order_by('-received_at')
+                .first()
+            )
             if parent_email:
-                # If we don't have the SMTP Message-ID, fetch it from Gmail
                 parent_smtp_id = parent_email.smtp_message_id
                 if not parent_smtp_id:
                     try:
-                        parent_txt = service.users().messages().get(userId='me', id=parent_email.message_id).execute()
-                        parent_headers = parent_txt['payload']['headers']
-                        parent_smtp_id = next((h['value'] for h in parent_headers if h['name'] == 'Message-ID'), None)
+                        parent_txt = service.users().messages().get(
+                            userId='me', id=parent_email.message_id
+                        ).execute()
+                        parent_headers = parent_txt.get('payload', {}).get('headers', [])
+                        parent_smtp_id = next(
+                            (h['value'] for h in parent_headers if h['name'].lower() == 'message-id'),
+                            None,
+                        )
                         if parent_smtp_id:
                             parent_email.smtp_message_id = parent_smtp_id
-                            parent_email.save()
-                    except:
-                        pass
-                
+                            parent_email.save(update_fields=['smtp_message_id'])
+                    except Exception as exc:
+                        logger.warning('Could not load parent Message-ID: %s', exc)
+
                 if parent_smtp_id:
                     message['In-Reply-To'] = parent_smtp_id
                     message['References'] = parent_smtp_id
-                    
-                # Prepend Re: if needed
-                if not subject.lower().startswith('re:'):
-                    del message['Subject']
-                    message['Subject'] = f"Re: {subject}"
-        
+
+                reply_subject = (parent_email.subject or subject_line).strip() or '(No Subject)'
+                if not reply_subject.lower().startswith('re:'):
+                    reply_subject = f'Re: {reply_subject}'
+                del message['Subject']
+                message['Subject'] = reply_subject
+                subject_line = reply_subject
+
         encoded_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
         create_message['raw'] = encoded_message
-            
-        sent_message = service.users().messages().send(userId="me", body=create_message).execute()
-        
-        # Save to DB
-        client = Client.objects.filter(studio=user.studio, email=to_email).first()
-        
-        # Fetch the sent message to get its SMTP Message-ID
+
+        sent_message = service.users().messages().send(userId='me', body=create_message).execute()
+
+        client = Client.objects.filter(studio=user.studio, email__iexact=to_clean).first()
+
+        sent_smtp_id = None
         try:
-            full_sent_message = service.users().messages().get(userId="me", id=sent_message['id']).execute()
-            sent_headers = full_sent_message['payload']['headers']
-            sent_smtp_id = next((h['value'] for h in sent_headers if h['name'] == 'Message-ID'), None)
-        except:
-            sent_smtp_id = None
+            full_sent_message = service.users().messages().get(
+                userId='me', id=sent_message['id']
+            ).execute()
+            sent_headers = full_sent_message.get('payload', {}).get('headers', [])
+            sent_smtp_id = next(
+                (h['value'] for h in sent_headers if h['name'].lower() == 'message-id'),
+                None,
+            )
+        except Exception as exc:
+            logger.warning('Could not load sent Message-ID: %s', exc)
 
-        # Generate snippet
-        snippet = ' '.join(body.split())[:100]
+        snippet = ' '.join(str(body).split())[:100]
         if len(snippet) == 100:
-            snippet += "..."
+            snippet += '...'
 
-        Email.objects.create(
-            studio=user.studio,
-            client=client,
-            sender=user.email,
-            recipient=to_email,
-            subject=message['Subject'],
-            body=body,
-            snippet=snippet,
-            received_at=timezone.now(),
+        Email.objects.update_or_create(
             message_id=sent_message['id'],
-            thread_id=sent_message['threadId'],
-            smtp_message_id=sent_smtp_id,
-            is_sent=True
+            defaults={
+                'studio': user.studio,
+                'client': client,
+                'sender': from_header,
+                'recipient': to_clean,
+                'subject': message['Subject'],
+                'body': str(body).strip(),
+                'snippet': snippet,
+                'received_at': timezone.now(),
+                'thread_id': sent_message.get('threadId') or thread_id or '',
+                'smtp_message_id': sent_smtp_id,
+                'is_sent': True,
+            },
         )
-        
+
         return {"success": True, "message_id": sent_message['id']}
-        
+
     except Exception as e:
+        logger.exception('Gmail send failed')
         return {"error": str(e)}
 
 def create_google_calendar_event(user, event_data):

@@ -35,6 +35,9 @@ import {
 import Link from 'next/link';
 import { usePost } from '@/hooks/usePost';
 import useFetch from '@/hooks/useFetch';
+import { getApiErrorMessage } from '@/lib/api-error';
+import useUser from '@/hooks/useUser';
+import { messageIsSentByUser, resolveReplyToEmail } from '@/lib/gmail-reply';
 import { useQueryClient } from '@tanstack/react-query';
 import { TaskModal } from '@/components/tasks/task-modal';
 import { useTaskModalStore } from '@/store/useTaskModalStore';
@@ -82,6 +85,7 @@ type ThreadsResponse = {
 type MessageItem = {
   id: number;
   sender: string;
+  sender_label?: string;
   recipient: string;
   subject: string;
   body: string;
@@ -477,29 +481,33 @@ function SuggestedTaskCard({ task, onAdd, onView, isCreating, createdTaskId, ema
   );
 }
 
-function MessageBlock({ msg, suggestedTasks, onAddTask, onViewTask, isCreatingTask, addedTaskIds }: { msg: MessageItem; suggestedTasks?: SuggestedTask[]; onAddTask?: (task: SuggestedTask, emailId: number, suggestionIndex: number) => void; onViewTask?: (taskId: number) => void; isCreatingTask?: boolean; addedTaskIds?: Map<string, number> }) {
+function MessageBlock({ msg, userEmail, suggestedTasks, onAddTask, onViewTask, isCreatingTask, addedTaskIds }: { msg: MessageItem; userEmail?: string | null; suggestedTasks?: SuggestedTask[]; onAddTask?: (task: SuggestedTask, emailId: number, suggestionIndex: number) => void; onViewTask?: (taskId: number) => void; isCreatingTask?: boolean; addedTaskIds?: Map<string, number> }) {
   const [expanded, setExpanded] = useState(false);
   const { main, quoted } = useMemo(() => splitGmailEmail(msg.body), [msg.body]);
+  const sentByMe = messageIsSentByUser(msg.sender, userEmail);
+  const senderLabel =
+    msg.sender_label ||
+    (sentByMe ? 'You' : msg.sender?.split('<')[0]?.trim().replace(/^["']|["']$/g, '') || 'Unknown');
 
   return (
     <div className="flex gap-4">
       <Avatar className="w-8 h-8 flex-shrink-0 mt-1">
-        <AvatarFallback className={msg.is_sent ? 'bg-black text-white' : 'bg-stone-200'}>
-          {msg?.sender?.charAt(0).toUpperCase()}
+        <AvatarFallback className={sentByMe ? 'bg-black text-white' : 'bg-stone-200'}>
+          {senderLabel.charAt(0).toUpperCase()}
         </AvatarFallback>
       </Avatar>
 
       <div className="flex flex-col max-w-[99%]">
         <div className="flex items-center gap-2 mb-2 px-1">
           <span className="text-xs font-medium text-gray-900">
-            {msg.is_sent ? 'You' : msg.sender?.split('<')[0]}
+            {senderLabel}
           </span>
           <span className="text-xs text-gray-500">
             {dayjs(msg.received_at).format('MMM D, h:mm A')}
           </span>
         </div>
 
-        <div className={`rounded-2xl p-4 text-sm w-full ${msg.is_sent
+        <div className={`rounded-2xl p-4 text-sm w-full ${sentByMe
           ? 'bg-stone-50 text-gray-900 rounded-tr-sm'
           : 'bg-white border border-gray-100 text-gray-900 rounded-tl-sm'
         }`}>
@@ -570,8 +578,10 @@ function EmailDetailPanelWithMessages({
   isCreatingTask,
   addedTaskIds,
   onBack,
+  userEmail,
 }: {
   email: EmailWithAnalysis;
+  userEmail?: string | null;
   messages: MessageItem[] | null | undefined;
   messagesLoading: boolean;
   scrollRef: React.RefObject<HTMLDivElement | null>;
@@ -771,6 +781,7 @@ function EmailDetailPanelWithMessages({
                 <MessageBlock
                   key={msg.id}
                   msg={msg}
+                  userEmail={userEmail}
                   suggestedTasks={aiSummary?.emails?.find(e => e.id === msg.id)?.suggested_tasks}
                   onAddTask={onAddTask}
                   isCreatingTask={isCreatingTask}
@@ -810,6 +821,7 @@ function EmailDetailPanelWithMessages({
                   <MessageBlock
                     key={msg.id}
                     msg={msg}
+                    userEmail={userEmail}
                     suggestedTasks={aiSummary?.emails?.find(e => e.id === msg.id)?.suggested_tasks}
                     onAddTask={onAddTask}
                     onViewTask={onViewTask}
@@ -939,6 +951,7 @@ function EmptyDetailPanel({ hasEmails, isDisconnected }: { hasEmails: boolean, i
 }
 
 export default function MagicalInboxPage() {
+  const { user } = useUser();
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>('all');
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [syncing, setSyncing] = useState(false);
@@ -1199,6 +1212,13 @@ export default function MagicalInboxPage() {
     }
   }, [selectedThreadId]);
 
+  // Show reply composer when a thread with messages is open
+  useEffect(() => {
+    if (selectedThreadId && messages && messages.length > 0) {
+      setShowReplyInput(true);
+    }
+  }, [selectedThreadId, messages?.length]);
+
   async function handleSync() {
     setSyncing(true);
     fetchGmail({
@@ -1245,41 +1265,41 @@ export default function MagicalInboxPage() {
   // Handle send reply
   function handleSendReply() {
     if (!replyBody.trim() || !selectedThreadId || !messages?.length) return;
-    const lastMsg = messages[messages.length - 1];
 
-    let toEmail = '';
-    const extractEmail = (str: string) => {
-      const match = str.match(/<([^>]+)>/);
-      return match ? match[1] : str;
-    };
+    const toEmail = resolveReplyToEmail(messages, user?.email);
+    const subject =
+      messages.find((m) => m.subject)?.subject ||
+      messages[messages.length - 1]?.subject ||
+      '(No Subject)';
 
-    if (lastMsg.is_sent) {
-      toEmail = extractEmail(lastMsg.recipient);
-    } else {
-      toEmail = extractEmail(lastMsg.sender);
+    if (!toEmail) {
+      toast.error('Could not determine who to reply to.');
+      return;
     }
 
-    const payload = {
-      to_email: toEmail,
-      subject: lastMsg.subject,
-      body: replyBody,
-      thread_id: selectedThreadId
-    };
-
-    sendReply({
-      url: '/gmail/send/',
-      data: payload
-    }, {
-      onSuccess: () => {
-        toast.success('Reply sent successfully');
-        setReplyBody('');
-        setShowReplyInput(false);
-        refetchMessages();
+    sendReply(
+      {
+        url: 'gmail/send/',
+        data: {
+          to_email: toEmail,
+          subject,
+          body: replyBody.trim(),
+          thread_id: selectedThreadId,
+        },
       },
-      onError: (err: any) => {
-        toast.error('Failed to send reply: ' + (err.message || 'Unknown error'));
+      {
+        onSuccess: () => {
+          toast.success('Reply sent successfully');
+          setReplyBody('');
+          setShowReplyInput(true);
+          refetchMessages();
+          refetchThreads();
+        },
+        onError: (err: unknown) => {
+          toast.error(`Failed to send reply: ${getApiErrorMessage(err, 'Unknown error')}`);
+        },
       }
-    });
+    );
   }
 
   // Handle add to project
@@ -1604,6 +1624,7 @@ export default function MagicalInboxPage() {
           {selectedEmail ? (
             <EmailDetailPanelWithMessages
               email={selectedEmail}
+              userEmail={user?.email}
               messages={messages}
               messagesLoading={messagesLoading}
               scrollRef={scrollRef}

@@ -3,8 +3,18 @@ from django.conf import settings
 from django.core.cache import cache
 from django.http import HttpResponseRedirect
 from django.utils import timezone
-from .models import GmailToken
-from .utils import fetch_gmail_messages, send_gmail_message, create_google_calendar_event, get_calendar_service
+from .models import Email, GmailToken
+from .utils import (
+    client_display_name,
+    email_sender_label,
+    fetch_gmail_messages,
+    send_gmail_message,
+    create_google_calendar_event,
+    get_calendar_service,
+    message_is_sent_by_user,
+    normalize_email_address,
+    resolve_thread_reply_to,
+)
 import requests
 from datetime import timedelta
 from rest_framework.decorators import api_view, permission_classes
@@ -137,14 +147,28 @@ def send_email(request):
     to_email = request.data.get('to_email')
     subject = request.data.get('subject')
     body = request.data.get('body')
-    thread_id = request.data.get('thread_id') # Optional, for threading replies
-    
-    if not to_email or not body:
-        return Response({'error': 'to_email and body are required'}, status=400)
-        
+    thread_id = request.data.get('thread_id')  # Optional, for threading replies
+
+    if not body or not str(body).strip():
+        return Response({'error': 'body is required'}, status=400)
+
+    # For thread replies, always compute recipient server-side (client can send wrong to_email)
+    if thread_id and user.studio:
+        computed_to = resolve_thread_reply_to(user, thread_id, user.studio)
+        if computed_to:
+            to_email = computed_to
+        elif not normalize_email_address(to_email):
+            return Response(
+                {'error': 'Could not determine who to reply to in this thread.'},
+                status=400,
+            )
+
+    if not normalize_email_address(to_email):
+        return Response({'error': 'to_email is required'}, status=400)
+
     if not subject and not thread_id:
-         return Response({'error': 'subject is required for new emails'}, status=400)
-         
+        return Response({'error': 'subject is required for new emails'}, status=400)
+
     result = send_gmail_message(user, to_email, subject, body, thread_id)
     
     if "error" in result:
@@ -172,7 +196,11 @@ def get_thread(request, thread_id):
     from .models import Email
 
 
-    emails = Email.objects.filter(studio=user.studio, thread_id=thread_id).order_by('received_at')
+    emails = (
+        Email.objects.filter(studio=user.studio, thread_id=thread_id)
+        .select_related('client')
+        .order_by('received_at')
+    )
     
     # Security check: Ensure user is a participant in this thread
     # if not emails.filter(recipient__icontains=user.email).exists():
@@ -181,11 +209,12 @@ def get_thread(request, thread_id):
     data = [{
         "id": email.id,
         "sender": email.sender,
+        "sender_label": email_sender_label(email, user),
         "recipient": email.recipient,
         "subject": email.subject,
         "body": email.body,
         "received_at": email.received_at,
-        "is_sent": email.is_sent,
+        "is_sent": message_is_sent_by_user(email.sender, user),
         "thread_id": email.thread_id,
     } for email in emails]
     
@@ -661,17 +690,18 @@ def get_all_threads(request):
                 project_data = {"id": project.id, "name": project.project_name}
         _loop_project += time.perf_counter() - _ts
 
-        # Sender name mapping
+        # Sender name mapping (CRM company / contact name for client threads)
         _ts = time.perf_counter()
         sender_display = email.sender
-        _, email_addr = parseaddr(email.sender)
+        email_addr_norm = normalize_email_address(parseaddr(email.sender)[1] or email.sender)
+        user_addr_norm = normalize_email_address(user.email)
 
-        if email_addr:
-            if email_addr == user.email:
-                user_name = user.name if hasattr(user, 'name') and user.name else "Me"
-                sender_display = f"{user_name} <{email_addr}>"
-            elif email.client:
-                sender_display = f"{email.client.name} <{email_addr}>"
+        if email_addr_norm and email_addr_norm == user_addr_norm:
+            user_name = user.name if hasattr(user, 'name') and user.name else "Me"
+            sender_display = f"{user_name} <{email_addr_norm}>"
+        elif email.client:
+            label = client_display_name(email.client) or email.client.name or email_addr_norm
+            sender_display = f"{label} <{email_addr_norm}>" if email_addr_norm else label
         _loop_sender += time.perf_counter() - _ts
 
         data.append({
@@ -844,14 +874,15 @@ def search_emails(request):
             p = client_project_map[email.client_id]
             project_data = {"id": p.id, "name": p.project_name}
 
-        _, email_addr = parseaddr(email.sender)
+        email_addr_norm = normalize_email_address(parseaddr(email.sender)[1] or email.sender)
+        user_addr_norm = normalize_email_address(user.email)
         sender_display = email.sender
-        if email_addr:
-            if email_addr == user.email:
-                user_name = user.name if hasattr(user, 'name') and user.name else "Me"
-                sender_display = f"{user_name} <{email_addr}>"
-            elif email.client:
-                sender_display = f"{email.client.name} <{email_addr}>"
+        if email_addr_norm and email_addr_norm == user_addr_norm:
+            user_name = user.name if hasattr(user, 'name') and user.name else "Me"
+            sender_display = f"{user_name} <{email_addr_norm}>"
+        elif email.client:
+            label = client_display_name(email.client) or email.client.name or email_addr_norm
+            sender_display = f"{label} <{email_addr_norm}>" if email_addr_norm else label
 
         results.append({
             "thread_id": email.thread_id,
@@ -1013,15 +1044,15 @@ def get_threads_by_project(request, project_id):
             # High-performance fallback
             current_snippet = get_fast_snippet(email.body)
             
-        # Sender display name
+        email_addr_norm = normalize_email_address(parseaddr(email.sender)[1] or email.sender)
+        user_addr_norm = normalize_email_address(user.email)
         sender_display = email.sender
-        _, email_addr = parseaddr(email.sender)
-        if email_addr:
-            if email_addr == user.email:
-                user_name = user.name if hasattr(user, 'name') and user.name else "Me"
-                sender_display = f"{user_name} <{email_addr}>"
-            elif email.client:
-                sender_display = f"{email.client.name} <{email_addr}>"
+        if email_addr_norm and email_addr_norm == user_addr_norm:
+            user_name = user.name if hasattr(user, 'name') and user.name else "Me"
+            sender_display = f"{user_name} <{email_addr_norm}>"
+        elif email.client:
+            label = client_display_name(email.client) or email.client.name or email_addr_norm
+            sender_display = f"{label} <{email_addr_norm}>" if email_addr_norm else label
 
         data.append({
             "thread_id": email.thread_id,
