@@ -43,6 +43,7 @@ import { InboxReplyComposer } from '@/components/inbox/InboxReplyComposer';
 import { postFormData } from '@/lib/Api';
 import { htmlHasContent } from '@/lib/html-content';
 import { sanitizeComposeHtml } from '@/lib/sanitize-html';
+import { EMAIL_BODY_PROSE_CLASS } from '@/lib/email-body-styles';
 import { useQueryClient } from '@tanstack/react-query';
 import { TaskModal } from '@/components/tasks/task-modal';
 import { useTaskModalStore } from '@/store/useTaskModalStore';
@@ -520,7 +521,7 @@ function MessageBlock({ msg, userEmail, suggestedTasks, onAddTask, onViewTask, i
           : 'bg-white border border-gray-100 text-gray-900 rounded-tl-sm'
         }`}>
           <div
-            className="prose prose-sm max-w-none [&_img]:max-w-full [&_img]:h-auto [&_img]:mx-auto [&_img]:inline-block"
+            className={EMAIL_BODY_PROSE_CLASS}
             dangerouslySetInnerHTML={{ __html: main }}
           />
 

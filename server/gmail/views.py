@@ -151,8 +151,8 @@ def send_email(request):
         
     to_email = request.data.get('to_email')
     subject = request.data.get('subject')
-    body = request.data.get('body', '')
-    thread_id = request.data.get('thread_id')  # Optional, for threading replies
+    body = request.data.get('body') or request.POST.get('body', '')
+    thread_id = request.data.get('thread_id') or request.POST.get('thread_id', '')
     uploaded_files = request.FILES.getlist('attachments')
 
     from .utils import _looks_like_html, _strip_html_to_text

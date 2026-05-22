@@ -1,15 +1,20 @@
 import DOMPurify from 'dompurify';
 
-const CONFIG: DOMPurify.Config = {
-  FORBID_TAGS: ['script', 'style', 'iframe', 'object', 'embed', 'form', 'input', 'button'],
-  FORBID_ATTR: ['onclick', 'onerror', 'onload', 'onmouseover', 'onfocus', 'onblur', 'onchange', 'onsubmit', 'action'],
+const EMAIL_DISPLAY_CONFIG: DOMPurify.Config = {
+  ALLOWED_TAGS: [
+    'p', 'br', 'strong', 'b', 'em', 'i', 'u', 's', 'strike',
+    'ul', 'ol', 'li', 'a', 'div', 'span', 'blockquote', 'h1', 'h2', 'h3',
+  ],
+  ALLOWED_ATTR: ['href', 'target', 'rel'],
   ALLOW_DATA_ATTR: false,
-  FORCE_BODY: true,
 };
+
+const CONFIG: DOMPurify.Config = EMAIL_DISPLAY_CONFIG;
 
 export function sanitizeEmailHtml(html: string): string {
   if (typeof window === 'undefined') return '';
-  return DOMPurify.sanitize(html, CONFIG) as string;
+  if (!html?.trim()) return '';
+  return DOMPurify.sanitize(html, EMAIL_DISPLAY_CONFIG) as string;
 }
 
 /** Allow basic formatting for outbound compose (Gmail-compatible subset). */

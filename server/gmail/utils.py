@@ -247,28 +247,29 @@ def ensure_email_attachments(email, user, service=None) -> list:
 
 def _get_body_from_payload(payload):
     """Extract the best available body (HTML preferred) from a Gmail message payload."""
-    body = ""
-    if 'parts' in payload:
-        for part in payload['parts']:
-            mime = part.get('mimeType', '')
-            if mime == 'text/html':
-                data = part['body'].get('data')
-                if data:
-                    return base64.urlsafe_b64decode(data).decode('utf-8', errors='replace')
-            elif mime == 'text/plain':
-                data = part['body'].get('data')
-                if data:
-                    body = base64.urlsafe_b64decode(data).decode('utf-8', errors='replace')
-            if 'parts' in part:
-                res = _get_body_from_payload(part)
-                if res:
-                    return res
-        return body
-    else:
-        data = payload.get('body', {}).get('data')
+    html_body = ''
+    plain_body = ''
+
+    def walk(node):
+        nonlocal html_body, plain_body
+        if not node:
+            return
+        mime = node.get('mimeType', '') or ''
+        data = node.get('body', {}).get('data')
         if data:
-            return base64.urlsafe_b64decode(data).decode('utf-8', errors='replace')
-    return body
+            try:
+                decoded = base64.urlsafe_b64decode(data).decode('utf-8', errors='replace')
+            except Exception:
+                decoded = ''
+            if mime == 'text/html' and decoded.strip():
+                html_body = html_body or decoded
+            elif mime == 'text/plain' and decoded.strip():
+                plain_body = plain_body or decoded
+        for child in node.get('parts') or []:
+            walk(child)
+
+    walk(payload or {})
+    return html_body or plain_body
 
 
 def _get_refreshed_credentials(token):
@@ -526,7 +527,16 @@ def fetch_gmail_messages(user):
 
 def _looks_like_html(body: str) -> bool:
     s = (body or '').strip()
-    return bool(re.search(r'<[a-z][\s\S]*>', s, re.I))
+    if not s:
+        return False
+    if re.search(r'<[a-z][\s\S]*?>', s, re.I):
+        return True
+    return bool(re.search(r'&(?:lt|gt|amp|#\d+);', s, re.I))
+
+
+def _normalize_compose_html(html: str) -> str:
+    """Sanitize rich-text editor HTML while keeping lists and inline formatting."""
+    return _sanitize_outbound_html(html)
 
 
 def _strip_html_to_text(html: str) -> str:
@@ -554,7 +564,7 @@ def _prepare_email_body(body: str) -> tuple[str, str | None]:
     if not raw:
         return '', None
     if _looks_like_html(raw):
-        html = _sanitize_outbound_html(raw)
+        html = _normalize_compose_html(raw)
         plain = _strip_html_to_text(html)
         return plain or '(no content)', html
     return raw, None
@@ -683,6 +693,11 @@ def send_gmail_message(user, to_email, subject, body, thread_id=None, attachment
             full_sent = service.users().messages().get(
                 userId='me', id=sent_message['id'], format='full', fields=_MSG_FIELDS
             ).execute()
+            fetched_html = _get_body_from_payload(full_sent.get('payload', {}))
+            if fetched_html and _looks_like_html(fetched_html):
+                stored_body = fetched_html
+            elif html_body:
+                stored_body = html_body
             sent_attachments = _extract_attachments_from_payload(full_sent.get('payload', {}))
         except Exception as exc:
             logger.warning('Could not load sent attachment metadata: %s', exc)

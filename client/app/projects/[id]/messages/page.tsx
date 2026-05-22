@@ -34,6 +34,7 @@ import { InboxReplyComposer } from '@/components/inbox/InboxReplyComposer';
 import { postFormData } from '@/lib/Api';
 import { htmlHasContent } from '@/lib/html-content';
 import { sanitizeComposeHtml } from '@/lib/sanitize-html';
+import { EMAIL_BODY_PROSE_CLASS } from '@/lib/email-body-styles';
 import { getApiErrorMessage } from '@/lib/api-error';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { motion } from 'framer-motion';
@@ -122,7 +123,7 @@ const MessageBlock = ({ msg, userEmail }: { msg: MessageItem; userEmail?: string
         >
           {/* Main Content */}
           <div
-            className="prose prose-sm max-w-none [&_img]:max-w-full [&_img]:h-auto [&_img]:mx-auto [&_img]:inline-block"
+            className={EMAIL_BODY_PROSE_CLASS}
             dangerouslySetInnerHTML={{ __html: main }}
           />
 
