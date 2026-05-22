@@ -28,7 +28,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id', 'email', 'name', 'studio', 'role', 'phone_number', 'title',
-            'pay_per_hour', 'hours_per_week', 'profile_picture', 'is_2fa_enabled',
+            'pay_per_hour', 'hours_per_week', 'profile_picture', 'cover_image', 'is_2fa_enabled',
         ]
 
     def get_is_2fa_enabled(self, obj):

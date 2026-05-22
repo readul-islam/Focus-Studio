@@ -142,6 +142,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(auto_now_add=True)
 
     profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+    cover_image = models.ImageField(upload_to='profile_covers/', null=True, blank=True)
 
     studio = models.ForeignKey(Studio, on_delete=models.SET_NULL, null=True, blank=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='member')

@@ -919,21 +919,29 @@ def get_current_user(request):
 def update_current_user(request):
     """
     Update the currently logged-in user's information.
-    Supports JSON or multipart (profile_picture file upload).
+    Supports JSON or multipart (profile_picture / cover_image file upload).
     """
     user = User.objects.get(id=request.user.id)
 
-    # JSON clear: { "profile_picture": null }
-    if (
-        request.content_type
-        and 'application/json' in request.content_type
-        and 'profile_picture' in request.data
-        and request.data.get('profile_picture') in (None, '', 'null')
-    ):
-        if user.profile_picture:
-            user.profile_picture.delete(save=False)
-        user.profile_picture = None
-        user.save(update_fields=['profile_picture'])
+    def _clear_image_field(field_name: str):
+        img = getattr(user, field_name, None)
+        if img:
+            img.delete(save=False)
+        setattr(user, field_name, None)
+        user.save(update_fields=[field_name])
+
+    # JSON clear: { "profile_picture": null } or { "cover_image": null }
+    if request.content_type and 'application/json' in request.content_type:
+        if (
+            'profile_picture' in request.data
+            and request.data.get('profile_picture') in (None, '', 'null')
+        ):
+            _clear_image_field('profile_picture')
+        if (
+            'cover_image' in request.data
+            and request.data.get('cover_image') in (None, '', 'null')
+        ):
+            _clear_image_field('cover_image')
 
     serializer = UserSerializer(user, data=request.data, partial=True)
     if serializer.is_valid():
