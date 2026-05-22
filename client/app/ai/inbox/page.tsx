@@ -31,6 +31,7 @@ import {
   ChevronRight,
   X,
   ExternalLink,
+  PenSquare,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePost } from '@/hooks/usePost';
@@ -40,6 +41,7 @@ import useUser from '@/hooks/useUser';
 import { messageIsSentByUser, resolveReplyToEmail } from '@/lib/gmail-reply';
 import { EmailAttachments, type EmailAttachmentMeta } from '@/components/inbox/EmailAttachments';
 import { InboxReplyComposer } from '@/components/inbox/InboxReplyComposer';
+import { ComposeEmailDialog } from '@/components/inbox/ComposeEmailDialog';
 import { postFormData } from '@/lib/Api';
 import { htmlHasContent } from '@/lib/html-content';
 import { sanitizeComposeHtml } from '@/lib/sanitize-html';
@@ -961,6 +963,8 @@ export default function MagicalInboxPage() {
   const [replyBody, setReplyBody] = useState('');
   const [showReplyInput, setShowReplyInput] = useState(false);
 
+  const [composeOpen, setComposeOpen] = useState(false);
+
   // Add to project state
   const [projectOpen, setProjectOpen] = useState(false);
   const [projectSearch, setProjectSearch] = useState('');
@@ -1501,6 +1505,13 @@ export default function MagicalInboxPage() {
               </div>
             )}
 
+            {isGmailConnected && (
+              <Button onClick={() => setComposeOpen(true)} size="sm" className="bg-black text-white hover:bg-gray-800">
+                <PenSquare className="mr-2 h-4 w-4" />
+                Compose
+              </Button>
+            )}
+
             {/* Sync Button */}
             <Button onClick={handleSync} disabled={syncing} variant="outline" size="sm">
               {syncing || isPending ? (
@@ -1644,6 +1655,18 @@ export default function MagicalInboxPage() {
           )}
         </div>
       </div>
+
+      <ComposeEmailDialog
+        open={composeOpen}
+        onOpenChange={setComposeOpen}
+        studioId={user?.studio?.id}
+        currentUserEmail={user?.email}
+        onSent={(threadId) => {
+          setSelectedThreadId(threadId);
+          setShowReplyInput(false);
+          refetchThreads();
+        }}
+      />
 
       {/* Add to Project Dialog */}
       <Dialog open={projectOpen} onOpenChange={(open) => {

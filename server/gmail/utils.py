@@ -730,7 +730,11 @@ def send_gmail_message(user, to_email, subject, body, thread_id=None, attachment
             },
         )
 
-        return {"success": True, "message_id": sent_message['id']}
+        return {
+            "success": True,
+            "message_id": sent_message['id'],
+            "thread_id": sent_message.get('threadId') or thread_id or '',
+        }
 
     except Exception as e:
         logger.exception('Gmail send failed')

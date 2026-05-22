@@ -32,6 +32,9 @@ type InboxReplyComposerProps = {
   isSending: boolean;
   threadId?: string | null;
   subject?: string | null;
+  embedded?: boolean;
+  placeholder?: string;
+  sendTitle?: string;
 };
 
 export function InboxReplyComposer({
@@ -41,6 +44,9 @@ export function InboxReplyComposer({
   isSending,
   threadId,
   subject,
+  embedded = false,
+  placeholder = 'Write a reply...',
+  sendTitle = 'Send reply',
 }: InboxReplyComposerProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [isPolishing, setIsPolishing] = useState(false);
@@ -102,7 +108,13 @@ export function InboxReplyComposer({
   };
 
   return (
-    <div className="flex-shrink-0 p-4 border-t border-gray-100 bg-white">
+    <div
+      className={
+        embedded
+          ? 'flex-shrink-0'
+          : 'flex-shrink-0 p-4 border-t border-gray-100 bg-white'
+      }
+    >
       {files.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-2">
           {files.map((file, index) => (
@@ -140,7 +152,7 @@ export function InboxReplyComposer({
         <RichTextEditor
           value={replyBody}
           onChange={(html) => setReplyBody(sanitizeComposeHtml(html))}
-          placeholder="Write a reply..."
+          placeholder={placeholder}
           disabled={busy}
           fullWidthToolbar
           className="border-0 shadow-none rounded-none"
@@ -180,7 +192,7 @@ export function InboxReplyComposer({
               className="h-8 w-8 rounded-full bg-black hover:bg-gray-800 transition-all shadow-sm"
               onClick={handleSend}
               disabled={busy || !canSend}
-              title="Send reply"
+              title={sendTitle}
             >
               {isSending ? (
                 <Loader2 className="w-4 h-4 animate-spin text-white" />
@@ -191,9 +203,11 @@ export function InboxReplyComposer({
           }
         />
       </div>
-      <p className="text-[11px] text-gray-400 mt-1.5 px-1">
-        Sparkles: AI polish · Paperclip: attach files (max 25 MB each)
-      </p>
+      {!embedded && (
+        <p className="text-[11px] text-gray-400 mt-1.5 px-1">
+          Sparkles: AI polish · Paperclip: attach files (max 25 MB each)
+        </p>
+      )}
     </div>
   );
 }
