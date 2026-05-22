@@ -562,12 +562,53 @@ pnpm dev
 
 ---
 
+## Phase 2b: Notion Outbound (প্রজেক্ট পেজ + টাস্ক টেবিল)
+
+Focuspilot → Notion: নতুন **Project** = Notion পেজ; **Task** = সেই প্রজেক্টের Tasks database-এ row। বিস্তারিত: [notion_workflow.md](notion_workflow.md)
+
+### ধাপ ১ — Parent page (ঐচ্ছিক)
+
+1. Integrations → Notion → Settings
+2. **Parent page for new projects** — Notion পেজ URL বা ID পেস্ট → **Save parent page**
+3. খালি রাখলে অটো `Focuspilot Projects` হাব পেজ
+
+### ধাপ ২ — Outbound প্রজেক্ট
+
+1. Focuspilot-এ **নতুন Project** তৈরি (Notion inbound থেকে নয়)
+2. Notion-এ parent এর নিচে নতুন পেজ দেখুন
+3. API: `GET http://localhost:8000/notion/project-sync/?project_id={id}` → `synced: true`, `notion_project_url`
+
+### ধাপ ৩ — Outbound টাস্ক
+
+1. সেই প্রজেক্টে **Add Task** (phase সিলেক্ট — ডিফল্ট ফেজ অটো সিড হয়)
+2. Save → Notion-এ **Tasks** table + ১ম row
+3. আরেকটি টাস্ক → ২য় row
+4. টাস্ক এডিট → Notion row আপডেট
+
+### চেকলিস্ট (Outbound)
+
+- [ ] `PUT notion/settings/` parent page (ঐচ্ছিক)
+- [ ] নতুন FP project → Notion child page
+- [ ] প্রথম task → Tasks DB + row (screenshot-এর মতো কলাম)
+- [ ] দ্বিতীয় task → ২য় row
+- [ ] Inbound sync করা project → duplicate Notion page **নয়**
+
+### API
+
+| Method | URL |
+|--------|-----|
+| GET/PUT | `/notion/settings/` |
+| GET | `/notion/project-sync/?project_id=` |
+
+---
+
 ## পরবর্তী ফেজ (খসড়া)
 
 | Phase | বিষয় |
 |-------|--------|
 | Phase 1 | Inbox (Gmail) — উপরে |
-| Phase 2 | **Notion** (ব্রাউজ + প্রজেক্ট সিঙ্ক) — এই সেকশন |
+| Phase 2 | Notion Inbound (ব্রাউজ + প্রজেক্ট সিঙ্ক) |
+| Phase 2b | **Notion Outbound** (প্রজেক্ট পেজ + টাস্ক rows) — উপরে |
 | Phase 3 | Calendar + Daily Brief |
 | Phase 4 | Billing / Plan / Product Tour |
 | Phase 5 | Xero + Zapier E2E |
@@ -590,4 +631,4 @@ pnpm dev
 
 ---
 
-*সর্বশেষ আপডেট: Phase 1 (Inbox) + Phase 2 (Notion — লোকাল লাইভ ওয়ার্কফ্লো, বাংলা)*
+*সর্বশেষ আপডেট: Phase 1–2 + Phase 2b (Notion outbound, বাংলা)*

@@ -11,7 +11,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from users.models import Studio, User
-from .models import NotionProjectMapping, NotionToken
+from .models import NotionProjectMapping, NotionProjectSync, NotionToken
+from .outbound import normalize_notion_page_id
 from .sync import sync_notion_projects
 from .utils import (
     default_title_property,
@@ -176,7 +177,65 @@ def notion_status(request):
     return Response({
         'connected': is_notion_connected(request.user.studio),
         'workspace_name': token.workspace_name or '',
+        'parent_page_id': token.parent_page_id or '',
+        'outbound_enabled': True,
         'mapping': mapping,
+    })
+
+
+@api_view(['GET', 'PUT'])
+@permission_classes([IsAuthenticated])
+def notion_settings(request):
+    """GET/PUT outbound settings (parent page for new Focuspilot projects)."""
+    if not request.user.studio_id:
+        return Response({'error': 'User does not belong to a studio'}, status=400)
+    try:
+        token = NotionToken.objects.get(studio=request.user.studio)
+    except NotionToken.DoesNotExist:
+        return Response({'error': 'Notion not connected'}, status=400)
+
+    if request.method == 'GET':
+        return Response({
+            'parent_page_id': token.parent_page_id or '',
+            'workspace_name': token.workspace_name or '',
+        })
+
+    raw = (request.data.get('parent_page_id') or '').strip()
+    token.parent_page_id = normalize_notion_page_id(raw) if raw else ''
+    token.save(update_fields=['parent_page_id', 'updated_at'])
+    return Response({'parent_page_id': token.parent_page_id})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def notion_project_sync_info(request):
+    """Notion URLs/IDs for a Focuspilot project (outbound sync)."""
+    if not request.user.studio_id:
+        return Response({'error': 'User does not belong to a studio'}, status=400)
+    project_id = request.query_params.get('project_id')
+    if not project_id:
+        return Response({'error': 'project_id is required'}, status=400)
+
+    from projects.models import Project
+
+    try:
+        project = Project.objects.get(id=project_id, studio=request.user.studio)
+    except Project.DoesNotExist:
+        return Response({'error': 'Project not found'}, status=404)
+
+    try:
+        sync = NotionProjectSync.objects.get(project=project)
+    except NotionProjectSync.DoesNotExist:
+        return Response({'synced': False})
+
+    page_id = sync.notion_project_page_id
+    page_slug = page_id.replace('-', '') if page_id else ''
+    return Response({
+        'synced': True,
+        'notion_project_page_id': page_id,
+        'notion_project_url': f'https://www.notion.so/{page_slug}' if page_slug else '',
+        'notion_tasks_database_id': sync.notion_tasks_database_id or '',
+        'last_pushed_at': sync.last_pushed_at.isoformat() if sync.last_pushed_at else None,
     })
 
 

@@ -74,6 +74,8 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
   const [savingMapping, setSavingMapping] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [lastSyncResult, setLastSyncResult] = useState<SyncResult | null>(null);
+  const [parentPageId, setParentPageId] = useState('');
+  const [savingParentPage, setSavingParentPage] = useState(false);
 
   const { refetch: getNotionAuthUrl } = useFetch('notion/connect/', { enabled: false });
   const { data: notionStatus } = useFetch(isConnected ? 'notion/status/' : null);
@@ -86,6 +88,11 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
     const timer = window.setTimeout(() => setDebouncedSearch(search.trim()), 300);
     return () => window.clearTimeout(timer);
   }, [search]);
+
+  useEffect(() => {
+    const pid = (notionStatus as { parent_page_id?: string })?.parent_page_id;
+    if (pid) setParentPageId(pid);
+  }, [notionStatus]);
 
   const databasesUrl = browseOpen
     ? `notion/databases/?q=${encodeURIComponent(debouncedSearch)}`
@@ -251,6 +258,22 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
     }
   }
 
+  async function handleSaveParentPage() {
+    setSavingParentPage(true);
+    try {
+      await putData({
+        url: 'notion/settings/',
+        data: { parent_page_id: parentPageId.trim() },
+      });
+      await refreshNotionQueries();
+      toast.success('Notion parent page saved.');
+    } catch {
+      toast.error('Could not save parent page.');
+    } finally {
+      setSavingParentPage(false);
+    }
+  }
+
   async function handleSyncProjects() {
     setSyncing(true);
     try {
@@ -302,9 +325,38 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
           isConnected ? (
           <>
             <p className="text-sm text-gray-600">
-              Sync pulls from Notion into Focuspilot Projects (Notion is not edited by sync).
+              <span className="font-medium">Outbound:</span> New Focuspilot projects create a Notion
+              page; tasks on that project add rows to a task table on the page.
               {workspace ? ` Workspace: ${workspace}.` : ''}
             </p>
+            <p className="text-xs text-stone-500">
+              <span className="font-medium">Inbound:</span> Map a shared database below to import
+              Notion rows as Focuspilot projects (manual sync).
+            </p>
+            <div className="space-y-2 rounded-lg border border-stone-200 bg-stone-50/80 p-3">
+              <Label htmlFor="notion-parent-page" className="text-xs">
+                Parent page for new projects (optional)
+              </Label>
+              <Input
+                id="notion-parent-page"
+                placeholder="Notion page URL or ID (leave empty for auto “Focuspilot Projects”)"
+                value={parentPageId}
+                onChange={(e) => setParentPageId(e.target.value)}
+                className="bg-white text-sm"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={savingParentPage}
+                onClick={handleSaveParentPage}
+              >
+                {savingParentPage ? (
+                  <Loader2 className="mr-2 h-3 w-3 animate-spin" />
+                ) : null}
+                Save parent page
+              </Button>
+            </div>
             {mapping ? (
               <p className="text-xs text-stone-500">
                 Mapped database: <span className="font-medium">{mapping.database_title}</span>

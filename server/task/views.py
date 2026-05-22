@@ -28,6 +28,27 @@ class TaskViewSet(StudioScopedMixin, viewsets.ModelViewSet):
     def perform_create(self, serializer):
         task = serializer.save()
         task.assignees.add(self.request.user)
+        try:
+            from notion.outbound import push_task_to_notion
+            push_task_to_notion(task, self.request.user)
+        except Exception:
+            pass
+
+    def perform_update(self, serializer):
+        task = serializer.save()
+        try:
+            from notion.outbound import update_task_in_notion
+            update_task_in_notion(task)
+        except Exception:
+            pass
+
+    def perform_destroy(self, instance):
+        try:
+            from notion.outbound import archive_task_in_notion
+            archive_task_in_notion(instance)
+        except Exception:
+            pass
+        super().perform_destroy(instance)
 
 
 @api_view(['GET'])

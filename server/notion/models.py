@@ -10,6 +10,12 @@ class NotionToken(models.Model):
     workspace_id = models.CharField(max_length=64, blank=True, default='')
     workspace_name = models.CharField(max_length=255, blank=True, default='')
     bot_id = models.CharField(max_length=64, blank=True, default='')
+    parent_page_id = models.CharField(
+        max_length=64,
+        blank=True,
+        default='',
+        help_text='Notion page ID where new Focuspilot projects are created as child pages.',
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(
@@ -66,3 +72,42 @@ class NotionProjectLink(models.Model):
 
     def __str__(self):
         return f'{self.notion_page_id} → project {self.project_id}'
+
+
+class NotionProjectSync(models.Model):
+    """Outbound sync: Focuspilot project ↔ Notion project page + optional tasks database."""
+
+    studio = models.ForeignKey(Studio, on_delete=models.CASCADE, related_name='notion_project_syncs')
+    project = models.OneToOneField(
+        'projects.Project', on_delete=models.CASCADE, related_name='notion_sync'
+    )
+    notion_project_page_id = models.CharField(max_length=64)
+    notion_tasks_database_id = models.CharField(max_length=64, blank=True, default='')
+    last_pushed_at = models.DateTimeField(null=True, blank=True)
+    last_error = models.TextField(blank=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'project {self.project_id} → {self.notion_project_page_id}'
+
+
+class NotionTaskLink(models.Model):
+    """Outbound sync: Focuspilot task ↔ Notion database row (page)."""
+
+    studio = models.ForeignKey(Studio, on_delete=models.CASCADE, related_name='notion_task_links')
+    task = models.OneToOneField('task.Task', on_delete=models.CASCADE, related_name='notion_link')
+    notion_page_id = models.CharField(max_length=64, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['studio', 'notion_page_id'],
+                name='unique_notion_task_page_per_studio',
+            ),
+        ]
+
+    def __str__(self):
+        return f'task {self.task_id} → {self.notion_page_id}'

@@ -58,3 +58,20 @@ class Task(models.Model):
     
     def __str__(self):
         return f"{self.title}-{self.project}"
+
+
+class TaskAttachment(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='attachments')
+    file = models.FileField(upload_to='task_attachments/%Y/%m/')
+    file_name = models.CharField(max_length=255)
+    file_size = models.PositiveIntegerField(default=0)
+    content_type = models.CharField(max_length=128, blank=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_at']
+        verbose_name = 'Task Attachment'
+        verbose_name_plural = 'Task Attachments'
+
+    def __str__(self):
+        return self.file_name

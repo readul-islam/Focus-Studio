@@ -55,7 +55,7 @@ import { patchData, deleteData, postData } from '@/lib/Api';
 import { gooeyToast as toast } from 'goey-toast';
 import DraggableSubtasks2 from './DraggableSubtasks2';
 import { AnimatePresence, motion } from 'framer-motion';
-import Attachments from './Attachments';
+import Attachments, { uploadTaskFiles } from './Attachments';
 import useUser from '@/hooks/useUser';
 import useDeleteData from '@/hooks/useDelete';
 import { useTaskModalStore } from '@/store/useTaskModalStore';
@@ -346,6 +346,9 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
   const dropdownRef = React.useRef(null);
   const [subTaskText, setSubTaskText] = React.useState('');
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
+  const [pendingAttachmentFiles, setPendingAttachmentFiles] = React.useState<File[]>([]);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const pendingAttachmentsRef = React.useRef<File[]>([]);
   const { user, isLoading: userLoading } = useUser();
   const { can } = usePermissions();
   const canEdit = can('tasks.edit');
@@ -405,11 +408,17 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
   }, [taskToEdit, open, projectId, phase, status, setTaskValues]);
 
 
+  React.useEffect(() => {
+    pendingAttachmentsRef.current = pendingAttachmentFiles;
+  }, [pendingAttachmentFiles]);
+
   const handleCloseModal = React.useCallback(() => {
     onOpenChange(false);
     setTaskValues(initialTask);
     setComment({ name: '', value: '', time: '', profileImg: '' });
     setSelectedMembers([]);
+    setPendingAttachmentFiles([]);
+    setIsSubmitting(false);
   }, [onOpenChange, setTaskValues, setComment, setSelectedMembers]);
   
 
@@ -516,14 +525,26 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
 
   // Create task mutation
   const { mutate: createTask } = usePost({
-    onSuccess: (data: any) => {
+    onSuccess: async (data: any) => {
+      const pending = pendingAttachmentsRef.current;
+      if (pending.length && data?.id) {
+        try {
+          await uploadTaskFiles(data.id, pending);
+          setPendingAttachmentFiles([]);
+        } catch {
+          toast.error('Task created but attachment upload failed');
+        }
+      }
       toast.success('Task Created');
       queryClient.refetchQueries({ queryKey: ['task/user-tasks/'] });
       queryClient.refetchQueries({ queryKey: [`task/user-tasks-project?project_id=${projectId}`] });
       queryClient.refetchQueries({ queryKey: [`task/task-datacards/`] });
+      handleCloseModal();
+      setIsSubmitting(false);
     },
     onError: () => {
       toast.error('Error creating task');
+      setIsSubmitting(false);
     },
   });
 
@@ -536,8 +557,8 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
       queryClient.invalidateQueries({ queryKey: [`task/user-tasks-project?project_id=${projectId}`] });
       queryClient.invalidateQueries({ queryKey: [`task/task-datacards/`] });
     },
-    onError: (error) => {
-      toast.error('Error updating task')
+    onError: () => {
+      toast.error('Error updating task');
     },
   });
 
@@ -660,16 +681,23 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
       subtask: taskValues.subtasks?.map((st: any) => st.id),
     };
     // Create or update task
+    setIsSubmitting(true);
+
     if (taskToEdit || taskValues?.id) {
-      // console.log('createTask', payload);
-      updateTask({ ...payload, id: taskValues.id });
+      updateTask(
+        { ...payload, id: taskValues.id },
+        {
+          onSuccess: () => {
+            handleCloseModal();
+            setIsSubmitting(false);
+          },
+          onError: () => setIsSubmitting(false),
+        }
+      );
     } else {
-      // console.log({ status: payload?.status })
       createTask({ url: 'task/tasks/', data: payload });
     }
-
-    onOpenChange(false);
-  }, [taskValues, user, taskToEdit, updateTask, createTask, onOpenChange, validateForm]);
+  }, [taskValues, user, taskToEdit, updateTask, createTask, validateForm, handleCloseModal]);
 
   // Handle Click Save
   const handleClickSave = React.useCallback(editGuard(() => {
@@ -1367,7 +1395,11 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
             </div>
 
             {/* attachments */}
-            <Attachments projectID={taskValues?.projectID} task={taskToEdit} />
+            <Attachments
+              taskId={taskValues?.id ?? taskToEdit?.id}
+              pendingFiles={pendingAttachmentFiles}
+              onPendingFilesChange={setPendingAttachmentFiles}
+            />
 
             {/* sub tasks */}
             <Labeled icon={<ListTodo className="h-4 w-4" />} label="Sub Tasks" alignTop>
@@ -1511,9 +1543,11 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
               <Button
                 type="button"
                 className="h-10 bg-gray-900 text-white hover:bg-gray-800"
+                disabled={isSubmitting}
                 onClick={() => formRef.current?.requestSubmit()}
               >
-                Save <span className="ml-2 text-xs opacity-70">{'⌘⏎'}</span>
+                {isSubmitting ? 'Saving…' : 'Save'}
+                <span className="ml-2 text-xs opacity-70">{'⌘⏎'}</span>
               </Button>
             )}
           </div>

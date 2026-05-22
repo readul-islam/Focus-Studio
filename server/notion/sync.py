@@ -5,6 +5,7 @@ from projects.models import Project
 from projects.phase_defaults import seed_default_phases_for_project
 
 from .models import NotionProjectLink, NotionProjectMapping
+from .outbound import upsert_project_sync_from_link
 from .utils import extract_page_status, extract_page_title, query_database_pages
 
 
@@ -107,6 +108,7 @@ def sync_notion_projects(studio, user=None) -> dict:
                 notion_page_id=page_id,
                 project=project,
             )
+            upsert_project_sync_from_link(studio, project, page_id)
             seed_default_phases_for_project(project, studio, user=user)
             created += 1
             try:

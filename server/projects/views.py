@@ -200,6 +200,11 @@ class ProjectViewSet(StudioScopedMixin, viewsets.ModelViewSet):
         from users.models import ProjectTemplate
         project = serializer.save()
         try:
+            from notion.outbound import push_project_to_notion
+            push_project_to_notion(project, self.request.user)
+        except Exception:
+            pass
+        try:
             from integrations.events import EVENT_PROJECT_CREATED, emit_studio_event
             emit_studio_event(
                 self.request.user.studio,

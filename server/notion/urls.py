@@ -7,6 +7,8 @@ urlpatterns = [
     path('callback/', views.notion_callback, name='notion-callback'),
     path('disconnect/', views.notion_disconnect, name='notion-disconnect'),
     path('status/', views.notion_status, name='notion-status'),
+    path('settings/', views.notion_settings, name='notion-settings'),
+    path('project-sync/', views.notion_project_sync_info, name='notion-project-sync-info'),
     path('databases/', views.notion_databases, name='notion-databases'),
     path(
         'databases/<str:database_id>/schema/',
