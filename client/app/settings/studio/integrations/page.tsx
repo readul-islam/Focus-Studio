@@ -2,17 +2,17 @@
 
 import { Section } from '@/components/settings/section';
 import { PermissionGuard } from '@/components/PermissionGuard';
+import { IntegrationStatusProvider, useIntegrationStatusContext } from '@/components/settings/integration-status-context';
 import XeroIntegration from '@/components/settings/XeroIntegration';
 import GmailIntegration from '@/components/settings/GmailIntegration';
 import GoogleCalendarIntegration from '@/components/settings/GoogleCalendarIntegration';
 import NotionIntegration from '@/components/settings/NotionIntegration';
 import ZapierIntegration from '@/components/settings/ZapierIntegration';
-import useFetch from '@/hooks/useFetch';
 
 function IntegrationsPageContent() {
-  const { data: integrations, isLoading: integrationsLoading } = useFetch(
-    'user/integration-status/'
-  );
+  const { status, isLoading, isFetching } = useIntegrationStatusContext();
+
+  const pageLoading = isLoading && !status.gmail_connected && !status.notion_connected;
 
   return (
     <div className="space-y-6 md:space-y-8">
@@ -24,29 +24,33 @@ function IntegrationsPageContent() {
       <Section title="Apps">
         <div className="grid gap-4 sm:grid-cols-2">
           <XeroIntegration
-            isLoading={integrationsLoading}
-            isConnected={integrations?.xero_connected}
+            isLoading={pageLoading}
+            isConnected={!!status.xero_connected}
+            isSyncing={isFetching}
           />
 
           <GmailIntegration
-            isLoading={integrationsLoading}
-            isConnected={integrations?.gmail_connected}
+            isLoading={pageLoading}
+            isConnected={!!status.gmail_connected}
+            isSyncing={isFetching}
           />
 
           <GoogleCalendarIntegration
-            isLoading={integrationsLoading}
-            isConnected={integrations?.calendar_connected}
-            gmailConnected={integrations?.gmail_connected}
+            isLoading={pageLoading}
+            isConnected={!!status.calendar_connected}
+            gmailConnected={!!status.gmail_connected}
+            isSyncing={isFetching}
           />
 
           <NotionIntegration
-            isLoading={integrationsLoading}
-            isConnected={integrations?.notion_connected}
+            isLoading={pageLoading}
+            isConnected={!!status.notion_connected}
+            isSyncing={isFetching}
           />
 
           <ZapierIntegration
-            isLoading={integrationsLoading}
-            isConfigured={integrations?.zapier_configured}
+            isLoading={pageLoading}
+            isConfigured={!!status.zapier_configured}
           />
         </div>
       </Section>
@@ -57,7 +61,9 @@ function IntegrationsPageContent() {
 export default function IntegrationsPage() {
   return (
     <PermissionGuard permission="settings.edit" redirectTo="/settings/user/profile">
-      <IntegrationsPageContent />
+      <IntegrationStatusProvider>
+        <IntegrationsPageContent />
+      </IntegrationStatusProvider>
     </PermissionGuard>
   );
 }

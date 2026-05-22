@@ -40,7 +40,9 @@ export async function openNotionOAuthPopup(
 
     const pollInterval = setInterval(() => {
       if (popup?.closed) {
-        cleanup('cancelled');
+        setTimeout(() => {
+          if (!cleaned) cleanup('cancelled');
+        }, 900);
         return;
       }
       try {

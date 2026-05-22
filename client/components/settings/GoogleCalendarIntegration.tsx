@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Loader2, RefreshCw } from 'lucide-react';
+import { Calendar, Loader2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -13,6 +13,8 @@ import useFetch from '@/hooks/useFetch';
 import { usePost } from '@/hooks/usePost';
 import { useQueryClient } from '@tanstack/react-query';
 import { openGmailOAuthPopup } from '@/lib/gmail-connect';
+import { confirmIntegrationConnection } from '@/lib/integrations/confirm-connection';
+import { useIntegrationStatusContext } from '@/components/settings/integration-status-context';
 import { gooeyToast as toast } from 'goey-toast';
 import { IntegrationCard } from './IntegrationCard';
 
@@ -20,62 +22,83 @@ type GoogleCalendarIntegrationProps = {
   isConnected: boolean;
   isLoading: boolean;
   gmailConnected?: boolean;
+  isSyncing?: boolean;
 };
 
 const GoogleCalendarIntegration = ({
   isConnected,
   isLoading: stateLoading,
   gmailConnected = false,
+  isSyncing,
 }: GoogleCalendarIntegrationProps) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDisconnectDialogOpen, setIsDisconnectDialogOpen] = useState(false);
-  const [showReloadTip, setShowReloadTip] = useState(false);
   const { refetch: getGmailAuthUrl } = useFetch('gmail/connect/', { enabled: false });
   const { mutateAsync: disconnectGmail } = usePost();
   const queryClient = useQueryClient();
+  const { applyPatch, waitForStatus } = useIntegrationStatusContext();
 
-  const refreshIntegrationState = () => {
-    queryClient.refetchQueries({ queryKey: ['user/integration-status/'] });
-    queryClient.refetchQueries({ queryKey: ['gmail/calendar/events/'] });
-    queryClient.refetchQueries({ queryKey: ['user/dashboard/'] });
-  };
+  const busy = isConnecting || isSyncing;
 
   const handleConnect = async () => {
-    setIsLoading(true);
+    setIsConnecting(true);
     setIsDialogOpen(false);
-    const result = await openGmailOAuthPopup(getGmailAuthUrl);
-    setIsLoading(false);
 
-    if (result === 'success') {
-      refreshIntegrationState();
-      setShowReloadTip(true);
-      toast.success('Google Calendar connected.');
-      return;
-    }
-    if (result === 'access_denied') {
-      toast.error('Google blocked access. Add your email under OAuth → Test users.');
-      return;
-    }
-    if (result === 'error') {
-      toast.error('Could not connect. Check server GMAIL_* env vars.');
+    try {
+      const result = await openGmailOAuthPopup(getGmailAuthUrl);
+
+      if (result === 'access_denied') {
+        toast.error('Google blocked access. Add your email under OAuth → Test users.');
+        return;
+      }
+      if (result === 'error') {
+        toast.error('Could not connect. Check server GMAIL_* env vars.');
+        return;
+      }
+
+      const connected = await confirmIntegrationConnection({
+        applyPatch,
+        waitForStatus,
+        patch: { gmail_connected: true, calendar_connected: true },
+        predicate: (s) => s.calendar_connected === true,
+      });
+
+      if (connected) {
+        await queryClient.invalidateQueries({ queryKey: ['gmail/calendar/events/'] });
+        await queryClient.invalidateQueries({ queryKey: ['user/dashboard/'] });
+        toast.success('Google Calendar connected.');
+      } else if (result === 'cancelled') {
+        applyPatch({ calendar_connected: false });
+        toast.error('Calendar connection was cancelled.');
+      } else {
+        applyPatch({ calendar_connected: false });
+        toast.error('Calendar connected to Google but status did not update. Please try again.');
+      }
+    } finally {
+      setIsConnecting(false);
     }
   };
 
   const handleDisconnect = async () => {
-    setIsLoading(true);
-    await disconnectGmail(
-      { url: 'gmail/disconnect/', data: {} },
-      {
-        onSuccess: () => {
-          setIsDisconnectDialogOpen(false);
-          refreshIntegrationState();
-          window.location.reload();
-        },
-        onError: () => toast.error('Failed to disconnect.'),
-      }
-    );
-    setIsLoading(false);
+    setIsConnecting(true);
+    try {
+      await disconnectGmail(
+        { url: 'gmail/disconnect/', data: {} },
+        {
+          onSuccess: async () => {
+            setIsDisconnectDialogOpen(false);
+            applyPatch({ gmail_connected: false, calendar_connected: false });
+            await waitForStatus((s) => !s.calendar_connected);
+            await queryClient.invalidateQueries({ queryKey: ['gmail/calendar/events/'] });
+            toast.success('Google Calendar disconnected.');
+          },
+          onError: () => toast.error('Failed to disconnect.'),
+        }
+      );
+    } finally {
+      setIsConnecting(false);
+    }
   };
 
   return (
@@ -87,7 +110,7 @@ const GoogleCalendarIntegration = ({
           ? 'Calendar sync for studio schedule and Daily Brief.'
           : 'Sync meetings and deadlines with Google Calendar.'
       }
-      isLoading={stateLoading}
+      isLoading={stateLoading && !isConnected}
       status={isConnected ? 'connected' : null}
       footer={
         isConnected ? (
@@ -97,6 +120,7 @@ const GoogleCalendarIntegration = ({
                 variant="outline"
                 size="sm"
                 className="text-red-600 border-gray-200 hover:bg-red-50 hover:border-red-200"
+                disabled={busy}
               >
                 Disconnect
               </Button>
@@ -112,9 +136,9 @@ const GoogleCalendarIntegration = ({
                 <Button variant="outline" onClick={() => setIsDisconnectDialogOpen(false)}>
                   Cancel
                 </Button>
-                <Button variant="destructive" onClick={handleDisconnect} disabled={isLoading}>
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {isLoading ? 'Disconnecting...' : 'Disconnect'}
+                <Button variant="destructive" onClick={handleDisconnect} disabled={busy}>
+                  {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {busy ? 'Disconnecting...' : 'Disconnect'}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -127,24 +151,11 @@ const GoogleCalendarIntegration = ({
                 permissions.
               </p>
             ) : null}
-            {showReloadTip ? (
-              <div className="mb-4 flex items-center gap-2 rounded-lg border border-blue-100 bg-blue-50 px-3 py-2.5">
-                <RefreshCw className="h-3.5 w-3.5 shrink-0 text-blue-500" />
-                <p className="text-xs text-blue-700 flex-1">Connected. Reload if Calendar looks empty.</p>
-                <button
-                  type="button"
-                  onClick={() => window.location.reload()}
-                  className="text-xs font-medium text-blue-700 underline"
-                >
-                  Reload
-                </button>
-              </div>
-            ) : null}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button size="sm" disabled={isLoading || stateLoading}>
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {isLoading ? 'Connecting...' : 'Connect with Google Calendar'}
+                <Button size="sm" disabled={busy || stateLoading}>
+                  {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {busy ? 'Connecting...' : 'Connect with Google Calendar'}
                 </Button>
               </DialogTrigger>
               <DialogContent>
@@ -161,9 +172,9 @@ const GoogleCalendarIntegration = ({
                   <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
                     Cancel
                   </Button>
-                  <Button onClick={handleConnect} disabled={isLoading}>
-                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {isLoading ? 'Connecting...' : 'Continue with Google'}
+                  <Button onClick={handleConnect} disabled={busy}>
+                    {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {busy ? 'Connecting...' : 'Continue with Google'}
                   </Button>
                 </DialogFooter>
               </DialogContent>

@@ -44,7 +44,10 @@ export async function openGmailOAuthPopup(
 
     const pollInterval = setInterval(() => {
       if (popup?.closed) {
-        cleanup('cancelled');
+        // Allow postMessage from the callback page to arrive before treating as cancelled.
+        setTimeout(() => {
+          if (!cleaned) cleanup('cancelled');
+        }, 900);
         return;
       }
       try {

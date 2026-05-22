@@ -23,12 +23,15 @@ import useFetch from '@/hooks/useFetch';
 import { usePost } from '@/hooks/usePost';
 import { useQueryClient } from '@tanstack/react-query';
 import { openNotionOAuthPopup } from '@/lib/notion-connect';
+import { confirmIntegrationConnection } from '@/lib/integrations/confirm-connection';
+import { useIntegrationStatusContext } from '@/components/settings/integration-status-context';
 import { putData, postData } from '@/lib/Api';
 import { gooeyToast as toast } from 'goey-toast';
 
 type Props = {
   isConnected: boolean;
   isLoading: boolean;
+  isSyncing?: boolean;
 };
 
 type NotionDatabase = {
@@ -55,8 +58,8 @@ type SyncResult = {
   error?: string;
 };
 
-const NotionIntegration = ({ isConnected, isLoading: stateLoading }: Props) => {
-  const [isLoading, setIsLoading] = useState(false);
+const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: Props) => {
+  const [isConnecting, setIsConnecting] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [isDisconnectDialogOpen, setIsDisconnectDialogOpen] = useState(false);
   const [isConnectDialogOpen, setIsConnectDialogOpen] = useState(false);
@@ -76,6 +79,8 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading }: Props) => {
   const { data: notionStatus } = useFetch(isConnected ? 'notion/status/' : null);
   const { mutateAsync: disconnectNotion } = usePost();
   const queryClient = useQueryClient();
+  const { applyPatch, waitForStatus } = useIntegrationStatusContext();
+  const busy = isConnecting || isSyncing;
 
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedSearch(search.trim()), 300);
@@ -113,43 +118,65 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading }: Props) => {
   const titleProperties: string[] = schemaData?.title_properties ?? [];
   const statusProperties: string[] = schemaData?.status_properties ?? [];
 
-  const refreshState = () => {
-    queryClient.refetchQueries({ queryKey: ['user/integration-status/'] });
-    queryClient.refetchQueries({ queryKey: ['notion/status/'] });
-    queryClient.refetchQueries({ queryKey: ['notion/mapping/'] });
+  const refreshNotionQueries = async () => {
+    await queryClient.invalidateQueries({ queryKey: ['notion/status/'] });
+    await queryClient.invalidateQueries({ queryKey: ['notion/mapping/'] });
   };
 
   const handleConnect = async () => {
-    setIsLoading(true);
+    setIsConnecting(true);
     setIsConnectDialogOpen(false);
-    const result = await openNotionOAuthPopup(getNotionAuthUrl);
-    setIsLoading(false);
 
-    if (result === 'success') {
-      refreshState();
-      toast.success('Notion connected.');
-      return;
-    }
-    if (result === 'error') {
-      toast.error('Could not connect Notion. Check server NOTION_* env vars.');
+    try {
+      const result = await openNotionOAuthPopup(getNotionAuthUrl);
+
+      if (result === 'error') {
+        toast.error('Could not connect Notion. Check server NOTION_* env vars.');
+        return;
+      }
+
+      const connected = await confirmIntegrationConnection({
+        applyPatch,
+        waitForStatus,
+        patch: { notion_connected: true },
+        predicate: (s) => s.notion_connected === true,
+      });
+
+      if (connected) {
+        await refreshNotionQueries();
+        toast.success('Notion connected.');
+      } else if (result === 'cancelled') {
+        applyPatch({ notion_connected: false });
+        toast.error('Notion connection was cancelled.');
+      } else {
+        applyPatch({ notion_connected: false });
+        toast.error('Notion authorized but status did not update. Please try again.');
+      }
+    } finally {
+      setIsConnecting(false);
     }
   };
 
   const handleDisconnect = async () => {
-    setIsLoading(true);
-    await disconnectNotion(
-      { url: 'notion/disconnect/', data: {} },
-      {
-        onSuccess: () => {
-          setIsDisconnectDialogOpen(false);
-          setSettingsOpen(false);
-          refreshState();
-          toast.success('Notion disconnected.');
-        },
-        onError: () => toast.error('Failed to disconnect Notion.'),
-      }
-    );
-    setIsLoading(false);
+    setIsConnecting(true);
+    try {
+      await disconnectNotion(
+        { url: 'notion/disconnect/', data: {} },
+        {
+          onSuccess: async () => {
+            setIsDisconnectDialogOpen(false);
+            setSettingsOpen(false);
+            applyPatch({ notion_connected: false });
+            await waitForStatus((s) => !s.notion_connected);
+            await refreshNotionQueries();
+            toast.success('Notion disconnected.');
+          },
+          onError: () => toast.error('Failed to disconnect Notion.'),
+        }
+      );
+    } finally {
+      setIsConnecting(false);
+    }
   };
 
   function copyId(id: string) {
@@ -215,7 +242,7 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading }: Props) => {
         },
       });
       setMappingOpen(false);
-      refreshState();
+      await refreshNotionQueries();
       toast.success('Project sync configured.');
     } catch {
       toast.error('Could not save mapping.');
@@ -232,7 +259,7 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading }: Props) => {
         data: {},
       })) as SyncResult;
       setLastSyncResult(result);
-      refreshState();
+      await refreshNotionQueries();
       if (result.error && !result.created && !result.updated) {
         toast.error(result.error);
       } else {
@@ -265,7 +292,7 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading }: Props) => {
         icon={<BookOpen className="h-4 w-4 text-stone-500" />}
         title="Notion"
         description={cardDescription}
-        isLoading={stateLoading}
+        isLoading={stateLoading && !isConnected}
         status={isConnected ? 'connected' : null}
         showSettings={isConnected}
         settingsOpen={settingsOpen}
@@ -350,9 +377,9 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading }: Props) => {
                   <Button variant="outline" onClick={() => setIsDisconnectDialogOpen(false)}>
                     Cancel
                   </Button>
-                  <Button variant="destructive" onClick={handleDisconnect} disabled={isLoading}>
-                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {isLoading ? 'Disconnecting...' : 'Disconnect'}
+                  <Button variant="destructive" onClick={handleDisconnect} disabled={busy}>
+                    {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {busy ? 'Disconnecting...' : 'Disconnect'}
                   </Button>
                 </DialogFooter>
               </DialogContent>
@@ -360,9 +387,9 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading }: Props) => {
           ) : (
             <Dialog open={isConnectDialogOpen} onOpenChange={setIsConnectDialogOpen}>
               <DialogTrigger asChild>
-                <Button size="sm" disabled={isLoading || stateLoading}>
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {isLoading ? 'Connecting...' : 'Connect Notion'}
+                <Button size="sm" disabled={busy || stateLoading}>
+                  {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {busy ? 'Connecting...' : 'Connect Notion'}
                 </Button>
               </DialogTrigger>
               <DialogContent>
@@ -376,9 +403,9 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading }: Props) => {
                   <Button variant="outline" onClick={() => setIsConnectDialogOpen(false)}>
                     Cancel
                   </Button>
-                  <Button onClick={handleConnect} disabled={isLoading}>
-                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {isLoading ? 'Connecting...' : 'Continue'}
+                  <Button onClick={handleConnect} disabled={busy}>
+                    {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {busy ? 'Connecting...' : 'Continue'}
                   </Button>
                 </DialogFooter>
               </DialogContent>
