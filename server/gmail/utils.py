@@ -5,6 +5,7 @@ from .models import GmailToken, Email, Client
 from django.utils import timezone
 import base64
 import html
+import mimetypes
 from datetime import datetime, time
 from email.message import EmailMessage
 from email.utils import parseaddr, formataddr
@@ -523,7 +524,17 @@ def fetch_gmail_messages(user):
     except Exception as e:
         return {"error": str(e)}
 
-def send_gmail_message(user, to_email, subject, body, thread_id=None):
+def _mime_parts(filename: str, content_type: str | None = None) -> tuple[str, str]:
+    if content_type and '/' in content_type:
+        main, sub = content_type.split('/', 1)
+        return main, sub
+    guess, _ = mimetypes.guess_type(filename or '')
+    if guess and '/' in guess:
+        return guess.split('/', 1)
+    return 'application', 'octet-stream'
+
+
+def send_gmail_message(user, to_email, subject, body, thread_id=None, attachments=None):
     service = get_gmail_service(user)
     if not service:
         return {"error": "Gmail not connected"}
@@ -532,8 +543,10 @@ def send_gmail_message(user, to_email, subject, body, thread_id=None):
     if not to_clean:
         return {"error": "Invalid recipient email address"}
 
-    if not body or not str(body).strip():
-        return {"error": "Message body is required"}
+    attachments = attachments or []
+    body_str = str(body or '').strip()
+    if not body_str and not attachments:
+        return {"error": "Message body or attachment is required"}
 
     try:
         subject_line = (subject or '').strip() or '(No Subject)'
@@ -543,7 +556,16 @@ def send_gmail_message(user, to_email, subject, body, thread_id=None):
             from_header = formataddr((user.name, user.email))
 
         message = EmailMessage()
-        message.set_content(str(body).strip())
+        message.set_content(body_str or '(See attachment)')
+        for att in attachments:
+            filename = att.get('filename') or 'attachment'
+            maintype, subtype = _mime_parts(filename, att.get('content_type'))
+            message.add_attachment(
+                att.get('data') or b'',
+                maintype=maintype,
+                subtype=subtype,
+                filename=filename,
+            )
         message['To'] = to_clean
         message['From'] = from_header
         message['Subject'] = subject_line
@@ -607,9 +629,29 @@ def send_gmail_message(user, to_email, subject, body, thread_id=None):
         except Exception as exc:
             logger.warning('Could not load sent Message-ID: %s', exc)
 
-        snippet = ' '.join(str(body).split())[:100]
+        snippet_source = body_str or ' '.join(a.get('filename', '') for a in attachments)
+        snippet = ' '.join(snippet_source.split())[:100]
         if len(snippet) == 100:
             snippet += '...'
+
+        sent_attachments = []
+        try:
+            full_sent = service.users().messages().get(
+                userId='me', id=sent_message['id'], format='full', fields=_MSG_FIELDS
+            ).execute()
+            sent_attachments = _extract_attachments_from_payload(full_sent.get('payload', {}))
+        except Exception as exc:
+            logger.warning('Could not load sent attachment metadata: %s', exc)
+            if attachments:
+                sent_attachments = [
+                    {
+                        'attachment_id': '',
+                        'filename': a.get('filename') or 'attachment',
+                        'mime_type': a.get('content_type') or 'application/octet-stream',
+                        'size': len(a.get('data') or b''),
+                    }
+                    for a in attachments
+                ]
 
         Email.objects.update_or_create(
             message_id=sent_message['id'],
@@ -619,8 +661,9 @@ def send_gmail_message(user, to_email, subject, body, thread_id=None):
                 'sender': from_header,
                 'recipient': to_clean,
                 'subject': message['Subject'],
-                'body': str(body).strip(),
+                'body': body_str or '(See attachment)',
                 'snippet': snippet,
+                'attachments': sent_attachments,
                 'received_at': timezone.now(),
                 'thread_id': sent_message.get('threadId') or thread_id or '',
                 'smtp_message_id': sent_smtp_id,

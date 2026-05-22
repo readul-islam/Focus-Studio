@@ -148,11 +148,27 @@ def send_email(request):
         
     to_email = request.data.get('to_email')
     subject = request.data.get('subject')
-    body = request.data.get('body')
+    body = request.data.get('body', '')
     thread_id = request.data.get('thread_id')  # Optional, for threading replies
+    uploaded_files = request.FILES.getlist('attachments')
 
-    if not body or not str(body).strip():
-        return Response({'error': 'body is required'}, status=400)
+    if not str(body or '').strip() and not uploaded_files:
+        return Response({'error': 'body or attachment is required'}, status=400)
+
+    MAX_ATTACHMENT_BYTES = 25 * 1024 * 1024
+    attachment_payloads = []
+    for uploaded in uploaded_files:
+        data = uploaded.read()
+        if len(data) > MAX_ATTACHMENT_BYTES:
+            return Response(
+                {'error': f'Attachment "{uploaded.name}" exceeds 25 MB limit'},
+                status=400,
+            )
+        attachment_payloads.append({
+            'filename': uploaded.name,
+            'content_type': uploaded.content_type or 'application/octet-stream',
+            'data': data,
+        })
 
     # For thread replies, always compute recipient server-side (client can send wrong to_email)
     if thread_id and user.studio:
@@ -171,7 +187,9 @@ def send_email(request):
     if not subject and not thread_id:
         return Response({'error': 'subject is required for new emails'}, status=400)
 
-    result = send_gmail_message(user, to_email, subject, body, thread_id)
+    result = send_gmail_message(
+        user, to_email, subject, body, thread_id, attachments=attachment_payloads
+    )
     
     if "error" in result:
         return Response(result, status=400)

@@ -20,7 +20,8 @@ import {
   ChevronsUpDown,
   ArrowLeft,
   FolderPlus,
-  AlertCircle
+  AlertCircle,
+  Paperclip,
 } from 'lucide-react';
 import GmailIntegration from '@/components/settings/GmailIntegration';
 import { gooeyToast as toast } from 'goey-toast';
@@ -32,6 +33,7 @@ import { getApiErrorMessage } from '@/lib/api-error';
 import useUser from '@/hooks/useUser';
 import { messageIsSentByUser, resolveReplyToEmail } from '@/lib/gmail-reply';
 import { EmailAttachments, type EmailAttachmentMeta } from '@/components/inbox/EmailAttachments';
+import { postFormData } from '@/lib/Api';
 import {
   Dialog,
   DialogContent,
@@ -177,6 +179,9 @@ export default function InboxPage() {
   const { user } = useUser();
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [replyBody, setReplyBody] = useState('');
+  const [replyFiles, setReplyFiles] = useState<File[]>([]);
+  const [isSending, setIsSending] = useState(false);
+  const replyFileInputRef = useRef<HTMLInputElement>(null);
   const [searchText, setSearchText] = useState('');
   const [projectOpen, setProjectOpen] = useState(false);
   const { mutate: fetchGmail } = usePost();
@@ -260,7 +265,6 @@ export default function InboxPage() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   // Send Reply Mutation
-  const { mutate: sendReply, isPending: isSending } = usePost();
 
   useEffect(() => {
     document.title = 'My Inbox | Focuspilot';
@@ -275,11 +279,12 @@ export default function InboxPage() {
 
   const handleThreadSelect = (threadId: string) => {
     setSelectedThreadId(threadId);
-    setReplyBody(''); // Clear reply draft on switch
+    setReplyBody('');
+    setReplyFiles([]);
   };
 
-  const handleSendReply = () => {
-    if (!replyBody.trim() || !selectedThreadId || !messages?.length) return;
+  const handleSendReply = async () => {
+    if ((!replyBody.trim() && !replyFiles.length) || !selectedThreadId || !messages?.length) return;
 
     const toEmail = resolveReplyToEmail(messages, user?.email);
     const subject =
@@ -292,28 +297,26 @@ export default function InboxPage() {
       return;
     }
 
-    sendReply(
-      {
-        url: 'gmail/send/',
-        data: {
-          to_email: toEmail,
-          subject,
-          body: replyBody.trim(),
-          thread_id: selectedThreadId,
-        },
-      },
-      {
-        onSuccess: () => {
-          toast.success('Reply sent successfully');
-          setReplyBody('');
-          refetchMessages();
-          refetchThreads();
-        },
-        onError: (err: unknown) => {
-          toast.error(`Failed to send reply: ${getApiErrorMessage(err, 'Unknown error')}`);
-        },
-      }
-    );
+    const formData = new FormData();
+    formData.append('to_email', toEmail);
+    formData.append('subject', subject);
+    formData.append('body', replyBody.trim());
+    formData.append('thread_id', selectedThreadId);
+    replyFiles.forEach((f) => formData.append('attachments', f));
+
+    setIsSending(true);
+    try {
+      await postFormData({ url: 'gmail/send/', data: formData });
+      toast.success('Reply sent successfully');
+      setReplyBody('');
+      setReplyFiles([]);
+      refetchMessages();
+      refetchThreads();
+    } catch (err: unknown) {
+      toast.error(`Failed to send reply: ${getApiErrorMessage(err, 'Unknown error')}`);
+    } finally {
+      setIsSending(false);
+    }
   };
 
   // Filter threads based on search
@@ -644,19 +647,53 @@ export default function InboxPage() {
                           </Button>
                         </div>
                       )}
-                      <div className={`flex border-box gap-4 bg-white p-2 rounded-lg border border-gray-200 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all ${isFullScreen ? 'h-full' : ''}`}>
+                      {replyFiles.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-2">
+                          {replyFiles.map((file, i) => (
+                            <span key={`${file.name}-${i}`} className="text-xs bg-stone-100 border rounded px-2 py-1 flex items-center gap-1">
+                              {file.name}
+                              <button type="button" onClick={() => setReplyFiles((p) => p.filter((_, j) => j !== i))}>
+                                <X className="w-3 h-3" />
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      <input
+                        ref={replyFileInputRef}
+                        type="file"
+                        multiple
+                        accept="image/*,.pdf,.doc,.docx"
+                        className="hidden"
+                        onChange={(e) => {
+                          if (e.target.files) setReplyFiles((p) => [...p, ...Array.from(e.target.files!)]);
+                          e.target.value = '';
+                        }}
+                      />
+                      <div className={`flex border-box gap-2 bg-white p-2 rounded-lg border border-gray-200 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all ${isFullScreen ? 'h-full' : ''}`}>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          className="h-9 w-9 shrink-0"
+                          onClick={() => replyFileInputRef.current?.click()}
+                          disabled={isSending}
+                          title="Attach file"
+                        >
+                          <Paperclip className="w-4 h-4" />
+                        </Button>
                         <Textarea
                           value={replyBody}
                           onChange={e => setReplyBody(e.target.value)}
                           placeholder="Write a reply..."
-                          className={`min-h-[60px] focus:ring-offset-0 focus:ring-0 focus:border-none  focus:outline-none  border-0 focus-visible:ring-0 resize-none bg-transparent p-2 text-sm ${isFullScreen ? 'h-full' : 'max-h-[200px]'}`}
+                          className={`min-h-[60px] flex-1 focus:ring-offset-0 focus:ring-0 focus:border-none  focus:outline-none  border-0 focus-visible:ring-0 resize-none bg-transparent p-2 text-sm ${isFullScreen ? 'h-full' : 'max-h-[200px]'}`}
                         />
                         <div className={`flex flex-col justify-center pb-1 pr-1 gap-2 ${isFullScreen ? 'self-end' : ''}`}>
                           <Button
                             size="icon"
                             className="h-8 w-8 rounded-full bg-black hover:bg-gray-800 transition-all shadow-sm"
                             onClick={handleSendReply}
-                            disabled={isSending || !replyBody.trim()}
+                            disabled={isSending || (!replyBody.trim() && !replyFiles.length)}
                           >
                             {isSending ? (
                               <Loader2 className="w-4 h-4 animate-spin text-white" />

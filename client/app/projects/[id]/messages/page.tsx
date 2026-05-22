@@ -30,6 +30,8 @@ import useFetch from '@/hooks/useFetch';
 import useUser from '@/hooks/useUser';
 import { messageIsSentByUser, resolveReplyToEmail } from '@/lib/gmail-reply';
 import { EmailAttachments, type EmailAttachmentMeta } from '@/components/inbox/EmailAttachments';
+import { InboxReplyComposer } from '@/components/inbox/InboxReplyComposer';
+import { postFormData } from '@/lib/Api';
 import { getApiErrorMessage } from '@/lib/api-error';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { motion } from 'framer-motion';
@@ -215,7 +217,7 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   // Send Reply Mutation
-  const { mutate: sendReply, isPending: isSending } = usePost();
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     document.title = 'My Inbox | Focuspilot';
@@ -233,8 +235,8 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
     setReplyBody(''); // Clear reply draft on switch
   };
 
-  const handleSendReply = () => {
-    if (!replyBody.trim() || !selectedThreadId || !messages?.length) return;
+  const handleSendReply = async (attachmentFiles: File[] = []) => {
+    if ((!replyBody.trim() && !attachmentFiles.length) || !selectedThreadId || !messages?.length) return;
 
     const toEmail = resolveReplyToEmail(messages, user?.email);
     const subject =
@@ -247,27 +249,24 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
       return;
     }
 
-    sendReply(
-      {
-        url: 'gmail/send/',
-        data: {
-          to_email: toEmail,
-          subject,
-          body: replyBody.trim(),
-          thread_id: selectedThreadId,
-        },
-      },
-      {
-        onSuccess: () => {
-          toast.success('Reply sent successfully');
-          setReplyBody('');
-          refetchMessages();
-        },
-        onError: (err: unknown) => {
-          toast.error(`Failed to send reply: ${getApiErrorMessage(err, 'Unknown error')}`);
-        },
-      },
-    );
+    const formData = new FormData();
+    formData.append('to_email', toEmail);
+    formData.append('subject', subject);
+    formData.append('body', replyBody.trim());
+    formData.append('thread_id', selectedThreadId);
+    attachmentFiles.forEach((f) => formData.append('attachments', f));
+
+    setIsSending(true);
+    try {
+      await postFormData({ url: 'gmail/send/', data: formData });
+      toast.success('Reply sent successfully');
+      setReplyBody('');
+      refetchMessages();
+    } catch (err: unknown) {
+      toast.error(`Failed to send reply: ${getApiErrorMessage(err, 'Unknown error')}`);
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const handleUnlinkThread = () => {
@@ -531,26 +530,12 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
                           </Button>
                         </div>
                       )}
-                      <div
-                        className={`flex border-box gap-4 bg-white p-2 rounded-lg border border-gray-200 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all ${isFullScreen ? 'h-full' : ''}`}
-                      >
-                        <Textarea
-                          value={replyBody}
-                          onChange={e => setReplyBody(e.target.value)}
-                          placeholder="Write a reply..."
-                          className={`min-h-[60px] focus:ring-offset-0 focus:ring-0 focus:border-none  focus:outline-none  border-0 focus-visible:ring-0 resize-none bg-transparent p-2 text-sm ${isFullScreen ? 'h-full' : 'max-h-[200px]'}`}
-                        />
-                        <div className={`flex flex-col justify-center pb-1 pr-1 gap-2 ${isFullScreen ? 'self-end' : ''}`}>
-                          <Button
-                            size="icon"
-                            className="h-8 w-8 rounded-full bg-black hover:bg-gray-800 transition-all shadow-sm"
-                            onClick={handleSendReply}
-                            disabled={isSending || !replyBody.trim()}
-                          >
-                            {isSending ? <Loader2 className="w-4 h-4 animate-spin text-white" /> : <Send className="w-4 h-4 text-white" />}
-                          </Button>
-                        </div>
-                      </div>
+                      <InboxReplyComposer
+                        replyBody={replyBody}
+                        setReplyBody={setReplyBody}
+                        onSend={handleSendReply}
+                        isSending={isSending}
+                      />
                     </div>
                   ) : (
                     <div className="absolute bottom-6 right-8">

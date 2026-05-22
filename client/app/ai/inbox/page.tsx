@@ -39,6 +39,8 @@ import { getApiErrorMessage } from '@/lib/api-error';
 import useUser from '@/hooks/useUser';
 import { messageIsSentByUser, resolveReplyToEmail } from '@/lib/gmail-reply';
 import { EmailAttachments, type EmailAttachmentMeta } from '@/components/inbox/EmailAttachments';
+import { InboxReplyComposer } from '@/components/inbox/InboxReplyComposer';
+import { postFormData } from '@/lib/Api';
 import { useQueryClient } from '@tanstack/react-query';
 import { TaskModal } from '@/components/tasks/task-modal';
 import { useTaskModalStore } from '@/store/useTaskModalStore';
@@ -597,7 +599,7 @@ function EmailDetailPanelWithMessages({
   onAddToProject: () => void;
   replyBody: string;
   setReplyBody: (value: string) => void;
-  onSendReply: () => void;
+  onSendReply: (files: File[]) => void;
   isSending: boolean;
   showReplyInput: boolean;
   setShowReplyInput: (value: boolean) => void;
@@ -850,32 +852,13 @@ function EmailDetailPanelWithMessages({
 
       </div>{/* end scroll container */}
 
-      {/* Reply Input Area */}
       {showReplyInput && (
-        <div className="flex-shrink-0 p-4 border-t border-gray-100 bg-white">
-          <div className="flex gap-4 bg-white p-2 rounded-lg border border-gray-200 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all">
-            <Textarea
-              value={replyBody}
-              onChange={e => setReplyBody(e.target.value)}
-              placeholder="Write a reply..."
-              className="min-h-[60px] max-h-[200px] focus:ring-offset-0 focus:ring-0 focus:border-none focus:outline-none border-0 focus-visible:ring-0 resize-none bg-transparent p-2 text-sm"
-            />
-            <div className="flex flex-col justify-center pb-1 pr-1 gap-2">
-              <Button
-                size="icon"
-                className="h-8 w-8 rounded-full bg-black hover:bg-gray-800 transition-all shadow-sm"
-                onClick={onSendReply}
-                disabled={isSending || !replyBody.trim()}
-              >
-                {isSending ? (
-                  <Loader2 className="w-4 h-4 animate-spin text-white" />
-                ) : (
-                  <Send className="w-4 h-4 text-white" />
-                )}
-              </Button>
-            </div>
-          </div>
-        </div>
+        <InboxReplyComposer
+          replyBody={replyBody}
+          setReplyBody={setReplyBody}
+          onSend={onSendReply}
+          isSending={isSending}
+        />
       )}
 
       {/* Action Bar - Always at bottom */}
@@ -1010,7 +993,7 @@ export default function MagicalInboxPage() {
   };
 
   const { mutate: fetchGmail , isPending } = usePost();
-  const { mutate: sendReply, isPending: isSending } = usePost();
+  const [isSending, setIsSending] = useState(false);
   const { mutate: linkToProject } = usePost();
   const { mutate: createTask, isPending: isCreatingTask } = usePost();
   const { mutate: markCreated } = usePost();
@@ -1270,9 +1253,10 @@ export default function MagicalInboxPage() {
     setShowReplyInput(false);
   }
 
-  // Handle send reply
-  function handleSendReply() {
-    if (!replyBody.trim() || !selectedThreadId || !messages?.length) return;
+  async function handleSendReply(attachmentFiles: File[] = []) {
+    if ((!replyBody.trim() && !attachmentFiles.length) || !selectedThreadId || !messages?.length) {
+      return;
+    }
 
     const toEmail = resolveReplyToEmail(messages, user?.email);
     const subject =
@@ -1285,29 +1269,26 @@ export default function MagicalInboxPage() {
       return;
     }
 
-    sendReply(
-      {
-        url: 'gmail/send/',
-        data: {
-          to_email: toEmail,
-          subject,
-          body: replyBody.trim(),
-          thread_id: selectedThreadId,
-        },
-      },
-      {
-        onSuccess: () => {
-          toast.success('Reply sent successfully');
-          setReplyBody('');
-          setShowReplyInput(true);
-          refetchMessages();
-          refetchThreads();
-        },
-        onError: (err: unknown) => {
-          toast.error(`Failed to send reply: ${getApiErrorMessage(err, 'Unknown error')}`);
-        },
-      }
-    );
+    const formData = new FormData();
+    formData.append('to_email', toEmail);
+    formData.append('subject', subject);
+    formData.append('body', replyBody.trim());
+    formData.append('thread_id', selectedThreadId);
+    attachmentFiles.forEach((file) => formData.append('attachments', file));
+
+    setIsSending(true);
+    try {
+      await postFormData({ url: 'gmail/send/', data: formData });
+      toast.success('Reply sent successfully');
+      setReplyBody('');
+      setShowReplyInput(true);
+      refetchMessages();
+      refetchThreads();
+    } catch (err: unknown) {
+      toast.error(`Failed to send reply: ${getApiErrorMessage(err, 'Unknown error')}`);
+    } finally {
+      setIsSending(false);
+    }
   }
 
   // Handle add to project
