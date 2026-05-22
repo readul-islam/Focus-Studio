@@ -96,12 +96,21 @@ Task modal থেকে এডিট → Save → Notion row **PATCH** হয়
 
 ## Inbound ওয়ার্কফ্লো (Notion → Focuspilot)
 
-*(আগের মতো — পরিবর্তন নেই)*
+### প্রজেক্ট (আগের মতো)
 
 1. Integrations → **Set up project sync** / **Browse databases**
 2. Database + Name column + Status (optional) → Save
 3. **Sync projects now**
 4. Notion row → Focuspilot **Project** + `NotionProjectLink` + `NotionProjectSync` (একই page id — duplicate পেজ নয়)
+
+### টাস্ক (নতুন)
+
+Focuspilot থেকে Notion-এ পাঠানো টাস্ক (`NotionTaskLink` আছে) — Notion-এ **Status**, নাম, তারিখ ইত্যাদি বদলালে:
+
+- **Home → Tasks** বা **Project → Tasks** পেজ খুললে অটো `POST /notion/tasks/sync/` চলে (ট্যাব ফোকাসে আবার)
+- **Sync projects now** চালালেও টাস্ক আপডেট হয়
+
+শুধু Notion-এ হাতে বানানো row (FP-তে টাস্ক নেই) ইম্পোর্ট হয় না — MVP।
 
 বিস্তারিত: [testing.md](testing.md) — Phase 2।
 
@@ -156,6 +165,7 @@ Task modal থেকে এডিট → Save → Notion row **PATCH** হয়
 | GET/PUT | `/notion/settings/` | Parent page id |
 | GET | `/notion/project-sync/?project_id=` | প্রজেক্টের Notion URL |
 | GET | `/notion/status/` | connected, mapping, parent_page_id |
-| POST | `/notion/mapping/sync/` | Inbound project import |
+| POST | `/notion/mapping/sync/` | Inbound project + task import |
+| POST | `/notion/tasks/sync/` | Inbound task pull only (tasks page auto-calls) |
 
 *সর্বশেষ আপডেট: Outbound project + task sync*

@@ -10,7 +10,7 @@ from notion.outbound import (
     push_project_to_notion,
     upsert_project_sync_from_link,
 )
-from notion.sync import map_notion_status_to_project_status
+from notion.sync import map_notion_status_to_project_status, map_notion_status_to_task_status
 from notion.utils import extract_page_title
 
 
@@ -18,6 +18,11 @@ class NotionSyncHelpersTest(TestCase):
     def test_status_mapping(self):
         self.assertEqual(map_notion_status_to_project_status('Done'), 'COM')
         self.assertEqual(map_notion_status_to_project_status('In progress'), 'AC')
+
+    def test_task_status_mapping(self):
+        self.assertEqual(map_notion_status_to_task_status('Not started'), 'TD')
+        self.assertEqual(map_notion_status_to_task_status('In progress'), 'IP')
+        self.assertEqual(map_notion_status_to_task_status('Done'), 'D')
 
     def test_extract_title(self):
         page = {

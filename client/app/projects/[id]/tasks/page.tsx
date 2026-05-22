@@ -33,6 +33,7 @@ import { gooeyToast as toast } from 'goey-toast';
 import { DeleteDialog } from '@/components/DeleteDialog';
 import useDeleteData from '@/hooks/useDelete';
 import useFetch from '@/hooks/useFetch';
+import { useNotionTaskSync } from '@/hooks/useNotionTaskSync';
 import { CircleFilled } from '@/components/Delete Animation/DeletionAnimations';
 import { usePermissions } from '@/hooks/usePermissions';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -223,6 +224,8 @@ function ProjectTasksPageContent({ params }: { params: { id: string } }) {
   const taskPermission = can('tasks.edit');
   const taskDeletePermission = can('tasks.delete');
   const projectPermission = can('projects.edit');
+
+  useNotionTaskSync(!!projectId);
 
   const {
     data: taskData,

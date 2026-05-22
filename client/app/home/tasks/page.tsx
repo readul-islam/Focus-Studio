@@ -51,6 +51,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useRouter } from 'next/navigation';
 import useUser from '@/hooks/useUser';
+import { useNotionTaskSync } from '@/hooks/useNotionTaskSync';
 import { usePermissions } from '@/hooks/usePermissions';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -408,6 +409,8 @@ export default function MyTasksPage() {
   const [overID, setOverId] = useState<string | null>(null);
   const { user } = useUser();
   const queryClient = useQueryClient();
+
+  useNotionTaskSync();
 
   const { data: taskData, isLoading: taskLoading } = useFetch('task/user-tasks/');
   const { data: taskDataCards, isLoading: taskDataCardsLoading } = useFetch('task/task-datacards/');

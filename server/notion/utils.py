@@ -165,6 +165,36 @@ def extract_page_status(page: dict, status_property: str) -> str:
     return ''
 
 
+def extract_page_rich_text(page: dict, property_name: str) -> str:
+    prop = page.get('properties', {}).get(property_name, {})
+    if prop.get('type') == 'rich_text':
+        return _rich_text_plain(prop.get('rich_text', []))
+    return ''
+
+
+def extract_page_date(page: dict, property_name: str):
+    """Return date object or None from a Notion date property."""
+    prop = page.get('properties', {}).get(property_name, {})
+    if prop.get('type') != 'date':
+        return None
+    date_val = prop.get('date')
+    if not isinstance(date_val, dict):
+        return None
+    start = date_val.get('start')
+    if not start:
+        return None
+    from datetime import date as date_cls
+
+    try:
+        return date_cls.fromisoformat(str(start)[:10])
+    except ValueError:
+        return None
+
+
+def extract_page_select(page: dict, property_name: str) -> str:
+    return extract_page_status(page, property_name)
+
+
 def default_title_property(properties: dict) -> str:
     for name, schema in properties.items():
         if schema.get('type') == 'title':

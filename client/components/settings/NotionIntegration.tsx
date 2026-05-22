@@ -50,6 +50,8 @@ type NotionMapping = {
 };
 
 type SyncResult = {
+  tasks_updated?: number;
+  tasks_skipped?: number;
   created: number;
   updated: number;
   skipped: number;
@@ -286,10 +288,15 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
       if (result.error && !result.created && !result.updated) {
         toast.error(result.error);
       } else {
+        const taskPart =
+          result.tasks_updated != null
+            ? ` · ${result.tasks_updated} task(s) updated from Notion`
+            : '';
         toast.success(
-          `Sync done: ${result.created} created, ${result.updated} updated, ${result.skipped} unchanged.`
+          `Sync done: ${result.created} created, ${result.updated} updated, ${result.skipped} unchanged${taskPart}.`
         );
         queryClient.invalidateQueries({ queryKey: ['projects'] });
+        queryClient.invalidateQueries({ queryKey: ['task/user-tasks/'] });
       }
     } catch {
       toast.error('Sync failed.');
@@ -372,6 +379,9 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
             {lastSyncResult && !lastSyncResult.error ? (
               <p className="text-xs text-stone-500">
                 Last run: {lastSyncResult.created} created, {lastSyncResult.updated} updated
+                {lastSyncResult.tasks_updated != null && lastSyncResult.tasks_updated > 0
+                  ? `, ${lastSyncResult.tasks_updated} tasks from Notion`
+                  : ''}
                 {lastSyncResult.total_pages != null
                   ? ` (${lastSyncResult.total_pages} rows in Notion)`
                   : ''}

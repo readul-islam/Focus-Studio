@@ -17,4 +17,5 @@ urlpatterns = [
     ),
     path('mapping/', views.notion_project_mapping, name='notion-project-mapping'),
     path('mapping/sync/', views.notion_project_sync, name='notion-project-sync'),
+    path('tasks/sync/', views.notion_tasks_sync, name='notion-tasks-sync'),
 ]

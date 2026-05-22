@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from users.models import Studio, User
 from .models import NotionProjectMapping, NotionProjectSync, NotionToken
 from .outbound import normalize_notion_page_id
-from .sync import sync_notion_projects
+from .sync import sync_notion_projects, sync_notion_tasks
 from .utils import (
     default_title_property,
     get_database_schema,
@@ -306,6 +306,20 @@ def notion_project_sync(request):
 
     result = sync_notion_projects(request.user.studio, user=request.user)
     if result.get('error') and not result.get('created') and not result.get('updated'):
+        if not result.get('tasks_updated'):
+            return Response(result, status=400)
+    return Response(result)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def notion_tasks_sync(request):
+    """Pull task status and fields from Notion task databases into Focuspilot."""
+    if not request.user.studio_id:
+        return Response({'error': 'User does not belong to a studio'}, status=400)
+
+    result = sync_notion_tasks(request.user.studio, user=request.user)
+    if result.get('error') and not result.get('tasks_updated'):
         return Response(result, status=400)
     return Response(result)
 
