@@ -197,7 +197,7 @@ export function DesignShareDialog({
             <TabsContent value="project" className="space-y-4 mt-4">
               {projectSelect}
               <Button
-                className="w-full bg-[#748971] hover:bg-[#5f7560]"
+                className="w-full bg-gray-900 hover:bg-gray-800"
                 onClick={handleAttachToProject}
                 disabled={isSubmitting || !projectId}
               >
@@ -209,7 +209,7 @@ export function DesignShareDialog({
                   Attached.{' '}
                   <Link
                     href={`/projects/${projectId}/docs`}
-                    className="text-[#748971] underline"
+                    className="text-sage-700 underline"
                     onClick={handleClose}
                   >
                     View in Files
@@ -228,7 +228,7 @@ export function DesignShareDialog({
                 />
               </div>
               <Button
-                className="w-full bg-[#748971] hover:bg-[#5f7560]"
+                className="w-full bg-gray-900 hover:bg-gray-800"
                 onClick={handleShareTeam}
                 disabled={isSubmitting || !projectId}
               >
@@ -242,7 +242,7 @@ export function DesignShareDialog({
                 The design will be saved to project Files, then shared with a contractor on that project.
               </p>
               <Button
-                className="w-full bg-[#748971] hover:bg-[#5f7560]"
+                className="w-full bg-gray-900 hover:bg-gray-800"
                 onClick={handleOpenContractorShare}
                 disabled={isSubmitting || !projectId}
               >

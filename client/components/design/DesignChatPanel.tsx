@@ -66,13 +66,13 @@ function ThinkingSkeleton({ label = 'Thinking...' }: { label?: string }) {
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
-        <DesignStar size={16} className="text-[#748971] shrink-0 animate-spin" />
+        <DesignStar size={16} className="text-sage-700 shrink-0 animate-spin" />
         <span className="text-xs text-gray-400">{label}</span>
       </div>
       <div className="space-y-1.5 pl-0.5">
-        <Skeleton className="h-2.5 w-full rounded-full bg-[#748971]/15" />
-        <Skeleton className="h-2.5 w-5/6 rounded-full bg-[#748971]/10" />
-        <Skeleton className="h-2.5 w-4/6 rounded-full bg-[#748971]/10" />
+        <Skeleton className="h-2.5 w-full rounded-full bg-sage-500/15" />
+        <Skeleton className="h-2.5 w-5/6 rounded-full bg-sage-500/10" />
+        <Skeleton className="h-2.5 w-4/6 rounded-full bg-sage-500/10" />
       </div>
     </div>
   );
@@ -92,7 +92,7 @@ function MarkdownContent({ content }: { content: string }) {
         ul: ({ children }) => <ul className="space-y-0.5 mb-1.5">{children}</ul>,
         li: ({ children }) => (
           <li className="flex gap-1.5 text-xs text-gray-700 leading-relaxed">
-            <span className="text-[#748971] shrink-0 mt-0.5">•</span>
+            <span className="text-sage-700 shrink-0 mt-0.5">•</span>
             <span>{children}</span>
           </li>
         ),
@@ -130,7 +130,7 @@ function GeneratedImageBlock({
           download
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-900 px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50"
+          className="inline-flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-900 px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-stone-50"
         >
           <Download className="w-3.5 h-3.5" />
           Download
@@ -138,7 +138,7 @@ function GeneratedImageBlock({
         <button
           type="button"
           onClick={onShare}
-          className="inline-flex items-center gap-1.5 text-xs text-white px-2.5 py-1.5 rounded-lg bg-[#748971] hover:bg-[#5f7560]"
+          className="inline-flex items-center gap-1.5 text-xs text-white px-2.5 py-1.5 rounded-lg bg-gray-900 hover:bg-gray-800"
         >
           <Share2 className="w-3.5 h-3.5" />
           Share or attach
@@ -325,9 +325,9 @@ export function DesignChatPanel({
 
   return (
     <div className="flex flex-col h-full bg-white min-w-0">
-      <div className="flex items-center justify-between px-4 pt-4 pb-3 shrink-0 border-b border-gray-100">
+      <div className="flex items-center justify-between px-4 pt-4 pb-3 shrink-0 border-b border-stone-200">
         <div className="flex items-center gap-2">
-          <DesignStar size={20} className="text-[#748971]" />
+          <DesignStar size={20} className="text-sage-700" />
           <span className="text-[15px] font-medium text-gray-900">Design Studio</span>
         </div>
         <div className="flex items-center gap-2">
@@ -343,7 +343,7 @@ export function DesignChatPanel({
           <button
             type="button"
             onClick={() => refetch()}
-            className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400"
+            className="p-1.5 rounded-full hover:bg-stone-100 text-gray-400"
             title="Refresh"
           >
             <RotateCcw className="w-4 h-4" />
@@ -353,8 +353,8 @@ export function DesignChatPanel({
 
       {isEmpty && (
         <div className="flex flex-col items-center justify-center flex-1 px-6 pb-4 text-center">
-          <DesignStar size={38} className="text-[#748971] mb-4 opacity-80" />
-          <p className="text-xl font-medium text-[#748971] mb-2 leading-tight">
+          <DesignStar size={38} className="text-sage-700 mb-4 opacity-80" />
+          <p className="text-xl font-medium text-gray-900 mb-2 leading-tight">
             Interior & exterior design
           </p>
           <p className="text-sm text-gray-500 mb-8 max-w-sm">
@@ -366,9 +366,9 @@ export function DesignChatPanel({
                 key={q}
                 type="button"
                 onClick={() => setInput(q)}
-                className="w-full text-left text-[13px] text-gray-700 font-medium hover:bg-gray-100 px-3 py-2 rounded-md transition-colors flex items-center gap-2.5 group"
+                className="w-full text-left text-[13px] text-gray-700 font-medium hover:bg-stone-100 px-3 py-2 rounded-md transition-colors flex items-center gap-2.5 group"
               >
-                <ArrowRight className="w-3.5 h-3.5 text-gray-400 shrink-0 group-hover:text-[#748971]" />
+                <ArrowRight className="w-3.5 h-3.5 text-gray-400 shrink-0 group-hover:text-sage-700" />
                 {q}
               </button>
             ))}
@@ -404,7 +404,7 @@ export function DesignChatPanel({
         </div>
       )}
 
-      <div className="px-4 pb-4 pt-2 shrink-0 border-t border-gray-100">
+      <div className="px-4 pb-4 pt-2 shrink-0 border-t border-stone-200">
         {pendingFiles.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-2 justify-end">
             {pendingFiles.map((f, i) => (
@@ -480,7 +480,7 @@ export function DesignChatPanel({
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={!canEdit}
-                className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 disabled:opacity-40"
+                className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-stone-100 disabled:opacity-40"
                 title="Upload sketch"
               >
                 <Paperclip className="w-4 h-4" />
@@ -495,7 +495,7 @@ export function DesignChatPanel({
                   type="button"
                   onClick={handleGenerate}
                   disabled={isPending || !canEdit || (!input.trim() && pendingFiles.length === 0)}
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-[#748971] text-white text-xs font-medium hover:bg-[#5f7560] disabled:opacity-40"
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-gray-900 text-white text-xs font-medium hover:bg-gray-800 disabled:opacity-40"
                 >
                   {generateMutation.isPending ? (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -509,7 +509,7 @@ export function DesignChatPanel({
                 type="button"
                 onClick={handleChat}
                 disabled={!input.trim() || isPending || !canEdit}
-                className="w-8 h-8 rounded-full bg-[#748971] flex items-center justify-center disabled:opacity-30 hover:bg-[#5f7560] transition-colors shrink-0"
+                className="w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center disabled:opacity-30 hover:bg-gray-800 transition-colors shrink-0"
                 title="Send message"
               >
                 <Send className="w-3.5 h-3.5 text-white" />
@@ -572,7 +572,7 @@ function MessageBubble({
 
   return (
     <div className="space-y-2">
-      <DesignStar size={18} className="text-[#748971]" />
+      <DesignStar size={18} className="text-sage-700" />
       {msg.image_url && msg.asset_id ? (
         <GeneratedImageBlock
           imageUrl={msg.image_url}

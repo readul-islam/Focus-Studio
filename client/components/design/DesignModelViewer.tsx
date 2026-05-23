@@ -96,7 +96,7 @@ export function DesignModelViewer({ assetId, className = '', minHeight = 280 }: 
 
   return (
     <div
-      className={`relative w-full rounded-xl overflow-hidden border border-gray-200 bg-stone-100 ${className}`}
+      className={`relative w-full rounded-xl overflow-hidden border border-stone-200 bg-stone-100 ${className}`}
       style={{ height: minHeight }}
     >
       {(!viewerReady || !blobUrl) && !error && (
@@ -104,7 +104,7 @@ export function DesignModelViewer({ assetId, className = '', minHeight = 280 }: 
           className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-gray-500"
           aria-busy="true"
         >
-          <Loader2 className="w-6 h-6 animate-spin text-[#748971]" />
+          <Loader2 className="w-6 h-6 animate-spin text-sage-700" />
           <span className="text-xs">Loading 3D model…</span>
         </div>
       )}

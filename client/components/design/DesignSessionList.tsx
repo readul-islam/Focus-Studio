@@ -81,7 +81,7 @@ function SessionRow({
     <div
       className={cn(
         'group flex items-center gap-0.5 rounded-lg transition-colors',
-        isActive ? 'bg-[#748971]/10' : 'hover:bg-gray-50'
+        isActive ? 'bg-stone-100' : 'hover:bg-stone-50'
       )}
     >
       {editing ? (
@@ -104,7 +104,7 @@ function SessionRow({
             onBlur={() => void saveEdit()}
             disabled={isRenaming}
             maxLength={255}
-            className="w-full text-sm font-medium text-gray-900 border border-[#748971]/40 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-[#748971]/30"
+            className="w-full text-sm font-medium text-gray-900 border border-stone-200 rounded-md px-2 py-1 outline-none focus:ring-2 focus:ring-sage-500/30"
             aria-label="Session name"
           />
           <p className="text-[11px] text-gray-400 capitalize mt-1 px-0.5">
@@ -129,7 +129,7 @@ function SessionRow({
         <button
           type="button"
           onClick={startEdit}
-          className="p-1.5 rounded opacity-0 group-hover:opacity-100 text-gray-400 hover:text-[#748971] hover:bg-[#748971]/10 transition-all"
+          className="p-1.5 rounded opacity-0 group-hover:opacity-100 text-gray-400 hover:text-sage-700 hover:bg-stone-100 transition-all"
           title="Rename"
         >
           <Pencil className="w-3.5 h-3.5" />
@@ -164,13 +164,13 @@ export function DesignSessionList({
   isRenaming,
 }: Props) {
   return (
-    <div className="flex flex-col h-full border-r border-gray-200 bg-white">
-      <div className="p-3 border-b border-gray-100">
+    <div className="flex flex-col h-full bg-white">
+      <div className="p-3 border-b border-stone-200">
         <button
           type="button"
           onClick={onNew}
           disabled={isCreating}
-          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-[#748971] text-white text-sm font-medium hover:bg-[#5f7560] transition-colors disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors disabled:opacity-50"
         >
           {isCreating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
           New design

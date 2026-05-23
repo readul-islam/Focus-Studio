@@ -71,7 +71,7 @@ export function DesignClickableImage({
     <button
       type="button"
       onClick={onOpen}
-      className={`block p-0 border-0 bg-transparent cursor-zoom-in w-full h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#748971] focus-visible:ring-offset-2 rounded-xl ${className ?? ''}`}
+      className={`block p-0 border-0 bg-transparent cursor-zoom-in w-full h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-sage-500 focus-visible:ring-offset-2 rounded-xl ${className ?? ''}`}
       aria-label={`View ${alt} fullscreen`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}

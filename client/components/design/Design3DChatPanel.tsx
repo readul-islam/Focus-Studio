@@ -64,10 +64,10 @@ function ThinkingSkeleton({ label = 'Generating 3D…' }: { label?: string }) {
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
-        <DesignStar size={16} className="text-[#748971] shrink-0 animate-spin" />
+        <DesignStar size={16} className="text-sage-700 shrink-0 animate-spin" />
         <span className="text-xs text-gray-400">{label}</span>
       </div>
-      <Skeleton className="h-48 w-full max-w-md rounded-xl bg-[#748971]/10" />
+      <Skeleton className="h-48 w-full max-w-md rounded-xl bg-sage-500/10" />
     </div>
   );
 }
@@ -98,6 +98,7 @@ export function Design3DChatPanel({
   const [modelLightboxAssetId, setModelLightboxAssetId] = useState<number | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const { data: messages = [], isLoading: messagesLoading } = useDesignMessages(sessionId);
   const generate3d = useDesignGenerate3d(sessionId);
@@ -206,9 +207,9 @@ export function Design3DChatPanel({
 
   return (
     <div className="flex flex-col h-full bg-white min-w-0">
-      <div className="flex items-center justify-between px-4 pt-4 pb-3 shrink-0 border-b border-gray-100">
+      <div className="flex items-center justify-between px-4 pt-4 pb-3 shrink-0 border-b border-stone-200">
         <div className="flex items-center gap-2">
-          <Box className="w-5 h-5 text-[#748971]" />
+          <Box className="w-5 h-5 text-sage-700" />
           <span className="text-[15px] font-medium text-gray-900">3D Design Studio</span>
           {meshyStatus?.test_mode && (
             <span className="text-[10px] font-medium uppercase tracking-wide text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded">
@@ -216,22 +217,24 @@ export function Design3DChatPanel({
             </span>
           )}
         </div>
-        <select
-          value={designType}
-          onChange={e => onDesignTypeChange(e.target.value as 'interior' | 'exterior')}
-          className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white text-gray-700"
-          aria-label="Design type"
-        >
-          <option value="interior">Interior</option>
-          <option value="exterior">Exterior</option>
-        </select>
+        <div className="flex items-center gap-2">
+          <select
+            value={designType}
+            onChange={e => onDesignTypeChange(e.target.value as 'interior' | 'exterior')}
+            className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white text-gray-700"
+            aria-label="Design type"
+          >
+            <option value="interior">Interior</option>
+            <option value="exterior">Exterior</option>
+          </select>
+        </div>
       </div>
 
       {isEmpty && (
         <div className="flex flex-col items-center justify-center flex-1 px-6 pb-4 text-center">
-          <Box className="w-10 h-10 text-[#748971] mb-4" />
-          <p className="text-xl font-medium text-[#748971] mb-2">Sketch to 3D model</p>
-          <p className="text-sm text-gray-500 mb-6 max-w-sm">
+          <Box className="w-10 h-10 text-sage-700 mb-4" />
+          <p className="text-xl font-medium text-gray-900 mb-2">Sketch to 3D model</p>
+          <p className="text-sm text-gray-500 mb-8 max-w-sm">
             Upload a sketch or product photo. Meshy turns it into a rotatable GLB model you can
             attach to projects and share with your team.
           </p>
@@ -241,9 +244,9 @@ export function Design3DChatPanel({
                 key={q}
                 type="button"
                 onClick={() => setInput(q)}
-                className="w-full text-left text-[13px] text-gray-700 font-medium hover:bg-gray-100 px-3 py-2 rounded-md flex items-center gap-2.5"
+                className="w-full text-left text-[13px] text-gray-700 font-medium hover:bg-stone-100 px-3 py-2 rounded-md transition-colors flex items-center gap-2.5 group"
               >
-                <ArrowRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                <ArrowRight className="w-3.5 h-3.5 text-gray-400 shrink-0 group-hover:text-sage-700" />
                 {q}
               </button>
             ))}
@@ -274,10 +277,10 @@ export function Design3DChatPanel({
         </div>
       )}
 
-      <div className="px-4 pb-4 pt-2 shrink-0 border-t border-gray-100">
+      <div className="px-4 pb-4 pt-2 shrink-0 border-t border-stone-200">
         {pendingPreviews[0] && (
-          <div className="flex justify-end mb-2">
-            <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-gray-200">
+          <div className="flex flex-wrap gap-2 mb-2 justify-end">
+            <div className="relative group rounded-lg overflow-hidden border border-gray-200 bg-gray-50 w-20 h-20 shrink-0">
               <DesignClickableImage
                 src={pendingPreviews[0]}
                 alt="Sketch"
@@ -289,18 +292,27 @@ export function Design3DChatPanel({
               <button
                 type="button"
                 onClick={() => setPendingFiles([])}
-                className="absolute top-0.5 right-0.5 p-0.5 rounded-full bg-black/50 text-white"
+                className="absolute top-0.5 right-0.5 p-0.5 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                aria-label="Remove sketch"
               >
                 <X className="w-3 h-3" />
               </button>
             </div>
           </div>
         )}
-        <div className="rounded-2xl border border-gray-200 bg-gray-50 shadow-sm">
+        <div className="rounded-2xl border border-gray-200 bg-gray-50 focus-within:border-gray-300 focus-within:bg-white transition-all shadow-sm">
           <textarea
+            ref={inputRef}
             rows={1}
             value={input}
-            onChange={e => setInput(e.target.value)}
+            onChange={e => {
+              setInput(e.target.value);
+              const el = e.target;
+              el.style.height = '0px';
+              requestAnimationFrame(() => {
+                el.style.height = `${Math.min(el.scrollHeight, 160)}px`;
+              });
+            }}
             onKeyDown={e => {
               if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
@@ -309,9 +321,10 @@ export function Design3DChatPanel({
             }}
             placeholder="Describe materials and style (optional)…"
             disabled={!canEdit}
-            className="w-full bg-transparent text-sm px-4 pt-3 pb-1 outline-none resize-none min-h-[40px]"
+            className="w-full bg-transparent text-sm text-gray-800 placeholder-gray-400 outline-none resize-none px-4 pt-3 pb-1 leading-relaxed max-h-40 overflow-y-auto"
+            style={{ minHeight: '40px' }}
           />
-          <div className="flex items-center justify-between px-3 pb-2.5 gap-2">
+          <div className="flex items-center justify-between px-3 pb-2.5 pt-1 gap-2">
             <div className="flex items-center gap-1">
               <input
                 ref={fileInputRef}
@@ -327,24 +340,30 @@ export function Design3DChatPanel({
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={!canEdit}
-                className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+                className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-stone-100 disabled:opacity-40"
+                title="Upload sketch"
               >
                 <Paperclip className="w-4 h-4" />
               </button>
+              <span className="text-[10px] text-gray-400 hidden sm:inline">
+                Enter to generate · Shift+Enter newline
+              </span>
             </div>
-            <button
-              type="button"
-              onClick={handleGenerate3d}
-              disabled={isPending || !canEdit || pendingFiles.length === 0}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#748971] text-white text-xs font-medium hover:bg-[#5f7560] disabled:opacity-40"
-            >
-              {isPending ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Box className="w-4 h-4" />
-              )}
-              Generate 3D
-            </button>
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={handleGenerate3d}
+                disabled={isPending || !canEdit || pendingFiles.length === 0}
+                className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-gray-900 text-white text-xs font-medium hover:bg-gray-800 disabled:opacity-40"
+              >
+                {isPending ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <Box className="w-3.5 h-3.5" />
+                )}
+                Generate 3D
+              </button>
+            </div>
           </div>
         </div>
         <p className="text-[10px] text-gray-400 text-center mt-2">
@@ -398,7 +417,7 @@ function ModelDownloadButton({ assetId, filename }: { assetId: number; filename:
       type="button"
       onClick={handleDownload}
       disabled={loading}
-      className="inline-flex items-center gap-1.5 text-xs text-gray-600 px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50"
+      className="inline-flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-900 px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50"
     >
       {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
       Download GLB
@@ -421,7 +440,7 @@ function Message3DBubble({
     return (
       <div className="flex flex-col items-end gap-2 max-w-[85%] ml-auto">
         {msg.sketch_url && (
-          <div className="relative w-40 h-40 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+          <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
             <DesignClickableImage
               src={msg.sketch_url}
               alt="Sketch"
@@ -431,7 +450,7 @@ function Message3DBubble({
           </div>
         )}
         {msg.content && (
-          <div className="bg-gray-100 text-gray-800 rounded-2xl rounded-br-md px-4 py-2.5 text-[13px]">
+          <div className="bg-gray-100 text-gray-800 rounded-2xl rounded-br-md px-4 py-2.5 text-[13px] leading-relaxed">
             {msg.content}
           </div>
         )}
@@ -441,13 +460,13 @@ function Message3DBubble({
 
   return (
     <div className="space-y-2 max-w-lg">
-      <DesignStar size={18} className="text-[#748971]" />
+      <DesignStar size={18} className="text-sage-700" />
       {msg.model_url && msg.asset_id && (
         <>
           <button
             type="button"
             onClick={() => onOpenModelFullscreen(msg.asset_id!)}
-            className="relative group w-full text-left rounded-xl overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-[#748971]"
+            className="relative group w-full text-left rounded-xl overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-sage-500"
             title="Open fullscreen"
           >
             <DesignModelViewer assetId={msg.asset_id} minHeight={300} />
@@ -462,7 +481,7 @@ function Message3DBubble({
             <button
               type="button"
               onClick={() => onShare(msg.model_url!, msg.asset_id!)}
-              className="inline-flex items-center gap-1.5 text-xs text-white px-2.5 py-1.5 rounded-lg bg-[#748971] hover:bg-[#5f7560]"
+              className="inline-flex items-center gap-1.5 text-xs text-white px-2.5 py-1.5 rounded-lg bg-gray-900 hover:bg-gray-800"
             >
               <Share2 className="w-3.5 h-3.5" />
               Share or attach

@@ -43,7 +43,7 @@ export default function ProjectLayout({
   }
 
   return (
-    <main className="flex-1 bg-stone-50 p-4 sm:p-6">
+    <main className="flex-1 bg-stone-50 p-4 sm:p-6 h-full">
       <div className="space-y-6 max-w-7xl mx-auto">
         {!isSettingsPage ? (
           <ProjectCollaborationProvider projectId={params.id}>
@@ -61,7 +61,7 @@ export default function ProjectLayout({
 function ProjectLayoutNav({ projectId }: { projectId: string }) {
   const { presence } = useProjectCollaborationContext();
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 h-full">
       <ProjectNav projectId={projectId} />
       <ProjectPresenceStrip presence={presence} />
     </div>
