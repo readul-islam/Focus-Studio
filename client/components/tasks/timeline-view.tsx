@@ -217,7 +217,7 @@ export default function TimelineView({
           </div>
 
           {/* Scroll Container */}
-          <div className="flex-1 border rounded-[12px] bg-white overflow-auto relative">
+          <div className="flex-1 border rounded-[12px] bg-white overflow-auto relative min-h-[480px]">
             <div style={{ minWidth: `${totalWidth + SIDEBAR_WIDTH}px` }}>
 
               {/* Sticky Header */}
