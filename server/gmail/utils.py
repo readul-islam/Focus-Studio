@@ -41,7 +41,56 @@ _MSG_PART_FIELDS = (
     'parts(mimeType,filename,headers,body(data,attachmentId,size),'
     'parts(mimeType,filename,headers,body(data,attachmentId,size))))'
 )
-_MSG_FIELDS = f'id,threadId,snippet,payload(headers,body(data),parts({_MSG_PART_FIELDS}))'
+_MSG_FIELDS = f'id,threadId,snippet,labelIds,payload(headers,body(data),parts({_MSG_PART_FIELDS}))'
+
+
+def gmail_message_is_read(label_ids) -> bool:
+    """Gmail marks unread messages with the UNREAD label."""
+    return 'UNREAD' not in (label_ids or [])
+
+
+def get_unread_thread_ids(studio, thread_ids: list) -> set:
+    """Thread IDs that have at least one unread inbound message."""
+    if not thread_ids:
+        return set()
+    return set(
+        Email.objects.filter(
+            studio=studio,
+            thread_id__in=thread_ids,
+            is_read=False,
+            is_sent=False,
+        ).values_list('thread_id', flat=True).distinct()
+    )
+
+
+def set_thread_read_state(user, thread_id: str, *, read: bool) -> dict:
+    """
+    Update read state for all emails in a thread (app DB + Gmail UNREAD label).
+    """
+    if not user.studio:
+        return {'error': 'User has no studio'}
+
+    emails = Email.objects.filter(studio=user.studio, thread_id=thread_id)
+    if not emails.exists():
+        return {'error': 'Thread not found'}
+
+    emails.update(is_read=read)
+
+    service = get_gmail_service(user)
+    if not service:
+        return {'success': True, 'gmail_synced': False}
+
+    body = (
+        {'removeLabelIds': ['UNREAD']}
+        if read
+        else {'addLabelIds': ['UNREAD']}
+    )
+    try:
+        service.users().threads().modify(userId='me', id=thread_id, body=body).execute()
+        return {'success': True, 'gmail_synced': True}
+    except Exception as exc:
+        logger.warning('Gmail thread read state sync failed for %s: %s', thread_id, exc)
+        return {'success': True, 'gmail_synced': False, 'warning': str(exc)}
 
 _EMAIL_RE = re.compile(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+')
 
@@ -494,6 +543,8 @@ def fetch_gmail_messages(user):
             snippet = html.unescape(txt.get('snippet') or get_fast_snippet(body))
 
             is_sent = message_is_sent_by_user(sender_full, user)
+            label_ids = txt.get('labelIds') or []
+            is_read = True if is_sent else gmail_message_is_read(label_ids)
             attachments = _extract_attachments_from_payload(txt.get('payload', {}))
 
             emails_to_create.append(Email(
@@ -510,6 +561,7 @@ def fetch_gmail_messages(user):
                 thread_id=txt.get('threadId', ''),
                 smtp_message_id=smtp_message_id,
                 is_sent=is_sent,
+                is_read=is_read,
             ))
 
         # Single bulk INSERT instead of one INSERT per message
@@ -727,6 +779,7 @@ def send_gmail_message(user, to_email, subject, body, thread_id=None, attachment
                 'thread_id': sent_message.get('threadId') or thread_id or '',
                 'smtp_message_id': sent_smtp_id,
                 'is_sent': True,
+                'is_read': True,
             },
         )
 

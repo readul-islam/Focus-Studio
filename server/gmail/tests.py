@@ -1,4 +1,5 @@
 from unittest.mock import patch, MagicMock
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APITestCase
 from users.models import User, Studio
@@ -145,6 +146,46 @@ class GmailSendEmailTests(APITestCase):
             format='json',
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class GmailThreadReadTests(APITestCase):
+    def setUp(self):
+        self.studio = create_studio()
+        self.user = create_user(studio=self.studio, gmail=True)
+        self.client.force_authenticate(user=self.user)
+        from gmail.models import Email
+        from crm.models import Client
+        client = Client.objects.create(
+            studio=self.studio,
+            name='Test',
+            email='client@example.com',
+        )
+        Email.objects.create(
+            studio=self.studio,
+            client=client,
+            sender='client@example.com',
+            recipient=self.user.email,
+            subject='Hello',
+            body='Body',
+            received_at=timezone.now(),
+            message_id='msg-1',
+            thread_id='thread-1',
+            is_sent=False,
+            is_read=False,
+        )
+
+    def test_mark_thread_read(self):
+        response = self.client.post('/gmail/thread/thread-1/read/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        from gmail.models import Email
+        self.assertTrue(Email.objects.filter(thread_id='thread-1').first().is_read)
+
+    def test_threads_list_includes_is_read(self):
+        response = self.client.get('/gmail/threads/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        results = response.data.get('results', response.data)
+        if isinstance(results, list) and results:
+            self.assertIn('is_read', results[0])
 
 
 class GmailSearchTests(APITestCase):

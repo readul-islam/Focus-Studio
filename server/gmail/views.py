@@ -10,6 +10,8 @@ from .models import Email, GmailToken
 from .utils import (
     client_display_name,
     email_sender_label,
+    get_unread_thread_ids,
+    set_thread_read_state,
     ensure_email_attachments,
     fetch_gmail_messages,
     get_gmail_service,
@@ -304,12 +306,45 @@ def get_thread(request, thread_id):
             "body": email.body,
             "received_at": email.received_at,
             "is_sent": message_is_sent_by_user(email.sender, user),
+            "is_read": email.is_read,
             "thread_id": email.thread_id,
             "attachments": attachments,
             "has_attachment": bool(attachments),
         })
     
     return Response(data)
+
+
+@api_view(['POST', 'PATCH'])
+@permission_classes([IsAuthenticated])
+def mark_thread_read(request, thread_id):
+    """Mark all messages in a thread as read (app + Gmail)."""
+    user = request.user
+    if not getattr(user, 'gmail', False):
+        return Response({'error': 'User has no gmail connected'}, status=400)
+    if not user.studio:
+        return Response({'error': 'User has no studio'}, status=400)
+
+    result = set_thread_read_state(user, thread_id, read=True)
+    if result.get('error'):
+        return Response(result, status=404)
+    return Response(result)
+
+
+@api_view(['POST', 'PATCH'])
+@permission_classes([IsAuthenticated])
+def mark_thread_unread(request, thread_id):
+    """Mark a thread as unread (app + Gmail)."""
+    user = request.user
+    if not getattr(user, 'gmail', False):
+        return Response({'error': 'User has no gmail connected'}, status=400)
+    if not user.studio:
+        return Response({'error': 'User has no studio'}, status=400)
+
+    result = set_thread_read_state(user, thread_id, read=False)
+    if result.get('error'):
+        return Response(result, status=404)
+    return Response(result)
 
 
 @api_view(['GET'])
@@ -798,6 +833,8 @@ def get_all_threads(request):
     print(f"[TIMER] Step 4 - fetch client→project map: {time.perf_counter() - _t3:.3f}s")
     _t4 = time.perf_counter()
 
+    unread_thread_ids = get_unread_thread_ids(user.studio, thread_ids)
+
     _loop_snippet = _loop_project = _loop_sender = 0.0
 
     for t_id in thread_ids:
@@ -853,6 +890,7 @@ def get_all_threads(request):
             "sender": sender_display,
             "received_at": email.received_at,
             "has_attachment": bool(email.attachments),
+            "is_read": email.thread_id not in unread_thread_ids,
             "project": project_data,
             "projects": projects_data
         })
@@ -997,6 +1035,8 @@ def search_emails(request):
             if project.client_id not in client_project_map:
                 client_project_map[project.client_id] = project
 
+    unread_thread_ids = get_unread_thread_ids(user.studio, thread_ids)
+
     results = []
     for t_id in thread_ids:
         email = email_map.get(t_id)
@@ -1033,6 +1073,7 @@ def search_emails(request):
             "snippet": current_snippet,
             "sender": sender_display,
             "received_at": email.received_at,
+            "is_read": email.thread_id not in unread_thread_ids,
             "project": project_data,
             "projects": projects_data,
         })
@@ -1174,6 +1215,7 @@ def get_threads_by_project(request, project_id):
     ).select_related('client')
 
     email_map = {e.thread_id: e for e in latest_emails}
+    unread_thread_ids = get_unread_thread_ids(user.studio, thread_ids)
     data = []
     
     for t_id in thread_ids:
@@ -1202,7 +1244,8 @@ def get_threads_by_project(request, project_id):
             "subject": email.subject,
             "snippet": current_snippet,
             "sender": sender_display,
-            "received_at": email.received_at
+            "received_at": email.received_at,
+            "is_read": email.thread_id not in unread_thread_ids,
         })
 
     return Response(data)

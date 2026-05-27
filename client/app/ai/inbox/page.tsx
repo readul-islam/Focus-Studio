@@ -65,6 +65,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useGmailSearchStore } from '@/store/useGmailSearchStore';
 import { useRouter } from 'next/navigation';
 import { openGmailOAuthPopup } from '@/lib/gmail-connect';
+import { markGmailThreadRead, markGmailThreadUnread } from '@/lib/gmail-inbox';
 
 dayjs.extend(relativeTime);
 
@@ -75,6 +76,7 @@ type ThreadItem = {
   sender: string;
   received_at: string;
   has_attachment?: boolean;
+  is_read?: boolean;
   project: any;
   projects?: any[];
 };
@@ -156,7 +158,7 @@ function splitGmailEmail(html: string) {
   };
 }
 
-type CategoryFilter = 'all' | 'action_required' | 'procurement' | 'fyi';
+type CategoryFilter = 'all' | 'unread' | 'action_required' | 'procurement' | 'fyi';
 
 const categoryConfig = {
   action_required: {
@@ -593,6 +595,7 @@ function EmailDetailPanelWithMessages({
   isCreatingTask,
   addedTaskIds,
   onBack,
+  onMarkUnread,
   userEmail,
 }: {
   email: EmailWithAnalysis;
@@ -615,6 +618,7 @@ function EmailDetailPanelWithMessages({
   isCreatingTask?: boolean;
   addedTaskIds?: Map<string, number>;
   onBack?: () => void;
+  onMarkUnread?: () => void;
 }) {
   // Use AI summary category if available, otherwise fall back to email analysis
   const category = aiSummary?.category || email.analysis?.category || 'fyi';
@@ -635,15 +639,28 @@ function EmailDetailPanelWithMessages({
   return (
     <div className="bg-white h-full flex flex-col">
       {/* Mobile back button */}
-      {onBack && (
-        <div className="lg:hidden flex-shrink-0 flex items-center gap-2 px-4 pt-4 pb-2">
-          <button
-            onClick={onBack}
-            className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            <ChevronLeft className="w-4 h-4" />
-            Back
-          </button>
+      {(onBack || onMarkUnread) && (
+        <div className="flex-shrink-0 flex items-center justify-between gap-2 px-4 pt-4 pb-2">
+          {onBack ? (
+            <button
+              onClick={onBack}
+              className="lg:hidden flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              Back
+            </button>
+          ) : (
+            <span className="lg:hidden" />
+          )}
+          {onMarkUnread && email.isRead && (
+            <button
+              type="button"
+              onClick={onMarkUnread}
+              className="ml-auto text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              Mark unread
+            </button>
+          )}
         </div>
       )}
 
@@ -1075,7 +1092,7 @@ export default function MagicalInboxPage() {
       subject: thread.subject || '(No Subject)',
       snippet: thread.snippet || '',
       date: thread.received_at,
-      isRead: true, // API doesn't provide this, default to true
+      isRead: thread.is_read !== false,
       hasAttachment: Boolean(thread.has_attachment),
       analysis: thread.project ? {
         category: 'fyi' as const,
@@ -1260,6 +1277,23 @@ export default function MagicalInboxPage() {
     setSelectedThreadId(email.id);
     setReplyBody('');
     setShowReplyInput(false);
+    if (!email.isRead) {
+      markGmailThreadRead(email.id)
+        .then(() => {
+          queryClient.invalidateQueries({ queryKey: [threadsEndpoint] });
+        })
+        .catch(() => {});
+    }
+  }
+
+  function handleMarkUnread() {
+    if (!selectedThreadId) return;
+    markGmailThreadUnread(selectedThreadId)
+      .then(() => {
+        queryClient.invalidateQueries({ queryKey: [threadsEndpoint] });
+        toast.success('Marked as unread');
+      })
+      .catch(() => toast.error('Could not mark thread as unread'));
   }
 
   async function handleSendReply(attachmentFiles: File[] = []) {
@@ -1384,8 +1418,10 @@ export default function MagicalInboxPage() {
 
   // Filter emails by category
   const filteredEmails = useMemo(() => {
-    // const removeStudioEmail = emails.filter(e => e?.analysis?.project !== 'Studio Tasks')
     const removeStudioEmail = emails;
+    if (activeCategory === 'unread') {
+      return removeStudioEmail.filter((e) => !e.isRead);
+    }
     if (activeCategory === 'all') return removeStudioEmail;
     return removeStudioEmail.filter(e => e.analysis?.category === activeCategory);
   }, [emails, activeCategory]);
@@ -1447,6 +1483,14 @@ export default function MagicalInboxPage() {
                   isActive={activeCategory === 'all'}
                   onClick={() => handleCategoryChange('all')}
                   icon={Inbox}
+                />
+                <CategoryTab
+                  category="unread"
+                  label="Unread"
+                  count={filteredStats.unread}
+                  isActive={activeCategory === 'unread'}
+                  onClick={() => handleCategoryChange('unread')}
+                  icon={Mail}
                 />
                 <CategoryTab
                   category="action_required"
@@ -1618,7 +1662,7 @@ export default function MagicalInboxPage() {
               <p className="text-gray-800 font-medium mb-2">No emails found</p>
               <p className="text-sm text-gray-500 max-w-xs">
                 {activeCategory !== 'all'
-                  ? `No ${activeCategory.replace('_', ' ')} emails found. Try selecting a different category.`
+                  ? `No ${activeCategory === 'unread' ? 'unread' : activeCategory.replace('_', ' ')} emails found. Try selecting a different category.`
                   : 'Your inbox is empty.'}
               </p>
             </div>
@@ -1649,6 +1693,7 @@ export default function MagicalInboxPage() {
               isCreatingTask={isCreatingTask}
               addedTaskIds={addedTaskIds}
               onBack={() => setSelectedThreadId(null)}
+              onMarkUnread={handleMarkUnread}
             />
           ) : (
             <EmptyDetailPanel isDisconnected={gmailDisconnected} hasEmails={filteredEmails.length > 0} />

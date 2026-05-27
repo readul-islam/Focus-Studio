@@ -35,6 +35,8 @@ import { htmlHasContent } from '@/lib/html-content';
 import { sanitizeComposeHtml } from '@/lib/sanitize-html';
 import { EMAIL_BODY_PROSE_CLASS } from '@/lib/email-body-styles';
 import { InboxReplyComposer } from '@/components/inbox/InboxReplyComposer';
+import { markGmailThreadRead } from '@/lib/gmail-inbox';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   Dialog,
   DialogContent,
@@ -53,6 +55,7 @@ type ThreadItem = {
   snippet: string;
   sender: string;
   received_at: string;
+  is_read?: boolean;
   project: string;
 };
 
@@ -178,6 +181,7 @@ const MessageBlock = ({ msg, userEmail }: { msg: MessageItem; userEmail?: string
 
 export default function InboxPage() {
   const { user } = useUser();
+  const queryClient = useQueryClient();
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [replyBody, setReplyBody] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -276,9 +280,14 @@ export default function InboxPage() {
     }
   }, [messages]);
 
-  const handleThreadSelect = (threadId: string) => {
+  const handleThreadSelect = (threadId: string, isRead?: boolean) => {
     setSelectedThreadId(threadId);
     setReplyBody('');
+    if (isRead === false) {
+      markGmailThreadRead(threadId)
+        .then(() => queryClient.invalidateQueries({ queryKey: ['gmail/threads/'] }))
+        .catch(() => {});
+    }
   };
 
   const handleSendReply = async (attachmentFiles: File[] = []) => {
@@ -317,9 +326,19 @@ export default function InboxPage() {
     }
   };
 
-  // Filter threads based on search
-  const filteredThreads = (Array.isArray(threads) ? threads : []).filter((t: ThreadItem) => {
+  const threadList = useMemo(() => {
+    if (Array.isArray(threads)) return threads as ThreadItem[];
+    if (threads && typeof threads === 'object' && 'results' in threads) {
+      return ((threads as { results?: ThreadItem[] }).results) ?? [];
+    }
+    return [];
+  }, [threads]);
+
+  // Filter threads based on search and read filter
+  const filteredThreads = threadList.filter((t: ThreadItem) => {
+    if (filter === 'unread' && t.is_read !== false) return false;
     const search = searchText.toLowerCase();
+    if (!search) return true;
     return (
       (t.subject && t.subject.toLowerCase().includes(search)) ||
       (t.sender && t.sender.toLowerCase().includes(search)) ||
@@ -362,6 +381,15 @@ export default function InboxPage() {
                 onClick={() => setFilter("all")}
               >
                 All
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-8 px-3 text-sm font-medium hover:text-gray-600 ${filter === "unread" ? "text-white hover:text-white" : "text-gray-600"}`}
+                style={filter === "unread" ? { backgroundColor: "rgb(17, 24, 39)" } : {}}
+                onClick={() => setFilter("unread")}
+              >
+                Unread
               </Button>
               <Button
                 variant="ghost"
@@ -439,13 +467,23 @@ export default function InboxPage() {
                 )}
 
                 <div className="divide-y divide-gray-100">
-                  {filteredThreads.map((thread: ThreadItem) => (
+                  {filteredThreads.map((thread: ThreadItem) => {
+                    const isUnread = thread.is_read === false;
+                    return (
                     <div
                       key={thread.thread_id}
-                      onClick={() => handleThreadSelect(thread.thread_id)}
-                      className={`group flex items-start gap-4 p-4 hover:bg-stone-50 transition-colors cursor-pointer ${selectedThreadId === thread.thread_id ? 'bg-[#f3f4f6] hover:bg-blue-50' : ''
-                        }`}
+                      onClick={() => handleThreadSelect(thread.thread_id, thread.is_read)}
+                      className={`group flex items-start gap-4 p-4 hover:bg-stone-50 transition-colors cursor-pointer ${
+                        selectedThreadId === thread.thread_id
+                          ? 'bg-[#f3f4f6] hover:bg-blue-50'
+                          : isUnread
+                            ? 'bg-white'
+                            : 'bg-stone-50/30'
+                      }`}
                     >
+                      <div className="flex flex-col items-center gap-2 pt-2 flex-shrink-0">
+                        <div className={`w-2 h-2 rounded-full ${isUnread ? 'bg-gray-900' : 'bg-transparent'}`} />
+                      </div>
                       <div className="flex-shrink-0">
                         <Avatar className="w-10 h-10">
                           {/* Simple fallback based on sender name */}
@@ -457,14 +495,14 @@ export default function InboxPage() {
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2 mb-1">
-                          <span className={`font-medium truncate text-sm ${selectedThreadId === thread.thread_id ? 'text-gray-900' : 'text-gray-900'}`}>
+                          <span className={`font-medium truncate text-sm ${isUnread ? 'text-gray-900' : 'text-gray-700'}`}>
                             {thread.sender?.split('<')[0].trim()}
                           </span>
                           <span className="text-xs text-gray-500 flex-shrink-0">
                             {dayjs(thread.received_at).fromNow(true)}
                           </span>
                         </div>
-                        <p className={`text-sm mb-1 line-clamp-1 ${selectedThreadId === thread.thread_id ? 'text-gray-700 font-medium' : 'text-gray-700'}`}>
+                        <p className={`text-sm mb-1 line-clamp-1 ${isUnread ? 'text-gray-900 font-medium' : 'text-gray-700'}`}>
                           {thread.subject || '(No Subject)'}
                         </p>
                         <p className="text-xs text-gray-500 line-clamp-2">
@@ -475,7 +513,8 @@ export default function InboxPage() {
                         </div>}
                       </div>
                     </div>
-                  ))}
+                  );
+                  })}
                 </div>
               </div>
 
