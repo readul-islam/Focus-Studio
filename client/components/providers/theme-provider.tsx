@@ -16,6 +16,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       enableColorScheme
       storageKey="focuspilot-theme"
       disableTransitionOnChange
+      themes={['light', 'dark', 'midnight', 'forest', 'terracotta', 'cobalt', 'quartz', 'pink', 'system']}
     >
       {children}
     </NextThemesProvider>

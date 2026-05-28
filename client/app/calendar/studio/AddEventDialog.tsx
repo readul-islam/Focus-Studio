@@ -208,78 +208,119 @@ export default function AddEventDialog({
         : 'Adds a schedule entry to the selected project (visible in All Projects and project filters).';
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={(v) => { setOpen(v); if(!v) reset(); }}>
             <DialogTrigger asChild>
-                <Button className="h-9 gap-2 bg-primary text-primary-foreground hover:opacity-90">
+                <Button className="h-9 gap-2 bg-primary text-primary-foreground hover:opacity-90 rounded-xl px-4 text-xs font-semibold shadow-sm">
                     <Plus className="w-4 h-4" />
                     Add Event
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[520px] max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
-                    <DialogTitle>{dialogTitle}</DialogTitle>
-                    <p className="text-xs text-gray-500 mt-0.5">{dialogDesc}</p>
+            <DialogContent 
+                overlayClassName="bg-background/35 backdrop-blur-[8px]"
+                className="sm:max-w-[520px] bg-card border border-border/40 shadow-[0_20px_60px_rgba(0,0,0,0.65)] hover:border-primary/25 transition-colors duration-300 max-h-[92vh] flex flex-col overflow-hidden rounded-2xl text-foreground p-0 gap-0"
+            >
+                <DialogHeader className="px-6 pt-6 pb-4 border-b border-border/40 bg-card flex-shrink-0">
+                    <DialogTitle className="text-[16px] font-bold text-foreground tracking-tight">{dialogTitle}</DialogTitle>
+                    <p className="text-[11px] text-muted-foreground mt-1.5">{dialogDesc}</p>
                 </DialogHeader>
-                <form onSubmit={handleSubmit} className="grid gap-4 py-2">
+                <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto space-y-4 px-6 py-5 scrollbar-thin scrollbar-thumb-rounded pr-2 bg-card">
 
                     {/* Project selector — only in all-projects mode */}
                     {mode === 'all-projects' && (
-                        <div className="grid gap-2">
-                            <Label>Project <span className="text-red-500">*</span></Label>
+                        <div className="space-y-1.5">
+                            <Label className="text-sm font-medium text-foreground/90">Project <span className="text-red-500">*</span></Label>
                             <Select value={selectedProject} onValueChange={setSelectedProject}>
-                                <SelectTrigger className="w-full">
+                                <SelectTrigger className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] font-medium transition-colors hover:border-primary/40 focus:ring-0 focus:outline-none focus:border-primary/40">
                                     <SelectValue placeholder="Select a project" />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className="bg-card z-[9999] rounded-xl border-border/80 shadow-2xl">
                                     {projects.map(p => (
-                                        <SelectItem key={p.id} value={String(p.id)}>{p.project_name}</SelectItem>
+                                        <SelectItem key={p.id} value={String(p.id)} className="text-[13px] cursor-pointer hover:bg-muted/40 focus:bg-muted/40">{p.project_name}</SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
                         </div>
                     )}
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="summary">Title <span className="text-red-500">*</span></Label>
-                        <Input id="summary" value={summary} onChange={e => setSummary(e.target.value)} placeholder="e.g. Site visit, Client review" required />
+                    <div className="space-y-1.5">
+                        <Label htmlFor="summary" className="text-sm font-medium text-foreground/90">Title <span className="text-red-500">*</span></Label>
+                        <Input 
+                            id="summary" 
+                            value={summary} 
+                            onChange={e => setSummary(e.target.value)} 
+                            placeholder="e.g. Site visit, Client review" 
+                            required 
+                            className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
+                        />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                        <div className="grid gap-2">
-                            <Label>Start <span className="text-red-500">*</span></Label>
+                        <div className="space-y-1.5">
+                            <Label className="text-sm font-medium text-foreground/90">Start <span className="text-red-500">*</span></Label>
                             <DateTimePicker value={startTime} onChange={setStartTime} />
                         </div>
-                        <div className="grid gap-2">
-                            <Label>End <span className="text-red-500">*</span></Label>
+                        <div className="space-y-1.5">
+                            <Label className="text-sm font-medium text-foreground/90">End <span className="text-red-500">*</span></Label>
                             <DateTimePicker value={endTime} onChange={setEndTime} />
                         </div>
                     </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="location">Location</Label>
-                        <Input id="location" value={location} onChange={e => setLocation(e.target.value)} placeholder="Zoom / Office / Site address" />
+                    <div className="space-y-1.5">
+                        <Label htmlFor="location" className="text-sm font-medium text-foreground/90">Location</Label>
+                        <Input 
+                            id="location" 
+                            value={location} 
+                            onChange={e => setLocation(e.target.value)} 
+                            placeholder="Zoom / Office / Site address" 
+                            className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
+                        />
                     </div>
 
                     {mode === 'my-calendar' && (
-                        <div className="grid gap-2">
-                            <Label htmlFor="attendees">Attendees <span className="text-xs text-gray-400">(comma separated emails)</span></Label>
-                            <Input id="attendees" value={attendees} onChange={e => setAttendees(e.target.value)} placeholder="guest@example.com, guest2@example.com" />
+                        <div className="space-y-1.5">
+                            <Label htmlFor="attendees" className="text-sm font-medium text-foreground/90">Attendees <span className="text-xs text-muted-foreground font-semibold">(comma separated emails)</span></Label>
+                            <Input 
+                                id="attendees" 
+                                value={attendees} 
+                                onChange={e => setAttendees(e.target.value)} 
+                                placeholder="guest@example.com, guest2@example.com" 
+                                className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
+                            />
                         </div>
                     )}
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="description">Notes</Label>
-                        <Textarea id="description" value={description} onChange={e => setDescription(e.target.value)} placeholder="Any additional details..." />
+                    <div className="space-y-1.5">
+                        <Label htmlFor="description" className="text-sm font-medium text-foreground/90">Notes</Label>
+                        <Textarea 
+                            id="description" 
+                            value={description} 
+                            onChange={e => setDescription(e.target.value)} 
+                            placeholder="Any additional details..." 
+                            className="rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors resize-none"
+                            rows={3}
+                        />
                     </div>
-
-                    <DialogFooter>
-                        <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-                        <Button type="submit" disabled={isPending || isSubmitting}>
-                            {(isPending || isSubmitting) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Create
-                        </Button>
-                    </DialogFooter>
                 </form>
+                <DialogFooter className="flex-shrink-0 flex items-center justify-between gap-3 px-6 py-4 border-t border-border/40 bg-card">
+                    <Button 
+                        type="button" 
+                        variant="ghost" 
+                        onClick={() => setOpen(false)}
+                        className="h-10 px-5 rounded-xl text-[13px] font-medium text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors"
+                    >
+                        Cancel
+                    </Button>
+                    <Button 
+                        type="submit" 
+                        form="add-event-form"
+                        onClick={handleSubmit}
+                        disabled={isPending || isSubmitting}
+                        className="h-10 px-6 rounded-xl text-[13px] font-medium bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/95 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    >
+                        {(isPending || isSubmitting) && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
+                        Create Event
+                    </Button>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );

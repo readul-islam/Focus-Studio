@@ -403,22 +403,22 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
           </div>
           {projectEditPermission && <Dialog open={isAddOpen} onOpenChange={open => open ? setIsAddOpen(true) : closeAddDialog()}>
             <DialogTrigger asChild>
-              <Button className="h-9 bg-gray-900 text-white hover:bg-gray-800">
+              <Button className="h-9 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-xl shadow-sm">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Contractor
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[520px] bg-white max-h-[90vh] flex flex-col">
+            <DialogContent className="sm:max-w-[520px] bg-card border border-border/40 text-foreground max-h-[90vh] flex flex-col rounded-2xl shadow-xl">
               <DialogHeader>
-                <DialogTitle className="text-lg">Add Contractor</DialogTitle>
+                <DialogTitle className="text-lg text-foreground font-bold">Add Contractor</DialogTitle>
               </DialogHeader>
 
               <Tabs value={addTab} onValueChange={v => setAddTab(v as 'new' | 'existing')} className="flex-1 flex flex-col min-h-0">
-                <TabsList className="grid grid-cols-2 w-full">
-                  <TabsTrigger value="new" className="flex items-center gap-1.5">
+                <TabsList className="grid grid-cols-2 w-full bg-muted/65 p-1 rounded-xl border border-border/20">
+                  <TabsTrigger value="new" className="flex items-center gap-1.5 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm font-semibold py-1.5 transition-all">
                     <UserPlus className="w-3.5 h-3.5" /> Create New
                   </TabsTrigger>
-                  <TabsTrigger value="existing" className="flex items-center gap-1.5">
+                  <TabsTrigger value="existing" className="flex items-center gap-1.5 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm font-semibold py-1.5 transition-all">
                     <Link2 className="w-3.5 h-3.5" /> Link Existing
                   </TabsTrigger>
                 </TabsList>
@@ -428,7 +428,7 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                   <div className="py-4 space-y-4">
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
-                        <Label htmlFor="name" className="text-sm text-neutral-700">
+                        <Label htmlFor="name" className="text-sm font-semibold text-foreground/80">
                           First Name <span className="text-red-500">*</span>
                         </Label>
                         <Input
@@ -436,31 +436,34 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                           placeholder="e.g. James"
                           value={newContractor.name}
                           onChange={e => setNewContractor(prev => ({ ...prev, name: e.target.value }))}
+                          className="bg-background border-border/60 text-foreground rounded-xl focus-visible:ring-primary"
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <Label htmlFor="surname" className="text-sm text-neutral-700">
-                          Surname <span className="text-neutral-400 font-normal">(for access code)</span>
+                        <Label htmlFor="surname" className="text-sm font-semibold text-foreground/80">
+                          Surname <span className="text-muted-foreground font-normal">(for access code)</span>
                         </Label>
                         <Input
                           id="surname"
                           placeholder="e.g. Fletcher"
                           value={newContractor.surname}
                           onChange={e => setNewContractor(prev => ({ ...prev, surname: e.target.value }))}
+                          className="bg-background border-border/60 text-foreground rounded-xl focus-visible:ring-primary"
                         />
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="company_name" className="text-sm text-neutral-700">Company Name</Label>
+                      <Label htmlFor="company_name" className="text-sm font-semibold text-foreground/80">Company Name</Label>
                       <Input
                         id="company_name"
                         placeholder="e.g. Fletcher & Sons Builders"
                         value={newContractor.company_name}
                         onChange={e => setNewContractor(prev => ({ ...prev, company_name: e.target.value }))}
+                        className="bg-background border-border/60 text-foreground rounded-xl focus-visible:ring-primary"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="email" className="text-sm text-neutral-700">
+                      <Label htmlFor="email" className="text-sm font-semibold text-foreground/80">
                         Email <span className="text-red-500">*</span>
                       </Label>
                       <Input
@@ -469,38 +472,40 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                         placeholder="e.g. james@fletcherbuilders.co.uk"
                         value={newContractor.email}
                         onChange={e => setNewContractor(prev => ({ ...prev, email: e.target.value }))}
+                        className="bg-background border-border/60 text-foreground rounded-xl focus-visible:ring-primary"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="phone" className="text-sm text-neutral-700">Phone</Label>
+                      <Label htmlFor="phone" className="text-sm font-semibold text-foreground/80">Phone</Label>
                       <Input
                         id="phone"
                         type="tel"
                         placeholder="e.g. +44 7700 900123"
                         value={newContractor.phone}
                         onChange={e => setNewContractor(prev => ({ ...prev, phone: e.target.value }))}
+                        className="bg-background border-border/60 text-foreground rounded-xl focus-visible:ring-primary"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="trade" className="text-sm text-neutral-700">
+                      <Label htmlFor="trade" className="text-sm font-semibold text-foreground/80">
                         Trade <span className="text-red-500">*</span>
                       </Label>
                       <Select value={newContractor.trade} onValueChange={value => setNewContractor(prev => ({ ...prev, trade: value }))}>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-background border-border/60 text-foreground rounded-xl focus:ring-primary">
                           <SelectValue placeholder="Select trade" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-card border-border text-foreground rounded-xl">
                           {TRADE_OPTIONS.map((trade) => (
-                            <SelectItem key={trade} value={trade}>{trade}</SelectItem>
+                            <SelectItem key={trade} value={trade} className="hover:bg-accent/40 focus:bg-accent/40 rounded-lg">{trade}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
-                  <DialogFooter>
-                    <Button variant="outline" onClick={closeAddDialog}>Cancel</Button>
+                  <DialogFooter className="gap-2 sm:gap-0 border-t border-border/20 pt-4 mt-2">
+                    <Button variant="outline" className="rounded-xl border-border/60 text-foreground hover:bg-accent" onClick={closeAddDialog}>Cancel</Button>
                     <Button
-                      className="bg-gray-900 text-white hover:bg-gray-800"
+                      className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-xl shadow-sm"
                       disabled={!newContractor.name || !newContractor.email || !newContractor.trade || isAdding}
                       onClick={handleAddContractor}
                     >
@@ -513,22 +518,22 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                 <TabsContent value="existing" className="flex-1 flex flex-col min-h-0 mt-0">
                   <div className="py-4 flex flex-col gap-3 flex-1 min-h-0">
                     <div className="relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
                         placeholder="Search by name, company or trade..."
-                        className="pl-9"
+                        className="pl-9 bg-background border-border/60 text-foreground rounded-xl focus-visible:ring-primary"
                         value={existingSearch}
                         onChange={e => setExistingSearch(e.target.value)}
                       />
                     </div>
 
-                    <div className="flex-1 overflow-y-auto max-h-72 space-y-1.5 pr-0.5">
+                    <div className="flex-1 overflow-y-auto max-h-72 space-y-1.5 pr-1 pl-0.5">
                       {isLoadingStudio ? (
                         <div className="flex items-center justify-center py-8">
-                          <Loader2 className="w-5 h-5 animate-spin text-neutral-400" />
+                          <Loader2 className="w-5 h-5 animate-spin text-primary" />
                         </div>
                       ) : filteredStudioContractors.length === 0 ? (
-                        <p className="text-sm text-neutral-500 text-center py-8">No contractors found</p>
+                        <p className="text-sm text-muted-foreground text-center py-8">No contractors found</p>
                       ) : (
                         filteredStudioContractors.map(c => {
                           const fullName = `${c.name} ${c.surname}`.trim();
@@ -537,23 +542,23 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                             <button
                               key={c.id}
                               onClick={() => setSelectedContractorId(isSelected ? null : c.id)}
-                              className={`w-full text-left px-3 py-2.5 rounded-lg border transition-colors ${
+                              className={`w-full text-left px-3.5 py-3 rounded-xl border transition-all duration-200 flex flex-col gap-1 ${
                                 isSelected
-                                  ? 'border-gray-900 bg-gray-900/5'
-                                  : 'border-neutral-200 hover:border-neutral-300 hover:bg-stone-50'
+                                  ? 'border-primary bg-primary/10 shadow-sm'
+                                  : 'border-border/60 text-foreground/80 hover:border-border hover:bg-accent/40 hover:text-foreground'
                               }`}
                             >
-                              <div className="flex items-center justify-between">
+                              <div className="flex items-center justify-between w-full">
                                 <div className="min-w-0">
-                                  <p className="text-sm font-medium text-neutral-900 truncate">{fullName || c.company_name}</p>
-                                  <p className="text-xs text-neutral-500 truncate">{c.company_name}{c.trade ? ` · ${c.trade}` : ''}</p>
+                                  <p className="text-sm font-semibold text-foreground truncate">{fullName || c.company_name}</p>
+                                  <p className="text-xs text-muted-foreground truncate">{c.company_name}{c.trade ? ` · ${c.trade}` : ''}</p>
                                 </div>
-                                <div className="flex items-center gap-2 shrink-0 ml-3">
-                                  <span className="text-xs font-mono text-neutral-400">{c.access_code}</span>
+                                <div className="flex items-center gap-2.5 shrink-0 ml-3">
+                                  <span className="text-xs font-mono text-muted-foreground">{c.access_code}</span>
                                   {isSelected && (
-                                    <div className="w-4 h-4 rounded-full bg-gray-900 flex items-center justify-center">
-                                      <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 12 12">
-                                        <path d="M10 3L5 8.5 2 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                                    <div className="w-4 h-4 rounded-full bg-primary flex items-center justify-center shadow-sm">
+                                      <svg className="w-2.5 h-2.5 text-primary-foreground" fill="currentColor" viewBox="0 0 12 12">
+                                        <path d="M10 3L5 8.5 2 5.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
                                       </svg>
                                     </div>
                                   )}
@@ -565,10 +570,10 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                       )}
                     </div>
                   </div>
-                  <DialogFooter>
-                    <Button variant="outline" onClick={closeAddDialog}>Cancel</Button>
+                  <DialogFooter className="gap-2 sm:gap-0 border-t border-border/20 pt-4 mt-2">
+                    <Button variant="outline" className="rounded-xl border-border/60 text-foreground hover:bg-accent" onClick={closeAddDialog}>Cancel</Button>
                     <Button
-                      className="bg-gray-900 text-white hover:bg-gray-800"
+                      className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-xl shadow-sm"
                       disabled={!selectedContractorId || isLinking}
                       onClick={handleLinkContractor}
                     >

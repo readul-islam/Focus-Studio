@@ -68,7 +68,7 @@ function TabItem({ item }: { item: Item }) {
       href={item.href}
       className={cn(
         'flex items-center gap-1.5 px-3 py-2 text-sm whitespace-nowrap rounded-md transition-colors shrink-0',
-        active ? 'bg-stone-100 text-foreground font-medium' : 'text-muted-foreground hover:text-foreground hover:bg-stone-50'
+        active ? 'bg-accent text-foreground font-semibold' : 'text-muted-foreground hover:text-foreground hover:bg-accent/40'
       )}
       aria-current={active ? 'page' : undefined}
     >

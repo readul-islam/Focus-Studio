@@ -4,7 +4,23 @@ import { useState, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Calendar, Clock, AlertTriangle, TrendingUp, Users } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Calendar,
+  Clock,
+  AlertTriangle,
+  TrendingUp,
+  Users,
+  CheckCircle2,
+  Circle,
+  Sparkles,
+  Paintbrush,
+  ShieldCheck,
+  Milestone,
+  ArrowRight,
+  Loader2,
+  Compass
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import useUser from '@/hooks/useUser';
 import useFetch from '@/hooks/useFetch';
@@ -16,26 +32,30 @@ dayjs.extend(relativeTime);
 
 // AI Components
 import { DailyBriefHero } from '@/components/ai/DailyBriefHero';
-import { generateDailyBrief } from '@/app/ai/daily-brief/actions';
-import type { DailyBrief } from '@/lib/ai/types';
 
 // Scope toggle for owners/admins
-function ScopeToggle({ scope, onScopeChange, canSeeStudio }) {
+function ScopeToggle({ scope, onScopeChange, canSeeStudio }: { scope: string, onScopeChange: (s: string) => void, canSeeStudio: boolean }) {
   if (!canSeeStudio) return null;
 
   return (
-    <div className="flex items-center gap-1 bg-stone-100 rounded-lg p-1">
+    <div className="flex items-center gap-1 bg-muted/75 border border-border/30 rounded-xl p-1 shadow-sm">
       <button
         onClick={() => onScopeChange('my')}
-        className={`px-3 py-1.5 text-sm rounded-md transition-colors ${scope === 'my' ? 'bg-white text-neutral-900 shadow-sm' : 'text-neutral-700 hover:text-neutral-900'
-          }`}
+        className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+          scope === 'my'
+            ? 'bg-card text-foreground shadow-sm'
+            : 'text-muted-foreground hover:text-foreground'
+        }`}
       >
         My View
       </button>
       <button
         onClick={() => onScopeChange('studio')}
-        className={`px-3 py-1.5 text-sm rounded-md transition-colors ${scope === 'studio' ? 'bg-white text-neutral-900 shadow-sm' : 'text-neutral-700 hover:text-neutral-900'
-          }`}
+        className={`px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+          scope === 'studio'
+            ? 'bg-card text-foreground shadow-sm'
+            : 'text-muted-foreground hover:text-foreground'
+        }`}
       >
         Studio View
       </button>
@@ -43,204 +63,239 @@ function ScopeToggle({ scope, onScopeChange, canSeeStudio }) {
   );
 }
 
-// Dashboard card components with role-based data
-function TodaysMeetingsCard({ scope, userRole, meetings = [] }: { scope: any, userRole: any, meetings: any[] }) {
-  const displayMeetings = scope === 'studio' ? meetings : meetings;
+// Workspace Setup Tour Card
+function WorkspaceTourCard() {
+  const [completedSteps, setCompletedSteps] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('focuspilot_onboarding_steps');
+      if (saved) {
+        setCompletedSteps(JSON.parse(saved));
+      } else {
+        // Default values representing initial configuration
+        const defaults = {
+          inbox: true,
+          theme: true,
+          team: false,
+          project: true
+        };
+        setCompletedSteps(defaults);
+        localStorage.setItem('focuspilot_onboarding_steps', JSON.stringify(defaults));
+      }
+    }
+  }, []);
+
+  const toggleStep = (stepId: string) => {
+    const updated = { ...completedSteps, [stepId]: !completedSteps[stepId] };
+    setCompletedSteps(updated);
+    localStorage.setItem('focuspilot_onboarding_steps', JSON.stringify(updated));
+  };
+
+  const steps = [
+    {
+      id: 'inbox',
+      title: 'Connect AI Inbox',
+      desc: 'Sync your Gmail to automatically synthesize email summaries and action items.',
+      icon: Sparkles,
+      link: '/ai/inbox',
+      btnLabel: 'Go to Inbox'
+    },
+    {
+      id: 'theme',
+      title: 'Personalize Interface Theme',
+      desc: 'Choose your color presets, dark modes, and interface grid density.',
+      icon: Paintbrush,
+      link: '/settings/user/appearance',
+      btnLabel: 'Customize Theme'
+    },
+    {
+      id: 'team',
+      title: 'Invite Team & Contractors',
+      desc: 'Add external trade teams and set up shared portal links for accessing plans.',
+      icon: ShieldCheck,
+      link: '/projects',
+      btnLabel: 'Onboard Team'
+    },
+    {
+      id: 'project',
+      title: 'Configure Your First Project',
+      desc: 'Set up digital workboards, outline access controls, and assign tasks.',
+      icon: Milestone,
+      link: '/projects',
+      btnLabel: 'Launch Projects'
+    }
+  ];
+
+  const completedCount = Object.values(completedSteps).filter(Boolean).length;
+  const progressPercent = (completedCount / steps.length) * 100;
+
+  return (
+    <Card className="p-5 sm:p-6 rounded-2xl border border-border/40 bg-card shadow-sm">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
+        <div>
+          <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+            <Compass className="w-5 h-5 text-primary animate-pulse" /> Focuspilot Onboarding Guide
+          </h2>
+          <p className="text-sm text-muted-foreground mt-0.5 leading-relaxed">
+            Complete your workspace configuration to unlock advance AI-driven project features.
+          </p>
+        </div>
+        <div className="flex flex-col gap-1 items-end min-w-[220px]">
+          <div className="flex justify-between w-full text-xs font-semibold text-foreground/80">
+            <span>Setup Milestones</span>
+            <span>{completedCount}/{steps.length} Completed</span>
+          </div>
+          <Progress value={progressPercent} className="w-full h-2 rounded-full bg-muted mt-1.5 [&>div]:bg-primary" />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {steps.map((step) => {
+          const Icon = step.icon;
+          const isDone = !!completedSteps[step.id];
+          return (
+            <div
+              key={step.id}
+              className={`relative flex flex-col p-4 rounded-xl border transition-all duration-200 ${
+                isDone
+                  ? 'bg-muted/20 border-border/20 text-foreground/75'
+                  : 'bg-card border-border/50 hover:border-border hover:shadow-sm text-foreground'
+              }`}
+            >
+              {/* Checkbox button */}
+              <button
+                onClick={() => toggleStep(step.id)}
+                className="absolute top-3.5 right-3.5 text-muted-foreground hover:text-primary transition-colors shrink-0"
+              >
+                {isDone ? (
+                  <CheckCircle2 className="w-5 h-5 text-primary fill-primary/10" />
+                ) : (
+                  <Circle className="w-5 h-5 text-muted-foreground/60" />
+                )}
+              </button>
+
+              <div className="flex items-center gap-2.5 mb-2.5">
+                <div className={`p-2 rounded-lg shrink-0 ${isDone ? 'bg-primary/5 text-primary/70' : 'bg-primary/10 text-primary'}`}>
+                  <Icon className="w-4 h-4" />
+                </div>
+                <h4 className={`text-sm font-semibold truncate pr-6 ${isDone ? 'text-foreground/70 line-through' : 'text-foreground'}`}>
+                  {step.title}
+                </h4>
+              </div>
+
+              <p className="text-xs text-muted-foreground leading-relaxed flex-1 mb-4 pr-1">
+                {step.desc}
+              </p>
+
+              <Link
+                href={step.link}
+                className={`inline-flex items-center gap-1.5 text-xs font-semibold hover:underline mt-auto ${
+                  isDone ? 'text-primary/70' : 'text-primary'
+                }`}
+              >
+                {step.btnLabel}
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          );
+        })}
+      </div>
+    </Card>
+  );
+}
+
+// Today's Meetings Card
+function TodaysMeetingsCard({ meetings = [] }: { scope: string, meetings: any[] }) {
+  const displayMeetings = meetings;
 
   const formatMeetingTime = (start: string, end: string) => {
-    // Check if it's a full date (YYYY-MM-DD) -> All Day
-    if (start.length === 10) {
-      return 'All Day';
-    }
+    if (start.length === 10) return 'All Day';
 
     try {
       const startDate = new Date(start);
       const endDate = new Date(end);
-
       const timeOptions: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: '2-digit' };
-      const startTime = startDate.toLocaleTimeString([], timeOptions);
-      const endTime = endDate.toLocaleTimeString([], timeOptions);
-
-      return `${startTime} - ${endTime}`;
+      return `${startDate.toLocaleTimeString([], timeOptions)} - ${endDate.toLocaleTimeString([], timeOptions)}`;
     } catch (e) {
       return 'Invalid Time';
     }
   };
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="flex items-center gap-2 mb-4">
-        <Calendar className="w-5 h-5 text-slatex-600" />
-        <h3 className="font-semibold text-neutral-900">Today's Meetings</h3>
-      </div>
-      <div className="space-y-1 flex-1 overflow-x-hidden overflow-y-auto">
-        {displayMeetings?.length > 0 ? (
-          displayMeetings.slice(0, 4).map((meeting, index) => (
-            <Link
-              key={meeting.id || index}
-              href={meeting.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 group hover:bg-stone-50 p-2 rounded-md transition-colors"
-            >
-              <div className="w-2 h-2 rounded-full flex-shrink-0 bg-sage-500"></div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-neutral-900 truncate group-hover:text-sage-700 transition-colors">
-                  {meeting.summary}
-                </p>
-                <p className="text-xs text-neutral-600">
-                  {formatMeetingTime(meeting.start_time, meeting.end_time)}
-                </p>
-              </div>
-            </Link>
-          ))
-        ) : (
-          <div className="flex flex-col items-center justify-center h-full border-2 border-dashed border-neutral-300 rounded-lg p-6 text-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-12 w-12 text-neutral-400 mb-3"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7H3v12a2 2 0 002 2z"
-              />
-            </svg>
-            <p className="text-neutral-500 font-medium text-sm">No meetings today</p>
-            <p className="text-neutral-400 text-xs mt-1">Relax! You don&apos;t have any scheduled meetings.</p>
+    <div className="h-full flex flex-col bg-transparent justify-between">
+      <div className="flex flex-col h-full justify-between">
+        <div className="flex items-center justify-between w-full mb-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-primary/10 text-primary border border-primary/20 rounded-xl shadow-inner">
+              <Calendar className="w-4.5 h-4.5" />
+            </div>
+            <h3 className="font-bold text-foreground text-sm sm:text-base tracking-tight">Today's Meetings</h3>
           </div>
-        )}
+          {displayMeetings?.length > 0 && (
+            <Badge variant="outline" className="bg-primary/10 text-primary border-primary/25 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm animate-pulse">
+              {displayMeetings.length}
+            </Badge>
+          )}
+        </div>
+        <div className="space-y-2.5 flex-grow overflow-x-hidden overflow-y-auto max-h-[220px] pr-1 scrollbar-thin">
+          {displayMeetings?.length > 0 ? (
+            displayMeetings.slice(0, 4).map((meeting, index) => (
+              <Link
+                key={meeting.id || index}
+                href={meeting.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative flex items-center justify-between gap-3 p-3 rounded-xl border border-border/30 bg-gradient-to-r from-primary/[0.04] to-primary/[0.01] hover:border-primary/25 hover:from-primary/[0.08] hover:to-primary/[0.03] transition-all duration-300 hover:translate-x-1 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(var(--primary),0.05)] group pl-4"
+              >
+                {/* Vertical brand-primary line on left edge */}
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary/80 rounded-l-xl group-hover:bg-primary group-hover:w-1.5 transition-all duration-300" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-foreground truncate group-hover:text-primary transition-colors duration-200">
+                    {meeting.summary}
+                  </p>
+                  <p className="text-[11px] text-muted-foreground mt-1 font-semibold flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-primary/70 shrink-0" />
+                    {formatMeetingTime(meeting.start_time, meeting.end_time)}
+                  </p>
+                </div>
+                <ArrowRight className="w-4 h-4 text-primary shrink-0 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+              </Link>
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center py-10 border border-dashed border-border/40 rounded-xl p-5 text-center bg-muted/5 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
+              <div className="p-3 bg-muted/20 rounded-full mb-3 border border-border/20 shadow-inner">
+                <Calendar className="h-7 w-7 text-muted-foreground/60" />
+              </div>
+              <p className="text-foreground font-bold text-sm">Schedule is clear</p>
+              <p className="text-muted-foreground text-xs mt-1 max-w-[180px] leading-relaxed">Relax! You have no meetings on your calendar today.</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
 export default function DashboardPage() {
-  const [userTime] = useState(null);
   const { user } = useUser();
   const { data: dashboardInfo } = useFetch('user/dashboard/');
-  const { data:dailyBrief , refetch ,isLoading } = useFetch('user/daily-brief/');
+  const { data: dailyBrief, refetch, isLoading } = useFetch('user/daily-brief/');
   const [isRegenerating, setIsRegenerating] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     document.title = 'Home | Focuspilot';
   }, []);
 
-  
-  
-const handleRegenerateBrief = async () => {
-  setIsRegenerating(true);
-  await refetch();
-  setIsRegenerating(false);
-}
-
-
-  const router = useRouter();
-
-  function JumpBackInCard({ scope, userRole, projects = [] }) {
-    const displayProjects = scope === 'studio' ? projects : projects;
-
-    return (
-      <div className="h-full flex flex-col">
-        <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="w-5 h-5 text-slatex-600" />
-          <h3 className="font-semibold text-neutral-900">Jump Back In</h3>
-        </div>
-        <div className="space-y-2 flex-1 overflow-y-auto">
-          {displayProjects?.length > 0 ? (
-            displayProjects.slice(0, 4).map((project, index) => (
-              <div
-                onClick={() => router.push(`/projects/${project?.id}`)}
-                key={index}
-                className="flex items-center gap-3 p-2 hover:bg-stone-50 rounded-md transition-colors cursor-pointer group"
-              >
-                <div className="w-2 h-2 rounded-full flex-shrink-0 bg-clay-500"></div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-neutral-900 truncate group-hover:text-clay-700 transition-colors">
-                    {project.name}
-                  </p>
-                  <div className="flex items-center gap-2 mt-0.5">
-                    <span className="text-xs text-neutral-500 capitalize">{project.pill || 'Project'}</span>
-                    <span className="text-xs text-neutral-400">{project.progress || 0}%</span>
-                  </div>
-                </div>
-                <Progress
-                  value={project.progress || 0}
-                  className="w-12 h-1 [&>div]:bg-clay-500"
-                />
-              </div>
-            ))
-          ) : (
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <TrendingUp className="w-10 h-10 text-neutral-300 mb-3" />
-              <p className="text-sm font-medium text-neutral-700">No recent projects</p>
-              <p className="text-xs text-neutral-500 mt-1">Your recent projects will appear here</p>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  function TimeTrackedCard({ scope, userRole, timeData = null }) {
-    if (scope === 'studio') {
-      return (
-        <div className="h-full flex flex-col">
-          <div className="flex items-center gap-2 mb-4">
-            <Users className="w-5 h-5 text-slatex-600" />
-            <h3 className="font-semibold text-neutral-900">Team Capacity</h3>
-          </div>
-          <div className="space-y-3 flex-1">
-            {userTime?.slice(0, 6).map((member,index) => (
-              <div key={index} className="space-y-1">
-                <div className="flex justify-between text-sm">
-                  <span className="text-neutral-900">{member.name}</span>
-                  <span className="text-neutral-600">{member.totalTime}h / 40h</span>
-                </div>
-                <Progress value={(member.totalTime / 40) * 100} className="h-1 [&>div]:bg-olive-600" />
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <div className="h-full flex flex-col">
-        <div className="flex items-center gap-2 mb-4">
-          <Clock className="w-5 h-5 text-slatex-600" />
-          <h3 className="font-semibold text-neutral-900">Time Tracked</h3>
-        </div>
-        <div className="space-y-4 flex-1">
-          <div>
-            <p className="text-xl font-semibold text-neutral-900">{timeData?.total_hours || 0}</p>
-            <p className="text-xs text-neutral-600">This week</p>
-          </div>
-          <div className="space-y-2">
-            {timeData?.breakdown && Object.entries(timeData.breakdown).map(([day, hours],index) => (
-              <div key={index} className="flex items-center justify-between">
-                <span className="text-sm w-[30px] text-neutral-700">{day}</span>
-                <div className="flex items-center gap-2 ml-3 flex-1">
-                  <Progress value={(Number(hours?.calc_hours) / 10) * 100} className="h-1 w-full  [&>div]:bg-slatex-700" />
-
-                </div>
-                       <span className="text-xs flex-shrink-0 inline-block font-medium text-neutral-900 w-16 text-right">{hours?.time}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const handleRegenerateBrief = async () => {
+    setIsRegenerating(true);
+    await refetch();
+    setIsRegenerating(false);
+  };
 
   const [scope, setScope] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return 'my';
-    }
     return 'my';
   });
 
@@ -250,34 +305,166 @@ const handleRegenerateBrief = async () => {
     return dashboardInfo?.greeting?.greeting || 'Good morning';
   };
 
-  function OverdueTasksCard({ scope, userRole, overdueData = null }) {
+  // Overdue Tasks Card
+  function OverdueTasksCard({ overdueData = null }: { overdueData: any }) {
     const tasks = overdueData?.tasks || [];
 
     return (
-      <div className="h-full flex flex-col">
-        <div className="flex items-center gap-2 mb-4">
-          <AlertTriangle className="w-5 h-5 text-terracotta-600" />
-          <h3 className="font-semibold text-neutral-900">Overdue Tasks</h3>
-          <Badge className="bg-terracotta-600/10 text-terracotta-600 border border-terracotta-600/30 text-xs">{overdueData?.count || 0}</Badge>
-        </div>
-        <div className="space-y-3 flex-1">
-          {tasks?.length > 0 ? (
-            tasks.slice(0, 5).map((task, index) => (
-              <div key={index} className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-terracotta-600 rounded-full flex-shrink-0"></div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium capitalize text-neutral-900 truncate">{task.title || task.name}</p>
-                  <p className="text-xs capitalize text-neutral-600">
-                    {task.project || 'No Project'}
-                  </p>
-                </div>
+      <div className="h-full flex flex-col bg-transparent justify-between">
+        <div className="flex flex-col h-full justify-between">
+          <div className="flex items-center justify-between w-full mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-destructive/10 text-destructive border border-destructive/20 rounded-xl shadow-inner">
+                <AlertTriangle className="w-4.5 h-4.5" />
               </div>
-            ))
-          ) : (
-            <div className="flex items-center justify-center h-full text-neutral-500 text-sm">
-              No overdue tasks
+              <h3 className="font-bold text-foreground text-sm sm:text-base tracking-tight">Overdue Tasks</h3>
             </div>
-          )}
+            <Badge className="bg-destructive/15 text-destructive border border-destructive/25 text-xs font-bold rounded-full px-2.5 py-0.5 shadow-sm">
+              {overdueData?.count || 0}
+            </Badge>
+          </div>
+          <div className="space-y-2.5 flex-grow overflow-y-auto max-h-[220px] pr-1 scrollbar-thin">
+            {tasks?.length > 0 ? (
+              tasks.slice(0, 4).map((task: any, index: number) => (
+                <div 
+                  key={index} 
+                  className="relative flex items-center justify-between gap-3 p-3 rounded-xl border border-border/30 bg-gradient-to-r from-destructive/[0.04] to-destructive/[0.01] hover:border-destructive/25 hover:from-destructive/[0.08] hover:to-destructive/[0.03] transition-all duration-300 hover:translate-x-1 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(239,68,68,0.03)] group pl-4"
+                >
+                  {/* Vertical brand-destructive line on left edge */}
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-destructive/70 rounded-l-xl group-hover:bg-destructive group-hover:w-1.5 transition-all duration-300" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold capitalize text-foreground truncate group-hover:text-destructive transition-colors duration-200">
+                      {task.title || task.name}
+                    </p>
+                    <div className="flex items-center justify-between mt-1 gap-2">
+                      <span className="text-[10px] bg-destructive/5 text-destructive/85 border border-destructive/10 px-2 py-0.5 rounded-md font-semibold truncate max-w-[150px]">
+                        {task.project || 'No Project'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-center py-10 border border-dashed border-border/40 rounded-xl p-5 text-center bg-muted/5 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
+                <div className="p-3 bg-primary/10 text-primary border border-primary/20 rounded-full mb-3 shadow-sm animate-pulse">
+                  <CheckCircle2 className="h-7 w-7 text-primary fill-primary/10" />
+                </div>
+                <p className="text-foreground font-bold text-sm">All caught up!</p>
+                <p className="text-muted-foreground text-xs mt-1 max-w-[180px] leading-relaxed">No overdue tasks. Enjoy your neat, productive workspace!</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Jump Back In (Recent Projects) Card
+  function JumpBackInCard({ projects = [] }: { projects: any[] }) {
+    return (
+      <div className="h-full flex flex-col bg-transparent justify-between">
+        <div className="flex flex-col h-full justify-between">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 bg-primary/10 text-primary border border-primary/20 rounded-xl shadow-inner">
+              <TrendingUp className="w-4.5 h-4.5" />
+            </div>
+            <h3 className="font-bold text-foreground text-sm sm:text-base tracking-tight">Jump Back In</h3>
+          </div>
+          <div className="space-y-2.5 flex-grow overflow-y-auto max-h-[220px] pr-1 scrollbar-thin">
+            {projects?.length > 0 ? (
+              projects.slice(0, 4).map((project, index) => (
+                <div
+                  onClick={() => router.push(`/projects/${project?.id}`)}
+                  key={index}
+                  className="flex flex-col gap-3 p-3 rounded-xl border border-border/30 hover:border-primary/25 transition-all duration-300 hover:translate-x-1 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(var(--primary),0.04)] cursor-pointer bg-gradient-to-r from-primary/[0.04] to-primary/[0.01] hover:from-primary/[0.08] hover:to-primary/[0.03] group pl-4 relative"
+                >
+                  {/* Subtle indicator bar on project active states */}
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary/40 rounded-l-xl group-hover:bg-primary group-hover:w-1.5 transition-all duration-300" />
+                  
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <p className="text-sm font-semibold text-foreground truncate group-hover:text-primary transition-colors duration-200">
+                        {project.name}
+                      </p>
+                    </div>
+                    <span className="text-[10px] bg-card/80 border border-border/50 px-2 py-0.5 rounded-full text-muted-foreground font-semibold capitalize shrink-0 shadow-sm">{project.pill || 'Project'}</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3 mt-0.5">
+                    {/* Custom high-end glass progress bar */}
+                    <div className="h-2 w-full bg-muted/60 border border-border/30 rounded-full overflow-hidden flex-1 p-[1px] relative shadow-inner">
+                      <div 
+                        style={{ width: `${project.progress || 0}%` }} 
+                        className="h-full rounded-full bg-gradient-to-r from-primary/80 to-primary shadow-[0_0_6px_rgba(var(--primary),0.3)] transition-all duration-500 ease-out" 
+                      />
+                    </div>
+                    <span className="text-[10px] font-bold text-foreground/80 bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-full min-w-[38px] text-center shrink-0">{project.progress || 0}%</span>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-center py-10 border border-dashed border-border/40 rounded-xl p-5 text-center bg-muted/5 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
+                <div className="p-3 bg-muted/20 rounded-full mb-3 border border-border/20 shadow-inner">
+                  <TrendingUp className="h-7 w-7 text-muted-foreground/60" />
+                </div>
+                <p className="text-foreground font-bold text-sm">No recent boards</p>
+                <p className="text-muted-foreground text-xs mt-1 max-w-[180px] leading-relaxed">Your active digital boards will appear right here.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Time Tracked productivity Card
+  function TimeTrackedCard({ timeData = null }: { timeData: any }) {
+    return (
+      <div className="h-full flex flex-col bg-transparent justify-between">
+        <div className="flex flex-col h-full justify-between">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-primary/10 text-primary border border-primary/20 rounded-xl shadow-inner">
+                <Clock className="w-4.5 h-4.5" />
+              </div>
+              <h3 className="font-bold text-foreground text-sm sm:text-base tracking-tight">Time Tracked</h3>
+            </div>
+            
+            <div className="bg-gradient-to-r from-primary/15 to-accent/10 border border-primary/25 rounded-2xl p-4 flex items-center justify-between mb-4 shadow-sm relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative z-10">
+                <p className="text-2xl font-black text-foreground tracking-tight leading-none">{timeData?.total_hours || '0h 0m'}</p>
+                <p className="text-[10px] font-bold text-primary tracking-wider uppercase mt-1">Productive Hours</p>
+              </div>
+              <div className="p-2.5 bg-primary/10 text-primary border border-primary/20 rounded-xl shadow-inner relative z-10 group-hover:scale-110 transition-transform duration-300 shrink-0">
+                <Clock className="w-4 h-4" />
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2 overflow-y-auto max-h-[110px] pr-1 scrollbar-thin">
+            {timeData?.breakdown && Object.entries(timeData.breakdown).map(([day, hours]: [string, any], index: number) => {
+              const calcHours = Number(hours?.calc_hours || 0);
+              const percent = Math.min((calcHours / 10) * 100, 100);
+              return (
+                <div key={index} className="flex items-center justify-between gap-3 group/row py-0.5 hover:bg-muted/10 rounded px-1 transition-colors duration-200">
+                  <span className="text-[10px] font-bold w-[32px] text-muted-foreground uppercase group-hover/row:text-primary transition-colors">{day}</span>
+                  <div className="flex-1 flex items-center">
+                    {/* Custom High-end micro progress track */}
+                    <div className="h-2 w-full bg-muted/60 border border-border/30 rounded-full overflow-hidden p-[1px] relative shadow-inner group-hover/row:border-primary/20 transition-all duration-300">
+                      <div 
+                        style={{ width: `${percent}%` }} 
+                        className="h-full rounded-full bg-gradient-to-r from-primary/80 to-primary shadow-[0_0_8px_rgba(var(--primary),0.35)] transition-all duration-500 ease-out group-hover/row:brightness-110" 
+                      />
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-bold text-foreground/80 bg-card border border-border/40 px-1.5 py-0.5 rounded-md min-w-[42px] text-right shrink-0 shadow-sm group-hover/row:border-primary/25 transition-colors">{hours?.time || '0h'}</span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     );
@@ -291,8 +478,8 @@ const handleRegenerateBrief = async () => {
   });
 
   return (
-    <div className="flex flex-col h-[calc(100svh-3.5rem)] min-h-0 bg-stone-50 p-4 sm:p-6">
-      <div className="max-w-7xl mx-auto w-full flex flex-col flex-1 min-h-0 space-y-6">
+    <div className="flex-1 pb-8 min-h-0 bg-stone-50 overflow-y-auto">
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 space-y-6 flex flex-col min-h-0">
 
         {/* AI Daily Brief Hero Section */}
         <section>
@@ -314,20 +501,25 @@ const handleRegenerateBrief = async () => {
           </div>
         )}
 
-        {/* Dashboard Cards */}
-        <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-          <Card className="p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow h-80">
-            <TodaysMeetingsCard scope={scope} userRole={user?.role} meetings={dashboardInfo?.today_meetings} />
+        {/* Dashboard Cards Grid */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card className="p-5 bg-card/65 backdrop-blur-md border border-border/40 hover:border-primary/30 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 rounded-2xl h-[335px] flex flex-col justify-between">
+            <TodaysMeetingsCard scope={scope} meetings={dashboardInfo?.today_meetings} />
           </Card>
-          <Card className="p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow h-80">
-            <OverdueTasksCard scope={scope} userRole={user?.role} overdueData={dashboardInfo?.overdue_tasks} />
+          <Card className="p-5 bg-card/65 backdrop-blur-md border border-border/40 hover:border-primary/30 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 rounded-2xl h-[335px] flex flex-col justify-between">
+            <OverdueTasksCard overdueData={dashboardInfo?.overdue_tasks} />
           </Card>
-          <Card className="p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow h-80">
-            <JumpBackInCard scope={scope} userRole={user?.role} projects={dashboardInfo?.jump_back_in} />
+          <Card className="p-5 bg-card/65 backdrop-blur-md border border-border/40 hover:border-primary/30 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 rounded-2xl h-[335px] flex flex-col justify-between">
+            <JumpBackInCard projects={dashboardInfo?.jump_back_in} />
           </Card>
-          <Card className="p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow h-80">
-            <TimeTrackedCard scope={scope} userRole={user?.role} timeData={dashboardInfo?.time_tracked} />
+          <Card className="p-5 bg-card/65 backdrop-blur-md border border-border/40 hover:border-primary/30 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300 rounded-2xl h-[335px] flex flex-col justify-between">
+            <TimeTrackedCard timeData={dashboardInfo?.time_tracked} />
           </Card>
+        </section>
+
+        {/* Premium Onboarding Setup Tour Card */}
+        <section>
+          <WorkspaceTourCard />
         </section>
 
       </div>

@@ -49,6 +49,387 @@
     --scrollbar-thumb-hover: hsl(240 5% 55% / 0.75);
     --scrollbar-thumb-active: hsl(240 5% 45% / 0.85);
   }
+  .dark {
+    color-scheme: dark;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 7.5%; /* Elevated card canvas to provide rich depth & contrast */
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 7.5%; /* Matches elevated card backdrop */
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5% 18%; /* Crisp, highly professional card border */
+    --input: 240 5% 18%;
+    --ring: 240 4.9% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  .midnight {
+    color-scheme: dark;
+    --background: 222 30% 6%;
+    --foreground: 210 40% 98%;
+    --card: 222 30% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 30% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 222 20% 14%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 222 20% 14%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 222 20% 16%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 222 20% 16%;
+    --input: 222 20% 16%;
+    --ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 222 35% 8%;
+    --sidebar-foreground: 215 20% 75%;
+    --sidebar-primary: 217.2 91.2% 59.8%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 222 20% 14%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 222 20% 14%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  .forest {
+    color-scheme: dark;
+    --background: 145 35% 6%;
+    --foreground: 40 25% 96%;
+    --card: 145 30% 8%;
+    --card-foreground: 40 25% 96%;
+    --popover: 145 30% 8%;
+    --popover-foreground: 40 25% 96%;
+    --primary: 142.1 70.6% 45.3%;
+    --primary-foreground: 40 25% 96%;
+    --secondary: 145 20% 12%;
+    --secondary-foreground: 40 25% 96%;
+    --muted: 145 20% 12%;
+    --muted-foreground: 145 10% 60%;
+    --accent: 145 20% 14%;
+    --accent-foreground: 40 25% 96%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 145 20% 14%;
+    --input: 145 20% 14%;
+    --ring: 142.1 76% 36.3%;
+    --sidebar-background: 145 30% 8%;
+    --sidebar-foreground: 145 10% 75%;
+    --sidebar-primary: 142.1 70.6% 45.3%;
+    --sidebar-primary-foreground: 145 35% 6%;
+    --sidebar-accent: 145 20% 12%;
+    --sidebar-accent-foreground: 40 25% 96%;
+    --sidebar-border: 145 20% 12%;
+    --sidebar-ring: 142.1 76% 36.3%;
+  }
+  .terracotta {
+    color-scheme: dark;
+    --background: 20 15% 7%;
+    --foreground: 35 30% 96%;
+    --card: 20 12% 10%;
+    --card-foreground: 35 30% 96%;
+    --popover: 20 12% 10%;
+    --popover-foreground: 35 30% 96%;
+    --primary: 20 70% 55%;
+    --primary-foreground: 35 30% 96%;
+    --secondary: 20 10% 14%;
+    --secondary-foreground: 35 30% 96%;
+    --muted: 20 10% 14%;
+    --muted-foreground: 20 10% 60%;
+    --accent: 20 10% 16%;
+    --accent-foreground: 35 30% 96%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 20 10% 16%;
+    --input: 20 10% 16%;
+    --ring: 20 70% 55%;
+    --sidebar-background: 20 12% 9%;
+    --sidebar-foreground: 20 10% 75%;
+    --sidebar-primary: 20 70% 55%;
+    --sidebar-primary-foreground: 20 15% 7%;
+    --sidebar-accent: 20 10% 14%;
+    --sidebar-accent-foreground: 35 30% 96%;
+    --sidebar-border: 20 10% 14%;
+    --sidebar-ring: 20 70% 55%;
+  }
+  .cobalt {
+    color-scheme: dark;
+    --background: 222 47% 6%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 222 25% 15%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 222 25% 15%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 222 25% 18%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 222 25% 18%;
+    --input: 222 25% 18%;
+    --ring: 221.2 83.2% 53.3%;
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 215 20% 75%;
+    --sidebar-primary: 221.2 83.2% 53.3%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 222 25% 15%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 222 25% 15%;
+    --sidebar-ring: 221.2 83.2% 53.3%;
+  }
+  .quartz {
+    color-scheme: dark;
+    --background: 275 25% 6%;
+    --foreground: 275 20% 96%;
+    --card: 275 20% 9%;
+    --card-foreground: 275 20% 96%;
+    --popover: 275 20% 9%;
+    --popover-foreground: 275 20% 96%;
+    --primary: 325 60% 60%;
+    --primary-foreground: 275 20% 96%;
+    --secondary: 275 15% 15%;
+    --secondary-foreground: 275 20% 96%;
+    --muted: 275 15% 15%;
+    --muted-foreground: 275 10% 65%;
+    --accent: 275 15% 18%;
+    --accent-foreground: 275 20% 96%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 275 15% 18%;
+    --input: 275 15% 18%;
+    --ring: 325 60% 60%;
+    --sidebar-background: 275 20% 8%;
+    --sidebar-foreground: 275 10% 75%;
+    --sidebar-primary: 325 60% 60%;
+    --sidebar-primary-foreground: 275 25% 6%;
+    --sidebar-accent: 275 15% 15%;
+    --sidebar-accent-foreground: 275 20% 96%;
+    --sidebar-border: 275 15% 15%;
+    --sidebar-ring: 325 60% 60%;
+  }
+  .pink {
+    color-scheme: dark;
+    --background: 330 30% 6%;
+    --foreground: 330 20% 98%;
+    --card: 330 25% 9%;
+    --card-foreground: 330 20% 98%;
+    --popover: 330 25% 9%;
+    --popover-foreground: 330 20% 98%;
+    --primary: 330 85% 60%;
+    --primary-foreground: 330 20% 98%;
+    --secondary: 330 15% 15%;
+    --secondary-foreground: 330 20% 98%;
+    --muted: 330 15% 15%;
+    --muted-foreground: 330 10% 65%;
+    --accent: 330 15% 18%;
+    --accent-foreground: 330 20% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 330 15% 18%;
+    --input: 330 15% 18%;
+    --ring: 330 85% 60%;
+    --sidebar-background: 330 25% 8%;
+    --sidebar-foreground: 330 10% 75%;
+    --sidebar-primary: 330 85% 60%;
+    --sidebar-primary-foreground: 330 30% 6%;
+    --sidebar-accent: 330 15% 15%;
+    --sidebar-accent-foreground: 330 20% 98%;
+    --sidebar-border: 330 15% 15%;
+    --sidebar-ring: 330 85% 60%;
+  }
+
+  /* Intercept and adapt legacy hardcoded light-mode classes under any dark/custom themes */
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-white,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-greige-50 {
+    background-color: hsl(var(--card)) !important;
+  }
+  
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-stone-50,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-stone-100,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-gray-50,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-neutral-50,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-greige-100,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .tasks-sidebar {
+    background-color: hsl(var(--background)) !important;
+  }
+  
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-stone-200,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-gray-100,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-neutral-100,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-greige-200 {
+    background-color: hsl(var(--muted)) !important;
+  }
+  
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-gray-900,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-neutral-900,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-slate-900,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-gray-800,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-ink {
+    color: hsl(var(--foreground)) !important;
+  }
+  
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-gray-700,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-gray-600,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-gray-500,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-neutral-500,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-muted-foreground,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-ink-muted {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+  
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .border-gray-200,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .border-gray-100,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .border-neutral-200,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .border-stone-200,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .border-gray-300,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .border-gray-400,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .border-borderSoft,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .border-borderStrong,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .border-border {
+    border-color: hsl(var(--border)) !important;
+  }
+
+  /* Adapter for overlapping avatar white borders in dark mode stack spacing */
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .border-white {
+    border-color: hsl(var(--card)) !important;
+  }
+
+  /* Intercept and adapt hardcoded brand-highlight classes to make the UI dynamically respond to any dark/custom theme */
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-clay-50 {
+    background-color: hsl(var(--primary) / 0.1) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-clay-100 {
+    background-color: hsl(var(--primary) / 0.2) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-clay-200 {
+    background-color: hsl(var(--primary) / 0.25) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-clay-500,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-clay-600 {
+    background-color: hsl(var(--primary)) !important;
+    color: hsl(var(--primary-foreground)) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-clay-600,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-clay-700 {
+    color: hsl(var(--primary)) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .border-clay-600 {
+    border-color: hsl(var(--primary) / 0.8) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .border-clay-300 {
+    border-color: hsl(var(--primary) / 0.4) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .focus\:border-clay-300:focus,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .focus-visible\:border-clay-300:focus-visible {
+    border-color: hsl(var(--primary)) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-greige-50 {
+    background-color: hsl(var(--muted) / 0.5) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .hover\:bg-greige-50:hover {
+    background-color: hsl(var(--muted) / 0.8) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .hover\:border-clay-300:hover {
+    border-color: hsl(var(--primary) / 0.4) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .hover\:bg-clay-500:hover,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .hover\:bg-clay-600:hover {
+    background-color: hsl(var(--primary) / 0.9) !important;
+    color: hsl(var(--primary-foreground)) !important;
+  }
+
+  /* Intercept and adapt TeamSummaryDashboard nested cards to avoid blending in */
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-white .bg-white,
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-card .bg-white {
+    background-color: hsl(var(--background)) !important;
+  }
+
+  /* Intercept and adapt TeamSummaryDashboard hardcoded colors for high-contrast dark modes */
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-\[\#8fa58f\]\/10 {
+    background-color: hsl(142.1 70.6% 45.3% / 0.1) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-\[\#5a6f5a\] {
+    color: hsl(142.1 70.6% 70%) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-\[\#3a4b3a\] {
+    color: hsl(142.1 70.6% 90%) !important;
+  }
+
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-\[\#d9d5cc\]\/30 {
+    background-color: hsl(var(--muted) / 0.4) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-\[\#5c5750\] {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-\[\#3d3a35\] {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .bg-\[\#e07a57\]\/10 {
+    background-color: hsl(20 70% 55% / 0.15) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-\[\#c45a3a\] {
+    color: hsl(20 70% 70%) !important;
+  }
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) .text-\[\#a04028\] {
+    color: hsl(20 70% 90%) !important;
+  }
+
+  /* Progress track circle */
+  :is(.dark, .midnight, .forest, .terracotta, .cobalt, .quartz, .pink) circle[stroke="#e5e7eb"] {
+    stroke: hsl(var(--border)) !important;
+  }
+
+  /* Intercept and adapt category fade overlays under dark themes */
+  .category-fade-left {
+    background: linear-gradient(to right, hsl(var(--background)) 60%, transparent) !important;
+  }
+  .category-fade-right {
+    background: linear-gradient(to left, hsl(var(--background)) 60%, transparent) !important;
+  }
+
+  /* Intercept and adapt pipeline drag-and-drop empty stage placeholders under dark themes */
+  .dropzone-placeholder {
+    background-color: hsl(var(--muted) / 0.15) !important;
+    border-color: hsl(var(--border)) !important;
+    color: hsl(var(--muted-foreground)) !important;
+  }
+}
+
+/* Dynamic horizontal scroll category fade styles for category headers */
+.category-fade-left {
+  background: linear-gradient(to right, #f0ebe0 60%, transparent);
+}
+.category-fade-right {
+  background: linear-gradient(to left, #f0ebe0 60%, transparent);
+}
+
+/* Pipeline drag-and-drop placeholder empty drop target class */
+.dropzone-placeholder {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-color: #d1d5db !important;
 }
 
 @layer base {
@@ -198,7 +579,9 @@ html {
   left: 0;
   top: 0;
   z-index: 91 !important;
-  background: #0000005c !important;
+  background: hsl(var(--background) / 0.35) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
 }
 
 .ReactModal__Content {
@@ -560,3 +943,27 @@ input[type='number'] {
     margin: 1.2cm;
   }
 }
+
+/* Dynamic interface density styles */
+@layer base {
+  html[data-density='compact'] {
+    font-size: 14px;
+  }
+
+  html[data-density='comfortable'] {
+    font-size: 16px;
+  }
+
+  html[data-density='spacious'] {
+    font-size: 17px;
+  }
+
+  html[data-density='compact'] .density-aware {
+    @apply gap-2 p-3;
+  }
+
+  html[data-density='spacious'] .density-aware {
+    @apply gap-4 p-5;
+  }
+}
+

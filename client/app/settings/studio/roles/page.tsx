@@ -31,10 +31,10 @@ function RolesPageContent() {
   }
 
   return (
-    <div className="space-y-6 md:space-y-8">
+    <div className="space-y-6 md:space-y-8 animate-in fade-in duration-300">
       <div>
-        <h1 className="text-base font-semibold text-gray-900">Roles & permissions</h1>
-        <p className="text-sm text-gray-600">Define what each role can view and edit across the workspace.</p>
+        <h1 className="text-base font-bold text-foreground tracking-tight">Roles & permissions</h1>
+        <p className="text-sm text-muted-foreground mt-1">Define what each role can view and edit across the workspace.</p>
       </div>
 
       <Section title="Permissions matrix" description="Customise access for each role.">

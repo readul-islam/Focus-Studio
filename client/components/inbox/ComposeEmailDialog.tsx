@@ -252,61 +252,66 @@ export function ComposeEmailDialog({
       setIsSending(false);
     }
   };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-2xl bg-white max-h-[90vh] flex flex-col overflow-hidden">
-        <DialogHeader>
-          <DialogTitle>New email</DialogTitle>
+      <DialogContent 
+        overlayClassName="bg-background/35 backdrop-blur-[8px]"
+        className="sm:max-w-2xl bg-card border border-border/40 shadow-[0_20px_60px_rgba(0,0,0,0.65)] hover:border-primary/25 transition-colors duration-300 max-h-[92vh] flex flex-col overflow-hidden rounded-2xl text-foreground p-0 gap-0"
+      >
+        <DialogHeader className="px-6 pt-6 pb-4 border-b border-border/40 bg-card flex-shrink-0">
+          <DialogTitle className="text-[16px] font-bold text-foreground tracking-tight">New email</DialogTitle>
         </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto space-y-4 py-1 pr-1">
+        <div className="flex-1 overflow-y-auto space-y-4 px-6 py-5 scrollbar-thin scrollbar-thumb-rounded pr-2 bg-card">
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="compose-to-type">To</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="compose-to-type" className="text-sm font-medium text-foreground/90">To</Label>
               <Select
                 value={recipientKind}
                 onValueChange={(v) => handleRecipientKindChange(v as RecipientKind)}
               >
-                <SelectTrigger id="compose-to-type">
+                <SelectTrigger 
+                  id="compose-to-type"
+                  className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] font-medium transition-colors hover:border-primary/40 focus:ring-0 focus:outline-none focus:border-primary/40"
+                >
                   <SelectValue placeholder="Recipient type" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="client">Client</SelectItem>
-                  <SelectItem value="team">Team member</SelectItem>
-                  <SelectItem value="custom">Other email</SelectItem>
+                <SelectContent className="bg-card z-[9999] rounded-xl border-border/80 shadow-2xl">
+                  <SelectItem value="client" className="text-[13px] cursor-pointer hover:bg-muted/40 focus:bg-muted/40">Client</SelectItem>
+                  <SelectItem value="team" className="text-[13px] cursor-pointer hover:bg-muted/40 focus:bg-muted/40">Team member</SelectItem>
+                  <SelectItem value="custom" className="text-[13px] cursor-pointer hover:bg-muted/40 focus:bg-muted/40">Other email</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="compose-subject">Subject</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="compose-subject" className="text-sm font-medium text-foreground/90">Subject</Label>
               <Input
                 id="compose-subject"
                 placeholder="Email subject"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                className="bg-white"
+                className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
               />
             </div>
           </div>
 
           {recipientKind === 'client' && (
-            <div className="space-y-2">
-              <Label>Client</Label>
+            <div className="space-y-1.5">
+              <Label className="text-sm font-medium text-foreground/90">Client</Label>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 w-3.5 h-3.5" />
                 <Input
                   placeholder="Search clients..."
                   value={clientSearch}
                   onChange={(e) => setClientSearch(e.target.value)}
-                  className="pl-9 bg-white"
+                  className="h-10 pl-9 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 />
               </div>
-              <div className="flex flex-col gap-1 max-h-36 overflow-y-auto border border-gray-100 rounded-lg p-1">
+              <div className="flex flex-col gap-1 max-h-36 overflow-y-auto border border-border/40 bg-background/50 rounded-xl p-1.5 scrollbar-thin scrollbar-thumb-rounded">
                 {contactsLoading ? (
                   <div className="flex justify-center py-4">
-                    <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
+                    <Loader2 className="w-5 h-5 animate-spin text-muted-foreground/60" />
                   </div>
                 ) : contacts.length > 0 ? (
                   contacts.map((contact) => (
@@ -314,18 +319,18 @@ export function ComposeEmailDialog({
                       key={contact.id}
                       type="button"
                       onClick={() => setSelectedClientId(contact.id)}
-                      className={`text-left px-3 py-2 rounded-md text-sm transition-colors ${
+                      className={`text-left px-3 py-2 rounded-lg text-[13px] border transition-all ${
                         selectedClientId === contact.id
-                          ? 'bg-black text-white'
-                          : 'hover:bg-stone-50 text-gray-800'
+                          ? 'bg-primary text-primary-foreground border-transparent shadow-sm'
+                          : 'bg-transparent border-transparent hover:bg-muted/40 text-foreground/80 hover:text-foreground'
                       }`}
                     >
                       <span className="font-medium block">{contactLabel(contact)}</span>
                       <span
-                        className={`text-xs ${
+                        className={`text-xs block mt-0.5 ${
                           selectedClientId === contact.id
-                            ? 'text-gray-300'
-                            : 'text-gray-500'
+                            ? 'text-primary-foreground/80'
+                            : 'text-muted-foreground'
                         }`}
                       >
                         {contact.email}
@@ -333,7 +338,7 @@ export function ComposeEmailDialog({
                     </button>
                   ))
                 ) : (
-                  <p className="text-sm text-gray-500 text-center py-4">
+                  <p className="text-xs text-muted-foreground/80 text-center py-4 font-medium">
                     No clients with an email address found
                   </p>
                 )}
@@ -342,21 +347,21 @@ export function ComposeEmailDialog({
           )}
 
           {recipientKind === 'team' && (
-            <div className="space-y-2">
-              <Label>Team member</Label>
+            <div className="space-y-1.5">
+              <Label className="text-sm font-medium text-foreground/90">Team member</Label>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 w-3.5 h-3.5" />
                 <Input
                   placeholder="Search team..."
                   value={teamSearch}
                   onChange={(e) => setTeamSearch(e.target.value)}
-                  className="pl-9 bg-white"
+                  className="h-10 pl-9 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 />
               </div>
-              <div className="flex flex-col gap-1 max-h-36 overflow-y-auto border border-gray-100 rounded-lg p-1">
+              <div className="flex flex-col gap-1 max-h-36 overflow-y-auto border border-border/40 bg-background/50 rounded-xl p-1.5 scrollbar-thin scrollbar-thumb-rounded">
                 {teamLoading ? (
                   <div className="flex justify-center py-4">
-                    <Loader2 className="w-5 h-5 animate-spin text-gray-400" />
+                    <Loader2 className="w-5 h-5 animate-spin text-muted-foreground/60" />
                   </div>
                 ) : filteredTeam.length > 0 ? (
                   filteredTeam.map((member) => (
@@ -364,10 +369,10 @@ export function ComposeEmailDialog({
                       key={member.id}
                       type="button"
                       onClick={() => setSelectedUserId(member.id)}
-                      className={`text-left px-3 py-2 rounded-md text-sm transition-colors ${
+                      className={`text-left px-3 py-2 rounded-lg text-[13px] border transition-all ${
                         selectedUserId === member.id
-                          ? 'bg-black text-white'
-                          : 'hover:bg-stone-50 text-gray-800'
+                          ? 'bg-primary text-primary-foreground border-transparent shadow-sm'
+                          : 'bg-transparent border-transparent hover:bg-muted/40 text-foreground/80 hover:text-foreground'
                       }`}
                     >
                       <span className="font-medium block">
@@ -375,10 +380,10 @@ export function ComposeEmailDialog({
                       </span>
                       {member.name && (
                         <span
-                          className={`text-xs ${
+                          className={`text-xs block mt-0.5 ${
                             selectedUserId === member.id
-                              ? 'text-gray-300'
-                              : 'text-gray-500'
+                              ? 'text-primary-foreground/80'
+                              : 'text-muted-foreground'
                           }`}
                         >
                           {member.email}
@@ -387,7 +392,7 @@ export function ComposeEmailDialog({
                     </button>
                   ))
                 ) : (
-                  <p className="text-sm text-gray-500 text-center py-4">
+                  <p className="text-xs text-muted-foreground/80 text-center py-4 font-medium">
                     No team members found
                   </p>
                 )}
@@ -396,45 +401,45 @@ export function ComposeEmailDialog({
           )}
 
           {recipientKind === 'custom' && (
-            <div className="space-y-2">
-              <Label htmlFor="compose-custom-email">Email address</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="compose-custom-email" className="text-sm font-medium text-foreground/90">Email address</Label>
               <Input
                 id="compose-custom-email"
                 type="email"
                 placeholder="name@example.com"
                 value={customEmail}
                 onChange={(e) => setCustomEmail(e.target.value)}
-                className="bg-white"
+                className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
               />
             </div>
           )}
 
-          <div className="space-y-2">
-            <Label>Link to project (optional)</Label>
+          <div className="space-y-1.5">
+            <Label className="text-sm font-medium text-foreground/90">Link to project (optional)</Label>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60 w-3.5 h-3.5" />
               <Input
                 placeholder="Search projects..."
                 value={projectSearch}
                 onChange={(e) => setProjectSearch(e.target.value)}
-                className="pl-9 bg-white"
+                className="h-10 pl-9 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
               />
             </div>
-            <div className="flex flex-col gap-1 max-h-28 overflow-y-auto border border-gray-100 rounded-lg p-1">
+            <div className="flex flex-col gap-1 max-h-28 overflow-y-auto border border-border/40 bg-background/50 rounded-xl p-1.5 scrollbar-thin scrollbar-thumb-rounded">
               <button
                 type="button"
                 onClick={() => setSelectedProjectId(null)}
-                className={`text-left px-3 py-2 rounded-md text-sm ${
+                className={`text-left px-3 py-2 rounded-lg text-[13px] border transition-all ${
                   selectedProjectId === null
-                    ? 'bg-stone-100 text-gray-800 font-medium'
-                    : 'hover:bg-stone-50 text-gray-600'
+                    ? 'bg-primary text-primary-foreground border-transparent shadow-sm'
+                    : 'bg-transparent border-transparent hover:bg-muted/40 text-foreground/80 hover:text-foreground'
                 }`}
               >
                 No project
               </button>
               {projectsLoading ? (
                 <div className="flex justify-center py-3">
-                  <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
+                  <Loader2 className="w-4 h-4 animate-spin text-muted-foreground/60" />
                 </div>
               ) : filteredProjects.length > 0 ? (
                 filteredProjects.map((project) => (
@@ -442,10 +447,10 @@ export function ComposeEmailDialog({
                     key={project.id}
                     type="button"
                     onClick={() => setSelectedProjectId(project.id)}
-                    className={`text-left px-3 py-2 rounded-md text-sm flex items-center justify-between gap-2 ${
+                    className={`text-left px-3 py-2 rounded-lg text-[13px] border transition-all flex items-center justify-between gap-2 ${
                       selectedProjectId === project.id
-                        ? 'bg-black text-white'
-                        : 'hover:bg-stone-50 text-gray-800'
+                        ? 'bg-primary text-primary-foreground border-transparent shadow-sm'
+                        : 'bg-transparent border-transparent hover:bg-muted/40 text-foreground/80 hover:text-foreground'
                     }`}
                   >
                     <span>{project.project_name}</span>
@@ -453,8 +458,8 @@ export function ComposeEmailDialog({
                       <span
                         className={`text-xs shrink-0 ${
                           selectedProjectId === project.id
-                            ? 'text-gray-300'
-                            : 'text-gray-500'
+                            ? 'text-primary-foreground/75'
+                            : 'text-muted-foreground'
                         }`}
                       >
                         {project.project_code}
@@ -463,13 +468,13 @@ export function ComposeEmailDialog({
                   </button>
                 ))
               ) : (
-                <p className="text-sm text-gray-500 text-center py-3">No projects found</p>
+                <p className="text-xs text-muted-foreground/80 text-center py-3 font-medium">No projects found</p>
               )}
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label>Message</Label>
+          <div className="space-y-1.5">
+            <Label className="text-sm font-medium text-foreground/90">Message</Label>
             <InboxReplyComposer
               replyBody={composeBody}
               setReplyBody={setComposeBody}
@@ -483,12 +488,17 @@ export function ComposeEmailDialog({
           </div>
         </div>
 
-        <DialogFooter className="border-t border-gray-100 pt-4 sm:justify-between gap-2">
-          <p className="text-xs text-gray-500 text-left flex-1 truncate">
+        <DialogFooter className="flex-shrink-0 flex items-center justify-between gap-3 px-6 py-4 border-t border-border/40 bg-card">
+          <p className="text-xs text-muted-foreground text-left flex-1 truncate font-medium">
             {resolvedToEmail ? `To: ${resolvedToEmail}` : 'Select a recipient'}
           </p>
           <div className="flex gap-2 shrink-0">
-            <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isSending}>
+            <Button 
+              variant="ghost" 
+              onClick={() => onOpenChange(false)} 
+              disabled={isSending}
+              className="h-10 px-5 rounded-xl text-[13px] font-medium text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors"
+            >
               Cancel
             </Button>
           </div>

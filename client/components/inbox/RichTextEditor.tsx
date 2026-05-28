@@ -53,8 +53,8 @@ function ToolbarButton({
       variant="ghost"
       size="icon"
       className={cn(
-        'h-8 w-8 text-gray-600 hover:text-gray-900',
-        active && 'bg-stone-200 text-gray-900'
+        'h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-all rounded-lg',
+        active && 'bg-primary/10 text-primary border border-primary/20 hover:bg-primary/15'
       )}
       onClick={onClick}
       disabled={disabled}
@@ -91,7 +91,7 @@ export function ComposeToolbar({
   return (
     <div
       className={cn(
-        'flex flex-wrap items-center gap-0.5 w-full px-2 py-1 border-b border-gray-100 bg-stone-50/80',
+        'flex flex-wrap items-center gap-1 w-full px-2 py-1.5 border-b border-border/40 bg-muted/20 backdrop-blur-sm',
         className
       )}
     >
@@ -127,7 +127,7 @@ export function ComposeToolbar({
       >
         <Strikethrough className="w-4 h-4" />
       </ToolbarButton>
-      <span className="w-px h-5 bg-gray-200 mx-0.5" />
+      <span className="w-px h-5 bg-border/40 mx-1" />
       <ToolbarButton
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         active={editor.isActive('bulletList')}
@@ -144,7 +144,7 @@ export function ComposeToolbar({
       >
         <ListOrdered className="w-4 h-4" />
       </ToolbarButton>
-      <span className="w-px h-5 bg-gray-200 mx-0.5" />
+      <span className="w-px h-5 bg-border/40 mx-1" />
       <ToolbarButton
         onClick={setLink}
         active={editor.isActive('link')}
@@ -202,7 +202,7 @@ export function RichTextEditor({
     editorProps: {
       attributes: {
         class:
-          'prose prose-sm max-w-none min-h-[80px] max-h-[200px] overflow-y-auto px-2 py-2 text-sm text-gray-900 focus:outline-none [&_p]:my-1 [&_ul]:my-2 [&_ol]:my-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-0.5 [&_strong]:font-semibold',
+          'prose prose-sm dark:prose-invert max-w-none min-h-[80px] max-h-[200px] overflow-y-auto px-2 py-2 text-sm text-foreground focus:outline-none [&_p]:my-1 [&_ul]:my-2 [&_ol]:my-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-0.5 [&_strong]:font-semibold',
       },
     },
   });
@@ -223,7 +223,7 @@ export function RichTextEditor({
 
   if (!editor) {
     return (
-      <div className={cn('min-h-[100px] rounded-md bg-stone-50 animate-pulse', className)} />
+      <div className={cn('min-h-[100px] rounded-md bg-muted/10 animate-pulse', className)} />
     );
   }
 

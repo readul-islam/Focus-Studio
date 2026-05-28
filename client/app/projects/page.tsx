@@ -117,7 +117,7 @@ export default function ProjectsPage() {
   }, [data]);
 
   return (
-    <div className="flex-1 space-y-6 min-h-[calc(100svh-3.5rem)] bg-stone-50 p-4 sm:p-6">
+    <div className="flex-1 space-y-6 min-h-[calc(100svh-3.5rem)] bg-background p-4 sm:p-6">
       {/* Header */}
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -203,18 +203,21 @@ export default function ProjectsPage() {
 
       {/* Empty State */}
       {!projectsLoading && filteredProjects?.length === 0 && (
-        <div className="text-center py-12">
-          <div className="w-16 h-16 bg-greige-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Calendar className="w-8 h-8 text-greige-400" />
+        <div className="text-center py-16 animate-in fade-in duration-300">
+          <div className="w-16 h-16 bg-muted/40 border border-border/40 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+            <Calendar className="w-7 h-7 text-muted-foreground" />
           </div>
-          <h3 className="text-lg font-medium text-ink mb-2">
+          <h3 className="text-lg font-bold text-foreground mb-2">
             No projects found
           </h3>
-          <p className="text-ink-muted mb-4">
+          <p className="text-muted-foreground/80 text-sm mb-6 max-w-sm mx-auto">
             Get started by creating your first project
           </p>
-          <Button onClick={() => setShowNewProjectDialog(true)} className="bg-clay-600 hover:bg-clay-700 text-white">
-            <Plus className="w-4 h-4 mr-2" />
+          <Button
+            onClick={() => setShowNewProjectDialog(true)}
+            className="bg-primary text-primary-foreground hover:opacity-90 h-11 px-6 rounded-xl shadow-sm font-semibold transition-all gap-2"
+          >
+            <Plus className="w-4 h-4" />
             New project
           </Button>
         </div>

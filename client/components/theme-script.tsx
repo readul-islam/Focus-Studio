@@ -10,11 +10,16 @@ export function ThemeScript() {
     var theme = localStorage.getItem(key);
     var root = document.documentElement;
     var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var darkThemes = ['dark', 'midnight', 'forest', 'terracotta', 'cobalt', 'quartz', 'pink'];
     var isDark =
-      theme === 'dark' ||
+      darkThemes.indexOf(theme) !== -1 ||
       (theme === 'system' && systemDark) ||
       (!theme && systemDark);
-    root.classList.toggle('dark', isDark);
+    if (theme && theme !== 'system') {
+      root.className = theme;
+    } else {
+      root.className = isDark ? 'dark' : 'light';
+    }
     root.style.colorScheme = isDark ? 'dark' : 'light';
   } catch (e) {}
 })();

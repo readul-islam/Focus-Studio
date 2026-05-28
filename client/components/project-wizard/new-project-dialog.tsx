@@ -22,6 +22,7 @@ import {
   DollarSign,
   Hash,
   Home,
+  Loader2,
   Mail,
   Percent,
   Plus,
@@ -411,29 +412,29 @@ function ClientSelect({
           role="combobox"
           aria-expanded={open}
           className={cn(
-            "w-full justify-between bg-white border-borderSoft focus:ring-0 focus:border-clay-300 h-10 transition-colors",
+            "w-full justify-between bg-background border border-border/60 text-foreground text-[13px] font-normal rounded-xl hover:bg-muted/40 hover:border-primary/30 focus:ring-0 focus:outline-none focus:border-primary/40 h-10 transition-colors",
             error && "border-red-300 focus:border-red-400"
           )}
         >
           <span className="flex items-center gap-2 overflow-hidden">
             {selectedClient ? (
-              <span className="truncate">{getClientDisplayName(selectedClient)}</span>
+              <span className="truncate font-semibold">{getClientDisplayName(selectedClient)}</span>
             ) : (
-              <span className="flex items-center gap-2 text-gray-500">
-                <Search className="h-4 w-4" />
+              <span className="flex items-center gap-2 text-muted-foreground/60">
+                <Search className="h-3.5 w-3.5" />
                 Search clients…
               </span>
             )}
           </span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="p-0 w-[360px] rounded-xl border border-gray-200 shadow-lg overflow-hidden" align="start">
-        <Command className="max-h-[400px]">
+      <PopoverContent className="p-0 w-[360px] rounded-xl border border-border/85 bg-card shadow-2xl overflow-hidden z-[9999]" align="start">
+        <Command className="max-h-[400px] bg-transparent">
           <CommandInput
             placeholder="Search clients…"
-            className="focus-visible:ring-gray-300 focus-visible:ring-offset-0 focus:outline-none"
+            className="focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none text-[13px] bg-transparent"
           />
-          <CommandEmpty>No clients found</CommandEmpty>
+          <CommandEmpty className="text-xs text-muted-foreground py-3 px-4">No clients found</CommandEmpty>
           <CommandList
             className="max-h-[300px] overflow-y-auto"
             style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
@@ -451,16 +452,16 @@ function ClientSelect({
                       onSelect(client.id);
                       setOpen(false);
                     }}
-                    className="flex flex-col items-start gap-1.5 cursor-pointer py-3"
+                    className="flex flex-col items-start gap-1.5 cursor-pointer py-3 hover:bg-muted/40 focus:bg-muted/40 rounded-lg text-foreground"
                   >
                     <div className="flex items-center justify-between w-full">
                       <div className="flex pl-4 items-center gap-2">
-                        <User className="h-4 w-4 text-gray-500" />
-                        <span className="font-medium">{displayName}</span>
+                        <User className="h-4 w-4 text-muted-foreground/80" />
+                        <span className="font-semibold">{displayName}</span>
                       </div>
-                      {isSelected && <Check className="h-4 w-4 text-gray-500" />}
+                      {isSelected && <Check className="h-4 w-4 text-primary" />}
                     </div>
-                    <div className="flex flex-col gap-1 pl-4 text-xs text-gray-500">
+                    <div className="flex flex-col gap-1 pl-10 text-xs text-muted-foreground">
                       {client?.email && (
                         <span className="flex items-center gap-1">
                           <Mail className="h-2.5 w-2.5" />
@@ -502,10 +503,10 @@ function ProgressStep({
     <div className="flex flex-col items-center gap-1.5">
       <motion.div
         className={cn(
-          'w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold transition-colors',
-          isActive && 'bg-clay-600 text-white shadow-md',
-          isCompleted && 'bg-sage-500 text-white',
-          !isActive && !isCompleted && 'bg-greige-200 text-ink-muted'
+          'w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold transition-colors border',
+          isActive && 'bg-primary text-primary-foreground border-transparent shadow-md font-bold',
+          isCompleted && 'bg-primary/20 text-primary border-primary/30',
+          !isActive && !isCompleted && 'bg-muted/40 text-muted-foreground border-border/40'
         )}
         animate={{
           scale: isActive ? 1.05 : 1,
@@ -516,8 +517,8 @@ function ProgressStep({
        
       </motion.div>
       <span className={cn(
-        'text-xs font-medium transition-colors',
-        isActive ? 'text-ink' : 'text-ink-muted'
+        'text-xs font-semibold transition-colors',
+        isActive ? 'text-foreground' : 'text-muted-foreground'
       )}>
         {label}
       </span>
@@ -841,8 +842,8 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
             animate="animate"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <motion.div className="space-y-2" variants={fadeInUp}>
-                <Label htmlFor="name" className="text-sm font-medium text-ink">
+              <motion.div className="space-y-1.5" variants={fadeInUp}>
+                <Label htmlFor="name" className="text-sm font-medium text-foreground/90">
                   Project Name <span className="text-red-500">*</span>
                 </Label>
                 <Input
@@ -852,8 +853,8 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                   onChange={e => updateData({ name: e.target.value })}
                   onBlur={() => markTouched('name')}
                   className={cn(
-                    "bg-white border-borderSoft focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors",
-                    touched.name && errors.name && "border-red-300 focus:border-red-400"
+                    "h-10 rounded-xl border bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors",
+                    touched.name && errors.name ? "border-red-300 focus:border-red-400" : "border-border/60"
                   )}
                 />
                 <AnimatePresence>
@@ -862,7 +863,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="flex items-center gap-1.5 text-xs text-red-500"
+                      className="flex items-center gap-1.5 text-xs text-red-500 mt-1"
                     >
                       <AlertCircle className="w-3 h-3" />
                       {errors.name}
@@ -871,9 +872,9 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                 </AnimatePresence>
               </motion.div>
 
-              <motion.div className="space-y-2" variants={fadeInUp}>
-                <Label htmlFor="projectCode" className="text-sm font-medium text-ink flex items-center gap-2">
-                  <Hash className="w-3.5 h-3.5 text-ink-muted" />
+              <motion.div className="space-y-1.5" variants={fadeInUp}>
+                <Label htmlFor="projectCode" className="text-sm font-medium text-foreground/90 flex items-center gap-2">
+                  <Hash className="w-3.5 h-3.5 text-muted-foreground/60" />
                   Project Code
                 </Label>
                 <Input
@@ -881,14 +882,14 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                   value={data.projectCode}
                   onChange={e => updateData({ projectCode: e.target.value.toUpperCase() })}
                   placeholder="e.g., TP-001"
-                  className="bg-white border-borderSoft focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 />
-                <p className="text-xs text-ink-muted">Auto-generated, but you can customize it</p>
+                <p className="text-xs text-muted-foreground mt-0.5 font-medium">Auto-generated, but you can customize it</p>
               </motion.div>
             </div>
 
-            <motion.div className="space-y-2" variants={fadeInUp}>
-              <Label className="text-sm font-medium text-ink">
+            <motion.div className="space-y-1.5" variants={fadeInUp}>
+              <Label className="text-sm font-medium text-foreground/90">
                 Project Type <span className="text-red-500">*</span>
               </Label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -898,15 +899,14 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                   return (
                     <motion.div
                       key={type.id}
-                      // whileHover={{ scale: 1 }}
                       whileTap={{ scale: 0.98 }}
                     >
                       <Card
                         className={cn(
-                          'cursor-pointer transition-all duration-200',
+                          'cursor-pointer transition-all duration-300 rounded-xl overflow-hidden border',
                           isSelected
-                            ? 'border-clay-600 bg-clay-50 shadow-sm'
-                            : 'border-borderSoft bg-white hover:bg-greige-50 hover:border-clay-300'
+                            ? 'border-primary bg-primary/10 shadow-sm'
+                            : 'border-border/60 bg-background/50 hover:bg-muted/20 hover:border-primary/40'
                         )}
                         onClick={() => updateData({ projectType: type.id })}
                       >
@@ -914,13 +914,13 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                           <div className="flex flex-col items-center text-center gap-2">
                             <div className={cn(
                               "w-12 h-12 rounded-xl flex items-center justify-center transition-colors",
-                              isSelected ? 'bg-clay-600 text-white' : 'bg-greige-100 text-ink-muted'
+                              isSelected ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
                             )}>
-                              <IconComponent className="w-6 h-6" />
+                              <IconComponent className="w-5 h-5" />
                             </div>
                             <div>
-                              <h4 className="font-medium text-ink">{type.name}</h4>
-                              <p className="text-xs text-ink-muted mt-0.5">{type.description}</p>
+                              <h4 className={cn("font-bold text-[13px] tracking-tight transition-colors", isSelected ? 'text-primary' : 'text-foreground/90')}>{type.name}</h4>
+                              <p className="text-[11px] text-muted-foreground mt-1 max-w-[160px] leading-normal">{type.description}</p>
                             </div>
                           </div>
                         </CardContent>
@@ -935,7 +935,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="flex items-center gap-1.5 text-xs text-red-500"
+                    className="flex items-center gap-1.5 text-xs text-red-500 mt-1"
                   >
                     <AlertCircle className="w-3 h-3" />
                     {errors.projectType}
@@ -945,8 +945,8 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
             </motion.div>
 
             <motion.div variants={fadeInUp}>
-              <div className="space-y-2">
-                <Label htmlFor="client" className="text-sm font-medium text-ink">
+              <div className="space-y-1.5">
+                <Label htmlFor="client" className="text-sm font-medium text-foreground/90">
                   Client <span className="text-red-500">*</span>
                 </Label>
                 <ClientSelect
@@ -961,7 +961,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="flex items-center gap-1.5 text-xs text-red-500"
+                      className="flex items-center gap-1.5 text-xs text-red-500 mt-1"
                     >
                       <AlertCircle className="w-3 h-3" />
                       {errors.client}
@@ -971,8 +971,8 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
               </div>
             </motion.div>
 
-            <motion.div className="space-y-2" variants={fadeInUp}>
-              <Label htmlFor="description" className="text-sm font-medium text-ink">
+            <motion.div className="space-y-1.5" variants={fadeInUp}>
+              <Label htmlFor="description" className="text-sm font-medium text-foreground/90">
                 Project Description
               </Label>
               <Textarea
@@ -980,7 +980,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                 placeholder="Brief description of the project scope and objectives..."
                 value={data.description}
                 onChange={e => updateData({ description: e.target.value })}
-                className="bg-white border-borderSoft focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0 min-h-[80px] resize-none"
+                className="rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors min-h-[80px] resize-none"
               />
             </motion.div>
           </motion.div>
@@ -1636,17 +1636,18 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         ref={dialogRef}
-        className="max-w-3xl max-h-[90vh] overflow-y-auto bg-white border-borderSoft"
+        overlayClassName="bg-background/35 backdrop-blur-[8px]"
+        className="max-w-3xl bg-card border border-border/40 shadow-[0_20px_60px_rgba(0,0,0,0.65)] hover:border-primary/25 transition-colors duration-300 max-h-[92vh] flex flex-col overflow-hidden rounded-2xl text-foreground p-0 gap-0"
       >
-        <DialogHeader>
+        <DialogHeader className="px-6 pt-6 pb-4 border-b border-border/40 bg-card flex-shrink-0">
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-xl font-semibold text-ink">Create New Project</DialogTitle>
+            <DialogTitle className="text-[16px] font-bold text-foreground tracking-tight">Create New Project</DialogTitle>
           </div>
         </DialogHeader>
 
-        <div>
+        <div className="flex-1 overflow-y-auto px-6 py-6 scrollbar-thin scrollbar-thumb-rounded pr-2 bg-card flex flex-col gap-6">
           {/* Progress Steps */}
-          <div className="flex items-center justify-between mb-8 px-4">
+          <div className="flex items-center justify-between px-4 pb-4 border-b border-border/20">
             {[1, 2, 3, 4].map((stepNumber, index) => (
               <div key={stepNumber} className="flex items-center">
                 <ProgressStep
@@ -1654,13 +1655,12 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                   currentStep={step}
                   label={stepLabels[index]}
                 />
-          
               </div>
             ))}
           </div>
 
           {/* Step Content with Animation */}
-          <div className="min-h-[420px] relative overflow-hidden">
+          <div className="min-h-[380px] relative overflow-hidden flex-1">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={step}
@@ -1673,87 +1673,78 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                   x: { type: 'spring', stiffness: 300, damping: 30 },
                   opacity: { duration: 0.2 },
                 }}
+                className="h-full"
               >
                 {renderStep()}
               </motion.div>
             </AnimatePresence>
           </div>
+        </div>
 
-          <Separator className="bg-borderSoft my-6" />
-
-          {/* Footer */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                onClick={handleClose}
-                className="border-borderSoft bg-white hover:bg-greige-50"
-                disabled={isSubmitting}
+        {/* Footer */}
+        <div className="flex-shrink-0 flex items-center justify-between gap-3 px-6 py-4 border-t border-border/40 bg-card">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              onClick={handleClose}
+              className="h-10 px-5 rounded-xl text-[13px] font-medium text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors"
+              disabled={isSubmitting}
+            >
+              Cancel
+            </Button>
+            {step > 1 && (
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
               >
-                Cancel
-              </Button>
-              {step > 1 && (
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                >
-                  <Button
-                    variant="outline"
-                    onClick={handleBack}
-                    className="border-borderSoft bg-white hover:bg-greige-50"
-                    disabled={isSubmitting}
-                  >
-                    Back
-                  </Button>
-                </motion.div>
-              )}
-            </div>
-
-            <div className="flex items-center gap-2">
-              {step === 2 && (
                 <Button
                   variant="ghost"
-                  onClick={() => { setDirection(1); setStep(3); }}
+                  onClick={handleBack}
+                  className="h-10 px-5 rounded-xl text-[13px] font-medium text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors"
                   disabled={isSubmitting}
-                  className="border-borderSoft"
                 >
-                  Skip
+                  Back
                 </Button>
-              )}
-              {step < 4 ? (
-                <Button
-                  onClick={handleNext}
-                  disabled={!canProceed()}
-                  className="bg-clay-600 hover:bg-clay-700 text-white min-w-[100px]"
-                >
-                  Continue
-                </Button>
-              ) : (
-                <Button
-                  onClick={handleCreate}
-                  disabled={isSubmitting}
-                  className="bg-clay-600 hover:bg-clay-700 text-white min-w-[140px]"
-                >
-                  {isSubmitting ? (
-                    <motion.div
-                      className="flex items-center gap-2"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                    >
-                      <motion.div
-                        className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                      />
-                      Creating...
-                    </motion.div>
-                  ) : (
-                    'Create Project'
-                  )}
-                </Button>
-              )}
-            </div>
+              </motion.div>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            {step === 2 && (
+              <Button
+                variant="ghost"
+                onClick={() => { setDirection(1); setStep(3); }}
+                disabled={isSubmitting}
+                className="h-10 px-4 rounded-xl text-[13px] font-medium text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors"
+              >
+                Skip
+              </Button>
+            )}
+            {step < 4 ? (
+              <Button
+                onClick={handleNext}
+                disabled={!canProceed()}
+                className="h-10 px-6 rounded-xl text-[13px] font-medium bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/95 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-[100px]"
+              >
+                Continue
+              </Button>
+            ) : (
+              <Button
+                onClick={handleCreate}
+                disabled={isSubmitting}
+                className="h-10 px-6 rounded-xl text-[13px] font-medium bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/95 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-[140px] flex items-center justify-center gap-2"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  'Create Project'
+                )}
+              </Button>
+            )}
           </div>
         </div>
       </DialogContent>

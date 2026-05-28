@@ -106,13 +106,13 @@ function FieldError({ message }: { message?: string }) {
 
 function SectionHeader({ icon: Icon, title, description }: { icon: any; title: string; description?: string }) {
   return (
-    <div className="flex items-center gap-3 pb-3 mb-4 border-b border-stone-100">
-      <div className="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center flex-shrink-0">
-        <Icon className="h-4 w-4 text-stone-600" />
+    <div className="flex items-center gap-3 pb-3 mb-4 border-b border-border/40">
+      <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+        <Icon className="h-4 w-4 text-foreground/80" />
       </div>
       <div>
-        <p className="text-[13px] font-semibold text-stone-900 tracking-tight">{title}</p>
-        {description && <p className="text-[11px] text-stone-400 mt-0.5">{description}</p>}
+        <p className="text-[13px] font-semibold text-foreground tracking-tight">{title}</p>
+        {description && <p className="text-[11px] text-muted-foreground mt-0.5">{description}</p>}
       </div>
     </div>
   );
@@ -127,30 +127,30 @@ function BooleanSelect({ value, onChange, label, id, error }: {
 }) {
   return (
     <div className="space-y-1.5">
-      <Label htmlFor={id} className="text-sm font-medium text-ink">
+      <Label htmlFor={id} className="text-sm font-medium text-foreground/90">
         {label}
       </Label>
       <Select value={value || ''} onValueChange={onChange}>
         <SelectTrigger
           id={id}
           className={cn(
-            'h-10 rounded-xl border bg-white text-[13px] font-medium transition-colors',
-            'hover:border-clay-300 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0',
-            error ? 'border-red-300 focus:border-red-400' : 'border-borderSoft'
+            'h-10 rounded-xl border bg-background text-foreground text-[13px] font-medium transition-colors',
+            'hover:border-primary/40 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0',
+            error ? 'border-red-300 focus:border-red-400' : 'border-border/60'
           )}
         >
           <SelectValue placeholder="Select…" />
         </SelectTrigger>
-        <SelectContent className="bg-white z-[9999] rounded-xl border-borderSoft shadow-xl">
-          <SelectItem value="true" className="text-[13px] cursor-pointer focus:bg-stone-50">
+        <SelectContent className="bg-card z-[9999] rounded-xl border-border/80 shadow-2xl">
+          <SelectItem value="true" className="text-[13px] cursor-pointer hover:bg-muted/40 focus:bg-muted/40">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-emerald-500" />
               Yes
             </div>
           </SelectItem>
-          <SelectItem value="false" className="text-[13px] cursor-pointer focus:bg-stone-50">
+          <SelectItem value="false" className="text-[13px] cursor-pointer hover:bg-muted/40 focus:bg-muted/40">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-stone-400" />
+              <div className="w-2 h-2 rounded-full bg-muted-foreground/60" />
               No
             </div>
           </SelectItem>
@@ -174,7 +174,7 @@ function FormField({ label, id, error, required, children }: {
     <div className="space-y-1.5">
       <Label
         htmlFor={id}
-        className="text-sm font-medium text-ink"
+        className="text-sm font-medium text-foreground/90"
       >
         {label}
         {required && <span className="text-red-500 ml-0.5">*</span>}
@@ -218,12 +218,12 @@ function ImageUploadZone({
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2">
-        <div className="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center">
-          <ImageIcon className="h-4 w-4 text-stone-600" />
+        <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">
+          <ImageIcon className="h-4 w-4 text-foreground/80" />
         </div>
         <div>
-          <p className="text-[13px] font-semibold text-stone-900 tracking-tight">Product Images</p>
-          <p className="text-[11px] text-stone-400">Up to 5 images · Max 20MB each</p>
+          <p className="text-[13px] font-semibold text-foreground tracking-tight">Product Images</p>
+          <p className="text-[11px] text-muted-foreground">Up to 5 images · Max 20MB each</p>
         </div>
       </div>
 
@@ -233,22 +233,22 @@ function ImageUploadZone({
           'relative border-2 border-dashed rounded-2xl p-6 cursor-pointer transition-all duration-200',
           'flex flex-col items-center justify-center text-center gap-3',
           isDragActive
-            ? 'border-clay-600 bg-clay-50 scale-[1.01]'
-            : 'border-borderSoft hover:border-clay-300 hover:bg-greige-50/50 bg-white'
+            ? 'border-primary bg-primary/5 scale-[1.01]'
+            : 'border-border/60 hover:border-primary/40 hover:bg-muted/20 bg-background'
         )}
       >
         <input {...getInputProps()} aria-label="Upload product images" />
         <div className={cn(
           'w-10 h-10 rounded-xl flex items-center justify-center transition-colors',
-          isDragActive ? 'bg-stone-900' : 'bg-stone-100'
+          isDragActive ? 'bg-primary' : 'bg-muted'
         )}>
-          <Upload className={cn('h-4 w-4', isDragActive ? 'text-white' : 'text-stone-500')} />
+          <Upload className={cn('h-4 w-4', isDragActive ? 'text-primary-foreground' : 'text-muted-foreground')} />
         </div>
         <div>
-          <p className="text-[13px] font-medium text-stone-700">
+          <p className="text-[13px] font-medium text-foreground/85">
             {isDragActive ? 'Drop images here' : 'Drag & drop or click to upload'}
           </p>
-          <p className="text-[11px] text-stone-400 mt-0.5">PNG, JPG, GIF, WEBP supported</p>
+          <p className="text-[11px] text-muted-foreground mt-0.5">PNG, JPG, GIF, WEBP supported</p>
         </div>
         {error && (
           <p className="flex items-center gap-1 text-[11px] font-medium text-red-500">
@@ -272,7 +272,7 @@ function ImageUploadZone({
               >
                 <div className={cn(
                   'w-20 h-20 rounded-xl overflow-hidden border-2 transition-all',
-                  index === primaryIndex ? 'border-amber-400 shadow-[0_0_0_3px_rgba(251,191,36,0.2)]' : 'border-borderSoft'
+                  index === primaryIndex ? 'border-amber-400 shadow-[0_0_0_3px_rgba(251,191,36,0.2)]' : 'border-border/60 bg-muted/20'
                 )}>
                   <img src={file.preview} alt="Preview" className="w-full h-full object-cover" />
                 </div>
@@ -291,7 +291,7 @@ function ImageUploadZone({
                     'absolute -bottom-1.5 -right-1.5 w-5 h-5 rounded-full flex items-center justify-center transition-all z-10',
                     index === primaryIndex
                       ? 'bg-amber-400 text-white'
-                      : 'bg-stone-200 text-stone-400 opacity-0 group-hover:opacity-100 hover:bg-amber-200'
+                      : 'bg-muted text-muted-foreground opacity-0 group-hover:opacity-100 hover:bg-primary/20 hover:text-primary'
                   )}
                   title="Set as primary image"
                   aria-label={index === primaryIndex ? 'Primary image' : 'Set as primary'}
@@ -455,24 +455,25 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
     <>
       <Dialog open={modalOpen} onOpenChange={v => !v && handleClose()}>
         <DialogContent
+          overlayClassName="bg-background/35 backdrop-blur-[8px]"
           className={cn(
-            'p-0 gap-0 border-0 shadow-2xl overflow-hidden',
+            'p-0 gap-0 border border-border/40 shadow-[0_20px_60px_rgba(0,0,0,0.65)] hover:border-primary/25 transition-colors duration-300 overflow-hidden',
             'w-full max-w-[680px] max-h-[92vh] flex flex-col',
-            'bg-[#FAFAF8] rounded-2xl'
+            'bg-card rounded-2xl text-foreground'
           )}
           onInteractOutside={e => e.preventDefault()}
         >
           {/* ── Header ── */}
-          <DialogHeader className="flex-shrink-0 px-6 pt-6 pb-4 border-b border-stone-100 bg-white">
+          <DialogHeader className="flex-shrink-0 px-6 pt-6 pb-4 border-b border-border/40 bg-card">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-stone-900 flex items-center justify-center">
-                <Package className="h-4 w-4 text-white" />
+              <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
+                <Package className="h-4 w-4 text-primary-foreground" />
               </div>
               <div>
-                <DialogTitle className="text-[16px] font-semibold text-stone-900 tracking-tight">
+                <DialogTitle className="text-[16px] font-bold text-foreground tracking-tight">
                   Add Product
                 </DialogTitle>
-                <DialogDescription className="text-[12px] text-stone-400 mt-0.5">
+                <DialogDescription className="text-[12px] text-muted-foreground mt-0.5">
                   Fill in the details below. Name and currency are required.
                 </DialogDescription>
               </div>
@@ -480,7 +481,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
           </DialogHeader>
 
           {/* ── Scrollable Body ── */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded pr-1">
             <form
               id="add-product-form"
               onSubmit={handleSubmit(onSubmit)}
@@ -488,7 +489,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
               className="space-y-0"
             >
               {/* Images */}
-              <div className="px-6 py-5 bg-white border-b border-stone-100">
+              <div className="px-6 py-5 bg-card border-b border-border/40">
                 <ImageUploadZone
                   files={files}
                   primaryIndex={primaryImageIndex}
@@ -500,7 +501,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
               </div>
 
               {/* Basic Info */}
-              <div className="px-6 py-5 bg-white border-b border-stone-100">
+              <div className="px-6 py-5 bg-card border-b border-border/40">
                 <SectionHeader icon={Package} title="Basic Information" description="Core product details" />
                 <div className="grid grid-cols-2 gap-4">
                   {/* Product Name */}
@@ -513,16 +514,16 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       aria-describedby={errors.name ? 'name-error' : undefined}
                       aria-invalid={!!errors.name}
                       className={cn(
-                        'h-10 rounded-xl border bg-white text-[13px] transition-colors',
-                        'placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0',
-                        errors.name ? 'border-red-300 focus:border-red-400' : 'border-borderSoft'
+                        'h-10 rounded-xl border bg-background text-foreground text-[13px] transition-colors',
+                        'placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0',
+                        errors.name ? 'border-red-300 focus:border-red-400' : 'border-border/60'
                       )}
                     />
                   </FormField>
 
                   {/* Supplier */}
                   <div className="space-y-1.5">
-                    <Label className="text-sm font-medium text-ink">
+                    <Label className="text-sm font-medium text-foreground/90">
                       Supplier
                     </Label>
                     <Popover open={supplierOpen} onOpenChange={setSupplierOpen}>
@@ -534,21 +535,21 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                           aria-expanded={supplierOpen}
                           aria-label="Select supplier"
                           className={cn(
-                            'w-full h-10 rounded-xl border border-borderSoft bg-white text-[13px] font-normal',
-                            'justify-between hover:bg-greige-50 hover:border-clay-300',
-                            'focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0',
-                            !selectedSupplier && 'text-stone-400'
+                            'w-full h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] font-normal',
+                            'justify-between hover:bg-muted/40 hover:border-primary/30',
+                            'focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0',
+                            !selectedSupplier && 'text-muted-foreground/60'
                           )}
                         >
                           {selectedSupplier?.company_name || 'Select supplier…'}
                           <ChevronDown className="ml-2 h-3.5 w-3.5 opacity-50 flex-shrink-0" />
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent side="bottom" align="start" className="w-72 p-0 z-[9999] bg-white border-borderSoft shadow-xl rounded-xl">
-                        <Command>
-                          <CommandInput placeholder="Search suppliers…" className="text-[13px]" />
+                      <PopoverContent side="bottom" align="start" className="w-72 p-0 z-[9999] bg-card border-border/80 shadow-2xl rounded-xl">
+                        <Command className="bg-transparent">
+                          <CommandInput placeholder="Search suppliers…" className="text-[13px] text-foreground bg-transparent" />
                           <CommandList className="max-h-52">
-                            <CommandEmpty className="text-[12px] text-stone-400 py-3 px-4">No suppliers found.</CommandEmpty>
+                            <CommandEmpty className="text-[12px] text-muted-foreground py-3 px-4">No suppliers found.</CommandEmpty>
                             {!loadingSuppliers && suppliers?.map((item: any) => (
                               <CommandItem
                                 key={item.id}
@@ -558,18 +559,18 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                                   setValue('supplier', item.company_name);
                                   setSupplierOpen(false);
                                 }}
-                                className="text-[13px] cursor-pointer"
+                                className="text-[13px] cursor-pointer hover:bg-muted/40 focus:bg-muted/40 text-foreground"
                               >
                                 <Check className={cn('mr-2 h-3.5 w-3.5', selectedSupplier?.id === item.id ? 'opacity-100' : 'opacity-0')} />
                                 {item.company_name}
                               </CommandItem>
                             ))}
                           </CommandList>
-                          <div className="border-t border-stone-100">
+                          <div className="border-t border-border/40">
                             <button
                               type="button"
                               onClick={() => { setSupplierOpen(false); setIsAddSupplierOpen(true); }}
-                              className="w-full text-[12px] font-medium text-stone-600 py-2.5 px-4 text-left hover:bg-stone-50 transition-colors"
+                              className="w-full text-[12px] font-medium text-primary py-2.5 px-4 text-left hover:bg-muted/40 transition-colors"
                             >
                               + Add new supplier
                             </button>
@@ -581,7 +582,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
 
                   {/* Type */}
                   <div className="space-y-1.5">
-                    <Label className="text-sm font-medium text-ink">
+                    <Label className="text-sm font-medium text-foreground/90">
                       Product Type
                     </Label>
                     <Popover open={typeOpen} onOpenChange={setTypeOpen}>
@@ -592,16 +593,16 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                           role="combobox"
                           aria-expanded={typeOpen}
                           className={cn(
-                            'w-full h-10 rounded-xl border border-borderSoft bg-white text-[13px] font-normal',
-                            'justify-between hover:bg-greige-50 hover:border-clay-300',
-                            !typeValue && 'text-stone-400'
+                            'w-full h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] font-normal',
+                            'justify-between hover:bg-muted/40 hover:border-primary/30',
+                            !typeValue && 'text-muted-foreground/60'
                           )}
                         >
                           {typeValue || 'Select type…'}
                           <ChevronDown className="ml-2 h-3.5 w-3.5 opacity-50 flex-shrink-0" />
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent side="bottom" align="start" className="w-52 p-1 z-[9999] bg-white border-borderSoft shadow-xl rounded-xl">
+                      <PopoverContent side="bottom" align="start" className="w-52 p-1 z-[9999] bg-card border-border/80 shadow-2xl rounded-xl">
                         {PRODUCT_TYPES.map(t => (
                           <button
                             key={t}
@@ -609,7 +610,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                             onClick={() => { setValue('type', t); setTypeOpen(false); }}
                             className={cn(
                               'w-full text-left text-[13px] px-3 py-2 rounded-lg transition-colors flex items-center justify-between',
-                              typeValue === t ? 'bg-stone-100 text-stone-900 font-medium' : 'hover:bg-stone-50 text-stone-700'
+                              typeValue === t ? 'bg-muted text-foreground font-medium' : 'hover:bg-muted/40 text-foreground/80'
                             )}
                           >
                             {t}
@@ -623,7 +624,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                   {/* Product URL */}
                   <FormField label="Product URL" id="product_url" error={errors.product_url?.message}>
                     <div className="relative">
-                      <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-stone-400" />
+                      <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/60" />
                       <Input
                         {...register('product_url')}
                         id="product_url"
@@ -631,9 +632,9 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                         placeholder="https://supplier.com/product"
                         aria-invalid={!!errors.product_url}
                         className={cn(
-                          'h-10 pl-9 rounded-xl border bg-white text-[13px] transition-colors',
-                          'placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0',
-                          errors.product_url ? 'border-red-300' : 'border-borderSoft'
+                          'h-10 pl-9 rounded-xl border bg-background text-foreground text-[13px] transition-colors',
+                          'placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0',
+                          errors.product_url ? 'border-red-300' : 'border-border/60'
                         )}
                       />
                     </div>
@@ -649,8 +650,8 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       rows={3}
                       placeholder="Brief product description…"
                       className={cn(
-                        'rounded-xl border border-borderSoft bg-white text-[13px] resize-none',
-                        'placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0'
+                        'rounded-xl border border-border/60 bg-background text-foreground text-[13px] resize-none',
+                        'placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0'
                       )}
                     />
                   </FormField>
@@ -658,7 +659,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
               </div>
 
               {/* Pricing */}
-              <div className="px-6 py-5 bg-white border-b border-stone-100">
+              <div className="px-6 py-5 bg-card border-b border-border/40">
                 <SectionHeader icon={DollarSign} title="Pricing" description="Trade and retail pricing" />
                 <div className="grid grid-cols-3 gap-4">
                   <div className="col-span-1">
@@ -687,9 +688,9 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       step="0.01"
                       placeholder="0.00"
                       className={cn(
-                        'h-10 rounded-xl border bg-white text-[13px] transition-colors',
-                        'placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0',
-                        errors.priceMember ? 'border-red-300' : 'border-borderSoft'
+                        'h-10 rounded-xl border bg-background text-foreground text-[13px] transition-colors',
+                        'placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0',
+                        errors.priceMember ? 'border-red-300' : 'border-border/60'
                       )}
                     />
                   </FormField>
@@ -702,9 +703,9 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       step="0.01"
                       placeholder="0.00"
                       className={cn(
-                        'h-10 rounded-xl border bg-white text-[13px] transition-colors',
-                        'placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0',
-                        errors.priceRegular ? 'border-red-300' : 'border-borderSoft'
+                        'h-10 rounded-xl border bg-background text-foreground text-[13px] transition-colors',
+                        'placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0',
+                        errors.priceRegular ? 'border-red-300' : 'border-border/60'
                       )}
                     />
                   </FormField>
@@ -712,7 +713,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
               </div>
 
               {/* Specifications */}
-              <div className="px-6 py-5 bg-white border-b border-stone-100">
+              <div className="px-6 py-5 bg-card border-b border-border/40">
                 <SectionHeader icon={Ruler} title="Specifications" description="Physical product details" />
                 <div className="grid grid-cols-2 gap-4">
                   {[
@@ -728,7 +729,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                         {...register(id as keyof ProductForm)}
                         id={id}
                         placeholder={placeholder}
-                        className="h-10 rounded-xl border border-borderSoft bg-white text-[13px] placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+                        className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                       />
                     </FormField>
                   ))}
@@ -736,7 +737,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
               </div>
 
               {/* Furniture Details */}
-              <div className="px-6 py-5 bg-white">
+              <div className="px-6 py-5 bg-card">
                 <SectionHeader icon={Sofa} title="Furniture Details" description="Optional furniture-specific attributes" />
                 <div className="grid grid-cols-2 gap-4">
                   {/* Assembly Required */}
@@ -760,7 +761,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       {...register('seatWidth')}
                       id="seatWidth"
                       placeholder="e.g. 55 cm"
-                      className="h-10 rounded-xl border border-borderSoft bg-white text-[13px] placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
 
@@ -770,7 +771,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       {...register('seatDepth')}
                       id="seatDepth"
                       placeholder="e.g. 50 cm"
-                      className="h-10 rounded-xl border border-borderSoft bg-white text-[13px] placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
 
@@ -780,7 +781,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       {...register('seatHeight')}
                       id="seatHeight"
                       placeholder="e.g. 44 cm"
-                      className="h-10 rounded-xl border border-borderSoft bg-white text-[13px] placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
 
@@ -790,7 +791,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       {...register('composition')}
                       id="composition"
                       placeholder="e.g. 80% polyester"
-                      className="h-10 rounded-xl border border-borderSoft bg-white text-[13px] placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
 
@@ -800,7 +801,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       {...register('construction')}
                       id="construction"
                       placeholder="e.g. Kiln-dried oak frame"
-                      className="h-10 rounded-xl border border-borderSoft bg-white text-[13px] placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
 
@@ -812,7 +813,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       type="number"
                       min="0"
                       placeholder="e.g. 15"
-                      className="h-10 rounded-xl border border-borderSoft bg-white text-[13px] placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
 
@@ -822,7 +823,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       {...register('filling')}
                       id="filling"
                       placeholder="e.g. High-density foam"
-                      className="h-10 rounded-xl border border-borderSoft bg-white text-[13px] placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
 
@@ -832,7 +833,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       {...register('frame')}
                       id="frame"
                       placeholder="e.g. Solid oak"
-                      className="h-10 rounded-xl border border-borderSoft bg-white text-[13px] placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
 
@@ -875,7 +876,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       id="instructions"
                       rows={3}
                       placeholder="Assembly or care instructions…"
-                      className="rounded-xl border border-borderSoft bg-white text-[13px] resize-none placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className="rounded-xl border border-border/60 bg-background text-foreground text-[13px] resize-none placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
                 </div>
@@ -884,13 +885,13 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
           </div>
 
           {/* ── Footer ── */}
-          <div className="flex-shrink-0 flex items-center justify-between gap-3 px-6 py-4 border-t border-stone-100 bg-white">
+          <div className="flex-shrink-0 flex items-center justify-between gap-3 px-6 py-4 border-t border-border/40 bg-card">
             <Button
               type="button"
               variant="ghost"
               onClick={handleClose}
               disabled={isBusy}
-              className="h-10 px-5 rounded-xl text-[13px] font-medium text-stone-600 hover:bg-stone-100 hover:text-stone-900 transition-colors"
+              className="h-10 px-5 rounded-xl text-[13px] font-medium text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors"
             >
               Cancel
             </Button>
@@ -899,8 +900,8 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
               form="add-product-form"
               disabled={isBusy}
               className={cn(
-                'h-10 px-6 rounded-xl text-[13px] font-medium bg-stone-900 text-white',
-                'hover:bg-stone-800 active:bg-stone-950 transition-colors',
+                'h-10 px-6 rounded-xl text-[13px] font-medium bg-primary text-primary-foreground',
+                'hover:bg-primary/90 active:bg-primary/95 transition-colors',
                 'disabled:opacity-50 disabled:cursor-not-allowed',
                 'flex items-center gap-2'
               )}

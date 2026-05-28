@@ -112,7 +112,7 @@ export function InboxReplyComposer({
       className={
         embedded
           ? 'flex-shrink-0'
-          : 'flex-shrink-0 p-4 border-t border-gray-100 bg-white'
+          : 'flex-shrink-0 p-4 border-t border-border/40 bg-card/45 backdrop-blur-md'
       }
     >
       {files.length > 0 && (
@@ -120,14 +120,14 @@ export function InboxReplyComposer({
           {files.map((file, index) => (
             <div
               key={`${file.name}-${file.size}-${index}`}
-              className="flex items-center gap-2 text-xs bg-stone-100 border border-stone-200 rounded-lg px-2 py-1.5 max-w-full"
+              className="flex items-center gap-2 text-xs bg-muted/30 border border-border/40 rounded-lg px-2 py-1.5 max-w-full text-foreground/80"
             >
               <FilePreviewThumb file={file} />
-              <span className="truncate max-w-[140px] font-medium text-gray-700">{file.name}</span>
+              <span className="truncate max-w-[140px] font-medium text-foreground/80">{file.name}</span>
               <button
                 type="button"
                 onClick={() => removeFile(index)}
-                className="text-gray-400 hover:text-gray-700"
+                className="text-muted-foreground hover:text-foreground"
                 aria-label={`Remove ${file.name}`}
               >
                 <X className="w-3.5 h-3.5" />
@@ -148,21 +148,21 @@ export function InboxReplyComposer({
           e.target.value = '';
         }}
       />
-      <div className="bg-white rounded-lg border border-gray-200 shadow-sm focus-within:ring-2 focus-within:ring-black/5 transition-all overflow-hidden">
+      <div className="bg-card rounded-lg border border-border/60 shadow-sm focus-within:ring-1 focus-within:ring-primary/20 transition-all overflow-hidden">
         <RichTextEditor
           value={replyBody}
           onChange={(html) => setReplyBody(sanitizeComposeHtml(html))}
           placeholder={placeholder}
           disabled={busy}
           fullWidthToolbar
-          className="border-0 shadow-none rounded-none"
+          className="border-0 shadow-none rounded-none bg-transparent"
           leadingActions={
             <>
               <Button
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 text-violet-600 hover:text-violet-800 hover:bg-violet-50"
+                className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
                 onClick={handlePolish}
                 disabled={busy}
                 title="AI assistant — fix grammar and organise your reply"
@@ -177,7 +177,7 @@ export function InboxReplyComposer({
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 text-gray-500 hover:text-gray-900"
+                className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={busy}
                 title="Attach image or file"
@@ -189,22 +189,22 @@ export function InboxReplyComposer({
           trailingActions={
             <Button
               size="icon"
-              className="h-8 w-8 rounded-full bg-black hover:bg-gray-800 transition-all shadow-sm"
+              className="h-8 w-8 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-sm"
               onClick={handleSend}
               disabled={busy || !canSend}
               title={sendTitle}
             >
               {isSending ? (
-                <Loader2 className="w-4 h-4 animate-spin text-white" />
+                <Loader2 className="w-4 h-4 animate-spin text-primary-foreground" />
               ) : (
-                <Send className="w-4 h-4 text-white" />
+                <Send className="w-4 h-4 text-primary-foreground" />
               )}
             </Button>
           }
         />
       </div>
       {!embedded && (
-        <p className="text-[11px] text-gray-400 mt-1.5 px-1">
+        <p className="text-[11px] text-muted-foreground mt-1.5 px-1">
           Sparkles: AI polish · Paperclip: attach files (max 25 MB each)
         </p>
       )}

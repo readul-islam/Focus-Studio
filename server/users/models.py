@@ -205,6 +205,12 @@ THEME_CHOICES = [
     ('system', 'System'),
     ('light', 'Light'),
     ('dark', 'Dark'),
+    ('midnight', 'Midnight Basalt'),
+    ('forest', 'Earthy Forest'),
+    ('terracotta', 'Warm Terracotta'),
+    ('cobalt', 'Cobalt Blue'),
+    ('quartz', 'Rose Quartz'),
+    ('pink', 'Modern Pink'),
 ]
 
 DENSITY_CHOICES = [

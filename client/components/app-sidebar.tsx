@@ -23,6 +23,7 @@ import {
   Users2
 } from 'lucide-react';
 import Image from 'next/image';
+import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
@@ -205,6 +206,7 @@ function NavItem({ item, isActive, isCollapsed }: { item: Item; isActive: boolea
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { theme, resolvedTheme } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('sidebarCollapsed');
@@ -218,6 +220,11 @@ export function AppSidebar() {
   const isTablet = useMediaQuery('(max-width: 1024px)');
   const isShortScreen = useMediaQuery('(max-height: 600px)');
   const router = useRouter();
+
+  // Decide if the sidebar theme is dark/custom to toggle filters
+  const isDarkSidebar = hasMounted && 
+    theme !== 'light' && 
+    (theme === 'dark' || theme === 'system' ? resolvedTheme === 'dark' : true);
 
   useEffect(() => {
     setHasMounted(true);
@@ -328,7 +335,10 @@ export function AppSidebar() {
                   height={35}
                   src="/brand/Logo.png"
                   alt="Focuspilot"
-                  className="w-8 h-8 pl-1 object-contain"
+                  className={cn(
+                    "w-8 h-8 pl-1 object-contain",
+                    isDarkSidebar ? "invert mix-blend-screen" : "mix-blend-multiply"
+                  )}
                 />
               </div>
               <motion.span

@@ -169,22 +169,28 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>{contact ? 'Edit Contact' : 'Add New Contact'}</DialogTitle>
-          <DialogDescription>
+      <DialogContent
+        overlayClassName="bg-background/35 backdrop-blur-[8px]"
+        className="max-w-3xl bg-card border border-border/40 shadow-[0_20px_60px_rgba(0,0,0,0.65)] hover:border-primary/25 transition-colors duration-300 max-h-[92vh] flex flex-col overflow-hidden rounded-2xl text-foreground p-0 gap-0"
+      >
+        <DialogHeader className="px-6 pt-6 pb-4 border-b border-border/40 bg-card flex-shrink-0">
+          <DialogTitle className="text-[16px] font-bold text-foreground tracking-tight">
+            {contact ? 'Edit Contact' : 'Add New Contact'}
+          </DialogTitle>
+          <DialogDescription className="text-xs text-muted-foreground mt-1">
             {contact ? 'Update the contact information below.' : 'Fill in the details to create a new contact.'}
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-6 py-4">
+        <form onSubmit={handleSubmit} className="flex-1 flex flex-col overflow-hidden m-0">
+          <div className="flex-1 overflow-y-auto px-6 py-6 scrollbar-thin scrollbar-thumb-rounded pr-2 bg-card space-y-6">
           <div className="space-y-2">
             <Label htmlFor="contact_type">Contact Type</Label>
             <Select onValueChange={value => handleSelectChange('contact_type', value)} value={formValues.contact_type || ''}>
-              <SelectTrigger className="bg-white rounded-[10px] w-full px-3 py-[10px] border">
+              <SelectTrigger className="h-10 rounded-xl border border-border/20 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors w-full px-3 py-[10px]">
                 <SelectValue placeholder="Select Type" />
               </SelectTrigger>
-              <SelectContent className="bg-white z-[999]">
+              <SelectContent className="border border-border/20 bg-card text-foreground z-[999]">
                 <SelectItem value="CL">Client</SelectItem>
                 <SelectItem value="SP">Supplier</SelectItem>
                 <SelectItem value="CN">Contractor</SelectItem>
@@ -199,7 +205,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
             <Input
               onChange={handleInputChange}
               value={formValues.company_name}
-              className="bg-white rounded-lg"
+              className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
               id="company_name"
               name="company_name"
               placeholder="Company Name"
@@ -213,7 +219,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
               <Input
                 onChange={handleInputChange}
                 value={formValues.name}
-                className="bg-white rounded-lg"
+                className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 id="name"
                 name="name"
                 placeholder="John Doe"
@@ -226,7 +232,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
               <Input
                 onChange={handleInputChange}
                 value={formValues.surname}
-                className="bg-white rounded-lg"
+                className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 id="surname"
                 name="surname"
                 placeholder="Smith"
@@ -239,7 +245,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
               <Input
                 onChange={handleInputChange}
                 value={formValues.email}
-                className="bg-white rounded-lg"
+                className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 id="email"
                 name="email"
                 type="email"
@@ -253,7 +259,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
               <Input
                 onChange={handleInputChange}
                 value={formValues.phone}
-                className="bg-white rounded-lg"
+                className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 id="phone"
                 name="phone"
                 placeholder="+1 234 567 890"
@@ -268,7 +274,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                 <Input
                   onChange={handleInputChange}
                   value={formValues.connection}
-                  className="bg-white rounded-lg"
+                  className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                   id="connection"
                   name="connection"
                   placeholder="Very strong with john doe.."
@@ -280,7 +286,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                 <Input
                   onChange={handleInputChange}
                   value={formValues.find}
-                  className="bg-white rounded-lg"
+                  className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                   id="find"
                   name="find"
                   placeholder="e.g. Via Linkedin"
@@ -296,7 +302,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                 <Input
                   onChange={handleInputChange}
                   value={formValues.budget}
-                  className="bg-white rounded-lg"
+                  className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                   id="budget"
                   name="budget"
                   type="number"
@@ -309,10 +315,10 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
             <div className="space-y-2">
               <Label htmlFor="status">Status</Label>
               <Select onValueChange={value => handleSelectChange('status', value)} value={formValues.status || ''}>
-                <SelectTrigger className="bg-white rounded-[10px] w-full px-3 py-[10px] border">
+                <SelectTrigger className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors w-full px-3 py-[10px]">
                   <SelectValue placeholder="Select Status" />
                 </SelectTrigger>
-                <SelectContent className="bg-white z-[999]">
+                <SelectContent className="border border-border/85 bg-card text-foreground z-[999]">
                   <SelectItem value="NE">New</SelectItem>
                   <SelectItem value="AC">Active</SelectItem>
                   <SelectItem value="QA">Qualified</SelectItem>
@@ -355,7 +361,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                 <Input
                   onChange={handleInputChange}
                   value={formValues.trade_login_url || ''}
-                  className="bg-white rounded-lg"
+                  className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                   id="trade_login_url"
                   name="trade_login_url"
                   type="url"
@@ -368,7 +374,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                   <Input
                     onChange={handleInputChange}
                     value={formValues.supplier_user_id || ''}
-                    className="bg-white rounded-lg"
+                    className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                     id="supplier_user_id"
                     name="supplier_user_id"
                     placeholder="e.g. studio_account"
@@ -379,7 +385,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                   <Input
                     onChange={handleInputChange}
                     value={formValues.supplier_password || ''}
-                    className="bg-white rounded-lg"
+                    className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                     id="supplier_password"
                     name="supplier_password"
                     type="password"
@@ -395,7 +401,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
             <Input
               onChange={handleInputChange}
               value={formValues.address_line_1}
-              className="bg-white rounded-lg"
+              className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
               id="address_line_1"
               name="address_line_1"
               placeholder="Street address"
@@ -407,7 +413,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
             <Input
               onChange={handleInputChange}
               value={formValues.address_line_2}
-              className="bg-white rounded-lg"
+              className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
               id="address_line_2"
               name="address_line_2"
               placeholder="Apartment, suite, etc."
@@ -420,7 +426,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
               <Input
                 onChange={handleInputChange}
                 value={formValues.city}
-                className="bg-white rounded-lg"
+                className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 id="city"
                 name="city"
                 placeholder="City"
@@ -432,7 +438,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
               <Input
                 onChange={handleInputChange}
                 value={formValues.postcode}
-                className="bg-white rounded-lg"
+                className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 id="postcode"
                 name="postcode"
                 placeholder="Postcode"
@@ -446,7 +452,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
               <Input
                 onChange={handleInputChange}
                 value={formValues.county}
-                className="bg-white rounded-lg"
+                className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 id="county"
                 name="county"
                 placeholder="County"
@@ -458,7 +464,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
               <Input
                 onChange={handleInputChange}
                 value={formValues.country}
-                className="bg-white rounded-lg"
+                className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 id="country"
                 name="country"
                 placeholder="Country"
@@ -489,7 +495,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
             {formValues.additional_contacts && formValues.additional_contacts.length > 0 && (
               <div className="space-y-4">
                 {formValues.additional_contacts.map((contact, index) => (
-                  <div key={index} className="p-4 border border-gray-200 rounded-lg bg-gray-50 relative">
+                  <div key={index} className="p-4 border border-border/40 rounded-xl bg-muted/20 relative">
                     <button
                       type="button"
                       onClick={() => {
@@ -512,7 +518,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                             newContacts[index] = { ...newContacts[index], name: e.target.value };
                             setFormValues(prev => ({ ...prev, additional_contacts: newContacts }));
                           }}
-                          className="bg-white rounded-lg"
+                          className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                           id={`additional_contact_name_${index}`}
                           placeholder="Contact name"
                         />
@@ -527,7 +533,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                             newContacts[index] = { ...newContacts[index], relationship: e.target.value };
                             setFormValues(prev => ({ ...prev, additional_contacts: newContacts }));
                           }}
-                          className="bg-white rounded-lg"
+                          className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                           id={`additional_contact_relationship_${index}`}
                           placeholder="e.g. Wife, Director, PA"
                         />
@@ -542,7 +548,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                             newContacts[index] = { ...newContacts[index], email: e.target.value };
                             setFormValues(prev => ({ ...prev, additional_contacts: newContacts }));
                           }}
-                          className="bg-white rounded-lg"
+                          className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                           id={`additional_contact_email_${index}`}
                           type="email"
                           placeholder="contact@example.com"
@@ -558,7 +564,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                             newContacts[index] = { ...newContacts[index], phone: e.target.value };
                             setFormValues(prev => ({ ...prev, additional_contacts: newContacts }));
                           }}
-                          className="bg-white rounded-lg"
+                          className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                           id={`additional_contact_phone_${index}`}
                           placeholder="+1 234 567 890"
                         />
@@ -570,14 +576,14 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
             )}
           </div>
           {formValues.contact_type === 'SP' && (
-            <div className="space-y-4 rounded-lg border border-dashed border-gray-200 p-4">
+            <div className="space-y-4 rounded-xl border border-dashed border-border/40 p-4 bg-muted/10">
               <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Trade Portal</p>
               <div className="space-y-2">
                 <Label htmlFor="trade_login_url">Login URL</Label>
                 <Input
                   onChange={handleInputChange}
                   value={formValues.trade_login_url}
-                  className="bg-white rounded-lg"
+                  className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                   id="trade_login_url"
                   name="trade_login_url"
                   type="url"
@@ -590,7 +596,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                   <Input
                     onChange={handleInputChange}
                     value={formValues.supplier_user_id}
-                    className="bg-white rounded-lg"
+                    className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                     id="supplier_user_id"
                     name="supplier_user_id"
                     placeholder="e.g. studio_account"
@@ -601,7 +607,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                   <Input
                     onChange={handleInputChange}
                     value={formValues.supplier_password}
-                    className="bg-white rounded-lg"
+                    className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                     id="supplier_password"
                     name="supplier_password"
                     type="text"
@@ -612,11 +618,21 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
             </div>
           )}
 
-          <div className="flex justify-end space-x-4 pt-4">
-            <Button className="bg-white min-w-[150px] rounded-[10px]" type="button" variant="outline" onClick={() => onOpenChange(false)}>
+          </div>
+          <div className="flex-shrink-0 flex items-center justify-end gap-3 px-6 py-4 border-t border-border/40 bg-card">
+            <Button
+              className="h-10 px-5 rounded-xl text-[13px] font-medium text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors border border-border/60 bg-background min-w-[150px]"
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+            >
               Cancel
             </Button>
-            <Button className="min-w-[150px] rounded-[10px]" type="submit" disabled={isLoading}>
+            <Button
+              className="h-10 px-6 rounded-xl text-[13px] font-semibold bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/95 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-[150px]"
+              type="submit"
+              disabled={isLoading}
+            >
               {isLoading ? 'Processing...' : contact ? 'Update Contact' : 'Create Contact'}
             </Button>
           </div>

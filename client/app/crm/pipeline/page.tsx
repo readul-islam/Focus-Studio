@@ -1033,7 +1033,7 @@ function PipelinePageContent() {
                   ))}
 
                   {byStage[s.id].length === 0 && (
-                    <div className="text-xs text-gray-500 px-3 py-6 text-center border border-dashed border-gray-300 rounded-lg bg-white/50">
+                    <div className="text-xs px-3 py-6 text-center border border-dashed rounded-lg dropzone-placeholder">
                       Drag a deal here
                     </div>
                   )}

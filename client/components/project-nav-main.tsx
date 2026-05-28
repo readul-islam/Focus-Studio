@@ -20,8 +20,8 @@ const tabs: { key: TabKey; label: string }[] = [
 
 export function ProjectNavMain({ activeTab = 'all', counts = { active: 3 }, onChange }: ProjectNavMainProps) {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-1">
-      <div className="flex scrollbar scrollbar-thin items-center gap-2 overflow-x-auto">
+    <div className="bg-card/45 border border-border/40 rounded-xl p-1 backdrop-blur-sm">
+      <div className="flex scrollbar-thin items-center gap-2 overflow-x-auto">
         {tabs.map(t => {
           const isActive = activeTab === t.key;
           const count = counts[t.key];
@@ -29,13 +29,13 @@ export function ProjectNavMain({ activeTab = 'all', counts = { active: 3 }, onCh
             <button
               key={t.key}
               onClick={() => onChange?.(t.key)}
-              className="relative inline-flex items-center gap-2 h-8 px-3 rounded-lg text-xs sm:text-sm hover:bg-stone-50 transition-colors"
+              className="relative inline-flex items-center gap-2 h-8 px-3.5 rounded-lg text-xs sm:text-sm hover:bg-muted/40 transition-colors"
             >
               {/* Animated active background */}
               {isActive && (
                 <motion.span
                   layoutId="project-nav-main-active"
-                  className="absolute inset-0 bg-stone-100 rounded-lg"
+                  className="absolute inset-0 bg-primary rounded-lg shadow-sm"
                   transition={{
                     type: 'spring',
                     stiffness: 400,
@@ -47,13 +47,16 @@ export function ProjectNavMain({ activeTab = 'all', counts = { active: 3 }, onCh
               <span
                 className={cn(
                   'relative z-10 transition-colors duration-150',
-                  isActive ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'
+                  isActive ? 'text-primary-foreground font-semibold' : 'text-muted-foreground hover:text-foreground'
                 )}
               >
                 {t.label}
               </span>
               {typeof count === 'number' && (
-                <span className="relative z-10 inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded-full text-xs font-medium text-white bg-clay-500">
+                <span className={cn(
+                  'relative z-10 inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 rounded-full text-xs font-semibold transition-colors',
+                  isActive ? 'bg-primary-foreground/20 text-primary-foreground' : 'bg-muted text-muted-foreground'
+                )}>
                   {count}
                 </span>
               )}

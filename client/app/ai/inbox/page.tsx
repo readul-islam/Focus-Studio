@@ -164,20 +164,20 @@ const categoryConfig = {
   action_required: {
     label: 'Action Required',
     icon: AlertCircle,
-    color: 'bg-terracotta-100 text-terracotta-700 border-terracotta-200',
+    color: 'bg-terracotta-500/10 text-terracotta-500 border-terracotta-500/20 dark:bg-terracotta-500/15 dark:text-terracotta-400 dark:border-terracotta-500/25',
     dotColor: 'bg-terracotta-500',
   },
   procurement: {
     label: 'Procurement',
     icon: Package,
-    color: 'bg-sage-100 text-sage-700 border-sage-200',
+    color: 'bg-sage-500/10 text-sage-500 border-sage-500/20 dark:bg-sage-500/15 dark:text-sage-400 dark:border-sage-500/25',
     dotColor: 'bg-sage-500',
   },
   fyi: {
     label: 'FYI',
     icon: Info,
-    color: 'bg-stone-100 text-gray-600 border-gray-200',
-    dotColor: 'bg-stone-400',
+    color: 'bg-muted text-muted-foreground border-border/50',
+    dotColor: 'bg-muted-foreground/60',
   },
 };
 
@@ -225,52 +225,52 @@ function EmailRow({
 }) {
   const category = email.analysis?.category || 'fyi';
   const config = categoryConfig[category];
-  const Icon = config.icon;
 
   return (
     <div
       onClick={onClick}
-      className={`group flex items-start gap-3 p-3 border-b border-gray-100 cursor-pointer transition-colors ${
+      className={`group relative flex items-start gap-3 mx-2.5 my-2 p-3.5 rounded-xl cursor-pointer border transition-all duration-200 ${
         isSelected
-          ? 'bg-stone-100 border-l-2 border-l-gray-900'
+          ? 'bg-primary/10 border-primary/30 shadow-sm'
           : !email.isRead
-            ? 'bg-white hover:bg-stone-50'
-            : 'bg-stone-50/30 hover:bg-stone-50'
+            ? 'bg-card border-border/60 shadow-sm hover:bg-accent/40 hover:border-border/80 hover:translate-x-0.5'
+            : 'bg-card/45 border-transparent text-foreground/80 hover:bg-accent/40 hover:translate-x-0.5'
       }`}
     >
+      {/* Left accent strip for selected email */}
+      {isSelected && (
+        <div className="absolute left-0 top-3.5 bottom-3.5 w-1 bg-primary rounded-r-md" />
+      )}
+
       {/* Unread indicator */}
-      <div className="flex flex-col items-center gap-2 pt-1">
+      <div className="flex flex-col items-center gap-2 pt-1 flex-shrink-0">
         <div className={`w-2 h-2 rounded-full ${!email.isRead ? config.dotColor : 'bg-transparent'}`} />
       </div>
 
       {/* Main content */}
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2 mb-1">
-          <span className={`text-sm font-medium truncate ${!email.isRead ? 'text-gray-900' : 'text-gray-700'}`}>
+          <span className={`text-sm truncate ${!email.isRead ? 'font-semibold text-foreground' : 'font-medium text-foreground/80'}`}>
             {email.fromName}
           </span>
-          <span className="text-xs text-gray-500 flex-shrink-0">{formatRelativeTime(email.date)}</span>
+          <span className="text-xs text-muted-foreground/80 flex-shrink-0 font-medium">{formatRelativeTime(email.date)}</span>
         </div>
 
-        <p className={`text-sm truncate mb-1 ${!email.isRead ? 'text-gray-900 font-medium' : 'text-gray-600'}`}>
+        <p className={`text-sm truncate mb-1 ${!email.isRead ? 'text-foreground font-semibold' : 'text-foreground/90'}`}>
           {email.subject}
         </p>
 
-        <p className="text-xs text-gray-500 truncate mb-2">{email.snippet}</p>
+        <p className="text-xs text-muted-foreground truncate mb-2 leading-relaxed">{email.snippet}</p>
 
         {/* Badges */}
         <div className="flex items-center gap-2 flex-wrap">
-          {/* <Badge variant="outline" className={`text-xs ${config.color}`}>
-            <Icon className="w-3 h-3 mr-1" />
-            {config.label}
-          </Badge> */}
           {email.analysis?.project && email.analysis?.project !== 'Studio Tasks' && (
-            <Badge variant="outline" className="text-xs bg-clay-50 text-clay-700 border-clay-200">
-              <Building2 className="w-3 h-3 mr-1" />
+            <Badge variant="outline" className="text-[10px] px-2 py-0.5 bg-primary/5 text-primary border-primary/20 rounded-md">
+              <Building2 className="w-2.5 h-2.5 mr-1" />
               {email.analysis.project}
             </Badge>
           )}
-          {email.hasAttachment && <Paperclip className="w-3 h-3 text-gray-400" />}
+          {email.hasAttachment && <Paperclip className="w-3 h-3 text-muted-foreground/60" />}
         </div>
       </div>
     </div>
@@ -295,19 +295,14 @@ function CategoryTab({
   return (
     <button
       onClick={onClick}
-      className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
-        isActive ? 'bg-gray-900 text-white' : 'bg-stone-100 text-gray-600 hover:bg-stone-200'
+      className={`flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-xl transition-all duration-200 ${
+        isActive
+          ? 'bg-primary text-primary-foreground shadow-sm scale-[1.02]'
+          : 'bg-muted/40 text-muted-foreground hover:bg-muted/70 hover:text-foreground'
       }`}
     >
       <Icon className="w-4 h-4" />
       <span className="hidden sm:inline">{label}</span>
-      {/* <span
-        className={`text-xs px-1.5 py-0.5 rounded-full ${
-          isActive ? 'bg-white/20 text-white' : 'bg-stone-200 text-gray-600'
-        }`}
-      >
-        {count}
-      </span> */}
     </button>
   );
 }
@@ -318,14 +313,14 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
   const CategoryIcon = config.icon;
 
   return (
-    <div className="h-full flex flex-col bg-white">
+    <div className="h-full flex flex-col bg-card">
       {/* AI Analysis Section - Top */}
       {email.analysis && (
-        <div className="flex-shrink-0 p-4 bg-gradient-to-br from-sage-50/50 via-gray-50 to-clay-50/30 border-b border-gray-200">
+        <div className="flex-shrink-0 p-5 bg-gradient-to-br from-primary/5 via-card to-accent/5 border-b border-border/40">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <Sparkle className="w-4 h-4 text-[#748971]" />
-              <span className="text-sm font-medium text-gray-800">AI Summary</span>
+              <Sparkle className="w-4 h-4 text-primary" />
+              <span className="text-sm font-semibold text-foreground">AI Summary</span>
             </div>
             <Badge variant="outline" className={`${config.color}`}>
               <CategoryIcon className="w-3 h-3 mr-1" />
@@ -333,12 +328,12 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
             </Badge>
           </div>
 
-          <p className="text-sm text-gray-800 leading-relaxed mb-3">{email.analysis.summary}</p>
+          <p className="text-sm text-foreground/90 leading-relaxed mb-3">{email.analysis.summary}</p>
 
           {email.analysis.suggestedAction && (
-            <div className="bg-white/80 rounded-lg p-3 border border-gray-200 mb-3">
-              <p className="text-xs font-medium text-gray-500 mb-1">Suggested Action</p>
-              <p className="text-sm text-gray-900">{email.analysis.suggestedAction}</p>
+            <div className="bg-background/50 rounded-xl p-3 border border-border/40 mb-3">
+              <p className="text-xs font-semibold text-muted-foreground mb-1">Suggested Action</p>
+              <p className="text-sm text-foreground">{email.analysis.suggestedAction}</p>
             </div>
           )}
 
@@ -347,22 +342,22 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
             <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs mb-3">
               {email.analysis.entities.suppliers && email.analysis.entities.suppliers.length > 0 && (
                 <div className="flex items-center gap-1">
-                  <span className="text-gray-500">Suppliers:</span>
-                  <span className="text-gray-700">{email.analysis.entities.suppliers.join(', ')}</span>
+                  <span className="text-muted-foreground">Suppliers:</span>
+                  <span className="text-foreground/90">{email.analysis.entities.suppliers.join(', ')}</span>
                 </div>
               )}
               {email.analysis.entities.amounts && email.analysis.entities.amounts.length > 0 && (
                 <div className="flex items-center gap-1">
-                  <span className="text-gray-500">Amounts:</span>
-                  <span className="text-gray-700 font-medium">
+                  <span className="text-muted-foreground">Amounts:</span>
+                  <span className="text-foreground font-semibold">
                     {email.analysis.entities.amounts.map(a => `£${a.value.toLocaleString()}`).join(', ')}
                   </span>
                 </div>
               )}
               {email.analysis.entities.items && email.analysis.entities.items.length > 0 && (
                 <div className="flex items-center gap-1">
-                  <span className="text-gray-500">Items:</span>
-                  <span className="text-gray-700">{email.analysis.entities.items.join(', ')}</span>
+                  <span className="text-muted-foreground">Items:</span>
+                  <span className="text-foreground/90">{email.analysis.entities.items.join(', ')}</span>
                 </div>
               )}
             </div>
@@ -372,7 +367,7 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
           {email.analysis.project && (
             <Link
               href={`/projects`}
-              className="inline-flex items-center gap-2 text-sm text-primary hover:underline font-medium"
+              className="inline-flex items-center gap-2 text-sm text-primary hover:underline font-semibold"
             >
               <Building2 className="w-4 h-4" />
               {email.analysis.project}
@@ -383,15 +378,15 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
       )}
 
       {/* Email Header */}
-      <div className="flex-shrink-0 p-4 border-b border-gray-200 bg-white">
-        <h2 className="text-lg font-semibold text-gray-900 leading-tight mb-2">{email.subject}</h2>
+      <div className="flex-shrink-0 p-5 border-b border-border/40 bg-card">
+        <h2 className="text-lg font-bold text-foreground leading-tight mb-2">{email.subject}</h2>
         <div className="flex items-center gap-2 text-sm">
-          <span className="font-medium text-gray-900">{email.fromName}</span>
-          <span className="text-gray-400">&lt;{email.from}&gt;</span>
+          <span className="font-semibold text-foreground">{email.fromName}</span>
+          <span className="text-muted-foreground/80">&lt;{email.from}&gt;</span>
         </div>
-        <p className="text-xs text-gray-500 mt-1">{formatFullDate(email.date)}</p>
+        <p className="text-xs text-muted-foreground mt-1.5">{formatFullDate(email.date)}</p>
         {email.hasAttachment && (
-          <div className="flex items-center gap-1 mt-2 text-xs text-gray-500">
+          <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
             <Paperclip className="w-3 h-3" />
             <span>Attachment</span>
           </div>
@@ -399,11 +394,11 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
       </div>
 
       {/* Email Content */}
-      <div className="flex-1 p-4 overflow-y-auto bg-white">
-        <div className="prose prose-sm max-w-none">
-          <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{email.snippet}</p>
-          <div className="p-4 bg-white rounded-lg border border-gray-100">
-            <p className="text-xs text-gray-400 italic m-0">
+      <div className="flex-1 p-5 overflow-y-auto bg-card">
+        <div className="prose prose-sm max-w-none dark:prose-invert">
+          <p className="text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap">{email.snippet}</p>
+          <div className="p-4 bg-muted/30 rounded-xl border border-border/20 mt-4">
+            <p className="text-xs text-muted-foreground italic m-0">
               Full email thread will be displayed here when connected to Gmail.
             </p>
           </div>
@@ -411,30 +406,26 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
       </div>
 
       {/* Action Bar - Fixed at bottom */}
-      <div className="flex-shrink-0 p-4 border-t border-gray-200 bg-white">
+      <div className="flex-shrink-0 p-4 border-t border-border/40 bg-card">
         <div className="flex items-center justify-between gap-3">
           {/* Primary Actions */}
           <div className="flex items-center gap-2">
-            <Button size="sm" className="bg-gray-900 hover:bg-gray-800">
+            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/95 shadow-sm rounded-xl">
               <CornerUpLeft className="w-4 h-4 mr-2" />
               Reply
             </Button>
-            {/* <Button size="sm" variant="outline">
-              <CornerUpRight className="w-4 h-4 mr-2" />
-              Forward
-            </Button> */}
           </div>
 
           {/* Secondary Actions */}
           <div className="flex items-center gap-2">
-            <Button size="sm" variant="outline">
+            <Button size="sm" variant="outline" className="rounded-xl border-border/60 hover:bg-accent">
               <FolderPlus className="w-4 h-4 mr-2" />
               Add to Project
             </Button>
-            <Button size="sm" variant="ghost">
+            <Button size="sm" variant="ghost" className="rounded-xl text-muted-foreground hover:text-foreground">
               <Archive className="w-4 h-4" />
             </Button>
-            <Button size="sm" variant="ghost">
+            <Button size="sm" variant="ghost" className="rounded-xl text-muted-foreground hover:text-foreground">
               <MoreHorizontal className="w-4 h-4" />
             </Button>
           </div>
@@ -457,33 +448,33 @@ function SuggestedTaskCard({ task, onAdd, onView, isCreating, createdTaskId, ema
   const isAlreadyCreated = !!createdTaskId;
 
   return (
-    <div className="flex items-start gap-2 px-3 py-2.5 rounded-xl border border-[#748971] bg-[#7489711A]">
-      <div className="mt-0.5 flex-shrink-0 w-6 h-6 rounded-full bg-[#74897126] flex items-center justify-center">
-        <Sparkle className="w-3.5 h-3.5 text-[#748971]" />
+    <div className="flex items-start gap-2.5 px-4 py-3 rounded-2xl border border-primary/20 bg-primary/5">
+      <div className="mt-0.5 flex-shrink-0 w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
+        <Sparkle className="w-3.5 h-3.5 text-primary" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-[10px] font-medium text-[#748971] mb-0.5">AI suggested task</p>
-        <p className="text-[13px] font-medium text-gray-900 leading-snug">{task.title}</p>
+        <p className="text-[10px] font-semibold text-primary mb-0.5 tracking-wider uppercase">AI suggested task</p>
+        <p className="text-sm font-semibold text-foreground leading-snug">{task.title}</p>
         {task.description && (
-          <p className="text-[11px] text-gray-500 mt-0.5 leading-snug">{task.description}</p>
+          <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{task.description}</p>
         )}
       </div>
       {isAlreadyCreated ? (
         <button
           onClick={() => onView(createdTaskId!)}
-          className="flex-shrink-0 self-center inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border border-gray-200 text-gray-700 bg-white hover:bg-gray-50 transition-all"
+          className="flex-shrink-0 self-center inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold border border-border bg-card text-foreground hover:bg-accent transition-all shadow-sm"
         >
-          <ExternalLink className="w-3 h-3" />
+          <ExternalLink className="w-3.5 h-3.5" />
           View
         </button>
       ) : (
         <button
           onClick={() => onAdd(task, emailId, suggestionIndex)}
           disabled={isCreating}
-          className={`flex-shrink-0 self-center inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+          className={`flex-shrink-0 self-center inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all shadow-sm ${
             isCreating
-              ? 'bg-[#748971] text-white cursor-not-allowed'
-              : 'bg-[#748971] text-white hover:bg-[#748971]'
+              ? 'bg-primary/80 text-primary-foreground cursor-not-allowed'
+              : 'bg-primary text-primary-foreground hover:bg-primary/90'
           }`}
         >
           {isCreating && <Loader2 className="w-3 h-3 animate-spin" />}
@@ -504,25 +495,25 @@ function MessageBlock({ msg, userEmail, suggestedTasks, onAddTask, onViewTask, i
 
   return (
     <div className="flex gap-4">
-      <Avatar className="w-8 h-8 flex-shrink-0 mt-1">
-        <AvatarFallback className={sentByMe ? 'bg-black text-white' : 'bg-stone-200'}>
+      <Avatar className="w-8 h-8 flex-shrink-0 mt-1 shadow-sm">
+        <AvatarFallback className={sentByMe ? 'bg-primary text-primary-foreground font-semibold' : 'bg-muted text-muted-foreground font-medium'}>
           {senderLabel.charAt(0).toUpperCase()}
         </AvatarFallback>
       </Avatar>
 
-      <div className="flex flex-col max-w-[99%]">
+      <div className="flex flex-col max-w-[99%] flex-1">
         <div className="flex items-center gap-2 mb-2 px-1">
-          <span className="text-xs font-medium text-gray-900">
+          <span className="text-xs font-semibold text-foreground">
             {senderLabel}
           </span>
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-muted-foreground">
             {dayjs(msg.received_at).format('MMM D, h:mm A')}
           </span>
         </div>
 
-        <div className={`rounded-2xl p-4 text-sm w-full ${sentByMe
-          ? 'bg-stone-50 text-gray-900 rounded-tr-sm'
-          : 'bg-white border border-gray-100 text-gray-900 rounded-tl-sm'
+        <div className={`rounded-2xl p-4 text-sm w-full border ${sentByMe
+          ? 'bg-accent/20 border-border/20 text-foreground rounded-tr-sm'
+          : 'bg-card border-border/40 text-foreground rounded-tl-sm shadow-sm'
         }`}>
           <div
             className={EMAIL_BODY_PROSE_CLASS}
@@ -534,7 +525,7 @@ function MessageBlock({ msg, userEmail, suggestedTasks, onAddTask, onViewTask, i
               {!expanded ? (
                 <button
                   onClick={() => setExpanded(true)}
-                  className="flex items-center justify-center px-1 bg-stone-200 hover:bg-stone-300 rounded-[5px] text-gray-500 transition-colors"
+                  className="flex items-center justify-center px-2 py-0.5 bg-muted hover:bg-muted/80 rounded-lg text-muted-foreground transition-colors"
                   title="Show trimmed content"
                 >
                   <MoreHorizontal className="w-4 h-4" />
@@ -543,13 +534,13 @@ function MessageBlock({ msg, userEmail, suggestedTasks, onAddTask, onViewTask, i
                 <>
                   <button
                     onClick={() => setExpanded(false)}
-                    className="flex items-center justify-center px-1 bg-stone-200 hover:bg-stone-300 rounded-[5px] text-gray-500 transition-colors"
+                    className="flex items-center justify-center px-2 py-0.5 bg-muted hover:bg-muted/80 rounded-lg text-muted-foreground transition-colors"
                     title="Hide trimmed content"
                   >
                     <MoreHorizontal className="w-4 h-4" />
                   </button>
                   <div
-                    className="prose prose-sm max-w-none mt-4 pt-4 border-t border-gray-300 text-gray-500 [&_img]:max-w-full [&_img]:h-auto"
+                    className="prose prose-sm max-w-none mt-4 pt-4 border-t border-border/40 text-muted-foreground [&_img]:max-w-full [&_img]:h-auto"
                     dangerouslySetInnerHTML={{ __html: quoted }}
                   />
                 </>
@@ -563,7 +554,7 @@ function MessageBlock({ msg, userEmail, suggestedTasks, onAddTask, onViewTask, i
         </div>
 
         {suggestedTasks && suggestedTasks.length > 0 && (
-          <div className="mt-2 flex flex-col gap-2 px-1">
+          <div className="mt-3 flex flex-col gap-2.5 px-1">
             {suggestedTasks.map((task, i) => (
               <SuggestedTaskCard key={i} task={task} onAdd={onAddTask ?? (() => {})} onView={onViewTask ?? (() => {})} isCreating={isCreatingTask} createdTaskId={addedTaskIds?.get(task.title) ?? task.created_task_id ?? null} emailId={msg.id} suggestionIndex={i} />
             ))}
@@ -637,14 +628,14 @@ function EmailDetailPanelWithMessages({
   const messageList = Array.isArray(messages) ? messages : [];
 
   return (
-    <div className="bg-white h-full flex flex-col">
+    <div className="bg-card h-full flex flex-col">
       {/* Mobile back button */}
       {(onBack || onMarkUnread) && (
-        <div className="flex-shrink-0 flex items-center justify-between gap-2 px-4 pt-4 pb-2">
+        <div className="flex-shrink-0 flex items-center justify-between gap-2 px-4 pt-4 pb-2 border-b border-border/20">
           {onBack ? (
             <button
               onClick={onBack}
-              className="lg:hidden flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+              className="lg:hidden flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
               Back
@@ -656,7 +647,7 @@ function EmailDetailPanelWithMessages({
             <button
               type="button"
               onClick={onMarkUnread}
-              className="ml-auto text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+              className="ml-auto text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
             >
               Mark unread
             </button>
@@ -665,14 +656,14 @@ function EmailDetailPanelWithMessages({
       )}
 
       {/* AI Analysis Section - Top (scrolls with content) */}
-      <div className="flex-1 overflow-y-auto bg-white flex flex-col" ref={scrollContainerRef}>
+      <div className="flex-1 overflow-y-auto bg-card flex flex-col" ref={scrollContainerRef}>
 
       {/* AI Summary */}
-      <div className="flex-shrink-0 p-4 border-b border-gray-200 bg-white">
+      <div className="flex-shrink-0 p-5 border-b border-border/40 bg-gradient-to-br from-primary/5 via-card to-accent/5">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Sparkle className="w-4 h-4 text-[#748971]" />
-            <span className="text-sm font-semibold text-gray-900">AI Summary</span>
+            <Sparkle className="w-4 h-4 text-primary" />
+            <span className="text-sm font-semibold text-foreground">AI Summary</span>
           </div>
           {!aiSummaryLoading && aiSummary?.category && (
             <Badge variant="outline" className={`${config.color}`}>
@@ -684,74 +675,68 @@ function EmailDetailPanelWithMessages({
 
         {aiSummaryLoading ? (
           <div className="space-y-2.5 py-1">
-            <div className="h-3 rounded-full w-full overflow-hidden relative bg-gray-100">
-              <div className="absolute inset-0 animate-shimmer" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.7) 50%, transparent 100%)', transform: 'translateX(-100%)' }} />
-            </div>
-            <div className="h-3 rounded-full w-[85%] overflow-hidden relative bg-gray-100">
-              <div className="absolute inset-0 animate-shimmer" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.7) 50%, transparent 100%)', transform: 'translateX(-100%)', animationDelay: '150ms' }} />
-            </div>
-            <div className="h-3 rounded-full w-[60%] overflow-hidden relative bg-gray-100">
-              <div className="absolute inset-0 animate-shimmer" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.7) 50%, transparent 100%)', transform: 'translateX(-100%)', animationDelay: '300ms' }} />
-            </div>
+            <div className="h-3 rounded-full w-full overflow-hidden relative bg-muted/65 animate-pulse" />
+            <div className="h-3 rounded-full w-[85%] overflow-hidden relative bg-muted/65 animate-pulse" />
+            <div className="h-3 rounded-full w-[60%] overflow-hidden relative bg-muted/65 animate-pulse" />
           </div>
         ) : aiSummary?.summary ? (
           <>
-            <p className="text-sm text-gray-800 leading-relaxed mb-3">{aiSummary.summary}</p>
+            <p className="text-sm text-foreground/90 leading-relaxed mb-3.5">{aiSummary.summary}</p>
 
             {aiSummary.suggested_action && (
-              <div className="bg-white/80 rounded-lg p-3 border border-gray-200 mb-3">
-                <p className="text-xs font-medium text-gray-500 mb-1">Suggested Action</p>
-                <p className="text-sm text-gray-900">{aiSummary.suggested_action}</p>
+              <div className="bg-background/55 rounded-xl p-3 border border-border/30 mb-3.5">
+                <p className="text-xs font-semibold text-muted-foreground mb-1">Suggested Action</p>
+                <p className="text-sm text-foreground">{aiSummary.suggested_action}</p>
               </div>
             )}
 
             {/* Extracted Entities */}
             {aiSummary.entities && (
-              <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs mb-3">
+              <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs mb-3">
                 {aiSummary.entities.suppliers && aiSummary.entities.suppliers.length > 0 && (
                   <div className="flex items-center gap-1">
-                    <span className="text-gray-500">Suppliers:</span>
-                    <span className="text-gray-700">{aiSummary.entities.suppliers.join(', ')}</span>
+                    <span className="text-muted-foreground">Suppliers:</span>
+                    <span className="text-foreground/95">{aiSummary.entities.suppliers.join(', ')}</span>
                   </div>
                 )}
                 {aiSummary.entities.amounts && aiSummary.entities.amounts.length > 0 && (
                   <div className="flex items-center gap-1">
-                    <span className="text-gray-500">Amounts:</span>
-                    <span className="text-gray-700 font-medium">
+                    <span className="text-muted-foreground">Amounts:</span>
+                    <span className="text-foreground font-semibold">
                       {aiSummary.entities.amounts.map(a => `£${a.value.toLocaleString()}`).join(', ')}
                     </span>
                   </div>
                 )}
                 {aiSummary.entities.items && aiSummary.entities.items.length > 0 && (
                   <div className="flex items-center gap-1">
-                    <span className="text-gray-500">Items:</span>
-                    <span className="text-gray-700">{aiSummary.entities.items.join(', ')}</span>
+                    <span className="text-muted-foreground">Items:</span>
+                    <span className="text-foreground/95">{aiSummary.entities.items.join(', ')}</span>
                   </div>
                 )}
                 {aiSummary.entities.people && aiSummary.entities.people.length > 0 && (
                   <div className="flex items-center gap-1">
-                    <span className="text-gray-500">People:</span>
-                    <span className="text-gray-700">{aiSummary.entities.people.join(', ')}</span>
+                    <span className="text-muted-foreground">People:</span>
+                    <span className="text-foreground/95">{aiSummary.entities.people.join(', ')}</span>
                   </div>
                 )}
                 {aiSummary.entities.dates && aiSummary.entities.dates.length > 0 && (
                   <div className="flex items-center gap-1">
-                    <span className="text-gray-500">Dates:</span>
-                    <span className="text-gray-700">{aiSummary.entities.dates.join(', ')}</span>
+                    <span className="text-muted-foreground">Dates:</span>
+                    <span className="text-foreground/95">{aiSummary.entities.dates.join(', ')}</span>
                   </div>
                 )}
               </div>
             )}
           </>
         ) : (
-          <p className="text-sm text-gray-500 italic">No AI summary available for this thread.</p>
+          <p className="text-sm text-muted-foreground italic">No AI summary available for this thread.</p>
         )}
 
         {/* Project Link */}
         {email.analysis?.project && (
           <Link
             href={`/projects/${(email?.analysis as any)?.project_id}`}
-            className="inline-flex items-center gap-2 text-sm text-primary hover:underline font-medium mt-2"
+            className="inline-flex items-center gap-2 text-sm text-primary hover:underline font-semibold mt-2"
           >
             <Building2 className="w-4 h-4" />
             {email.analysis.project}
@@ -761,38 +746,38 @@ function EmailDetailPanelWithMessages({
       </div>
 
       {/* Email Header */}
-      <div className="flex-shrink-0 border-b border-gray-200 bg-white">
+      <div className="flex-shrink-0 border-b border-border/40 bg-card">
         <button
           onClick={() => setHeaderCollapsed(prev => !prev)}
-          className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors text-left"
+          className="w-full flex items-center justify-between px-5 py-4 hover:bg-accent/30 transition-colors text-left"
         >
           <div className="flex-1 min-w-0 pr-2">
-            <h2 className="text-sm font-semibold text-gray-900 leading-tight truncate">{email.subject}</h2>
+            <h2 className="text-sm font-bold text-foreground leading-tight truncate">{email.subject}</h2>
             {headerCollapsed && (
-              <p className="text-xs text-gray-500 truncate mt-0.5">
+              <p className="text-xs text-muted-foreground truncate mt-1">
                 {email.fromName} · {formatFullDate(email.date)}
                 {messageList.length > 0 && ` · ${messageList.length} message${messageList.length !== 1 ? 's' : ''}`}
               </p>
             )}
           </div>
-          <ChevronDown className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-200 ${headerCollapsed ? '' : 'rotate-180'}`} />
+          <ChevronDown className={`w-4 h-4 text-muted-foreground/80 flex-shrink-0 transition-transform duration-250 ${headerCollapsed ? '' : 'rotate-180'}`} />
         </button>
 
         {!headerCollapsed && (
-          <div className="px-4 pb-3">
+          <div className="px-5 pb-4">
             <div className="flex items-center gap-2 text-sm">
-              <span className="font-medium text-gray-900">{email.fromName}</span>
-              <span className="text-gray-400">&lt;{email.from}&gt;</span>
+              <span className="font-semibold text-foreground">{email.fromName}</span>
+              <span className="text-muted-foreground/80">&lt;{email.from}&gt;</span>
             </div>
-            <p className="text-xs text-gray-500 mt-1">{formatFullDate(email.date)}</p>
+            <p className="text-xs text-muted-foreground mt-1.5">{formatFullDate(email.date)}</p>
             {email.hasAttachment && (
-              <div className="flex items-center gap-1 mt-2 text-xs text-gray-500">
+              <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
                 <Paperclip className="w-3 h-3" />
                 <span>Attachment</span>
               </div>
             )}
             {messageList.length > 0 && (
-              <div className="text-xs text-gray-500 mt-1">
+              <div className="text-xs text-muted-foreground mt-1.5">
                 {messageList.length} message{messageList.length !== 1 ? 's' : ''} in thread
               </div>
             )}
@@ -801,10 +786,10 @@ function EmailDetailPanelWithMessages({
       </div>
 
       {/* Email Content / Messages */}
-      <div className="flex-1 p-4 bg-white">
+      <div className="flex-1 p-5 bg-card">
         {messagesLoading ? (
           <div className="flex justify-center py-10">
-            <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+            <Loader2 className="w-6 h-6 animate-spin text-primary" />
           </div>
         ) : messageList.length > 0 ? (
           <div className="space-y-6">
@@ -840,11 +825,11 @@ function EmailDetailPanelWithMessages({
                   className="relative py-2 flex items-center justify-start pl-4 cursor-pointer group"
                   onClick={() => setMessagesExpanded(true)}
                 >
-                  <div className="absolute w-full top-1/2 left-0 h-px bg-stone-100 group-hover:bg-stone-200 transition-colors" />
-                  <div className="absolute group w-full top-1/2 transform -translate-y-[5px] left-0 h-px bg-stone-100 group-hover:bg-stone-200 transition-colors" />
-                  <div className="relative z-10 w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center text-sm font-medium text-gray-500 group-hover:border-gray-300 group-hover:text-gray-700 hover:bg-stone-100 transition-all shadow-sm">
+                  <div className="absolute w-full top-1/2 left-0 h-px bg-border/40 group-hover:bg-border/60 transition-colors" />
+                  <div className="absolute group w-full top-1/2 transform -translate-y-[5px] left-0 h-px bg-border/40 group-hover:bg-border/60 transition-colors" />
+                  <div className="relative z-10 w-9 h-9 rounded-full border border-border bg-card flex items-center justify-center text-xs font-semibold text-muted-foreground group-hover:border-primary/50 group-hover:text-primary transition-all shadow-sm">
                     <span className="group-hover:hidden">{messageList.length - 3}</span>
-                    <ChevronsUpDown className="group-hover:block hidden w-4 h-4" />
+                    <ChevronsUpDown className="group-hover:block hidden w-3.5 h-3.5" />
                   </div>
                 </div>
 
@@ -866,8 +851,8 @@ function EmailDetailPanelWithMessages({
             <div ref={scrollRef} />
           </div>
         ) : (
-          <div className="prose prose-sm max-w-none">
-            <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{email.snippet}</p>
+          <div className="prose prose-sm max-w-none dark:prose-invert">
+            <p className="text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap">{email.snippet}</p>
           </div>
         )}
       </div>
@@ -886,36 +871,26 @@ function EmailDetailPanelWithMessages({
       )}
 
       {/* Action Bar - Always at bottom */}
-      <div className="flex-shrink-0 p-4 border-t border-gray-200 bg-white">
+      <div className="flex-shrink-0 p-4 border-t border-border/40 bg-card">
         <div className="flex items-center justify-between gap-3">
           {/* Primary Actions */}
           <div className="flex items-center gap-2">
             <Button
               size="sm"
-              className="bg-gray-900 hover:bg-gray-800"
+              className="bg-primary text-primary-foreground hover:bg-primary/95 shadow-sm rounded-xl font-semibold"
               onClick={() => setShowReplyInput(!showReplyInput)}
             >
               <CornerUpLeft className="w-4 h-4 mr-2" />
               Reply
             </Button>
-            {/* <Button size="sm" variant="outline">
-              <CornerUpRight className="w-4 h-4 mr-2" />
-              Forward
-            </Button> */}
           </div>
 
           {/* Secondary Actions */}
           <div className="flex items-center gap-2">
-            <Button size="sm" variant="outline" onClick={onAddToProject}>
+            <Button size="sm" variant="outline" className="rounded-xl border-border/60 hover:bg-accent font-semibold text-foreground" onClick={onAddToProject}>
               <FolderPlus className="w-4 h-4 mr-2" />
               Add to Project
             </Button>
-            {/* <Button size="sm" variant="ghost">
-              <Archive className="w-4 h-4" />
-            </Button>
-            <Button size="sm" variant="ghost">
-              <MoreHorizontal className="w-4 h-4" />
-            </Button> */}
           </div>
         </div>
       </div>
@@ -926,25 +901,25 @@ function EmailDetailPanelWithMessages({
 function EmptyDetailPanel({ hasEmails, isDisconnected }: { hasEmails: boolean, isDisconnected: boolean }) {
   if (isDisconnected) {
     return (
-      <div className="h-full flex flex-col items-center justify-center text-center p-8 bg-gradient-to-br from-sage-50/30 via-gray-50 to-clay-50/20">
-        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm border border-gray-100">
-          <Mail className="w-10 h-10 text-sage-400" />
+      <div className="h-full flex flex-col items-center justify-center text-center p-8 bg-gradient-to-br from-primary/5 via-card to-accent/5">
+        <div className="w-20 h-20 bg-card rounded-full flex items-center justify-center mb-6 shadow-md border border-border/40">
+          <Mail className="w-10 h-10 text-primary" />
         </div>
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">Connect your Gmail</h3>
-        <p className="text-sm text-gray-500 max-w-sm mb-6">
+        <h3 className="text-lg font-bold text-foreground mb-2">Connect your Gmail</h3>
+        <p className="text-sm text-muted-foreground max-w-sm mb-6 leading-relaxed">
           Connect your Gmail account to see emails automatically categorised by AI, with summaries and suggested actions.
         </p>
-        <div className="flex flex-col gap-3 text-left text-sm text-gray-600 bg-white/80 rounded-lg p-4 border border-gray-100">
-          <div className="flex items-start gap-2">
+        <div className="flex flex-col gap-3 text-left text-sm text-foreground/80 bg-card/85 rounded-2xl p-5 border border-border/40 shadow-sm max-w-md">
+          <div className="flex items-start gap-2.5">
             <AlertCircle className="w-4 h-4 text-terracotta-500 mt-0.5 flex-shrink-0" />
             <span>Action required emails highlighted</span>
           </div>
-          <div className="flex items-start gap-2">
+          <div className="flex items-start gap-2.5">
             <Package className="w-4 h-4 text-sage-500 mt-0.5 flex-shrink-0" />
             <span>Procurement emails automatically grouped</span>
           </div>
-          <div className="flex items-start gap-2">
-            <Sparkle className="w-4 h-4 text-clay-500 mt-0.5 flex-shrink-0" />
+          <div className="flex items-start gap-2.5">
+            <Sparkle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0 animate-pulse" />
             <span>AI summaries and suggested actions</span>
           </div>
         </div>
@@ -953,13 +928,13 @@ function EmptyDetailPanel({ hasEmails, isDisconnected }: { hasEmails: boolean, i
   }
 
   return (
-    <div className="p-8 border h-full flex items-center justify-center">
-      <div>
-         <div className="w-16 h-16 bg-stone-100 rounded-full flex items-center justify-center mb-4">
-        <Mail className="w-8 h-8 text-gray-400" />
+    <div className="p-8 h-full flex items-center justify-center text-center bg-card">
+      <div className="flex flex-col items-center">
+         <div className="w-16 h-16 bg-muted/60 rounded-full flex items-center justify-center mb-4 border border-border/20 shadow-sm">
+        <Mail className="w-8 h-8 text-muted-foreground/60" />
       </div>
-      <p className="text-gray-700 font-medium mb-1">Select an email</p>
-      <p className="text-sm text-gray-500">Choose an email from the list to view its content and AI analysis</p>
+      <p className="text-foreground font-semibold mb-1 text-base">Select an email</p>
+      <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">Choose an email from the list to view its content and AI analysis</p>
       </div>
     </div>
   );
@@ -1453,24 +1428,24 @@ export default function MagicalInboxPage() {
   }
 
   return (
-    <div className="flex-1 pb-2 h-full bg-stone-50 flex flex-col overflow-hidden">
+    <div className="flex-1 pb-2 h-full bg-background flex flex-col overflow-hidden">
         {/* Top Bar: Tabs + Sync */}
-        <div className="flex-shrink-0 p-4 sm:p-6 pb-4 bg-stone-50">
+        <div className="flex-shrink-0 p-4 sm:p-6 pb-4 bg-background">
         <div className="flex items-center justify-between gap-4">
           {/* Category Tabs or Search Results */}
           <div className="flex items-center gap-2">
             {searchQuery.trim() ? (
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-stone-100 rounded-lg">
-                  <Search className="w-4 h-4 text-gray-500" />
-                  <span className="text-sm text-gray-700">
-                    Results for "<span className="font-medium">{searchQuery}</span>"
+                <div className="flex items-center gap-2 px-3.5 py-2 bg-muted border border-border/30 rounded-xl">
+                  <Search className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm text-foreground">
+                    Results for "<span className="font-semibold">{searchQuery}</span>"
                   </span>
                   <button
                     onClick={clearSearch}
-                    className="ml-1 p-0.5 hover:bg-stone-200 rounded transition-colors"
+                    className="ml-1 p-0.5 hover:bg-muted-foreground/10 rounded transition-colors"
                   >
-                    <X className="w-4 h-4 text-gray-500" />
+                    <X className="w-4 h-4 text-muted-foreground" />
                   </button>
                 </div>
               </div>
@@ -1525,7 +1500,7 @@ export default function MagicalInboxPage() {
             {/* Pagination Controls */}
             {pagination && pagination.total_pages > 1 && (
               <div className="flex items-center gap-1">
-                <span className="text-sm text-gray-500 mr-2">
+                <span className="text-sm text-muted-foreground mr-2 font-medium">
                   {((currentPage - 1) * (pagination.page_size || 10)) + 1}-{Math.min(currentPage * (pagination.page_size || 10), pagination.total)} of {pagination.total}
                 </span>
                 <Button
@@ -1533,7 +1508,7 @@ export default function MagicalInboxPage() {
                   disabled={currentPage <= 1}
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8"
+                  className="h-8 w-8 text-foreground hover:bg-muted"
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
@@ -1542,7 +1517,7 @@ export default function MagicalInboxPage() {
                   disabled={currentPage >= pagination.total_pages}
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8"
+                  className="h-8 w-8 text-foreground hover:bg-muted"
                 >
                   <ChevronRight className="h-4 w-4" />
                 </Button>
@@ -1550,17 +1525,17 @@ export default function MagicalInboxPage() {
             )}
 
             {isGmailConnected && (
-              <Button onClick={() => setComposeOpen(true)} size="sm" className="bg-black text-white hover:bg-gray-800">
+              <Button onClick={() => setComposeOpen(true)} size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-xl shadow-sm">
                 <PenSquare className="mr-2 h-4 w-4" />
                 Compose
               </Button>
             )}
 
             {/* Sync Button */}
-            <Button onClick={handleSync} disabled={syncing} variant="outline" size="sm">
+            <Button onClick={handleSync} disabled={syncing} variant="outline" size="sm" className="rounded-xl border-border/60 hover:bg-accent font-semibold text-foreground">
               {syncing || isPending ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin text-primary" />
                   Syncing...
                 </>
               ) : (
@@ -1576,7 +1551,7 @@ export default function MagicalInboxPage() {
               isGmailConnected ? (
                 <button
                   onClick={() => setIsDisconnectDialogOpen(true)}
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 hover:bg-emerald-500/15 transition-colors shrink-0"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
                   Gmail
@@ -1585,7 +1560,7 @@ export default function MagicalInboxPage() {
                 <button
                   onClick={handleGmailConnect}
                   disabled={isConnecting}
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-stone-100 text-stone-600 border border-stone-200 hover:bg-stone-200 transition-colors disabled:opacity-60"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-primary/10 text-primary border border-primary/20 hover:bg-primary/15 transition-colors disabled:opacity-60 shrink-0"
                 >
                   {isConnecting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Mail className="w-3 h-3" />}
                   {isConnecting ? 'Connecting...' : 'Connect Gmail'}
@@ -1597,12 +1572,12 @@ export default function MagicalInboxPage() {
       </div>
 
       {/* Two-Panel Layout */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-6 min-h-0 mx-4 sm:mx-6 mb-0 sm:mb-0 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-6 min-h-0 mx-4 sm:mx-6 mb-0 sm:mb-0 bg-card rounded-2xl shadow-md border border-border/50 overflow-hidden">
         {/* Left Panel: Email List — hidden on mobile when a thread is open */}
-        <div className={`lg:col-span-2 border-r border-gray-200 h-[calc(100vh-140px)] overflow-y-auto scrollbar-thin bg-white ${selectedThreadId ? 'hidden lg:block' : 'block'}`}>
+        <div className={`lg:col-span-2 border-r border-border/40 h-[calc(100vh-140px)] overflow-y-auto scrollbar-thin bg-card/25 ${selectedThreadId ? 'hidden lg:block' : 'block'}`}>
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+              <Loader2 className="h-6 w-6 animate-spin text-primary" />
             </div>
           ) : filteredEmails.length > 0 ? (
             <AnimatePresence initial={false}>
@@ -1612,7 +1587,7 @@ export default function MagicalInboxPage() {
                   initial={newEmailIds.has(email.id) ? {
                     opacity: 0,
                     y: -60,
-                    backgroundColor: 'rgb(219 234 254 / 0.7)'
+                    backgroundColor: 'rgba(var(--primary), 0.15)'
                   } : false}
                   animate={{
                     opacity: 1,
@@ -1639,15 +1614,15 @@ export default function MagicalInboxPage() {
             </AnimatePresence>
           ) : gmailDisconnected ? (
             <div className="flex flex-col items-center justify-center py-12 text-center px-4">
-              <div className="w-16 h-16 bg-sage-50 rounded-full flex items-center justify-center mb-4">
-                <Mail className="w-8 h-8 text-sage-400" />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                <Mail className="w-8 h-8 text-primary" />
               </div>
-              <p className="text-gray-800 font-medium mb-2">Connect your Gmail</p>
-              <p className="text-sm text-gray-500 max-w-xs">
+              <p className="text-foreground font-bold mb-2">Connect your Gmail</p>
+              <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
                 Connect your Gmail account to see your emails automatically categorised with AI summaries.
               </p>
               <Button
-                className="mt-4 bg-black text-white hover:bg-gray-800"
+                className="mt-5 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-xl shadow-sm"
                 onClick={handleGmailConnect}
                 disabled={isConnecting}
               >
@@ -1656,11 +1631,11 @@ export default function MagicalInboxPage() {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-12 text-center px-4">
-              <div className="w-16 h-16 bg-sage-50 rounded-full flex items-center justify-center mb-4">
-                <Mail className="w-8 h-8 text-sage-400" />
+              <div className="w-16 h-16 bg-muted/50 rounded-full flex items-center justify-center mb-4">
+                <Mail className="w-8 h-8 text-muted-foreground/60" />
               </div>
-              <p className="text-gray-800 font-medium mb-2">No emails found</p>
-              <p className="text-sm text-gray-500 max-w-xs">
+              <p className="text-foreground font-bold mb-2">No emails found</p>
+              <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
                 {activeCategory !== 'all'
                   ? `No ${activeCategory === 'unread' ? 'unread' : activeCategory.replace('_', ' ')} emails found. Try selecting a different category.`
                   : 'Your inbox is empty.'}
@@ -1670,7 +1645,7 @@ export default function MagicalInboxPage() {
         </div>
 
         {/* Right Panel: Email Detail + AI Summary — full width on mobile when thread open */}
-        <div className={`lg:col-span-4 h-[calc(100vh-145px)] overflow-y-auto scrollbar-thin bg-stone-50 relative ${selectedThreadId ? 'col-span-1' : 'hidden lg:block'}`}>
+        <div className={`lg:col-span-4 h-[calc(100vh-145px)] overflow-y-auto scrollbar-thin bg-card relative ${selectedThreadId ? 'col-span-1' : 'hidden lg:block'}`}>
           {selectedEmail ? (
             <EmailDetailPanelWithMessages
               email={selectedEmail}
@@ -1721,66 +1696,66 @@ export default function MagicalInboxPage() {
           setSelectedProjectId(null);
         }
       }}>
-        <DialogContent className="sm:max-w-md bg-white">
+        <DialogContent className="sm:max-w-md bg-card border border-border/40 text-foreground rounded-2xl shadow-xl">
           <DialogHeader>
-            <DialogTitle>Add to Project</DialogTitle>
+            <DialogTitle className="text-foreground font-bold">Add to Project</DialogTitle>
           </DialogHeader>
 
           <div className="py-4">
             <div className="relative mb-4">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
                 placeholder="Search projects..."
                 value={projectSearch}
                 onChange={(e) => setProjectSearch(e.target.value)}
-                className="pl-9 bg-white border-gray-200"
+                className="pl-9 bg-background border-border/60 text-foreground rounded-xl focus-visible:ring-primary"
               />
             </div>
 
-            <div className="flex flex-col gap-2 max-h-[40vh] overflow-y-auto">
+            <div className="flex flex-col gap-2 max-h-[40vh] overflow-y-auto pr-1">
               {projectsLoading ? (
-                <div className="flex justify-center py-4"><Loader2 className="animate-spin text-gray-400 w-5 h-5" /></div>
+                <div className="flex justify-center py-4"><Loader2 className="animate-spin text-primary w-5 h-5" /></div>
               ) : filteredProjects.length > 0 ? (
                 filteredProjects.map((project: any) => (
                   <div
                     key={project.id}
                     onClick={() => setSelectedProjectId(project.id)}
-                    className={`px-3 py-2 rounded-lg cursor-pointer border transition-all flex items-center justify-between group ${selectedProjectId === project.id
-                      ? 'bg-black text-white border-black ring-1 ring-black'
-                      : 'bg-white border-transparent hover:bg-stone-50 hover:border-gray-200'
+                    className={`px-3.5 py-2.5 rounded-xl cursor-pointer border transition-all flex items-center justify-between group ${selectedProjectId === project.id
+                      ? 'bg-primary text-primary-foreground border-primary ring-1 ring-primary/20 shadow-sm'
+                      : 'bg-card border-transparent text-foreground/80 hover:bg-accent/40 hover:border-border/40 hover:text-foreground'
                       }`}
                   >
-                    <span className={`text-sm ${selectedProjectId === project.id ? 'text-white' : 'text-gray-700 group-hover:text-gray-900'}`}>{project.project_name}</span>
+                    <span className="text-sm font-semibold">{project.project_name}</span>
                     {project.project_code && (
-                      <span className={`text-xs px-2 py-1 rounded-md border ${selectedProjectId === project.id ? 'bg-gray-700 text-white border-gray-600' : 'text-gray-500 bg-white border-gray-100'}`}>{project.project_code}</span>
+                      <span className={`text-xs px-2.5 py-0.5 rounded-lg border font-medium ${selectedProjectId === project.id ? 'bg-primary-foreground/20 text-primary-foreground border-primary-foreground/30' : 'text-muted-foreground bg-muted/65 border-border/30'}`}>{project.project_code}</span>
                     )}
                   </div>
                 ))
               ) : (
-                <div className="text-center text-gray-500 py-8 text-sm">
+                <div className="text-center text-muted-foreground py-8 text-sm">
                   No projects found
                 </div>
               )}
             </div>
           </div>
 
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setProjectOpen(false)}>Cancel</Button>
-            <Button onClick={handleAddToProject} disabled={!selectedProjectId} className="bg-black text-white hover:bg-gray-800">Submit</Button>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button variant="outline" className="rounded-xl border-border/60 text-foreground hover:bg-accent" onClick={() => setProjectOpen(false)}>Cancel</Button>
+            <Button onClick={handleAddToProject} disabled={!selectedProjectId} className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl font-semibold shadow-sm">Submit</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* Gmail Disconnect Confirmation Dialog */}
       <Dialog open={isDisconnectDialogOpen} onOpenChange={setIsDisconnectDialogOpen}>
-        <DialogContent className="sm:max-w-sm bg-white">
+        <DialogContent className="sm:max-w-sm bg-card border border-border/40 text-foreground rounded-2xl shadow-xl">
           <DialogHeader>
-            <DialogTitle>Disconnect Gmail?</DialogTitle>
+            <DialogTitle className="text-foreground font-bold">Disconnect Gmail?</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-gray-500">Your inbox will no longer sync and AI categorisation will stop. You can reconnect at any time.</p>
-          <DialogFooter className="mt-2">
-            <Button variant="outline" onClick={() => setIsDisconnectDialogOpen(false)}>Cancel</Button>
-            <Button variant="destructive" onClick={handleGmailDisconnect} disabled={isDisconnecting}>
+          <p className="text-sm text-muted-foreground leading-relaxed">Your inbox will no longer sync and AI categorisation will stop. You can reconnect at any time.</p>
+          <DialogFooter className="mt-4 gap-2 sm:gap-0">
+            <Button variant="outline" className="rounded-xl border-border/60 text-foreground hover:bg-accent" onClick={() => setIsDisconnectDialogOpen(false)}>Cancel</Button>
+            <Button variant="destructive" className="rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90 font-semibold shadow-sm" onClick={handleGmailDisconnect} disabled={isDisconnecting}>
               {isDisconnecting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Disconnecting...</> : 'Disconnect'}
             </Button>
           </DialogFooter>

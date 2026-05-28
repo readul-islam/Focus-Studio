@@ -6,8 +6,8 @@ import { X } from "lucide-react"
 
 function NACheckbox() {
   return (
-    <div className="w-4 h-4 rounded-[4px] border-2 border-gray-300 bg-gray-100 flex items-center justify-center flex-shrink-0">
-      <X className="w-2.5 h-2.5 text-gray-400" strokeWidth={3} />
+    <div className="w-4 h-4 rounded-[6px] border border-border/60 bg-muted/20 flex items-center justify-center flex-shrink-0">
+      <X className="w-2.5 h-2.5 text-muted-foreground/60" strokeWidth={3} />
     </div>
   )
 }
@@ -70,17 +70,17 @@ export function PermissionsMatrix({
   }
 
   return (
-    <div className="overflow-x-auto -mx-4 sm:-mx-5">
+    <div className="overflow-x-auto -mx-4 sm:-mx-5 scrollbar-thin scrollbar-thumb-rounded">
       {/* Header */}
-      <div className={`grid border-b border-gray-200 bg-stone-50 px-4 py-2 ${roleColumns.length === 3 ? "grid-cols-[1fr_repeat(3,_180px)]" : "grid-cols-[1fr_repeat(2,_180px)]"}`}>
+      <div className={`grid border-b border-border/40 bg-muted/10 px-4 py-3.5 ${roleColumns.length === 3 ? "grid-cols-[1fr_repeat(3,_180px)]" : "grid-cols-[1fr_repeat(2,_180px)]"}`}>
         <div />
         {roleColumns.map(col => (
           <div key={col.key} className="text-center">
-            <span className="text-xs font-semibold text-gray-700">{col.label}</span>
-            <div className="flex justify-center gap-4 mt-1">
-              <span className="text-[10px] text-stone-400 w-8">View</span>
-              <span className="text-[10px] text-stone-400 w-8">Edit</span>
-              <span className="text-[10px] text-stone-400 w-8">Delete</span>
+            <span className="text-xs font-bold text-foreground tracking-tight">{col.label}</span>
+            <div className="flex justify-center gap-4 mt-2">
+              <span className="text-[10px] font-semibold text-muted-foreground/80 w-8">View</span>
+              <span className="text-[10px] font-semibold text-muted-foreground/80 w-8">Edit</span>
+              <span className="text-[10px] font-semibold text-muted-foreground/80 w-8">Delete</span>
             </div>
           </div>
         ))}
@@ -90,11 +90,11 @@ export function PermissionsMatrix({
       {resources.map((res, i) => (
         <div
           key={res.key}
-          className={`grid items-center px-4 py-3 border-b border-gray-100 last:border-b-0 ${roleColumns.length === 3 ? "grid-cols-[1fr_repeat(3,_180px)]" : "grid-cols-[1fr_repeat(2,_180px)]"} ${i % 2 === 0 ? "bg-white" : "bg-stone-50/30"}`}
+          className={`grid items-center px-4 py-3.5 border-b border-border/20 last:border-b-0 transition-colors duration-200 ${roleColumns.length === 3 ? "grid-cols-[1fr_repeat(3,_180px)]" : "grid-cols-[1fr_repeat(2,_180px)]"} ${i % 2 === 0 ? "bg-card/45" : "bg-muted/10"}`}
         >
           <div>
-            <p className="text-sm font-medium text-gray-800">{res.label}</p>
-            <p className="text-xs text-stone-400 mt-0.5">{res.desc}</p>
+            <p className="text-sm font-bold text-foreground">{res.label}</p>
+            <p className="text-xs text-muted-foreground/80 mt-0.5">{res.desc}</p>
           </div>
           {roleColumns.map(col => {
             const viewKey   = `${res.key}.view`

@@ -383,8 +383,7 @@ function ProductsPageContent() {
               ))}
             </div>
             <motion.div
-              className="absolute left-0 top-0 h-full w-8 rounded-l-lg flex items-center justify-start pl-0.5 z-10"
-              style={{ background: 'linear-gradient(to right, #f0ebe0 60%, transparent)' }}
+              className="absolute left-0 top-0 h-full w-8 rounded-l-lg flex items-center justify-start pl-0.5 z-10 category-fade-left"
               animate={{ opacity: canScrollLeft ? 1 : 0, pointerEvents: canScrollLeft ? 'auto' : 'none' }}
               transition={{ duration: 0.2 }}
             >
@@ -396,8 +395,7 @@ function ProductsPageContent() {
               </button>
             </motion.div>
             <motion.div
-              className="absolute right-0 top-0 h-full w-8 rounded-r-lg flex items-center justify-end pr-0.5 z-10"
-              style={{ background: 'linear-gradient(to left, #f0ebe0 60%, transparent)' }}
+              className="absolute right-0 top-0 h-full w-8 rounded-r-lg flex items-center justify-end pr-0.5 z-10 category-fade-right"
               animate={{ opacity: canScrollRight ? 1 : 0, pointerEvents: canScrollRight ? 'auto' : 'none' }}
               transition={{ duration: 0.2 }}
             >

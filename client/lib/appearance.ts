@@ -1,4 +1,13 @@
-export type AppearanceTheme = 'system' | 'light' | 'dark';
+export type AppearanceTheme =
+  | 'system'
+  | 'light'
+  | 'dark'
+  | 'midnight'
+  | 'forest'
+  | 'terracotta'
+  | 'cobalt'
+  | 'quartz'
+  | 'pink';
 export type AppearanceDensity = 'comfortable' | 'compact' | 'spacious';
 
 export type AppearancePrefs = {
@@ -71,4 +80,25 @@ export function applyAppearanceToDocument(prefs: AppearancePrefs) {
 
 export function clearAppearanceFromDocument() {
   applyAppearanceToDocument(DEFAULT_APPEARANCE);
+}
+
+/** Convert space-separated CSS HSL values (e.g. "222 30% 6%") to a standard Hex string. */
+export function hslToHex(hslStr: string): string {
+  if (!hslStr) return '#000000';
+  const clean = hslStr.trim().replace(/%/g, '');
+  const parts = clean.split(/\s+/);
+  if (parts.length < 3) return '#000000';
+
+  const h = parseFloat(parts[0]);
+  const s = parseFloat(parts[1]) / 100;
+  const l = parseFloat(parts[2]) / 100;
+
+  const a = s * Math.min(l, 1 - l);
+  const f = (n: number) => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color).toString(16).padStart(2, '0');
+  };
+
+  return `#${f(0)}${f(8)}${f(4)}`;
 }

@@ -62,7 +62,7 @@ const ContactRow = React.memo(function ContactRow({
   const router = useRouter();
 
   return (
-    <tr key={contact.id} onClick={() => router.push(`/crm/contacts/${contact.id}`)} className="hover:bg-stone-50 cursor-pointer">
+    <tr key={contact.id} onClick={() => router.push(`/crm/contacts/${contact.id}`)} className="hover:bg-muted/40 transition-colors cursor-pointer border-b border-border/20 text-foreground">
       <td className="px-4 py-3">
         <span onClick={e => e.stopPropagation()} onPointerDown={e => e.stopPropagation()}>
           <Checkbox disabled={!clientsPermission} checked={isSelected} onCheckedChange={checked => onToggleSelect(contact, checked as boolean)} />
@@ -71,15 +71,15 @@ const ContactRow = React.memo(function ContactRow({
       <td className="px-4 py-3">
         <div className="flex items-center gap-3 min-w-0">
           <Avatar className="w-8 h-8 shrink-0">
-            <AvatarFallback className="bg-gray-900 text-white text-xs font-semibold">
+            <AvatarFallback className="bg-primary text-primary-foreground text-xs font-semibold">
               {contact?.name ? contact.name[0] : contact?.company?.[0]}
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <div className="font-medium text-gray-900 truncate" title={contact?.name}>
+            <div className="font-semibold text-foreground truncate" title={contact?.name}>
               {contact?.name}
             </div>
-            <div className="text-xs text-gray-600 truncate" title={contact?.company_name}>
+            <div className="text-xs text-muted-foreground truncate" title={contact?.company_name}>
               {contact?.company_name}
             </div>
           </div>
@@ -87,14 +87,14 @@ const ContactRow = React.memo(function ContactRow({
       </td>
       <td className="px-4 py-3">
         <div className="flex flex-col gap-1 min-w-0">
-          <div className="flex items-center gap-2 text-gray-600 whitespace-nowrap truncate" title={contact?.email || 'Not available'}>
+          <div className="flex items-center gap-2 text-muted-foreground whitespace-nowrap truncate" title={contact?.email || 'Not available'}>
             {contact?.email ? <>
-              <Mail className="w-4 h-4 shrink-0" />
+              <Mail className="w-4 h-4 shrink-0 text-muted-foreground/60" />
               <span className="truncate">{contact?.email}</span></> : '-'}
           </div>
-          <div className="flex items-center gap-2 text-gray-600 whitespace-nowrap truncate" title={contact?.phone || 'Not available'}>
+          <div className="flex items-center gap-2 text-muted-foreground whitespace-nowrap truncate" title={contact?.phone || 'Not available'}>
             {contact?.phone ? <>
-              <Phone className="w-4 h-4 shrink-0" />
+              <Phone className="w-4 h-4 shrink-0 text-muted-foreground/60" />
               <span className="truncate">{contact?.phone}</span></> : '-'}
           </div>
         </div>
@@ -329,7 +329,7 @@ const handleCheckAll = (checked: boolean) => {
  
 
   return (
-    <div className="flex flex-col h-[calc(100svh-3.5rem)] min-h-0 bg-stone-50 p-4 sm:p-6">
+    <div className="flex flex-col h-[calc(100svh-3.5rem)] min-h-0 bg-background p-4 sm:p-6">
       <div className="max-w-7xl mx-auto w-full flex flex-col flex-1 min-h-0 space-y-6">
         <CrmNav />
 
@@ -338,8 +338,8 @@ const handleCheckAll = (checked: boolean) => {
           <div className="flex items-center gap-2 md:gap-4 flex-1">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Filter className="w-4 h-4 mr-2" />
+                <Button variant="outline" size="sm" className="h-9 rounded-xl border border-border/60 bg-background text-foreground text-[13px] hover:bg-muted/40 hover:border-primary/30 focus:ring-0 focus:outline-none transition-colors">
+                  <Filter className="w-4 h-4 mr-2 text-muted-foreground/60" />
                   {activeTab === 'all'
                     ? 'Filter'
                     : activeTab === 'clients'
@@ -366,15 +366,15 @@ const handleCheckAll = (checked: boolean) => {
             </DropdownMenu>
 
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/60" />
               <Input
                 placeholder="Search contacts..."
                 value={inputValue}
                 onChange={e => setInputValue(e.target.value)}
-                className="pl-10 h-9"
+                className="pl-10 h-9 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
               />
               {(isFetching || inputValue !== searchTerm) && (
-                <Loader2 className="absolute right-3 h-4 w-4 top-2.5 text-gray-400 animate-spin" />
+                <Loader2 className="absolute right-3 h-4 w-4 top-2.5 text-muted-foreground animate-spin" />
               )}
             </div>
           </div>
@@ -388,7 +388,10 @@ const handleCheckAll = (checked: boolean) => {
                 damping: 25,
               }}
             >
-              <Button size="sm" className="gap-2 bg-gray-900 hover:bg-gray-800" onClick={() => openContactModal(null)}>
+              <Button
+                onClick={() => openContactModal(null)}
+                className="bg-primary text-primary-foreground hover:opacity-90 h-9 px-4 rounded-xl shadow-sm font-semibold transition-all gap-2"
+              >
                 <Plus className="w-4 h-4" />
                 Add Contact
               </Button>
@@ -417,28 +420,28 @@ const handleCheckAll = (checked: boolean) => {
         </div>
 
         {/* Contacts Table */}
-        <div className="bg-white animate-in fade-in slide-in-from-bottom-4 duration-500 rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-card animate-in fade-in slide-in-from-bottom-4 duration-500 rounded-xl shadow-sm border border-border/40 overflow-hidden">
           <div className="overflow-x-auto scrollbar scrollbar-thin">
             <table className="w-full table-fixed">
-              <thead className="bg-white border-b border-gray-200 sticky top-0 z-10">
+              <thead className="bg-card border-b border-border/40 sticky top-0 z-10">
                 <tr>
-                  <th className="px-4 text-left text-sm font-medium text-gray-600" style={{ width: 48 }}>
+                  <th className="px-4 text-left text-sm font-medium text-muted-foreground" style={{ width: 48 }}>
                     <Checkbox
                     disabled={!clientsPermission}
                       checked={checkedItems.length > 0 && checkedItems.length === contacts.length}
                       onCheckedChange={handleCheckAll}
                     />
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-600" style={{ width: 320 }}>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-muted-foreground" style={{ width: 320 }}>
                     Contact
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-600" style={{ width: 360 }}>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-muted-foreground" style={{ width: 360 }}>
                     Contact Info
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-600" style={{ width: 140 }}>
+                  <th className="px-4 py-3 text-left text-sm font-semibold text-muted-foreground" style={{ width: 140 }}>
                     Type
                   </th>
-                  <th className="pl-4 pr-6 py-3 text-right text-sm font-medium text-gray-600" style={{ width: 96 }}>
+                  <th className="pl-4 pr-6 py-3 text-right text-sm font-semibold text-muted-foreground" style={{ width: 96 }}>
                     Actions
                   </th>
                 </tr>
@@ -448,14 +451,17 @@ const handleCheckAll = (checked: boolean) => {
                   <tr>
                     <td colSpan={5} className="py-16 text-center">
                       <div className="flex flex-col items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center">
-                          <Users className="w-6 h-6 text-gray-400" />
+                        <div className="w-12 h-12 rounded-full bg-muted/40 border border-border/40 flex items-center justify-center shadow-sm text-muted-foreground">
+                          <Users className="w-6 h-6" />
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-900">No contacts yet</p>
-                          <p className="text-sm text-gray-500 mt-1">Add your first contact to get started</p>
+                          <p className="text-sm font-bold text-foreground">No contacts yet</p>
+                          <p className="text-sm text-muted-foreground mt-1">Add your first contact to get started</p>
                         </div>
-                        <Button size="sm" className="mt-2 gap-2" onClick={() => openContactModal()}>
+                        <Button
+                          onClick={() => openContactModal()}
+                          className="mt-2 bg-primary text-primary-foreground hover:opacity-90 h-9 px-4 rounded-xl shadow-sm font-semibold transition-all gap-2"
+                        >
                           <Plus className="w-4 h-4" />
                           Add Contact
                         </Button>

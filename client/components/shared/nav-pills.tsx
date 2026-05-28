@@ -32,7 +32,7 @@ export function NavPills({ items, activeHref, className, id }: NavPillsProps) {
   }, null);
 
   return (
-    <div className={cn('bg-white border border-gray-200 rounded-lg p-1', className)}>
+    <div className={cn('bg-card/45 border border-border/40 rounded-xl p-1 backdrop-blur-sm', className)}>
       <nav className="flex items-center gap-2 overflow-x-auto" aria-label="Section navigation">
         {items.map(item => {
           const isActive = bestMatch?.href === item.href;
@@ -41,13 +41,13 @@ export function NavPills({ items, activeHref, className, id }: NavPillsProps) {
               key={item.label}
               href={item.href}
               aria-current={isActive ? 'page' : undefined}
-              className="relative inline-flex items-center gap-2 h-8 px-3 rounded-lg text-xs sm:text-sm font-normal hover:bg-stone-50 transition-colors"
+              className="relative inline-flex items-center gap-2 h-8 px-3.5 rounded-lg text-xs sm:text-sm font-normal hover:bg-muted/40 transition-colors"
             >
               {/* Animated active background */}
               {isActive && (
                 <motion.span
                   layoutId={`nav-pill-active-${id}`}
-                  className="absolute inset-0 bg-stone-100 rounded-lg"
+                  className="absolute inset-0 bg-primary rounded-lg shadow-sm"
                   transition={{
                     type: 'spring',
                     stiffness: 400,
@@ -59,7 +59,7 @@ export function NavPills({ items, activeHref, className, id }: NavPillsProps) {
               <span
                 className={cn(
                   'relative z-10 transition-colors duration-150',
-                  isActive ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900',
+                  isActive ? 'text-primary-foreground font-semibold' : 'text-muted-foreground hover:text-foreground',
                 )}
               >
                 {item.label}
