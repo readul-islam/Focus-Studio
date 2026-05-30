@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { CheckCircle2 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { cn } from "@/lib/utils"
 
 /**
@@ -21,7 +22,9 @@ export function FinanceComposite({
   className?: string
   ratio?: string
 }) {
-  function PaidGlassButton({ label = "Paid" }: { label?: string }) {
+  const t = useTranslations("visuals.finance")
+
+  function PaidGlassButton() {
     return (
       <button
         type="button"
@@ -30,10 +33,10 @@ export function FinanceComposite({
           backgroundColor: "rgba(255,255,255,0.25)", // lighter white-based glass
           boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.4), 0 8px 20px rgba(0,0,0,0.12)",
         }}
-        aria-label={label}
+        aria-label={t("paidLabel")}
       >
         <CheckCircle2 className="h-4 w-4" />
-        <span>{label}</span>
+        <span>{t("paidLabel")}</span>
       </button>
     )
   }
@@ -43,7 +46,7 @@ export function FinanceComposite({
       {/* Base lifestyle image — square to avoid top/bottom crop */}
       <Image
         src="/images/home/finance-lounge-new.png"
-        alt="Elegant living room with blonde woman reading, featuring chevron wood paneling and brass accents"
+        alt={t("heroAlt")}
         fill
         sizes="(max-width: 768px) 100vw, (max-width: 1280px) 55vw, 640px"
         className="rounded-xl object-cover"
@@ -66,7 +69,7 @@ export function FinanceComposite({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-08-10%20at%2013.23.38-Bs84CmeM1ZzZUbByqwfSAlKiunNbJZ.png"
-            alt="Paid status snippet showing amount and green paid chip"
+            alt={t("paidSnippetAlt")}
             className="block h-auto w-full"
             loading="lazy"
           />
@@ -79,7 +82,7 @@ export function FinanceComposite({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-08-10%20at%2013.25.15-LWPR9mXHVBRAP9BP986dbgr911OQfz.png"
-            alt="Studio Profit KPI showing £45.2k, up 12%"
+            alt={t("profitKpiAlt")}
             className="block h-auto w-full"
             loading="lazy"
           />

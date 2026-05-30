@@ -1,9 +1,10 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useTranslations } from "next-intl"
 import { AuthBrandMark } from "@/components/auth/auth-brand-mark"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,20 +12,14 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { GoogleAuthButton } from "@/components/auth/google-auth-button"
 import { apiErrorMessage, fieldError, registerUser } from "@/lib/api"
-import {
-  passwordStrength,
-  signupIsValid,
-  strengthLabel,
-  validateSignup,
-  type SignupForm,
-  type SignupErrors,
-} from "@/lib/auth-validation"
+import { passwordStrength, signupIsValid, type SignupForm, type SignupErrors } from "@/lib/auth-validation"
 
 type SignupFormProps = {
   loginHref?: string
 }
 
 export function SignupForm({ loginHref = "/login" }: SignupFormProps) {
+  const t = useTranslations("authSignupPage.form")
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState<SignupForm>({
@@ -37,6 +32,48 @@ export function SignupForm({ loginHref = "/login" }: SignupFormProps) {
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [agreeToTerms, setAgreeToTerms] = useState(false)
 
+  const validateSignup = useMemo(() => {
+    const validateName = (v: string) => {
+      if (!v) return t("validation.nameRequired")
+      if (!/^[A-Za-z\s'-]{2,}$/.test(v)) return t("validation.nameInvalid")
+    }
+
+    const validateEmail = (v: string) => {
+      if (!v) return t("validation.emailRequired")
+      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(v)) return t("validation.emailInvalid")
+    }
+
+    const validatePassword = (v: string) => {
+      if (!v) return t("validation.passwordRequired")
+      if (v.length < 8) return t("validation.passwordMinLength")
+      if (!/[A-Z]/.test(v)) return t("validation.passwordUppercase")
+      if (!/[a-z]/.test(v)) return t("validation.passwordLowercase")
+      if (!/\d/.test(v)) return t("validation.passwordNumber")
+      if (!/[@$!%*?&]/.test(v)) return t("validation.passwordSpecial")
+    }
+
+    const validateConfirm = (v: string, pw: string) => {
+      if (!v) return t("validation.confirmRequired")
+      if (v !== pw) return t("validation.confirmMismatch")
+    }
+
+    return (d: SignupForm): SignupErrors => ({
+      name: validateName(d.name),
+      email: validateEmail(d.email),
+      password: validatePassword(d.password),
+      confirmPassword: validateConfirm(d.confirmPassword, d.password),
+    })
+  }, [t])
+
+  const strengthLabel = useMemo(() => {
+    return (s: number) => {
+      if (s <= 1) return { label: t("strength.weak"), color: "bg-red-400" }
+      if (s <= 3) return { label: t("strength.fair"), color: "bg-amber-400" }
+      if (s === 4) return { label: t("strength.good"), color: "bg-blue-400" }
+      return { label: t("strength.strong"), color: "bg-emerald-400" }
+    }
+  }, [t])
+
   const handleChange = (field: keyof SignupForm, value: string) => {
     const next = { ...formData, [field]: value }
     setFormData(next)
@@ -46,7 +83,7 @@ export function SignupForm({ loginHref = "/login" }: SignupFormProps) {
   }
 
   const handleBlur = (field: keyof SignupForm) => {
-    setTouched((t) => ({ ...t, [field]: true }))
+    setTouched((prev) => ({ ...prev, [field]: true }))
     setErrors(validateSignup(formData))
   }
 
@@ -74,7 +111,7 @@ export function SignupForm({ loginHref = "/login" }: SignupFormProps) {
       } else {
         setErrors((prev) => ({
           ...prev,
-          form: apiErrorMessage(error, "Registration failed. Please try again."),
+          form: apiErrorMessage(error, t("registrationFailed")),
         }))
       }
     } finally {
@@ -95,8 +132,8 @@ export function SignupForm({ loginHref = "/login" }: SignupFormProps) {
       <AuthBrandMark className="mb-10" />
 
       <div className="space-y-3 mb-8">
-        <h1 className="text-3xl lg:text-[32px] font-medium text-stone-900 leading-tight">Create your account</h1>
-        <p className="text-base text-stone-600">Start your free trial — verify your email to continue</p>
+        <h1 className="text-3xl lg:text-[32px] font-medium text-stone-900 leading-tight">{t("title")}</h1>
+        <p className="text-base text-stone-600">{t("subtitle")}</p>
       </div>
 
       {errors.form ? (
@@ -105,7 +142,7 @@ export function SignupForm({ loginHref = "/login" }: SignupFormProps) {
       <form onSubmit={handleSubmit} className="space-y-5">
         <GoogleAuthButton
           mode="signup"
-          label="Sign up with Google"
+          label={t("googleSignUp")}
           className="w-full h-12 lg:h-11 text-base lg:text-sm bg-transparent border-stone-300 hover:bg-stone-50"
         />
 
@@ -114,12 +151,12 @@ export function SignupForm({ loginHref = "/login" }: SignupFormProps) {
             <span className="w-full border-t border-stone-200" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white px-3 text-stone-500">or</span>
+            <span className="bg-white px-3 text-stone-500">{t("orDivider")}</span>
           </div>
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="name">Full name</Label>
+          <Label htmlFor="name">{t("fullName")}</Label>
           <Input
             id="name"
             value={formData.name}
@@ -132,7 +169,7 @@ export function SignupForm({ loginHref = "/login" }: SignupFormProps) {
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="email">Email address</Label>
+          <Label htmlFor="email">{t("email")}</Label>
           <Input
             id="email"
             type="email"
@@ -147,7 +184,7 @@ export function SignupForm({ loginHref = "/login" }: SignupFormProps) {
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">{t("password")}</Label>
           <Input
             id="password"
             type="password"
@@ -168,14 +205,14 @@ export function SignupForm({ loginHref = "/login" }: SignupFormProps) {
                   />
                 ))}
               </div>
-              <p className="text-xs text-stone-500">Strength: {strengthText}</p>
+              <p className="text-xs text-stone-500">{t("strengthLabel", { level: strengthText })}</p>
             </div>
           ) : null}
           {errors.password && touched.password ? <p className="text-xs text-red-600">{errors.password}</p> : null}
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="confirmPassword">Confirm password</Label>
+          <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
           <Input
             id="confirmPassword"
             type="password"
@@ -199,13 +236,13 @@ export function SignupForm({ loginHref = "/login" }: SignupFormProps) {
             className="mt-0.5"
           />
           <Label htmlFor="terms" className="text-sm text-stone-600 leading-relaxed">
-            I agree to the{" "}
+            {t("agreeTermsBefore")}{" "}
             <Link href="/terms" className="text-stone-900 underline hover:no-underline">
-              Terms of Service
+              {t("termsOfService")}
             </Link>{" "}
-            and{" "}
+            {t("and")}{" "}
             <Link href="/privacy" className="text-stone-900 underline hover:no-underline">
-              Privacy Policy
+              {t("privacyPolicy")}
             </Link>
           </Label>
         </div>
@@ -215,14 +252,14 @@ export function SignupForm({ loginHref = "/login" }: SignupFormProps) {
           disabled={isLoading || !agreeToTerms}
           className="w-full h-12 lg:h-11 bg-[#E07A57] hover:bg-[#d06a47] text-white text-base lg:text-sm font-medium mt-2"
         >
-          {isLoading ? "Creating account…" : "Create account"}
+          {isLoading ? t("creatingAccount") : t("createAccount")}
         </Button>
       </form>
 
       <p className="mt-8 text-center text-sm text-stone-600">
-        Already have an account?{" "}
+        {t("hasAccount")}{" "}
         <Link href={loginHref} className="text-[#E07A57] font-medium hover:underline">
-          Sign in
+          {t("signIn")}
         </Link>
       </p>
     </div>

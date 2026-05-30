@@ -4,6 +4,7 @@ import type React from "react"
 import { useState } from "react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
+import { useTranslations } from "next-intl"
 import { AuthBrandMark } from "@/components/auth/auth-brand-mark"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -24,6 +25,7 @@ export function LoginForm({
   forgotHref = "/forgot-password",
   showBrandMark = true,
 }: LoginFormProps) {
+  const t = useTranslations("authLoginPage.form")
   const searchParams = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
   const [formError, setFormError] = useState("")
@@ -42,7 +44,7 @@ export function LoginForm({
       await loginUser(formData.email.trim(), formData.password)
       redirectToApp("/home/dashboard", searchParams.get("next"))
     } catch (error) {
-      setFormError(apiErrorMessage(error, "Invalid email or password. Please try again."))
+      setFormError(apiErrorMessage(error, t("invalidCredentials")))
     } finally {
       setIsLoading(false)
     }
@@ -54,8 +56,8 @@ export function LoginForm({
 
       <div className="space-y-6">
         <div className="space-y-2">
-          <h1 className="text-2xl font-semibold tracking-tight text-stone-900">Welcome back</h1>
-          <p className="text-sm text-stone-600">Sign in to your Focuspilot studio account</p>
+          <h1 className="text-2xl font-semibold tracking-tight text-stone-900">{t("title")}</h1>
+          <p className="text-sm text-stone-600">{t("subtitle")}</p>
         </div>
 
         {formError ? (
@@ -64,7 +66,7 @@ export function LoginForm({
         <form onSubmit={handleSubmit} className="space-y-4">
           <GoogleAuthButton
             mode="login"
-            label="Sign in with Google"
+            label={t("googleSignIn")}
             nextPath={searchParams.get("next")}
             showIcon
             className="w-full h-10 text-sm bg-transparent"
@@ -75,19 +77,19 @@ export function LoginForm({
               <span className="w-full border-t border-stone-200" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-stone-500">or</span>
+              <span className="bg-white px-2 text-stone-500">{t("orDivider")}</span>
             </div>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="email" className="text-sm font-medium text-stone-700">
-              Email
+              {t("email")}
             </Label>
             <Input
               id="email"
               type="email"
               autoComplete="email"
-              placeholder="Enter your email"
+              placeholder={t("emailPlaceholder")}
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className="h-10 text-sm"
@@ -97,13 +99,13 @@ export function LoginForm({
 
           <div className="space-y-2">
             <Label htmlFor="password" className="text-sm font-medium text-stone-700">
-              Password
+              {t("password")}
             </Label>
             <Input
               id="password"
               type="password"
               autoComplete="current-password"
-              placeholder="Enter your password"
+              placeholder={t("passwordPlaceholder")}
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               className="h-10 text-sm"
@@ -119,11 +121,11 @@ export function LoginForm({
                 onCheckedChange={(checked) => setFormData({ ...formData, rememberMe: checked === true })}
               />
               <Label htmlFor="remember" className="text-xs text-stone-600">
-                Remember me
+                {t("rememberMe")}
               </Label>
             </div>
             <Link href={forgotHref} className="text-xs text-stone-600 hover:text-stone-900 hover:underline">
-              Forgot password?
+              {t("forgotPassword")}
             </Link>
           </div>
 
@@ -132,14 +134,14 @@ export function LoginForm({
             className="w-full h-10 bg-stone-900 text-white hover:bg-stone-800 text-sm"
             disabled={isLoading}
           >
-            {isLoading ? "Signing in…" : "Sign in"}
+            {isLoading ? t("signingIn") : t("signIn")}
           </Button>
         </form>
 
         <p className="text-center text-xs text-stone-600">
-          Don&apos;t have an account?{" "}
+          {t("noAccount")}{" "}
           <Link href={signupHref} className="font-medium text-stone-900 hover:underline">
-            Sign up
+            {t("signUp")}
           </Link>
         </p>
       </div>

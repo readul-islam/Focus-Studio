@@ -1,0 +1,126 @@
+{
+  "siteMeta": {
+    "title": "インテリアデザイン向けプロジェクト管理ソフトウェア | Focuspilot",
+    "description": "インテリアデザイナーと建築家向けのAI搭載プロジェクト管理。プロジェクト、調達、クライアント承認、請求を一つのワークスペースで。3ヶ月無料トライアル。",
+    "keywords": [
+      "インテリアデザイン ソフトウェア",
+      "デザインスタジオ 管理",
+      "デザイナー向け プロジェクト管理",
+      "インテリアデザイン CRM",
+      "調達 ソフトウェア",
+      "クライアントポータル",
+      "建築 プロジェクト管理",
+      "デザインスタジオ ワークフロー",
+      "インテリアデザイン ビジネス",
+      "デザインプロジェクト コラボレーション"
+    ],
+    "ogImageAlt": "インテリアデザイン向けプロジェクト管理ソフトウェア | Focuspilot",
+    "jsonLd": {
+      "organization": {
+        "description": "インテリアデザイナーと建築家のためのモダンなオペレーティングシステム。",
+        "contactType": "カスタマーサービス",
+        "availableLanguage": "日本語"
+      },
+      "software": {
+        "description": "プロジェクト管理、調達、クライアントコラボレーション、財務のためのインテリアデザインスタジオ管理ソフトウェア。",
+        "applicationSubCategory": "プロジェクト管理ソフトウェア",
+        "offerDescription": "無料ベータアクセス利用可能",
+        "features": {
+          "projectManagement": "プロジェクト管理",
+          "crm": "デザインスタジオ向けCRM",
+          "procurement": "AI搭載調達",
+          "clientPortal": "クライアントポータルと承認",
+          "finance": "財務と請求",
+          "library": "製品ライブラリ管理"
+        }
+      }
+    }
+  },
+  "authLoginPage": {
+    "meta": {
+      "title": "ログイン | Focuspilot",
+      "description": "Focuspilotアカウントにサインインして、デザインスタジオ管理ツールにアクセス。"
+    }
+  },
+  "authSignupPage": {
+    "meta": {
+      "title": "新規登録 | Focuspilot",
+      "description": "Focuspilotアカウントを作成し、AI搭載ツールでデザインスタジオのワークフローを変革。"
+    }
+  },
+  "authLayout": {
+    "meta": {
+      "title": "認証 | Focuspilot",
+      "description": "Focuspilotアカウントにサインインまたは新規作成"
+    }
+  },
+  "visuals": {
+    "finance": {
+      "heroAlt": "シェブロン木パネルと真鍮アクセントのエレガントなリビングルーム",
+      "paidSnippetAlt": "支払済み金額と緑のチップを表示するステータス",
+      "profitKpiAlt": "スタジオ利益KPI £45.2k、12%増",
+      "paidLabel": "支払済"
+    },
+    "pm": {
+      "heroAlt": "組み込み本棚と真鍮照明のあるエレガントなスタジオで働くインテリアデザイナー",
+      "calendarAlt": "カレンダー：現地訪問 - オフィススペース進捗",
+      "aiComposerAlt": "プロジェクト管理のクイックアクション付きAIコンポーザー",
+      "taskCardAlt": "タスク：最終コンセプトの提示"
+    }
+  },
+  "studioProfile": {
+    "meta": {
+      "notFoundTitle": "スタジオが見つかりません | Focuspilot",
+      "titleSuffix": " — インテリアデザインスタジオ",
+      "fallbackDescription": "{studioName}のポートフォリオ、チーム、クライアントレビューをご覧ください。"
+    },
+    "notFoundPage": {
+      "title": "スタジオプロフィールが見つかりません",
+      "description": "このプロフィールは非公開か、リンクが正しくない可能性があります。",
+      "backToFocuspilot": "Focuspilotに戻る"
+    }
+  },
+  "resourcesAiPlaybook": {
+    "navAriaLabel": "プレイブックの章",
+    "quickWins": {
+      "inboxSummary": {
+        "title": "昨日の受信トレイを要約",
+        "body": "クライアントの決定、サプライヤーの遅延、タスクをプロジェクト別に箇条書きで取得。"
+      },
+      "phasedProposal": {
+        "title": "フェーズ別提案書を下書き",
+        "body": "ブリーフを提案書テンプレートに貼り付けられるスコープセクションに数分で変換。"
+      },
+      "ffeSchedule": {
+        "title": "FF&Eスケジュールを更新",
+        "body": "URLから仕様を抽出し、設置を妨げる前に長納期品目をフラグ。"
+      }
+    },
+    "chapters": {
+      "start": {
+        "title": "ここから始める",
+        "summary": "自動化の前にガードレールを設定—AIが下書きできること、人間が承認すべきこと、プロジェクトデータの所在を定義。"
+      },
+      "email": {
+        "title": "メールとクライアントコミュニケーション",
+        "summary": "受信トレイのノイズをルーティングされたアクションに—正しいプロジェクトに紐づく要約、返信下書き、承認リマインダー。"
+      },
+      "procurement": {
+        "title": "調達と仕様",
+        "summary": "AIで代替品を比較し、リードタイムを確認し、重複入力なしでFF&Eスケジュールを最新に。"
+      },
+      "tasks": {
+        "title": "タスクとタイムライン",
+        "summary": "ブリーフと議事録を担当者付きフェーズタスクに変換—日付がずれたらAIがタイムラインを正直に保つ。"
+      },
+      "proposals": {
+        "title": "提案書とフィー",
+        "summary": "テンプレートと一貫した商業条件を保ちながら、フィー提案とスコープレターを加速。"
+      },
+      "governance": {
+        "title": "ガバナンスと品質",
+        "summary": "クライアントの信頼を守る—プライバシー、正確性、ブランドボイスはスピードより重要。"
+      }
+    }
+  }
+}

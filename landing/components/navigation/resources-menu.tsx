@@ -2,28 +2,64 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { useTranslations } from "next-intl"
 import { cn } from "@/lib/utils"
 import * as LucideReact from "lucide-react"
 import { notifyNavOpen, subscribeNavOpen } from "@/lib/nav-bus"
 
-const links = [
-  { label: "Blog", href: "/blog", icon: LucideReact.BookOpen, desc: "Ideas and studio workflows." },
-  { label: "Customer stories", href: "#stories", icon: LucideReact.Users, desc: "Studios shipping great work." },
-  { label: "Knowledge Centre", href: "/knowledge", icon: LucideReact.FileText, desc: "Guides & how‑tos." },
-  { label: "Changelog", href: "/changelog", icon: LucideReact.Megaphone, desc: "What we ship, every week." },
-  { label: "Templates", href: "/resources/templates", icon: LucideReact.Stars, desc: "Plug‑and‑play docs." },
-  {
-    label: "AI Playbook",
-    href: "/resources/ai-playbook",
-    icon: LucideReact.Sparkles,
-    desc: "Use AI across your studio.",
-  },
-]
-
 export function ResourcesMenu() {
+  const t = useTranslations("resourcesMenu")
   const [open, setOpen] = React.useState(false)
   const [panelTop, setPanelTop] = React.useState<number>(64)
   const MENU_ID = "resources"
+
+  const links = React.useMemo(
+    () => [
+      {
+        key: "blog",
+        href: "/blog",
+        icon: LucideReact.BookOpen,
+        label: t("links.blog.label"),
+        desc: t("links.blog.desc"),
+      },
+      {
+        key: "customerStories",
+        href: "#stories",
+        icon: LucideReact.Users,
+        label: t("links.customerStories.label"),
+        desc: t("links.customerStories.desc"),
+      },
+      {
+        key: "knowledgeCentre",
+        href: "/knowledge",
+        icon: LucideReact.FileText,
+        label: t("links.knowledgeCentre.label"),
+        desc: t("links.knowledgeCentre.desc"),
+      },
+      {
+        key: "changelog",
+        href: "/changelog",
+        icon: LucideReact.Megaphone,
+        label: t("links.changelog.label"),
+        desc: t("links.changelog.desc"),
+      },
+      {
+        key: "templates",
+        href: "/resources/templates",
+        icon: LucideReact.Stars,
+        label: t("links.templates.label"),
+        desc: t("links.templates.desc"),
+      },
+      {
+        key: "aiPlaybook",
+        href: "/resources/ai-playbook",
+        icon: LucideReact.Sparkles,
+        label: t("links.aiPlaybook.label"),
+        desc: t("links.aiPlaybook.desc"),
+      },
+    ],
+    [t],
+  )
 
   const updateTop = React.useCallback(() => {
     const header = document.querySelector("header")
@@ -93,7 +129,7 @@ export function ResourcesMenu() {
         onClick={() => setOpen((s) => !s)}
         onMouseEnter={() => setOpen(true)}
       >
-        Resources
+        {t("trigger")}
         <svg
           aria-hidden="true"
           className={cn("h-4 w-4 transition-transform", open ? "rotate-180" : "rotate-0")}
@@ -113,7 +149,7 @@ export function ResourcesMenu() {
         )}
         style={{ top: panelTop }}
         role="menu"
-        aria-label="Resources"
+        aria-label={t("menuAria")}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
       >
@@ -122,7 +158,7 @@ export function ResourcesMenu() {
             {links.map((l) => {
               const Icon = l.icon
               return (
-                <li key={l.label}>
+                <li key={l.key}>
                   <Link href={l.href} className="group flex items-start gap-3 rounded-lg px-3 py-2 hover:bg-stone-50">
                     <span className="mt-0.5 inline-flex h-8 w-8 items-center justify-center rounded-lg bg-stone-100 text-stone-900 ring-1 ring-stone-200">
                       {Icon ? <Icon className="h-4 w-4" /> : null}

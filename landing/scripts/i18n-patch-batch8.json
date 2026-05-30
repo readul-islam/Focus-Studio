@@ -1,0 +1,250 @@
+{
+  "platformShared": {
+    "backToHome": "Back to home",
+    "breadcrumb": {
+      "projects": "Projects",
+      "finance": "Finance",
+      "crm": "CRM",
+      "clientPortal": "Client Portal",
+      "procurement": "Procurement",
+      "aiEmail": "AI Email",
+      "library": "Product Library",
+      "aiProcurement": "AI Procurement",
+      "invoicing": "Invoicing",
+      "contractorPortal": "Contractor Portal"
+    }
+  },
+  "aboutPage": {
+    "meta": {
+      "title": "About Focuspilot | Our Story & Mission",
+      "description": "Learn about Focuspilot - the team building AI-powered project management software for interior designers. Our mission is to give designers more time to design."
+    },
+    "title": "About Focuspilot",
+    "paragraph1": "We're building the modern operating system for interior design studios. Our mission is simple: give designers more time to design by automating the admin.",
+    "paragraph2": "Founded in 2026, Focuspilot combines deep industry knowledge with cutting-edge AI to create tools that actually understand how design studios work."
+  },
+  "careersPage": {
+    "meta": {
+      "title": "Careers at Focuspilot | Join Our Team",
+      "description": "Join the Focuspilot team. We're building AI-powered software for interior designers and looking for passionate people to help us grow."
+    },
+    "title": "Careers at Focuspilot",
+    "intro": "We're building tools that help interior designers focus on what they love. Join us if you're passionate about great software and beautiful design.",
+    "noOpenings": "We're a small, growing team. While we don't have open positions listed right now, we're always interested in hearing from talented people.",
+    "emailPrompt": "Send us an email at"
+  },
+  "customersPage": {
+    "meta": {
+      "title": "Customer Stories | Interior Designers Using Focuspilot",
+      "description": "See how interior design studios use Focuspilot to save time and grow their business. Real stories from real designers."
+    },
+    "hero": {
+      "badge": "Customer stories",
+      "title": "Loved by design studios",
+      "subtitle": "See how interior designers and architects use Focuspilot to save time, delight clients, and focus on what they do best."
+    },
+    "stats": {
+      "designStudios": "Design studios",
+      "savedPerWeek": "Saved per week",
+      "averageRating": "Average rating",
+      "retentionRate": "Retention rate"
+    },
+    "testimonials": {
+      "sarahMitchell": {
+        "quote": "Focuspilot has transformed how we manage projects. The AI features alone save us 10+ hours a week on admin work that used to consume my evenings.",
+        "author": "Sarah Mitchell",
+        "role": "Principal Designer",
+        "company": "Studio Mitchell",
+        "highlight": "10+ hours saved weekly"
+      },
+      "jamesChen": {
+        "quote": "Finally, software that actually understands how interior design studios work. The client portal is beautiful and our clients love being able to approve selections online.",
+        "author": "James Chen",
+        "role": "Creative Director",
+        "company": "Chen Interiors",
+        "highlight": "Clients love it"
+      },
+      "emmaWilliams": {
+        "quote": "We switched from Programa and haven't looked back. The Xero integration works flawlessly and procurement tracking has eliminated our spreadsheet chaos.",
+        "author": "Emma Williams",
+        "role": "Founder",
+        "company": "Williams Design Co",
+        "highlight": "Seamless Xero sync"
+      },
+      "marcusThompson": {
+        "quote": "The onboarding was smooth and the support team genuinely understands design practice. They've built features we didn't even know we needed.",
+        "author": "Marcus Thompson",
+        "role": "Senior Designer",
+        "company": "Thompson & Associates",
+        "highlight": "Built for designers"
+      },
+      "lisaPark": {
+        "quote": "Managing FF&E schedules used to be a nightmare. Now our whole team can see what's ordered, what's shipped, and what's installed in real-time.",
+        "author": "Lisa Park",
+        "role": "Operations Director",
+        "company": "Park Design Studio",
+        "highlight": "Real-time visibility"
+      },
+      "davidOkonkwo": {
+        "quote": "The AI proposal generator paid for the entire subscription in the first month. It's scarily accurate at estimating project timelines and costs.",
+        "author": "David Okonkwo",
+        "role": "Founding Partner",
+        "company": "Okonkwo Design",
+        "highlight": "ROI in first month"
+      }
+    },
+    "relatedLinks": {
+      "title": "See it for yourself",
+      "subtitle": "Explore the features that designers love.",
+      "projects": { "title": "Projects", "desc": "Manage timelines and tasks" },
+      "clientPortal": { "title": "Client Portal", "desc": "Share and get approvals" },
+      "aiFeatures": { "title": "AI Features", "desc": "Automate the admin" },
+      "pricing": { "title": "Pricing", "desc": "Start free today" }
+    },
+    "finalCta": {
+      "ariaLabel": "Get started",
+      "title": "Join 500+ design studios",
+      "subtitle": "Start your free trial and see why designers love Focuspilot."
+    }
+  },
+  "integrationsPage": {
+    "meta": {
+      "title": "Integrations | Connect Your Tools | Focuspilot",
+      "description": "Connect Focuspilot with Xero, QuickBooks, Stripe, Google Calendar, Gmail, Zapier, and more. All integrations included on every plan."
+    },
+    "hero": {
+      "badge": "Connect your tools",
+      "title": "Integrations",
+      "subtitle": "Connect Focuspilot with the tools you already use. Automate your workflow and keep everything in sync.",
+      "note": "All integrations included on every plan."
+    },
+    "grid": {
+      "title": "Available integrations",
+      "popular": "Popular",
+      "available": "Available"
+    },
+    "categories": {
+      "accounting": "Accounting",
+      "payments": "Payments",
+      "scheduling": "Scheduling",
+      "email": "Email",
+      "automation": "Automation",
+      "productivity": "Productivity",
+      "communication": "Communication"
+    },
+    "items": {
+      "xero": {
+        "description": "Two-way sync for invoices, payments, and expenses. Keep your books up to date automatically."
+      },
+      "quickbooks": {
+        "description": "Sync invoices and payments automatically. Works with QuickBooks Online."
+      },
+      "stripe": {
+        "description": "Accept client payments through the portal. Automatic reconciliation with invoices."
+      },
+      "googleCalendar": {
+        "description": "Sync project milestones, meetings, and deadlines to your calendar."
+      },
+      "outlookCalendar": {
+        "description": "Keep your Outlook calendar in sync with project timelines and appointments."
+      },
+      "gmail": {
+        "description": "Connect Gmail in Studio Integrations for AI Inbox — categorised email, summaries, and suggested actions in one workspace."
+      },
+      "zapier": {
+        "description": "Studio API keys, signed webhooks, and REST endpoints for projects and clients. Trigger Zaps on new projects, clients, and invoices."
+      },
+      "notion": {
+        "description": "Connect your Notion workspace, browse shared databases, and sync rows into Focuspilot projects — names and status stay up to date."
+      }
+    },
+    "comingSoon": {
+      "title": "Coming soon",
+      "subtitle": "We're always adding new integrations. Have a request? Let us know.",
+      "requestLink": "Request an integration"
+    },
+    "relatedLinks": {
+      "title": "Explore the platform",
+      "subtitle": "See how everything works together.",
+      "finance": { "title": "Finance", "desc": "Invoicing and accounting" },
+      "clientPortal": { "title": "Client Portal", "desc": "Share and get approvals" },
+      "knowledgeCentre": { "title": "Knowledge Centre", "desc": "Guides and tutorials" },
+      "pricing": { "title": "Pricing", "desc": "Start free today" }
+    },
+    "finalCta": {
+      "ariaLabel": "Get started",
+      "title": "Connect everything you use",
+      "subtitle": "All integrations are included on every plan. Start free and connect your tools."
+    }
+  },
+  "authForgotPasswordPage": {
+    "meta": {
+      "title": "Reset Password | Focuspilot",
+      "description": "Reset your Focuspilot account password."
+    },
+    "backToLogin": "Back to login",
+    "title": "Reset your password",
+    "subtitle": "Enter your email and we'll send you a link to reset your password.",
+    "email": "Email",
+    "sending": "Sending…",
+    "sendResetLink": "Send reset link",
+    "sendFailed": "Failed to send reset email. Please try again.",
+    "success": {
+      "title": "Check your email",
+      "message": "If an account exists for {email}, we sent a password reset link."
+    }
+  },
+  "authVerifyOtpPage": {
+    "meta": {
+      "title": "Verify Email | Focuspilot",
+      "description": "Verify your email address to complete Focuspilot registration."
+    },
+    "incorrectCode": "Incorrect code. Please try again.",
+    "resendFailed": "Failed to resend. Try again.",
+    "noSession": {
+      "title": "Session expired",
+      "message": "Your verification session has expired. Please register again.",
+      "backToRegistration": "Back to registration"
+    },
+    "success": {
+      "title": "Email verified",
+      "message": "Opening your studio…"
+    },
+    "entry": {
+      "title": "Check your email",
+      "message": "We sent a 6-digit code to {email}",
+      "verifyEmail": "Verify email",
+      "verifying": "Verifying…",
+      "noCode": "Didn't receive a code?",
+      "resendIn": "Resend in {time}",
+      "resendCode": "Resend code",
+      "useDifferentAccount": "Use a different account"
+    },
+    "hero": {
+      "titleLine1": "One step away",
+      "titleLine2": "from your studio",
+      "subtitle": "Confirm your email to unlock Focuspilot and start managing your design projects."
+    }
+  },
+  "authGoogleCallbackPage": {
+    "completingSignIn": "Completing sign-in…",
+    "invalidCallback": "Invalid callback. Please try signing in again.",
+    "backToSignIn": "Back to sign in",
+    "createAccount": "Create account",
+    "errors": {
+      "default": "Google sign-in failed. Please try again.",
+      "not_configured": "Google sign-in is not configured yet. Use email and password, or ask your admin to set GOOGLE_AUTH_* in the API.",
+      "account_exists": "An account with this email already exists. Sign in with your password, or use Google on the sign-in page.",
+      "email_not_verified": "Your Google email is not verified. Please verify it with Google and try again.",
+      "profile_incomplete": "Could not read your Google profile. Please try again.",
+      "access_denied": "Google sign-in was cancelled.",
+      "token_exchange_failed": "Could not complete Google sign-in. Please try again.",
+      "profile_fetch_failed": "Could not load your Google profile. Please try again.",
+      "invalid_state": "Sign-in session expired. Please try again.",
+      "no_code": "Google did not return an authorization code. Please try again."
+    }
+  },
+  "authShared": {
+    "logoAlt": "Focuspilot"
+  }
+}

@@ -1,0 +1,202 @@
+{
+  "platformClientPortal": {
+    "meta": {
+      "title": "Interior Design Client Portal Software | Approvals & Payments | Focuspilot",
+      "description": "Give clients a branded portal to approve selections, track deliveries & pay invoices. One-click approvals, real-time updates, integrated payments via Stripe. Try free.",
+      "ogDescription": "Give clients a branded portal to approve selections, track deliveries & pay invoices. One-click approvals, real-time updates, integrated payments via Stripe. Try free.",
+      "twitterDescription": "Give clients a branded portal to approve selections, track deliveries & pay invoices. One-click approvals, real-time updates.",
+      "ogImageAlt": "Focuspilot client portal for interior design approvals"
+    },
+    "hero": {
+      "badge": "Client Collaboration",
+      "title": "Client portal for interior designers",
+      "subtitle": "Review selections, message your designer, and view invoices in one place. Approve or decline products and ideas with comments so everyone stays in sync.",
+      "note": "Built for design studios who want to give clients a premium, branded experience for approvals and collaboration."
+    },
+    "kpis": {
+      "awaitingApproval": {
+        "label": "Awaiting approval",
+        "value": "2"
+      },
+      "messages": {
+        "label": "Messages",
+        "value": "12",
+        "sub": "+2 new"
+      },
+      "invoices": {
+        "label": "Invoices",
+        "value": "2",
+        "sub": "1 unpaid"
+      },
+      "deliveries": {
+        "label": "Deliveries",
+        "value": "3",
+        "sub": "in transit"
+      }
+    },
+    "approvals": {
+      "title": "Selections to review",
+      "subtitle": "Approve or decline products and ideas. Leave comments and questions—your designer is notified instantly.",
+      "chips": {
+        "linkedToProject": "Linked to project",
+        "notifiesDesigner": "Notifies your designer",
+        "keepsHistory": "Keeps a history"
+      }
+    },
+    "status": {
+      "approved": "Approved",
+      "declined": "Declined",
+      "awaitingDecision": "Awaiting decision",
+      "paid": "Paid",
+      "unpaid": "Unpaid"
+    },
+    "approvalCard": {
+      "imageAlt": "{title} - product selection for interior design project approval",
+      "commentLabel": "Comment (optional)",
+      "commentPlaceholder": "Share thoughts, changes or alternatives you'd prefer…",
+      "approve": "Approve",
+      "decline": "Decline"
+    },
+    "demo": {
+      "approvals": {
+        "chandelier": {
+          "id": "A-02",
+          "title": "Orbital Brass Chandelier",
+          "room": "Dining",
+          "vendor": "LUMINA DESIGN",
+          "price": "£1,450"
+        },
+        "art": {
+          "id": "A-03",
+          "title": "Abstract Canvas Art",
+          "room": "Living Room",
+          "vendor": "DECO ART",
+          "price": "£890"
+        }
+      },
+      "messages": {
+        "designer": {
+          "who": "Designer",
+          "text": "Uploaded final pendant light options",
+          "meta": "2h ago",
+          "tag": "Design"
+        },
+        "client": {
+          "who": "You",
+          "text": "We like the linen chairs — approved",
+          "meta": "1d ago",
+          "tag": "Client"
+        },
+        "vendor": {
+          "who": "Vendor",
+          "text": "Dispatch notice • Order 34821",
+          "meta": "2d ago",
+          "tag": "Delivery"
+        }
+      },
+      "invoices": {
+        "phase2Deposit": {
+          "id": "2053",
+          "title": "Phase 2 deposit",
+          "amount": "2,180"
+        },
+        "approvedPendants": {
+          "id": "1972",
+          "title": "Approved pendants",
+          "amount": "1,260"
+        }
+      }
+    },
+    "clientView": {
+      "title": "Client view: simple, branded, and secure",
+      "subtitle": "Emails, procurement 1‑click approvals, and messaging all from a customisable client portal, accessible via a simple magic link.",
+      "imageAlt": "Client portal dashboard showing project hero, KPIs and approval actions",
+      "chips": {
+        "magicLinkAccess": "Magic link access",
+        "oneClickApprovals": "1‑click approvals",
+        "brandedExperience": "Branded experience"
+      }
+    },
+    "messages": {
+      "title": "Messages and project updates",
+      "subtitle": "One shared feed for updates, files and approvals. Email and portal messages live together so nothing is missed.",
+      "bullets": {
+        "postReply": "Post and reply right from the portal",
+        "deliveryUpdates": "Delivery updates appear automatically",
+        "aiSummaries": "AI summaries keep everyone on the same page"
+      },
+      "snapshotTitle": "Messages & updates",
+      "imageAlt": "Messages workspace with threads, AI key points and next steps"
+    },
+    "invoices": {
+      "title": "Invoices & payments",
+      "subtitle": "View, download and pay securely. Everything stays in sync with your project and approvals.",
+      "chips": {
+        "stripeSecured": "Stripe secured",
+        "pdfCopies": "PDF copies",
+        "statusUpdates": "Status updates"
+      },
+      "tags": {
+        "portal": "Portal",
+        "invoice": "Invoice"
+      },
+      "downloadPdf": "Download PDF",
+      "payNow": "Pay now",
+      "viewPdf": "View PDF"
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "Common questions about the Focuspilot client portal.",
+      "items": {
+        "branding": {
+          "question": "Can I customise the portal with my branding?",
+          "answer": "Yes. The client portal displays your studio's logo, colours, and branding. Your clients see a professional, branded experience that feels like an extension of your business—not a generic third-party tool."
+        },
+        "approveSelections": {
+          "question": "How do clients approve products and selections?",
+          "answer": "Clients can view selections organised by room or category, then approve or decline each item with a single click. They can add comments to explain their decisions, and you're notified instantly. No more email chains or lost feedback."
+        },
+        "payInvoices": {
+          "question": "Can clients pay invoices through the portal?",
+          "answer": "Absolutely. Clients can view all invoices, see payment history, and pay directly via Stripe with credit card or bank transfer. You get paid faster, and clients appreciate the convenience."
+        },
+        "secure": {
+          "question": "Is the portal secure?",
+          "answer": "Yes. Each client has secure, password-protected access to only their projects. All data is encrypted, and you control exactly what information clients can see. Enterprise-grade security with a consumer-friendly experience."
+        }
+      }
+    },
+    "related": {
+      "title": "Connected to your studio operations",
+      "subtitle": "Client Portal works seamlessly with projects, procurement, and finance.",
+      "items": {
+        "projects": {
+          "title": "Projects",
+          "description": "Share progress with clients"
+        },
+        "procurement": {
+          "title": "Procurement",
+          "description": "Approvals flow to purchasing"
+        },
+        "finance": {
+          "title": "Finance",
+          "description": "Payments sync automatically"
+        },
+        "pricing": {
+          "title": "See Pricing",
+          "description": "Start free with all features"
+        }
+      }
+    },
+    "finalCta": {
+      "title": "A calmer way to collaborate with clients",
+      "subtitle": "Approvals, messages and invoices—connected to procurement and your project plan."
+    },
+    "toast": {
+      "approved": "Approved",
+      "declined": "Declined",
+      "noteWithComment": "Your note: \"{comment}\"",
+      "selectionStatus": "Selection {status}."
+    }
+  }
+}

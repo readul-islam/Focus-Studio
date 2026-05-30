@@ -1,0 +1,131 @@
+{
+  "privacyPage": {
+    "meta": {
+      "title": "プライバシーポリシー | Focuspilot",
+      "description": "Focuspilotのプライバシーポリシー。データの収集、利用、保護方法について。"
+    },
+    "title": "プライバシーポリシー",
+    "lastUpdated": "最終更新：2026年5月",
+    "sections": {
+      "collect": {
+        "title": "1. 収集する情報",
+        "p1": "アカウント情報、プロジェクトデータ、コミュニケーションなど、お客様が直接提供する情報を収集します。サービス改善のため利用データも収集します。",
+        "p2": "Google（GmailまたはGoogleカレンダー）を接続する場合、クライアントとのメールスレッド、カレンダーイベント、メッセージメタデータなど、利用する機能に必要なデータのみにアクセスします。それ以上の広範なアクセスは要求しません。"
+      },
+      "use": {
+        "title": "2. 情報の利用方法",
+        "body": "Focuspilotの提供・改善、お客様とのコミュニケーション、セキュリティ確保のために情報を利用します。個人データやGoogleユーザーデータを第三者に販売することはありません。"
+      },
+      "google": {
+        "title": "3. Googleユーザーデータ",
+        "p1": "GmailまたはGoogleカレンダーを接続すると、Focuspilot（「当社」）は、お客様が有効にしたスタジオインボックス、返信、カレンダーオーバーレイおよび関連生産性機能を提供するためにのみGoogleユーザーデータにアクセスします。クライアント関連メールスレッドの同期、アプリからの返信、カレンダーイベントの表示、AIサマリーや返信改善機能利用時の下書き生成に使用します。",
+        "p2": "Googleユーザーデータを汎用機械学習・AIモデルのトレーニングに使用しません。オプションのAI機能（スレッドサマリー、返信推敲など）は、結果を返すために限定的なメール内容をAIプロバイダーに送信しますが、お客様のデータを公開モデルのトレーニングに使用させません。",
+        "p3": "Googleユーザーデータは、サービス提供に必要な期間のみサーバーに保存します（例：スタジオとクライアントにリンクされたキャッシュメールスレッド）。設定 → 連携でいつでもGoogleを切断でき、新規アクセスを停止し、保存データの削除をリクエストできます。"
+      },
+      "sharing": {
+        "title": "4. Googleユーザーデータの共有・移転・開示",
+        "intro": "Googleユーザーデータを販売、賃貸、ライセンス供与しません。以下の限られた場合にのみ共有・移転・開示します：",
+        "processors": {
+          "label": "サービスプロバイダー（処理者）：",
+          "body": "Focuspilotの運営のために契約に基づきデータを処理するインフラ・ソフトウェアベンダーを使用します—クラウドホスティング、データベース、メール配信、（AIインボックス機能利用時）OpenAIによるオンデマンドサマリー・下書き支援など。これらのプロバイダーは当社のサービス実行のためのみGoogleユーザーデータにアクセスし、本ポリシーに沿って保護する必要があります。"
+        },
+        "team": {
+          "label": "スタジオチーム：",
+          "body": "Focuspilotに同期されたメール・カレンダー情報は、アカウント権限に応じてスタジオの他の認証済みメンバーに表示される場合があります。本製品はビジネス向け共有ワークスペースです。"
+        },
+        "google": {
+          "label": "Google：",
+          "body": "データはお客様の承認のもとGoogle APIを通じて取得されます。GoogleアカウントにはGoogle独自のプライバシーポリシーが適用されます。"
+        },
+        "legal": {
+          "label": "法令・安全：",
+          "body": "法令、規制、法的手続きにより要求される場合、またはFocuspilot、ユーザー、第三者の権利・安全・セキュリティを保護するために情報を開示する場合があります。"
+        },
+        "outro": "Googleユーザーデータを広告主、データブローカー、または第三者のマーケティング・製品開発のために共有しません。"
+      },
+      "security": {
+        "title": "5. データセキュリティ",
+        "body": "転送中・保存時の暗号化、アクセス制御、OAuthトークンの安全な保存など、業界標準のセキュリティ対策を実施しています。Google APIアクセスはOAuth 2.0を使用し、Googleアカウントのパスワードは保存しません。"
+      },
+      "rights": {
+        "title": "6. お客様の権利",
+        "bodyBefore": "GDPRおよび類似法令の下、Googleサービス由来のデータを含むデータへのアクセス、訂正、削除、エクスポートの権利があります。アプリ内でGoogleを切断するか、当社に連絡してアクセスを取り消し、保存されたGoogle由来データの削除をリクエストしてください。お問い合わせ："
+      },
+      "contactUs": {
+        "title": "7. お問い合わせ",
+        "bodyBefore": "プライバシーに関するご質問は",
+        "bodyAfter": "Focuspilotは英国から運営されています。Google API Servicesについて、Google APIから受け取った情報の利用・移転は",
+        "policyLinkText": "Google API Services User Data Policy",
+        "bodyEnd": "（Limited Use要件を含む）に準拠します。"
+      }
+    }
+  },
+  "knowledgePage": {
+    "meta": {
+      "title": "ナレッジセンター | Focuspilot ヘルプ & ガイド",
+      "description": "Focuspilotを最大限活用するためのガイド、チュートリアル、回答。"
+    },
+    "hero": {
+      "badge": "ヘルプ & ガイド",
+      "title": "ナレッジセンター",
+      "subtitle": "Focuspilotを最大限活用するためのガイド、チュートリアル、回答。",
+      "searchPlaceholder": "記事を検索..."
+    },
+    "categories": {
+      "gettingStarted": {
+        "title": "はじめに",
+        "description": "アカウント設定と基本操作",
+        "articles": {
+          "quickStart": { "title": "クイックスタートガイド", "time": "5分" },
+          "accountSetup": { "title": "アカウント設定", "time": "3分" },
+          "invitingTeam": { "title": "チームメンバーの招待", "time": "2分" },
+          "firstProject": { "title": "初めてのプロジェクトウォークスルー", "time": "8分" }
+        }
+      },
+      "features": {
+        "title": "機能",
+        "description": "Focuspilot機能の詳細ガイド",
+        "articles": {
+          "projectManagement": { "title": "プロジェクト管理", "time": "10分" },
+          "procurementPos": { "title": "調達 & 発注書", "time": "8分" },
+          "clientPortal": { "title": "クライアントポータル", "time": "6分" },
+          "financeInvoicing": { "title": "財務 & 請求", "time": "7分" }
+        }
+      },
+      "videoTutorials": {
+        "title": "動画チュートリアル",
+        "description": "自分のペースで視聴して学習",
+        "articles": {
+          "platformOverview": { "title": "プラットフォーム概要", "time": "12分" },
+          "aiFeaturesDemo": { "title": "AI機能デモ", "time": "8分" },
+          "clientPortalSetup": { "title": "クライアントポータル設定", "time": "6分" },
+          "xeroIntegration": { "title": "Xero連携", "time": "5分" }
+        }
+      },
+      "faq": {
+        "title": "FAQ",
+        "description": "よくある質問への回答",
+        "articles": {
+          "billingPricing": { "title": "請求 & 料金", "time": "3分" },
+          "dataSecurity": { "title": "データ & セキュリティ", "time": "4分" },
+          "integrations": { "title": "連携", "time": "3分" },
+          "migrationHelp": { "title": "移行サポート", "time": "5分" }
+        }
+      }
+    },
+    "support": {
+      "title": "お探しの情報が見つかりませんか？",
+      "subtitle": "サポートチームがお手伝いします。24時間以内に返信いたします。",
+      "contactSupport": "サポートに連絡",
+      "viewChangelog": "変更履歴を見る"
+    },
+    "relatedLinks": {
+      "title": "プラットフォームを探索",
+      "subtitle": "Focuspilotでできることをもっと知る。",
+      "projects": { "title": "プロジェクト", "desc": "タイムラインとタスクを管理" },
+      "aiFeatures": { "title": "AI機能", "desc": "管理業務を自動化" },
+      "integrations": { "title": "連携", "desc": "ツールを接続" },
+      "pricing": { "title": "料金", "desc": "今日から無料で始める" }
+    }
+  }
+}

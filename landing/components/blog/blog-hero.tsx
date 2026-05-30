@@ -3,12 +3,10 @@
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight, BookOpen, ChevronRight, Clock, Home } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { MarketingPageHero } from "@/components/marketing/marketing-page-hero"
-import {
-  BLOG_CATEGORY_TABS,
-  type BlogCategoryFilter,
-} from "@/lib/blog-categories"
-import { getAllPosts, getCategoryDisplay, getFeaturedPosts } from "@/lib/blog-data"
+import { useBlogCategoryTabs, type BlogCategoryFilter } from "@/lib/blog-categories"
+import { useBlogPosts, useCategoryDisplayFor, useFeaturedPosts } from "@/lib/use-blog-posts"
 import { cn } from "@/lib/utils"
 
 const TITLE_H1 = "text-[30px] sm:text-5xl md:text-[56px] font-medium tracking-tight leading-[1.1]"
@@ -18,10 +16,62 @@ type BlogHeroProps = {
   onFilterChange: (filter: BlogCategoryFilter) => void
 }
 
+function FeaturedPostCard({ post }: { post: NonNullable<ReturnType<typeof useFeaturedPosts>[number]> }) {
+  const t = useTranslations("blogHero")
+  const categoryLabel = useCategoryDisplayFor(post)
+
+  return (
+    <Link
+      href={`/blog/${post.slug}`}
+      className="group relative block overflow-hidden rounded-2xl border border-stone-200/90 bg-white shadow-[0_8px_30px_rgba(28,25,23,0.06)] transition-shadow hover:shadow-[0_12px_40px_rgba(28,25,23,0.1)]"
+    >
+      <span className="absolute left-4 top-4 z-10 rounded-full bg-stone-900 px-3 py-1 text-xs font-medium text-white">
+        {t("featuredLabel")}
+      </span>
+      <div className="relative aspect-[16/10] w-full bg-stone-100">
+        <Image
+          src={post.featuredImage}
+          alt={post.title}
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+          sizes="(max-width: 1024px) 100vw, 420px"
+          priority
+        />
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-stone-900/50 via-transparent to-transparent"
+          aria-hidden
+        />
+      </div>
+      <div className="p-5 sm:p-6">
+        <span className="text-xs font-medium uppercase tracking-wider text-stone-500">{categoryLabel}</span>
+        <h2 className="mt-2 text-lg font-semibold leading-snug text-stone-900 transition-colors group-hover:text-stone-700 sm:text-xl">
+          {post.title}
+        </h2>
+        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-stone-600">{post.excerpt}</p>
+        <div className="mt-4 flex items-center justify-between gap-4">
+          <span className="flex items-center gap-1.5 text-sm text-stone-500">
+            <Clock className="h-4 w-4" aria-hidden />
+            {post.readTime}
+          </span>
+          <span className="inline-flex items-center gap-1 text-sm font-medium text-stone-900">
+            {t("readArticle")}
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+          </span>
+        </div>
+      </div>
+    </Link>
+  )
+}
+
 export function BlogHero({ activeFilter, onFilterChange }: BlogHeroProps) {
-  const featuredPost = getFeaturedPosts()[0] ?? getAllPosts()[0]
-  const articleCount = getAllPosts().length
-  const topicCount = BLOG_CATEGORY_TABS.length - 1
+  const t = useTranslations("blogHero")
+  const tc = useTranslations("blogCategories")
+  const categoryTabs = useBlogCategoryTabs()
+  const allPosts = useBlogPosts()
+  const featuredPosts = useFeaturedPosts()
+  const featuredPost = featuredPosts[0] ?? allPosts[0]
+  const articleCount = allPosts.length
+  const topicCount = categoryTabs.length - 1
 
   return (
     <MarketingPageHero
@@ -35,14 +85,14 @@ export function BlogHero({ activeFilter, onFilterChange }: BlogHeroProps) {
             <li>
               <Link href="/" className="inline-flex items-center gap-1 transition-colors hover:text-stone-900">
                 <Home className="h-3.5 w-3.5" aria-hidden />
-                Home
+                {t("breadcrumbHome")}
               </Link>
             </li>
             <li aria-hidden>
               <ChevronRight className="h-3.5 w-3.5" />
             </li>
             <li className="font-medium text-stone-900" aria-current="page">
-              Blog
+              {t("breadcrumbBlog")}
             </li>
           </ol>
         </nav>
@@ -51,83 +101,36 @@ export function BlogHero({ activeFilter, onFilterChange }: BlogHeroProps) {
           <div className="max-w-2xl">
             <span className="inline-flex items-center gap-2 rounded-full border border-stone-300/70 bg-white/90 px-3 py-1 text-xs font-medium text-stone-700 shadow-sm backdrop-blur-sm">
               <BookOpen className="h-3.5 w-3.5" aria-hidden />
-              Studio insights
+              {t("badge")}
             </span>
 
-            <h1 className={cn("mt-5 text-stone-900", TITLE_H1)}>
-              Insights for modern design studios
-            </h1>
+            <h1 className={cn("mt-5 text-stone-900", TITLE_H1)}>{t("title")}</h1>
 
-            <p className="mt-5 text-base leading-relaxed text-stone-600 sm:text-lg">
-              Practical guides on workflow, studio operations, and industry trends—written for teams who run
-              projects, procurement, and client approvals in one place.
-            </p>
+            <p className="mt-5 text-base leading-relaxed text-stone-600 sm:text-lg">{t("subtitle")}</p>
 
             <dl className="mt-8 flex flex-wrap gap-3">
               <div className="rounded-xl border border-stone-200/80 bg-white/80 px-4 py-3 backdrop-blur-sm">
-                <dt className="text-xs font-medium uppercase tracking-wider text-stone-500">Articles</dt>
+                <dt className="text-xs font-medium uppercase tracking-wider text-stone-500">{t("statsArticles")}</dt>
                 <dd className="mt-0.5 text-lg font-semibold text-stone-900">{articleCount}</dd>
               </div>
               <div className="rounded-xl border border-stone-200/80 bg-white/80 px-4 py-3 backdrop-blur-sm">
-                <dt className="text-xs font-medium uppercase tracking-wider text-stone-500">Topics</dt>
+                <dt className="text-xs font-medium uppercase tracking-wider text-stone-500">{t("statsTopics")}</dt>
                 <dd className="mt-0.5 text-lg font-semibold text-stone-900">{topicCount}</dd>
               </div>
               <div className="rounded-xl border border-stone-200/80 bg-white/80 px-4 py-3 backdrop-blur-sm">
-                <dt className="text-xs font-medium uppercase tracking-wider text-stone-500">Updated</dt>
-                <dd className="mt-0.5 text-lg font-semibold text-stone-900">Weekly</dd>
+                <dt className="text-xs font-medium uppercase tracking-wider text-stone-500">{t("statsUpdated")}</dt>
+                <dd className="mt-0.5 text-lg font-semibold text-stone-900">{t("statsUpdatedValue")}</dd>
               </div>
             </dl>
           </div>
 
-          {featuredPost && (
-            <Link
-              href={`/blog/${featuredPost.slug}`}
-              className="group relative block overflow-hidden rounded-2xl border border-stone-200/90 bg-white shadow-[0_8px_30px_rgba(28,25,23,0.06)] transition-shadow hover:shadow-[0_12px_40px_rgba(28,25,23,0.1)]"
-            >
-              <span className="absolute left-4 top-4 z-10 rounded-full bg-stone-900 px-3 py-1 text-xs font-medium text-white">
-                Featured
-              </span>
-              <div className="relative aspect-[16/10] w-full bg-stone-100">
-                <Image
-                  src={featuredPost.featuredImage}
-                  alt={featuredPost.title}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                  sizes="(max-width: 1024px) 100vw, 420px"
-                  priority
-                />
-                <div
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-stone-900/50 via-transparent to-transparent"
-                  aria-hidden
-                />
-              </div>
-              <div className="p-5 sm:p-6">
-                <span className="text-xs font-medium uppercase tracking-wider text-stone-500">
-                  {getCategoryDisplay(featuredPost)}
-                </span>
-                <h2 className="mt-2 text-lg font-semibold leading-snug text-stone-900 transition-colors group-hover:text-stone-700 sm:text-xl">
-                  {featuredPost.title}
-                </h2>
-                <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-stone-600">{featuredPost.excerpt}</p>
-                <div className="mt-4 flex items-center justify-between gap-4">
-                  <span className="flex items-center gap-1.5 text-sm text-stone-500">
-                    <Clock className="h-4 w-4" aria-hidden />
-                    {featuredPost.readTime}
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-sm font-medium text-stone-900">
-                    Read article
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
-                  </span>
-                </div>
-              </div>
-            </Link>
-          )}
+          {featuredPost && <FeaturedPostCard post={featuredPost} />}
         </div>
 
         <div className="border-t border-stone-200/70 bg-white/75 py-5 backdrop-blur-md">
-          <div className="flex flex-wrap items-center justify-center gap-3" role="tablist" aria-label="Blog categories">
-            <span className="text-sm font-medium text-stone-700">Filter by:</span>
-            {BLOG_CATEGORY_TABS.map((tab) => {
+          <div className="flex flex-wrap items-center justify-center gap-3" role="tablist" aria-label={tc("filterBy")}>
+            <span className="text-sm font-medium text-stone-700">{tc("filterBy")}</span>
+            {categoryTabs.map((tab) => {
               const isActive = activeFilter === tab.id
               return (
                 <button

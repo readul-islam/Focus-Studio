@@ -1,9 +1,13 @@
 import type React from "react"
 import type { Metadata } from "next"
+import { getTranslations } from "next-intl/server"
 
-export const metadata: Metadata = {
-  title: "Login | Focuspilot",
-  description: "Sign in to your Focuspilot account and access your design studio management tools.",
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("authLoginPage.meta")
+  return {
+    title: t("title"),
+    description: t("description"),
+  }
 }
 
 export default function LoginLayout({ children }: { children: React.ReactNode }) {

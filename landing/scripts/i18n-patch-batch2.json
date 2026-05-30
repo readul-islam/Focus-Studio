@@ -1,0 +1,167 @@
+{
+  "siteFooter": {
+    "tagline": "Calm, premium tools for interior design studios & architects.",
+    "platform": "Platform",
+    "compare": "Compare",
+    "resources": "Resources",
+    "company": "Company",
+    "stayInLoop": "Stay in the loop",
+    "emailPlaceholder": "Enter your email",
+    "emailAria": "Enter your email",
+    "copyright": "© {year} Focuspilot. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use",
+    "sitemap": "Sitemap",
+    "social": {
+      "facebook": "Follow Focuspilot on Facebook",
+      "twitter": "Follow Focuspilot on Twitter",
+      "linkedin": "Follow Focuspilot on LinkedIn",
+      "instagram": "Follow Focuspilot on Instagram"
+    },
+    "links": {
+      "projectManagement": "Project Management",
+      "procurementFfe": "Procurement & FF&E",
+      "clientPortal": "Client Portal",
+      "contractorPortal": "Contractor Portal",
+      "financeInvoicing": "Finance & Invoicing",
+      "crmPipeline": "CRM & Pipeline",
+      "aiFeatures": "AI Features",
+      "vsHouzzPro": "vs Houzz Pro",
+      "vsPrograma": "vs Programa",
+      "vsStudioDesigner": "vs Studio Designer",
+      "vsDesignFiles": "vs DesignFiles",
+      "allComparisons": "All Comparisons",
+      "blog": "Blog",
+      "knowledgeCentre": "Knowledge Centre",
+      "customerStories": "Customer Stories",
+      "changelog": "Changelog",
+      "templates": "Templates",
+      "aiPlaybook": "AI Playbook",
+      "about": "About",
+      "pricing": "Pricing",
+      "contact": "Contact",
+      "careers": "Careers",
+      "integrations": "Integrations"
+    }
+  },
+  "megaNavPlatform": {
+    "trigger": "Platform",
+    "menuAria": "Platform",
+    "promoImageAlt": "{title} - {desc}",
+    "columns": {
+      "coreWorkflows": "Core workflows",
+      "studioOperations": "Studio operations",
+      "keyFeatures": "Key features"
+    },
+    "items": {
+      "projectManagement": { "label": "Project management", "desc": "Phases, tasks, timelines" },
+      "procurement": { "label": "Procurement", "desc": "Sourcing, POs, tracking" },
+      "finance": { "label": "Finance", "desc": "Proposals, invoices, payments" },
+      "clientPortal": { "label": "Client portal", "desc": "Approvals, files, messaging" },
+      "crm": { "label": "CRM", "desc": "Lead → project pipeline" },
+      "schedulingInstalls": { "label": "Scheduling & installs", "desc": "Project timelines and installation scheduling" },
+      "resourcePlanning": { "label": "Resource planning", "desc": "Team allocation and capacity management" },
+      "vendorDeliveries": { "label": "Vendor & deliveries", "desc": "Supplier management and delivery tracking" },
+      "docsTemplates": { "label": "Docs & templates", "desc": "Document library and project templates" },
+      "communication": { "label": "Communication", "desc": "Unified inbox with project routing" },
+      "approvals": { "label": "Approvals", "desc": "Client sign-off and decision tracking" },
+      "aiProcurement": { "label": "AI Product Procurement", "desc": "Web clipper with instant AI extraction" },
+      "productLibrary": { "label": "Product Library", "desc": "Centralized product database with AI sourcing" },
+      "proposalsInvoices": { "label": "Proposals & invoices", "desc": "AI proposals and automated billing" }
+    },
+    "promos": {
+      "overview": {
+        "title": "Platform overview",
+        "desc": "Connect leads, projects, procurement and billing in one calm workspace."
+      },
+      "tour": {
+        "title": "Product tour",
+        "desc": "Take a quick guided tour of the UI—see how studios run projects end‑to‑end."
+      },
+      "whatsNew": {
+        "title": "What's new",
+        "desc": "See recently shipped features and what's coming next."
+      }
+    }
+  },
+  "resourcesMenu": {
+    "trigger": "Resources",
+    "menuAria": "Resources",
+    "links": {
+      "blog": { "label": "Blog", "desc": "Ideas and studio workflows." },
+      "customerStories": { "label": "Customer stories", "desc": "Studios shipping great work." },
+      "knowledgeCentre": { "label": "Knowledge Centre", "desc": "Guides & how‑tos." },
+      "changelog": { "label": "Changelog", "desc": "What we ship, every week." },
+      "templates": { "label": "Templates", "desc": "Plug‑and‑play docs." },
+      "aiPlaybook": { "label": "AI Playbook", "desc": "Use AI across your studio." }
+    }
+  },
+  "authLoginPage": {
+    "loading": "Loading…",
+    "heroTitle": "Welcome back to your design studio",
+    "heroSubtitle": "Continue managing your projects with Focuspilot — built for interior designers.",
+    "heroImageAlt": "Beautiful modern kitchen interior design",
+    "form": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your Focuspilot studio account",
+      "invalidCredentials": "Invalid email or password. Please try again.",
+      "googleSignIn": "Sign in with Google",
+      "orDivider": "or",
+      "email": "Email",
+      "password": "Password",
+      "emailPlaceholder": "Enter your email",
+      "passwordPlaceholder": "Enter your password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "signingIn": "Signing in…",
+      "signIn": "Sign in",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up"
+    }
+  },
+  "authSignupPage": {
+    "heroTitle": "Transform your design studio workflow",
+    "heroSubtitle": "Join interior designers who run projects, clients, and procurement in one place.",
+    "heroImageAlt": "Modern kitchen design",
+    "form": {
+      "title": "Create your account",
+      "subtitle": "Start your free trial — verify your email to continue",
+      "registrationFailed": "Registration failed. Please try again.",
+      "googleSignUp": "Sign up with Google",
+      "orDivider": "or",
+      "fullName": "Full name",
+      "email": "Email address",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "strengthLabel": "Strength: {level}",
+      "agreeTermsBefore": "I agree to the",
+      "termsOfService": "Terms of Service",
+      "and": "and",
+      "privacyPolicy": "Privacy Policy",
+      "creatingAccount": "Creating account…",
+      "createAccount": "Create account",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "validation": {
+        "nameRequired": "Name is required",
+        "nameInvalid": "Please enter a valid name",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email",
+        "passwordRequired": "Password is required",
+        "passwordMinLength": "Must be at least 8 characters",
+        "passwordUppercase": "Must contain an uppercase letter",
+        "passwordLowercase": "Must contain a lowercase letter",
+        "passwordNumber": "Must contain a number",
+        "passwordSpecial": "Must contain a special character (@$!%*?&)",
+        "confirmRequired": "Please confirm your password",
+        "confirmMismatch": "Passwords do not match"
+      },
+      "strength": {
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "strong": "Strong"
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "resourcesTemplates": {
+    "categories": {
+      "Briefs": "ブリーフ"
+    },
+    "formats": {
+      "plainTextOutline": "プレーンテキストアウトライン"
+    }
+  },
+  "resourcesAiPlaybook": {
+    "startFree": "無料で始める",
+    "viewTemplates": "テンプレートを見る"
+  },
+  "studioProfile": {
+    "verified": "認証済みスタジオ",
+    "projects": "プロジェクト",
+    "location": "所在地",
+    "contactStudio": "スタジオに連絡",
+    "viewProjects": "プロジェクトを見る"
+  },
+  "templateDownloadDialog": {
+    "error": "ダウンロードに失敗しました。もう一度お試しください。"
+  }
+}

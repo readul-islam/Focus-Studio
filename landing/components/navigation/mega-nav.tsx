@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { useTranslations } from "next-intl"
 import { cn } from "@/lib/utils"
 import * as LucideReact from "lucide-react"
 import { notifyNavOpen, subscribeNavOpen } from "@/lib/nav-bus"
@@ -34,118 +35,20 @@ function hexToRgba(hex: string, alpha = 1) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
 
-const coreColumns: Column[] = [
-  {
-    heading: "Core workflows",
-    href: "/platform",
-    items: [
-      {
-        label: "Project management",
-        href: "/platform/projects",
-        icon: LucideReact.ClipboardList,
-        desc: "Phases, tasks, timelines",
-      },
-      {
-        label: "Procurement",
-        href: "/platform/procurement",
-        icon: LucideReact.ShoppingCart,
-        desc: "Sourcing, POs, tracking",
-      },
-      {
-        label: "Finance",
-        href: "/platform/finance",
-        icon: LucideReact.CreditCard,
-        desc: "Proposals, invoices, payments",
-      },
-      {
-        label: "Client portal",
-        href: "/platform/client-portal",
-        icon: LucideReact.Users,
-        desc: "Approvals, files, messaging",
-      },
-      { label: "CRM", href: "/platform/crm", icon: LucideReact.Building2, desc: "Lead → project pipeline" },
-    ],
-  },
-  {
-    heading: "Studio operations",
-    href: "/platform/projects",
-    items: [
-      {
-        label: "Scheduling & installs",
-        href: "/platform/projects",
-        icon: LucideReact.CalendarCheck,
-        desc: "Project timelines and installation scheduling",
-      },
-      {
-        label: "Resource planning",
-        href: "/platform/crm",
-        icon: LucideReact.Boxes,
-        desc: "Team allocation and capacity management",
-      },
-      {
-        label: "Vendor & deliveries",
-        href: "/platform/procurement",
-        icon: LucideReact.Truck,
-        desc: "Supplier management and delivery tracking",
-      },
-      {
-        label: "Docs & templates",
-        href: "/platform/features/library",
-        icon: LucideReact.FileText,
-        desc: "Document library and project templates",
-      },
-    ],
-  },
-  {
-    heading: "Key features",
-    href: "/platform/features",
-    items: [
-      {
-        label: "Communication",
-        href: "/platform/features/ai-email",
-        icon: LucideReact.Mail,
-        desc: "Unified inbox with project routing",
-      },
-      {
-        label: "Approvals",
-        href: "/platform/features/approvals",
-        icon: LucideReact.CheckCircle2,
-        desc: "Client sign-off and decision tracking",
-      },
-      {
-        label: "AI Product Procurement",
-        href: "/platform/features/ai-procurement",
-        icon: LucideReact.Sparkles,
-        desc: "Web clipper with instant AI extraction",
-      },
-      {
-        label: "Product Library",
-        href: "/platform/features/library",
-        icon: LucideReact.Library,
-        desc: "Centralized product database with AI sourcing",
-      },
-      {
-        label: "Proposals & invoices",
-        href: "/platform/features/invoicing",
-        icon: LucideReact.FileText,
-        desc: "AI proposals and automated billing",
-      },
-    ],
-  },
-]
-
 function VisualPromo({
   title,
   desc,
   href,
   img,
   accent,
+  imageAlt,
 }: {
   title: string
   desc: string
   href: string
   img: string
   accent: string
+  imageAlt: string
 }) {
   const bar = hexToRgba(accent, 0.85)
   return (
@@ -162,7 +65,7 @@ function VisualPromo({
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={img || "/placeholder.svg?height=220&width=400"}
-        alt={`${title} - ${desc}`}
+        alt={imageAlt}
         className="h-32 w-full object-cover sm:h-36 md:h-40"
         loading="lazy"
       />
@@ -194,9 +97,118 @@ function VisualPromo({
 }
 
 export function MegaNavPlatform() {
+  const t = useTranslations("megaNavPlatform")
   const [open, setOpen] = React.useState(false)
   const [panelTop, setPanelTop] = React.useState<number>(64)
   const MENU_ID = "platform"
+
+  const coreColumns = React.useMemo<Column[]>(
+    () => [
+      {
+        heading: t("columns.coreWorkflows"),
+        href: "/platform",
+        items: [
+          {
+            label: t("items.projectManagement.label"),
+            href: "/platform/projects",
+            icon: LucideReact.ClipboardList,
+            desc: t("items.projectManagement.desc"),
+          },
+          {
+            label: t("items.procurement.label"),
+            href: "/platform/procurement",
+            icon: LucideReact.ShoppingCart,
+            desc: t("items.procurement.desc"),
+          },
+          {
+            label: t("items.finance.label"),
+            href: "/platform/finance",
+            icon: LucideReact.CreditCard,
+            desc: t("items.finance.desc"),
+          },
+          {
+            label: t("items.clientPortal.label"),
+            href: "/platform/client-portal",
+            icon: LucideReact.Users,
+            desc: t("items.clientPortal.desc"),
+          },
+          {
+            label: t("items.crm.label"),
+            href: "/platform/crm",
+            icon: LucideReact.Building2,
+            desc: t("items.crm.desc"),
+          },
+        ],
+      },
+      {
+        heading: t("columns.studioOperations"),
+        href: "/platform/projects",
+        items: [
+          {
+            label: t("items.schedulingInstalls.label"),
+            href: "/platform/projects",
+            icon: LucideReact.CalendarCheck,
+            desc: t("items.schedulingInstalls.desc"),
+          },
+          {
+            label: t("items.resourcePlanning.label"),
+            href: "/platform/crm",
+            icon: LucideReact.Boxes,
+            desc: t("items.resourcePlanning.desc"),
+          },
+          {
+            label: t("items.vendorDeliveries.label"),
+            href: "/platform/procurement",
+            icon: LucideReact.Truck,
+            desc: t("items.vendorDeliveries.desc"),
+          },
+          {
+            label: t("items.docsTemplates.label"),
+            href: "/platform/features/library",
+            icon: LucideReact.FileText,
+            desc: t("items.docsTemplates.desc"),
+          },
+        ],
+      },
+      {
+        heading: t("columns.keyFeatures"),
+        href: "/platform/features",
+        items: [
+          {
+            label: t("items.communication.label"),
+            href: "/platform/features/ai-email",
+            icon: LucideReact.Mail,
+            desc: t("items.communication.desc"),
+          },
+          {
+            label: t("items.approvals.label"),
+            href: "/platform/features/approvals",
+            icon: LucideReact.CheckCircle2,
+            desc: t("items.approvals.desc"),
+          },
+          {
+            label: t("items.aiProcurement.label"),
+            href: "/platform/features/ai-procurement",
+            icon: LucideReact.Sparkles,
+            desc: t("items.aiProcurement.desc"),
+          },
+          {
+            label: t("items.productLibrary.label"),
+            href: "/platform/features/library",
+            icon: LucideReact.Library,
+            desc: t("items.productLibrary.desc"),
+          },
+          {
+            label: t("items.proposalsInvoices.label"),
+            href: "/platform/features/invoicing",
+            icon: LucideReact.FileText,
+            desc: t("items.proposalsInvoices.desc"),
+          },
+        ],
+      },
+    ],
+    [t],
+  )
 
   const updateTop = React.useCallback(() => {
     const header = document.querySelector("header")
@@ -262,7 +274,7 @@ export function MegaNavPlatform() {
         onClick={() => setOpen((s) => !s)}
         onMouseEnter={() => setOpen(true)}
       >
-        Platform
+        {t("trigger")}
         <svg
           aria-hidden="true"
           className={cn("h-4 w-4 transition-transform", open ? "rotate-180" : "rotate-0")}
@@ -283,7 +295,7 @@ export function MegaNavPlatform() {
         )}
         style={{ top: panelTop }}
         role="menu"
-        aria-label="Platform"
+        aria-label={t("menuAria")}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
       >
@@ -346,25 +358,37 @@ export function MegaNavPlatform() {
           {/* Visual promos with images */}
           <div className="mt-5 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
             <VisualPromo
-              title="Platform overview"
-              desc="Connect leads, projects, procurement and billing in one calm workspace."
+              title={t("promos.overview.title")}
+              desc={t("promos.overview.desc")}
               href="/platform/projects"
               img="/images/platform/projects/overview-hero.png"
               accent={PALETTE.clay}
+              imageAlt={t("promoImageAlt", {
+                title: t("promos.overview.title"),
+                desc: t("promos.overview.desc"),
+              })}
             />
             <VisualPromo
-              title="Product tour"
-              desc="Take a quick guided tour of the UI—see how studios run projects end‑to‑end."
+              title={t("promos.tour.title")}
+              desc={t("promos.tour.desc")}
               href="/tour"
               img="/images/ui-hero-dashboard.png"
               accent={PALETTE.emerald}
+              imageAlt={t("promoImageAlt", {
+                title: t("promos.tour.title"),
+                desc: t("promos.tour.desc"),
+              })}
             />
             <VisualPromo
-              title="What's new"
-              desc="See recently shipped features and what's coming next."
+              title={t("promos.whatsNew.title")}
+              desc={t("promos.whatsNew.desc")}
               href="/"
               img="/images/app/dashboard-hero.png"
               accent={PALETTE.slate}
+              imageAlt={t("promoImageAlt", {
+                title: t("promos.whatsNew.title"),
+                desc: t("promos.whatsNew.desc"),
+              })}
             />
           </div>
         </div>

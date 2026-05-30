@@ -3,8 +3,8 @@
 import { Suspense, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
+import { useTranslations } from "next-intl"
 import { AuthBrandMark } from "@/components/auth/auth-brand-mark"
-import { googleAuthErrorMessage } from "@/lib/google-auth"
 import { redirectToApp } from "@/lib/auth"
 
 function decodeNextParam(encoded: string | null): string {
@@ -20,8 +20,9 @@ function decodeNextParam(encoded: string | null): string {
 }
 
 function GoogleCallbackContent() {
+  const t = useTranslations("authGoogleCallbackPage")
   const searchParams = useSearchParams()
-  const [message, setMessage] = useState("Completing sign-in…")
+  const [message, setMessage] = useState(t("completingSignIn"))
 
   useEffect(() => {
     const status = searchParams.get("status")
@@ -39,12 +40,27 @@ function GoogleCallbackContent() {
     }
 
     if (status === "error") {
-      setMessage(googleAuthErrorMessage(code))
+      const knownErrors = [
+        "not_configured",
+        "account_exists",
+        "email_not_verified",
+        "profile_incomplete",
+        "access_denied",
+        "token_exchange_failed",
+        "profile_fetch_failed",
+        "invalid_state",
+        "no_code",
+      ] as const
+      const errorKey =
+        code && (knownErrors as readonly string[]).includes(code)
+          ? (`errors.${code}` as "errors.default")
+          : "errors.default"
+      setMessage(t(errorKey))
       return
     }
 
-    setMessage("Invalid callback. Please try signing in again.")
-  }, [searchParams])
+    setMessage(t("invalidCallback"))
+  }, [searchParams, t])
 
   const isError = searchParams.get("status") === "error"
 
@@ -55,11 +71,11 @@ function GoogleCallbackContent() {
       {isError ? (
         <p className="mt-6 text-sm text-stone-600">
           <Link href="/login" className="font-medium text-stone-900 hover:underline">
-            Back to sign in
+            {t("backToSignIn")}
           </Link>
           {" · "}
           <Link href="/signup" className="font-medium text-stone-900 hover:underline">
-            Create account
+            {t("createAccount")}
           </Link>
         </p>
       ) : null}
@@ -68,9 +84,11 @@ function GoogleCallbackContent() {
 }
 
 export default function GoogleCallbackPage() {
+  const t = useTranslations("authGoogleCallbackPage")
+
   return (
     <div className="min-h-[50vh] flex items-center justify-center px-4">
-      <Suspense fallback={<p className="text-sm text-stone-600">Completing sign-in…</p>}>
+      <Suspense fallback={<p className="text-sm text-stone-600">{t("completingSignIn")}</p>}>
         <GoogleCallbackContent />
       </Suspense>
     </div>

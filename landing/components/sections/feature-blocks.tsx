@@ -2,6 +2,8 @@
 
 import type React from "react"
 
+import { useMemo } from "react"
+import { useTranslations } from "next-intl"
 import Image from "next/image"
 import * as LucideReact from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -11,11 +13,14 @@ import { FinanceComposite } from "@/components/visuals/finance-composite"
 const container = "mx-auto max-w-[1200px] px-6 sm:px-8"
 const TITLE_H2 = "text-2xl sm:text-[30px] md:text-4xl font-medium tracking-tight"
 
+type BlockKey = "projectManagement" | "procurement" | "finance"
+
 type Block = {
-  labelText?: string
-  labelIcon?: React.ComponentType<React.SVGProps<SVGSVGElement>>
+  key: BlockKey
+  labelText: string
+  labelIcon: React.ComponentType<React.SVGProps<SVGSVGElement>>
   title: string
-  kicker?: string
+  kicker: string
   body: string
   bullets: string[]
   image: {
@@ -25,70 +30,6 @@ type Block = {
     height?: number
   }
 }
-
-// Fixed accent frame colors (no clay, deeper than olive)
-const FRAME_ACCENTS = ["#C78A3B", "#6E7A58", "#4B5960"] as const // Ochre 500, Olive 600, Slate 700
-
-const BLOCKS: Block[] = [
-  {
-    labelText: "Project management",
-    labelIcon: LucideReact.ClipboardList,
-    title: "From ideas to completed projects",
-    kicker: "From scattered to streamlined.",
-    body: "Run every project from brief to install in one centralised workspace.",
-    bullets: [
-      "Stay on top of every phase, task, and timeline.",
-      "Automate reminders and status updates.",
-      "Collaborate in real-time with teams, contractors, and clients.",
-      "Access documents, drawings, and design concepts in one place.",
-    ],
-    image: {
-      // Fallback only (first block renders PmComposite)
-      src: "/images/overlays/designer-hero.png",
-      alt: "Designer working with Focuspilot across task, approvals and products",
-      width: 1280,
-      height: 840,
-    },
-  },
-  {
-    labelText: "Procurement",
-    labelIcon: LucideReact.ShoppingCart,
-    title: "Procure Smarter. Deliver Faster.",
-    kicker: "Sourcing, ordering, and tracking materials shouldn't be a headache.",
-    body: "No more manual spreadsheets or lost invoices. Focuspilot ensures materials arrive on time, every time.",
-    bullets: [
-      "Organise products by room, project, or supplier.",
-      "Track deliveries and install dates on your project calendar.",
-      "Automate approvals and keep clients in the loop.",
-      "Generate purchase orders automatically.",
-    ],
-    image: {
-      src: "/images/overlays/procurement/thumb-room.png",
-      alt: "Warm living room scene with curated furniture and decor",
-      width: 1280,
-      height: 820,
-    },
-  },
-  {
-    labelText: "Finance",
-    labelIcon: LucideReact.CreditCard,
-    title: "Get paid faster. Stay in control.",
-    kicker: "One place for invoices, budgets, and client payments.",
-    body: "From uncertainty and missed payments to cash flow confidence.",
-    bullets: [
-      "Track budgets at project and studio level.",
-      "Accept payments via Stripe instantly.",
-      "Generate branded invoices in seconds.",
-      "View insights that actually help you grow.",
-    ],
-    image: {
-      src: "/images/home/finance-lounge.png",
-      alt: "Sunlit living room with boucle seating, wood shelving and warm timber details",
-      width: 1600,
-      height: 1600,
-    },
-  },
-]
 
 function EyebrowLabel({
   text,
@@ -105,10 +46,6 @@ function EyebrowLabel({
   )
 }
 
-/**
- * AddableImage
- * - Shows an image with a very small glass-morphism "Add to project" button at the bottom center.
- */
 function AddableImage({
   src,
   alt,
@@ -118,9 +55,10 @@ function AddableImage({
   rounded = "rounded-xl",
   className,
   oneLine = false,
-  fit = "cover",
   position = "center",
   showButton = true,
+  addLabel,
+  addAriaLabel,
 }: {
   src: string
   alt: string
@@ -133,6 +71,8 @@ function AddableImage({
   fit?: "cover" | "contain"
   position?: "center" | "bottom" | "top"
   showButton?: boolean
+  addLabel: string
+  addAriaLabel: string
 }) {
   const posClass = position === "bottom" ? "object-bottom" : position === "top" ? "object-top" : "object-center"
   return (
@@ -150,7 +90,7 @@ function AddableImage({
       {showButton ? (
         <button
           type="button"
-          aria-label="Add to project"
+          aria-label={addAriaLabel}
           className={cn(
             "absolute left-1/2 -translate-x-1/2",
             "bottom-1.5 sm:bottom-2",
@@ -161,61 +101,75 @@ function AddableImage({
           )}
         >
           <LucideReact.Plus className="h-3.5 w-3.5" />
-          <span>{"Add to project"}</span>
+          <span>{addLabel}</span>
         </button>
       ) : null}
     </div>
   )
 }
 
-/**
- * ProcurementComposite
- * - Main large image (abstract artwork) + three small images beneath.
- * - Each image includes a small glass "Add to project" button.
- */
-function ProcurementComposite() {
+function ProcurementComposite({
+  roomAlt,
+  chairAlt,
+  artAlt,
+  chandelierAlt,
+  addLabel,
+  addAriaLabel,
+}: {
+  roomAlt: string
+  chairAlt: string
+  artAlt: string
+  chandelierAlt: string
+  addLabel: string
+  addAriaLabel: string
+}) {
   return (
     <div className="relative">
       <div className="space-y-3">
-        {/* Main image */}
         <AddableImage
           src="/images/overlays/procurement/thumb-room.png"
-          alt="Warm living room scene"
+          alt={roomAlt}
           width={1280}
           height={820}
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 55vw, 640px"
           rounded="rounded-xl"
           showButton={false}
+          addLabel={addLabel}
+          addAriaLabel={addAriaLabel}
         />
-
-        {/* Bottom strip of three images */}
         <div className="grid grid-cols-3 gap-3">
           <AddableImage
             src="/images/overlays/procurement/thumb-chair.png"
-            alt="Boucle lounge chair"
+            alt={chairAlt}
             width={420}
             height={420}
             sizes="(max-width: 768px) 33vw, (max-width: 1280px) 18vw, 200px"
             rounded="rounded-lg"
             oneLine
+            addLabel={addLabel}
+            addAriaLabel={addAriaLabel}
           />
           <AddableImage
             src="/images/overlays/procurement/artwork-middle.png"
-            alt="Abstract artwork framed on wall"
+            alt={artAlt}
             width={420}
             height={420}
             sizes="(max-width: 768px) 33vw, (max-width: 1280px) 18vw, 200px"
             rounded="rounded-lg"
             oneLine
+            addLabel={addLabel}
+            addAriaLabel={addAriaLabel}
           />
           <AddableImage
             src="/images/overlays/procurement/thumb-chandelier.png"
-            alt="Brass chandelier with alabaster globes"
+            alt={chandelierAlt}
             width={420}
             height={420}
             sizes="(max-width: 768px) 33vw, (max-width: 1280px) 18vw, 200px"
             rounded="rounded-lg"
             oneLine
+            addLabel={addLabel}
+            addAriaLabel={addAriaLabel}
           />
         </div>
       </div>
@@ -223,32 +177,34 @@ function ProcurementComposite() {
   )
 }
 
-function SplitRow({ block, flip = false, index = 0 }: { block: Block; flip?: boolean; index?: number }) {
+function SplitRow({
+  block,
+  flip = false,
+  index = 0,
+  tagline,
+  addLabel,
+  addAriaLabel,
+  procurementAlts,
+}: {
+  block: Block
+  flip?: boolean
+  index?: number
+  tagline: string
+  addLabel: string
+  addAriaLabel: string
+  procurementAlts?: { roomAlt: string; chairAlt: string; artAlt: string; chandelierAlt: string }
+}) {
   const isFirst = index === 0
   const isProcurement = index === 1
   const isFinance = index === 2
 
-  const getTagline = () => {
-    if (isFirst) {
-      return "Go from scattered tasks to a clear, controllable project timeline."
-    }
-    if (isProcurement) {
-      return "Replace lost invoices with a clear, automated procurement workflow."
-    }
-    if (isFinance) {
-      return "Move from budget uncertainty to complete financial clarity and control."
-    }
-    return "From post-it notes and endless spreadsheets to calm, clarity, and control."
-  }
-
   return (
     <div className={cn("grid items-center md:grid-cols-12", "gap-10 lg:gap-14")}>
-      {/* Text (left by default) */}
       <div className={cn("md:col-span-6", flip ? "md:order-2" : "md:order-1")}>
         <div className="mx-auto max-w-xl">
-          {block.labelText ? <EyebrowLabel text={block.labelText} Icon={block.labelIcon} /> : null}
+          <EyebrowLabel text={block.labelText} Icon={block.labelIcon} />
           <h2 className={cn("mt-2", TITLE_H2)}>{block.title}</h2>
-          {block.kicker ? <p className="mt-3 text-base sm:text-lg font-medium text-stone-800">{block.kicker}</p> : null}
+          <p className="mt-3 text-base sm:text-lg font-medium text-stone-800">{block.kicker}</p>
           <p className="mt-3 text-sm sm:text-base text-stone-600">{block.body}</p>
           <ul className="mt-6 space-y-3">
             {block.bullets.map((b) => (
@@ -258,18 +214,21 @@ function SplitRow({ block, flip = false, index = 0 }: { block: Block; flip?: boo
               </li>
             ))}
           </ul>
-          <p className="mt-6 text-xs sm:text-sm text-stone-500">{getTagline()}</p>
+          <p className="mt-6 text-xs sm:text-sm text-stone-500">{tagline}</p>
         </div>
       </div>
 
-      {/* Visual (right by default) */}
       <div className={cn("md:col-span-6", flip ? "md:order-1" : "md:order-2")}>
         {isFirst ? (
           <div className="relative">
             <PmComposite className="h-full w-full" />
           </div>
-        ) : isProcurement ? (
-          <ProcurementComposite />
+        ) : isProcurement && procurementAlts ? (
+          <ProcurementComposite
+            {...procurementAlts}
+            addLabel={addLabel}
+            addAriaLabel={addAriaLabel}
+          />
         ) : isFinance ? (
           <FinanceComposite />
         ) : (
@@ -291,12 +250,111 @@ function SplitRow({ block, flip = false, index = 0 }: { block: Block; flip?: boo
 }
 
 export default function FeatureBlocks() {
+  const t = useTranslations("homePage.featureBlocks")
+
+  const blocks = useMemo<Block[]>(
+    () => [
+      {
+        key: "projectManagement",
+        labelText: t("blocks.projectManagement.label"),
+        labelIcon: LucideReact.ClipboardList,
+        title: t("blocks.projectManagement.title"),
+        kicker: t("blocks.projectManagement.kicker"),
+        body: t("blocks.projectManagement.body"),
+        bullets: [
+          t("blocks.projectManagement.bullet1"),
+          t("blocks.projectManagement.bullet2"),
+          t("blocks.projectManagement.bullet3"),
+          t("blocks.projectManagement.bullet4"),
+        ],
+        image: {
+          src: "/images/overlays/designer-hero.png",
+          alt: t("blocks.projectManagement.imageAlt"),
+          width: 1280,
+          height: 840,
+        },
+      },
+      {
+        key: "procurement",
+        labelText: t("blocks.procurement.label"),
+        labelIcon: LucideReact.ShoppingCart,
+        title: t("blocks.procurement.title"),
+        kicker: t("blocks.procurement.kicker"),
+        body: t("blocks.procurement.body"),
+        bullets: [
+          t("blocks.procurement.bullet1"),
+          t("blocks.procurement.bullet2"),
+          t("blocks.procurement.bullet3"),
+          t("blocks.procurement.bullet4"),
+        ],
+        image: {
+          src: "/images/overlays/procurement/thumb-room.png",
+          alt: t("blocks.procurement.imageAlt"),
+          width: 1280,
+          height: 820,
+        },
+      },
+      {
+        key: "finance",
+        labelText: t("blocks.finance.label"),
+        labelIcon: LucideReact.CreditCard,
+        title: t("blocks.finance.title"),
+        kicker: t("blocks.finance.kicker"),
+        body: t("blocks.finance.body"),
+        bullets: [
+          t("blocks.finance.bullet1"),
+          t("blocks.finance.bullet2"),
+          t("blocks.finance.bullet3"),
+          t("blocks.finance.bullet4"),
+        ],
+        image: {
+          src: "/images/home/finance-lounge.png",
+          alt: t("blocks.finance.imageAlt"),
+          width: 1600,
+          height: 1600,
+        },
+      },
+    ],
+    [t],
+  )
+
+  const taglines: Record<BlockKey, string> = useMemo(
+    () => ({
+      projectManagement: t("taglines.projectManagement"),
+      procurement: t("taglines.procurement"),
+      finance: t("taglines.finance"),
+    }),
+    [t],
+  )
+
+  const procurementAlts = useMemo(
+    () => ({
+      roomAlt: t("blocks.procurement.roomAlt"),
+      chairAlt: t("blocks.procurement.chairAlt"),
+      artAlt: t("blocks.procurement.artAlt"),
+      chandelierAlt: t("blocks.procurement.chandelierAlt"),
+    }),
+    [t],
+  )
+
+  const addLabel = t("addToProject")
+  const addAriaLabel = t("addToProjectAria")
+
   return (
     <section className="bg-white py-20 sm:py-24">
       <div className={container}>
         <div className="space-y-20 sm:space-y-24">
-          {BLOCKS.map((b, i) => (
-            <SplitRow key={b.title} block={b} flip={i % 2 === 1} index={i} />
+          {blocks.map((b, i) => (
+            <SplitRow
+              key={b.key}
+              block={b}
+              flip={i % 2 === 1}
+              index={i}
+              tagline={taglines[b.key]}
+              addLabel={addLabel}
+              addAriaLabel={addAriaLabel}
+              procurementAlts={b.key === "procurement" ? procurementAlts : undefined}
+            />
           ))}
         </div>
       </div>

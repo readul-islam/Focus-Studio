@@ -1,0 +1,233 @@
+{
+  "platformShared": {
+    "seeItInAction": "See it in action",
+    "exploreFeatures": "Explore features",
+    "tryAiProposals": "Try AI proposals",
+    "viewTemplates": "View templates",
+    "paymentOptions": "Payment options",
+    "viewIntegrations": "View integrations",
+    "seeClientPortal": "See client portal",
+    "delightYourClients": "Delight your clients"
+  },
+  "platformAiProcurement": {
+    "meta": {
+      "title": "AI Product Procurement for Interior Designers | Focuspilot",
+      "description": "AI-powered web clipper extracts product details from any website instantly. Build specifications faster with intelligent product sourcing and vendor matching.",
+      "ogDescription": "AI-powered web clipper extracts product details from any website instantly for interior designers.",
+      "twitterDescription": "AI-powered web clipper extracts product details from any website instantly for interior designers."
+    },
+    "hero": {
+      "badge": "AI-powered procurement",
+      "title": "AI Product Procurement Web clipper meets instant library.",
+      "subtitle": "Transform how you source products with AI that instantly extracts specifications, pricing, and vendor details from any website. Build your product library effortlessly.",
+      "imageAlt": "AI Product Procurement showing web clipper extracting product specifications and details"
+    },
+    "procurementFlow": {
+      "title": "How AI procurement works",
+      "subtitle": "From discovery to library in seconds. Let AI handle the tedious work of product data entry.",
+      "steps": {
+        "browseAndClip": {
+          "title": "Browse & clip",
+          "description": "Use our browser extension to capture products from any vendor website with one click."
+        },
+        "aiExtractsDetails": {
+          "title": "AI extracts details",
+          "description": "Our AI instantly pulls specifications, pricing, dimensions, and vendor information."
+        },
+        "reviewAndOrganize": {
+          "title": "Review & organize",
+          "description": "Verify extracted data and organize products into collections and project libraries."
+        },
+        "addToProjects": {
+          "title": "Add to projects",
+          "description": "Seamlessly add products to client presentations and procurement lists."
+        }
+      }
+    },
+    "featureBlocks": {
+      "instantDataExtraction": {
+        "title": "Instant data extraction",
+        "description": "AI automatically captures product specifications, pricing, dimensions, materials, and vendor details from any website.",
+        "benefits": {
+          "automaticSpecSheets": "Automatic spec sheet generation",
+          "priceTracking": "Price tracking and updates",
+          "vendorContact": "Vendor contact information",
+          "productImages": "Product images and documentation"
+        },
+        "imageAlt": "AI extracting product details from a furniture website showing specifications and pricing"
+      },
+      "smartProductLibrary": {
+        "title": "Smart product library",
+        "description": "Build a comprehensive product database with AI-powered categorization, search, and recommendations.",
+        "benefits": {
+          "intelligentCategorization": "Intelligent product categorization",
+          "advancedSearch": "Advanced search and filtering",
+          "similarProducts": "Similar product suggestions",
+          "customTags": "Custom tags and collections"
+        },
+        "imageAlt": "Product library interface showing organized collections and AI-powered search"
+      },
+      "projectIntegration": {
+        "title": "Project integration",
+        "description": "Seamlessly add products to client presentations, mood boards, and procurement lists.",
+        "benefits": {
+          "oneClickAddition": "One-click project addition",
+          "automatedLists": "Automated procurement lists",
+          "clientPresentations": "Client presentation tools",
+          "budgetTracking": "Budget tracking integration"
+        },
+        "imageAlt": "Project procurement interface showing products added to client presentation"
+      }
+    },
+    "benefitsGrid": {
+      "title": "Why designers love AI procurement",
+      "subtitle": "Transform your sourcing workflow with intelligent automation that learns from your preferences.",
+      "items": {
+        "saveHoursDaily": {
+          "title": "Save hours daily",
+          "description": "Eliminate manual data entry and product research. Focus on design, not admin work."
+        },
+        "buildYourLibrary": {
+          "title": "Build your library",
+          "description": "Create a comprehensive product database that grows with every project."
+        },
+        "instantAccuracy": {
+          "title": "Instant accuracy",
+          "description": "AI ensures consistent, accurate product data across all your projects."
+        },
+        "universalCompatibility": {
+          "title": "Universal compatibility",
+          "description": "Works with any vendor website - from trade-only to retail platforms."
+        },
+        "professionalPresentations": {
+          "title": "Professional presentations",
+          "description": "Generate beautiful spec sheets and client presentations automatically."
+        },
+        "alwaysUpToDate": {
+          "title": "Always up-to-date",
+          "description": "Track price changes and availability updates across all your saved products."
+        }
+      }
+    },
+    "bigCta": {
+      "title": "Deliver beautiful projects with less effort",
+      "subtitle": "Specs, approvals, purchase orders and receipts in one connected workflow."
+    }
+  },
+  "platformInvoicing": {
+    "meta": {
+      "title": "Proposals & Invoicing for Interior Designers | Focuspilot",
+      "description": "Create professional proposals, automate invoicing, and get paid faster. AI-powered pricing recommendations and branded PDF generation for interior design studios.",
+      "ogDescription": "Create professional proposals and automate invoicing for your interior design studio.",
+      "twitterDescription": "Create professional proposals and automate invoicing for your interior design studio."
+    },
+    "hero": {
+      "badge": "Proposals & Invoicing",
+      "title": "From proposal to payment in minutes, not days",
+      "subtitle": "Create stunning proposals, generate professional invoices, and get paid faster with automated workflows that connect seamlessly to your projects and client portal.",
+      "imageAlt": "AI-powered proposal creation interface showing project details, scope definition, and pricing automation"
+    },
+    "workflow": {
+      "title": "How proposals and invoicing work in Focuspilot",
+      "subtitle": "A streamlined process that turns project briefs into professional proposals and seamless payment collection.",
+      "steps": {
+        "createProposal": {
+          "title": "Create proposal",
+          "description": "Use AI to draft professional proposals from project briefs with accurate scope and pricing."
+        },
+        "clientReviews": {
+          "title": "Client reviews",
+          "description": "Clients receive branded proposals in their portal with clear terms and easy approval process."
+        },
+        "generateInvoice": {
+          "title": "Generate invoice",
+          "description": "Approved proposals automatically become invoices with payment links and tracking."
+        },
+        "getPaid": {
+          "title": "Get paid",
+          "description": "Clients pay securely via Stripe with automatic receipt generation and accounting sync."
+        }
+      }
+    },
+    "aiProposals": {
+      "title": "AI-powered proposal creation",
+      "description": "Transform project briefs into professional proposals in minutes. Our AI understands design workflows and creates accurate scope definitions with market-rate pricing.",
+      "bullets": {
+        "detailedScope": "Generate detailed scope from project requirements",
+        "automaticPricing": "Automatic pricing based on project complexity and market rates",
+        "professionalTemplates": "Professional templates with your branding",
+        "versionControl": "Version control and revision tracking"
+      },
+      "imageAlts": {
+        "scopeDefinition": "AI scope definition interface showing automated project breakdown and phase planning",
+        "pricingCalculator": "AI pricing calculator showing automated cost estimation and fee structure"
+      }
+    },
+    "automatedInvoicing": {
+      "title": "Automated invoicing and payments",
+      "description": "Turn approved proposals into invoices instantly. Set up payment schedules, send automated reminders, and get paid faster with integrated Stripe payments.",
+      "bullets": {
+        "oneClickGeneration": "One-click invoice generation from proposals",
+        "paymentSchedules": "Automated payment schedules and milestone billing",
+        "stripeIntegration": "Stripe integration for secure card and ACH payments",
+        "xeroSync": "Automatic Xero sync for seamless accounting"
+      },
+      "imageAlts": {
+        "invoiceDashboard": "Invoice dashboard showing total invoices and purchase orders summary",
+        "invoiceButtons": "Invoice action buttons for creating and syncing with Xero",
+        "costTracking": "Project cost tracking with delivery progress and budget monitoring"
+      }
+    },
+    "clientExperience": {
+      "title": "Seamless client experience",
+      "description": "Clients receive proposals and invoices through their branded portal. They can review, approve, and pay—all in one professional experience that reflects your studio's quality.",
+      "bullets": {
+        "brandedPortal": "Branded client portal with your studio identity",
+        "oneClickApproval": "One-click proposal approval and e-signatures",
+        "securePayments": "Secure payment processing with instant receipts",
+        "realtimeUpdates": "Real-time status updates and notifications"
+      },
+      "imageAlt": "Client portal interface showing proposal review and approval workflow"
+    },
+    "benefitsGrid": {
+      "title": "Why studios choose Focuspilot for proposals and invoicing",
+      "subtitle": "Professional tools that save time, improve cash flow, and delight clients.",
+      "items": {
+        "fasterProposals": {
+          "title": "Faster proposals",
+          "description": "AI-powered proposal generation reduces creation time from hours to minutes while maintaining professional quality."
+        },
+        "betterCashFlow": {
+          "title": "Better cash flow",
+          "description": "Automated payment reminders and easy online payments help you get paid 40% faster on average."
+        },
+        "professionalBranding": {
+          "title": "Professional branding",
+          "description": "Fully customizable templates ensure every proposal and invoice reflects your studio's brand and quality."
+        },
+        "clientSatisfaction": {
+          "title": "Client satisfaction",
+          "description": "Streamlined approval process and transparent communication keep clients happy and engaged."
+        },
+        "automatedWorkflows": {
+          "title": "Automated workflows",
+          "description": "Set up payment schedules, reminders, and follow-ups that run automatically in the background."
+        },
+        "seamlessIntegration": {
+          "title": "Seamless integration",
+          "description": "Connect with Xero, Stripe, and your project management for a unified business workflow."
+        }
+      }
+    },
+    "imageBlock": {
+      "line1": "Your proposals, professional.",
+      "line2": "Your invoices, automated.",
+      "line3": "Your payments, faster.",
+      "imageAlt": "Modern luxury kitchen with marble surfaces and warm wood cabinetry"
+    },
+    "finalCta": {
+      "title": "Professional proposals and faster payments start here",
+      "subtitle": "Join studios using Focuspilot to streamline their proposal and invoicing workflows."
+    }
+  }
+}

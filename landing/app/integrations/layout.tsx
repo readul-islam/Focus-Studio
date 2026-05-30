@@ -1,15 +1,17 @@
+import type React from "react"
 import type { Metadata } from "next"
+import { getTranslations } from "next-intl/server"
+import { localeHreflangAlternates } from "@/lib/seo-alternates"
 
-export const metadata: Metadata = {
-  title: "Integrations | Connect Focuspilot with Your Tools",
-  description: "Focuspilot integrates with Xero, QuickBooks, Stripe, Google Calendar, and more. Connect your interior design workflow with the tools you already use.",
-  alternates: { canonical: "https://focuspilot.io/integrations" },
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("integrationsPage.meta")
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: localeHreflangAlternates("integrations"),
+  }
 }
 
-export default function IntegrationsLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function IntegrationsLayout({ children }: { children: React.ReactNode }) {
   return children
 }

@@ -1,30 +1,35 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 import { CtaButton } from "@/components/cta-button"
+import { localeHreflangAlternates } from "@/lib/seo-alternates"
 
-export const metadata: Metadata = {
-  title: "About Focuspilot | Our Story & Mission",
-  description: "Learn about Focuspilot - the team building AI-powered project management software for interior designers. Our mission is to give designers more time to design.",
-  alternates: { canonical: "https://focuspilot.io/about" },
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("aboutPage.meta")
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: localeHreflangAlternates("about"),
+  }
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const t = await getTranslations("aboutPage")
+  const ts = await getTranslations("platformShared")
+
   return (
     <main className="min-h-screen bg-white">
       <div className="mx-auto max-w-3xl px-6 py-24 text-center">
-        <h1 className="text-[30px] sm:text-5xl md:text-[56px] font-medium tracking-tight leading-[1.1] text-stone-900">About Focuspilot</h1>
-        <p className="mt-6 text-lg text-stone-600">
-          We're building the modern operating system for interior design studios. Our mission is simple: give designers more time to design by automating the admin.
-        </p>
-        <p className="mt-4 text-stone-600">
-          Founded in 2026, Focuspilot combines deep industry knowledge with cutting-edge AI to create tools that actually understand how design studios work.
-        </p>
+        <h1 className="text-[30px] sm:text-5xl md:text-[56px] font-medium tracking-tight leading-[1.1] text-stone-900">
+          {t("title")}
+        </h1>
+        <p className="mt-6 text-lg text-stone-600">{t("paragraph1")}</p>
+        <p className="mt-4 text-stone-600">{t("paragraph2")}</p>
         <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-          <CtaButton href="/signup">Start free trial</CtaButton>
+          <CtaButton href="/signup">{ts("startFreeTrial")}</CtaButton>
           <CtaButton href="/" variant="outline">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to home
+            {ts("backToHome")}
           </CtaButton>
         </div>
       </div>

@@ -1,3 +1,7 @@
+"use client"
+
+import { useMemo } from "react"
+import { useTranslations } from "next-intl"
 import { generateBreadcrumbSchema } from "@/lib/seo-schemas"
 
 interface BreadcrumbItem {
@@ -17,7 +21,60 @@ export function BreadcrumbSchema({ items }: BreadcrumbSchemaProps) {
 
 const BASE_URL = "https://focuspilot.io"
 
-// Pre-defined breadcrumb paths for platform pages
+export type PlatformBreadcrumbKey =
+  | "projects"
+  | "finance"
+  | "crm"
+  | "clientPortal"
+  | "procurement"
+  | "ai"
+  | "aiEmail"
+  | "approvals"
+  | "library"
+  | "aiProcurement"
+  | "invoicing"
+
+const PLATFORM_PAGE_CONFIG: Record<
+  PlatformBreadcrumbKey,
+  { path: string; labelKey: string; isFeature?: boolean }
+> = {
+  projects: { path: "/platform/projects", labelKey: "projects" },
+  finance: { path: "/platform/finance", labelKey: "finance" },
+  crm: { path: "/platform/crm", labelKey: "crm" },
+  clientPortal: { path: "/platform/client-portal", labelKey: "clientPortal" },
+  procurement: { path: "/platform/procurement", labelKey: "procurement" },
+  ai: { path: "/platform/ai", labelKey: "ai" },
+  aiEmail: { path: "/platform/features/ai-email", labelKey: "aiEmail", isFeature: true },
+  approvals: { path: "/platform/features/approvals", labelKey: "approvals", isFeature: true },
+  library: { path: "/platform/features/library", labelKey: "library", isFeature: true },
+  aiProcurement: { path: "/platform/features/ai-procurement", labelKey: "aiProcurement", isFeature: true },
+  invoicing: { path: "/platform/features/invoicing", labelKey: "invoicing", isFeature: true },
+}
+
+export function usePlatformBreadcrumbs(key: PlatformBreadcrumbKey): BreadcrumbItem[] {
+  const t = useTranslations("platformShared.breadcrumb")
+  const config = PLATFORM_PAGE_CONFIG[key]
+
+  return useMemo(() => {
+    const items: BreadcrumbItem[] = [
+      { name: t("home"), url: BASE_URL },
+      { name: t("platform"), url: `${BASE_URL}/platform` },
+    ]
+
+    if (config.isFeature) {
+      items.push({ name: t("features"), url: `${BASE_URL}/platform/features` })
+    }
+
+    items.push({
+      name: t(config.labelKey),
+      url: `${BASE_URL}${config.path}`,
+    })
+
+    return items
+  }, [config.isFeature, config.labelKey, config.path, t])
+}
+
+/** @deprecated Use usePlatformBreadcrumbs hook for locale-aware labels */
 export const platformBreadcrumbs = {
   projects: [
     { name: "Home", url: BASE_URL },
@@ -49,7 +106,6 @@ export const platformBreadcrumbs = {
     { name: "Platform", url: `${BASE_URL}/platform` },
     { name: "AI", url: `${BASE_URL}/platform/ai` },
   ],
-  // Feature pages
   aiEmail: [
     { name: "Home", url: BASE_URL },
     { name: "Platform", url: `${BASE_URL}/platform` },

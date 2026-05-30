@@ -1,25 +1,31 @@
 import type { Metadata } from "next"
+import { notFound } from "next/navigation"
+import { getLocale, getTranslations } from "next-intl/server"
 import { BlogPostPageClient } from "./BlogPostPageClient"
-import { getAllPosts, getPostBySlug } from "@/lib/blog-data"
+import { BLOG_POST_META, getPostBySlugFromMessages } from "@/lib/blog-data"
+import { loadBlogMessages } from "@/lib/blog-messages"
+import { localeHreflangAlternates } from "@/lib/seo-alternates"
 import { generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo-schemas"
 
 export async function generateStaticParams() {
-  const posts = getAllPosts()
-  return posts.map((post) => ({
+  return BLOG_POST_META.map((post) => ({
     slug: post.slug,
   }))
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const post = getPostBySlug(params.slug)
+  const locale = await getLocale()
+  const { blogPosts, blogAuthors } = loadBlogMessages(locale)
+  const post = getPostBySlugFromMessages(params.slug, blogPosts, blogAuthors)
+  const t = await getTranslations("blogPage.postMeta")
 
   if (!post) {
-    return { title: "Post Not Found" }
+    return { title: t("notFoundTitle") }
   }
 
   return {
-    title: `${post.title} | Focuspilot Blog`,
-    description: post.excerpt,    
+    title: `${post.title}${t("titleSuffix")}`,
+    description: post.excerpt,
     openGraph: {
       title: post.title,
       description: post.excerpt,
@@ -37,17 +43,18 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       description: post.excerpt,
       images: [post.featuredImage],
     },
-    alternates: {
-      canonical: `https://focuspilot.io/blog/${post.slug}`,
-    },
+    alternates: localeHreflangAlternates(`blog/${post.slug}`),
   }
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug)
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+  const locale = await getLocale()
+  const { blogPosts, blogAuthors } = loadBlogMessages(locale)
+  const post = getPostBySlugFromMessages(params.slug, blogPosts, blogAuthors)
+  const t = await getTranslations("blogPage.breadcrumb")
 
   if (!post) {
-    return <BlogPostPageClient params={params} />
+    notFound()
   }
 
   const articleSchema = generateArticleSchema({
@@ -62,8 +69,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   })
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: "Home", url: "https://focuspilot.io" },
-    { name: "Blog", url: "https://focuspilot.io/blog" },
+    { name: t("home"), url: "https://focuspilot.io" },
+    { name: t("blog"), url: "https://focuspilot.io/blog" },
     { name: post.title, url: `https://focuspilot.io/blog/${post.slug}` },
   ])
 
@@ -71,7 +78,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <BlogPostPageClient params={params} />
+      <BlogPostPageClient post={post} />
     </>
   )
 }

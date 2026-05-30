@@ -1,0 +1,125 @@
+{
+  "platformCRM": {
+    "meta": {
+      "title": "Interior Design CRM Software | Lead to Project Pipeline | Focuspilot",
+      "description": "Manage interior design leads, clients & proposals in one CRM built for designers. AI-powered proposals, pipeline tracking, seamless project conversion. Start free.",
+      "ogDescription": "Manage interior design leads, clients & proposals in one CRM built for designers. AI-powered proposals, pipeline tracking, seamless project conversion.",
+      "twitterDescription": "Manage interior design leads, clients & proposals in one CRM built for designers. AI-powered proposals, pipeline tracking.",
+      "ogImageAlt": "Focuspilot CRM dashboard for interior design studios"
+    },
+    "hero": {
+      "badge": "CRM for interior design studios",
+      "title": "Interior design CRM software",
+      "subtitle": "Centralise leads, clients, and suppliers. Track your pipeline from first inquiry to signed proposal and kick off every project with clarity.",
+      "note": "Built for interior designers and architects who want to win the right projects and nurture every client relationship.",
+      "seePipeline": "See pipeline",
+      "manageLeads": "Manage leads"
+    },
+    "featureLabel": "CRM",
+    "features": {
+      "leads": {
+        "title": "Lead capture that fits your studio",
+        "body": "Plug inquiries from your website, Instagram, referrals, or events straight into Focuspilot. Qualify faster with clear statuses, sources, and scores so your team knows where to focus.",
+        "bullets": {
+          "inbox": "Single inbox for new inquiries with source tracking.",
+          "statuses": "Custom lead statuses mapped to your sales process.",
+          "bulkImport": "Bulk actions and CSV import to onboard historical data."
+        },
+        "imageAlt": "Interior design CRM lead intake table showing source tracking, status chips, and contact details for studio management"
+      },
+      "pipeline": {
+        "title": "Pipeline you can drag, drop, and trust",
+        "body": "Move opportunities from New to Won with a pipeline designed for design studios see values, owners, and momentum at a glance.",
+        "bullets": {
+          "forecast": "Custom columns and deal values to forecast revenue.",
+          "dragDrop": "Drag‑and‑drop across stages; keyboard accessible.",
+          "views": "Switch between Board and Table views in one click."
+        },
+        "imageAlt": "Interior design sales pipeline Kanban board showing deal stages from lead to won with project cards and revenue values"
+      },
+      "contacts": {
+        "title": "Clients, contacts, and supplier organised",
+        "body": "Keep every relationship up to date. Consolidate client details, specifiers, vendors, and trades with the notes, emails, and files that matter.",
+        "bullets": {
+          "types": "Flexible types: Lead, Client, Partner, Supplier, Trade.",
+          "profiles": "Rich profiles with email, phone, and linked projects.",
+          "bulkActions": "Bulk actions for outreach and GDPR-friendly exports."
+        },
+        "imageAlt": "Interior design CRM contacts directory showing client types, company names, and quick action buttons for communication"
+      },
+      "proposals": {
+        "title": "AI-powered proposals that win work",
+        "body": "Create intelligent, data-driven proposals in minutes. Our AI wizard analyses your brief and historic data to generate line-by-line costings organised by phases and milestones ready to download as branded PDFs.",
+        "bullets": {
+          "scopeDefinition": "AI scope definition from brief with smart enhancement suggestions.",
+          "pricing": "Historic data analysis for accurate pricing recommendations.",
+          "milestones": "Phase-based milestone structure with detailed line items.",
+          "pdf": "Branded PDF generation ready to send to clients."
+        },
+        "imageAlt": "AI-powered interior design proposal wizard showing detailed pricing breakdown with line items, fees, and AI assistant suggestions"
+      }
+    },
+    "aiProposal": {
+      "badge": "AI Proposal Wizard",
+      "title": "From brief to branded proposal in minutes",
+      "subtitle": "Let AI transform your project briefs into comprehensive, accurately-priced proposals with detailed scope definitions and milestone-based pricing.",
+      "scopeTitle": "Intelligent scope definition",
+      "scopeDescription": "Start with a basic brief and watch AI enhance it into a comprehensive scope of work. Choose from templates, write custom content, or let AI generate detailed project phases with professional formatting.",
+      "scopeBullets": {
+        "enhancement": "AI enhancement of basic project briefs",
+        "formatting": "Professional markdown formatting for proposals",
+        "templates": "Template library with custom options"
+      },
+      "scopeImageAlt": "AI scope definition interface for interior design proposals with markdown formatting, project phases, and deliverables outline"
+    },
+    "onboarding": {
+      "title": "From proposal to project in minutes",
+      "subtitle": "Use our onboarding wizard to generate the essentials for every job, so designers spend less time setting up, and more time designing.",
+      "steps": {
+        "createProject": {
+          "title": "Create project",
+          "text": "Choose a template for residential, commercial, or staging."
+        },
+        "inviteStakeholders": {
+          "title": "Invite stakeholders",
+          "text": "Clients, contractors, and partners in one secure place."
+        },
+        "seedDetails": {
+          "title": "Seed details",
+          "text": "Rooms, budget, styles, and initial milestones auto‑generated."
+        },
+        "automations": {
+          "title": "Automations",
+          "text": "Kickstart tasks, approvals, and messages with AI suggestions."
+        }
+      }
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "Common questions about Focuspilot CRM for interior designers.",
+      "items": {
+        "vsHubspot": {
+          "question": "How is this different from HubSpot or Salesforce?",
+          "answer": "Generic CRMs require extensive customisation to work for design studios. Focuspilot CRM is built specifically for interior designers with pipeline stages, contact types, and proposal tools that match how design businesses actually operate. No complex setup required."
+        },
+        "proposals": {
+          "question": "Can I create proposals and quotes?",
+          "answer": "Yes. Our AI-powered proposal wizard generates professional, branded proposals from your project brief. It analyses your historic data for accurate pricing and creates detailed scope documents with phase-based milestones ready to download as PDFs."
+        },
+        "projectIntegration": {
+          "question": "Does it integrate with project management?",
+          "answer": "Absolutely. When you win a deal, you can convert it to a project with one click. All client information, scope details, and proposal data flow seamlessly into your project workspace. No duplicate data entry."
+        },
+        "leadSources": {
+          "question": "Can I track where my leads come from?",
+          "answer": "Yes. Focuspilot tracks lead sources automatically—whether from your website, Instagram, referrals, or events. See which channels bring your best clients and focus your marketing efforts accordingly."
+        }
+      }
+    },
+    "finalCta": {
+      "ariaLabel": "Get started",
+      "title": "Bring clarity to your studio's relationships.",
+      "subtitle": "Capture leads, move deals forward, and launch projects - seamlessly connected to approvals, procurement, and finance."
+    }
+  }
+}

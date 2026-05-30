@@ -1,0 +1,193 @@
+{
+  "contactPage": {
+    "meta": {
+      "title": "Contact Focuspilot | Get in Touch",
+      "description": "Contact the Focuspilot team. We'd love to hear from you - whether you have questions about our interior design software or want to book a demo."
+    },
+    "title": "Get in Touch",
+    "subtitle": "Have questions about Focuspilot? Want to book a demo? We'd love to hear from you.",
+    "email": {
+      "title": "Email Us",
+      "description": "For general enquiries and support"
+    },
+    "demo": {
+      "title": "Book a Demo",
+      "description": "See Focuspilot in action",
+      "cta": "Schedule demo"
+    }
+  },
+  "comparePage": {
+    "meta": {
+      "title": "Compare Interior Design Software | Focuspilot vs Competitors",
+      "description": "Compare Focuspilot with Programa, Houzz Pro, Studio Designer, DesignFiles and more. See why interior designers choose Focuspilot for project management.",
+      "ogDescription": "Compare Focuspilot with Programa, Houzz Pro, Studio Designer, DesignFiles and more. See why interior designers choose Focuspilot.",
+      "twitterDescription": "Compare Focuspilot with leading interior design software. See detailed feature comparisons."
+    },
+    "breadcrumb": {
+      "home": "Home",
+      "compare": "Compare"
+    },
+    "badge": "Software Comparisons",
+    "title": "Compare Focuspilot",
+    "subtitle": "See how Focuspilot compares to other interior design software. We believe in transparency – find the right tool for your studio.",
+    "detailedTitle": "Detailed Comparisons",
+    "vsLabel": "Focuspilot vs {name}",
+    "advantageLabel": "Focuspilot advantage:",
+    "competitors": {
+      "programa": {
+        "description": "Popular in the US for procurement and project management",
+        "advantage": "Global-ready with native Xero, AI features, and Stripe payments"
+      },
+      "designManager": {
+        "description": "Legacy desktop software for interior designers",
+        "advantage": "Modern cloud-based, mobile-friendly, no installation required"
+      },
+      "houzzPro": {
+        "description": "All-in-one platform tied to Houzz marketplace",
+        "advantage": "Independent platform, dedicated support, more flexible"
+      },
+      "studioDesigner": {
+        "description": "Cloud-based design business management",
+        "advantage": "AI-powered features, better procurement, multi-currency pricing"
+      },
+      "designfiles": {
+        "description": "Simple project management for designers",
+        "advantage": "More comprehensive features, AI automation, scales better"
+      }
+    },
+    "whySwitch": {
+      "title": "Why studios switch to Focuspilot",
+      "subtitle": "Common reasons interior designers choose Focuspilot over alternatives",
+      "reasons": {
+        "worldwide": {
+          "title": "Built for design studios worldwide",
+          "description": "Native Xero integration, multi-currency support, VAT handling, and dedicated support."
+        },
+        "ai": {
+          "title": "AI-Powered Automation",
+          "description": "AI email drafting, product sourcing, and proposal generation save hours weekly."
+        },
+        "mobile": {
+          "title": "Modern & Mobile",
+          "description": "Cloud-based, works on any device. No desktop software to install or update."
+        },
+        "allInOne": {
+          "title": "All-in-One Platform",
+          "description": "CRM, projects, procurement, client portal, and finance in one connected workspace."
+        },
+        "migration": {
+          "title": "Free Migration",
+          "description": "We help you migrate data from your existing software at no extra cost."
+        },
+        "pricing": {
+          "title": "Transparent Pricing",
+          "description": "Simple per-user pricing. No hidden fees or per-project charges."
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to see Focuspilot in action?",
+      "subtitle": "Start your free 3-month trial and see why studios are switching to Focuspilot.",
+      "startTrial": "Start free trial",
+      "viewPricing": "View pricing"
+    }
+  },
+  "pricingPage": {
+    "meta": {
+      "title": "Focuspilot Pricing | Interior Design Software from £49/user | Free Trial",
+      "description": "Simple, transparent pricing for interior design studios. Free 3-month beta or £49/user/month Professional. All AI features included. No setup fees. Start free today.",
+      "ogDescription": "Simple, transparent pricing for interior design studios. Free 3-month beta or £49/user/month Professional. All AI features included. No setup fees.",
+      "twitterDescription": "Simple, transparent pricing for interior design studios. Free 3-month beta or £49/user/month Professional. All AI features included."
+    },
+    "hero": {
+      "badge": "Beta program now open",
+      "title": "Simple, transparent pricing",
+      "subtitle": "Join early and get unlimited access for free during beta. Scale with confidence as your studio grows."
+    },
+    "plans": {
+      "beta": {
+        "name": "Beta Access",
+        "badge": "Limited spots",
+        "price": "Free",
+        "description": "Full platform access during beta",
+        "features": {
+          "users": "Unlimited users during beta period",
+          "ai": "All AI features included",
+          "projects": "Project management & CRM",
+          "portal": "Client portal & approvals",
+          "procurement": "AI procurement & library",
+          "support": "Priority support & feedback"
+        },
+        "cta": "Join beta waitlist"
+      },
+      "professional": {
+        "name": "Professional",
+        "badge": "Most popular",
+        "price": "£49",
+        "priceUnit": "/user/month",
+        "description": "First 5 users • £39/user for additional users",
+        "features": {
+          "everything": "Everything in Beta, forever",
+          "unlimited": "Unlimited projects & clients",
+          "automation": "Advanced AI automation",
+          "branding": "Custom branding & white-label",
+          "support": "Priority support & onboarding",
+          "sla": "99.9% uptime SLA"
+        },
+        "cta": "Start free trial"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "badge": "20+ users",
+        "price": "Custom",
+        "description": "Tailored pricing for large studios & networks",
+        "features": {
+          "everything": "Everything in Professional",
+          "unlimited": "Unlimited users & projects",
+          "security": "SSO & advanced security",
+          "api": "API access & custom integrations",
+          "manager": "Dedicated account manager",
+          "billing": "Annual billing & invoicing options"
+        },
+        "cta": "Contact sales"
+      }
+    },
+    "note": "All plans include a 14-day free trial. No credit card required. Beta users get locked-in rates when we launch.",
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "Everything you need to know about pricing and plans",
+      "items": {
+        "afterBeta": {
+          "question": "What happens after the beta period?",
+          "answer": "Beta users will be offered special pricing and the option to lock in their rate before we officially launch. You'll have plenty of notice before any billing begins."
+        },
+        "userPricing": {
+          "question": "How does the user pricing work?",
+          "answer": "Your first 5 users are £49 per user per month. Users 6+ are £39 per user per month. You only pay for active users, and you can add or remove users at any time."
+        },
+        "tryBeforeBuy": {
+          "question": "Can I try before I buy?",
+          "answer": "Join our beta for free access, or start a 14-day free trial of the Professional plan. No credit card required for beta access."
+        },
+        "paymentMethods": {
+          "question": "What payment methods do you accept?",
+          "answer": "We accept all major credit and debit cards. Annual billing options are available with a discount. Contact us for invoicing or alternative payment arrangements."
+        },
+        "setupFee": {
+          "question": "Is there a setup fee or contract?",
+          "answer": "No setup fees, no hidden costs, and no long-term contracts. Pay monthly and cancel anytime. We believe in earning your business every month."
+        },
+        "annualBilling": {
+          "question": "Do you offer discounts for annual billing?",
+          "answer": "Yes! Annual billing saves you 2 months (equivalent to 16% off). Contact our sales team for custom enterprise pricing for studios with 20+ users."
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to transform your studio?",
+      "subtitle": "Join design studios already using Focuspilot to save time, reduce admin, and deliver better client experiences.",
+      "button": "Start for free",
+      "noCreditCard": "No credit card required"
+    }
+  }
+}

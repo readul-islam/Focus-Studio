@@ -1,0 +1,140 @@
+{
+  "homePage": {
+    "logoCloud": {
+      "logoAlt": "{name} design studio logo"
+    },
+    "aiLayer": {
+      "title": "The future of design management is intelligent",
+      "subtitle": "Move beyond standard project tools. Focuspilot is the first interior design platform with an intelligent AI layer that automates admin, anticipates needs, and frees you up to focus on creative work.",
+      "navAria": "Platform features",
+      "pillFeaturesAria": "{label} features",
+      "cards": {
+        "assistant": {
+          "title": "AI assistant",
+          "text": "Ask AI to draft your email, create a task, summarise a meeting or reorganise your day."
+        },
+        "tasks": {
+          "title": "AI tasks",
+          "text": "Instantly turn that brief into a task map—complete with dependencies, dates, and owners."
+        },
+        "procurement": {
+          "title": "AI procurement",
+          "text": "Web-clip any product, pull specs & pricing, and raise the PO (with tracking) in one click."
+        },
+        "noteTaker": {
+          "title": "AI note-taker",
+          "text": "Auto-transcribe meetings or site visits into action-items, RFIs, and searchable project notes."
+        }
+      },
+      "pills": {
+        "library": "Library",
+        "workflow": "Workflow",
+        "ai": "AI",
+        "insights": "Insights",
+        "automation": "Automation"
+      }
+    },
+    "testimonials": {
+      "title": "How designers are saving 10+ hours a week",
+      "tablistAria": "Customer testimonials",
+      "viewTestimonialAria": "View testimonial from {name} at {role}",
+      "portraitAlt": "Portrait of {name}, {role}",
+      "studioLogoAlt": "{name}'s studio logo",
+      "prev": "Previous testimonial",
+      "next": "Next testimonial",
+      "people": {
+        "tess": {
+          "name": "Tess H.",
+          "role": "Design studio",
+          "quote": "From proposal to payment, it just works."
+        },
+        "sarah": {
+          "name": "Sarah",
+          "role": "Interior designer",
+          "quote": "Focuspilot transformed the way I manage my business. I can now focus more on creativity and less on admin!"
+        },
+        "james": {
+          "name": "James",
+          "role": "Design studio owner",
+          "quote": "Clients love the clarity. We love the speed."
+        }
+      }
+    },
+    "bigCta": {
+      "title": "Get visibility over your studio, team and projects.",
+      "subtitle": "Wave goodbye to uncertainty with Focuspilot - your AI-powered studio operating system",
+      "cta": "Start for free",
+      "noCreditCard": "No credit card required"
+    },
+    "attentionBanner": {
+      "titleLine1": "The day gets busy for designers.",
+      "titleLine2": "We make it calm.",
+      "subtitle": "Every email, call, client question and supplier update funnels into Focuspilot — one calm command centre for your studio.",
+      "messages": {
+        "email": "New email • \"Can we add a second wall sconce?\"",
+        "missedCalls": "3 missed calls",
+        "installMove": "Client asked to move install to Friday.",
+        "marble": "Did the marble arrive from the supplier?",
+        "fabric": "Which sofa fabric is approved—linen or boucle?",
+        "whatsapp": "WhatsApp • Contractor: \"Need updated floor plan.\"",
+        "leadTime": "Lead time on dining chairs just changed."
+      }
+    },
+    "sloganBanner": {
+      "line1": "Your studio, organised.",
+      "line2": "Your projects, simplified.",
+      "line3": "Your time, optimised.",
+      "cta": "Delight your clients",
+      "imageAlt": "Modern interior design workspace showcasing Focuspilot studio management platform benefits"
+    },
+    "featureBlocks": {
+      "addToProject": "Add to project",
+      "addToProjectAria": "Add to project",
+      "taglines": {
+        "projectManagement": "Go from scattered tasks to a clear, controllable project timeline.",
+        "procurement": "Replace lost invoices with a clear, automated procurement workflow.",
+        "finance": "Move from budget uncertainty to complete financial clarity and control.",
+        "default": "From post-it notes and endless spreadsheets to calm, clarity, and control."
+      },
+      "blocks": {
+        "projectManagement": {
+          "label": "Project management",
+          "title": "From ideas to completed projects",
+          "kicker": "From scattered to streamlined.",
+          "body": "Run every project from brief to install in one centralised workspace.",
+          "bullet1": "Stay on top of every phase, task, and timeline.",
+          "bullet2": "Automate reminders and status updates.",
+          "bullet3": "Collaborate in real-time with teams, contractors, and clients.",
+          "bullet4": "Access documents, drawings, and design concepts in one place.",
+          "imageAlt": "Designer working with Focuspilot across task, approvals and products"
+        },
+        "procurement": {
+          "label": "Procurement",
+          "title": "Procure Smarter. Deliver Faster.",
+          "kicker": "Sourcing, ordering, and tracking materials shouldn't be a headache.",
+          "body": "No more manual spreadsheets or lost invoices. Focuspilot ensures materials arrive on time, every time.",
+          "bullet1": "Organise products by room, project, or supplier.",
+          "bullet2": "Track deliveries and install dates on your project calendar.",
+          "bullet3": "Automate approvals and keep clients in the loop.",
+          "bullet4": "Generate purchase orders automatically.",
+          "imageAlt": "Warm living room scene with curated furniture and decor",
+          "roomAlt": "Warm living room scene",
+          "chairAlt": "Boucle lounge chair",
+          "artAlt": "Abstract artwork framed on wall",
+          "chandelierAlt": "Brass chandelier with alabaster globes"
+        },
+        "finance": {
+          "label": "Finance",
+          "title": "Get paid faster. Stay in control.",
+          "kicker": "One place for invoices, budgets, and client payments.",
+          "body": "From uncertainty and missed payments to cash flow confidence.",
+          "bullet1": "Track budgets at project and studio level.",
+          "bullet2": "Accept payments via Stripe instantly.",
+          "bullet3": "Generate branded invoices in seconds.",
+          "bullet4": "View insights that actually help you grow.",
+          "imageAlt": "Sunlit living room with boucle seating, wood shelving and warm timber details"
+        }
+      }
+    }
+  }
+}

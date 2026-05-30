@@ -1,0 +1,3927 @@
+{
+  "language": {
+    "switchLanguage": "Switch language",
+    "englishUs": "English (US)",
+    "japanese": "Japanese (Japan)"
+  },
+  "siteHeader": {
+    "primaryNavAria": "Primary",
+    "platform": "Platform",
+    "ai": "AI",
+    "resources": "Resources",
+    "login": "Login",
+    "startForFree": "Start for free",
+    "toggleMenu": "Toggle navigation menu",
+    "closeMenu": "Close navigation menu",
+    "mobile": {
+      "platform": "Platform",
+      "keyFeatures": "Key Features",
+      "resources": "Resources",
+      "blog": "Blog",
+      "knowledgeCentre": "Knowledge Centre",
+      "templates": "Templates",
+      "aiPlaybook": "AI Playbook",
+      "contact": "Contact",
+      "aiTitle": "AI",
+      "aiDesc": "Intelligent automation",
+      "projectManagementTitle": "Project management",
+      "projectManagementDesc": "Phases, tasks, timelines",
+      "procurementTitle": "Procurement",
+      "procurementDesc": "Sourcing, POs, tracking",
+      "financeTitle": "Finance",
+      "financeDesc": "Proposals, invoices, payments",
+      "clientPortalTitle": "Client portal",
+      "clientPortalDesc": "Approvals, files, messaging",
+      "crmTitle": "CRM",
+      "crmDesc": "Lead → project pipeline",
+      "communicationTitle": "Communication",
+      "communicationDesc": "Unified inbox with project routing",
+      "approvalsTitle": "Approvals",
+      "approvalsDesc": "Client sign-off and decision tracking",
+      "aiProcurementTitle": "AI Product Procurement",
+      "aiProcurementDesc": "Web clipper with instant AI extraction",
+      "productLibraryTitle": "Product Library",
+      "productLibraryDesc": "Centralized product database with AI sourcing",
+      "proposalsInvoicesTitle": "Proposals & invoices",
+      "proposalsInvoicesDesc": "AI proposals and automated billing"
+    }
+  },
+  "homePage": {
+    "hero": {
+      "badgeMobile": "AI Project Management",
+      "badgeDesktop": "Projects • Procurement • Payments",
+      "titleMobileBefore": "AI-powered project management for",
+      "titleAccent": "interior designers",
+      "titleDesktopLine1": "AI-powered project management software",
+      "titleDesktopLine2Before": "for",
+      "subtitleMobile": "From first brief to final invoice - timelines, budgets, and approvals handled automatically.",
+      "subtitleDesktop": "From first inquiry to final invoice, Focuspilot transforms chaotic spreadsheets and endless emails into live timelines, real-time budgets, and one-click client approvals.",
+      "cta": "Start for free",
+      "dashboardAlt": "Focuspilot project management dashboard showing active interior design projects including Chelsea Penthouse, Cotswold Country Home, and Bath Boutique Hotel with progress tracking, budgets, and team assignments"
+    },
+    "logoCloud": {
+      "title": "Powering the industry's most innovative studios",
+      "logoAlt": "{name} design studio logo"
+    },
+    "aiLayer": {
+      "title": "The future of design management is intelligent",
+      "subtitle": "Move beyond standard project tools. Focuspilot is the first interior design platform with an intelligent AI layer that automates admin, anticipates needs, and frees you up to focus on creative work.",
+      "navAria": "Platform features",
+      "pillFeaturesAria": "{label} features",
+      "cards": {
+        "assistant": {
+          "title": "AI assistant",
+          "text": "Ask AI to draft your email, create a task, summarise a meeting or reorganise your day."
+        },
+        "tasks": {
+          "title": "AI tasks",
+          "text": "Instantly turn that brief into a task map—complete with dependencies, dates, and owners."
+        },
+        "procurement": {
+          "title": "AI procurement",
+          "text": "Web-clip any product, pull specs & pricing, and raise the PO (with tracking) in one click."
+        },
+        "noteTaker": {
+          "title": "AI note-taker",
+          "text": "Auto-transcribe meetings or site visits into action-items, RFIs, and searchable project notes."
+        }
+      },
+      "pills": {
+        "library": "Library",
+        "workflow": "Workflow",
+        "ai": "AI",
+        "insights": "Insights",
+        "automation": "Automation"
+      }
+    },
+    "testimonials": {
+      "title": "How designers are saving 10+ hours a week",
+      "tablistAria": "Customer testimonials",
+      "viewTestimonialAria": "View testimonial from {name} at {role}",
+      "portraitAlt": "Portrait of {name}, {role}",
+      "studioLogoAlt": "{name}'s studio logo",
+      "prev": "Previous testimonial",
+      "next": "Next testimonial",
+      "people": {
+        "tess": {
+          "name": "Tess H.",
+          "role": "Design studio",
+          "quote": "From proposal to payment, it just works."
+        },
+        "sarah": {
+          "name": "Sarah",
+          "role": "Interior designer",
+          "quote": "Focuspilot transformed the way I manage my business. I can now focus more on creativity and less on admin!"
+        },
+        "james": {
+          "name": "James",
+          "role": "Design studio owner",
+          "quote": "Clients love the clarity. We love the speed."
+        }
+      }
+    },
+    "bigCta": {
+      "title": "Get visibility over your studio, team and projects.",
+      "subtitle": "Wave goodbye to uncertainty with Focuspilot - your AI-powered studio operating system",
+      "cta": "Start for free",
+      "noCreditCard": "No credit card required"
+    },
+    "attentionBanner": {
+      "titleLine1": "The day gets busy for designers.",
+      "titleLine2": "We make it calm.",
+      "subtitle": "Every email, call, client question and supplier update funnels into Focuspilot — one calm command centre for your studio.",
+      "messages": {
+        "email": "New email • \"Can we add a second wall sconce?\"",
+        "missedCalls": "3 missed calls",
+        "installMove": "Client asked to move install to Friday.",
+        "marble": "Did the marble arrive from the supplier?",
+        "fabric": "Which sofa fabric is approved—linen or boucle?",
+        "whatsapp": "WhatsApp • Contractor: \"Need updated floor plan.\"",
+        "leadTime": "Lead time on dining chairs just changed."
+      }
+    },
+    "sloganBanner": {
+      "line1": "Your studio, organised.",
+      "line2": "Your projects, simplified.",
+      "line3": "Your time, optimised.",
+      "cta": "Delight your clients",
+      "imageAlt": "Modern interior design workspace showcasing Focuspilot studio management platform benefits"
+    },
+    "featureBlocks": {
+      "addToProject": "Add to project",
+      "addToProjectAria": "Add to project",
+      "taglines": {
+        "projectManagement": "Go from scattered tasks to a clear, controllable project timeline.",
+        "procurement": "Replace lost invoices with a clear, automated procurement workflow.",
+        "finance": "Move from budget uncertainty to complete financial clarity and control.",
+        "default": "From post-it notes and endless spreadsheets to calm, clarity, and control."
+      },
+      "blocks": {
+        "projectManagement": {
+          "label": "Project management",
+          "title": "From ideas to completed projects",
+          "kicker": "From scattered to streamlined.",
+          "body": "Run every project from brief to install in one centralised workspace.",
+          "bullet1": "Stay on top of every phase, task, and timeline.",
+          "bullet2": "Automate reminders and status updates.",
+          "bullet3": "Collaborate in real-time with teams, contractors, and clients.",
+          "bullet4": "Access documents, drawings, and design concepts in one place.",
+          "imageAlt": "Designer working with Focuspilot across task, approvals and products"
+        },
+        "procurement": {
+          "label": "Procurement",
+          "title": "Procure Smarter. Deliver Faster.",
+          "kicker": "Sourcing, ordering, and tracking materials shouldn't be a headache.",
+          "body": "No more manual spreadsheets or lost invoices. Focuspilot ensures materials arrive on time, every time.",
+          "bullet1": "Organise products by room, project, or supplier.",
+          "bullet2": "Track deliveries and install dates on your project calendar.",
+          "bullet3": "Automate approvals and keep clients in the loop.",
+          "bullet4": "Generate purchase orders automatically.",
+          "imageAlt": "Warm living room scene with curated furniture and decor",
+          "roomAlt": "Warm living room scene",
+          "chairAlt": "Boucle lounge chair",
+          "artAlt": "Abstract artwork framed on wall",
+          "chandelierAlt": "Brass chandelier with alabaster globes"
+        },
+        "finance": {
+          "label": "Finance",
+          "title": "Get paid faster. Stay in control.",
+          "kicker": "One place for invoices, budgets, and client payments.",
+          "body": "From uncertainty and missed payments to cash flow confidence.",
+          "bullet1": "Track budgets at project and studio level.",
+          "bullet2": "Accept payments via Stripe instantly.",
+          "bullet3": "Generate branded invoices in seconds.",
+          "bullet4": "View insights that actually help you grow.",
+          "imageAlt": "Sunlit living room with boucle seating, wood shelving and warm timber details"
+        }
+      }
+    }
+  },
+  "siteFooter": {
+    "tagline": "Calm, premium tools for interior design studios & architects.",
+    "platform": "Platform",
+    "compare": "Compare",
+    "resources": "Resources",
+    "company": "Company",
+    "stayInLoop": "Stay in the loop",
+    "emailPlaceholder": "Enter your email",
+    "emailAria": "Enter your email",
+    "copyright": "© {year} Focuspilot. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfUse": "Terms of Use",
+    "sitemap": "Sitemap",
+    "social": {
+      "facebook": "Follow Focuspilot on Facebook",
+      "twitter": "Follow Focuspilot on Twitter",
+      "linkedin": "Follow Focuspilot on LinkedIn",
+      "instagram": "Follow Focuspilot on Instagram"
+    },
+    "links": {
+      "projectManagement": "Project Management",
+      "procurementFfe": "Procurement & FF&E",
+      "clientPortal": "Client Portal",
+      "contractorPortal": "Contractor Portal",
+      "financeInvoicing": "Finance & Invoicing",
+      "crmPipeline": "CRM & Pipeline",
+      "aiFeatures": "AI Features",
+      "vsHouzzPro": "vs Houzz Pro",
+      "vsPrograma": "vs Programa",
+      "vsStudioDesigner": "vs Studio Designer",
+      "vsDesignFiles": "vs DesignFiles",
+      "allComparisons": "All Comparisons",
+      "blog": "Blog",
+      "knowledgeCentre": "Knowledge Centre",
+      "customerStories": "Customer Stories",
+      "changelog": "Changelog",
+      "templates": "Templates",
+      "aiPlaybook": "AI Playbook",
+      "about": "About",
+      "pricing": "Pricing",
+      "contact": "Contact",
+      "careers": "Careers",
+      "integrations": "Integrations"
+    }
+  },
+  "megaNavPlatform": {
+    "trigger": "Platform",
+    "menuAria": "Platform",
+    "promoImageAlt": "{title} - {desc}",
+    "columns": {
+      "coreWorkflows": "Core workflows",
+      "studioOperations": "Studio operations",
+      "keyFeatures": "Key features"
+    },
+    "items": {
+      "projectManagement": {
+        "label": "Project management",
+        "desc": "Phases, tasks, timelines"
+      },
+      "procurement": {
+        "label": "Procurement",
+        "desc": "Sourcing, POs, tracking"
+      },
+      "finance": {
+        "label": "Finance",
+        "desc": "Proposals, invoices, payments"
+      },
+      "clientPortal": {
+        "label": "Client portal",
+        "desc": "Approvals, files, messaging"
+      },
+      "crm": {
+        "label": "CRM",
+        "desc": "Lead → project pipeline"
+      },
+      "schedulingInstalls": {
+        "label": "Scheduling & installs",
+        "desc": "Project timelines and installation scheduling"
+      },
+      "resourcePlanning": {
+        "label": "Resource planning",
+        "desc": "Team allocation and capacity management"
+      },
+      "vendorDeliveries": {
+        "label": "Vendor & deliveries",
+        "desc": "Supplier management and delivery tracking"
+      },
+      "docsTemplates": {
+        "label": "Docs & templates",
+        "desc": "Document library and project templates"
+      },
+      "communication": {
+        "label": "Communication",
+        "desc": "Unified inbox with project routing"
+      },
+      "approvals": {
+        "label": "Approvals",
+        "desc": "Client sign-off and decision tracking"
+      },
+      "aiProcurement": {
+        "label": "AI Product Procurement",
+        "desc": "Web clipper with instant AI extraction"
+      },
+      "productLibrary": {
+        "label": "Product Library",
+        "desc": "Centralized product database with AI sourcing"
+      },
+      "proposalsInvoices": {
+        "label": "Proposals & invoices",
+        "desc": "AI proposals and automated billing"
+      }
+    },
+    "promos": {
+      "overview": {
+        "title": "Platform overview",
+        "desc": "Connect leads, projects, procurement and billing in one calm workspace."
+      },
+      "tour": {
+        "title": "Product tour",
+        "desc": "Take a quick guided tour of the UI—see how studios run projects end‑to‑end."
+      },
+      "whatsNew": {
+        "title": "What's new",
+        "desc": "See recently shipped features and what's coming next."
+      }
+    }
+  },
+  "resourcesMenu": {
+    "trigger": "Resources",
+    "menuAria": "Resources",
+    "links": {
+      "blog": {
+        "label": "Blog",
+        "desc": "Ideas and studio workflows."
+      },
+      "customerStories": {
+        "label": "Customer stories",
+        "desc": "Studios shipping great work."
+      },
+      "knowledgeCentre": {
+        "label": "Knowledge Centre",
+        "desc": "Guides & how‑tos."
+      },
+      "changelog": {
+        "label": "Changelog",
+        "desc": "What we ship, every week."
+      },
+      "templates": {
+        "label": "Templates",
+        "desc": "Plug‑and‑play docs."
+      },
+      "aiPlaybook": {
+        "label": "AI Playbook",
+        "desc": "Use AI across your studio."
+      }
+    }
+  },
+  "authLoginPage": {
+    "loading": "Loading…",
+    "heroTitle": "Welcome back to your design studio",
+    "heroSubtitle": "Continue managing your projects with Focuspilot — built for interior designers.",
+    "heroImageAlt": "Beautiful modern kitchen interior design",
+    "form": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your Focuspilot studio account",
+      "invalidCredentials": "Invalid email or password. Please try again.",
+      "googleSignIn": "Sign in with Google",
+      "orDivider": "or",
+      "email": "Email",
+      "password": "Password",
+      "emailPlaceholder": "Enter your email",
+      "passwordPlaceholder": "Enter your password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "signingIn": "Signing in…",
+      "signIn": "Sign in",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up"
+    },
+    "meta": {
+      "title": "Login | Focuspilot",
+      "description": "Sign in to your Focuspilot account and access your design studio management tools."
+    }
+  },
+  "authSignupPage": {
+    "heroTitle": "Transform your design studio workflow",
+    "heroSubtitle": "Join interior designers who run projects, clients, and procurement in one place.",
+    "heroImageAlt": "Modern kitchen design",
+    "form": {
+      "title": "Create your account",
+      "subtitle": "Start your free trial — verify your email to continue",
+      "registrationFailed": "Registration failed. Please try again.",
+      "googleSignUp": "Sign up with Google",
+      "orDivider": "or",
+      "fullName": "Full name",
+      "email": "Email address",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "strengthLabel": "Strength: {level}",
+      "agreeTermsBefore": "I agree to the",
+      "termsOfService": "Terms of Service",
+      "and": "and",
+      "privacyPolicy": "Privacy Policy",
+      "creatingAccount": "Creating account…",
+      "createAccount": "Create account",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "validation": {
+        "nameRequired": "Name is required",
+        "nameInvalid": "Please enter a valid name",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email",
+        "passwordRequired": "Password is required",
+        "passwordMinLength": "Must be at least 8 characters",
+        "passwordUppercase": "Must contain an uppercase letter",
+        "passwordLowercase": "Must contain a lowercase letter",
+        "passwordNumber": "Must contain a number",
+        "passwordSpecial": "Must contain a special character (@$!%*?&)",
+        "confirmRequired": "Please confirm your password",
+        "confirmMismatch": "Passwords do not match"
+      },
+      "strength": {
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "strong": "Strong"
+      }
+    },
+    "meta": {
+      "title": "Sign Up | Focuspilot",
+      "description": "Create your Focuspilot account and transform your design studio workflow with AI-powered tools."
+    }
+  },
+  "contactPage": {
+    "meta": {
+      "title": "Contact Focuspilot | Get in Touch",
+      "description": "Contact the Focuspilot team. We'd love to hear from you - whether you have questions about our interior design software or want to book a demo."
+    },
+    "title": "Get in Touch",
+    "subtitle": "Have questions about Focuspilot? Want to book a demo? We'd love to hear from you.",
+    "email": {
+      "title": "Email Us",
+      "description": "For general enquiries and support"
+    },
+    "demo": {
+      "title": "Book a Demo",
+      "description": "See Focuspilot in action",
+      "cta": "Schedule demo"
+    }
+  },
+  "comparePage": {
+    "meta": {
+      "title": "Compare Interior Design Software | Focuspilot vs Competitors",
+      "description": "Compare Focuspilot with Programa, Houzz Pro, Studio Designer, DesignFiles and more. See why interior designers choose Focuspilot for project management.",
+      "ogDescription": "Compare Focuspilot with Programa, Houzz Pro, Studio Designer, DesignFiles and more. See why interior designers choose Focuspilot.",
+      "twitterDescription": "Compare Focuspilot with leading interior design software. See detailed feature comparisons.",
+      "keywords": [
+        "interior design software comparison",
+        "Programa alternative",
+        "Houzz Pro alternative",
+        "Studio Designer alternative",
+        "DesignFiles alternative",
+        "best interior design software"
+      ]
+    },
+    "breadcrumb": {
+      "home": "Home",
+      "compare": "Compare"
+    },
+    "badge": "Software Comparisons",
+    "title": "Compare Focuspilot",
+    "subtitle": "See how Focuspilot compares to other interior design software. We believe in transparency – find the right tool for your studio.",
+    "detailedTitle": "Detailed Comparisons",
+    "vsLabel": "Focuspilot vs {name}",
+    "advantageLabel": "Focuspilot advantage:",
+    "competitors": {
+      "programa": {
+        "description": "Popular in the US for procurement and project management",
+        "advantage": "Global-ready with native Xero, AI features, and Stripe payments"
+      },
+      "designManager": {
+        "description": "Legacy desktop software for interior designers",
+        "advantage": "Modern cloud-based, mobile-friendly, no installation required"
+      },
+      "houzzPro": {
+        "description": "All-in-one platform tied to Houzz marketplace",
+        "advantage": "Independent platform, dedicated support, more flexible"
+      },
+      "studioDesigner": {
+        "description": "Cloud-based design business management",
+        "advantage": "AI-powered features, better procurement, multi-currency pricing"
+      },
+      "designfiles": {
+        "description": "Simple project management for designers",
+        "advantage": "More comprehensive features, AI automation, scales better"
+      }
+    },
+    "whySwitch": {
+      "title": "Why studios switch to Focuspilot",
+      "subtitle": "Common reasons interior designers choose Focuspilot over alternatives",
+      "reasons": {
+        "worldwide": {
+          "title": "Built for design studios worldwide",
+          "description": "Native Xero integration, multi-currency support, VAT handling, and dedicated support."
+        },
+        "ai": {
+          "title": "AI-Powered Automation",
+          "description": "AI email drafting, product sourcing, and proposal generation save hours weekly."
+        },
+        "mobile": {
+          "title": "Modern & Mobile",
+          "description": "Cloud-based, works on any device. No desktop software to install or update."
+        },
+        "allInOne": {
+          "title": "All-in-One Platform",
+          "description": "CRM, projects, procurement, client portal, and finance in one connected workspace."
+        },
+        "migration": {
+          "title": "Free Migration",
+          "description": "We help you migrate data from your existing software at no extra cost."
+        },
+        "pricing": {
+          "title": "Transparent Pricing",
+          "description": "Simple per-user pricing. No hidden fees or per-project charges."
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to see Focuspilot in action?",
+      "subtitle": "Start your free 3-month trial and see why studios are switching to Focuspilot.",
+      "startTrial": "Start free trial",
+      "viewPricing": "View pricing"
+    }
+  },
+  "pricingPage": {
+    "meta": {
+      "title": "Focuspilot Pricing | Interior Design Software from £49/user | Free Trial",
+      "description": "Simple, transparent pricing for interior design studios. Free 3-month beta or £49/user/month Professional. All AI features included. No setup fees. Start free today.",
+      "ogDescription": "Simple, transparent pricing for interior design studios. Free 3-month beta or £49/user/month Professional. All AI features included. No setup fees.",
+      "twitterDescription": "Simple, transparent pricing for interior design studios. Free 3-month beta or £49/user/month Professional. All AI features included."
+    },
+    "hero": {
+      "badge": "Beta program now open",
+      "title": "Simple, transparent pricing",
+      "subtitle": "Join early and get unlimited access for free during beta. Scale with confidence as your studio grows."
+    },
+    "plans": {
+      "beta": {
+        "name": "Beta Access",
+        "badge": "Limited spots",
+        "price": "Free",
+        "description": "Full platform access during beta",
+        "features": {
+          "users": "Unlimited users during beta period",
+          "ai": "All AI features included",
+          "projects": "Project management & CRM",
+          "portal": "Client portal & approvals",
+          "procurement": "AI procurement & library",
+          "support": "Priority support & feedback"
+        },
+        "cta": "Join beta waitlist"
+      },
+      "professional": {
+        "name": "Professional",
+        "badge": "Most popular",
+        "price": "£49",
+        "priceUnit": "/user/month",
+        "description": "First 5 users • £39/user for additional users",
+        "features": {
+          "everything": "Everything in Beta, forever",
+          "unlimited": "Unlimited projects & clients",
+          "automation": "Advanced AI automation",
+          "branding": "Custom branding & white-label",
+          "support": "Priority support & onboarding",
+          "sla": "99.9% uptime SLA"
+        },
+        "cta": "Start free trial"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "badge": "20+ users",
+        "price": "Custom",
+        "description": "Tailored pricing for large studios & networks",
+        "features": {
+          "everything": "Everything in Professional",
+          "unlimited": "Unlimited users & projects",
+          "security": "SSO & advanced security",
+          "api": "API access & custom integrations",
+          "manager": "Dedicated account manager",
+          "billing": "Annual billing & invoicing options"
+        },
+        "cta": "Contact sales"
+      }
+    },
+    "note": "All plans include a 14-day free trial. No credit card required. Beta users get locked-in rates when we launch.",
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "Everything you need to know about pricing and plans",
+      "items": {
+        "afterBeta": {
+          "question": "What happens after the beta period?",
+          "answer": "Beta users will be offered special pricing and the option to lock in their rate before we officially launch. You'll have plenty of notice before any billing begins."
+        },
+        "userPricing": {
+          "question": "How does the user pricing work?",
+          "answer": "Your first 5 users are £49 per user per month. Users 6+ are £39 per user per month. You only pay for active users, and you can add or remove users at any time."
+        },
+        "tryBeforeBuy": {
+          "question": "Can I try before I buy?",
+          "answer": "Join our beta for free access, or start a 14-day free trial of the Professional plan. No credit card required for beta access."
+        },
+        "paymentMethods": {
+          "question": "What payment methods do you accept?",
+          "answer": "We accept all major credit and debit cards. Annual billing options are available with a discount. Contact us for invoicing or alternative payment arrangements."
+        },
+        "setupFee": {
+          "question": "Is there a setup fee or contract?",
+          "answer": "No setup fees, no hidden costs, and no long-term contracts. Pay monthly and cancel anytime. We believe in earning your business every month."
+        },
+        "annualBilling": {
+          "question": "Do you offer discounts for annual billing?",
+          "answer": "Yes! Annual billing saves you 2 months (equivalent to 16% off). Contact our sales team for custom enterprise pricing for studios with 20+ users."
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to transform your studio?",
+      "subtitle": "Join design studios already using Focuspilot to save time, reduce admin, and deliver better client experiences.",
+      "button": "Start for free",
+      "noCreditCard": "No credit card required"
+    }
+  },
+  "compareDetailShared": {
+    "badge": "Software Comparison",
+    "breadcrumb": {
+      "home": "Home",
+      "compare": "Compare"
+    },
+    "table": {
+      "feature": "Feature",
+      "focuspilot": "Focuspilot"
+    },
+    "legend": {
+      "full": "Full support",
+      "partial": "Partial/limited",
+      "none": "Not available"
+    },
+    "faqTitle": "Frequently asked questions",
+    "learnMore": "Learn more",
+    "noCreditCard": "No credit card required"
+  },
+  "compareDetailCategories": {
+    "procurement": "Procurement",
+    "clientApprovals": "Client Approvals",
+    "financeInvoicing": "Finance & Invoicing",
+    "projectManagement": "Project Management",
+    "crm": "CRM",
+    "platformIndependence": "Platform Independence",
+    "financeCompliance": "Finance & compliance",
+    "aiAutomation": "AI & Automation",
+    "financePayments": "Finance & Payments",
+    "userExperience": "User Experience",
+    "clientExperience": "Client Experience",
+    "financialManagement": "Financial Management",
+    "procurementProducts": "Procurement & Products",
+    "clientManagement": "Client Management",
+    "finance": "Finance",
+    "procurementFfe": "Procurement & FF&E",
+    "scalability": "Scalability"
+  },
+  "compareDetailFeatures": {
+    "productLibraryPricing": "Product library with pricing",
+    "aiProductSourcing": "AI-powered product sourcing",
+    "purchaseOrderGeneration": "Purchase order generation",
+    "supplierManagement": "Supplier management",
+    "tradePricingIntegration": "Trade pricing integration",
+    "bulkOrderManagement": "Bulk order management",
+    "clientApprovalPortal": "Client approval portal",
+    "commentsRevisions": "Comments & revisions",
+    "inPortalPayments": "In-portal payments",
+    "realtimeStatusUpdates": "Real-time status updates",
+    "mobileOptimisedPortal": "Mobile-optimised portal",
+    "invoiceGeneration": "Invoice generation",
+    "xeroQuickbooksSync": "Xero/QuickBooks sync",
+    "stripePayments": "Stripe payments",
+    "projectProfitabilityTracking": "Project profitability tracking",
+    "automatedPaymentReminders": "Automated payment reminders",
+    "multiCurrencySupport": "Multi-currency support",
+    "projectTimelinesPhases": "Project timelines & phases",
+    "taskManagement": "Task management",
+    "teamCollaboration": "Team collaboration",
+    "aiEmailDrafting": "AI email drafting",
+    "documentStorage": "Document storage",
+    "clientCommunicationLog": "Client communication log",
+    "leadCaptureForms": "Lead capture forms",
+    "pipelineManagement": "Pipeline management",
+    "contactDatabase": "Contact database",
+    "aiPoweredProposals": "AI-powered proposals",
+    "automatedFollowUps": "Automated follow-ups",
+    "independentPlatform": "Independent platform (not tied to marketplace)",
+    "ownClientRelationships": "Own your client relationships",
+    "noPlatformCommission": "No platform commission on leads",
+    "anyProductSuppliers": "Use with any product suppliers",
+    "whiteLabelClientPortal": "White-label client portal",
+    "nativeXeroIntegration": "Native Xero integration",
+    "multiCurrencyVat": "Multi-currency pricing & VAT handling",
+    "dedicatedSupportTeam": "Dedicated support team",
+    "gdprCompliant": "GDPR compliant",
+    "britishSpellingTerminology": "British spelling & terminology",
+    "aiProposalGeneration": "AI proposal generation",
+    "smartClientThreadSummaries": "Smart client thread summaries",
+    "automatedDataExtraction": "Automated data extraction",
+    "stripePaymentIntegration": "Stripe payment integration",
+    "accountingSoftwareSync": "Accounting software sync",
+    "modernCloudInterface": "Modern cloud-based interface",
+    "mobileResponsiveDesign": "Mobile-responsive design",
+    "realtimeCollaboration": "Real-time collaboration",
+    "noInstallationRequired": "No installation required",
+    "regularFeatureUpdates": "Regular feature updates",
+    "smartProposalGeneration": "Smart proposal generation",
+    "workflowAutomation": "Workflow automation",
+    "brandedClientPortal": "Branded client portal",
+    "mobileClientAccess": "Mobile client access",
+    "realtimeApprovalNotifications": "Real-time approval notifications",
+    "clientCommentThreads": "Client comment threads",
+    "projectBudgeting": "Project budgeting",
+    "xeroIntegration": "Xero integration",
+    "profitabilityReporting": "Profitability reporting",
+    "purchaseOrderManagement": "Purchase order management",
+    "productLibrary": "Product library",
+    "supplierDatabase": "Supplier database",
+    "tradePricingManagement": "Trade pricing management",
+    "aiAlternativeFinder": "AI alternative finder",
+    "orderTracking": "Order tracking",
+    "smartReminders": "Smart reminders",
+    "multiCurrencyPricing": "Multi-currency pricing",
+    "vatTaxHandling": "VAT & tax handling",
+    "dedicatedSupport": "Dedicated support",
+    "britishEnglishInterface": "British English interface",
+    "clientPortal": "Client portal",
+    "selectionApprovals": "Selection approvals",
+    "realtimeUpdates": "Real-time updates",
+    "whiteLabelBranding": "White-label branding",
+    "projectProfitability": "Project profitability",
+    "budgetTracking": "Budget tracking",
+    "accountingSync": "Accounting sync",
+    "automatedWorkflows": "Automated workflows",
+    "smartDataExtraction": "Smart data extraction",
+    "deliveryTracking": "Delivery tracking",
+    "tradePricingLookup": "Trade pricing lookup",
+    "selectionBoards": "Selection boards",
+    "approvalWorkflows": "Approval workflows",
+    "budgetVsActualTracking": "Budget vs actual tracking",
+    "multiUserTeams": "Multi-user teams",
+    "roleBasedPermissions": "Role-based permissions",
+    "multipleStudiosBrands": "Multiple studios/brands",
+    "enterpriseFeatures": "Enterprise features",
+    "apiAccess": "API access"
+  },
+  "compareDetailPages": {
+    "programa": {
+      "meta": {
+        "title": "Focuspilot vs Programa | Interior Design Software Comparison 2026",
+        "description": "Compare Focuspilot vs Programa for interior design studios. See differences in AI features, transparent pricing, Xero integration & client portals. Switch with free migration.",
+        "ogDescription": "Compare Focuspilot vs Programa for interior design studios. See differences in AI features, transparent pricing, Xero integration & client portals. Switch with free migration.",
+        "twitterDescription": "Compare Focuspilot vs Programa for interior design studios. See differences in AI features, transparent pricing, Xero integration & client portals.",
+        "keywords": [
+          "Focuspilot vs Programa",
+          "Programa alternative",
+          "interior design software comparison",
+          "design studio management software",
+          "procurement software for designers"
+        ]
+      },
+      "breadcrumbTitle": "Focuspilot vs Programa",
+      "hero": {
+        "title": "Focuspilot vs Programa",
+        "subtitle": "A detailed comparison for interior design studios choosing between Focuspilot and Programa. See how procurement, approvals, invoicing, and project workflows compare."
+      },
+      "bestFor": {
+        "title": "Which is best for your studio?",
+        "focuspilotTitle": "Choose Focuspilot if you...",
+        "competitorTitle": "{name} might suit you if you...",
+        "focuspilotReasons": {
+          "accountingSync": "Use Xero or QuickBooks and want native accounting sync",
+          "aiFeatures": "Want AI-powered email drafting and product sourcing",
+          "inPortalPayments": "Need clients to pay directly through the approval portal",
+          "residentialPractice": "Run a residential or boutique commercial practice",
+          "perUserPricing": "Want per-user pricing that scales with your team"
+        },
+        "competitorReasons": {
+          "usQuickbooks": "Are US-based and heavily use QuickBooks",
+          "perProjectPricing": "Prefer per-project pricing over per-user",
+          "noAiPayments": "Don't need AI features or in-portal payments",
+          "existingWorkflows": "Already have established Programa workflows"
+        }
+      },
+      "comparisonTitle": "Feature-by-feature comparison",
+      "faqs": {
+        "mainDifference": {
+          "question": "What's the main difference between Focuspilot and Programa?",
+          "answer": "Focuspilot is built for interior design studios worldwide with native Xero and QuickBooks integration, Stripe payments, and AI-powered features like email drafting and product sourcing. Programa is US-focused with QuickBooks integration. Focuspilot also includes in-portal client payments and automated invoicing that Programa lacks."
+        },
+        "studioSize": {
+          "question": "Is Focuspilot better for small studios or larger teams?",
+          "answer": "Focuspilot scales from solo designers to 50+ person studios. Our pricing model (£49/user for first 5, then £39/user) is designed for growing teams. Programa's per-project pricing can become expensive for studios managing many concurrent projects."
+        },
+        "migration": {
+          "question": "Can I migrate from Programa to Focuspilot?",
+          "answer": "Yes. We offer free migration assistance including: product library import, client contact transfer, and project history migration. Most studios are fully operational on Focuspilot within one week."
+        },
+        "accounting": {
+          "question": "Does Focuspilot work with accounting software?",
+          "answer": "Absolutely. Focuspilot has native two-way sync with Xero and QuickBooks. Invoices, payments, and expenses sync automatically."
+        },
+        "procurement": {
+          "question": "Which has better procurement features?",
+          "answer": "Focuspilot includes AI-powered product sourcing that finds alternatives and trade pricing automatically. We also support bulk order management and supplier relationship tracking that Programa doesn't offer."
+        }
+      },
+      "migration": {
+        "title": "Switching from Programa?",
+        "subtitle": "We make migration painless. Here's what happens in your first week with Focuspilot.",
+        "steps": {
+          "productLibrary": {
+            "title": "Product library import",
+            "description": "We import your entire product library including images, pricing, and supplier details. Trade discounts are preserved."
+          },
+          "clientContacts": {
+            "title": "Client & contact migration",
+            "description": "All client records, contact details, and communication history transfer seamlessly. No re-entry required."
+          },
+          "activeProjects": {
+            "title": "Active project setup",
+            "description": "Current projects are recreated with timelines, budgets, and approval status intact. Clients get new portal access."
+          },
+          "accountingSync": {
+            "title": "Accounting sync",
+            "description": "Connect Xero or QuickBooks in minutes. Historical data syncs automatically so reporting is immediate."
+          }
+        }
+      },
+      "explore": {
+        "title": "Explore Focuspilot features",
+        "links": {
+          "procurement": {
+            "title": "Procurement",
+            "description": "AI-powered product sourcing and supplier management"
+          },
+          "clientPortal": {
+            "title": "Client Portal",
+            "description": "Approvals, payments, and real-time project updates"
+          },
+          "finance": {
+            "title": "Finance & Invoicing",
+            "description": "Budgets, invoices, and accounting integrations"
+          }
+        }
+      },
+      "cta": {
+        "title": "Ready to switch?",
+        "subtitle": "Start your free trial and see why studios are choosing Focuspilot over Programa.",
+        "primary": "Start for free"
+      }
+    },
+    "houzz-pro": {
+      "meta": {
+        "title": "Focuspilot vs Houzz Pro | Interior Design Software Comparison 2025",
+        "description": "Compare Focuspilot vs Houzz Pro for interior design studios. Independent platform vs Houzz ecosystem. See AI features, transparent pricing, and why designers are switching.",
+        "ogDescription": "Compare Focuspilot vs Houzz Pro for interior design studios. Independent platform vs Houzz ecosystem. AI features, transparent pricing, and more.",
+        "twitterDescription": "Compare Focuspilot vs Houzz Pro. See why designers choose an independent platform.",
+        "keywords": [
+          "Focuspilot vs Houzz Pro",
+          "Houzz Pro alternative",
+          "interior design software comparison",
+          "independent design software"
+        ]
+      },
+      "breadcrumbTitle": "Focuspilot vs Houzz Pro",
+      "hero": {
+        "title": "Focuspilot vs Houzz Pro",
+        "subtitle": "Compare an independent, global-ready platform with the Houzz marketplace ecosystem. See which is right for your interior design studio."
+      },
+      "bestFor": {
+        "title": "Which is best for your studio?",
+        "focuspilotTitle": "Choose Focuspilot if you...",
+        "competitorTitle": "Choose {name} if you...",
+        "focuspilotReasons": {
+          "independentPlatform": "Want an independent platform without marketplace ties",
+          "xeroIntegration": "Need native Xero accounting integration",
+          "aiAutomation": "Want AI-powered automation to save time",
+          "ownRelationships": "Prefer to own your client relationships completely",
+          "multiCurrency": "Work internationally and need multi-currency support"
+        },
+        "competitorReasons": {
+          "houzzLeads": "Want leads from the Houzz marketplace",
+          "houzzPresence": "Already have a strong Houzz presence",
+          "usBased": "Are primarily US-based",
+          "visualisationTools": "Value Houzz's 3D visualisation tools"
+        }
+      },
+      "comparisonTitle": "Feature comparison",
+      "faqs": {
+        "mainDifference": {
+          "question": "What's the main difference between Focuspilot and Houzz Pro?",
+          "answer": "Focuspilot is an independent platform built specifically for running your design business, while Houzz Pro is tied to the Houzz marketplace ecosystem. Focuspilot gives you complete ownership of client relationships without platform fees or commissions."
+        },
+        "leads": {
+          "question": "Is Houzz Pro better for getting leads?",
+          "answer": "Houzz Pro includes access to the Houzz marketplace for lead generation, but these leads come with platform dependencies and potential commission fees. Focuspilot focuses on helping you manage and convert your own leads more effectively with AI-powered proposals and CRM features."
+        },
+        "xero": {
+          "question": "Does Focuspilot integrate with Xero?",
+          "answer": "Yes, Focuspilot has native two-way Xero integration, which Houzz Pro lacks. Invoices, payments, and expenses sync automatically."
+        },
+        "bothPlatforms": {
+          "question": "Can I use both platforms together?",
+          "answer": "Some studios use Houzz for visibility while managing their business in Focuspilot. However, most find that Focuspilot's CRM and lead management features eliminate the need for Houzz Pro's business tools."
+        },
+        "international": {
+          "question": "Which is better for studios outside the US?",
+          "answer": "Focuspilot supports international studios with multi-currency pricing, VAT handling, Xero integration, and dedicated support. Houzz Pro is primarily designed for the US market."
+        }
+      },
+      "cta": {
+        "title": "Ready to try Focuspilot?",
+        "subtitle": "Start your free 3-month trial. No credit card required. Free migration from Houzz Pro.",
+        "primary": "Start free trial",
+        "secondary": "View all comparisons"
+      }
+    },
+    "design-manager": {
+      "meta": {
+        "title": "Focuspilot vs Design Manager | Modern Interior Design Software 2026",
+        "description": "Compare Focuspilot vs Design Manager. Modern cloud software vs legacy desktop. AI features, real-time collaboration, mobile access. Migrate free from Design Manager.",
+        "ogDescription": "Compare Focuspilot vs Design Manager. Modern cloud software vs legacy desktop. AI features, real-time collaboration, mobile access. Migrate free from Design Manager.",
+        "twitterDescription": "Compare Focuspilot vs Design Manager. Modern cloud software vs legacy desktop. AI features, real-time collaboration, mobile access.",
+        "keywords": [
+          "Focuspilot vs Design Manager",
+          "Design Manager alternative",
+          "interior design software comparison",
+          "design studio ERP"
+        ]
+      },
+      "breadcrumbTitle": "Focuspilot vs Design Manager",
+      "hero": {
+        "title": "Focuspilot vs Design Manager",
+        "subtitle": "Comparing modern cloud software with legacy desktop systems. See why studios are switching to Focuspilot for AI-powered workflows, mobile access, and integrated client payments."
+      },
+      "bestFor": {
+        "title": "Which is right for your studio?",
+        "focuspilotTitle": "Choose Focuspilot if you want...",
+        "competitorTitle": "{name} may suit you if...",
+        "focuspilotReasons": {
+          "modernCloud": "Modern, cloud-based software that works anywhere",
+          "aiFeatures": "AI features that save hours on emails and sourcing",
+          "clientPortalPayments": "Clients to approve and pay through one portal",
+          "perUserPricing": "Simple, predictable per-user pricing",
+          "quickSetup": "Quick setup without IT involvement"
+        },
+        "competitorReasons": {
+          "desktopSoftware": "You prefer desktop software with local installation",
+          "existingWorkflows": "You have existing Design Manager workflows and data",
+          "noRemoteAccess": "Your team doesn't need mobile or remote access",
+          "noAiPriority": "AI and automation features aren't priorities"
+        }
+      },
+      "comparisonTitle": "Feature-by-feature comparison",
+      "faqs": {
+        "mainDifference": {
+          "question": "How is Focuspilot different from Design Manager?",
+          "answer": "Focuspilot is a modern, cloud-native platform built for today's design studios. Unlike Design Manager's legacy desktop software, Focuspilot offers AI-powered features, real-time collaboration, mobile access, and integrated client payments. It's designed for studios who want modern tools without the complexity of traditional software."
+        },
+        "largeStudios": {
+          "question": "Is Design Manager better for larger studios?",
+          "answer": "Design Manager has historically served larger studios, but Focuspilot scales effectively from solo designers to 50+ person teams. Our AI features actually help smaller teams punch above their weight by automating admin tasks that would otherwise require additional staff."
+        },
+        "mobile": {
+          "question": "Can I access Focuspilot on mobile?",
+          "answer": "Yes. Focuspilot is fully responsive and works on any device with a browser. Your clients also get mobile-optimised portal access for approvals and payments. Design Manager requires desktop installation for full functionality."
+        },
+        "accounting": {
+          "question": "Which has better accounting integration?",
+          "answer": "Focuspilot has native two-way sync with Xero and QuickBooks, with automatic invoice and payment reconciliation. Design Manager supports accounting exports but requires more manual work to keep systems in sync."
+        },
+        "commercial": {
+          "question": "Is Focuspilot suitable for commercial projects?",
+          "answer": "Absolutely. While Focuspilot excels at residential projects, our procurement, approval, and financial tools handle commercial projects of any size. Multi-location projects, multiple stakeholder approvals, and complex budgeting are all supported."
+        },
+        "support": {
+          "question": "What about training and support?",
+          "answer": "Focuspilot is designed to be intuitive—most users are productive within hours, not weeks. We offer free onboarding calls, in-app guidance, and responsive support. Design Manager typically requires formal training sessions."
+        }
+      },
+      "migration": {
+        "title": "Migrating from Design Manager?",
+        "subtitle": "Our team helps you transition smoothly. Most studios are fully operational within 5-7 days.",
+        "steps": {
+          "dataExport": {
+            "title": "Data export assistance",
+            "description": "We guide you through exporting your Design Manager data and handle the technical conversion."
+          },
+          "productSupplier": {
+            "title": "Product & supplier import",
+            "description": "Your entire product library transfers with images, specs, and pricing. Supplier relationships preserved."
+          },
+          "clientPortal": {
+            "title": "Client portal setup",
+            "description": "Active clients receive branded portal invitations. Previous approval history is available for reference."
+          },
+          "teamOnboarding": {
+            "title": "Team onboarding",
+            "description": "Each team member gets a personalised orientation. Our intuitive design means most are productive same-day."
+          }
+        }
+      },
+      "explore": {
+        "title": "Discover what Focuspilot can do",
+        "links": {
+          "projectManagement": {
+            "title": "Project Management",
+            "description": "Timelines, tasks, and team collaboration"
+          },
+          "aiFeatures": {
+            "title": "AI Features",
+            "description": "Email drafting, product sourcing, and more"
+          },
+          "crm": {
+            "title": "CRM",
+            "description": "Lead capture, pipeline, and client relationships"
+          }
+        }
+      },
+      "cta": {
+        "title": "Experience modern design software",
+        "subtitle": "See why studios are moving from legacy systems to Focuspilot.",
+        "primary": "Start for free"
+      }
+    },
+    "studio-designer": {
+      "meta": {
+        "title": "Focuspilot vs Studio Designer | Interior Design Software Comparison 2025",
+        "description": "Compare Focuspilot vs Studio Designer for interior design firms. See differences in AI features, transparent pricing, procurement, and client management. Free migration available.",
+        "ogDescription": "Compare Focuspilot vs Studio Designer for interior design firms. AI features, transparent pricing, and comprehensive feature comparison.",
+        "twitterDescription": "Compare Focuspilot vs Studio Designer. See why designers are switching.",
+        "keywords": [
+          "Focuspilot vs Studio Designer",
+          "Studio Designer alternative",
+          "interior design software comparison",
+          "cloud design business software"
+        ]
+      },
+      "breadcrumbTitle": "Focuspilot vs Studio Designer",
+      "hero": {
+        "title": "Focuspilot vs Studio Designer",
+        "subtitle": "Compare AI-powered project management with traditional design business software. See which platform fits your studio's needs."
+      },
+      "bestFor": {
+        "title": "Which is best for your studio?",
+        "focuspilotTitle": "Choose Focuspilot if you...",
+        "competitorTitle": "Choose {name} if you...",
+        "focuspilotReasons": {
+          "aiAutomation": "Want AI to automate repetitive tasks",
+          "xeroIntegration": "Need native Xero accounting integration",
+          "stripePayments": "Want in-portal client payments via Stripe",
+          "mobileFirst": "Value modern, mobile-first design",
+          "multiCurrency": "Work across regions and need multi-currency support"
+        },
+        "competitorReasons": {
+          "traditionalSoftware": "Prefer established, traditional software",
+          "usBased": "Are primarily US-based",
+          "noAi": "Don't need AI automation features",
+          "quickbooks": "Use QuickBooks for accounting"
+        }
+      },
+      "comparisonTitle": "Feature comparison",
+      "faqs": {
+        "mainDifference": {
+          "question": "What's the main difference between Focuspilot and Studio Designer?",
+          "answer": "Focuspilot is built for studios worldwide with native Xero integration and includes AI-powered features for automation. Studio Designer is US-focused without the same accounting integrations or AI capabilities."
+        },
+        "aiFeatures": {
+          "question": "Does Studio Designer have AI features?",
+          "answer": "No, Studio Designer doesn't include AI features. Focuspilot offers AI email drafting, AI product sourcing, AI proposal generation, and automated data extraction – features that can save 10+ hours weekly."
+        },
+        "procurement": {
+          "question": "Which has better procurement features?",
+          "answer": "Both have solid procurement foundations, but Focuspilot adds AI-powered product sourcing that finds alternatives and trade pricing automatically, plus better delivery tracking and supplier management."
+        },
+        "migration": {
+          "question": "Can I migrate from Studio Designer to Focuspilot?",
+          "answer": "Yes. We offer free migration assistance including product library import, client data transfer, and project history migration. Most studios are fully operational within one week."
+        },
+        "international": {
+          "question": "Which is better for international studios?",
+          "answer": "Focuspilot supports global studios with Xero integration, multi-currency pricing, VAT handling, and dedicated support. Studio Designer is designed primarily for the US market."
+        }
+      },
+      "cta": {
+        "title": "Ready to try Focuspilot?",
+        "subtitle": "Start your free 3-month trial. No credit card required. Free migration from Studio Designer.",
+        "primary": "Start free trial",
+        "secondary": "View all comparisons"
+      }
+    },
+    "designfiles": {
+      "meta": {
+        "title": "Focuspilot vs DesignFiles | Interior Design Software Comparison 2025",
+        "description": "Compare Focuspilot vs DesignFiles for interior designers. See differences in AI features, procurement, finance tools, and scalability. Which is right for your studio?",
+        "ogDescription": "Compare Focuspilot vs DesignFiles for interior designers. AI features, procurement, finance tools, and scalability comparison.",
+        "twitterDescription": "Compare Focuspilot vs DesignFiles. See which scales better for growing studios.",
+        "keywords": [
+          "Focuspilot vs DesignFiles",
+          "DesignFiles alternative",
+          "interior design software comparison",
+          "design project management"
+        ]
+      },
+      "breadcrumbTitle": "Focuspilot vs DesignFiles",
+      "hero": {
+        "title": "Focuspilot vs DesignFiles",
+        "subtitle": "Compare a comprehensive AI-powered platform with simpler project management. See which tool fits your studio's current needs and growth plans."
+      },
+      "bestFor": {
+        "title": "Which is best for your studio?",
+        "focuspilotTitle": "Choose Focuspilot if you...",
+        "competitorTitle": "Choose {name} if you...",
+        "focuspilotReasons": {
+          "aiAdmin": "Want AI to handle repetitive admin tasks",
+          "procurement": "Need comprehensive procurement management",
+          "accountingIntegration": "Want accounting software integration",
+          "growTeam": "Plan to grow your team",
+          "clientPayments": "Need client payments through the portal"
+        },
+        "competitorReasons": {
+          "soloDesigner": "Are a solo designer with simple needs",
+          "presentationBoards": "Primarily need client presentation boards",
+          "tightBudget": "Have a very tight budget",
+          "noProcurementFinance": "Don't need procurement or finance features"
+        }
+      },
+      "comparisonTitle": "Feature comparison",
+      "faqs": {
+        "mainDifference": {
+          "question": "What's the main difference between Focuspilot and DesignFiles?",
+          "answer": "DesignFiles is a simpler, more affordable tool for basic project management and client boards. Focuspilot is a comprehensive platform with AI automation, full procurement management, accounting integration, and features that scale with your studio."
+        },
+        "pricing": {
+          "question": "Is DesignFiles cheaper than Focuspilot?",
+          "answer": "DesignFiles has a lower starting price, but Focuspilot's AI features can save 10+ hours weekly in admin time. When you factor in time savings, Focuspilot often provides better value, especially for studios doing £200k+ in projects annually."
+        },
+        "accounting": {
+          "question": "Does DesignFiles have accounting integration?",
+          "answer": "No, DesignFiles doesn't integrate with accounting software. Focuspilot has native two-way sync with Xero and QuickBooks, automatically syncing invoices, payments, and expenses."
+        },
+        "growingStudio": {
+          "question": "Which is better for a growing studio?",
+          "answer": "Focuspilot scales better with features like role-based permissions, multi-user collaboration, API access, and enterprise options. DesignFiles works well for solo designers but can feel limited as teams grow."
+        },
+        "migration": {
+          "question": "Can I migrate from DesignFiles to Focuspilot?",
+          "answer": "Yes. We offer free migration assistance including project data, client contacts, and product library import. Most studios transition within a few days."
+        }
+      },
+      "cta": {
+        "title": "Ready to try Focuspilot?",
+        "subtitle": "Start your free 3-month trial. No credit card required. Free migration from DesignFiles.",
+        "primary": "Start free trial",
+        "secondary": "View all comparisons"
+      }
+    }
+  },
+  "platformShared": {
+    "startFreeTrial": "Start free trial",
+    "seeAllFeatures": "See all features",
+    "startForFree": "Start for free",
+    "startFreeTrialCaps": "Start Free Trial",
+    "startBuildingLibrary": "Start Building Library",
+    "breadcrumb": {
+      "home": "Home",
+      "platform": "Platform",
+      "features": "Features",
+      "ai": "AI",
+      "approvals": "Approvals",
+      "projects": "Projects",
+      "finance": "Finance",
+      "crm": "CRM",
+      "clientPortal": "Client Portal",
+      "procurement": "Procurement",
+      "aiEmail": "AI Email",
+      "library": "Product Library",
+      "aiProcurement": "AI Procurement",
+      "invoicing": "Invoicing",
+      "contractorPortal": "Contractor Portal"
+    },
+    "noCreditCardRequired": "No credit card required",
+    "seeItInAction": "See it in action",
+    "exploreFeatures": "Explore features",
+    "tryAiProposals": "Try AI proposals",
+    "viewTemplates": "View templates",
+    "paymentOptions": "Payment options",
+    "viewIntegrations": "View integrations",
+    "seeClientPortal": "See client portal",
+    "delightYourClients": "Delight your clients",
+    "backToHome": "Back to home"
+  },
+  "platformContractorPortal": {
+    "meta": {
+      "title": "Contractor Portal for Interior Designers | Manage Trades | Focuspilot",
+      "description": "Give contractors access to project schedules, specifications, and documents. Streamline communication with trades on interior design projects.",
+      "ogDescription": "Give contractors access to project schedules, specifications, and documents. Streamline communication with trades.",
+      "twitterTitle": "Contractor Portal | Focuspilot",
+      "twitterDescription": "Streamline communication with contractors on interior design projects."
+    },
+    "hero": {
+      "title": "Contractor Portal",
+      "subtitle": "Give contractors controlled access to project schedules, specifications, and documents. Keep everyone aligned without endless emails."
+    },
+    "features": {
+      "title": "Coordinate trades effortlessly",
+      "items": {
+        "schedules": {
+          "title": "Shared Schedules",
+          "description": "Contractors see their tasks, deadlines, and dependencies in real-time"
+        },
+        "documents": {
+          "title": "Document Access",
+          "description": "Share specs, drawings, and product sheets with the right contractors"
+        },
+        "messaging": {
+          "title": "Project Messaging",
+          "description": "Keep all communication in context with project-specific threads"
+        },
+        "coordination": {
+          "title": "Team Coordination",
+          "description": "Coordinate multiple trades and track installation progress"
+        }
+      }
+    },
+    "benefits": {
+      "title": "Why contractors love it",
+      "items": {
+        "relevantScope": "See only what's relevant to their scope",
+        "anyDevice": "Access schedules and documents from any device",
+        "notifications": "Get notified of changes that affect them",
+        "siteUpdates": "Submit updates and photos from site",
+        "noInstall": "No app installation required"
+      }
+    },
+    "cta": {
+      "title": "Ready to streamline contractor coordination?",
+      "subtitle": "Start your free trial and invite your first contractor in minutes."
+    }
+  },
+  "platformProductLibrary": {
+    "meta": {
+      "title": "Product Library for Interior Designers | AI-Powered Sourcing | Focuspilot",
+      "description": "Your studio's centralized product database. Save, organise, and instantly add products to any project with AI-powered sourcing. Build specs 10x faster.",
+      "ogDescription": "Your studio's centralized product database. Save, organise, and instantly add products to any project with AI-powered sourcing.",
+      "twitterDescription": "Your studio's centralized product database with AI-powered sourcing."
+    },
+    "hero": {
+      "badge": "Product Library",
+      "title": "Your studio's memory bank. Without the chaos.",
+      "subtitle": "Build your centralized product database with AI-powered sourcing. Save products from any source, organise with smart tagging, and add to projects with one click."
+    },
+    "organise": {
+      "title": "Organise products your way",
+      "subtitle": "Filter by category, search by name or brand, and find exactly what you need in seconds.",
+      "imageAlt": "Product library grid interface showing categorized products with filters"
+    },
+    "benefits": {
+      "aiSourcing": {
+        "title": "AI-Powered Sourcing",
+        "description": "Drop any product URL and watch AI instantly extract specs, pricing, and supplier details."
+      },
+      "smartOrganisation": {
+        "title": "Smart Organisation",
+        "description": "Auto-categorise products with intelligent tagging and custom collections for easy discovery."
+      },
+      "oneClickProcurement": {
+        "title": "One-Click Procurement",
+        "description": "Add any library product to project procurement lists instantly—no re-entering details."
+      }
+    },
+    "intelligence": {
+      "title": "Complete product intelligence",
+      "subtitle": "Every product in your library includes comprehensive details: pricing, specifications, supplier information, and availability—all automatically captured and kept up to date.",
+      "imageAlt": "Detailed product view showing comprehensive product information and specifications",
+      "items": {
+        "pricing": {
+          "title": "Retail & Trade Pricing",
+          "description": "Track both client and cost pricing for accurate margins"
+        },
+        "supplier": {
+          "title": "Supplier Details",
+          "description": "Direct contact info, lead times, and ordering requirements"
+        },
+        "stock": {
+          "title": "Stock & Availability",
+          "description": "Real-time inventory status and sample availability"
+        }
+      }
+    },
+    "sources": {
+      "title": "Build your library from any source",
+      "subtitle": "Multiple ways to add products: AI web clipper, import from past projects, or manual entry.",
+      "webClipper": {
+        "title": "AI Web Clipper",
+        "description": "Drop any product URL and AI extracts all details instantly—specs, pricing, images, supplier info.",
+        "badge": "30 seconds vs 15-20 minutes"
+      },
+      "importProjects": {
+        "title": "Import from Projects",
+        "description": "Save products from any existing project schedule directly to your library with one click.",
+        "badge": "Bulk import available"
+      },
+      "manualEntry": {
+        "title": "Manual Entry",
+        "description": "Add custom products, trade-only items, or bespoke pieces with full specification control.",
+        "badge": "Custom fields supported"
+      }
+    },
+    "stats": {
+      "title": "Turn chaos into organised efficiency",
+      "kpis": {
+        "fasterSourcing": {
+          "label": "Faster sourcing",
+          "value": "95%"
+        },
+        "timeToAdd": {
+          "label": "Time to add product",
+          "value": "30s"
+        },
+        "dataAccuracy": {
+          "label": "Data accuracy",
+          "value": "100%"
+        },
+        "storage": {
+          "label": "Storage capacity",
+          "value": "∞"
+        }
+      }
+    },
+    "cta": {
+      "title": "Ready to build your product library?",
+      "subtitle": "Start organising your products today. Import from existing projects, use our AI web clipper, or add manually—your choice."
+    }
+  },
+  "platformAI": {
+    "meta": {
+      "title": "AI for Interior Design Studios | Focuspilot",
+      "description": "AI built for design studios: daily brief, email routing, procurement assist, and proposals — connected to your projects. Human approval on every client-facing output.",
+      "ogDescription": "Daily brief, smart inbox, procurement assist, and AI proposals — project context first, human approval always.",
+      "twitterDescription": "AI built for design studios — inbox, procurement, and proposals tied to real project data."
+    },
+    "breadcrumbLabel": "AI",
+    "hero": {
+      "badge": "AI for design studios",
+      "title": "AI built for design studios",
+      "subtitle": "Focuspilot AI works inside your projects — not in a disconnected chat window. Trim inbox noise, keep procurement accurate, and move proposals faster while your team stays in control.",
+      "imageAlt": "Focuspilot dashboard showing projects, tasks, and studio overview with AI-assisted workflows",
+      "seeAiFeatures": "See AI features"
+    },
+    "features": {
+      "title": "AI across your studio workflow",
+      "subtitle": "Four places where AI saves hours every week — each tied to real project data in Focuspilot.",
+      "showcasesHeading": "Inside the product",
+      "showcasesSubtitle": "Screenshots from the live studio app — the same AI tools you get after signup.",
+      "cards": {
+        "dailyBrief": {
+          "title": "Daily brief",
+          "description": "Start each morning with a project-aware summary: overdue tasks, client decisions waiting, procurement risks, and what to tackle first.",
+          "linkLabel": "See daily brief"
+        },
+        "emailRouting": {
+          "title": "Email routing & drafts",
+          "description": "Route threads to the right project, summarise long chains, and draft replies in your studio tone — ready for you to send.",
+          "linkLabel": "Explore AI email"
+        },
+        "procurementAssist": {
+          "title": "Procurement assist",
+          "description": "Extract specs from supplier pages, flag long-lead items, and suggest alternates when timelines slip — tied to your FF&E schedule.",
+          "linkLabel": "See AI procurement"
+        },
+        "proposalsDocuments": {
+          "title": "Proposals & documents",
+          "description": "Turn briefs and selections into scoped proposals and invoice-ready line items with checks that match your templates.",
+          "linkLabel": "Proposals & invoicing"
+        }
+      },
+      "showcases": {
+        "studioDashboard": {
+          "title": "Studio dashboard",
+          "caption": "Project health, tasks, and your daily brief in one view.",
+          "alt": "Focuspilot studio dashboard with project overview and KPIs"
+        },
+        "aiInbox": {
+          "title": "AI inbox",
+          "caption": "Threads routed to projects with context-aware drafts.",
+          "alt": "Project messages and email threads in Focuspilot"
+        },
+        "procurementAssist": {
+          "title": "Procurement assist",
+          "caption": "Import specs from supplier pages into your schedule.",
+          "alt": "AI extracting product specifications for FF&E procurement"
+        },
+        "aiProposals": {
+          "title": "AI proposals",
+          "caption": "Scope and pricing drafts from your brief and history.",
+          "alt": "AI proposal wizard with phased pricing for interior design studios"
+        }
+      }
+    },
+    "dailyBrief": {
+      "title": "Your morning brief, project by project",
+      "description": "Open Focuspilot and see what matters today: blocked approvals, slipping milestones, supplier delays, and client messages that need a reply — grouped by project, not buried in email.",
+      "bullets": {
+        "summarisesEmail": "Summarises overnight email and task changes",
+        "highlightsRisks": "Highlights budget and timeline risks before site meetings",
+        "availableAfterSignup": "Available in the studio app after you sign up"
+      },
+      "imageAlt": "Focuspilot daily brief and project dashboard for interior design studios",
+      "cta": "Try daily brief"
+    },
+    "howItWorks": {
+      "title": "How it works",
+      "subtitle": "Context first, drafts second, your approval last — the same pattern across email, procurement, and docs.",
+      "steps": {
+        "projectContext": {
+          "title": "Project context",
+          "body": "AI reads your active projects — phases, selections, messages, and budgets — so suggestions stay specific, not generic."
+        },
+        "draft": {
+          "title": "Draft",
+          "body": "Get summaries, reply drafts, spec extractions, or proposal sections you can edit in seconds instead of starting from a blank page."
+        },
+        "humanApprove": {
+          "title": "Human approve",
+          "body": "Nothing goes to clients or suppliers until you confirm. You stay in control; AI handles the repetitive first pass."
+        }
+      }
+    },
+    "playbook": {
+      "title": "Free AI Playbook for studios",
+      "description": "Practical workflows, copy-paste prompts, and guardrails for email, procurement, proposals, and governance — no fluff, ready to use with Focuspilot.",
+      "linkLabel": "Open the AI Playbook",
+      "cta": "Browse playbook"
+    },
+    "finalCta": {
+      "ariaLabel": "Get started",
+      "title": "Ship beautiful work with less admin",
+      "subtitle": "Join studios using Focuspilot AI for inbox, procurement, and proposals — connected to one project workspace.",
+      "playbookLink": "Read the AI Playbook"
+    }
+  },
+  "platformApprovals": {
+    "meta": {
+      "title": "Client Approval Software for Interior Designers | Focuspilot",
+      "description": "Streamline client sign-offs with beautiful approval workflows. Get faster decisions on selections, budgets, and design directions with Focuspilot approval tools.",
+      "ogDescription": "Streamline client sign-offs with beautiful approval workflows for interior design projects.",
+      "twitterDescription": "Streamline client sign-offs with beautiful approval workflows for interior design projects."
+    },
+    "hero": {
+      "badge": "Client approvals made simple",
+      "title": "Get client sign-off faster with seamless approvals.",
+      "subtitle": "Transform endless email chains and missed approvals into a streamlined workflow. Get real-time notifications, track progress, and keep projects moving forward.",
+      "imageAlt": "Focuspilot approval workflow showing client portal with pending approvals, comments, and real-time status updates"
+    },
+    "approvalFlow": {
+      "title": "How approvals work in Focuspilot",
+      "subtitle": "A simple, visual process that keeps everyone aligned and projects on track.",
+      "steps": {
+        "shareForApproval": {
+          "title": "Share for approval",
+          "description": "Upload designs, samples, or documents directly to your project. Set approval deadlines and add context."
+        },
+        "clientReviews": {
+          "title": "Client reviews",
+          "description": "Clients receive instant notifications and can review, comment, and approve from any device."
+        },
+        "trackProgress": {
+          "title": "Track progress",
+          "description": "See approval status in real-time. Get notified when decisions are made or deadlines approach."
+        },
+        "moveForward": {
+          "title": "Move forward",
+          "description": "Approved items automatically update project timelines. Keep momentum with automated next steps."
+        }
+      }
+    },
+    "featureBlocks": {
+      "realTimeNotifications": {
+        "title": "Real-time notifications",
+        "description": "Never miss an approval again. Get instant notifications when clients review, comment, or approve items.",
+        "benefits": {
+          "instantNotifications": "Instant email and in-app notifications",
+          "reminderSchedules": "Customizable reminder schedules",
+          "mobileLinks": "Mobile-friendly approval links",
+          "deadlineTracking": "Deadline tracking and alerts"
+        },
+        "imageAlt": "Real-time notification system showing approval requests and status updates"
+      },
+      "visualApprovalWorkflow": {
+        "title": "Visual approval workflow",
+        "description": "Present designs beautifully with context. Clients can see exactly what they're approving with full project context.",
+        "benefits": {
+          "imageGalleries": "High-resolution image galleries",
+          "sideBySide": "Side-by-side comparisons",
+          "projectContext": "Contextual project information",
+          "mobileViewing": "Mobile-optimized viewing"
+        },
+        "imageAlt": "Visual approval interface showing design presentations and client feedback"
+      },
+      "versionControlHistory": {
+        "title": "Version control & history",
+        "description": "Keep track of every revision and decision. Never lose sight of what was approved when.",
+        "benefits": {
+          "approvalHistory": "Complete approval history",
+          "versionComparison": "Version comparison tools",
+          "auditTrail": "Audit trail for all decisions",
+          "rollback": "Rollback to previous versions"
+        },
+        "imageAlt": "Document version control showing approval history and revision tracking"
+      }
+    },
+    "imageBlock": {
+      "line1": "Your clients, delighted.",
+      "line2": "Your approvals, streamlined.",
+      "line3": "Your projects, on time.",
+      "cta": "Transform approvals",
+      "imageAlt": "Modern interior design studio with natural lighting and organized workspace"
+    },
+    "benefitsGrid": {
+      "title": "Why designers love Focuspilot approvals",
+      "subtitle": "Transform client communication from chaos to clarity with features built for design professionals.",
+      "items": {
+        "fasterDecisions": {
+          "title": "Faster decisions",
+          "description": "Reduce approval time from days to hours with streamlined workflows and instant notifications."
+        },
+        "secureCompliant": {
+          "title": "Secure & compliant",
+          "description": "Enterprise-grade security with audit trails and compliance features for professional peace of mind."
+        },
+        "betterClientExperience": {
+          "title": "Better client experience",
+          "description": "Give clients a professional, easy-to-use portal that makes them feel involved and informed."
+        },
+        "neverMissDeadlines": {
+          "title": "Never miss deadlines",
+          "description": "Automated reminders and deadline tracking ensure approvals don't become project bottlenecks."
+        },
+        "completeTransparency": {
+          "title": "Complete transparency",
+          "description": "Everyone sees the same information. No more confusion about what's been approved or pending."
+        },
+        "automatedWorkflows": {
+          "title": "Automated workflows",
+          "description": "Approvals trigger next steps automatically, keeping your projects moving without manual intervention."
+        }
+      }
+    },
+    "bigCta": {
+      "title": "Stop chasing approvals. Start designing.",
+      "subtitle": "Join hundreds of design studios using Focuspilot to streamline client approvals and keep projects on track."
+    }
+  },
+  "platformAiProcurement": {
+    "meta": {
+      "title": "AI Product Procurement for Interior Designers | Focuspilot",
+      "description": "AI-powered web clipper extracts product details from any website instantly. Build specifications faster with intelligent product sourcing and vendor matching.",
+      "ogDescription": "AI-powered web clipper extracts product details from any website instantly for interior designers.",
+      "twitterDescription": "AI-powered web clipper extracts product details from any website instantly for interior designers."
+    },
+    "hero": {
+      "badge": "AI-powered procurement",
+      "title": "AI Product Procurement Web clipper meets instant library.",
+      "subtitle": "Transform how you source products with AI that instantly extracts specifications, pricing, and vendor details from any website. Build your product library effortlessly.",
+      "imageAlt": "AI Product Procurement showing web clipper extracting product specifications and details"
+    },
+    "procurementFlow": {
+      "title": "How AI procurement works",
+      "subtitle": "From discovery to library in seconds. Let AI handle the tedious work of product data entry.",
+      "steps": {
+        "browseAndClip": {
+          "title": "Browse & clip",
+          "description": "Use our browser extension to capture products from any vendor website with one click."
+        },
+        "aiExtractsDetails": {
+          "title": "AI extracts details",
+          "description": "Our AI instantly pulls specifications, pricing, dimensions, and vendor information."
+        },
+        "reviewAndOrganize": {
+          "title": "Review & organize",
+          "description": "Verify extracted data and organize products into collections and project libraries."
+        },
+        "addToProjects": {
+          "title": "Add to projects",
+          "description": "Seamlessly add products to client presentations and procurement lists."
+        }
+      }
+    },
+    "featureBlocks": {
+      "instantDataExtraction": {
+        "title": "Instant data extraction",
+        "description": "AI automatically captures product specifications, pricing, dimensions, materials, and vendor details from any website.",
+        "benefits": {
+          "automaticSpecSheets": "Automatic spec sheet generation",
+          "priceTracking": "Price tracking and updates",
+          "vendorContact": "Vendor contact information",
+          "productImages": "Product images and documentation"
+        },
+        "imageAlt": "AI extracting product details from a furniture website showing specifications and pricing"
+      },
+      "smartProductLibrary": {
+        "title": "Smart product library",
+        "description": "Build a comprehensive product database with AI-powered categorization, search, and recommendations.",
+        "benefits": {
+          "intelligentCategorization": "Intelligent product categorization",
+          "advancedSearch": "Advanced search and filtering",
+          "similarProducts": "Similar product suggestions",
+          "customTags": "Custom tags and collections"
+        },
+        "imageAlt": "Product library interface showing organized collections and AI-powered search"
+      },
+      "projectIntegration": {
+        "title": "Project integration",
+        "description": "Seamlessly add products to client presentations, mood boards, and procurement lists.",
+        "benefits": {
+          "oneClickAddition": "One-click project addition",
+          "automatedLists": "Automated procurement lists",
+          "clientPresentations": "Client presentation tools",
+          "budgetTracking": "Budget tracking integration"
+        },
+        "imageAlt": "Project procurement interface showing products added to client presentation"
+      }
+    },
+    "benefitsGrid": {
+      "title": "Why designers love AI procurement",
+      "subtitle": "Transform your sourcing workflow with intelligent automation that learns from your preferences.",
+      "items": {
+        "saveHoursDaily": {
+          "title": "Save hours daily",
+          "description": "Eliminate manual data entry and product research. Focus on design, not admin work."
+        },
+        "buildYourLibrary": {
+          "title": "Build your library",
+          "description": "Create a comprehensive product database that grows with every project."
+        },
+        "instantAccuracy": {
+          "title": "Instant accuracy",
+          "description": "AI ensures consistent, accurate product data across all your projects."
+        },
+        "universalCompatibility": {
+          "title": "Universal compatibility",
+          "description": "Works with any vendor website - from trade-only to retail platforms."
+        },
+        "professionalPresentations": {
+          "title": "Professional presentations",
+          "description": "Generate beautiful spec sheets and client presentations automatically."
+        },
+        "alwaysUpToDate": {
+          "title": "Always up-to-date",
+          "description": "Track price changes and availability updates across all your saved products."
+        }
+      }
+    },
+    "bigCta": {
+      "title": "Deliver beautiful projects with less effort",
+      "subtitle": "Specs, approvals, purchase orders and receipts in one connected workflow."
+    }
+  },
+  "platformInvoicing": {
+    "meta": {
+      "title": "Proposals & Invoicing for Interior Designers | Focuspilot",
+      "description": "Create professional proposals, automate invoicing, and get paid faster. AI-powered pricing recommendations and branded PDF generation for interior design studios.",
+      "ogDescription": "Create professional proposals and automate invoicing for your interior design studio.",
+      "twitterDescription": "Create professional proposals and automate invoicing for your interior design studio."
+    },
+    "hero": {
+      "badge": "Proposals & Invoicing",
+      "title": "From proposal to payment in minutes, not days",
+      "subtitle": "Create stunning proposals, generate professional invoices, and get paid faster with automated workflows that connect seamlessly to your projects and client portal.",
+      "imageAlt": "AI-powered proposal creation interface showing project details, scope definition, and pricing automation"
+    },
+    "workflow": {
+      "title": "How proposals and invoicing work in Focuspilot",
+      "subtitle": "A streamlined process that turns project briefs into professional proposals and seamless payment collection.",
+      "steps": {
+        "createProposal": {
+          "title": "Create proposal",
+          "description": "Use AI to draft professional proposals from project briefs with accurate scope and pricing."
+        },
+        "clientReviews": {
+          "title": "Client reviews",
+          "description": "Clients receive branded proposals in their portal with clear terms and easy approval process."
+        },
+        "generateInvoice": {
+          "title": "Generate invoice",
+          "description": "Approved proposals automatically become invoices with payment links and tracking."
+        },
+        "getPaid": {
+          "title": "Get paid",
+          "description": "Clients pay securely via Stripe with automatic receipt generation and accounting sync."
+        }
+      }
+    },
+    "aiProposals": {
+      "title": "AI-powered proposal creation",
+      "description": "Transform project briefs into professional proposals in minutes. Our AI understands design workflows and creates accurate scope definitions with market-rate pricing.",
+      "bullets": {
+        "detailedScope": "Generate detailed scope from project requirements",
+        "automaticPricing": "Automatic pricing based on project complexity and market rates",
+        "professionalTemplates": "Professional templates with your branding",
+        "versionControl": "Version control and revision tracking"
+      },
+      "imageAlts": {
+        "scopeDefinition": "AI scope definition interface showing automated project breakdown and phase planning",
+        "pricingCalculator": "AI pricing calculator showing automated cost estimation and fee structure"
+      }
+    },
+    "automatedInvoicing": {
+      "title": "Automated invoicing and payments",
+      "description": "Turn approved proposals into invoices instantly. Set up payment schedules, send automated reminders, and get paid faster with integrated Stripe payments.",
+      "bullets": {
+        "oneClickGeneration": "One-click invoice generation from proposals",
+        "paymentSchedules": "Automated payment schedules and milestone billing",
+        "stripeIntegration": "Stripe integration for secure card and ACH payments",
+        "xeroSync": "Automatic Xero sync for seamless accounting"
+      },
+      "imageAlts": {
+        "invoiceDashboard": "Invoice dashboard showing total invoices and purchase orders summary",
+        "invoiceButtons": "Invoice action buttons for creating and syncing with Xero",
+        "costTracking": "Project cost tracking with delivery progress and budget monitoring"
+      }
+    },
+    "clientExperience": {
+      "title": "Seamless client experience",
+      "description": "Clients receive proposals and invoices through their branded portal. They can review, approve, and pay—all in one professional experience that reflects your studio's quality.",
+      "bullets": {
+        "brandedPortal": "Branded client portal with your studio identity",
+        "oneClickApproval": "One-click proposal approval and e-signatures",
+        "securePayments": "Secure payment processing with instant receipts",
+        "realtimeUpdates": "Real-time status updates and notifications"
+      },
+      "imageAlt": "Client portal interface showing proposal review and approval workflow"
+    },
+    "benefitsGrid": {
+      "title": "Why studios choose Focuspilot for proposals and invoicing",
+      "subtitle": "Professional tools that save time, improve cash flow, and delight clients.",
+      "items": {
+        "fasterProposals": {
+          "title": "Faster proposals",
+          "description": "AI-powered proposal generation reduces creation time from hours to minutes while maintaining professional quality."
+        },
+        "betterCashFlow": {
+          "title": "Better cash flow",
+          "description": "Automated payment reminders and easy online payments help you get paid 40% faster on average."
+        },
+        "professionalBranding": {
+          "title": "Professional branding",
+          "description": "Fully customizable templates ensure every proposal and invoice reflects your studio's brand and quality."
+        },
+        "clientSatisfaction": {
+          "title": "Client satisfaction",
+          "description": "Streamlined approval process and transparent communication keep clients happy and engaged."
+        },
+        "automatedWorkflows": {
+          "title": "Automated workflows",
+          "description": "Set up payment schedules, reminders, and follow-ups that run automatically in the background."
+        },
+        "seamlessIntegration": {
+          "title": "Seamless integration",
+          "description": "Connect with Xero, Stripe, and your project management for a unified business workflow."
+        }
+      }
+    },
+    "imageBlock": {
+      "line1": "Your proposals, professional.",
+      "line2": "Your invoices, automated.",
+      "line3": "Your payments, faster.",
+      "imageAlt": "Modern luxury kitchen with marble surfaces and warm wood cabinetry"
+    },
+    "finalCta": {
+      "title": "Professional proposals and faster payments start here",
+      "subtitle": "Join studios using Focuspilot to streamline their proposal and invoicing workflows."
+    }
+  },
+  "aboutPage": {
+    "meta": {
+      "title": "About Focuspilot | Our Story & Mission",
+      "description": "Learn about Focuspilot - the team building AI-powered project management software for interior designers. Our mission is to give designers more time to design."
+    },
+    "title": "About Focuspilot",
+    "paragraph1": "We're building the modern operating system for interior design studios. Our mission is simple: give designers more time to design by automating the admin.",
+    "paragraph2": "Founded in 2026, Focuspilot combines deep industry knowledge with cutting-edge AI to create tools that actually understand how design studios work."
+  },
+  "careersPage": {
+    "meta": {
+      "title": "Careers at Focuspilot | Join Our Team",
+      "description": "Join the Focuspilot team. We're building AI-powered software for interior designers and looking for passionate people to help us grow."
+    },
+    "title": "Careers at Focuspilot",
+    "intro": "We're building tools that help interior designers focus on what they love. Join us if you're passionate about great software and beautiful design.",
+    "noOpenings": "We're a small, growing team. While we don't have open positions listed right now, we're always interested in hearing from talented people.",
+    "emailPrompt": "Send us an email at"
+  },
+  "customersPage": {
+    "meta": {
+      "title": "Customer Stories | Interior Designers Using Focuspilot",
+      "description": "See how interior design studios use Focuspilot to save time and grow their business. Real stories from real designers."
+    },
+    "hero": {
+      "badge": "Customer stories",
+      "title": "Loved by design studios",
+      "subtitle": "See how interior designers and architects use Focuspilot to save time, delight clients, and focus on what they do best."
+    },
+    "stats": {
+      "designStudios": "Design studios",
+      "savedPerWeek": "Saved per week",
+      "averageRating": "Average rating",
+      "retentionRate": "Retention rate"
+    },
+    "testimonials": {
+      "sarahMitchell": {
+        "quote": "Focuspilot has transformed how we manage projects. The AI features alone save us 10+ hours a week on admin work that used to consume my evenings.",
+        "author": "Sarah Mitchell",
+        "role": "Principal Designer",
+        "company": "Studio Mitchell",
+        "highlight": "10+ hours saved weekly"
+      },
+      "jamesChen": {
+        "quote": "Finally, software that actually understands how interior design studios work. The client portal is beautiful and our clients love being able to approve selections online.",
+        "author": "James Chen",
+        "role": "Creative Director",
+        "company": "Chen Interiors",
+        "highlight": "Clients love it"
+      },
+      "emmaWilliams": {
+        "quote": "We switched from Programa and haven't looked back. The Xero integration works flawlessly and procurement tracking has eliminated our spreadsheet chaos.",
+        "author": "Emma Williams",
+        "role": "Founder",
+        "company": "Williams Design Co",
+        "highlight": "Seamless Xero sync"
+      },
+      "marcusThompson": {
+        "quote": "The onboarding was smooth and the support team genuinely understands design practice. They've built features we didn't even know we needed.",
+        "author": "Marcus Thompson",
+        "role": "Senior Designer",
+        "company": "Thompson & Associates",
+        "highlight": "Built for designers"
+      },
+      "lisaPark": {
+        "quote": "Managing FF&E schedules used to be a nightmare. Now our whole team can see what's ordered, what's shipped, and what's installed in real-time.",
+        "author": "Lisa Park",
+        "role": "Operations Director",
+        "company": "Park Design Studio",
+        "highlight": "Real-time visibility"
+      },
+      "davidOkonkwo": {
+        "quote": "The AI proposal generator paid for the entire subscription in the first month. It's scarily accurate at estimating project timelines and costs.",
+        "author": "David Okonkwo",
+        "role": "Founding Partner",
+        "company": "Okonkwo Design",
+        "highlight": "ROI in first month"
+      }
+    },
+    "relatedLinks": {
+      "title": "See it for yourself",
+      "subtitle": "Explore the features that designers love.",
+      "projects": {
+        "title": "Projects",
+        "desc": "Manage timelines and tasks"
+      },
+      "clientPortal": {
+        "title": "Client Portal",
+        "desc": "Share and get approvals"
+      },
+      "aiFeatures": {
+        "title": "AI Features",
+        "desc": "Automate the admin"
+      },
+      "pricing": {
+        "title": "Pricing",
+        "desc": "Start free today"
+      }
+    },
+    "finalCta": {
+      "ariaLabel": "Get started",
+      "title": "Join 500+ design studios",
+      "subtitle": "Start your free trial and see why designers love Focuspilot."
+    }
+  },
+  "integrationsPage": {
+    "meta": {
+      "title": "Integrations | Connect Your Tools | Focuspilot",
+      "description": "Connect Focuspilot with Xero, QuickBooks, Stripe, Google Calendar, Gmail, Zapier, and more. All integrations included on every plan."
+    },
+    "hero": {
+      "badge": "Connect your tools",
+      "title": "Integrations",
+      "subtitle": "Connect Focuspilot with the tools you already use. Automate your workflow and keep everything in sync.",
+      "note": "All integrations included on every plan."
+    },
+    "grid": {
+      "title": "Available integrations",
+      "popular": "Popular",
+      "available": "Available"
+    },
+    "categories": {
+      "accounting": "Accounting",
+      "payments": "Payments",
+      "scheduling": "Scheduling",
+      "email": "Email",
+      "automation": "Automation",
+      "productivity": "Productivity",
+      "communication": "Communication"
+    },
+    "items": {
+      "xero": {
+        "description": "Two-way sync for invoices, payments, and expenses. Keep your books up to date automatically."
+      },
+      "quickbooks": {
+        "description": "Sync invoices and payments automatically. Works with QuickBooks Online."
+      },
+      "stripe": {
+        "description": "Accept client payments through the portal. Automatic reconciliation with invoices."
+      },
+      "googleCalendar": {
+        "description": "Sync project milestones, meetings, and deadlines to your calendar."
+      },
+      "outlookCalendar": {
+        "description": "Keep your Outlook calendar in sync with project timelines and appointments."
+      },
+      "gmail": {
+        "description": "Connect Gmail in Studio Integrations for AI Inbox — categorised email, summaries, and suggested actions in one workspace."
+      },
+      "zapier": {
+        "description": "Studio API keys, signed webhooks, and REST endpoints for projects and clients. Trigger Zaps on new projects, clients, and invoices."
+      },
+      "notion": {
+        "description": "Connect your Notion workspace, browse shared databases, and sync rows into Focuspilot projects — names and status stay up to date."
+      }
+    },
+    "comingSoon": {
+      "title": "Coming soon",
+      "subtitle": "We're always adding new integrations. Have a request? Let us know.",
+      "requestLink": "Request an integration"
+    },
+    "relatedLinks": {
+      "title": "Explore the platform",
+      "subtitle": "See how everything works together.",
+      "finance": {
+        "title": "Finance",
+        "desc": "Invoicing and accounting"
+      },
+      "clientPortal": {
+        "title": "Client Portal",
+        "desc": "Share and get approvals"
+      },
+      "knowledgeCentre": {
+        "title": "Knowledge Centre",
+        "desc": "Guides and tutorials"
+      },
+      "pricing": {
+        "title": "Pricing",
+        "desc": "Start free today"
+      }
+    },
+    "finalCta": {
+      "ariaLabel": "Get started",
+      "title": "Connect everything you use",
+      "subtitle": "All integrations are included on every plan. Start free and connect your tools."
+    }
+  },
+  "authForgotPasswordPage": {
+    "meta": {
+      "title": "Reset Password | Focuspilot",
+      "description": "Reset your Focuspilot account password."
+    },
+    "backToLogin": "Back to login",
+    "title": "Reset your password",
+    "subtitle": "Enter your email and we'll send you a link to reset your password.",
+    "email": "Email",
+    "sending": "Sending…",
+    "sendResetLink": "Send reset link",
+    "sendFailed": "Failed to send reset email. Please try again.",
+    "success": {
+      "title": "Check your email",
+      "message": "If an account exists for {email}, we sent a password reset link."
+    }
+  },
+  "authVerifyOtpPage": {
+    "meta": {
+      "title": "Verify Email | Focuspilot",
+      "description": "Verify your email address to complete Focuspilot registration."
+    },
+    "incorrectCode": "Incorrect code. Please try again.",
+    "resendFailed": "Failed to resend. Try again.",
+    "noSession": {
+      "title": "Session expired",
+      "message": "Your verification session has expired. Please register again.",
+      "backToRegistration": "Back to registration"
+    },
+    "success": {
+      "title": "Email verified",
+      "message": "Opening your studio…"
+    },
+    "entry": {
+      "title": "Check your email",
+      "message": "We sent a 6-digit code to {email}",
+      "verifyEmail": "Verify email",
+      "verifying": "Verifying…",
+      "noCode": "Didn't receive a code?",
+      "resendIn": "Resend in {time}",
+      "resendCode": "Resend code",
+      "useDifferentAccount": "Use a different account"
+    },
+    "hero": {
+      "titleLine1": "One step away",
+      "titleLine2": "from your studio",
+      "subtitle": "Confirm your email to unlock Focuspilot and start managing your design projects."
+    }
+  },
+  "authGoogleCallbackPage": {
+    "completingSignIn": "Completing sign-in…",
+    "invalidCallback": "Invalid callback. Please try signing in again.",
+    "backToSignIn": "Back to sign in",
+    "createAccount": "Create account",
+    "errors": {
+      "default": "Google sign-in failed. Please try again.",
+      "not_configured": "Google sign-in is not configured yet. Use email and password, or ask your admin to set GOOGLE_AUTH_* in the API.",
+      "account_exists": "An account with this email already exists. Sign in with your password, or use Google on the sign-in page.",
+      "email_not_verified": "Your Google email is not verified. Please verify it with Google and try again.",
+      "profile_incomplete": "Could not read your Google profile. Please try again.",
+      "access_denied": "Google sign-in was cancelled.",
+      "token_exchange_failed": "Could not complete Google sign-in. Please try again.",
+      "profile_fetch_failed": "Could not load your Google profile. Please try again.",
+      "invalid_state": "Sign-in session expired. Please try again.",
+      "no_code": "Google did not return an authorization code. Please try again."
+    }
+  },
+  "authShared": {
+    "logoAlt": "Focuspilot"
+  },
+  "platformAiEmail": {
+    "meta": {
+      "title": "AI Email & Communication Tools for Interior Designers | Focuspilot",
+      "description": "Unified inbox with AI-powered project routing, smart replies, and automatic email categorization. Keep all client communication organized by project.",
+      "ogDescription": "Unified inbox with AI-powered project routing for interior design studios.",
+      "twitterDescription": "Unified inbox with AI-powered project routing for interior design studios."
+    },
+    "hero": {
+      "badge": "Communication",
+      "title": "Unified inbox with project routing",
+      "subtitle": "Fully integrated with Gmail. Route project‑specific and supplier emails into Focuspilot, then share to the project and team with GDPR‑aware controls.",
+      "homeInbox": "Home inbox",
+      "projectMessages": "Project messages",
+      "gmailConnected": "Gmail connected",
+      "projectMessagesImageAlt": "Project messages feed with email and portal threads"
+    },
+    "howItWorks": {
+      "title": "Streamlined, collaborative communication",
+      "subtitle": "Nothing missed. Nothing dropped. One feed for emails, portal messages, contracts and AI alerts.",
+      "steps": {
+        "connectGmail": {
+          "title": "Connect Gmail",
+          "description": "Secure OAuth connection; keep your personal inbox intact."
+        },
+        "smartRouting": {
+          "title": "Smart routing",
+          "description": "Project detection by participants, subject and labels—plus vendor recognition."
+        },
+        "shareWithControl": {
+          "title": "Share with control",
+          "description": "Share to a project feed with one click; redact participants; revoke anytime."
+        }
+      }
+    },
+    "inbox": {
+      "share": "Share",
+      "shared": "Shared",
+      "shareToProject": "Share to project",
+      "shareAria": "Share to project",
+      "sharedAria": "Shared",
+      "toastTitle": "Shared to project",
+      "rows": {
+        "inGoodCompany": {
+          "from": "In Good Company",
+          "subject": "Proforma invoice • Brass floor lamp",
+          "tag": "Vendor"
+        },
+        "oakHouseClient": {
+          "from": "Client — Oak House",
+          "subject": "Re: Dining chair finishes (linen vs boucle)",
+          "tag": "Client"
+        },
+        "logistics": {
+          "from": "Logistics",
+          "subject": "Dispatch notice • Order 34821",
+          "tag": "Delivery"
+        },
+        "stonecraft": {
+          "from": "Stonecraft Ltd",
+          "subject": "Lead time update — marble slab",
+          "tag": "Vendor"
+        }
+      },
+      "tags": {
+        "vendor": "Vendor",
+        "client": "Client",
+        "delivery": "Delivery",
+        "design": "Design",
+        "email": "Email",
+        "shared": "Shared",
+        "linkedToTask": "Linked to task"
+      }
+    },
+    "bento": {
+      "unifiedInbox": {
+        "title": "Unified inbox"
+      },
+      "projectRouting": {
+        "title": "Project routing",
+        "description": "Emails are auto‑suggested to a project using participants, subject and labels. Confirm in one click.",
+        "exampleSubject": "“Dining chair finishes (linen vs boucle)”",
+        "projectLabel": "Project: Oak House",
+        "confirmRouting": "Confirm routing",
+        "change": "Change…"
+      },
+      "vendorTimeline": {
+        "title": "Vendor emails → PO timeline",
+        "description": "Delivery notices and lead time updates flow into Procurement and update PO status automatically.",
+        "items": {
+          "dispatch": {
+            "label": "Dispatch notice • Order 34821",
+            "status": "In transit"
+          },
+          "leadTime": {
+            "label": "Lead time update — marble slab",
+            "status": "ETA shifted +3d"
+          }
+        }
+      },
+      "aiSummary": {
+        "title": "AI summary & actions",
+        "summary": "Summary: Client prefers linen, requests sample. Approve pendant lights, confirm dispatch window.",
+        "actions": {
+          "orderSamples": "Create a task: Order fabric samples",
+          "createPo": "Create a PO: Pendant lights (approved)",
+          "replyDelivery": "Reply: Confirm delivery window"
+        },
+        "createTask": "Create task",
+        "createPo": "Create PO"
+      },
+      "shareControl": {
+        "title": "Share with control",
+        "description": "Share to a project feed with one click; redact participants; revoke anytime.",
+        "chips": {
+          "redact": "Redact personal emails",
+          "audit": "Audit trail",
+          "shareToFeed": "Share to: Project feed"
+        }
+      },
+      "unifiedMessages": {
+        "title": "Unified messages",
+        "description": "Email threads sit next to portal messages, RFIs and AI alerts — one place to collaborate.",
+        "imageAlt": "Project messages feed combining emails and portal threads"
+      }
+    },
+    "kpis": {
+      "emailsCentralised": {
+        "label": "Emails centralised",
+        "value": "100%"
+      },
+      "responseTime": {
+        "label": "Response time",
+        "value": "−38%",
+        "sub": "median vs baseline"
+      },
+      "sharedThreads": {
+        "label": "Shared threads",
+        "value": "4.2x",
+        "sub": "more visibility"
+      },
+      "autoActions": {
+        "label": "Auto actions",
+        "value": "2.8x",
+        "sub": "tasks/POs created"
+      }
+    },
+    "collaboration": {
+      "title": "One hub for studio communication",
+      "subtitle": "Your personal \"Home inbox\" stays yours. Share to the project when it matters - so teams, contractors, and clients stay aligned without forwarding chains.",
+      "bullets": {
+        "shareThreads": "Share email threads with one click",
+        "aiExtracts": "AI extracts next actions and drafts replies",
+        "linkMessages": "Link messages to tasks, POs, and documents instantly"
+      },
+      "mock": {
+        "projectTitle": "Oak House • Selections",
+        "projectFeed": "Project feed",
+        "fromClient": "From: Client",
+        "clientMessage": "“Let’s go with linen on the dining chairs.”",
+        "fromFocuspilot": "From: Focuspilot",
+        "aiSummary": "AI summary: Approve pendant lights; order fabric samples; confirm delivery window.",
+        "assign": "Assign",
+        "createPo": "Create PO",
+        "feedImageAlt": "Messages feed including emails, portal messages and AI alerts"
+      }
+    },
+    "finalCta": {
+      "title": "Email that works like your studio does",
+      "subtitle": "Unified inbox, project routing, supplier tracking and GDPR‑aware sharing—only in Focuspilot."
+    }
+  },
+  "platformProjects": {
+    "meta": {
+      "title": "Interior Design Project Management Software | Track Projects | Focuspilot",
+      "description": "Manage interior design projects from concept to completion. Track timelines, budgets, tasks & team collaboration. Purpose-built for interior design studios. Start free.",
+      "ogDescription": "Manage interior design projects from concept to completion. Track timelines, budgets, tasks & team collaboration. Purpose-built for interior design studios.",
+      "twitterDescription": "Manage interior design projects from concept to completion. Track timelines, budgets, tasks & team collaboration. Purpose-built for interior design studios.",
+      "ogImageAlt": "Focuspilot project management dashboard for interior designers"
+    },
+    "hero": {
+      "badge": "Project Management",
+      "title": "Interior design project management software",
+      "subtitle": "Plan phases, track tasks and timelines, manage budgets, approvals and communication in one calm workspace.",
+      "note": "Built for interior designers, architects, and design studios who want to replace spreadsheets and scattered tools with one calm workspace.",
+      "imageAlt": "Project overview dashboard showing KPIs, timeline, and procurement status for interior design project management"
+    },
+    "tabs": {
+      "navAria": "Project sections",
+      "sectionAria": "{label} section",
+      "overview": "Overview",
+      "tasks": "Tasks",
+      "calendar": "Calendar",
+      "messages": "Messages",
+      "docs": "Docs",
+      "procurement": "Procurement",
+      "finance": "Finance",
+      "contractors": "Contractors"
+    },
+    "sections": {
+      "overview": {
+        "title": "Everything in one live overview",
+        "description": "Keep status clear across teams budget, margin, tasks, POs, and milestones update in real time.",
+        "bullets": {
+          "kpis": "At‑a‑glance KPIs for each project",
+          "timeline": "Visual timeline for phases and installs",
+          "deepDive": "One click to deep‑dive into tasks, docs or procurement"
+        },
+        "imageAlt": "Chelsea Penthouse project overview showing budget utilization, profit margin, task completion, and project timeline with KPI cards and phase tracking"
+      },
+      "tasks": {
+        "title": "Plan phases. Track tasks. Stay on schedule.",
+        "description": "Kanban, list or Gantt view, assign owners, set priorities, and keep work moving with smart reminders.",
+        "bullets": {
+          "phaseBoards": "Phase boards with badges, dates and assignees",
+          "reminders": "Auto reminders and dependency warnings",
+          "aiSuggestions": "AI task suggestions from briefs and meetings"
+        },
+        "imageAlt": "Tasks Kanban board showing design phases with task cards, assignees, and progress tracking"
+      },
+      "calendar": {
+        "title": "Schedule installs, site visits, and milestones",
+        "description": "A studio calendar that reflects the reality of projects with agenda and timeline modes.",
+        "bullets": {
+          "studioView": "Studio‑wide view of events, deadlines and deliveries",
+          "attendees": "Assign attendees and rooms, log hours, track visits",
+          "sync": "Syncs with tasks and procurement statuses"
+        },
+        "imageAlt": "Studio calendar interface showing project events, deadlines, and team scheduling with KPIs and agenda view"
+      },
+      "messages": {
+        "title": "Keep clients and vendors aligned",
+        "description": "Centralise email, portal messages, and supplier threads with quick actions that drive work forward.",
+        "bullets": {
+          "inbox": "One inbox per project—searchable and organised",
+          "attachments": "Convert attachments into tasks, POs, or moodboard items",
+          "actionFilter": "Action‑required filter to clear blockers fast"
+        },
+        "imageAlt": "Project messages interface showing thread list and detailed conversation with action buttons for task creation and file management"
+      },
+      "docs": {
+        "title": "Drawings, photos, and files organised",
+        "description": "Keep documents where the work happens. Versioned, previewable, and linked to tasks and POs.",
+        "bullets": {
+          "templates": "Folder templates for repeatable organisation",
+          "uploads": "Drag‑and‑drop uploads with quick previews",
+          "recent": "Recent files and approvals at your fingertips"
+        },
+        "imageAlt": "Documents workspace showing organized folders for Design Concepts, Technical Drawings, and Procurement Documents with notes list and status indicators"
+      },
+      "procurement": {
+        "title": "From spec to PO to install",
+        "description": "Track lead times, deliveries, and approvals across every item - no spreadsheets required.",
+        "bullets": {
+          "totals": "Totals, quantities, costs and delivery progress",
+          "pos": "Generate POs, log receipts, and sync statuses",
+          "clientViews": "Client‑ready views for transparent selections"
+        },
+        "imageAlt": "Procurement items table showing product specifications, costs, delivery status, and Create PO functionality"
+      },
+      "finance": {
+        "title": "Proposals, invoices and payments automated",
+        "description": "Create branded docs, track due dates, and sync with accounting. Get paid faster.",
+        "bullets": {
+          "tracking": "Invoice and PO tracking in one table",
+          "filters": "Status chips and quick filters for action",
+          "sync": "Sync to Xero/QuickBooks to keep books tight"
+        },
+        "imageAlt": "Finance dashboard showing invoices and purchase orders table with payment status, amounts, and accounting sync options"
+      },
+      "contractors": {
+        "title": "Contractors, RFIs, and schedules in sync",
+        "description": "Keep site teams aligned with a secure, shared view across information requests, schedules, and items to install.",
+        "bullets": {
+          "rfi": "Request for Information (RFI) threads with attachments and approvals",
+          "schedule": "See the schedule and assigned work by phase, room, and day",
+          "shareItems": "Share procurement items with specs, install notes, and status"
+        },
+        "inviteContractor": "Invite a contractor",
+        "shareItem": "Share an item",
+        "imageAlt": "Contractor portal dashboard showing project KPIs, weekly schedule, recent activity, and quick actions for trade coordination"
+      }
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "Common questions about Focuspilot project management for interior designers.",
+      "items": {
+        "vsAsana": {
+          "question": "How is Focuspilot different from Asana or Monday?",
+          "answer": "Unlike generic project management tools, Focuspilot is purpose-built for interior designers and architects. It includes procurement tracking, client approval workflows, product libraries, and financial tools that Asana and Monday simply don't offer. Everything is designed around how design studios actually work."
+        },
+        "procurement": {
+          "question": "Does it handle procurement and purchase orders?",
+          "answer": "Yes. Focuspilot includes full procurement management with product libraries, supplier tracking, automated purchase orders, delivery scheduling, and client approval workflows. You can track every item from specification to installation."
+        },
+        "clientApprovals": {
+          "question": "Can clients approve items and pay invoices?",
+          "answer": "Absolutely. Your clients get a branded portal where they can review selections, approve or decline products with comments, view project progress, and pay invoices directly via Stripe. No more back-and-forth emails."
+        },
+        "smallStudios": {
+          "question": "Is Focuspilot suitable for small studios?",
+          "answer": "Yes, we're designed for studios of all sizes. Solo designers love having everything in one place, while larger teams benefit from collaboration features and role-based permissions. Our pricing scales with your team."
+        }
+      }
+    },
+    "relatedLinks": {
+      "title": "Connected to your entire workflow",
+      "subtitle": "Projects integrates seamlessly with the rest of the Focuspilot platform.",
+      "procurement": {
+        "title": "Procurement",
+        "desc": "Source products and manage vendors"
+      },
+      "finance": {
+        "title": "Finance",
+        "desc": "Track budgets and invoicing"
+      },
+      "clientPortal": {
+        "title": "Client Portal",
+        "desc": "Share updates and collect approvals"
+      },
+      "pricing": {
+        "title": "See Pricing",
+        "desc": "Start free with all features"
+      }
+    },
+    "finalCta": {
+      "title": "Run every project with clarity and control.",
+      "subtitle": "Project management, docs, procurement and billing designed for interior design studios."
+    }
+  },
+  "platformFinance": {
+    "meta": {
+      "title": "Interior Design Invoicing & Accounting Software | Xero Integration | Focuspilot",
+      "description": "Streamline interior design studio finances. Create invoices, track project profitability, sync with Xero & QuickBooks. Real-time budget vs actual tracking. Start free.",
+      "ogDescription": "Streamline interior design studio finances. Create invoices, track project profitability, sync with Xero & QuickBooks. Real-time budget vs actual tracking.",
+      "twitterDescription": "Streamline interior design studio finances. Create invoices, track project profitability, sync with Xero & QuickBooks.",
+      "ogImageAlt": "Focuspilot finance dashboard for interior design studios"
+    },
+    "hero": {
+      "badge": "Finance & Billing",
+      "title": "Finance & Invoicing Software for Interior Design Studios",
+      "subtitle": "Budgets, POs, invoices and cash flow in one place all connected to projects, the client portal, and accounting. Automate the busywork and keep profitability clear.",
+      "imageAlt": "Finance dashboard showing KPIs, invoices and cash flow",
+      "integratesWith": "Integrates with",
+      "stripeAlt": "Stripe payment processing integration for interior design invoicing",
+      "xeroAlt": "Xero accounting software integration for interior design finance"
+    },
+    "kpis": {
+      "title": "Clarity on cash flow, revenue and margins",
+      "description": "Stay on top of what matters: invoices issued and paid, upcoming POs, VAT, and projected runway all linked to projects and the studio view.",
+      "bullets": {
+        "cashFlow": "Real‑time cash flow with upcoming ins and outs",
+        "budgetVsActual": "Budget vs actual at project and studio level",
+        "reminders": "Automated payment reminders and notifications"
+      },
+      "tryAiAssistant": "Try the AI assistant",
+      "seeInvoices": "See invoices",
+      "tiles": {
+        "invoicesPaid": {
+          "label": "Invoices paid (30d)",
+          "value": "£48,320",
+          "sublabel": "+12% vs last month"
+        },
+        "outstanding": {
+          "label": "Outstanding",
+          "value": "£18,560",
+          "sublabel": "12 invoices • 7 overdue"
+        },
+        "posThisMonth": {
+          "label": "POs this month",
+          "value": "£26,410",
+          "sublabel": "On track"
+        },
+        "grossMargin": {
+          "label": "Gross margin (YTD)",
+          "value": "42%",
+          "sublabel": "+3 pts vs LY"
+        }
+      },
+      "chartImageAlt": "Finance dashboard showing revenue metrics, targets, variance, and YoY comparison charts"
+    },
+    "invoices": {
+      "title": "Invoices and payments automated, synced, paid",
+      "description": "Create invoices from estimates in one click, send them to the client portal, accept cards or ACH via Stripe, and sync every update to Xero automatically.",
+      "bullets": {
+        "xeroSync": "1‑click Xero sync for new and updated invoices",
+        "paymentLinks": "Payment links and reminders from the client portal",
+        "statusChips": "Status chips and aging to keep collections tight"
+      },
+      "generateWithAi": "Generate with AI",
+      "imageAlts": {
+        "summaryCards": "Invoice summary showing total invoices £425,000 and purchase orders £128,500",
+        "actionButtons": "Create Invoice and Sync with Xero action buttons",
+        "costTracking": "Project cost tracking showing total cost, delivery progress, and action buttons",
+        "invoiceList": "Invoice list showing amounts, status badges, and action dropdown menu"
+      }
+    },
+    "profitability": {
+      "title": "From budgets to real‑world profit",
+      "description": "Track budgets, approved spend and staff time to see accurate profitability by project and roll it up to the studio view.",
+      "bullets": {
+        "budgetView": "Budget, spend and committed POs in one view",
+        "timeTracking": "Time tracking for accurate project margins",
+        "studioProfit": "Studio profitability and trend analysis"
+      },
+      "timeTrackingNote": "Track time by phase and task for true costs",
+      "budgetImageAlt": "Budget analysis dashboard showing cost by category, monthly cost vs budget, vendor spend, and cost overruns",
+      "timeImageAlt": "Time tracking dashboard showing active timer, weekly hours breakdown, and recent project entries"
+    },
+    "aiAssistant": {
+      "title": "Your finance copilot, across every workflow",
+      "subtitle": "Ask questions about budgets, invoices, and cash flow. Draft, send, and sync faster than ever.",
+      "panelAria": "AI finance assistant",
+      "composerLabel": "Ask the AI finance assistant",
+      "placeholder": "Ask to draft an invoice, forecast cash flow, or send a reminder…",
+      "askAi": "Ask AI",
+      "askAiAria": "Ask AI",
+      "useSuggestionAria": "Use suggestion: {suggestion}",
+      "suggestions": {
+        "invoice": "Create an invoice for Oak House — 30% deposit from Phase 2 estimate",
+        "forecast": "Forecast cash flow for the next 60 days by project",
+        "reminder": "Send a payment reminder for INV-2053 (7 days overdue)",
+        "po": "Draft a PO for approved pendant lights and link to Project A"
+      },
+      "responses": {
+        "invoice": "Drafted invoice INV-3281 for Oak House • 30% deposit • £12,600\nItems pulled from: Phase 2 estimate\nStatus: Draft (unsent)\nNext: Send to client portal • Sync to Xero • Schedule reminder",
+        "reminder": "Reminder queued\nClient: Jane Smith • INV-2053 • £2,180 • 7 days overdue\nEmail + portal notification at 9:00 AM\nFollow up in 3 days if unpaid",
+        "default": "Cash flow forecast (next 60 days)\nIncoming: £86,400\nExpected spend (POs + payroll): £64,900\nProjection: Healthy\nTip: Close 2 pending approvals to improve Week 3 liquidity"
+      }
+    },
+    "relatedLinks": {
+      "title": "Connected to your studio workflow",
+      "subtitle": "Finance syncs with projects, procurement, and client payments.",
+      "projects": {
+        "title": "Projects",
+        "desc": "Track budgets by project phase"
+      },
+      "procurement": {
+        "title": "Procurement",
+        "desc": "POs flow into your accounts"
+      },
+      "clientPortal": {
+        "title": "Client Portal",
+        "desc": "Clients pay invoices online"
+      },
+      "pricing": {
+        "title": "See Pricing",
+        "desc": "Start free with all features"
+      }
+    },
+    "finalCta": {
+      "title": "Finance that keeps projects moving and profits clear",
+      "subtitle": "Xero and Stripe integrations, automated invoices and POs, and an AI copilot for speed."
+    }
+  },
+  "platformCRM": {
+    "meta": {
+      "title": "Interior Design CRM Software | Lead to Project Pipeline | Focuspilot",
+      "description": "Manage interior design leads, clients & proposals in one CRM built for designers. AI-powered proposals, pipeline tracking, seamless project conversion. Start free.",
+      "ogDescription": "Manage interior design leads, clients & proposals in one CRM built for designers. AI-powered proposals, pipeline tracking, seamless project conversion.",
+      "twitterDescription": "Manage interior design leads, clients & proposals in one CRM built for designers. AI-powered proposals, pipeline tracking.",
+      "ogImageAlt": "Focuspilot CRM dashboard for interior design studios"
+    },
+    "hero": {
+      "badge": "CRM for interior design studios",
+      "title": "Interior design CRM software",
+      "subtitle": "Centralise leads, clients, and suppliers. Track your pipeline from first inquiry to signed proposal and kick off every project with clarity.",
+      "note": "Built for interior designers and architects who want to win the right projects and nurture every client relationship.",
+      "seePipeline": "See pipeline",
+      "manageLeads": "Manage leads"
+    },
+    "featureLabel": "CRM",
+    "features": {
+      "leads": {
+        "title": "Lead capture that fits your studio",
+        "body": "Plug inquiries from your website, Instagram, referrals, or events straight into Focuspilot. Qualify faster with clear statuses, sources, and scores so your team knows where to focus.",
+        "bullets": {
+          "inbox": "Single inbox for new inquiries with source tracking.",
+          "statuses": "Custom lead statuses mapped to your sales process.",
+          "bulkImport": "Bulk actions and CSV import to onboard historical data."
+        },
+        "imageAlt": "Interior design CRM lead intake table showing source tracking, status chips, and contact details for studio management"
+      },
+      "pipeline": {
+        "title": "Pipeline you can drag, drop, and trust",
+        "body": "Move opportunities from New to Won with a pipeline designed for design studios see values, owners, and momentum at a glance.",
+        "bullets": {
+          "forecast": "Custom columns and deal values to forecast revenue.",
+          "dragDrop": "Drag‑and‑drop across stages; keyboard accessible.",
+          "views": "Switch between Board and Table views in one click."
+        },
+        "imageAlt": "Interior design sales pipeline Kanban board showing deal stages from lead to won with project cards and revenue values"
+      },
+      "contacts": {
+        "title": "Clients, contacts, and supplier organised",
+        "body": "Keep every relationship up to date. Consolidate client details, specifiers, vendors, and trades with the notes, emails, and files that matter.",
+        "bullets": {
+          "types": "Flexible types: Lead, Client, Partner, Supplier, Trade.",
+          "profiles": "Rich profiles with email, phone, and linked projects.",
+          "bulkActions": "Bulk actions for outreach and GDPR-friendly exports."
+        },
+        "imageAlt": "Interior design CRM contacts directory showing client types, company names, and quick action buttons for communication"
+      },
+      "proposals": {
+        "title": "AI-powered proposals that win work",
+        "body": "Create intelligent, data-driven proposals in minutes. Our AI wizard analyses your brief and historic data to generate line-by-line costings organised by phases and milestones ready to download as branded PDFs.",
+        "bullets": {
+          "scopeDefinition": "AI scope definition from brief with smart enhancement suggestions.",
+          "pricing": "Historic data analysis for accurate pricing recommendations.",
+          "milestones": "Phase-based milestone structure with detailed line items.",
+          "pdf": "Branded PDF generation ready to send to clients."
+        },
+        "imageAlt": "AI-powered interior design proposal wizard showing detailed pricing breakdown with line items, fees, and AI assistant suggestions"
+      }
+    },
+    "aiProposal": {
+      "badge": "AI Proposal Wizard",
+      "title": "From brief to branded proposal in minutes",
+      "subtitle": "Let AI transform your project briefs into comprehensive, accurately-priced proposals with detailed scope definitions and milestone-based pricing.",
+      "scopeTitle": "Intelligent scope definition",
+      "scopeDescription": "Start with a basic brief and watch AI enhance it into a comprehensive scope of work. Choose from templates, write custom content, or let AI generate detailed project phases with professional formatting.",
+      "scopeBullets": {
+        "enhancement": "AI enhancement of basic project briefs",
+        "formatting": "Professional markdown formatting for proposals",
+        "templates": "Template library with custom options"
+      },
+      "scopeImageAlt": "AI scope definition interface for interior design proposals with markdown formatting, project phases, and deliverables outline"
+    },
+    "onboarding": {
+      "title": "From proposal to project in minutes",
+      "subtitle": "Use our onboarding wizard to generate the essentials for every job, so designers spend less time setting up, and more time designing.",
+      "steps": {
+        "createProject": {
+          "title": "Create project",
+          "text": "Choose a template for residential, commercial, or staging."
+        },
+        "inviteStakeholders": {
+          "title": "Invite stakeholders",
+          "text": "Clients, contractors, and partners in one secure place."
+        },
+        "seedDetails": {
+          "title": "Seed details",
+          "text": "Rooms, budget, styles, and initial milestones auto‑generated."
+        },
+        "automations": {
+          "title": "Automations",
+          "text": "Kickstart tasks, approvals, and messages with AI suggestions."
+        }
+      }
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "Common questions about Focuspilot CRM for interior designers.",
+      "items": {
+        "vsHubspot": {
+          "question": "How is this different from HubSpot or Salesforce?",
+          "answer": "Generic CRMs require extensive customisation to work for design studios. Focuspilot CRM is built specifically for interior designers with pipeline stages, contact types, and proposal tools that match how design businesses actually operate. No complex setup required."
+        },
+        "proposals": {
+          "question": "Can I create proposals and quotes?",
+          "answer": "Yes. Our AI-powered proposal wizard generates professional, branded proposals from your project brief. It analyses your historic data for accurate pricing and creates detailed scope documents with phase-based milestones ready to download as PDFs."
+        },
+        "projectIntegration": {
+          "question": "Does it integrate with project management?",
+          "answer": "Absolutely. When you win a deal, you can convert it to a project with one click. All client information, scope details, and proposal data flow seamlessly into your project workspace. No duplicate data entry."
+        },
+        "leadSources": {
+          "question": "Can I track where my leads come from?",
+          "answer": "Yes. Focuspilot tracks lead sources automatically—whether from your website, Instagram, referrals, or events. See which channels bring your best clients and focus your marketing efforts accordingly."
+        }
+      }
+    },
+    "finalCta": {
+      "ariaLabel": "Get started",
+      "title": "Bring clarity to your studio's relationships.",
+      "subtitle": "Capture leads, move deals forward, and launch projects - seamlessly connected to approvals, procurement, and finance."
+    }
+  },
+  "platformClientPortal": {
+    "meta": {
+      "title": "Interior Design Client Portal Software | Approvals & Payments | Focuspilot",
+      "description": "Give clients a branded portal to approve selections, track deliveries & pay invoices. One-click approvals, real-time updates, integrated payments via Stripe. Try free.",
+      "ogDescription": "Give clients a branded portal to approve selections, track deliveries & pay invoices. One-click approvals, real-time updates, integrated payments via Stripe. Try free.",
+      "twitterDescription": "Give clients a branded portal to approve selections, track deliveries & pay invoices. One-click approvals, real-time updates.",
+      "ogImageAlt": "Focuspilot client portal for interior design approvals"
+    },
+    "hero": {
+      "badge": "Client Collaboration",
+      "title": "Client portal for interior designers",
+      "subtitle": "Review selections, message your designer, and view invoices in one place. Approve or decline products and ideas with comments so everyone stays in sync.",
+      "note": "Built for design studios who want to give clients a premium, branded experience for approvals and collaboration."
+    },
+    "kpis": {
+      "awaitingApproval": {
+        "label": "Awaiting approval",
+        "value": "2"
+      },
+      "messages": {
+        "label": "Messages",
+        "value": "12",
+        "sub": "+2 new"
+      },
+      "invoices": {
+        "label": "Invoices",
+        "value": "2",
+        "sub": "1 unpaid"
+      },
+      "deliveries": {
+        "label": "Deliveries",
+        "value": "3",
+        "sub": "in transit"
+      }
+    },
+    "approvals": {
+      "title": "Selections to review",
+      "subtitle": "Approve or decline products and ideas. Leave comments and questions—your designer is notified instantly.",
+      "chips": {
+        "linkedToProject": "Linked to project",
+        "notifiesDesigner": "Notifies your designer",
+        "keepsHistory": "Keeps a history"
+      }
+    },
+    "status": {
+      "approved": "Approved",
+      "declined": "Declined",
+      "awaitingDecision": "Awaiting decision",
+      "paid": "Paid",
+      "unpaid": "Unpaid"
+    },
+    "approvalCard": {
+      "imageAlt": "{title} - product selection for interior design project approval",
+      "commentLabel": "Comment (optional)",
+      "commentPlaceholder": "Share thoughts, changes or alternatives you'd prefer…",
+      "approve": "Approve",
+      "decline": "Decline"
+    },
+    "demo": {
+      "approvals": {
+        "chandelier": {
+          "id": "A-02",
+          "title": "Orbital Brass Chandelier",
+          "room": "Dining",
+          "vendor": "LUMINA DESIGN",
+          "price": "£1,450"
+        },
+        "art": {
+          "id": "A-03",
+          "title": "Abstract Canvas Art",
+          "room": "Living Room",
+          "vendor": "DECO ART",
+          "price": "£890"
+        }
+      },
+      "messages": {
+        "designer": {
+          "who": "Designer",
+          "text": "Uploaded final pendant light options",
+          "meta": "2h ago",
+          "tag": "Design"
+        },
+        "client": {
+          "who": "You",
+          "text": "We like the linen chairs — approved",
+          "meta": "1d ago",
+          "tag": "Client"
+        },
+        "vendor": {
+          "who": "Vendor",
+          "text": "Dispatch notice • Order 34821",
+          "meta": "2d ago",
+          "tag": "Delivery"
+        }
+      },
+      "invoices": {
+        "phase2Deposit": {
+          "id": "2053",
+          "title": "Phase 2 deposit",
+          "amount": "2,180"
+        },
+        "approvedPendants": {
+          "id": "1972",
+          "title": "Approved pendants",
+          "amount": "1,260"
+        }
+      }
+    },
+    "clientView": {
+      "title": "Client view: simple, branded, and secure",
+      "subtitle": "Emails, procurement 1‑click approvals, and messaging all from a customisable client portal, accessible via a simple magic link.",
+      "imageAlt": "Client portal dashboard showing project hero, KPIs and approval actions",
+      "chips": {
+        "magicLinkAccess": "Magic link access",
+        "oneClickApprovals": "1‑click approvals",
+        "brandedExperience": "Branded experience"
+      }
+    },
+    "messages": {
+      "title": "Messages and project updates",
+      "subtitle": "One shared feed for updates, files and approvals. Email and portal messages live together so nothing is missed.",
+      "bullets": {
+        "postReply": "Post and reply right from the portal",
+        "deliveryUpdates": "Delivery updates appear automatically",
+        "aiSummaries": "AI summaries keep everyone on the same page"
+      },
+      "snapshotTitle": "Messages & updates",
+      "imageAlt": "Messages workspace with threads, AI key points and next steps"
+    },
+    "invoices": {
+      "title": "Invoices & payments",
+      "subtitle": "View, download and pay securely. Everything stays in sync with your project and approvals.",
+      "chips": {
+        "stripeSecured": "Stripe secured",
+        "pdfCopies": "PDF copies",
+        "statusUpdates": "Status updates"
+      },
+      "tags": {
+        "portal": "Portal",
+        "invoice": "Invoice"
+      },
+      "downloadPdf": "Download PDF",
+      "payNow": "Pay now",
+      "viewPdf": "View PDF"
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "Common questions about the Focuspilot client portal.",
+      "items": {
+        "branding": {
+          "question": "Can I customise the portal with my branding?",
+          "answer": "Yes. The client portal displays your studio's logo, colours, and branding. Your clients see a professional, branded experience that feels like an extension of your business—not a generic third-party tool."
+        },
+        "approveSelections": {
+          "question": "How do clients approve products and selections?",
+          "answer": "Clients can view selections organised by room or category, then approve or decline each item with a single click. They can add comments to explain their decisions, and you're notified instantly. No more email chains or lost feedback."
+        },
+        "payInvoices": {
+          "question": "Can clients pay invoices through the portal?",
+          "answer": "Absolutely. Clients can view all invoices, see payment history, and pay directly via Stripe with credit card or bank transfer. You get paid faster, and clients appreciate the convenience."
+        },
+        "secure": {
+          "question": "Is the portal secure?",
+          "answer": "Yes. Each client has secure, password-protected access to only their projects. All data is encrypted, and you control exactly what information clients can see. Enterprise-grade security with a consumer-friendly experience."
+        }
+      }
+    },
+    "related": {
+      "title": "Connected to your studio operations",
+      "subtitle": "Client Portal works seamlessly with projects, procurement, and finance.",
+      "items": {
+        "projects": {
+          "title": "Projects",
+          "description": "Share progress with clients"
+        },
+        "procurement": {
+          "title": "Procurement",
+          "description": "Approvals flow to purchasing"
+        },
+        "finance": {
+          "title": "Finance",
+          "description": "Payments sync automatically"
+        },
+        "pricing": {
+          "title": "See Pricing",
+          "description": "Start free with all features"
+        }
+      }
+    },
+    "finalCta": {
+      "title": "A calmer way to collaborate with clients",
+      "subtitle": "Approvals, messages and invoices—connected to procurement and your project plan."
+    },
+    "toast": {
+      "approved": "Approved",
+      "declined": "Declined",
+      "noteWithComment": "Your note: \"{comment}\"",
+      "selectionStatus": "Selection {status}."
+    }
+  },
+  "platformProcurement": {
+    "meta": {
+      "title": "FF&E Procurement Software for Interior Designers | Focuspilot",
+      "description": "Streamline FF&E procurement with AI-powered product sourcing. Auto-generate POs, track deliveries, manage vendors. 94% on-time delivery rate. Try free for 3 months.",
+      "ogDescription": "Streamline FF&E procurement with AI-powered product sourcing. Auto-generate POs, track deliveries, manage vendors. 94% on-time delivery rate. Try free for 3 months.",
+      "twitterDescription": "Streamline FF&E procurement with AI-powered product sourcing. Auto-generate POs, track deliveries, manage vendors.",
+      "ogImageAlt": "Focuspilot procurement dashboard for interior designers"
+    },
+    "hero": {
+      "badge": "Procurement & Purchasing",
+      "title": "FF&E Procurement & Purchasing Software for Interior Designers",
+      "subtitle": "Build a product library, collect client approvals, and create purchase orders that stay in sync with your projects.",
+      "images": {
+        "loungeAlt": "Boucle lounge chair with approved status for interior design procurement",
+        "centerAlt": "Modern interior design room scene with lounge chair and brass floor lamp showcasing procurement workflow",
+        "lampAlt": "Brass floor lamp with approved status for interior design specification"
+      }
+    },
+    "kpis": {
+      "onTimeDeliveries": {
+        "label": "On time deliveries",
+        "value": "94%"
+      },
+      "posAutoGenerated": {
+        "label": "POs auto generated",
+        "value": "1,204"
+      },
+      "approvedSelections": {
+        "label": "Approved selections",
+        "value": "3,872"
+      },
+      "vendorsTracked": {
+        "label": "Vendors tracked",
+        "value": "212"
+      }
+    },
+    "status": {
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "aiImport": {
+      "sectionTitle": "Add products with AI from any URL",
+      "sectionSubtitle": "Paste a link to a product page and let AI pull the specs, images, pricing and vendor details into your library.",
+      "demoAria": "AI product import demonstration",
+      "productUrlLabel": "Product URL",
+      "urlPlaceholder": "Paste a product URL",
+      "aiTitle": "AI",
+      "buttons": {
+        "working": "Working...",
+        "imported": "Imported",
+        "addWithAi": "Add with AI"
+      },
+      "loadingAria": "Loading product information",
+      "badge": "AI import",
+      "sourceLabel": "Source: {domain}",
+      "demoUrl": "https://www.myluxinterior.com/chair",
+      "product": {
+        "title": "Arc Marble Table",
+        "description": "Sculptural, ribbed base with soft curves and a natural finish — a statement piece for dining or living.",
+        "price": "£1,290",
+        "vendor": "My Lux Interior",
+        "imageAlt": "Arc Marble Table - AI imported product showing sculptural ribbed base with natural finish"
+      },
+      "specLabels": {
+        "material": "Material",
+        "finish": "Finish",
+        "dimensions": "Dimensions",
+        "leadTime": "Lead time"
+      },
+      "specValues": {
+        "material": "Solid oak",
+        "finish": "Natural",
+        "dimensions": "W 560 x D 600 x H 820 mm",
+        "leadTime": "6 to 8 weeks"
+      },
+      "addToLibrary": "Add to library",
+      "createPo": "Create PO"
+    },
+    "features": {
+      "sectionAria": "Procurement features",
+      "learnMore": "Learn more",
+      "specSheets": {
+        "title": "Specification sheets",
+        "desc": "One place for dimensions, finishes, supplier links and room context.",
+        "imgAlt": "Specification sheets interface for interior design products"
+      },
+      "approvals": {
+        "title": "Approvals",
+        "desc": "Collect selections and sign off with a full change history.",
+        "imgAlt": "Client approval interface for interior design selections"
+      },
+      "purchaseOrders": {
+        "title": "Purchase orders",
+        "desc": "Create POs from specs and keep statuses in sync.",
+        "imgAlt": "Purchase order management table for interior design procurement"
+      },
+      "vendorsDeliveries": {
+        "title": "Vendors and deliveries",
+        "desc": "Supplier contacts, quotes and delivery windows linked to your schedule.",
+        "imgAlt": "Vendor and delivery tracking dashboard for interior design projects"
+      },
+      "receipts": {
+        "title": "Receipts",
+        "desc": "Log receipts and install dates. Catch delays early.",
+        "imgAlt": "Receipt tracking interface for interior design procurement"
+      },
+      "linkToBudget": {
+        "title": "Link to budget",
+        "desc": "Tie every item to budgets and client invoices without spreadsheets.",
+        "imgAlt": "Budget linking interface connecting procurement to project finances"
+      }
+    },
+    "clientApprovals": {
+      "title": "Client Approvals",
+      "subtitle": "Easily manage and track client approvals for your interior design projects.",
+      "thumbnailAlt": "{title} - {vendor} product for {room}",
+      "items": {
+        "brassLamp": {
+          "title": "Brass Floor Lamp",
+          "room": "Living Room",
+          "vendor": "In Good Company",
+          "code": "DL-01"
+        },
+        "boucleChair": {
+          "title": "Boucle Lounge Chair",
+          "room": "Library",
+          "vendor": "Carlisle Brem",
+          "code": "PL-02"
+        }
+      }
+    },
+    "library": {
+      "sectionAria": "Library cards",
+      "cardImageAlt": "{title} by {brand} - {tag} for interior design projects",
+      "items": {
+        "chandelier": {
+          "title": "Orbital Brass Chandelier",
+          "brand": "LUMINA DESIGN",
+          "price": "£1,450",
+          "tag": "Lighting"
+        },
+        "canvasArt": {
+          "title": "Abstract Canvas Art",
+          "brand": "CONTEMPORARY ART CO",
+          "price": "£890",
+          "tag": "Accessories"
+        },
+        "accentChair": {
+          "title": "Mid-Century Accent Chair",
+          "brand": "DANISH MODERN",
+          "price": "£1,650",
+          "tag": "Furniture"
+        }
+      }
+    },
+    "relatedLinks": {
+      "title": "Works with your entire workflow",
+      "subtitle": "Procurement connects to projects, finance, and client approvals.",
+      "projects": {
+        "title": "Projects",
+        "desc": "Link products to project phases"
+      },
+      "finance": {
+        "title": "Finance",
+        "desc": "Track costs and margins"
+      },
+      "clientPortal": {
+        "title": "Client Portal",
+        "desc": "Collect selection approvals"
+      },
+      "pricing": {
+        "title": "See Pricing",
+        "desc": "Start free with all features"
+      }
+    },
+    "finalCta": {
+      "title": "Specification and purchasing, connected to your projects",
+      "subtitle": "No more manual spreadsheets or lost invoices. Focuspilot ensures materials arrive on time, every time."
+    }
+  },
+  "blogPage": {
+    "meta": {
+      "title": "Blog | Focuspilot — Interior Design Studio Insights",
+      "description": "Tips, guides, and insights for interior design studios. Project management, procurement, client collaboration, and business growth."
+    },
+    "moreArticles": "More articles",
+    "emptyCategory": "No articles in this category yet.",
+    "postMeta": {
+      "titleSuffix": " | Focuspilot Blog",
+      "defaultDescription": "Read this article on the Focuspilot blog.",
+      "notFoundTitle": "Post Not Found"
+    },
+    "breadcrumb": {
+      "home": "Home",
+      "blog": "Blog"
+    }
+  },
+  "blogCategories": {
+    "all": "All",
+    "studio-operations": "Studio Operations",
+    "procurement": "Procurement",
+    "client-experience": "Client Experience",
+    "finance": "Finance",
+    "ai-automation": "AI & Automation",
+    "growth": "Growth",
+    "workflow": "Workflow",
+    "studio-management": "Studio Management",
+    "industry-trends": "Industry Trends",
+    "best-practices": "Best Practices",
+    "filterBy": "Filter by:"
+  },
+  "blogHero": {
+    "badge": "Studio insights",
+    "title": "Insights for modern design studios",
+    "subtitle": "Practical guides on workflow, studio operations, and industry trends—written for teams who run projects, procurement, and client approvals in one place.",
+    "featuredLabel": "Featured",
+    "readArticle": "Read article",
+    "breadcrumbHome": "Home",
+    "breadcrumbBlog": "Blog",
+    "statsArticles": "Articles",
+    "statsTopics": "Topics",
+    "statsUpdated": "Updated",
+    "statsUpdatedValue": "Weekly"
+  },
+  "blogPost": {
+    "backToBlog": "Back to Blog",
+    "shareArticle": "Share this article:",
+    "relatedArticles": "Related articles",
+    "readTime": "{minutes} min read",
+    "publishedOn": "Published {date}",
+    "authorRole": "Author",
+    "shareTwitter": "Share on Twitter",
+    "shareLinkedIn": "Share on LinkedIn",
+    "shareFacebook": "Share on Facebook",
+    "copyLink": "Copy link",
+    "tagged": "Tagged:",
+    "continueReading": "Continue Reading",
+    "finalCtaTitle": "Ready to transform your studio?",
+    "finalCtaSubtitle": "Join thousands of designers streamlining their workflows with Focuspilot."
+  },
+  "resourcesTemplates": {
+    "meta": {
+      "title": "Studio Templates | Free Downloads | Focuspilot",
+      "description": "Download free interior design studio templates—proposals, contracts, briefs, and procurement sheets. Customise or automate in Focuspilot."
+    },
+    "hero": {
+      "badge": "Free downloads",
+      "title": "Studio templates",
+      "subtitle": "Proposals, contracts, briefs, and procurement sheets—download outlines you can customise, or run them automatically in Focuspilot with AI."
+    },
+    "categories": {
+      "All": "All",
+      "Proposals": "Proposals",
+      "Contracts": "Contracts",
+      "Briefs": "Briefs",
+      "Procurement": "Procurement",
+      "Finance": "Finance",
+      "Planning": "Planning",
+      "Discovery": "Discovery"
+    },
+    "popular": "Popular",
+    "download": "Download",
+    "preview": "Preview",
+    "cta": {
+      "title": "Templates that update themselves",
+      "subtitle": "In Focuspilot, proposals pull from your CRM, FF&E links to procurement, and invoices sync to finance—no copy-paste between spreadsheets.",
+      "startFree": "Start for free",
+      "aiPlaybook": "AI Playbook"
+    },
+    "templates": {
+      "design-proposal": {
+        "title": "Design Proposal Template",
+        "description": "Professional proposal with scope, phased deliverables, fee structure, and terms—ready for residential or commercial kickoffs.",
+        "format": "Plain text outline",
+        "includes": {
+          "executiveSummary": "Executive summary",
+          "scopeExclusions": "Scope & exclusions",
+          "feeOptions": "Fee options",
+          "timelinePayment": "Timeline & payment schedule"
+        },
+        "preview": {
+          "projectOverview": "Project overview and design intent",
+          "phaseBreakdown": "Phase breakdown: Concept → DD → Procurement → Install",
+          "feeDepositTerms": "Fixed-fee and hourly options with deposit terms"
+        }
+      },
+      "letter-of-agreement": {
+        "title": "Letter of Agreement",
+        "description": "Contract template covering services, fees, revisions, liability, and termination—structured for interior design studios.",
+        "format": "Plain text outline",
+        "includes": {
+          "servicesDeliverables": "Services & deliverables",
+          "feesExpenses": "Fees & expenses",
+          "revisionPolicy": "Revision policy",
+          "legalClauses": "Legal clauses"
+        },
+        "preview": {
+          "partiesDate": "Parties, project address, and effective date",
+          "designerObligations": "Designer obligations and client responsibilities",
+          "paymentMilestones": "Payment milestones tied to project phases"
+        }
+      },
+      "project-brief": {
+        "title": "Project Brief Template",
+        "description": "Capture budget, timeline, style direction, and functional requirements before concept work begins.",
+        "format": "Plain text outline",
+        "includes": {
+          "goalsConstraints": "Goals & constraints",
+          "spaceProgram": "Space program",
+          "budgetBands": "Budget bands",
+          "decisionMakers": "Decision-makers"
+        },
+        "preview": {
+          "lifestyleReferences": "Lifestyle and aesthetic references",
+          "mustHaves": "Must-haves vs nice-to-haves",
+          "approvalProcess": "Approval process and key dates"
+        }
+      },
+      "ffe-schedule": {
+        "title": "FF&E Schedule Template",
+        "description": "Track specifications, suppliers, lead times, and room assignments in a studio-standard procurement sheet.",
+        "format": "Plain text outline",
+        "includes": {
+          "roomArea": "Room / area",
+          "itemSpec": "Item spec",
+          "supplierSku": "Supplier & SKU",
+          "statusEta": "Status & ETA"
+        },
+        "preview": {
+          "columnHeaders": "Column headers for qty, dimensions, finish, and cost",
+          "procurementStatus": "Procurement status: specified → ordered → delivered",
+          "clientApprovalFlag": "Client approval flag per line item"
+        }
+      },
+      "client-questionnaire": {
+        "title": "Client Questionnaire",
+        "description": "Discovery questions for lifestyle, budget comfort, and communication preferences—use before the first workshop.",
+        "format": "Plain text outline",
+        "includes": {
+          "householdProfile": "Household profile",
+          "styleInspiration": "Style & inspiration",
+          "budgetSensitivity": "Budget sensitivity",
+          "projectLogistics": "Project logistics"
+        },
+        "preview": {
+          "dailyRoutines": "Daily routines and entertaining needs",
+          "referencePrompts": "Pinterest / reference image prompts",
+          "contactCadence": "Preferred contact cadence and channels"
+        }
+      },
+      "invoice": {
+        "title": "Invoice Template",
+        "description": "Invoice layout with line items, VAT notes, payment terms, and bank details—aligned with Focuspilot finance workflows.",
+        "format": "Plain text outline",
+        "includes": {
+          "brandingBlock": "Studio branding block",
+          "lineItemsTax": "Line items & tax",
+          "paymentTerms": "Payment terms",
+          "remittanceDetails": "Remittance details"
+        },
+        "preview": {
+          "projectReference": "Project reference and milestone description",
+          "invoiceVariants": "Deposit vs progress vs final invoice variants",
+          "latePaymentNotes": "Late payment and currency notes"
+        }
+      }
+    },
+    "formats": {
+      "plainTextOutline": "Plain text outline"
+    },
+    "detail": {
+      "notFoundTitle": "Template not found",
+      "metaTitleSuffix": " | Free Template | Focuspilot",
+      "whatsIncluded": "What's included",
+      "previewStructure": "Preview structure"
+    }
+  },
+  "resourcesAiPlaybook": {
+    "meta": {
+      "title": "AI Playbook for Interior Design Studios | Focuspilot",
+      "description": "Practical AI workflows for interior design studios: email, procurement, proposals, and governance. Prompts and guardrails you can use today."
+    },
+    "hero": {
+      "badge": "Resources",
+      "title": "AI Playbook for design studios",
+      "subtitle": "Practical workflows, prompts, and guardrails to use AI across email, procurement, proposals, and delivery—without losing your studio's voice.",
+      "exploreAi": "Explore AI features"
+    },
+    "startFree": "Start for free",
+    "viewTemplates": "View templates",
+    "quickWinsTitle": "Quick wins this week",
+    "learnMore": "Learn more",
+    "onThisPage": "On this page",
+    "promptLibrary": "Prompt library",
+    "copy": "Copy",
+    "copied": "Copied",
+    "finalCta": {
+      "title": "Run the playbook inside Focuspilot",
+      "subtitle": "AI email routing, procurement assistance, and proposal drafts—connected to your projects, not a blank chat window.",
+      "startFree": "Start for free",
+      "browseTemplates": "Browse templates"
+    },
+    "navAriaLabel": "Playbook chapters",
+    "quickWins": {
+      "inboxSummary": {
+        "title": "Summarise yesterday's inbox",
+        "body": "Get a bulleted list of client decisions, supplier delays, and tasks—grouped by project."
+      },
+      "phasedProposal": {
+        "title": "Draft a phased proposal",
+        "body": "Turn a brief into scope sections you can paste into your proposal template in minutes."
+      },
+      "ffeSchedule": {
+        "title": "Refresh the FF&E schedule",
+        "body": "Extract specs from URLs and flag long-lead items before they block install."
+      }
+    },
+    "chapters": {
+      "start": {
+        "title": "Start here",
+        "summary": "Set guardrails before you automate—define what AI may draft, what humans must approve, and where project data lives.",
+        "steps": {
+          "sourceOfTruth": {
+            "title": "Name one source of truth",
+            "body": "Keep briefs, selections, and approvals in your project tool. AI outputs should reference that record, not a loose chat thread."
+          },
+          "humanReview": {
+            "title": "Default to human review",
+            "body": "Use AI for first drafts: emails, task lists, spec summaries. A principal or PM approves anything client-facing."
+          },
+          "logDecisions": {
+            "title": "Log decisions on the project",
+            "body": "When AI suggests an alternate product or timeline shift, capture the decision in the project so procurement and finance stay aligned."
+          }
+        },
+        "prompts": {
+          "projectContext": {
+            "label": "Project context block",
+            "text": "You are assisting an interior design studio. Project: [name]. Phase: [concept/DD/procurement]. Budget band: [range]. Style: [keywords]. Only use facts from the notes below."
+          }
+        }
+      },
+      "email": {
+        "title": "Email & client comms",
+        "summary": "Turn inbox noise into routed actions—summaries, reply drafts, and approval reminders tied to the right project.",
+        "steps": {
+          "routeByProject": {
+            "title": "Route by project",
+            "body": "Tag supplier threads separately from client threads. AI summaries should state which milestone or room they affect."
+          },
+          "draftDontSend": {
+            "title": "Draft, don't send",
+            "body": "Generate empathetic, concise replies with clear next steps and dates. Designer edits tone before send."
+          },
+          "surfaceBlockers": {
+            "title": "Surface blockers",
+            "body": "Ask AI to list open questions, missing selections, and overdue approvals from the last week of email."
+          }
+        },
+        "prompts": {
+          "clientUpdate": {
+            "label": "Client update email",
+            "text": "Draft a weekly client update for [project]. Tone: calm, professional. Include: completed this week, decisions needed, procurement status, next site date. Max 180 words."
+          },
+          "chaseApproval": {
+            "label": "Chase approval",
+            "text": "Write a polite follow-up asking the client to approve [item] in the portal by [date]. Mention the impact on lead time if delayed."
+          }
+        }
+      },
+      "procurement": {
+        "title": "Procurement & specs",
+        "summary": "Use AI to compare alternates, sanity-check lead times, and keep FF&E schedules current without duplicate data entry.",
+        "steps": {
+          "specFromSupplier": {
+            "title": "Spec from supplier pages",
+            "body": "Paste a product URL or cut sheet text; extract dimensions, finish, lead time, and compliance notes into your schedule format."
+          },
+          "alternateWhenDelayed": {
+            "title": "Alternate when delayed",
+            "body": "When lead time slips, request two alternates with cost and aesthetic trade-offs in the same message to the client."
+          },
+          "batchPoPrep": {
+            "title": "Batch PO prep",
+            "body": "Group line items by vendor and flag minimum order values before generating purchase orders."
+          }
+        },
+        "prompts": {
+          "alternateProduct": {
+            "label": "Alternate product",
+            "text": "Original: [product]. Constraint: must ship within [weeks], similar scale and finish. Suggest 2 alternates with pros/cons for a client email."
+          }
+        }
+      },
+      "tasks": {
+        "title": "Tasks & timelines",
+        "summary": "Convert briefs and meeting notes into phased tasks with owners—then let AI keep the timeline honest as dates slip.",
+        "steps": {
+          "kickoffTaskMap": {
+            "title": "Kickoff → task map",
+            "body": "Feed kickoff notes; output phases, tasks, owners, and due dates using your studio's standard phase names."
+          },
+          "weeklyReplan": {
+            "title": "Weekly replan",
+            "body": "Each Monday, list slipped tasks, dependencies at risk, and one recommended client communication."
+          }
+        },
+        "prompts": {
+          "kickoffTasks": {
+            "label": "Kickoff tasks",
+            "text": "From these kickoff notes, create tasks for Concept, DD, Procurement, and Install. Each task: owner role, due date (+buffer), dependency. Notes: [paste]."
+          }
+        }
+      },
+      "proposals": {
+        "title": "Proposals & fees",
+        "summary": "Accelerate fee proposals and scope letters while keeping commercial terms consistent with your templates.",
+        "steps": {
+          "scopeFromBrief": {
+            "title": "Scope from brief",
+            "body": "Turn a client brief into phased deliverables, exclusions, and assumptions before you price."
+          },
+          "alignWithTemplate": {
+            "title": "Align with template",
+            "body": "Merge AI scope output into your Letter of Agreement and Proposal templates so legal language stays consistent."
+          }
+        },
+        "prompts": {
+          "scopeOutline": {
+            "label": "Scope outline",
+            "text": "Create a scope outline for a [residential/commercial] interior project. Include deliverables per phase, client responsibilities, and explicit exclusions. Brief: [paste]."
+          }
+        }
+      },
+      "governance": {
+        "title": "Governance & quality",
+        "summary": "Protect client trust—privacy, accuracy, and brand voice matter more than speed.",
+        "steps": {
+          "noConfidentialUploads": {
+            "title": "No confidential uploads",
+            "body": "Do not paste client financials or personal data into public models. Use your studio's integrated AI where data stays in your workspace."
+          },
+          "verifyNumbers": {
+            "title": "Verify numbers",
+            "body": "AI must not invent dimensions, prices, or lead times. Confirm against supplier quotes and your library."
+          },
+          "brandVoiceChecklist": {
+            "title": "Brand voice checklist",
+            "body": "Before send: warm but precise, no over-promising on dates, British English if that is your studio default."
+          }
+        },
+        "prompts": {
+          "tonePass": {
+            "label": "Tone pass",
+            "text": "Rewrite this email to match a premium interior design studio: concise, confident, no jargon. Keep facts identical: [paste]."
+          }
+        }
+      }
+    }
+  },
+  "templateDownloadDialog": {
+    "title": "Download template",
+    "description": "Enter your email to download this template. We'll also send occasional studio tips—you can unsubscribe anytime.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@studio.com",
+    "submit": "Download",
+    "submitting": "Downloading...",
+    "success": "Check your inbox for the download link.",
+    "error": "Something went wrong. Please try again.",
+    "downloadOutline": "Download outline",
+    "useInFocuspilot": "Use in Focuspilot",
+    "formatDescription": "{format} — customise in Word, Google Docs, or use the automated version in Focuspilot.",
+    "footerNote": "Automate this template with AI proposals, approvals, and invoicing.",
+    "seeAiPlaybook": "See AI Playbook",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "studioProfile": {
+    "meta": {
+      "titleSuffix": " — Interior Design Studio",
+      "defaultDescription": "View this design studio profile on Focuspilot.",
+      "notFoundTitle": "Studio not found | Focuspilot",
+      "fallbackDescription": "View {studioName}'s portfolio, team, and client reviews."
+    },
+    "notFound": {
+      "title": "Studio not found",
+      "description": "This studio profile doesn't exist or is no longer public.",
+      "backHome": "Back to home"
+    },
+    "verified": "Verified studio",
+    "projects": "Projects",
+    "location": "Location",
+    "specialties": "Specialties",
+    "contactStudio": "Contact studio",
+    "viewProjects": "View projects",
+    "designStudio": "Design Studio",
+    "established": "Est. {year}",
+    "teamSize": "{count} team members",
+    "starsLabel": "{rating} out of 5 stars",
+    "website": "Website",
+    "linkedin": "LinkedIn",
+    "instagram": "Instagram",
+    "about": "About",
+    "pastWork": "Past work",
+    "noImage": "No image",
+    "clientReviews": "Client reviews",
+    "services": "Services",
+    "team": "Team",
+    "contact": "Contact",
+    "poweredBy": "Powered by",
+    "reviewsCount": "{rating} ({count} reviews)",
+    "notFoundPage": {
+      "title": "Studio profile not found",
+      "description": "This profile may be unpublished or the link is incorrect.",
+      "backToFocuspilot": "Back to Focuspilot"
+    }
+  },
+  "termsPage": {
+    "meta": {
+      "title": "Terms of Service | Focuspilot",
+      "description": "Focuspilot terms of service. Read our terms and conditions for using the platform."
+    },
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: March 2026",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "body": "By accessing or using Focuspilot, you agree to be bound by these Terms of Service. If you disagree with any part, you may not use our service."
+      },
+      "service": {
+        "title": "2. Description of Service",
+        "body": "Focuspilot provides project management, procurement, and business tools for interior design studios. We reserve the right to modify or discontinue features with reasonable notice."
+      },
+      "accounts": {
+        "title": "3. User Accounts",
+        "body": "You are responsible for maintaining the security of your account and all activities under it. You must provide accurate information and keep it updated."
+      },
+      "payment": {
+        "title": "4. Payment Terms",
+        "body": "Paid plans are billed in advance. You can cancel at any time; access continues until the end of your billing period. Refunds are handled on a case-by-case basis."
+      },
+      "ip": {
+        "title": "5. Intellectual Property",
+        "body": "You retain ownership of your data. We retain ownership of the Focuspilot platform, including software, design, and documentation."
+      },
+      "contact": {
+        "title": "6. Contact",
+        "bodyBefore": "For questions about these terms, contact us at"
+      }
+    }
+  },
+  "privacyPage": {
+    "meta": {
+      "title": "Privacy Policy | Focuspilot",
+      "description": "Focuspilot privacy policy. Learn how we collect, use, and protect your data."
+    },
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: May 2026",
+    "sections": {
+      "collect": {
+        "title": "1. Information We Collect",
+        "p1": "We collect information you provide directly, including account details, project data, and communications. We also collect usage data to improve our service.",
+        "p2": "If you connect Google (Gmail or Google Calendar), we access only the data needed for the features you use, such as email threads with your clients, calendar events, and message metadata. We do not request broader access than required for those features."
+      },
+      "use": {
+        "title": "2. How We Use Your Information",
+        "body": "We use your information to provide and improve Focuspilot, communicate with you, and ensure security. We never sell your personal data or Google user data to third parties."
+      },
+      "google": {
+        "title": "3. Google User Data",
+        "p1": "When you connect Gmail or Google Calendar, Focuspilot (\"we\", \"us\") accesses Google user data only to provide studio inbox, reply, calendar overlay, and related productivity features you enable. We use this data to sync client-related email threads, send replies from the app, show calendar events, and generate optional AI summaries or draft improvements when you use those features.",
+        "p2": "We do not use Google user data to train generalized machine-learning or artificial-intelligence models. Optional AI features (such as thread summaries or reply polish) send limited email content to our AI provider solely to return a result for your request; we do not permit that provider to use your data to train its public models.",
+        "p3": "Google user data is stored on our servers only as long as needed to provide the service (for example, cached email threads linked to your studio and clients). You can disconnect Google at any time in Settings → Integrations, which stops new access and allows you to request deletion of stored copies."
+      },
+      "sharing": {
+        "title": "4. Sharing, Transfer, and Disclosure of Google User Data",
+        "intro": "We do not sell, rent, or license Google user data. We share, transfer, or disclose Google user data only in the limited circumstances below:",
+        "processors": {
+          "label": "Service providers (processors):",
+          "body": "We use infrastructure and software vendors that process data on our behalf under contract, solely to operate Focuspilot—for example cloud hosting, databases, email delivery, and (when you use AI inbox features) OpenAI for on-demand summarization or draft assistance. These providers may access Google user data only to perform services for us and must protect it consistent with this policy."
+        },
+        "team": {
+          "label": "Your studio team:",
+          "body": "Email and calendar information synced into Focuspilot may be visible to other authenticated members of your studio according to your account permissions, because the product is a shared workspace for your business."
+        },
+        "google": {
+          "label": "Google:",
+          "body": "Data is obtained through Google's APIs under your authorization; Google's own privacy policy applies to your Google account."
+        },
+        "legal": {
+          "label": "Legal and safety:",
+          "body": "We may disclose information if required by law, regulation, legal process, or to protect the rights, safety, and security of Focuspilot, our users, or others."
+        },
+        "outro": "We do not share Google user data with advertisers, data brokers, or unrelated third parties for their own marketing or product development."
+      },
+      "security": {
+        "title": "5. Data Security",
+        "body": "We implement industry-standard security measures to protect your data, including encryption in transit and at rest, access controls, and secure storage of OAuth tokens. Google API access uses OAuth 2.0; we do not store your Google account password."
+      },
+      "rights": {
+        "title": "6. Your Rights",
+        "bodyBefore": "Under GDPR and similar laws, you have the right to access, correct, delete, or export your data, including data derived from Google services. Disconnect Google in the app or contact us to revoke access and request deletion of stored Google-derived data. Contact"
+      },
+      "contactUs": {
+        "title": "7. Contact Us",
+        "bodyBefore": "For privacy-related questions, contact us at",
+        "bodyAfter": "Focuspilot is operated from the United Kingdom. For Google API Services, our use and transfer of information received from Google APIs adheres to the",
+        "policyLinkText": "Google API Services User Data Policy",
+        "bodyEnd": ", including the Limited Use requirements."
+      }
+    }
+  },
+  "changelogPage": {
+    "meta": {
+      "title": "Changelog | Focuspilot Product Updates",
+      "description": "See what's new in Focuspilot. Weekly updates for project management, procurement, and client collaboration."
+    },
+    "hero": {
+      "badge": "Product updates",
+      "title": "Changelog",
+      "subtitle": "See what's new in Focuspilot. We ship updates weekly to help you manage projects, procurement, and client relationships more efficiently.",
+      "note": "Subscribe to our newsletter to get updates delivered to your inbox."
+    },
+    "typeBadges": {
+      "new": "new",
+      "improvement": "improvement",
+      "fix": "fix"
+    },
+    "relatedLinks": {
+      "title": "Explore the platform",
+      "subtitle": "Discover how Focuspilot can transform your design studio workflow.",
+      "projects": {
+        "title": "Projects",
+        "desc": "Manage timelines and tasks"
+      },
+      "procurement": {
+        "title": "Procurement",
+        "desc": "Source and track products"
+      },
+      "clientPortal": {
+        "title": "Client Portal",
+        "desc": "Share and get approvals"
+      },
+      "finance": {
+        "title": "Finance",
+        "desc": "Invoicing and accounting"
+      }
+    },
+    "finalCta": {
+      "ariaLabel": "Get started",
+      "title": "Ready to transform your studio?",
+      "subtitle": "Join hundreds of interior designers who've simplified their workflow with Focuspilot."
+    },
+    "updates": {
+      "v26": {
+        "date": "May 2026",
+        "version": "2.6",
+        "changes": {
+          "zapierApi": {
+            "type": "new",
+            "title": "Zapier & Studio API",
+            "description": "Create API keys and signed webhooks in Settings → API & webhooks. REST endpoints for projects and clients, with events for new projects, clients, and invoices."
+          },
+          "notionIntegration": {
+            "type": "new",
+            "title": "Notion Integration",
+            "description": "Connect Notion in Studio Integrations — browse shared databases, map a database to project sync, and pull rows into Focuspilot projects."
+          },
+          "integrationsSettings": {
+            "type": "improvement",
+            "title": "Integrations Settings",
+            "description": "Cleaner integration cards with connect/disconnect on each app and a settings panel for Notion (browse, mapping, and sync)."
+          }
+        }
+      },
+      "v25": {
+        "date": "May 2026",
+        "version": "2.5",
+        "changes": {
+          "gmailIntegration": {
+            "type": "new",
+            "title": "Gmail Integration",
+            "description": "Connect Gmail in Settings → Studio → Integrations to sync messages into AI Inbox and keep client email in one workspace."
+          },
+          "googleCalendar": {
+            "type": "new",
+            "title": "Google Calendar Connection",
+            "description": "Link Google Calendar from Studio Integrations and toggle My Calendar on the studio calendar to view and add personal Google events."
+          },
+          "projectCalendarEvents": {
+            "type": "new",
+            "title": "Project Calendar Events",
+            "description": "Add events to a specific project or browse All Projects — schedule entries show on the grid and in the day detail panel."
+          },
+          "calendarEventDisplay": {
+            "type": "improvement",
+            "title": "Calendar Event Display",
+            "description": "Event chips use matching text and background colors, truncate long titles with ellipsis, and show the full event on hover without bleeding into other dates."
+          },
+          "projectCalendarFiltering": {
+            "type": "fix",
+            "title": "Project Calendar Filtering",
+            "description": "Fixed date handling and project filters so events appear on the correct day in All Projects and single-project views."
+          }
+        }
+      },
+      "v24": {
+        "date": "January 2025",
+        "version": "2.4",
+        "changes": {
+          "aiEmailDrafting": {
+            "type": "new",
+            "title": "AI Email Drafting",
+            "description": "Let AI draft client emails based on project context and communication history"
+          },
+          "bulkPoGeneration": {
+            "type": "new",
+            "title": "Bulk PO Generation",
+            "description": "Create multiple purchase orders at once from your procurement schedule"
+          },
+          "fasterDashboard": {
+            "type": "improvement",
+            "title": "Faster Dashboard",
+            "description": "50% faster loading for project dashboards with optimized data fetching"
+          },
+          "contractorPortal": {
+            "type": "new",
+            "title": "Contractor Portal",
+            "description": "Give contractors secure access to specs, schedules, and communication"
+          }
+        }
+      },
+      "v23": {
+        "date": "December 2024",
+        "version": "2.3",
+        "changes": {
+          "clientPortalPayments": {
+            "type": "new",
+            "title": "Client Portal Payments",
+            "description": "Clients can pay invoices directly in the portal with Stripe integration"
+          },
+          "xeroTwoWaySync": {
+            "type": "new",
+            "title": "Xero Two-Way Sync",
+            "description": "Full bidirectional sync with Xero accounting for invoices and expenses"
+          },
+          "pdfExport": {
+            "type": "fix",
+            "title": "PDF Export",
+            "description": "Fixed formatting issues in proposal PDFs affecting tables and images"
+          },
+          "mobileNavigation": {
+            "type": "improvement",
+            "title": "Mobile Navigation",
+            "description": "Redesigned mobile menu for faster access to key features"
+          }
+        }
+      },
+      "v22": {
+        "date": "November 2024",
+        "version": "2.2",
+        "changes": {
+          "aiProductSourcing": {
+            "type": "new",
+            "title": "AI Product Sourcing",
+            "description": "Find alternative products and trade pricing automatically from supplier catalogs"
+          },
+          "mobileExperience": {
+            "type": "improvement",
+            "title": "Mobile Experience",
+            "description": "Redesigned mobile interface for on-site use with offline support"
+          },
+          "search": {
+            "type": "improvement",
+            "title": "Search",
+            "description": "Much faster search across projects, products, and contacts with fuzzy matching"
+          },
+          "calendarSync": {
+            "type": "fix",
+            "title": "Calendar Sync",
+            "description": "Resolved sync issues with Google Calendar for project milestones"
+          }
+        }
+      },
+      "v21": {
+        "date": "October 2024",
+        "version": "2.1",
+        "changes": {
+          "projectTemplates": {
+            "type": "new",
+            "title": "Project Templates",
+            "description": "Create and share project templates across your team for consistent workflows"
+          },
+          "timeTracking": {
+            "type": "new",
+            "title": "Time Tracking",
+            "description": "Track billable hours per task with automatic invoice generation"
+          },
+          "clientPortal": {
+            "type": "improvement",
+            "title": "Client Portal",
+            "description": "New approval workflow with comment threads and revision history"
+          }
+        }
+      }
+    }
+  },
+  "knowledgePage": {
+    "meta": {
+      "title": "Knowledge Centre | Focuspilot Help & Guides",
+      "description": "Guides, tutorials, and answers to help you get the most from Focuspilot."
+    },
+    "hero": {
+      "badge": "Help & guides",
+      "title": "Knowledge Centre",
+      "subtitle": "Guides, tutorials, and answers to help you get the most from Focuspilot.",
+      "searchPlaceholder": "Search articles..."
+    },
+    "categories": {
+      "gettingStarted": {
+        "title": "Getting Started",
+        "description": "Set up your account and learn the basics",
+        "articles": {
+          "quickStart": {
+            "title": "Quick start guide",
+            "time": "5 min"
+          },
+          "accountSetup": {
+            "title": "Account setup",
+            "time": "3 min"
+          },
+          "invitingTeam": {
+            "title": "Inviting team members",
+            "time": "2 min"
+          },
+          "firstProject": {
+            "title": "First project walkthrough",
+            "time": "8 min"
+          }
+        }
+      },
+      "features": {
+        "title": "Features",
+        "description": "Deep dives into Focuspilot features",
+        "articles": {
+          "projectManagement": {
+            "title": "Project management",
+            "time": "10 min"
+          },
+          "procurementPos": {
+            "title": "Procurement & POs",
+            "time": "8 min"
+          },
+          "clientPortal": {
+            "title": "Client portal",
+            "time": "6 min"
+          },
+          "financeInvoicing": {
+            "title": "Finance & invoicing",
+            "time": "7 min"
+          }
+        }
+      },
+      "videoTutorials": {
+        "title": "Video Tutorials",
+        "description": "Watch and learn at your own pace",
+        "articles": {
+          "platformOverview": {
+            "title": "Platform overview",
+            "time": "12 min"
+          },
+          "aiFeaturesDemo": {
+            "title": "AI features demo",
+            "time": "8 min"
+          },
+          "clientPortalSetup": {
+            "title": "Client portal setup",
+            "time": "6 min"
+          },
+          "xeroIntegration": {
+            "title": "Xero integration",
+            "time": "5 min"
+          }
+        }
+      },
+      "faq": {
+        "title": "FAQ",
+        "description": "Quick answers to common questions",
+        "articles": {
+          "billingPricing": {
+            "title": "Billing & pricing",
+            "time": "3 min"
+          },
+          "dataSecurity": {
+            "title": "Data & security",
+            "time": "4 min"
+          },
+          "integrations": {
+            "title": "Integrations",
+            "time": "3 min"
+          },
+          "migrationHelp": {
+            "title": "Migration help",
+            "time": "5 min"
+          }
+        }
+      }
+    },
+    "support": {
+      "title": "Can't find what you're looking for?",
+      "subtitle": "Our support team is here to help. Get in touch and we'll respond within 24 hours.",
+      "contactSupport": "Contact support",
+      "viewChangelog": "View changelog"
+    },
+    "relatedLinks": {
+      "title": "Explore the platform",
+      "subtitle": "Learn more about what Focuspilot can do.",
+      "projects": {
+        "title": "Projects",
+        "desc": "Manage timelines and tasks"
+      },
+      "aiFeatures": {
+        "title": "AI Features",
+        "desc": "Automate the admin"
+      },
+      "integrations": {
+        "title": "Integrations",
+        "desc": "Connect your tools"
+      },
+      "pricing": {
+        "title": "Pricing",
+        "desc": "Start free today"
+      }
+    }
+  },
+  "templateDetail": {
+    "freeOutline": "Free outline — customise for your studio",
+    "download": "Download",
+    "automateInFocuspilot": "Automate in Focuspilot",
+    "allTemplates": "← All templates"
+  },
+  "siteMeta": {
+    "title": "Interior Design Project Management Software | Focuspilot",
+    "description": "AI-powered project management for interior designers & architects. Manage projects, procurement, client approvals & invoicing in one workspace. Free 3-month trial.",
+    "keywords": [
+      "interior design software",
+      "design studio management",
+      "project management for designers",
+      "interior design CRM",
+      "design procurement software",
+      "client portal for designers",
+      "architecture project management",
+      "design studio workflow",
+      "interior design business software",
+      "design project collaboration"
+    ],
+    "ogImageAlt": "Interior Design Project Management Software | Focuspilot",
+    "jsonLd": {
+      "organization": {
+        "description": "The modern operating system for interior designers and architects.",
+        "contactType": "customer service",
+        "availableLanguage": "English"
+      },
+      "software": {
+        "description": "Interior design studio management software for project management, procurement, client collaboration, and finance.",
+        "applicationSubCategory": "Project Management Software",
+        "offerDescription": "Free beta access available",
+        "features": {
+          "projectManagement": "Project Management",
+          "crm": "CRM for Design Studios",
+          "procurement": "AI-Powered Procurement",
+          "clientPortal": "Client Portal & Approvals",
+          "finance": "Finance & Invoicing",
+          "library": "Product Library Management"
+        }
+      }
+    }
+  },
+  "authLayout": {
+    "meta": {
+      "title": "Authentication | Focuspilot",
+      "description": "Sign in or create your Focuspilot account"
+    }
+  },
+  "visuals": {
+    "finance": {
+      "heroAlt": "Elegant living room with blonde woman reading, featuring chevron wood paneling and brass accents",
+      "paidSnippetAlt": "Paid status snippet showing amount and green paid chip",
+      "profitKpiAlt": "Studio Profit KPI showing £45.2k, up 12%",
+      "paidLabel": "Paid"
+    },
+    "pm": {
+      "heroAlt": "Interior designer working at wooden desk in elegant studio with built-in bookshelves and brass lighting",
+      "calendarAlt": "Calendar: Site Visit - Office Space Progress",
+      "aiComposerAlt": "AI composer with quick actions for project management",
+      "taskCardAlt": "Task: Present final concepts"
+    }
+  },
+  "templatesRedirect": {
+    "meta": {
+      "title": "Free Templates for Interior Designers | Focuspilot",
+      "description": "Download free templates for interior design projects: proposals, contracts, project briefs, and more. Professionally designed and ready to use."
+    }
+  }
+}

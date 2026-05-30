@@ -1,27 +1,27 @@
 import type { Metadata } from "next"
 import { Suspense } from "react"
+import { getTranslations } from "next-intl/server"
 import { BlogPageContent } from "@/components/blog/blog-page-content"
+import { localeHreflangAlternates } from "@/lib/seo-alternates"
 
-export const metadata: Metadata = {
-  title: "Interior Design Studio Blog | Tips, Guides & Industry Insights | Focuspilot",
-  description:
-    "Expert insights on interior design workflows, studio management & industry trends. Practical guides for running a successful design studio. Updated weekly.",
-  openGraph: {
-    title: "Interior Design Studio Blog | Tips, Guides & Industry Insights | Focuspilot",
-    description:
-      "Expert insights on interior design workflows, studio management & industry trends. Practical guides for running a successful design studio.",
-    type: "website",
-    url: "https://focuspilot.io/blog",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Interior Design Studio Blog | Tips, Guides & Industry Insights | Focuspilot",
-    description:
-      "Expert insights on interior design workflows, studio management & industry trends. Practical guides for running a successful design studio.",
-  },
-  alternates: {
-    canonical: "https://focuspilot.io/blog",
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("blogPage.meta")
+  return {
+    title: t("title"),
+    description: t("description"),
+    openGraph: {
+      title: t("title"),
+      description: t("description"),
+      type: "website",
+      url: "https://focuspilot.io/blog",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("title"),
+      description: t("description"),
+    },
+    alternates: localeHreflangAlternates("blog"),
+  }
 }
 
 export default function BlogPage() {

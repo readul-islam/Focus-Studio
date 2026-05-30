@@ -3,10 +3,12 @@
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { CtaButton } from "@/components/cta-button"
+import { LanguageSwitcher } from "@/components/language-switcher"
 import { MegaNavPlatform } from "@/components/navigation/mega-nav"
 import { ResourcesMenu } from "@/components/navigation/resources-menu"
 import { useShowHeaderCta } from "@/hooks/use-show-header-cta"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { useTranslations } from "next-intl"
 import * as React from "react"
 import * as LucideReact from "lucide-react"
 import { AuthBrandMark } from "../auth/auth-brand-mark"
@@ -14,6 +16,8 @@ import { AuthBrandMark } from "../auth/auth-brand-mark"
 const container = "mx-auto max-w-[1200px] px-4 sm:px-6 md:px-8" // Reduced mobile padding from 6 to 4
 
 export function SiteHeader({ showCta }: { showCta?: boolean }) {
+  const t = useTranslations("siteHeader")
+  const tm = useTranslations("siteHeader.mobile")
   // If a prop is not provided, compute automatically based on #overview visibility.
   const autoShow = useShowHeaderCta("overview", 0.2)
   const visible = typeof showCta === "boolean" ? showCta : autoShow
@@ -60,27 +64,30 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
             <AuthBrandMark />
           </Link>
           {/* Desktop Navigation - unchanged */}
-          <nav className="hidden items-center gap-6 text-sm md:flex" aria-label="Primary">
+          <nav className="hidden items-center gap-6 text-sm md:flex" aria-label={t("primaryNavAria")}>
             <MegaNavPlatform />
             <Link href="/platform/ai" className="text-stone-700 hover:text-stone-900">
-              AI
+              {t("ai")}
             </Link>
             <ResourcesMenu />
           </nav>
           <div className="flex items-center gap-2">
+            <div className="hidden md:block">
+              <LanguageSwitcher />
+            </div>
             <button
               type="button"
               className="inline-flex items-center justify-center rounded-lg p-2 text-stone-700 hover:bg-stone-100 hover:text-stone-900 md:hidden"
               aria-expanded={mobileMenuOpen}
-              aria-label="Toggle navigation menu"
+              aria-label={t("toggleMenu")}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <LucideReact.X className="h-6 w-6" /> : <LucideReact.Menu className="h-6 w-6" />}
             </button>
 
             <div className="hidden md:flex md:items-center md:gap-2">
-              <CtaButton href="/login" variant="grey" label="Login" />
-              <CtaButton href="/signup" variant="clay" label="Start for free" />
+              <CtaButton href="/login" variant="grey" label={t("login")} />
+              <CtaButton href="/signup" variant="clay" label={t("startForFree")} />
             </div>
           </div>
         </div>
@@ -103,7 +110,7 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
                 type="button"
                 className="inline-flex items-center justify-center rounded-lg p-2 text-stone-700 hover:bg-stone-100"
                 onClick={() => setMobileMenuOpen(false)}
-                aria-label="Close navigation menu"
+                aria-label={t("closeMenu")}
               >
                 <LucideReact.X className="h-6 w-6" />
               </button>
@@ -111,9 +118,12 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
 
             {/* Mobile navigation content */}
             <div className="px-6 py-6 space-y-6 max-h-[calc(100vh-80px)] overflow-y-auto">
+              <div className="flex justify-end pb-2 border-b border-stone-100">
+                <LanguageSwitcher />
+              </div>
               {/* Platform section */}
               <div>
-                <h3 className="text-lg font-semibold text-stone-900 mb-4">Platform</h3>
+                <h3 className="text-lg font-semibold text-stone-900 mb-4">{tm("platform")}</h3>
                 <div className="space-y-4">
                   <Link
                     href="/platform/ai"
@@ -122,8 +132,8 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
                   >
                     <LucideReact.Sparkles className="h-5 w-5 text-stone-600" />
                     <div>
-                      <div className="font-medium text-stone-900">AI</div>
-                      <div className="text-sm text-stone-600">Intelligent automation</div>
+                      <div className="font-medium text-stone-900">{tm("aiTitle")}</div>
+                      <div className="text-sm text-stone-600">{tm("aiDesc")}</div>
                     </div>
                   </Link>
 
@@ -134,8 +144,8 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
                   >
                     <LucideReact.ClipboardList className="h-5 w-5 text-stone-600" />
                     <div>
-                      <div className="font-medium text-stone-900">Project management</div>
-                      <div className="text-sm text-stone-600">Phases, tasks, timelines</div>
+                      <div className="font-medium text-stone-900">{tm("projectManagementTitle")}</div>
+                      <div className="text-sm text-stone-600">{tm("projectManagementDesc")}</div>
                     </div>
                   </Link>
 
@@ -146,8 +156,8 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
                   >
                     <LucideReact.ShoppingCart className="h-5 w-5 text-stone-600" />
                     <div>
-                      <div className="font-medium text-stone-900">Procurement</div>
-                      <div className="text-sm text-stone-600">Sourcing, POs, tracking</div>
+                      <div className="font-medium text-stone-900">{tm("procurementTitle")}</div>
+                      <div className="text-sm text-stone-600">{tm("procurementDesc")}</div>
                     </div>
                   </Link>
 
@@ -158,8 +168,8 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
                   >
                     <LucideReact.CreditCard className="h-5 w-5 text-stone-600" />
                     <div>
-                      <div className="font-medium text-stone-900">Finance</div>
-                      <div className="text-sm text-stone-600">Proposals, invoices, payments</div>
+                      <div className="font-medium text-stone-900">{tm("financeTitle")}</div>
+                      <div className="text-sm text-stone-600">{tm("financeDesc")}</div>
                     </div>
                   </Link>
 
@@ -170,8 +180,8 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
                   >
                     <LucideReact.Users className="h-5 w-5 text-stone-600" />
                     <div>
-                      <div className="font-medium text-stone-900">Client portal</div>
-                      <div className="text-sm text-stone-600">Approvals, files, messaging</div>
+                      <div className="font-medium text-stone-900">{tm("clientPortalTitle")}</div>
+                      <div className="text-sm text-stone-600">{tm("clientPortalDesc")}</div>
                     </div>
                   </Link>
 
@@ -182,8 +192,8 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
                   >
                     <LucideReact.Building2 className="h-5 w-5 text-stone-600" />
                     <div>
-                      <div className="font-medium text-stone-900">CRM</div>
-                      <div className="text-sm text-stone-600">Lead → project pipeline</div>
+                      <div className="font-medium text-stone-900">{tm("crmTitle")}</div>
+                      <div className="text-sm text-stone-600">{tm("crmDesc")}</div>
                     </div>
                   </Link>
                 </div>
@@ -191,7 +201,7 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
 
               {/* Key Features section */}
               <div>
-                <h3 className="text-lg font-semibold text-stone-900 mb-4">Key Features</h3>
+                <h3 className="text-lg font-semibold text-stone-900 mb-4">{tm("keyFeatures")}</h3>
                 <div className="space-y-4">
                   <Link
                     href="/platform/features/ai-email"
@@ -200,8 +210,8 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
                   >
                     <LucideReact.Mail className="h-5 w-5 text-stone-600" />
                     <div>
-                      <div className="font-medium text-stone-900">Communication</div>
-                      <div className="text-sm text-stone-600">Unified inbox with project routing</div>
+                      <div className="font-medium text-stone-900">{tm("communicationTitle")}</div>
+                      <div className="text-sm text-stone-600">{tm("communicationDesc")}</div>
                     </div>
                   </Link>
 
@@ -212,8 +222,8 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
                   >
                     <LucideReact.CheckCircle2 className="h-5 w-5 text-stone-600" />
                     <div>
-                      <div className="font-medium text-stone-900">Approvals</div>
-                      <div className="text-sm text-stone-600">Client sign-off and decision tracking</div>
+                      <div className="font-medium text-stone-900">{tm("approvalsTitle")}</div>
+                      <div className="text-sm text-stone-600">{tm("approvalsDesc")}</div>
                     </div>
                   </Link>
 
@@ -224,8 +234,8 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
                   >
                     <LucideReact.Sparkles className="h-5 w-5 text-stone-600" />
                     <div>
-                      <div className="font-medium text-stone-900">AI Product Procurement</div>
-                      <div className="text-sm text-stone-600">Web clipper with instant AI extraction</div>
+                      <div className="font-medium text-stone-900">{tm("aiProcurementTitle")}</div>
+                      <div className="text-sm text-stone-600">{tm("aiProcurementDesc")}</div>
                     </div>
                   </Link>
 
@@ -236,8 +246,8 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
                   >
                     <LucideReact.Library className="h-5 w-5 text-stone-600" />
                     <div>
-                      <div className="font-medium text-stone-900">Product Library</div>
-                      <div className="text-sm text-stone-600">Centralized product database with AI sourcing</div>
+                      <div className="font-medium text-stone-900">{tm("productLibraryTitle")}</div>
+                      <div className="text-sm text-stone-600">{tm("productLibraryDesc")}</div>
                     </div>
                   </Link>
 
@@ -248,8 +258,8 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
                   >
                     <LucideReact.FileText className="h-5 w-5 text-stone-600" />
                     <div>
-                      <div className="font-medium text-stone-900">Proposals & invoices</div>
-                      <div className="text-sm text-stone-600">AI proposals and automated billing</div>
+                      <div className="font-medium text-stone-900">{tm("proposalsInvoicesTitle")}</div>
+                      <div className="text-sm text-stone-600">{tm("proposalsInvoicesDesc")}</div>
                     </div>
                   </Link>
                 </div>
@@ -257,50 +267,50 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
 
               {/* Resources section */}
               <div>
-                <h3 className="text-lg font-semibold text-stone-900 mb-4">Resources</h3>
+                <h3 className="text-lg font-semibold text-stone-900 mb-4">{tm("resources")}</h3>
                 <div className="space-y-2">
                   <Link
                     href="/blog"
                     className="block p-3 rounded-lg hover:bg-stone-50 text-stone-700"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Blog
+                    {tm("blog")}
                   </Link>
                   <Link
                     href="/knowledge"
                     className="block p-3 rounded-lg hover:bg-stone-50 text-stone-700"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Knowledge Centre
+                    {tm("knowledgeCentre")}
                   </Link>
                   <Link
                     href="/resources/templates"
                     className="block p-3 rounded-lg hover:bg-stone-50 text-stone-700"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Templates
+                    {tm("templates")}
                   </Link>
                   <Link
                     href="/resources/ai-playbook"
                     className="block p-3 rounded-lg hover:bg-stone-50 text-stone-700"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    AI Playbook
+                    {tm("aiPlaybook")}
                   </Link>
                   <Link
                     href="/contact"
                     className="block p-3 rounded-lg hover:bg-stone-50 text-stone-700"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Contact
+                    {tm("contact")}
                   </Link>
                 </div>
               </div>
 
               {/* Mobile CTA buttons */}
               <div className="pt-4 border-t border-stone-200 space-y-3">
-                <CtaButton href="/login" variant="grey" label="Login" className="w-full justify-center" />
-                <CtaButton href="/signup" variant="clay" label="Start for free" className="w-full justify-center" />
+                <CtaButton href="/login" variant="grey" label={t("login")} className="w-full justify-center" />
+                <CtaButton href="/signup" variant="clay" label={t("startForFree")} className="w-full justify-center" />
               </div>
             </div>
           </div>

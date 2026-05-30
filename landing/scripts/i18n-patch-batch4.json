@@ -1,0 +1,511 @@
+{
+  "compareDetailShared": {
+    "badge": "Software Comparison",
+    "breadcrumb": {
+      "home": "Home",
+      "compare": "Compare"
+    },
+    "table": {
+      "feature": "Feature",
+      "focuspilot": "Focuspilot"
+    },
+    "legend": {
+      "full": "Full support",
+      "partial": "Partial/limited",
+      "none": "Not available"
+    },
+    "faqTitle": "Frequently asked questions",
+    "learnMore": "Learn more",
+    "noCreditCard": "No credit card required"
+  },
+  "compareDetailCategories": {
+    "procurement": "Procurement",
+    "clientApprovals": "Client Approvals",
+    "financeInvoicing": "Finance & Invoicing",
+    "projectManagement": "Project Management",
+    "crm": "CRM",
+    "platformIndependence": "Platform Independence",
+    "financeCompliance": "Finance & compliance",
+    "aiAutomation": "AI & Automation",
+    "financePayments": "Finance & Payments",
+    "userExperience": "User Experience",
+    "clientExperience": "Client Experience",
+    "financialManagement": "Financial Management",
+    "procurementProducts": "Procurement & Products",
+    "clientManagement": "Client Management",
+    "finance": "Finance",
+    "procurementFfe": "Procurement & FF&E",
+    "scalability": "Scalability"
+  },
+  "compareDetailFeatures": {
+    "productLibraryPricing": "Product library with pricing",
+    "aiProductSourcing": "AI-powered product sourcing",
+    "purchaseOrderGeneration": "Purchase order generation",
+    "supplierManagement": "Supplier management",
+    "tradePricingIntegration": "Trade pricing integration",
+    "bulkOrderManagement": "Bulk order management",
+    "clientApprovalPortal": "Client approval portal",
+    "commentsRevisions": "Comments & revisions",
+    "inPortalPayments": "In-portal payments",
+    "realtimeStatusUpdates": "Real-time status updates",
+    "mobileOptimisedPortal": "Mobile-optimised portal",
+    "invoiceGeneration": "Invoice generation",
+    "xeroQuickbooksSync": "Xero/QuickBooks sync",
+    "stripePayments": "Stripe payments",
+    "projectProfitabilityTracking": "Project profitability tracking",
+    "automatedPaymentReminders": "Automated payment reminders",
+    "multiCurrencySupport": "Multi-currency support",
+    "projectTimelinesPhases": "Project timelines & phases",
+    "taskManagement": "Task management",
+    "teamCollaboration": "Team collaboration",
+    "aiEmailDrafting": "AI email drafting",
+    "documentStorage": "Document storage",
+    "clientCommunicationLog": "Client communication log",
+    "leadCaptureForms": "Lead capture forms",
+    "pipelineManagement": "Pipeline management",
+    "contactDatabase": "Contact database",
+    "aiPoweredProposals": "AI-powered proposals",
+    "automatedFollowUps": "Automated follow-ups",
+    "independentPlatform": "Independent platform (not tied to marketplace)",
+    "ownClientRelationships": "Own your client relationships",
+    "noPlatformCommission": "No platform commission on leads",
+    "anyProductSuppliers": "Use with any product suppliers",
+    "whiteLabelClientPortal": "White-label client portal",
+    "nativeXeroIntegration": "Native Xero integration",
+    "multiCurrencyVat": "Multi-currency pricing & VAT handling",
+    "dedicatedSupportTeam": "Dedicated support team",
+    "gdprCompliant": "GDPR compliant",
+    "britishSpellingTerminology": "British spelling & terminology",
+    "aiProposalGeneration": "AI proposal generation",
+    "smartClientThreadSummaries": "Smart client thread summaries",
+    "automatedDataExtraction": "Automated data extraction",
+    "stripePaymentIntegration": "Stripe payment integration",
+    "accountingSoftwareSync": "Accounting software sync",
+    "modernCloudInterface": "Modern cloud-based interface",
+    "mobileResponsiveDesign": "Mobile-responsive design",
+    "realtimeCollaboration": "Real-time collaboration",
+    "noInstallationRequired": "No installation required",
+    "regularFeatureUpdates": "Regular feature updates",
+    "smartProposalGeneration": "Smart proposal generation",
+    "workflowAutomation": "Workflow automation",
+    "brandedClientPortal": "Branded client portal",
+    "mobileClientAccess": "Mobile client access",
+    "realtimeApprovalNotifications": "Real-time approval notifications",
+    "clientCommentThreads": "Client comment threads",
+    "projectBudgeting": "Project budgeting",
+    "xeroIntegration": "Xero integration",
+    "profitabilityReporting": "Profitability reporting",
+    "purchaseOrderManagement": "Purchase order management",
+    "productLibrary": "Product library",
+    "supplierDatabase": "Supplier database",
+    "tradePricingManagement": "Trade pricing management",
+    "aiAlternativeFinder": "AI alternative finder",
+    "orderTracking": "Order tracking",
+    "smartReminders": "Smart reminders",
+    "multiCurrencyPricing": "Multi-currency pricing",
+    "vatTaxHandling": "VAT & tax handling",
+    "dedicatedSupport": "Dedicated support",
+    "britishEnglishInterface": "British English interface",
+    "clientPortal": "Client portal",
+    "selectionApprovals": "Selection approvals",
+    "realtimeUpdates": "Real-time updates",
+    "whiteLabelBranding": "White-label branding",
+    "projectProfitability": "Project profitability",
+    "budgetTracking": "Budget tracking",
+    "accountingSync": "Accounting sync",
+    "automatedWorkflows": "Automated workflows",
+    "smartDataExtraction": "Smart data extraction",
+    "deliveryTracking": "Delivery tracking",
+    "tradePricingLookup": "Trade pricing lookup",
+    "selectionBoards": "Selection boards",
+    "approvalWorkflows": "Approval workflows",
+    "budgetVsActualTracking": "Budget vs actual tracking",
+    "multiUserTeams": "Multi-user teams",
+    "roleBasedPermissions": "Role-based permissions",
+    "multipleStudiosBrands": "Multiple studios/brands",
+    "enterpriseFeatures": "Enterprise features",
+    "apiAccess": "API access"
+  },
+  "compareDetailPages": {
+    "programa": {
+      "meta": {
+        "title": "Focuspilot vs Programa | Interior Design Software Comparison 2026",
+        "description": "Compare Focuspilot vs Programa for interior design studios. See differences in AI features, transparent pricing, Xero integration & client portals. Switch with free migration.",
+        "ogDescription": "Compare Focuspilot vs Programa for interior design studios. See differences in AI features, transparent pricing, Xero integration & client portals. Switch with free migration.",
+        "twitterDescription": "Compare Focuspilot vs Programa for interior design studios. See differences in AI features, transparent pricing, Xero integration & client portals."
+      },
+      "breadcrumbTitle": "Focuspilot vs Programa",
+      "hero": {
+        "title": "Focuspilot vs Programa",
+        "subtitle": "A detailed comparison for interior design studios choosing between Focuspilot and Programa. See how procurement, approvals, invoicing, and project workflows compare."
+      },
+      "bestFor": {
+        "title": "Which is best for your studio?",
+        "focuspilotTitle": "Choose Focuspilot if you...",
+        "competitorTitle": "{name} might suit you if you...",
+        "focuspilotReasons": {
+          "accountingSync": "Use Xero or QuickBooks and want native accounting sync",
+          "aiFeatures": "Want AI-powered email drafting and product sourcing",
+          "inPortalPayments": "Need clients to pay directly through the approval portal",
+          "residentialPractice": "Run a residential or boutique commercial practice",
+          "perUserPricing": "Want per-user pricing that scales with your team"
+        },
+        "competitorReasons": {
+          "usQuickbooks": "Are US-based and heavily use QuickBooks",
+          "perProjectPricing": "Prefer per-project pricing over per-user",
+          "noAiPayments": "Don't need AI features or in-portal payments",
+          "existingWorkflows": "Already have established Programa workflows"
+        }
+      },
+      "comparisonTitle": "Feature-by-feature comparison",
+      "faqs": {
+        "mainDifference": {
+          "question": "What's the main difference between Focuspilot and Programa?",
+          "answer": "Focuspilot is built for interior design studios worldwide with native Xero and QuickBooks integration, Stripe payments, and AI-powered features like email drafting and product sourcing. Programa is US-focused with QuickBooks integration. Focuspilot also includes in-portal client payments and automated invoicing that Programa lacks."
+        },
+        "studioSize": {
+          "question": "Is Focuspilot better for small studios or larger teams?",
+          "answer": "Focuspilot scales from solo designers to 50+ person studios. Our pricing model (£49/user for first 5, then £39/user) is designed for growing teams. Programa's per-project pricing can become expensive for studios managing many concurrent projects."
+        },
+        "migration": {
+          "question": "Can I migrate from Programa to Focuspilot?",
+          "answer": "Yes. We offer free migration assistance including: product library import, client contact transfer, and project history migration. Most studios are fully operational on Focuspilot within one week."
+        },
+        "accounting": {
+          "question": "Does Focuspilot work with accounting software?",
+          "answer": "Absolutely. Focuspilot has native two-way sync with Xero and QuickBooks. Invoices, payments, and expenses sync automatically."
+        },
+        "procurement": {
+          "question": "Which has better procurement features?",
+          "answer": "Focuspilot includes AI-powered product sourcing that finds alternatives and trade pricing automatically. We also support bulk order management and supplier relationship tracking that Programa doesn't offer."
+        }
+      },
+      "migration": {
+        "title": "Switching from Programa?",
+        "subtitle": "We make migration painless. Here's what happens in your first week with Focuspilot.",
+        "steps": {
+          "productLibrary": {
+            "title": "Product library import",
+            "description": "We import your entire product library including images, pricing, and supplier details. Trade discounts are preserved."
+          },
+          "clientContacts": {
+            "title": "Client & contact migration",
+            "description": "All client records, contact details, and communication history transfer seamlessly. No re-entry required."
+          },
+          "activeProjects": {
+            "title": "Active project setup",
+            "description": "Current projects are recreated with timelines, budgets, and approval status intact. Clients get new portal access."
+          },
+          "accountingSync": {
+            "title": "Accounting sync",
+            "description": "Connect Xero or QuickBooks in minutes. Historical data syncs automatically so reporting is immediate."
+          }
+        }
+      },
+      "explore": {
+        "title": "Explore Focuspilot features",
+        "links": {
+          "procurement": {
+            "title": "Procurement",
+            "description": "AI-powered product sourcing and supplier management"
+          },
+          "clientPortal": {
+            "title": "Client Portal",
+            "description": "Approvals, payments, and real-time project updates"
+          },
+          "finance": {
+            "title": "Finance & Invoicing",
+            "description": "Budgets, invoices, and accounting integrations"
+          }
+        }
+      },
+      "cta": {
+        "title": "Ready to switch?",
+        "subtitle": "Start your free trial and see why studios are choosing Focuspilot over Programa.",
+        "primary": "Start for free"
+      }
+    },
+    "houzz-pro": {
+      "meta": {
+        "title": "Focuspilot vs Houzz Pro | Interior Design Software Comparison 2025",
+        "description": "Compare Focuspilot vs Houzz Pro for interior design studios. Independent platform vs Houzz ecosystem. See AI features, transparent pricing, and why designers are switching.",
+        "ogDescription": "Compare Focuspilot vs Houzz Pro for interior design studios. Independent platform vs Houzz ecosystem. AI features, transparent pricing, and more.",
+        "twitterDescription": "Compare Focuspilot vs Houzz Pro. See why designers choose an independent platform."
+      },
+      "breadcrumbTitle": "Focuspilot vs Houzz Pro",
+      "hero": {
+        "title": "Focuspilot vs Houzz Pro",
+        "subtitle": "Compare an independent, global-ready platform with the Houzz marketplace ecosystem. See which is right for your interior design studio."
+      },
+      "bestFor": {
+        "title": "Which is best for your studio?",
+        "focuspilotTitle": "Choose Focuspilot if you...",
+        "competitorTitle": "Choose {name} if you...",
+        "focuspilotReasons": {
+          "independentPlatform": "Want an independent platform without marketplace ties",
+          "xeroIntegration": "Need native Xero accounting integration",
+          "aiAutomation": "Want AI-powered automation to save time",
+          "ownRelationships": "Prefer to own your client relationships completely",
+          "multiCurrency": "Work internationally and need multi-currency support"
+        },
+        "competitorReasons": {
+          "houzzLeads": "Want leads from the Houzz marketplace",
+          "houzzPresence": "Already have a strong Houzz presence",
+          "usBased": "Are primarily US-based",
+          "visualisationTools": "Value Houzz's 3D visualisation tools"
+        }
+      },
+      "comparisonTitle": "Feature comparison",
+      "faqs": {
+        "mainDifference": {
+          "question": "What's the main difference between Focuspilot and Houzz Pro?",
+          "answer": "Focuspilot is an independent platform built specifically for running your design business, while Houzz Pro is tied to the Houzz marketplace ecosystem. Focuspilot gives you complete ownership of client relationships without platform fees or commissions."
+        },
+        "leads": {
+          "question": "Is Houzz Pro better for getting leads?",
+          "answer": "Houzz Pro includes access to the Houzz marketplace for lead generation, but these leads come with platform dependencies and potential commission fees. Focuspilot focuses on helping you manage and convert your own leads more effectively with AI-powered proposals and CRM features."
+        },
+        "xero": {
+          "question": "Does Focuspilot integrate with Xero?",
+          "answer": "Yes, Focuspilot has native two-way Xero integration, which Houzz Pro lacks. Invoices, payments, and expenses sync automatically."
+        },
+        "bothPlatforms": {
+          "question": "Can I use both platforms together?",
+          "answer": "Some studios use Houzz for visibility while managing their business in Focuspilot. However, most find that Focuspilot's CRM and lead management features eliminate the need for Houzz Pro's business tools."
+        },
+        "international": {
+          "question": "Which is better for studios outside the US?",
+          "answer": "Focuspilot supports international studios with multi-currency pricing, VAT handling, Xero integration, and dedicated support. Houzz Pro is primarily designed for the US market."
+        }
+      },
+      "cta": {
+        "title": "Ready to try Focuspilot?",
+        "subtitle": "Start your free 3-month trial. No credit card required. Free migration from Houzz Pro.",
+        "primary": "Start free trial",
+        "secondary": "View all comparisons"
+      }
+    },
+    "design-manager": {
+      "meta": {
+        "title": "Focuspilot vs Design Manager | Modern Interior Design Software 2026",
+        "description": "Compare Focuspilot vs Design Manager. Modern cloud software vs legacy desktop. AI features, real-time collaboration, mobile access. Migrate free from Design Manager.",
+        "ogDescription": "Compare Focuspilot vs Design Manager. Modern cloud software vs legacy desktop. AI features, real-time collaboration, mobile access. Migrate free from Design Manager.",
+        "twitterDescription": "Compare Focuspilot vs Design Manager. Modern cloud software vs legacy desktop. AI features, real-time collaboration, mobile access."
+      },
+      "breadcrumbTitle": "Focuspilot vs Design Manager",
+      "hero": {
+        "title": "Focuspilot vs Design Manager",
+        "subtitle": "Comparing modern cloud software with legacy desktop systems. See why studios are switching to Focuspilot for AI-powered workflows, mobile access, and integrated client payments."
+      },
+      "bestFor": {
+        "title": "Which is right for your studio?",
+        "focuspilotTitle": "Choose Focuspilot if you want...",
+        "competitorTitle": "{name} may suit you if...",
+        "focuspilotReasons": {
+          "modernCloud": "Modern, cloud-based software that works anywhere",
+          "aiFeatures": "AI features that save hours on emails and sourcing",
+          "clientPortalPayments": "Clients to approve and pay through one portal",
+          "perUserPricing": "Simple, predictable per-user pricing",
+          "quickSetup": "Quick setup without IT involvement"
+        },
+        "competitorReasons": {
+          "desktopSoftware": "You prefer desktop software with local installation",
+          "existingWorkflows": "You have existing Design Manager workflows and data",
+          "noRemoteAccess": "Your team doesn't need mobile or remote access",
+          "noAiPriority": "AI and automation features aren't priorities"
+        }
+      },
+      "comparisonTitle": "Feature-by-feature comparison",
+      "faqs": {
+        "mainDifference": {
+          "question": "How is Focuspilot different from Design Manager?",
+          "answer": "Focuspilot is a modern, cloud-native platform built for today's design studios. Unlike Design Manager's legacy desktop software, Focuspilot offers AI-powered features, real-time collaboration, mobile access, and integrated client payments. It's designed for studios who want modern tools without the complexity of traditional software."
+        },
+        "largeStudios": {
+          "question": "Is Design Manager better for larger studios?",
+          "answer": "Design Manager has historically served larger studios, but Focuspilot scales effectively from solo designers to 50+ person teams. Our AI features actually help smaller teams punch above their weight by automating admin tasks that would otherwise require additional staff."
+        },
+        "mobile": {
+          "question": "Can I access Focuspilot on mobile?",
+          "answer": "Yes. Focuspilot is fully responsive and works on any device with a browser. Your clients also get mobile-optimised portal access for approvals and payments. Design Manager requires desktop installation for full functionality."
+        },
+        "accounting": {
+          "question": "Which has better accounting integration?",
+          "answer": "Focuspilot has native two-way sync with Xero and QuickBooks, with automatic invoice and payment reconciliation. Design Manager supports accounting exports but requires more manual work to keep systems in sync."
+        },
+        "commercial": {
+          "question": "Is Focuspilot suitable for commercial projects?",
+          "answer": "Absolutely. While Focuspilot excels at residential projects, our procurement, approval, and financial tools handle commercial projects of any size. Multi-location projects, multiple stakeholder approvals, and complex budgeting are all supported."
+        },
+        "support": {
+          "question": "What about training and support?",
+          "answer": "Focuspilot is designed to be intuitive—most users are productive within hours, not weeks. We offer free onboarding calls, in-app guidance, and responsive support. Design Manager typically requires formal training sessions."
+        }
+      },
+      "migration": {
+        "title": "Migrating from Design Manager?",
+        "subtitle": "Our team helps you transition smoothly. Most studios are fully operational within 5-7 days.",
+        "steps": {
+          "dataExport": {
+            "title": "Data export assistance",
+            "description": "We guide you through exporting your Design Manager data and handle the technical conversion."
+          },
+          "productSupplier": {
+            "title": "Product & supplier import",
+            "description": "Your entire product library transfers with images, specs, and pricing. Supplier relationships preserved."
+          },
+          "clientPortal": {
+            "title": "Client portal setup",
+            "description": "Active clients receive branded portal invitations. Previous approval history is available for reference."
+          },
+          "teamOnboarding": {
+            "title": "Team onboarding",
+            "description": "Each team member gets a personalised orientation. Our intuitive design means most are productive same-day."
+          }
+        }
+      },
+      "explore": {
+        "title": "Discover what Focuspilot can do",
+        "links": {
+          "projectManagement": {
+            "title": "Project Management",
+            "description": "Timelines, tasks, and team collaboration"
+          },
+          "aiFeatures": {
+            "title": "AI Features",
+            "description": "Email drafting, product sourcing, and more"
+          },
+          "crm": {
+            "title": "CRM",
+            "description": "Lead capture, pipeline, and client relationships"
+          }
+        }
+      },
+      "cta": {
+        "title": "Experience modern design software",
+        "subtitle": "See why studios are moving from legacy systems to Focuspilot.",
+        "primary": "Start for free"
+      }
+    },
+    "studio-designer": {
+      "meta": {
+        "title": "Focuspilot vs Studio Designer | Interior Design Software Comparison 2025",
+        "description": "Compare Focuspilot vs Studio Designer for interior design firms. See differences in AI features, transparent pricing, procurement, and client management. Free migration available.",
+        "ogDescription": "Compare Focuspilot vs Studio Designer for interior design firms. AI features, transparent pricing, and comprehensive feature comparison.",
+        "twitterDescription": "Compare Focuspilot vs Studio Designer. See why designers are switching."
+      },
+      "breadcrumbTitle": "Focuspilot vs Studio Designer",
+      "hero": {
+        "title": "Focuspilot vs Studio Designer",
+        "subtitle": "Compare AI-powered project management with traditional design business software. See which platform fits your studio's needs."
+      },
+      "bestFor": {
+        "title": "Which is best for your studio?",
+        "focuspilotTitle": "Choose Focuspilot if you...",
+        "competitorTitle": "Choose {name} if you...",
+        "focuspilotReasons": {
+          "aiAutomation": "Want AI to automate repetitive tasks",
+          "xeroIntegration": "Need native Xero accounting integration",
+          "stripePayments": "Want in-portal client payments via Stripe",
+          "mobileFirst": "Value modern, mobile-first design",
+          "multiCurrency": "Work across regions and need multi-currency support"
+        },
+        "competitorReasons": {
+          "traditionalSoftware": "Prefer established, traditional software",
+          "usBased": "Are primarily US-based",
+          "noAi": "Don't need AI automation features",
+          "quickbooks": "Use QuickBooks for accounting"
+        }
+      },
+      "comparisonTitle": "Feature comparison",
+      "faqs": {
+        "mainDifference": {
+          "question": "What's the main difference between Focuspilot and Studio Designer?",
+          "answer": "Focuspilot is built for studios worldwide with native Xero integration and includes AI-powered features for automation. Studio Designer is US-focused without the same accounting integrations or AI capabilities."
+        },
+        "aiFeatures": {
+          "question": "Does Studio Designer have AI features?",
+          "answer": "No, Studio Designer doesn't include AI features. Focuspilot offers AI email drafting, AI product sourcing, AI proposal generation, and automated data extraction – features that can save 10+ hours weekly."
+        },
+        "procurement": {
+          "question": "Which has better procurement features?",
+          "answer": "Both have solid procurement foundations, but Focuspilot adds AI-powered product sourcing that finds alternatives and trade pricing automatically, plus better delivery tracking and supplier management."
+        },
+        "migration": {
+          "question": "Can I migrate from Studio Designer to Focuspilot?",
+          "answer": "Yes. We offer free migration assistance including product library import, client data transfer, and project history migration. Most studios are fully operational within one week."
+        },
+        "international": {
+          "question": "Which is better for international studios?",
+          "answer": "Focuspilot supports global studios with Xero integration, multi-currency pricing, VAT handling, and dedicated support. Studio Designer is designed primarily for the US market."
+        }
+      },
+      "cta": {
+        "title": "Ready to try Focuspilot?",
+        "subtitle": "Start your free 3-month trial. No credit card required. Free migration from Studio Designer.",
+        "primary": "Start free trial",
+        "secondary": "View all comparisons"
+      }
+    },
+    "designfiles": {
+      "meta": {
+        "title": "Focuspilot vs DesignFiles | Interior Design Software Comparison 2025",
+        "description": "Compare Focuspilot vs DesignFiles for interior designers. See differences in AI features, procurement, finance tools, and scalability. Which is right for your studio?",
+        "ogDescription": "Compare Focuspilot vs DesignFiles for interior designers. AI features, procurement, finance tools, and scalability comparison.",
+        "twitterDescription": "Compare Focuspilot vs DesignFiles. See which scales better for growing studios."
+      },
+      "breadcrumbTitle": "Focuspilot vs DesignFiles",
+      "hero": {
+        "title": "Focuspilot vs DesignFiles",
+        "subtitle": "Compare a comprehensive AI-powered platform with simpler project management. See which tool fits your studio's current needs and growth plans."
+      },
+      "bestFor": {
+        "title": "Which is best for your studio?",
+        "focuspilotTitle": "Choose Focuspilot if you...",
+        "competitorTitle": "Choose {name} if you...",
+        "focuspilotReasons": {
+          "aiAdmin": "Want AI to handle repetitive admin tasks",
+          "procurement": "Need comprehensive procurement management",
+          "accountingIntegration": "Want accounting software integration",
+          "growTeam": "Plan to grow your team",
+          "clientPayments": "Need client payments through the portal"
+        },
+        "competitorReasons": {
+          "soloDesigner": "Are a solo designer with simple needs",
+          "presentationBoards": "Primarily need client presentation boards",
+          "tightBudget": "Have a very tight budget",
+          "noProcurementFinance": "Don't need procurement or finance features"
+        }
+      },
+      "comparisonTitle": "Feature comparison",
+      "faqs": {
+        "mainDifference": {
+          "question": "What's the main difference between Focuspilot and DesignFiles?",
+          "answer": "DesignFiles is a simpler, more affordable tool for basic project management and client boards. Focuspilot is a comprehensive platform with AI automation, full procurement management, accounting integration, and features that scale with your studio."
+        },
+        "pricing": {
+          "question": "Is DesignFiles cheaper than Focuspilot?",
+          "answer": "DesignFiles has a lower starting price, but Focuspilot's AI features can save 10+ hours weekly in admin time. When you factor in time savings, Focuspilot often provides better value, especially for studios doing £200k+ in projects annually."
+        },
+        "accounting": {
+          "question": "Does DesignFiles have accounting integration?",
+          "answer": "No, DesignFiles doesn't integrate with accounting software. Focuspilot has native two-way sync with Xero and QuickBooks, automatically syncing invoices, payments, and expenses."
+        },
+        "growingStudio": {
+          "question": "Which is better for a growing studio?",
+          "answer": "Focuspilot scales better with features like role-based permissions, multi-user collaboration, API access, and enterprise options. DesignFiles works well for solo designers but can feel limited as teams grow."
+        },
+        "migration": {
+          "question": "Can I migrate from DesignFiles to Focuspilot?",
+          "answer": "Yes. We offer free migration assistance including project data, client contacts, and product library import. Most studios transition within a few days."
+        }
+      },
+      "cta": {
+        "title": "Ready to try Focuspilot?",
+        "subtitle": "Start your free 3-month trial. No credit card required. Free migration from DesignFiles.",
+        "primary": "Start free trial",
+        "secondary": "View all comparisons"
+      }
+    }
+  }
+}

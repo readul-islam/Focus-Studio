@@ -1,15 +1,17 @@
 import type { Metadata } from "next"
+import type { ReactNode } from "react"
+import { getTranslations } from "next-intl/server"
+import { localeHreflangAlternates } from "@/lib/seo-alternates"
 
-export const metadata: Metadata = {
-  title: "Changelog | What's New in Focuspilot",
-  description: "See the latest updates, features, and improvements to Focuspilot. We ship weekly to make your interior design workflow better.",
-  alternates: { canonical: "https://focuspilot.io/changelog" },
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("changelogPage.meta")
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: localeHreflangAlternates("changelog"),
+  }
 }
 
-export default function ChangelogLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function ChangelogLayout({ children }: { children: ReactNode }) {
   return children
 }

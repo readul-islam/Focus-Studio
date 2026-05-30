@@ -1,0 +1,3927 @@
+{
+  "language": {
+    "switchLanguage": "言語を切り替える",
+    "englishUs": "English (US)",
+    "japanese": "日本語（日本）"
+  },
+  "siteHeader": {
+    "primaryNavAria": "メイン",
+    "platform": "プラットフォーム",
+    "ai": "AI",
+    "resources": "リソース",
+    "login": "ログイン",
+    "startForFree": "無料で始める",
+    "toggleMenu": "ナビゲーションメニューを開く",
+    "closeMenu": "ナビゲーションメニューを閉じる",
+    "mobile": {
+      "platform": "プラットフォーム",
+      "keyFeatures": "主要機能",
+      "resources": "リソース",
+      "blog": "ブログ",
+      "knowledgeCentre": "ナレッジセンター",
+      "templates": "テンプレート",
+      "aiPlaybook": "AIプレイブック",
+      "contact": "お問い合わせ",
+      "aiTitle": "AI",
+      "aiDesc": "インテリジェントな自動化",
+      "projectManagementTitle": "プロジェクト管理",
+      "projectManagementDesc": "フェーズ、タスク、タイムライン",
+      "procurementTitle": "調達",
+      "procurementDesc": "仕入れ、発注、追跡",
+      "financeTitle": "財務",
+      "financeDesc": "提案書、請求書、支払い",
+      "clientPortalTitle": "クライアントポータル",
+      "clientPortalDesc": "承認、ファイル、メッセージ",
+      "crmTitle": "CRM",
+      "crmDesc": "リードからプロジェクトへのパイプライン",
+      "communicationTitle": "コミュニケーション",
+      "communicationDesc": "プロジェクト連携付き統合受信箱",
+      "approvalsTitle": "承認",
+      "approvalsDesc": "クライアントのサインオフと意思決定の追跡",
+      "aiProcurementTitle": "AI製品調達",
+      "aiProcurementDesc": "AI抽出付きウェブクリッパー",
+      "productLibraryTitle": "製品ライブラリ",
+      "productLibraryDesc": "AIソーシング付き集中製品データベース",
+      "proposalsInvoicesTitle": "提案書と請求書",
+      "proposalsInvoicesDesc": "AI提案書と自動請求"
+    }
+  },
+  "homePage": {
+    "hero": {
+      "badgeMobile": "AIプロジェクト管理",
+      "badgeDesktop": "プロジェクト • 調達 • 支払い",
+      "titleMobileBefore": "AI搭載プロジェクト管理 — ",
+      "titleAccent": "インテリアデザイナー向け",
+      "titleDesktopLine1": "AI搭載プロジェクト管理ソフトウェア",
+      "titleDesktopLine2Before": "対象：",
+      "subtitleMobile": "最初のブリーフから最終請求書まで — タイムライン、予算、承認を自動で管理。",
+      "subtitleDesktop": "最初の問い合わせから最終請求書まで、Focuspilotは散らばったスプレッドシートとメールを、ライブタイムライン、リアルタイム予算、ワンクリックのクライアント承認に変えます。",
+      "cta": "無料で始める",
+      "dashboardAlt": "Focuspilotプロジェクト管理ダッシュボード — Chelsea Penthouse、Cotswold Country Home、Bath Boutique Hotelなどのアクティブなインテリアデザインプロジェクトの進捗、予算、チーム割り当てを表示"
+    },
+    "logoCloud": {
+      "title": "業界で最も革新的なスタジオを支えています",
+      "logoAlt": "{name} デザインスタジオのロゴ"
+    },
+    "aiLayer": {
+      "title": "デザイン管理の未来はインテリジェント",
+      "subtitle": "標準的なプロジェクトツールを超えて。Focuspilotは管理業務を自動化し、ニーズを先読みし、クリエイティブな仕事に集中できる初のインテリアデザイン向けAIプラットフォームです。",
+      "navAria": "プラットフォーム機能",
+      "pillFeaturesAria": "{label} 機能",
+      "cards": {
+        "assistant": {
+          "title": "AIアシスタント",
+          "text": "メールの下書き、タスク作成、会議の要約、1日のスケジュール整理をAIに依頼できます。"
+        },
+        "tasks": {
+          "title": "AIタスク",
+          "text": "ブリーフを依存関係・日程・担当者付きのタスクマップに即座に変換します。"
+        },
+        "procurement": {
+          "title": "AI調達",
+          "text": "製品をWebクリップし、仕様と価格を取得、PO作成と追跡までワンクリックで。"
+        },
+        "noteTaker": {
+          "title": "AI議事録",
+          "text": "打ち合わせや現場訪問を自動文字起こしし、アクションアイテム・RFI・検索可能なプロジェクトメモに変換。"
+        }
+      },
+      "pills": {
+        "library": "ライブラリ",
+        "workflow": "ワークフロー",
+        "ai": "AI",
+        "insights": "インサイト",
+        "automation": "自動化"
+      }
+    },
+    "testimonials": {
+      "title": "デザイナーが週10時間以上節約している方法",
+      "tablistAria": "お客様の声",
+      "viewTestimonialAria": "{name}（{role}）の声を見る",
+      "portraitAlt": "{name}（{role}）のポートレート",
+      "studioLogoAlt": "{name}のスタジオロゴ",
+      "prev": "前の声",
+      "next": "次の声",
+      "people": {
+        "tess": {
+          "name": "Tess H.",
+          "role": "デザインスタジオ",
+          "quote": "提案から入金まで、すべてスムーズに機能します。"
+        },
+        "sarah": {
+          "name": "Sarah",
+          "role": "インテリアデザイナー",
+          "quote": "Focuspilotでビジネスの管理方法が変わりました。管理より創造性に集中できるようになりました！"
+        },
+        "james": {
+          "name": "James",
+          "role": "デザインスタジオオーナー",
+          "quote": "クライアントは明確さを気に入り、私たちはスピードを実感しています。"
+        }
+      }
+    },
+    "bigCta": {
+      "title": "スタジオ、チーム、プロジェクトを一目で把握。",
+      "subtitle": "Focuspilot — AI搭載スタジオOSで、不確実性にさよなら",
+      "cta": "無料で始める",
+      "noCreditCard": "クレジットカード不要"
+    },
+    "attentionBanner": {
+      "titleLine1": "デザイナーの1日は忙しくなりがち。",
+      "titleLine2": "私たちが落ち着きを届けます。",
+      "subtitle": "メール、電話、クライアントの質問、サプライヤーの更新 — すべてFocuspilotに集約。スタジオの落ち着いた司令塔です。",
+      "messages": {
+        "email": "新着メール • 「壁のスコーンをもう1つ追加できますか？」",
+        "missedCalls": "不在着信 3件",
+        "installMove": "クライアントが設置日を金曜に変更を希望。",
+        "marble": "大理石はサプライヤーから届きましたか？",
+        "fabric": "ソファの生地はリネンとブークレ、どちらが承認済み？",
+        "whatsapp": "WhatsApp • 業者：「更新された平面図が必要です。」",
+        "leadTime": "ダイニングチェアのリードタイムが変更されました。"
+      }
+    },
+    "sloganBanner": {
+      "line1": "スタジオを整理。",
+      "line2": "プロジェクトをシンプルに。",
+      "line3": "時間を最適化。",
+      "cta": "クライアントを喜ばせる",
+      "imageAlt": "Focuspilotスタジオ管理プラットフォームのメリットを示すモダンなインテリアデザインワークスペース"
+    },
+    "featureBlocks": {
+      "addToProject": "プロジェクトに追加",
+      "addToProjectAria": "プロジェクトに追加",
+      "taglines": {
+        "projectManagement": "散らばったタスクから、明確で管理可能なプロジェクトタイムラインへ。",
+        "procurement": "紛失した請求書を、明確で自動化された調達ワークフローに置き換え。",
+        "finance": "予算の不確実性から、完全な財務の明確さとコントロールへ。",
+        "default": "付箋と終わりのないスプレッドシートから、落ち着き、明確さ、コントロールへ。"
+      },
+      "blocks": {
+        "projectManagement": {
+          "label": "プロジェクト管理",
+          "title": "アイデアから完成プロジェクトまで",
+          "kicker": "散らばりから整理された流れへ。",
+          "body": "ブリーフから設置まで、すべてのプロジェクトを1つの集中ワークスペースで運営。",
+          "bullet1": "すべてのフェーズ、タスク、タイムラインを把握。",
+          "bullet2": "リマインダーとステータス更新を自動化。",
+          "bullet3": "チーム、業者、クライアントとリアルタイムで協働。",
+          "bullet4": "ドキュメント、図面、デザインコンセプトを1か所でアクセス。",
+          "imageAlt": "タスク、承認、製品を横断してFocuspilotを使用するデザイナー"
+        },
+        "procurement": {
+          "label": "調達",
+          "title": "よりスマートに調達。より速く納品。",
+          "kicker": "資材の調達、発注、追跡は頭痛の種である必要はありません。",
+          "body": "手作業のスプレッドシートや紛失した請求書はもう不要。Focuspilotが資材を時間通りに届けます。",
+          "bullet1": "部屋、プロジェクト、サプライヤー別に製品を整理。",
+          "bullet2": "プロジェクトカレンダーで配送と設置日を追跡。",
+          "bullet3": "承認を自動化し、クライアントを常に最新状態に。",
+          "bullet4": "発注書を自動生成。",
+          "imageAlt": "厳選された家具と装飾のある温かみのあるリビングルーム",
+          "roomAlt": "温かみのあるリビングルーム",
+          "chairAlt": "ブークレラウンジチェア",
+          "artAlt": "壁に額装された抽象アート",
+          "chandelierAlt": "雪花石グローブ付き真鍮シャンデリア"
+        },
+        "finance": {
+          "label": "財務",
+          "title": "より速く入金。コントロールを維持。",
+          "kicker": "請求書、予算、クライアント支払いを1か所に。",
+          "body": "不確実性と未払いから、キャッシュフローへの自信へ。",
+          "bullet1": "プロジェクトとスタジオレベルで予算を追跡。",
+          "bullet2": "Stripe経由で即座に支払いを受け付け。",
+          "bullet3": "数秒でブランド請求書を生成。",
+          "bullet4": "成長に役立つインサイトを表示。",
+          "imageAlt": "ブークレの座席、木製棚、温かい木材のディテールがある日差しのリビングルーム"
+        }
+      }
+    }
+  },
+  "siteFooter": {
+    "tagline": "インテリアデザインスタジオと建築家のための、落ち着いたプレミアムツール。",
+    "platform": "プラットフォーム",
+    "compare": "比較",
+    "resources": "リソース",
+    "company": "会社",
+    "stayInLoop": "最新情報を受け取る",
+    "emailPlaceholder": "メールアドレスを入力",
+    "emailAria": "メールアドレスを入力",
+    "copyright": "© {year} Focuspilot. All rights reserved.",
+    "privacyPolicy": "プライバシーポリシー",
+    "termsOfUse": "利用規約",
+    "sitemap": "サイトマップ",
+    "social": {
+      "facebook": "FacebookでFocuspilotをフォロー",
+      "twitter": "TwitterでFocuspilotをフォロー",
+      "linkedin": "LinkedInでFocuspilotをフォロー",
+      "instagram": "InstagramでFocuspilotをフォロー"
+    },
+    "links": {
+      "projectManagement": "プロジェクト管理",
+      "procurementFfe": "調達とFF&E",
+      "clientPortal": "クライアントポータル",
+      "contractorPortal": "業者ポータル",
+      "financeInvoicing": "財務と請求",
+      "crmPipeline": "CRMとパイプライン",
+      "aiFeatures": "AI機能",
+      "vsHouzzPro": "vs Houzz Pro",
+      "vsPrograma": "vs Programa",
+      "vsStudioDesigner": "vs Studio Designer",
+      "vsDesignFiles": "vs DesignFiles",
+      "allComparisons": "すべての比較",
+      "blog": "ブログ",
+      "knowledgeCentre": "ナレッジセンター",
+      "customerStories": "お客様の声",
+      "changelog": "変更履歴",
+      "templates": "テンプレート",
+      "aiPlaybook": "AIプレイブック",
+      "about": "会社概要",
+      "pricing": "料金",
+      "contact": "お問い合わせ",
+      "careers": "採用",
+      "integrations": "連携"
+    }
+  },
+  "megaNavPlatform": {
+    "trigger": "プラットフォーム",
+    "menuAria": "プラットフォーム",
+    "promoImageAlt": "{title} - {desc}",
+    "columns": {
+      "coreWorkflows": "コアワークフロー",
+      "studioOperations": "スタジオ運営",
+      "keyFeatures": "主要機能"
+    },
+    "items": {
+      "projectManagement": {
+        "label": "プロジェクト管理",
+        "desc": "フェーズ、タスク、タイムライン"
+      },
+      "procurement": {
+        "label": "調達",
+        "desc": "仕入れ、発注、追跡"
+      },
+      "finance": {
+        "label": "財務",
+        "desc": "提案書、請求書、支払い"
+      },
+      "clientPortal": {
+        "label": "クライアントポータル",
+        "desc": "承認、ファイル、メッセージ"
+      },
+      "crm": {
+        "label": "CRM",
+        "desc": "リードからプロジェクトへのパイプライン"
+      },
+      "schedulingInstalls": {
+        "label": "スケジュールと設置",
+        "desc": "プロジェクトタイムラインと設置スケジュール"
+      },
+      "resourcePlanning": {
+        "label": "リソース計画",
+        "desc": "チーム配分とキャパシティ管理"
+      },
+      "vendorDeliveries": {
+        "label": "ベンダーと配送",
+        "desc": "サプライヤー管理と配送追跡"
+      },
+      "docsTemplates": {
+        "label": "ドキュメントとテンプレート",
+        "desc": "ドキュメントライブラリとプロジェクトテンプレート"
+      },
+      "communication": {
+        "label": "コミュニケーション",
+        "desc": "プロジェクト連携付き統合受信箱"
+      },
+      "approvals": {
+        "label": "承認",
+        "desc": "クライアントのサインオフと意思決定の追跡"
+      },
+      "aiProcurement": {
+        "label": "AI製品調達",
+        "desc": "AI抽出付きウェブクリッパー"
+      },
+      "productLibrary": {
+        "label": "製品ライブラリ",
+        "desc": "AIソーシング付き集中製品データベース"
+      },
+      "proposalsInvoices": {
+        "label": "提案書と請求書",
+        "desc": "AI提案書と自動請求"
+      }
+    },
+    "promos": {
+      "overview": {
+        "title": "プラットフォーム概要",
+        "desc": "リード、プロジェクト、調達、請求を1つの落ち着いたワークスペースに。"
+      },
+      "tour": {
+        "title": "製品ツアー",
+        "desc": "UIのガイドツアー — スタジオがプロジェクトを端到端で運営する方法をご覧ください。"
+      },
+      "whatsNew": {
+        "title": "新機能",
+        "desc": "最近リリースした機能と今後の予定を確認。"
+      }
+    }
+  },
+  "resourcesMenu": {
+    "trigger": "リソース",
+    "menuAria": "リソース",
+    "links": {
+      "blog": {
+        "label": "ブログ",
+        "desc": "アイデアとスタジオのワークフロー。"
+      },
+      "customerStories": {
+        "label": "お客様の声",
+        "desc": "素晴らしい仕事を届けるスタジオ。"
+      },
+      "knowledgeCentre": {
+        "label": "ナレッジセンター",
+        "desc": "ガイドとハウツー。"
+      },
+      "changelog": {
+        "label": "変更履歴",
+        "desc": "毎週リリースする内容。"
+      },
+      "templates": {
+        "label": "テンプレート",
+        "desc": "すぐ使えるドキュメント。"
+      },
+      "aiPlaybook": {
+        "label": "AIプレイブック",
+        "desc": "スタジオ全体でAIを活用。"
+      }
+    }
+  },
+  "authLoginPage": {
+    "loading": "読み込み中…",
+    "heroTitle": "デザインスタジオへようこそ",
+    "heroSubtitle": "インテリアデザイナー向けに構築されたFocuspilotで、プロジェクト管理を続けましょう。",
+    "heroImageAlt": "美しいモダンキッチンのインテリアデザイン",
+    "form": {
+      "title": "おかえりなさい",
+      "subtitle": "Focuspilotスタジオアカウントにサインイン",
+      "invalidCredentials": "メールまたはパスワードが正しくありません。もう一度お試しください。",
+      "googleSignIn": "Googleでサインイン",
+      "orDivider": "または",
+      "email": "メール",
+      "password": "パスワード",
+      "emailPlaceholder": "メールアドレスを入力",
+      "passwordPlaceholder": "パスワードを入力",
+      "rememberMe": "ログイン状態を保持",
+      "forgotPassword": "パスワードをお忘れですか？",
+      "signingIn": "サインイン中…",
+      "signIn": "サインイン",
+      "noAccount": "アカウントをお持ちでないですか？",
+      "signUp": "新規登録"
+    },
+    "meta": {
+      "title": "ログイン | Focuspilot",
+      "description": "Focuspilotアカウントにサインインして、デザインスタジオ管理ツールにアクセス。"
+    }
+  },
+  "authSignupPage": {
+    "heroTitle": "デザインスタジオのワークフローを変える",
+    "heroSubtitle": "プロジェクト、クライアント、調達を1か所で管理するインテリアデザイナーに参加しましょう。",
+    "heroImageAlt": "モダンキッチンデザイン",
+    "form": {
+      "title": "アカウントを作成",
+      "subtitle": "無料トライアルを開始 — メールを確認して続行",
+      "registrationFailed": "登録に失敗しました。もう一度お試しください。",
+      "googleSignUp": "Googleで登録",
+      "orDivider": "または",
+      "fullName": "氏名",
+      "email": "メールアドレス",
+      "password": "パスワード",
+      "confirmPassword": "パスワード確認",
+      "strengthLabel": "強度: {level}",
+      "agreeTermsBefore": "以下に同意します：",
+      "termsOfService": "利用規約",
+      "and": "および",
+      "privacyPolicy": "プライバシーポリシー",
+      "creatingAccount": "アカウント作成中…",
+      "createAccount": "アカウントを作成",
+      "hasAccount": "すでにアカウントをお持ちですか？",
+      "signIn": "サインイン",
+      "validation": {
+        "nameRequired": "名前は必須です",
+        "nameInvalid": "有効な名前を入力してください",
+        "emailRequired": "メールは必須です",
+        "emailInvalid": "有効なメールアドレスを入力してください",
+        "passwordRequired": "パスワードは必須です",
+        "passwordMinLength": "8文字以上必要です",
+        "passwordUppercase": "大文字を1文字以上含めてください",
+        "passwordLowercase": "小文字を1文字以上含めてください",
+        "passwordNumber": "数字を1文字以上含めてください",
+        "passwordSpecial": "特殊文字を1文字以上含めてください（@$!%*?&）",
+        "confirmRequired": "パスワードを確認してください",
+        "confirmMismatch": "パスワードが一致しません"
+      },
+      "strength": {
+        "weak": "弱い",
+        "fair": "普通",
+        "good": "良好",
+        "strong": "強い"
+      }
+    },
+    "meta": {
+      "title": "新規登録 | Focuspilot",
+      "description": "Focuspilotアカウントを作成し、AI搭載ツールでデザインスタジオのワークフローを変革。"
+    }
+  },
+  "contactPage": {
+    "meta": {
+      "title": "Focuspilotへのお問い合わせ | ご連絡",
+      "description": "Focuspilotチームへのお問い合わせ。インテリアデザインソフトについてのご質問やデモのご予約など、お気軽にご連絡ください。"
+    },
+    "title": "お問い合わせ",
+    "subtitle": "Focuspilotについてご質問がありますか？デモをご希望ですか？お気軽にご連絡ください。",
+    "email": {
+      "title": "メールで連絡",
+      "description": "一般的なお問い合わせとサポート"
+    },
+    "demo": {
+      "title": "デモを予約",
+      "description": "Focuspilotの実際の操作をご覧ください",
+      "cta": "デモを予約"
+    }
+  },
+  "comparePage": {
+    "meta": {
+      "title": "インテリアデザインソフト比較 | Focuspilot vs 競合",
+      "description": "FocuspilotをPrograma、Houzz Pro、Studio Designer、DesignFilesなどと比較。インテリアデザイナーがFocuspilotを選ぶ理由をご覧ください。",
+      "ogDescription": "FocuspilotをPrograma、Houzz Pro、Studio Designer、DesignFilesなどと比較。インテリアデザイナーがFocuspilotを選ぶ理由をご覧ください。",
+      "twitterDescription": "Focuspilotと主要なインテリアデザインソフトを比較。詳細な機能比較をご覧ください。",
+      "keywords": [
+        "インテリアデザイン ソフトウェア 比較",
+        "Programa 代替",
+        "Houzz Pro 代替",
+        "Studio Designer 代替",
+        "DesignFiles 代替",
+        "インテリアデザイン ソフト おすすめ"
+      ]
+    },
+    "breadcrumb": {
+      "home": "ホーム",
+      "compare": "比較"
+    },
+    "badge": "ソフトウェア比較",
+    "title": "Focuspilotを比較",
+    "subtitle": "Focuspilotが他のインテリアデザインソフトとどう違うかをご確認ください。透明性を大切にし、スタジオに最適なツールを見つけてください。",
+    "detailedTitle": "詳細比較",
+    "vsLabel": "Focuspilot vs {name}",
+    "advantageLabel": "Focuspilotの優位点：",
+    "competitors": {
+      "programa": {
+        "description": "米国で調達とプロジェクト管理に人気",
+        "advantage": "Xeroネイティブ連携、AI機能、Stripe決済に対応したグローバル向け設計"
+      },
+      "designManager": {
+        "description": "インテリアデザイナー向けのレガシーデスクトップソフト",
+        "advantage": "モダンなクラウドベース、モバイル対応、インストール不要"
+      },
+      "houzzPro": {
+        "description": "Houzzマーケットプレイスと連携したオールインワンプラットフォーム",
+        "advantage": "独立したプラットフォーム、専任サポート、柔軟性"
+      },
+      "studioDesigner": {
+        "description": "クラウドベースのデザインビジネス管理",
+        "advantage": "AI機能、優れた調達、多通貨対応"
+      },
+      "designfiles": {
+        "description": "デザイナー向けのシンプルなプロジェクト管理",
+        "advantage": "より包括的な機能、AI自動化、スケーラビリティ"
+      }
+    },
+    "whySwitch": {
+      "title": "スタジオがFocuspilotに移行する理由",
+      "subtitle": "インテリアデザイナーが他社製品の代わりにFocuspilotを選ぶ主な理由",
+      "reasons": {
+        "worldwide": {
+          "title": "世界中のデザインスタジオ向けに設計",
+          "description": "Xeroネイティブ連携、多通貨対応、VAT処理、専任サポート。"
+        },
+        "ai": {
+          "title": "AIによる自動化",
+          "description": "AIメール作成、製品調達、提案書生成で毎週数時間を節約。"
+        },
+        "mobile": {
+          "title": "モダン＆モバイル",
+          "description": "クラウドベースであらゆるデバイスで動作。デスクトップソフトのインストールや更新は不要。"
+        },
+        "allInOne": {
+          "title": "オールインワンプラットフォーム",
+          "description": "CRM、プロジェクト、調達、クライアントポータル、財務を一つのワークスペースに。"
+        },
+        "migration": {
+          "title": "無料移行サポート",
+          "description": "既存ソフトからのデータ移行を追加費用なしでサポート。"
+        },
+        "pricing": {
+          "title": "透明な料金体系",
+          "description": "シンプルなユーザー単位の料金。隠れた費用やプロジェクト単位の課金なし。"
+        }
+      }
+    },
+    "cta": {
+      "title": "Focuspilotの実際の操作をご覧になりますか？",
+      "subtitle": "3ヶ月無料トライアルを開始し、スタジオがFocuspilotに移行する理由を体験してください。",
+      "startTrial": "無料トライアルを開始",
+      "viewPricing": "料金を見る"
+    }
+  },
+  "pricingPage": {
+    "meta": {
+      "title": "Focuspilot料金 | インテリアデザインソフト £49/ユーザー〜 | 無料トライアル",
+      "description": "インテリアデザインスタジオ向けのシンプルで透明な料金。3ヶ月無料ベータまたは£49/ユーザー/月のProfessional。AI機能すべて込み。初期費用なし。今すぐ無料で開始。",
+      "ogDescription": "インテリアデザインスタジオ向けのシンプルで透明な料金。3ヶ月無料ベータまたは£49/ユーザー/月のProfessional。AI機能すべて込み。初期費用なし。",
+      "twitterDescription": "インテリアデザインスタジオ向けのシンプルで透明な料金。3ヶ月無料ベータまたは£49/ユーザー/月のProfessional。AI機能すべて込み。"
+    },
+    "hero": {
+      "badge": "ベータプログラム受付中",
+      "title": "シンプルで透明な料金",
+      "subtitle": "早期参加でベータ期間中は無制限アクセス。スタジオの成長に合わせて安心してスケール。"
+    },
+    "plans": {
+      "beta": {
+        "name": "ベータアクセス",
+        "badge": "限定枠",
+        "price": "無料",
+        "description": "ベータ期間中のフルプラットフォームアクセス",
+        "features": {
+          "users": "ベータ期間中はユーザー数無制限",
+          "ai": "すべてのAI機能込み",
+          "projects": "プロジェクト管理とCRM",
+          "portal": "クライアントポータルと承認",
+          "procurement": "AI調達とライブラリ",
+          "support": "優先サポートとフィードバック"
+        },
+        "cta": "ベータ待機リストに参加"
+      },
+      "professional": {
+        "name": "Professional",
+        "badge": "最も人気",
+        "price": "£49",
+        "priceUnit": "/ユーザー/月",
+        "description": "最初の5ユーザー • 追加ユーザーは£39/ユーザー",
+        "features": {
+          "everything": "ベータのすべての機能を永久に",
+          "unlimited": "プロジェクトとクライアント数無制限",
+          "automation": "高度なAI自動化",
+          "branding": "カスタムブランディングとホワイトラベル",
+          "support": "優先サポートとオンボーディング",
+          "sla": "99.9%稼働率SLA"
+        },
+        "cta": "無料トライアルを開始"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "badge": "20ユーザー以上",
+        "price": "カスタム",
+        "description": "大規模スタジオとネットワーク向けのカスタム料金",
+        "features": {
+          "everything": "Professionalのすべての機能",
+          "unlimited": "ユーザー数とプロジェクト数無制限",
+          "security": "SSOと高度なセキュリティ",
+          "api": "APIアクセスとカスタム連携",
+          "manager": "専任アカウントマネージャー",
+          "billing": "年間請求と請求書払いオプション"
+        },
+        "cta": "営業に問い合わせ"
+      }
+    },
+    "note": "すべてのプランに14日間の無料トライアル付き。クレジットカード不要。ベータユーザーは正式リリース時に固定料金を適用。",
+    "faq": {
+      "title": "よくある質問",
+      "subtitle": "料金とプランについて知っておくべきこと",
+      "items": {
+        "afterBeta": {
+          "question": "ベータ期間終了後はどうなりますか？",
+          "answer": "ベータユーザーには特別料金と、正式リリース前に料金を固定するオプションが提供されます。課金開始前に十分なお知らせを行います。"
+        },
+        "userPricing": {
+          "question": "ユーザー単位の料金はどのように機能しますか？",
+          "answer": "最初の5ユーザーは£49/ユーザー/月。6ユーザー以降は£39/ユーザー/月。アクティブユーザーのみ課金され、いつでもユーザーの追加・削除が可能です。"
+        },
+        "tryBeforeBuy": {
+          "question": "購入前に試せますか？",
+          "answer": "ベータに無料参加するか、Professionalプランの14日間無料トライアルを開始できます。ベータアクセスにクレジットカードは不要です。"
+        },
+        "paymentMethods": {
+          "question": "どの支払い方法に対応していますか？",
+          "answer": "主要なクレジットカードとデビットカードに対応。年間請求オプションも割引付きで利用可能。請求書払いやその他の支払い方法についてはお問い合わせください。"
+        },
+        "setupFee": {
+          "question": "初期費用や契約期間はありますか？",
+          "answer": "初期費用なし、隠れたコストなし、長期契約なし。月払いでいつでもキャンセル可能。毎月お客様の信頼を勝ち取ることを大切にしています。"
+        },
+        "annualBilling": {
+          "question": "年間請求の割引はありますか？",
+          "answer": "はい！年間請求で2ヶ月分お得（16%オフ相当）。20ユーザー以上のスタジオ向けカスタムEnterprise料金については営業チームにお問い合わせください。"
+        }
+      }
+    },
+    "cta": {
+      "title": "スタジオを変革する準備はできましたか？",
+      "subtitle": "すでにFocuspilotを使用しているデザインスタジオに参加し、時間を節約し、管理業務を削減し、より良いクライアント体験を提供しましょう。",
+      "button": "無料で開始",
+      "noCreditCard": "クレジットカード不要"
+    }
+  },
+  "compareDetailShared": {
+    "badge": "ソフトウェア比較",
+    "breadcrumb": {
+      "home": "ホーム",
+      "compare": "比較"
+    },
+    "table": {
+      "feature": "機能",
+      "focuspilot": "Focuspilot"
+    },
+    "legend": {
+      "full": "完全対応",
+      "partial": "一部対応／制限あり",
+      "none": "非対応"
+    },
+    "faqTitle": "よくある質問",
+    "learnMore": "詳しく見る",
+    "noCreditCard": "クレジットカード不要"
+  },
+  "compareDetailCategories": {
+    "procurement": "調達",
+    "clientApprovals": "クライアント承認",
+    "financeInvoicing": "財務・請求",
+    "projectManagement": "プロジェクト管理",
+    "crm": "CRM",
+    "platformIndependence": "プラットフォームの独立性",
+    "financeCompliance": "財務・コンプライアンス",
+    "aiAutomation": "AI・自動化",
+    "financePayments": "財務・決済",
+    "userExperience": "ユーザー体験",
+    "clientExperience": "クライアント体験",
+    "financialManagement": "財務管理",
+    "procurementProducts": "調達・製品",
+    "clientManagement": "クライアント管理",
+    "finance": "財務",
+    "procurementFfe": "調達・FF&E",
+    "scalability": "スケーラビリティ"
+  },
+  "compareDetailFeatures": {
+    "productLibraryPricing": "価格付き製品ライブラリ",
+    "aiProductSourcing": "AIによる製品調達",
+    "purchaseOrderGeneration": "発注書の作成",
+    "supplierManagement": "サプライヤー管理",
+    "tradePricingIntegration": "トレード価格連携",
+    "bulkOrderManagement": "一括注文管理",
+    "clientApprovalPortal": "クライアント承認ポータル",
+    "commentsRevisions": "コメント・改訂",
+    "inPortalPayments": "ポータル内決済",
+    "realtimeStatusUpdates": "リアルタイムステータス更新",
+    "mobileOptimisedPortal": "モバイル最適化ポータル",
+    "invoiceGeneration": "請求書作成",
+    "xeroQuickbooksSync": "Xero／QuickBooks同期",
+    "stripePayments": "Stripe決済",
+    "projectProfitabilityTracking": "プロジェクト収益性の追跡",
+    "automatedPaymentReminders": "自動支払いリマインダー",
+    "multiCurrencySupport": "多通貨対応",
+    "projectTimelinesPhases": "プロジェクトタイムライン・フェーズ",
+    "taskManagement": "タスク管理",
+    "teamCollaboration": "チームコラボレーション",
+    "aiEmailDrafting": "AIメール下書き",
+    "documentStorage": "ドキュメント保管",
+    "clientCommunicationLog": "クライアントコミュニケーションログ",
+    "leadCaptureForms": "リード獲得フォーム",
+    "pipelineManagement": "パイプライン管理",
+    "contactDatabase": "連絡先データベース",
+    "aiPoweredProposals": "AI提案書",
+    "automatedFollowUps": "自動フォローアップ",
+    "independentPlatform": "独立プラットフォーム（マーケットプレイス非依存）",
+    "ownClientRelationships": "クライアント関係の完全な所有",
+    "noPlatformCommission": "リードへのプラットフォーム手数料なし",
+    "anyProductSuppliers": "あらゆる製品サプライヤーに対応",
+    "whiteLabelClientPortal": "ホワイトラベルクライアントポータル",
+    "nativeXeroIntegration": "ネイティブXero連携",
+    "multiCurrencyVat": "多通貨価格設定・VAT対応",
+    "dedicatedSupportTeam": "専任サポートチーム",
+    "gdprCompliant": "GDPR準拠",
+    "britishSpellingTerminology": "英国英語の表記・用語",
+    "aiProposalGeneration": "AI提案書生成",
+    "smartClientThreadSummaries": "スマートクライアントスレッド要約",
+    "automatedDataExtraction": "自動データ抽出",
+    "stripePaymentIntegration": "Stripe決済連携",
+    "accountingSoftwareSync": "会計ソフト同期",
+    "modernCloudInterface": "モダンなクラウドインターフェース",
+    "mobileResponsiveDesign": "モバイル対応デザイン",
+    "realtimeCollaboration": "リアルタイムコラボレーション",
+    "noInstallationRequired": "インストール不要",
+    "regularFeatureUpdates": "定期的な機能アップデート",
+    "smartProposalGeneration": "スマート提案書生成",
+    "workflowAutomation": "ワークフロー自動化",
+    "brandedClientPortal": "ブランド化クライアントポータル",
+    "mobileClientAccess": "モバイルクライアントアクセス",
+    "realtimeApprovalNotifications": "リアルタイム承認通知",
+    "clientCommentThreads": "クライアントコメントスレッド",
+    "projectBudgeting": "プロジェクト予算管理",
+    "xeroIntegration": "Xero連携",
+    "profitabilityReporting": "収益性レポート",
+    "purchaseOrderManagement": "発注書管理",
+    "productLibrary": "製品ライブラリ",
+    "supplierDatabase": "サプライヤーデータベース",
+    "tradePricingManagement": "トレード価格管理",
+    "aiAlternativeFinder": "AI代替品検索",
+    "orderTracking": "注文追跡",
+    "smartReminders": "スマートリマインダー",
+    "multiCurrencyPricing": "多通貨価格設定",
+    "vatTaxHandling": "VAT・税務対応",
+    "dedicatedSupport": "専任サポート",
+    "britishEnglishInterface": "英国英語インターフェース",
+    "clientPortal": "クライアントポータル",
+    "selectionApprovals": "セレクション承認",
+    "realtimeUpdates": "リアルタイム更新",
+    "whiteLabelBranding": "ホワイトラベルブランディング",
+    "projectProfitability": "プロジェクト収益性",
+    "budgetTracking": "予算追跡",
+    "accountingSync": "会計同期",
+    "automatedWorkflows": "自動ワークフロー",
+    "smartDataExtraction": "スマートデータ抽出",
+    "deliveryTracking": "配送追跡",
+    "tradePricingLookup": "トレード価格検索",
+    "selectionBoards": "セレクションボード",
+    "approvalWorkflows": "承認ワークフロー",
+    "budgetVsActualTracking": "予算対実績追跡",
+    "multiUserTeams": "複数ユーザーチーム",
+    "roleBasedPermissions": "ロールベース権限",
+    "multipleStudiosBrands": "複数スタジオ／ブランド",
+    "enterpriseFeatures": "エンタープライズ機能",
+    "apiAccess": "APIアクセス"
+  },
+  "compareDetailPages": {
+    "programa": {
+      "meta": {
+        "title": "Focuspilot vs Programa｜インテリアデザインソフト比較 2026",
+        "description": "インテリアデザインスタジオ向けにFocuspilotとProgramaを比較。AI機能、透明な料金、Xero連携、クライアントポータルの違いを確認。無料移行サポート付き。",
+        "ogDescription": "インテリアデザインスタジオ向けにFocuspilotとProgramaを比較。AI機能、透明な料金、Xero連携、クライアントポータルの違いを確認。無料移行サポート付き。",
+        "twitterDescription": "インテリアデザインスタジオ向けにFocuspilotとProgramaを比較。AI機能、透明な料金、Xero連携、クライアントポータルの違いを確認。",
+        "keywords": [
+          "Focuspilot vs Programa",
+          "Programa 代替",
+          "インテリアデザイン ソフトウェア 比較",
+          "デザインスタジオ 管理ソフト",
+          "デザイナー向け 調達ソフト"
+        ]
+      },
+      "breadcrumbTitle": "Focuspilot vs Programa",
+      "hero": {
+        "title": "Focuspilot vs Programa",
+        "subtitle": "FocuspilotとProgramaのどちらを選ぶか、インテリアデザインスタジオ向けの詳細比較。調達、承認、請求、プロジェクトワークフローの違いをご覧ください。"
+      },
+      "bestFor": {
+        "title": "あなたのスタジオに最適なのはどちら？",
+        "focuspilotTitle": "次のような場合はFocuspilotを選ぶ",
+        "competitorTitle": "次のような場合は{name}が向いている",
+        "focuspilotReasons": {
+          "accountingSync": "XeroまたはQuickBooksを使用し、ネイティブな会計同期が必要",
+          "aiFeatures": "AIによるメール下書きと製品調達を活用したい",
+          "inPortalPayments": "承認ポータルから直接クライアントに支払ってもらいたい",
+          "residentialPractice": "住宅またはブティック商業プロジェクトを手がけている",
+          "perUserPricing": "チーム規模に応じたユーザー単位の料金を希望"
+        },
+        "competitorReasons": {
+          "usQuickbooks": "米国拠点でQuickBooksを多用している",
+          "perProjectPricing": "ユーザー単位よりプロジェクト単位の料金を好む",
+          "noAiPayments": "AI機能やポータル内決済は不要",
+          "existingWorkflows": "すでにProgramaのワークフローが確立している"
+        }
+      },
+      "comparisonTitle": "機能別の詳細比較",
+      "faqs": {
+        "mainDifference": {
+          "question": "FocuspilotとProgramaの主な違いは何ですか？",
+          "answer": "Focuspilotは世界中のインテリアデザインスタジオ向けに構築され、ネイティブなXero・QuickBooks連携、Stripe決済、メール下書きや製品調達などのAI機能を備えています。Programaは米国中心でQuickBooks連携が中心です。FocuspilotにはProgramaにないポータル内クライアント決済と自動請求機能も含まれます。"
+        },
+        "studioSize": {
+          "question": "Focuspilotは小規模スタジオと大規模チームのどちらに適していますか？",
+          "answer": "Focuspilotはソロデザイナーから50名以上のスタジオまでスケールします。料金モデル（最初の5ユーザー£49/ユーザー、以降£39/ユーザー）は成長するチーム向けに設計されています。Programaのプロジェクト単位料金は、多数の同時進行プロジェクトを管理するスタジオでは高額になる場合があります。"
+        },
+        "migration": {
+          "question": "ProgramaからFocuspilotに移行できますか？",
+          "answer": "はい。製品ライブラリのインポート、クライアント連絡先の移行、プロジェクト履歴の移行を含む無料移行サポートを提供しています。ほとんどのスタジオは1週間以内にFocuspilotで完全に稼働できます。"
+        },
+        "accounting": {
+          "question": "Focuspilotは会計ソフトと連携しますか？",
+          "answer": "もちろんです。FocuspilotはXeroおよびQuickBooksとネイティブな双方向同期を備えています。請求書、支払い、経費が自動的に同期されます。"
+        },
+        "procurement": {
+          "question": "調達機能はどちらが優れていますか？",
+          "answer": "Focuspilotには代替品やトレード価格を自動で見つけるAI製品調達が含まれます。Programaにはない一括注文管理とサプライヤー関係の追跡もサポートしています。"
+        }
+      },
+      "migration": {
+        "title": "Programaからの切り替え",
+        "subtitle": "移行はスムーズです。Focuspilot導入後の最初の1週間で行うことをご紹介します。",
+        "steps": {
+          "productLibrary": {
+            "title": "製品ライブラリのインポート",
+            "description": "画像、価格、サプライヤー情報を含む製品ライブラリ全体をインポートします。トレード割引も保持されます。"
+          },
+          "clientContacts": {
+            "title": "クライアント・連絡先の移行",
+            "description": "すべてのクライアント記録、連絡先、コミュニケーション履歴がシームレスに移行されます。再入力は不要です。"
+          },
+          "activeProjects": {
+            "title": "進行中プロジェクトのセットアップ",
+            "description": "進行中のプロジェクトはタイムライン、予算、承認ステータスを維持したまま再作成されます。クライアントには新しいポータルアクセスが提供されます。"
+          },
+          "accountingSync": {
+            "title": "会計同期",
+            "description": "数分でXeroまたはQuickBooksに接続できます。履歴データも自動同期され、すぐにレポートが利用可能です。"
+          }
+        }
+      },
+      "explore": {
+        "title": "Focuspilotの機能を探索",
+        "links": {
+          "procurement": {
+            "title": "調達",
+            "description": "AIによる製品調達とサプライヤー管理"
+          },
+          "clientPortal": {
+            "title": "クライアントポータル",
+            "description": "承認、決済、リアルタイムのプロジェクト更新"
+          },
+          "finance": {
+            "title": "財務・請求",
+            "description": "予算、請求書、会計連携"
+          }
+        }
+      },
+      "cta": {
+        "title": "切り替えの準備はできましたか？",
+        "subtitle": "無料トライアルを開始し、スタジオがProgramaではなくFocuspilotを選ぶ理由をご確認ください。",
+        "primary": "無料で始める"
+      }
+    },
+    "houzz-pro": {
+      "meta": {
+        "title": "Focuspilot vs Houzz Pro｜インテリアデザインソフト比較 2025",
+        "description": "インテリアデザインスタジオ向けにFocuspilotとHouzz Proを比較。独立プラットフォームとHouzzエコシステムの違い。AI機能、透明な料金、デザイナーが切り替える理由を確認。",
+        "ogDescription": "インテリアデザインスタジオ向けにFocuspilotとHouzz Proを比較。独立プラットフォームとHouzzエコシステム。AI機能、透明な料金など。",
+        "twitterDescription": "FocuspilotとHouzz Proを比較。デザイナーが独立プラットフォームを選ぶ理由をご覧ください。",
+        "keywords": [
+          "Focuspilot vs Houzz Pro",
+          "Houzz Pro 代替",
+          "インテリアデザイン ソフトウェア 比較",
+          "独立系 デザインソフト"
+        ]
+      },
+      "breadcrumbTitle": "Focuspilot vs Houzz Pro",
+      "hero": {
+        "title": "Focuspilot vs Houzz Pro",
+        "subtitle": "独立したグローバル対応プラットフォームとHouzzマーケットプレイスエコシステムを比較。あなたのインテリアデザインスタジオに最適なのはどちらかをご確認ください。"
+      },
+      "bestFor": {
+        "title": "あなたのスタジオに最適なのはどちら？",
+        "focuspilotTitle": "次のような場合はFocuspilotを選ぶ",
+        "competitorTitle": "次のような場合は{name}を選ぶ",
+        "focuspilotReasons": {
+          "independentPlatform": "マーケットプレイスに依存しない独立プラットフォームを希望",
+          "xeroIntegration": "ネイティブなXero会計連携が必要",
+          "aiAutomation": "時間を節約するAI自動化を活用したい",
+          "ownRelationships": "クライアント関係を完全に所有したい",
+          "multiCurrency": "国際的に活動し、多通貨対応が必要"
+        },
+        "competitorReasons": {
+          "houzzLeads": "Houzzマーケットプレイスからリードを獲得したい",
+          "houzzPresence": "すでにHouzzでの存在感が強い",
+          "usBased": "主に米国拠点",
+          "visualisationTools": "Houzzの3Dビジュアライゼーションツールを重視"
+        }
+      },
+      "comparisonTitle": "機能比較",
+      "faqs": {
+        "mainDifference": {
+          "question": "FocuspilotとHouzz Proの主な違いは何ですか？",
+          "answer": "Focuspilotはデザインビジネスの運営に特化した独立プラットフォームです。Houzz ProはHouzzマーケットプレイスエコシステムに依存しています。Focuspilotはプラットフォーム手数料やコミッションなしで、クライアント関係を完全に所有できます。"
+        },
+        "leads": {
+          "question": "リード獲得にはHouzz Proの方が優れていますか？",
+          "answer": "Houzz Proにはリード獲得のためのHouzzマーケットプレイスへのアクセスが含まれますが、プラットフォーム依存やコミッション手数料が伴います。FocuspilotはAI提案書やCRM機能で、自社のリードをより効果的に管理・成約させることに注力しています。"
+        },
+        "xero": {
+          "question": "FocuspilotはXeroと連携しますか？",
+          "answer": "はい、FocuspilotにはHouzz Proにないネイティブな双方向Xero連携があります。請求書、支払い、経費が自動的に同期されます。"
+        },
+        "bothPlatforms": {
+          "question": "両方のプラットフォームを併用できますか？",
+          "answer": "Houzzで認知度を高めつつFocuspilotでビジネスを管理するスタジオもあります。ただし、多くのスタジオはFocuspilotのCRMとリード管理機能により、Houzz Proのビジネスツールは不要と感じています。"
+        },
+        "international": {
+          "question": "米国外のスタジオにはどちらが適していますか？",
+          "answer": "Focuspilotは多通貨価格設定、VAT対応、Xero連携、専任サポートで国際的なスタジオをサポートします。Houzz Proは主に米国市場向けに設計されています。"
+        }
+      },
+      "cta": {
+        "title": "Focuspilotを試してみませんか？",
+        "subtitle": "3ヶ月間の無料トライアルを開始。クレジットカード不要。Houzz Proからの無料移行サポート付き。",
+        "primary": "無料トライアルを開始",
+        "secondary": "すべての比較を見る"
+      }
+    },
+    "design-manager": {
+      "meta": {
+        "title": "Focuspilot vs Design Manager｜モダンなインテリアデザインソフト 2026",
+        "description": "FocuspilotとDesign Managerを比較。モダンなクラウドソフトとレガシーデスクトップの違い。AI機能、リアルタイムコラボレーション、モバイルアクセス。Design Managerから無料移行。",
+        "ogDescription": "FocuspilotとDesign Managerを比較。モダンなクラウドソフトとレガシーデスクトップ。AI機能、リアルタイムコラボレーション、モバイルアクセス。Design Managerから無料移行。",
+        "twitterDescription": "FocuspilotとDesign Managerを比較。モダンなクラウドソフトとレガシーデスクトップ。AI機能、リアルタイムコラボレーション、モバイルアクセス。",
+        "keywords": [
+          "Focuspilot vs Design Manager",
+          "Design Manager 代替",
+          "インテリアデザイン ソフトウェア 比較",
+          "デザインスタジオ ERP"
+        ]
+      },
+      "breadcrumbTitle": "Focuspilot vs Design Manager",
+      "hero": {
+        "title": "Focuspilot vs Design Manager",
+        "subtitle": "モダンなクラウドソフトとレガシーデスクトップシステムを比較。AIワークフロー、モバイルアクセス、統合クライアント決済のためにFocuspilotに切り替えるスタジオが増えています。"
+      },
+      "bestFor": {
+        "title": "あなたのスタジオに最適なのはどちら？",
+        "focuspilotTitle": "次のような場合はFocuspilotを選ぶ",
+        "competitorTitle": "次のような場合は{name}が向いている",
+        "focuspilotReasons": {
+          "modernCloud": "どこでも使えるモダンなクラウドソフト",
+          "aiFeatures": "メールや調達の時間を節約するAI機能",
+          "clientPortalPayments": "1つのポータルで承認と決済を完結",
+          "perUserPricing": "シンプルで予測可能なユーザー単位料金",
+          "quickSetup": "IT部門不要の迅速なセットアップ"
+        },
+        "competitorReasons": {
+          "desktopSoftware": "ローカルインストールのデスクトップソフトを好む",
+          "existingWorkflows": "既存のDesign Managerワークフローとデータがある",
+          "noRemoteAccess": "チームにモバイルやリモートアクセスは不要",
+          "noAiPriority": "AI・自動化機能は優先度が低い"
+        }
+      },
+      "comparisonTitle": "機能別の詳細比較",
+      "faqs": {
+        "mainDifference": {
+          "question": "FocuspilotはDesign Managerとどう違いますか？",
+          "answer": "Focuspilotは今日のデザインスタジオ向けに構築されたモダンなクラウドネイティブプラットフォームです。Design Managerのレガシーデスクトップソフトとは異なり、AI機能、リアルタイムコラボレーション、モバイルアクセス、統合クライアント決済を提供します。従来型ソフトの複雑さなしにモダンなツールを求めるスタジオ向けです。"
+        },
+        "largeStudios": {
+          "question": "大規模スタジオにはDesign Managerの方が適していますか？",
+          "answer": "Design Managerは歴史的に大規模スタジオにサービス提供してきましたが、Focuspilotはソロデザイナーから50名以上のチームまで効果的にスケールします。AI機能により、追加スタッフが必要な管理業務を自動化し、小規模チームでも大きな成果を出せます。"
+        },
+        "mobile": {
+          "question": "Focuspilotはモバイルで利用できますか？",
+          "answer": "はい。Focuspilotは完全レスポンシブで、ブラウザのあるあらゆるデバイスで動作します。クライアントも承認と決済のためのモバイル最適化ポータルにアクセスできます。Design Managerはフル機能にデスクトップインストールが必要です。"
+        },
+        "accounting": {
+          "question": "会計連携はどちらが優れていますか？",
+          "answer": "FocuspilotはXeroおよびQuickBooksとネイティブな双方向同期を備え、請求書と支払いの自動照合を行います。Design Managerは会計エクスポートに対応していますが、システム同期にはより多くの手作業が必要です。"
+        },
+        "commercial": {
+          "question": "Focuspilotは商業プロジェクトに適していますか？",
+          "answer": "もちろんです。Focuspilotは住宅プロジェクトに優れていますが、調達、承認、財務ツールはあらゆる規模の商業プロジェクトに対応します。複数拠点、複数ステークホルダー承認、複雑な予算管理もサポートしています。"
+        },
+        "support": {
+          "question": "トレーニングとサポートはどうですか？",
+          "answer": "Focuspilotは直感的に設計されており、ほとんどのユーザーは数週間ではなく数時間で生産的に使えます。無料オンボーディングコール、アプリ内ガイダンス、迅速なサポートを提供しています。Design Managerは通常、正式なトレーニングセッションが必要です。"
+        }
+      },
+      "migration": {
+        "title": "Design Managerからの移行",
+        "subtitle": "チームがスムーズな移行をサポートします。ほとんどのスタジオは5〜7日で完全稼働します。",
+        "steps": {
+          "dataExport": {
+            "title": "データエクスポート支援",
+            "description": "Design Managerデータのエクスポートをガイドし、技術的な変換を担当します。"
+          },
+          "productSupplier": {
+            "title": "製品・サプライヤーのインポート",
+            "description": "画像、仕様、価格を含む製品ライブラリ全体が移行されます。サプライヤー関係も保持されます。"
+          },
+          "clientPortal": {
+            "title": "クライアントポータルのセットアップ",
+            "description": "アクティブなクライアントにブランド化されたポータル招待を送信。過去の承認履歴も参照可能です。"
+          },
+          "teamOnboarding": {
+            "title": "チームオンボーディング",
+            "description": "各チームメンバーに個別のオリエンテーションを提供。直感的な設計により、多くのメンバーは当日から生産的に使えます。"
+          }
+        }
+      },
+      "explore": {
+        "title": "Focuspilotでできることを発見",
+        "links": {
+          "projectManagement": {
+            "title": "プロジェクト管理",
+            "description": "タイムライン、タスク、チームコラボレーション"
+          },
+          "aiFeatures": {
+            "title": "AI機能",
+            "description": "メール下書き、製品調達など"
+          },
+          "crm": {
+            "title": "CRM",
+            "description": "リード獲得、パイプライン、クライアント関係"
+          }
+        }
+      },
+      "cta": {
+        "title": "モダンなデザインソフトを体験",
+        "subtitle": "レガシーシステムからFocuspilotに移行するスタジオが増えている理由をご確認ください。",
+        "primary": "無料で始める"
+      }
+    },
+    "studio-designer": {
+      "meta": {
+        "title": "Focuspilot vs Studio Designer｜インテリアデザインソフト比較 2025",
+        "description": "インテリアデザインファーム向けにFocuspilotとStudio Designerを比較。AI機能、透明な料金、調達、クライアント管理の違い。無料移行サポートあり。",
+        "ogDescription": "インテリアデザインファーム向けにFocuspilotとStudio Designerを比較。AI機能、透明な料金、包括的な機能比較。",
+        "twitterDescription": "FocuspilotとStudio Designerを比較。デザイナーが切り替える理由をご覧ください。",
+        "keywords": [
+          "Focuspilot vs Studio Designer",
+          "Studio Designer 代替",
+          "インテリアデザイン ソフトウェア 比較",
+          "クラウド デザイン業務ソフト"
+        ]
+      },
+      "breadcrumbTitle": "Focuspilot vs Studio Designer",
+      "hero": {
+        "title": "Focuspilot vs Studio Designer",
+        "subtitle": "AI搭載プロジェクト管理と従来型デザインビジネスソフトを比較。あなたのスタジオのニーズに合うプラットフォームをご確認ください。"
+      },
+      "bestFor": {
+        "title": "あなたのスタジオに最適なのはどちら？",
+        "focuspilotTitle": "次のような場合はFocuspilotを選ぶ",
+        "competitorTitle": "次のような場合は{name}を選ぶ",
+        "focuspilotReasons": {
+          "aiAutomation": "反復作業をAIで自動化したい",
+          "xeroIntegration": "ネイティブなXero会計連携が必要",
+          "stripePayments": "Stripeによるポータル内クライアント決済を希望",
+          "mobileFirst": "モダンでモバイルファーストなデザインを重視",
+          "multiCurrency": "複数地域で活動し、多通貨対応が必要"
+        },
+        "competitorReasons": {
+          "traditionalSoftware": "確立された従来型ソフトを好む",
+          "usBased": "主に米国拠点",
+          "noAi": "AI自動化機能は不要",
+          "quickbooks": "会計にQuickBooksを使用"
+        }
+      },
+      "comparisonTitle": "機能比較",
+      "faqs": {
+        "mainDifference": {
+          "question": "FocuspilotとStudio Designerの主な違いは何ですか？",
+          "answer": "FocuspilotはネイティブXero連携を備え、自動化のためのAI機能を含む、世界中のスタジオ向けに構築されています。Studio Designerは米国中心で、同等の会計連携やAI機能はありません。"
+        },
+        "aiFeatures": {
+          "question": "Studio DesignerにはAI機能がありますか？",
+          "answer": "いいえ、Studio DesignerにはAI機能は含まれていません。FocuspilotはAIメール下書き、AI製品調達、AI提案書生成、自動データ抽出を提供し、週10時間以上の節約が可能です。"
+        },
+        "procurement": {
+          "question": "調達機能はどちらが優れていますか？",
+          "answer": "両者とも堅実な調達基盤を持っていますが、Focuspilotは代替品やトレード価格を自動で見つけるAI製品調達に加え、優れた配送追跡とサプライヤー管理を提供します。"
+        },
+        "migration": {
+          "question": "Studio DesignerからFocuspilotに移行できますか？",
+          "answer": "はい。製品ライブラリのインポート、クライアントデータ移行、プロジェクト履歴移行を含む無料移行サポートを提供しています。ほとんどのスタジオは1週間以内に完全稼働します。"
+        },
+        "international": {
+          "question": "国際的なスタジオにはどちらが適していますか？",
+          "answer": "FocuspilotはXero連携、多通貨価格設定、VAT対応、専任サポートでグローバルなスタジオをサポートします。Studio Designerは主に米国市場向けに設計されています。"
+        }
+      },
+      "cta": {
+        "title": "Focuspilotを試してみませんか？",
+        "subtitle": "3ヶ月間の無料トライアルを開始。クレジットカード不要。Studio Designerからの無料移行サポート付き。",
+        "primary": "無料トライアルを開始",
+        "secondary": "すべての比較を見る"
+      }
+    },
+    "designfiles": {
+      "meta": {
+        "title": "Focuspilot vs DesignFiles｜インテリアデザインソフト比較 2025",
+        "description": "インテリアデザイナー向けにFocuspilotとDesignFilesを比較。AI機能、調達、財務ツール、スケーラビリティの違い。あなたのスタジオに最適なのはどちら？",
+        "ogDescription": "インテリアデザイナー向けにFocuspilotとDesignFilesを比較。AI機能、調達、財務ツール、スケーラビリティの比較。",
+        "twitterDescription": "FocuspilotとDesignFilesを比較。成長するスタジオにどちらがスケールするかをご確認ください。",
+        "keywords": [
+          "Focuspilot vs DesignFiles",
+          "DesignFiles 代替",
+          "インテリアデザイン ソフトウェア 比較",
+          "デザイン プロジェクト管理"
+        ]
+      },
+      "breadcrumbTitle": "Focuspilot vs DesignFiles",
+      "hero": {
+        "title": "Focuspilot vs DesignFiles",
+        "subtitle": "包括的なAI搭載プラットフォームとシンプルなプロジェクト管理を比較。現在のニーズと成長計画に合うツールをご確認ください。"
+      },
+      "bestFor": {
+        "title": "あなたのスタジオに最適なのはどちら？",
+        "focuspilotTitle": "次のような場合はFocuspilotを選ぶ",
+        "competitorTitle": "次のような場合は{name}を選ぶ",
+        "focuspilotReasons": {
+          "aiAdmin": "反復的な管理業務をAIに任せたい",
+          "procurement": "包括的な調達管理が必要",
+          "accountingIntegration": "会計ソフト連携を希望",
+          "growTeam": "チームを拡大する計画がある",
+          "clientPayments": "ポータル経由のクライアント決済が必要"
+        },
+        "competitorReasons": {
+          "soloDesigner": "シンプルなニーズのソロデザイナー",
+          "presentationBoards": "主にクライアントプレゼンボードが必要",
+          "tightBudget": "非常に限られた予算",
+          "noProcurementFinance": "調達や財務機能は不要"
+        }
+      },
+      "comparisonTitle": "機能比較",
+      "faqs": {
+        "mainDifference": {
+          "question": "FocuspilotとDesignFilesの主な違いは何ですか？",
+          "answer": "DesignFilesは基本的なプロジェクト管理とクライアントボード向けのシンプルで手頃なツールです。FocuspilotはAI自動化、完全な調達管理、会計連携、スタジオの成長に合わせてスケールする機能を備えた包括的なプラットフォームです。"
+        },
+        "pricing": {
+          "question": "DesignFilesの方がFocuspilotより安いですか？",
+          "answer": "DesignFilesは初期価格が低いですが、FocuspilotのAI機能は週10時間以上の管理時間を節約できます。時間削減を考慮すると、特に年間£200k以上のプロジェクトを扱うスタジオではFocuspilotの方がコストパフォーマンスに優れることが多いです。"
+        },
+        "accounting": {
+          "question": "DesignFilesには会計連携がありますか？",
+          "answer": "いいえ、DesignFilesは会計ソフトと連携しません。FocuspilotはXeroおよびQuickBooksとネイティブな双方向同期を備え、請求書、支払い、経費を自動同期します。"
+        },
+        "growingStudio": {
+          "question": "成長するスタジオにはどちらが適していますか？",
+          "answer": "Focuspilotはロールベース権限、複数ユーザーコラボレーション、APIアクセス、エンタープライズオプションなどの機能でより良くスケールします。DesignFilesはソロデザイナーには適していますが、チームが成長すると制限を感じる場合があります。"
+        },
+        "migration": {
+          "question": "DesignFilesからFocuspilotに移行できますか？",
+          "answer": "はい。プロジェクトデータ、クライアント連絡先、製品ライブラリのインポートを含む無料移行サポートを提供しています。ほとんどのスタジオは数日以内に移行を完了します。"
+        }
+      },
+      "cta": {
+        "title": "Focuspilotを試してみませんか？",
+        "subtitle": "3ヶ月間の無料トライアルを開始。クレジットカード不要。DesignFilesからの無料移行サポート付き。",
+        "primary": "無料トライアルを開始",
+        "secondary": "すべての比較を見る"
+      }
+    }
+  },
+  "platformShared": {
+    "startFreeTrial": "無料トライアルを開始",
+    "seeAllFeatures": "すべての機能を見る",
+    "startForFree": "無料で開始",
+    "startFreeTrialCaps": "無料トライアルを開始",
+    "startBuildingLibrary": "ライブラリ構築を開始",
+    "breadcrumb": {
+      "home": "ホーム",
+      "platform": "プラットフォーム",
+      "features": "機能",
+      "ai": "AI",
+      "approvals": "承認",
+      "projects": "プロジェクト",
+      "finance": "財務",
+      "crm": "CRM",
+      "clientPortal": "クライアントポータル",
+      "procurement": "調達",
+      "aiEmail": "AIメール",
+      "library": "製品ライブラリ",
+      "aiProcurement": "AI調達",
+      "invoicing": "請求",
+      "contractorPortal": "業者ポータル"
+    },
+    "noCreditCardRequired": "クレジットカード不要",
+    "seeItInAction": "実際の画面を見る",
+    "exploreFeatures": "機能を探索",
+    "tryAiProposals": "AI提案を試す",
+    "viewTemplates": "テンプレートを見る",
+    "paymentOptions": "支払いオプション",
+    "viewIntegrations": "連携を見る",
+    "seeClientPortal": "クライアントポータルを見る",
+    "delightYourClients": "クライアントを喜ばせる",
+    "backToHome": "ホームに戻る"
+  },
+  "platformContractorPortal": {
+    "meta": {
+      "title": "業者ポータル｜インテリアデザイナー向け業者管理 | Focuspilot",
+      "description": "業者にプロジェクトスケジュール、仕様書、ドキュメントへのアクセスを提供。インテリアデザインプロジェクトでの業者とのコミュニケーションを効率化。",
+      "ogDescription": "業者にプロジェクトスケジュール、仕様書、ドキュメントへのアクセスを提供。業者とのコミュニケーションを効率化。",
+      "twitterTitle": "業者ポータル | Focuspilot",
+      "twitterDescription": "インテリアデザインプロジェクトでの業者とのコミュニケーションを効率化。"
+    },
+    "hero": {
+      "title": "業者ポータル",
+      "subtitle": "業者にプロジェクトスケジュール、仕様書、ドキュメントへの制御されたアクセスを提供。終わりのないメールなしで全員を同期。"
+    },
+    "features": {
+      "title": "業者を簡単に調整",
+      "items": {
+        "schedules": {
+          "title": "共有スケジュール",
+          "description": "業者はタスク、期限、依存関係をリアルタイムで確認"
+        },
+        "documents": {
+          "title": "ドキュメントアクセス",
+          "description": "仕様書、図面、製品シートを適切な業者と共有"
+        },
+        "messaging": {
+          "title": "プロジェクトメッセージ",
+          "description": "プロジェクト固有のスレッドでコミュニケーションを文脈内に保持"
+        },
+        "coordination": {
+          "title": "チーム調整",
+          "description": "複数の業種を調整し、設置進捗を追跡"
+        }
+      }
+    },
+    "benefits": {
+      "title": "業者に好評の理由",
+      "items": {
+        "relevantScope": "自分の担当範囲に関連する情報のみ表示",
+        "anyDevice": "あらゆるデバイスからスケジュールとドキュメントにアクセス",
+        "notifications": "自分に影響する変更の通知を受信",
+        "siteUpdates": "現場から更新と写真を提出",
+        "noInstall": "アプリのインストール不要"
+      }
+    },
+    "cta": {
+      "title": "業者調整を効率化する準備はできましたか？",
+      "subtitle": "無料トライアルを開始し、数分で最初の業者を招待。"
+    }
+  },
+  "platformProductLibrary": {
+    "meta": {
+      "title": "製品ライブラリ｜インテリアデザイナー向けAI調達 | Focuspilot",
+      "description": "スタジオの集中型製品データベース。AI調達で製品を保存、整理し、ワンクリックでプロジェクトに追加。仕様書作成を10倍速く。",
+      "ogDescription": "スタジオの集中型製品データベース。AI調達で製品を保存、整理し、ワンクリックでプロジェクトに追加。",
+      "twitterDescription": "AI調達機能付きの集中型製品データベース。"
+    },
+    "hero": {
+      "badge": "製品ライブラリ",
+      "title": "スタジオの記憶バンク。混沌なし。",
+      "subtitle": "AI調達で集中型製品データベースを構築。あらゆるソースから製品を保存し、スマートタグで整理、ワンクリックでプロジェクトに追加。"
+    },
+    "organise": {
+      "title": "自分の方法で製品を整理",
+      "subtitle": "カテゴリでフィルタ、名前やブランドで検索、数秒で必要なものを発見。",
+      "imageAlt": "カテゴリ別製品とフィルターを表示する製品ライブラリグリッド画面"
+    },
+    "benefits": {
+      "aiSourcing": {
+        "title": "AI調達",
+        "description": "製品URLを入力するだけで、AIが仕様、価格、サプライヤー情報を即座に抽出。"
+      },
+      "smartOrganisation": {
+        "title": "スマート整理",
+        "description": "インテリジェントタグとカスタムコレクションで製品を自動分類し、簡単に発見。"
+      },
+      "oneClickProcurement": {
+        "title": "ワンクリック調達",
+        "description": "ライブラリの製品をプロジェクト調達リストに即座に追加—再入力不要。"
+      }
+    },
+    "intelligence": {
+      "title": "完全な製品インテリジェンス",
+      "subtitle": "ライブラリの各製品には、価格、仕様、サプライヤー情報、在庫状況など包括的な詳細が含まれ—すべて自動キャプチャされ最新状態に維持。",
+      "imageAlt": "包括的な製品情報と仕様を表示する詳細製品ビュー",
+      "items": {
+        "pricing": {
+          "title": "小売・業者価格",
+          "description": "クライアント価格と原価の両方を追跡し、正確なマージンを把握"
+        },
+        "supplier": {
+          "title": "サプライヤー詳細",
+          "description": "直接連絡先、リードタイム、発注要件"
+        },
+        "stock": {
+          "title": "在庫・可用性",
+          "description": "リアルタイムの在庫状況とサンプル可用性"
+        }
+      }
+    },
+    "sources": {
+      "title": "あらゆるソースからライブラリを構築",
+      "subtitle": "製品追加方法は複数：AIウェブクリッパー、過去プロジェクトからのインポート、手動入力。",
+      "webClipper": {
+        "title": "AIウェブクリッパー",
+        "description": "製品URLを入力するだけで、AIが仕様、価格、画像、サプライヤー情報を即座に抽出。",
+        "badge": "30秒 vs 15-20分"
+      },
+      "importProjects": {
+        "title": "プロジェクトからインポート",
+        "description": "既存プロジェクトのスケジュールから製品をワンクリックでライブラリに保存。",
+        "badge": "一括インポート対応"
+      },
+      "manualEntry": {
+        "title": "手動入力",
+        "description": "カスタム製品、業者限定品、特注品を完全な仕様管理で追加。",
+        "badge": "カスタムフィールド対応"
+      }
+    },
+    "stats": {
+      "title": "混沌を整理された効率に変える",
+      "kpis": {
+        "fasterSourcing": {
+          "label": "調達速度向上",
+          "value": "95%"
+        },
+        "timeToAdd": {
+          "label": "製品追加時間",
+          "value": "30秒"
+        },
+        "dataAccuracy": {
+          "label": "データ精度",
+          "value": "100%"
+        },
+        "storage": {
+          "label": "ストレージ容量",
+          "value": "∞"
+        }
+      }
+    },
+    "cta": {
+      "title": "製品ライブラリを構築する準備はできましたか？",
+      "subtitle": "今日から製品を整理。既存プロジェクトからインポート、AIウェブクリッパー、手動追加—お好みの方法で。"
+    }
+  },
+  "platformAI": {
+    "meta": {
+      "title": "インテリアデザインスタジオ向けAI | Focuspilot",
+      "description": "デザインスタジオのためのAI：デイリーブリーフ、メール振り分け、調達アシスト、提案書—プロジェクトに連携。クライアント向け出力はすべて人間の承認を経由。",
+      "ogDescription": "デイリーブリーフ、スマートインボックス、調達アシスト、AI提案—プロジェクト文脈を優先、常に人間の承認。",
+      "twitterDescription": "デザインスタジオ向けAI—インボックス、調達、提案を実際のプロジェクトデータに紐づけ。"
+    },
+    "breadcrumbLabel": "AI",
+    "hero": {
+      "badge": "デザインスタジオ向けAI",
+      "title": "デザインスタジオのために構築されたAI",
+      "subtitle": "Focuspilot AIはプロジェクト内で動作—切り離されたチャットウィンドウではありません。インボックスのノイズを削減し、調達の精度を保ち、チームのコントロールを維持しながら提案を加速。",
+      "imageAlt": "プロジェクト、タスク、AI支援ワークフロー付きスタジオ概要を表示するFocuspilotダッシュボード",
+      "seeAiFeatures": "AI機能を見る"
+    },
+    "features": {
+      "title": "スタジオワークフロー全体のAI",
+      "subtitle": "毎週何時間も節約する4つの領域—それぞれFocuspilotの実際のプロジェクトデータに連携。",
+      "showcasesHeading": "プロダクト内部",
+      "showcasesSubtitle": "稼働中のスタジオアプリのスクリーンショット—サインアップ後に利用できる同じAIツール。",
+      "cards": {
+        "dailyBrief": {
+          "title": "デイリーブリーフ",
+          "description": "毎朝、プロジェクトを意識したサマリーで始めましょう：期限超過タスク、クライアントの待機中の決定、調達リスク、優先すべき事項。",
+          "linkLabel": "デイリーブリーフを見る"
+        },
+        "emailRouting": {
+          "title": "メール振り分けとドラフト",
+          "description": "スレッドを適切なプロジェクトに振り分け、長いやり取りを要約し、スタジオのトーンで返信ドラフトを作成—送信準備完了。",
+          "linkLabel": "AIメールを探索"
+        },
+        "procurementAssist": {
+          "title": "調達アシスト",
+          "description": "サプライヤーページから仕様を抽出し、長納期品目をフラグ付け、タイムラインが遅延した際に代替品を提案—FF&Eスケジュールに連携。",
+          "linkLabel": "AI調達を見る"
+        },
+        "proposalsDocuments": {
+          "title": "提案書とドキュメント",
+          "description": "ブリーフとセレクションからスコープ付き提案書と請求可能な明細項目を作成—テンプレートに合わせたチェック付き。",
+          "linkLabel": "提案書と請求"
+        }
+      },
+      "showcases": {
+        "studioDashboard": {
+          "title": "スタジオダッシュボード",
+          "caption": "プロジェクトの健全性、タスク、デイリーブリーフを1画面で。",
+          "alt": "プロジェクト概要とKPIを表示するFocuspilotスタジオダッシュボード"
+        },
+        "aiInbox": {
+          "title": "AIインボックス",
+          "caption": "文脈を理解したドラフト付きでプロジェクトに振り分けられたスレッド。",
+          "alt": "Focuspilotのプロジェクトメッセージとメールスレッド"
+        },
+        "procurementAssist": {
+          "title": "調達アシスト",
+          "caption": "サプライヤーページから仕様をスケジュールにインポート。",
+          "alt": "FF&E調達向けに製品仕様を抽出するAI"
+        },
+        "aiProposals": {
+          "title": "AI提案",
+          "caption": "ブリーフと履歴からスコープと価格のドラフトを作成。",
+          "alt": "インテリアデザインスタジオ向け段階的価格設定のAI提案ウィザード"
+        }
+      }
+    },
+    "dailyBrief": {
+      "title": "プロジェクトごとの朝のブリーフ",
+      "description": "Focuspilotを開いて今日重要なことを確認：ブロックされた承認、遅延するマイルストーン、サプライヤーの遅延、返信が必要なクライアントメッセージ—メールに埋もれず、プロジェクト別にグループ化。",
+      "bullets": {
+        "summarisesEmail": "一晩のメールとタスク変更を要約",
+        "highlightsRisks": "現場打合せ前に予算とタイムラインのリスクをハイライト",
+        "availableAfterSignup": "サインアップ後、スタジオアプリで利用可能"
+      },
+      "imageAlt": "インテリアデザインスタジオ向けFocuspilotデイリーブリーフとプロジェクトダッシュボード",
+      "cta": "デイリーブリーフを試す"
+    },
+    "howItWorks": {
+      "title": "仕組み",
+      "subtitle": "文脈第一、ドラフト第二、承認は最後—メール、調達、ドキュメント全体で同じパターン。",
+      "steps": {
+        "projectContext": {
+          "title": "プロジェクト文脈",
+          "body": "AIがアクティブなプロジェクト—フェーズ、セレクション、メッセージ、予算—を読み取り、提案が汎用的ではなく具体的に。"
+        },
+        "draft": {
+          "title": "ドラフト",
+          "body": "要約、返信ドラフト、仕様抽出、提案セクションを白紙からではなく、数秒で編集可能な形で取得。"
+        },
+        "humanApprove": {
+          "title": "人間の承認",
+          "body": "確認するまでクライアントやサプライヤーには送信されません。コントロールはあなたが維持—AIが反復的な第一パスを担当。"
+        }
+      }
+    },
+    "playbook": {
+      "title": "スタジオ向け無料AIプレイブック",
+      "description": "メール、調達、提案、ガバナンス向けの実践的ワークフロー、コピペ可能なプロンプト、ガードレール—余計なものなし、Focuspilotですぐ使える。",
+      "linkLabel": "AIプレイブックを開く",
+      "cta": "プレイブックを閲覧"
+    },
+    "finalCta": {
+      "ariaLabel": "始める",
+      "title": "管理業務を減らし、美しい仕事を届ける",
+      "subtitle": "インボックス、調達、提案にFocuspilot AIを使用するスタジオに参加—1つのプロジェクトワークスペースに連携。",
+      "playbookLink": "AIプレイブックを読む"
+    }
+  },
+  "platformApprovals": {
+    "meta": {
+      "title": "クライアント承認ソフトウェア｜インテリアデザイナー向け | Focuspilot",
+      "description": "美しい承認ワークフローでクライアントのサインオフを効率化。セレクション、予算、デザイン方向性について、Focuspilot承認ツールでより迅速な決定を。",
+      "ogDescription": "インテリアデザインプロジェクト向けの美しい承認ワークフローでクライアントのサインオフを効率化。",
+      "twitterDescription": "インテリアデザインプロジェクト向けの美しい承認ワークフローでクライアントのサインオフを効率化。"
+    },
+    "hero": {
+      "badge": "シンプルなクライアント承認",
+      "title": "シームレスな承認でクライアントのサインオフを加速。",
+      "subtitle": "終わりのないメールチェーンと見逃した承認を効率化されたワークフローに変換。リアルタイム通知で進捗を追跡し、プロジェクトを前進させ続けましょう。",
+      "imageAlt": "保留中の承認、コメント、リアルタイムステータス更新を表示するクライアントポータル付きFocuspilot承認ワークフロー"
+    },
+    "approvalFlow": {
+      "title": "Focuspilotでの承認の仕組み",
+      "subtitle": "全員を同期し、プロジェクトを軌道に保つシンプルで視覚的なプロセス。",
+      "steps": {
+        "shareForApproval": {
+          "title": "承認用に共有",
+          "description": "デザイン、サンプル、ドキュメントをプロジェクトに直接アップロード。承認期限を設定し、文脈を追加。"
+        },
+        "clientReviews": {
+          "title": "クライアントがレビュー",
+          "description": "クライアントは即座に通知を受け取り、あらゆるデバイスからレビュー、コメント、承認が可能。"
+        },
+        "trackProgress": {
+          "title": "進捗を追跡",
+          "description": "承認ステータスをリアルタイムで確認。決定が下されたときや期限が近づいたときに通知を受信。"
+        },
+        "moveForward": {
+          "title": "前進",
+          "description": "承認された項目はプロジェクトタイムラインを自動更新。自動化された次のステップで勢いを維持。"
+        }
+      }
+    },
+    "featureBlocks": {
+      "realTimeNotifications": {
+        "title": "リアルタイム通知",
+        "description": "承認を見逃すことはもうありません。クライアントがレビュー、コメント、承認した際に即座に通知。",
+        "benefits": {
+          "instantNotifications": "即座のメールとアプリ内通知",
+          "reminderSchedules": "カスタマイズ可能なリマインダースケジュール",
+          "mobileLinks": "モバイル対応の承認リンク",
+          "deadlineTracking": "期限追跡とアラート"
+        },
+        "imageAlt": "承認リクエストとステータス更新を表示するリアルタイム通知システム"
+      },
+      "visualApprovalWorkflow": {
+        "title": "視覚的な承認ワークフロー",
+        "description": "文脈付きで美しくデザインを提示。クライアントは完全なプロジェクト文脈の中で、何を承認しているか正確に確認可能。",
+        "benefits": {
+          "imageGalleries": "高解像度画像ギャラリー",
+          "sideBySide": "並列比較",
+          "projectContext": "文脈付きプロジェクト情報",
+          "mobileViewing": "モバイル最適化ビューイング"
+        },
+        "imageAlt": "デザインプレゼンテーションとクライアントフィードバックを表示する視覚的承認インターフェース"
+      },
+      "versionControlHistory": {
+        "title": "バージョン管理と履歴",
+        "description": "すべての改訂と決定を追跡。いつ何が承認されたかを見失うことはありません。",
+        "benefits": {
+          "approvalHistory": "完全な承認履歴",
+          "versionComparison": "バージョン比較ツール",
+          "auditTrail": "すべての決定の監査証跡",
+          "rollback": "以前のバージョンへのロールバック"
+        },
+        "imageAlt": "承認履歴と改訂追跡を表示するドキュメントバージョン管理"
+      }
+    },
+    "imageBlock": {
+      "line1": "クライアントを喜ばせる。",
+      "line2": "承認を効率化。",
+      "line3": "プロジェクトを期日通りに。",
+      "cta": "承認を変革",
+      "imageAlt": "自然光と整理されたワークスペースのあるモダンなインテリアデザインスタジオ"
+    },
+    "benefitsGrid": {
+      "title": "デザイナーがFocuspilot承認を愛する理由",
+      "subtitle": "デザインプロフェッショナル向けに構築された機能で、クライアントコミュニケーションを混沌から明確さへ。",
+      "items": {
+        "fasterDecisions": {
+          "title": "より迅速な決定",
+          "description": "効率化されたワークフローと即座の通知で、承認時間を数日から数時間に短縮。"
+        },
+        "secureCompliant": {
+          "title": "セキュアでコンプライアンス対応",
+          "description": "監査証跡とコンプライアンス機能を備えたエンタープライズグレードのセキュリティで、プロフェッショナルな安心感を。"
+        },
+        "betterClientExperience": {
+          "title": "より良いクライアント体験",
+          "description": "クライアントが関与し情報を得ていると感じられる、プロフェッショナルで使いやすいポータルを提供。"
+        },
+        "neverMissDeadlines": {
+          "title": "期限を見逃さない",
+          "description": "自動リマインダーと期限追跡により、承認がプロジェクトのボトルネックにならないように。"
+        },
+        "completeTransparency": {
+          "title": "完全な透明性",
+          "description": "全員が同じ情報を確認。何が承認済みか保留中かについての混乱はもうありません。"
+        },
+        "automatedWorkflows": {
+          "title": "自動化ワークフロー",
+          "description": "承認が次のステップを自動的にトリガーし、手動介入なしでプロジェクトを前進。"
+        }
+      }
+    },
+    "bigCta": {
+      "title": "承認を追いかけるのはやめて、デザインに集中。",
+      "subtitle": "Focuspilotでクライアント承認を効率化し、プロジェクトを軌道に保つ数百のデザインスタジオに参加。"
+    }
+  },
+  "platformAiProcurement": {
+    "meta": {
+      "title": "AI製品調達｜インテリアデザイナー向け | Focuspilot",
+      "description": "AI搭載のWebクリッパーがあらゆるウェブサイトから製品詳細を即座に抽出。インテリジェントな製品調達とベンダーマッチングで仕様書作成を加速。",
+      "ogDescription": "AI搭載のWebクリッパーがあらゆるウェブサイトから製品詳細を即座に抽出。インテリアデザイナー向け。",
+      "twitterDescription": "AI搭載のWebクリッパーがあらゆるウェブサイトから製品詳細を即座に抽出。インテリアデザイナー向け。"
+    },
+    "hero": {
+      "badge": "AI搭載の調達",
+      "title": "AI製品調達 — Webクリッパーと即時ライブラリの融合。",
+      "subtitle": "あらゆるウェブサイトから仕様、価格、ベンダー情報を即座に抽出するAIで製品調達を変革。製品ライブラリを手軽に構築。",
+      "imageAlt": "Webクリッパーが製品仕様と詳細を抽出するAI製品調達画面"
+    },
+    "procurementFlow": {
+      "title": "AI調達の仕組み",
+      "subtitle": "発見からライブラリまで数秒。製品データ入力の煩雑な作業はAIにお任せ。",
+      "steps": {
+        "browseAndClip": {
+          "title": "閲覧＆クリップ",
+          "description": "ブラウザ拡張機能で、あらゆるベンダーサイトからワンクリックで製品をキャプチャ。"
+        },
+        "aiExtractsDetails": {
+          "title": "AIが詳細を抽出",
+          "description": "AIが仕様、価格、寸法、ベンダー情報を即座に取得。"
+        },
+        "reviewAndOrganize": {
+          "title": "確認＆整理",
+          "description": "抽出データを検証し、コレクションとプロジェクトライブラリに整理。"
+        },
+        "addToProjects": {
+          "title": "プロジェクトに追加",
+          "description": "クライアントプレゼンと調達リストにシームレスに製品を追加。"
+        }
+      }
+    },
+    "featureBlocks": {
+      "instantDataExtraction": {
+        "title": "即時データ抽出",
+        "description": "AIがあらゆるウェブサイトから製品仕様、価格、寸法、素材、ベンダー詳細を自動キャプチャ。",
+        "benefits": {
+          "automaticSpecSheets": "仕様書の自動生成",
+          "priceTracking": "価格追跡と更新",
+          "vendorContact": "ベンダー連絡先情報",
+          "productImages": "製品画像とドキュメント"
+        },
+        "imageAlt": "家具サイトから仕様と価格を抽出するAI製品詳細画面"
+      },
+      "smartProductLibrary": {
+        "title": "スマート製品ライブラリ",
+        "description": "AIによる分類、検索、レコメンドで包括的な製品データベースを構築。",
+        "benefits": {
+          "intelligentCategorization": "インテリジェントな製品分類",
+          "advancedSearch": "高度な検索とフィルタリング",
+          "similarProducts": "類似製品の提案",
+          "customTags": "カスタムタグとコレクション"
+        },
+        "imageAlt": "整理されたコレクションとAI検索を表示する製品ライブラリ画面"
+      },
+      "projectIntegration": {
+        "title": "プロジェクト連携",
+        "description": "クライアントプレゼン、ムードボード、調達リストにシームレスに製品を追加。",
+        "benefits": {
+          "oneClickAddition": "ワンクリックでプロジェクトに追加",
+          "automatedLists": "調達リストの自動化",
+          "clientPresentations": "クライアントプレゼンツール",
+          "budgetTracking": "予算追跡の連携"
+        },
+        "imageAlt": "クライアントプレゼンに追加された製品を表示するプロジェクト調達画面"
+      }
+    },
+    "benefitsGrid": {
+      "title": "デザイナーがAI調達を愛する理由",
+      "subtitle": "あなたの好みを学習するインテリジェントな自動化で調達ワークフローを変革。",
+      "items": {
+        "saveHoursDaily": {
+          "title": "毎日の時間を節約",
+          "description": "手動データ入力と製品リサーチを排除。管理ではなくデザインに集中。"
+        },
+        "buildYourLibrary": {
+          "title": "ライブラリを構築",
+          "description": "プロジェクトごとに成長する包括的な製品データベースを作成。"
+        },
+        "instantAccuracy": {
+          "title": "即時の正確性",
+          "description": "AIがすべてのプロジェクトで一貫した正確な製品データを保証。"
+        },
+        "universalCompatibility": {
+          "title": "ユニバーサル互換性",
+          "description": "業界専用から小売プラットフォームまで、あらゆるベンダーサイトに対応。"
+        },
+        "professionalPresentations": {
+          "title": "プロフェッショナルなプレゼン",
+          "description": "美しい仕様書とクライアントプレゼンを自動生成。"
+        },
+        "alwaysUpToDate": {
+          "title": "常に最新",
+          "description": "保存したすべての製品の価格変動と在庫状況の更新を追跡。"
+        }
+      }
+    },
+    "bigCta": {
+      "title": "より少ない労力で美しいプロジェクトを届ける",
+      "subtitle": "仕様、承認、発注書、領収書を一つの連携ワークフローで。"
+    }
+  },
+  "platformInvoicing": {
+    "meta": {
+      "title": "提案書＆請求書｜インテリアデザイナー向け | Focuspilot",
+      "description": "プロフェッショナルな提案書を作成し、請求を自動化してより早く入金。AIによる価格提案とブランド付きPDF生成でインテリアデザインスタジオを支援。",
+      "ogDescription": "インテリアデザインスタジオ向けのプロフェッショナルな提案書作成と請求自動化。",
+      "twitterDescription": "インテリアデザインスタジオ向けのプロフェッショナルな提案書作成と請求自動化。"
+    },
+    "hero": {
+      "badge": "提案書＆請求書",
+      "title": "提案から入金まで、数日ではなく数分で",
+      "subtitle": "魅力的な提案書を作成し、プロフェッショナルな請求書を生成、自動化ワークフローでより早く入金。プロジェクトとクライアントポータルにシームレスに連携。",
+      "imageAlt": "プロジェクト詳細、スコープ定義、価格自動化を表示するAI提案作成画面"
+    },
+    "workflow": {
+      "title": "Focuspilotでの提案書と請求の仕組み",
+      "subtitle": "プロジェクトブリーフをプロフェッショナルな提案書とシームレスな入金に変える効率化プロセス。",
+      "steps": {
+        "createProposal": {
+          "title": "提案書を作成",
+          "description": "AIでプロジェクトブリーフから正確なスコープと価格のプロフェッショナルな提案書を起草。"
+        },
+        "clientReviews": {
+          "title": "クライアントがレビュー",
+          "description": "クライアントはポータルでブランド付き提案書を受け取り、明確な条件と簡単な承認プロセス。"
+        },
+        "generateInvoice": {
+          "title": "請求書を生成",
+          "description": "承認された提案書が自動的に支払いリンクと追跡付きの請求書に。"
+        },
+        "getPaid": {
+          "title": "入金",
+          "description": "クライアントはStripeで安全に支払い。領収書の自動生成と会計同期。"
+        }
+      }
+    },
+    "aiProposals": {
+      "title": "AI搭載の提案書作成",
+      "description": "プロジェクトブリーフを数分でプロフェッショナルな提案書に変換。AIはデザインワークフローを理解し、市場相場に基づく正確なスコープ定義を作成。",
+      "bullets": {
+        "detailedScope": "プロジェクト要件から詳細なスコープを生成",
+        "automaticPricing": "プロジェクトの複雑さと市場相場に基づく自動価格設定",
+        "professionalTemplates": "ブランド付きのプロフェッショナルテンプレート",
+        "versionControl": "バージョン管理と改訂追跡"
+      },
+      "imageAlts": {
+        "scopeDefinition": "自動プロジェクト分解とフェーズ計画を表示するAIスコープ定義画面",
+        "pricingCalculator": "自動コスト見積もりと料金体系を表示するAI価格計算画面"
+      }
+    },
+    "automatedInvoicing": {
+      "title": "自動請求と支払い",
+      "description": "承認された提案書を即座に請求書に。支払いスケジュールの設定、自動リマインダー、Stripe連携でより早く入金。",
+      "bullets": {
+        "oneClickGeneration": "提案書からワンクリックで請求書を生成",
+        "paymentSchedules": "自動支払いスケジュールとマイルストーン請求",
+        "stripeIntegration": "安全なカード・ACH決済のStripe連携",
+        "xeroSync": "シームレスな会計のためのXero自動同期"
+      },
+      "imageAlts": {
+        "invoiceDashboard": "請求書と発注書の合計を表示する請求ダッシュボード",
+        "invoiceButtons": "作成とXero同期のための請求書アクションボタン",
+        "costTracking": "納品進捗と予算監視を表示するプロジェクトコスト追跡"
+      }
+    },
+    "clientExperience": {
+      "title": "シームレスなクライアント体験",
+      "description": "クライアントはブランド付きポータルで提案書と請求書を受け取り。レビュー、承認、支払いがすべて一つのプロフェッショナルな体験で、スタジオの品質を反映。",
+      "bullets": {
+        "brandedPortal": "スタジオのアイデンティティを反映したブランド付きクライアントポータル",
+        "oneClickApproval": "ワンクリックの提案承認と電子署名",
+        "securePayments": "即時領収書付きの安全な決済処理",
+        "realtimeUpdates": "リアルタイムのステータス更新と通知"
+      },
+      "imageAlt": "提案レビューと承認ワークフローを表示するクライアントポータル画面"
+    },
+    "benefitsGrid": {
+      "title": "スタジオがFocuspilotの提案書・請求を選ぶ理由",
+      "subtitle": "時間を節約し、キャッシュフローを改善し、クライアントを喜ばせるプロフェッショナルツール。",
+      "items": {
+        "fasterProposals": {
+          "title": "より速い提案書",
+          "description": "AI搭載の提案書生成で作成時間を数時間から数分に短縮し、プロフェッショナルな品質を維持。"
+        },
+        "betterCashFlow": {
+          "title": "キャッシュフローの改善",
+          "description": "自動支払いリマインダーと簡単なオンライン決済で、平均40%早く入金。"
+        },
+        "professionalBranding": {
+          "title": "プロフェッショナルなブランディング",
+          "description": "完全にカスタマイズ可能なテンプレートで、すべての提案書と請求書がスタジオのブランドと品質を反映。"
+        },
+        "clientSatisfaction": {
+          "title": "クライアント満足度",
+          "description": "効率化された承認プロセスと透明なコミュニケーションでクライアントを満足させ、関与を維持。"
+        },
+        "automatedWorkflows": {
+          "title": "自動化ワークフロー",
+          "description": "支払いスケジュール、リマインダー、フォローアップをバックグラウンドで自動実行。"
+        },
+        "seamlessIntegration": {
+          "title": "シームレスな連携",
+          "description": "Xero、Stripe、プロジェクト管理と接続し、統合されたビジネスワークフローを実現。"
+        }
+      }
+    },
+    "imageBlock": {
+      "line1": "提案書は、プロフェッショナルに。",
+      "line2": "請求書は、自動化。",
+      "line3": "入金は、より速く。",
+      "imageAlt": "大理石のカウンターと温かみのある木製キャビネットのモダンなラグジュアリーキッチン"
+    },
+    "finalCta": {
+      "title": "プロフェッショナルな提案書とより速い入金はここから",
+      "subtitle": "Focuspilotで提案書と請求ワークフローを効率化しているスタジオに参加。"
+    }
+  },
+  "aboutPage": {
+    "meta": {
+      "title": "Focuspilotについて | 私たちのストーリーとミッション",
+      "description": "インテリアデザイナーのためのAIプロジェクト管理ソフトウェアを構築するFocuspilotチームについて。デザイナーがデザインに集中できる時間を増やすことが私たちのミッションです。"
+    },
+    "title": "Focuspilotについて",
+    "paragraph1": "インテリアデザインスタジオのための現代的なオペレーティングシステムを構築しています。ミッションはシンプルです。管理業務を自動化し、デザイナーがデザインに集中できる時間を増やすこと。",
+    "paragraph2": "2026年に設立されたFocuspilotは、深い業界知識と最先端のAIを組み合わせ、デザインスタジオの働き方を本当に理解するツールを作っています。"
+  },
+  "careersPage": {
+    "meta": {
+      "title": "Focuspilot採用情報 | チームに参加",
+      "description": "Focuspilotチームに参加しませんか。インテリアデザイナーのためのAIソフトウェアを構築しており、情熱を持った仲間を募集しています。"
+    },
+    "title": "Focuspilot採用情報",
+    "intro": "インテリアデザイナーが好きなことに集中できるツールを作っています。優れたソフトウェアと美しいデザインに情熱を持つ方、ぜひご連絡ください。",
+    "noOpenings": "小さく成長中のチームです。現在公開中のポジションはありませんが、優秀な方からのご連絡をいつでも歓迎しています。",
+    "emailPrompt": "メールはこちら"
+  },
+  "customersPage": {
+    "meta": {
+      "title": "お客様の声 | Focuspilotを使うインテリアデザイナー",
+      "description": "インテリアデザインスタジオがFocuspilotで時間を節約し、ビジネスを成長させている事例。デザイナーのリアルなストーリー。"
+    },
+    "hero": {
+      "badge": "お客様の声",
+      "title": "デザインスタジオに愛されています",
+      "subtitle": "インテリアデザイナーと建築家がFocuspilotで時間を節約し、クライアントを喜ばせ、得意分野に集中している方法をご覧ください。"
+    },
+    "stats": {
+      "designStudios": "デザインスタジオ",
+      "savedPerWeek": "週あたりの節約時間",
+      "averageRating": "平均評価",
+      "retentionRate": "継続率"
+    },
+    "testimonials": {
+      "sarahMitchell": {
+        "quote": "Focuspilotはプロジェクト管理のやり方を変えました。AI機能だけで、以前は夜に消費していた管理業務を週10時間以上節約できています。",
+        "author": "Sarah Mitchell",
+        "role": "プリンシパルデザイナー",
+        "company": "Studio Mitchell",
+        "highlight": "週10時間以上節約"
+      },
+      "jamesChen": {
+        "quote": "ついに、インテリアデザインスタジオの働き方を本当に理解してくれるソフトウェアです。クライアントポータルは美しく、オンラインで選択を承認できる点がクライアントに好評です。",
+        "author": "James Chen",
+        "role": "クリエイティブディレクター",
+        "company": "Chen Interiors",
+        "highlight": "クライアントに好評"
+      },
+      "emmaWilliams": {
+        "quote": "Programaから乗り換えて後悔はありません。Xero連携は完璧に動作し、調達トラッキングでスプレッドシートの混乱がなくなりました。",
+        "author": "Emma Williams",
+        "role": "創業者",
+        "company": "Williams Design Co",
+        "highlight": "Xeroシームレス同期"
+      },
+      "marcusThompson": {
+        "quote": "オンボーディングはスムーズで、サポートチームはデザイン業務を本当に理解しています。必要だと思わなかった機能まで作ってくれました。",
+        "author": "Marcus Thompson",
+        "role": "シニアデザイナー",
+        "company": "Thompson & Associates",
+        "highlight": "デザイナーのための設計"
+      },
+      "lisaPark": {
+        "quote": "FF&Eスケジュールの管理は悪夢でした。今はチーム全員が、発注・配送・設置状況をリアルタイムで確認できます。",
+        "author": "Lisa Park",
+        "role": "オペレーションズディレクター",
+        "company": "Park Design Studio",
+        "highlight": "リアルタイム可視化"
+      },
+      "davidOkonkwo": {
+        "quote": "AI提案書ジェネレーターは初月でサブスクリプション代以上の価値を生み出しました。プロジェクトの期間とコスト見積もりの精度が驚くほど高いです。",
+        "author": "David Okonkwo",
+        "role": "創業パートナー",
+        "company": "Okonkwo Design",
+        "highlight": "初月でROI"
+      }
+    },
+    "relatedLinks": {
+      "title": "実際に確かめる",
+      "subtitle": "デザイナーに愛される機能を探索してください。",
+      "projects": {
+        "title": "プロジェクト",
+        "desc": "タイムラインとタスクを管理"
+      },
+      "clientPortal": {
+        "title": "クライアントポータル",
+        "desc": "共有と承認"
+      },
+      "aiFeatures": {
+        "title": "AI機能",
+        "desc": "管理業務を自動化"
+      },
+      "pricing": {
+        "title": "料金",
+        "desc": "今日から無料で開始"
+      }
+    },
+    "finalCta": {
+      "ariaLabel": "始める",
+      "title": "500以上のデザインスタジオに参加",
+      "subtitle": "無料トライアルを開始し、デザイナーにFocuspilotが愛される理由を体験してください。"
+    }
+  },
+  "integrationsPage": {
+    "meta": {
+      "title": "連携 | ツールを接続 | Focuspilot",
+      "description": "FocuspilotをXero、QuickBooks、Stripe、Googleカレンダー、Gmail、Zapierなどと連携。すべてのプランに連携機能が含まれます。"
+    },
+    "hero": {
+      "badge": "ツールを接続",
+      "title": "連携",
+      "subtitle": "すでにお使いのツールとFocuspilotを接続。ワークフローを自動化し、すべてを同期します。",
+      "note": "すべてのプランに連携機能が含まれます。"
+    },
+    "grid": {
+      "title": "利用可能な連携",
+      "popular": "人気",
+      "available": "利用可能"
+    },
+    "categories": {
+      "accounting": "会計",
+      "payments": "決済",
+      "scheduling": "スケジュール",
+      "email": "メール",
+      "automation": "自動化",
+      "productivity": "生産性",
+      "communication": "コミュニケーション"
+    },
+    "items": {
+      "xero": {
+        "description": "請求書、支払い、経費の双方向同期。帳簿を自動的に最新の状態に保ちます。"
+      },
+      "quickbooks": {
+        "description": "請求書と支払いを自動同期。QuickBooks Onlineに対応。"
+      },
+      "stripe": {
+        "description": "ポータル経由でクライアント決済を受け付け。請求書と自動照合。"
+      },
+      "googleCalendar": {
+        "description": "プロジェクトのマイルストーン、会議、期限をカレンダーに同期。"
+      },
+      "outlookCalendar": {
+        "description": "Outlookカレンダーをプロジェクトタイムラインと予定と同期。"
+      },
+      "gmail": {
+        "description": "Studio IntegrationsでGmailを接続 — AI Inboxで分類されたメール、要約、推奨アクションを一つのワークスペースで。"
+      },
+      "zapier": {
+        "description": "Studio APIキー、署名付きWebhook、プロジェクトとクライアント向けRESTエンドポイント。新規プロジェクト、クライアント、請求書でZapをトリガー。"
+      },
+      "notion": {
+        "description": "Notionワークスペースを接続し、共有データベースを閲覧、行をFocuspilotプロジェクトに同期 — 名前とステータスを最新に保ちます。"
+      }
+    },
+    "comingSoon": {
+      "title": "近日公開",
+      "subtitle": "新しい連携を随時追加しています。リクエストがあればお知らせください。",
+      "requestLink": "連携をリクエスト"
+    },
+    "relatedLinks": {
+      "title": "プラットフォームを探索",
+      "subtitle": "すべてがどのように連携するかをご覧ください。",
+      "finance": {
+        "title": "財務",
+        "desc": "請求と会計"
+      },
+      "clientPortal": {
+        "title": "クライアントポータル",
+        "desc": "共有と承認"
+      },
+      "knowledgeCentre": {
+        "title": "ナレッジセンター",
+        "desc": "ガイドとチュートリアル"
+      },
+      "pricing": {
+        "title": "料金",
+        "desc": "今日から無料で開始"
+      }
+    },
+    "finalCta": {
+      "ariaLabel": "始める",
+      "title": "お使いのツールをすべて接続",
+      "subtitle": "すべての連携は全プランに含まれます。無料で始めてツールを接続しましょう。"
+    }
+  },
+  "authForgotPasswordPage": {
+    "meta": {
+      "title": "パスワードリセット | Focuspilot",
+      "description": "Focuspilotアカウントのパスワードをリセットします。"
+    },
+    "backToLogin": "ログインに戻る",
+    "title": "パスワードをリセット",
+    "subtitle": "メールアドレスを入力すると、パスワードリセット用のリンクをお送りします。",
+    "email": "メール",
+    "sending": "送信中…",
+    "sendResetLink": "リセットリンクを送信",
+    "sendFailed": "リセットメールの送信に失敗しました。もう一度お試しください。",
+    "success": {
+      "title": "メールを確認してください",
+      "message": "{email} のアカウントが存在する場合、パスワードリセットリンクを送信しました。"
+    }
+  },
+  "authVerifyOtpPage": {
+    "meta": {
+      "title": "メール認証 | Focuspilot",
+      "description": "Focuspilot登録を完了するためにメールアドレスを認証してください。"
+    },
+    "incorrectCode": "コードが正しくありません。もう一度お試しください。",
+    "resendFailed": "再送信に失敗しました。もう一度お試しください。",
+    "noSession": {
+      "title": "セッションが期限切れです",
+      "message": "認証セッションが期限切れになりました。再度登録してください。",
+      "backToRegistration": "登録に戻る"
+    },
+    "success": {
+      "title": "メール認証完了",
+      "message": "スタジオを開いています…"
+    },
+    "entry": {
+      "title": "メールを確認してください",
+      "message": "6桁のコードを {email} に送信しました",
+      "verifyEmail": "メールを認証",
+      "verifying": "認証中…",
+      "noCode": "コードが届きませんでしたか？",
+      "resendIn": "{time} 後に再送信",
+      "resendCode": "コードを再送信",
+      "useDifferentAccount": "別のアカウントを使用"
+    },
+    "hero": {
+      "titleLine1": "あと一歩",
+      "titleLine2": "スタジオまで",
+      "subtitle": "メールを確認してFocuspilotをアンロックし、デザインプロジェクトの管理を始めましょう。"
+    }
+  },
+  "authGoogleCallbackPage": {
+    "completingSignIn": "サインインを完了しています…",
+    "invalidCallback": "無効なコールバックです。もう一度サインインしてください。",
+    "backToSignIn": "サインインに戻る",
+    "createAccount": "アカウント作成",
+    "errors": {
+      "default": "Googleサインインに失敗しました。もう一度お試しください。",
+      "not_configured": "Googleサインインはまだ設定されていません。メールとパスワードを使用するか、管理者にGOOGLE_AUTH_*の設定を依頼してください。",
+      "account_exists": "このメールアドレスのアカウントは既に存在します。パスワードでサインインするか、サインインページでGoogleを使用してください。",
+      "email_not_verified": "Googleメールが認証されていません。Googleで認証してからもう一度お試しください。",
+      "profile_incomplete": "Googleプロフィールを読み取れませんでした。もう一度お試しください。",
+      "access_denied": "Googleサインインがキャンセルされました。",
+      "token_exchange_failed": "Googleサインインを完了できませんでした。もう一度お試しください。",
+      "profile_fetch_failed": "Googleプロフィールを読み込めませんでした。もう一度お試しください。",
+      "invalid_state": "サインインセッションが期限切れです。もう一度お試しください。",
+      "no_code": "Googleから認可コードが返されませんでした。もう一度お試しください。"
+    }
+  },
+  "authShared": {
+    "logoAlt": "Focuspilot"
+  },
+  "platformAiEmail": {
+    "meta": {
+      "title": "AIメール・コミュニケーション | インテリアデザイナー向け | Focuspilot",
+      "description": "AIプロジェクトルーティング、スマート返信、自動メール分類を備えた統合インボックス。クライアントとのやり取りをプロジェクト単位で整理。",
+      "ogDescription": "インテリアデザインスタジオ向けAIプロジェクトルーティング統合インボックス。",
+      "twitterDescription": "インテリアデザインスタジオ向けAIプロジェクトルーティング統合インボックス。"
+    },
+    "hero": {
+      "badge": "コミュニケーション",
+      "title": "プロジェクトルーティング付き統合インボックス",
+      "subtitle": "Gmailと完全連携。プロジェクト固有およびサプライヤーのメールをFocuspilotにルーティングし、GDPR対応の共有設定でプロジェクトとチームに共有。",
+      "homeInbox": "ホームインボックス",
+      "projectMessages": "プロジェクトメッセージ",
+      "gmailConnected": "Gmail接続済み",
+      "projectMessagesImageAlt": "メールとポータルスレッドを含むプロジェクトメッセージフィード"
+    },
+    "howItWorks": {
+      "title": "効率的で協力的なコミュニケーション",
+      "subtitle": "見落としなし。取りこぼしなし。メール、ポータルメッセージ、契約、AIアラートを一つのフィードで。",
+      "steps": {
+        "connectGmail": {
+          "title": "Gmailを接続",
+          "description": "安全なOAuth接続。個人インボックスはそのまま維持。"
+        },
+        "smartRouting": {
+          "title": "スマートルーティング",
+          "description": "参加者、件名、ラベルによるプロジェクト検出—ベンダー認識も。"
+        },
+        "shareWithControl": {
+          "title": "制御付き共有",
+          "description": "ワンクリックでプロジェクトフィードに共有。参加者を編集、いつでも取り消し可能。"
+        }
+      }
+    },
+    "inbox": {
+      "share": "共有",
+      "shared": "共有済み",
+      "shareToProject": "プロジェクトに共有",
+      "shareAria": "プロジェクトに共有",
+      "sharedAria": "共有済み",
+      "toastTitle": "プロジェクトに共有しました",
+      "rows": {
+        "inGoodCompany": {
+          "from": "In Good Company",
+          "subject": "プロフォーマ請求書 • 真鍮フロアランプ",
+          "tag": "ベンダー"
+        },
+        "oakHouseClient": {
+          "from": "クライアント — Oak House",
+          "subject": "Re: ダイニングチェア仕上げ（リネン vs ブークレ）",
+          "tag": "クライアント"
+        },
+        "logistics": {
+          "from": "物流",
+          "subject": "発送通知 • 注文 34821",
+          "tag": "配送"
+        },
+        "stonecraft": {
+          "from": "Stonecraft Ltd",
+          "subject": "リードタイム更新 — 大理石スラブ",
+          "tag": "ベンダー"
+        }
+      },
+      "tags": {
+        "vendor": "ベンダー",
+        "client": "クライアント",
+        "delivery": "配送",
+        "design": "デザイン",
+        "email": "メール",
+        "shared": "共有済み",
+        "linkedToTask": "タスクにリンク"
+      }
+    },
+    "bento": {
+      "unifiedInbox": {
+        "title": "統合インボックス"
+      },
+      "projectRouting": {
+        "title": "プロジェクトルーティング",
+        "description": "参加者、件名、ラベルでプロジェクトへの自動提案。ワンクリックで確認。",
+        "exampleSubject": "「ダイニングチェア仕上げ（リネン vs ブークレ）」",
+        "projectLabel": "プロジェクト: Oak House",
+        "confirmRouting": "ルーティングを確認",
+        "change": "変更…"
+      },
+      "vendorTimeline": {
+        "title": "ベンダーメール → POタイムライン",
+        "description": "配送通知とリードタイム更新が調達に流れ、POステータスを自動更新。",
+        "items": {
+          "dispatch": {
+            "label": "発送通知 • 注文 34821",
+            "status": "配送中"
+          },
+          "leadTime": {
+            "label": "リードタイム更新 — 大理石スラブ",
+            "status": "ETA +3日"
+          }
+        }
+      },
+      "aiSummary": {
+        "title": "AI要約とアクション",
+        "summary": "要約: クライアントはリネンを希望、サンプル依頼。ペンダントライト承認、配送ウィンドウ確認。",
+        "actions": {
+          "orderSamples": "タスク作成: ファブリックサンプル発注",
+          "createPo": "PO作成: ペンダントライト（承認済み）",
+          "replyDelivery": "返信: 配送ウィンドウを確認"
+        },
+        "createTask": "タスク作成",
+        "createPo": "PO作成"
+      },
+      "shareControl": {
+        "title": "制御付き共有",
+        "description": "ワンクリックでプロジェクトフィードに共有。参加者を編集、いつでも取り消し可能。",
+        "chips": {
+          "redact": "個人メールを編集",
+          "audit": "監査ログ",
+          "shareToFeed": "共有先: プロジェクトフィード"
+        }
+      },
+      "unifiedMessages": {
+        "title": "統合メッセージ",
+        "description": "メールスレッドがポータルメッセージ、RFI、AIアラートと並んで表示 — 一箇所で協業。",
+        "imageAlt": "メールとポータルスレッドを組み合わせたプロジェクトメッセージフィード"
+      }
+    },
+    "kpis": {
+      "emailsCentralised": {
+        "label": "メール一元化",
+        "value": "100%"
+      },
+      "responseTime": {
+        "label": "応答時間",
+        "value": "−38%",
+        "sub": "ベースライン比中央値"
+      },
+      "sharedThreads": {
+        "label": "共有スレッド",
+        "value": "4.2x",
+        "sub": "可視性向上"
+      },
+      "autoActions": {
+        "label": "自動アクション",
+        "value": "2.8x",
+        "sub": "タスク/PO作成"
+      }
+    },
+    "collaboration": {
+      "title": "スタジオコミュニケーションのハブ",
+      "subtitle": "個人の「ホームインボックス」はそのまま。必要なときだけプロジェクトに共有 — 転送チェーンなしでチーム、業者、クライアントを同期。",
+      "bullets": {
+        "shareThreads": "ワンクリックでメールスレッドを共有",
+        "aiExtracts": "AIが次のアクションを抽出し返信を下書き",
+        "linkMessages": "メッセージをタスク、PO、ドキュメントに即リンク"
+      },
+      "mock": {
+        "projectTitle": "Oak House • セレクション",
+        "projectFeed": "プロジェクトフィード",
+        "fromClient": "送信元: クライアント",
+        "clientMessage": "「ダイニングチェアはリネンにしましょう。」",
+        "fromFocuspilot": "送信元: Focuspilot",
+        "aiSummary": "AI要約: ペンダントライト承認；ファブリックサンプル発注；配送ウィンドウ確認。",
+        "assign": "割り当て",
+        "createPo": "PO作成",
+        "feedImageAlt": "メール、ポータルメッセージ、AIアラートを含むメッセージフィード"
+      }
+    },
+    "finalCta": {
+      "title": "スタジオの働き方に合ったメール",
+      "subtitle": "統合インボックス、プロジェクトルーティング、サプライヤートラッキング、GDPR対応共有 — Focuspilotだけ。"
+    }
+  },
+  "platformProjects": {
+    "meta": {
+      "title": "インテリアデザインプロジェクト管理ソフトウェア | Focuspilot",
+      "description": "コンセプトから完成までインテリアデザインプロジェクトを管理。タイムライン、予算、タスク、チーム協業を追跡。デザインスタジオ向けに設計。無料で開始。",
+      "ogDescription": "コンセプトから完成までインテリアデザインプロジェクトを管理。タイムライン、予算、タスク、チーム協業を追跡。",
+      "twitterDescription": "コンセプトから完成までインテリアデザインプロジェクトを管理。タイムライン、予算、タスク、チーム協業を追跡。",
+      "ogImageAlt": "インテリアデザイナー向けFocuspilotプロジェクト管理ダッシュボード"
+    },
+    "hero": {
+      "badge": "プロジェクト管理",
+      "title": "インテリアデザインプロジェクト管理ソフトウェア",
+      "subtitle": "フェーズ計画、タスクとタイムラインの追跡、予算、承認、コミュニケーションを落ち着いた一つのワークスペースで。",
+      "note": "スプレッドシートや散在するツールを一つのワークスペースに置き換えたいインテリアデザイナー、建築家、デザインスタジオのために構築。",
+      "imageAlt": "KPI、タイムライン、調達ステータスを表示するプロジェクト概要ダッシュボード"
+    },
+    "tabs": {
+      "navAria": "プロジェクトセクション",
+      "sectionAria": "{label} セクション",
+      "overview": "概要",
+      "tasks": "タスク",
+      "calendar": "カレンダー",
+      "messages": "メッセージ",
+      "docs": "ドキュメント",
+      "procurement": "調達",
+      "finance": "財務",
+      "contractors": "業者"
+    },
+    "sections": {
+      "overview": {
+        "title": "すべてを一つのライブ概要で",
+        "description": "チーム全体のステータスを明確に。予算、マージン、タスク、PO、マイルストーンがリアルタイムで更新。",
+        "bullets": {
+          "kpis": "各プロジェクトのKPIを一目で",
+          "timeline": "フェーズと設置のビジュアルタイムライン",
+          "deepDive": "ワンクリックでタスク、ドキュメント、調達に深掘り"
+        },
+        "imageAlt": "Chelsea Penthouseプロジェクト概要 — 予算利用率、利益率、タスク完了、フェーズ追跡付きKPIカード"
+      },
+      "tasks": {
+        "title": "フェーズを計画。タスクを追跡。スケジュールを守る。",
+        "description": "カンバン、リスト、ガント表示。担当者割り当て、優先度設定、スマートリマインダーで作業を前進。",
+        "bullets": {
+          "phaseBoards": "バッジ、日付、担当者付きフェーズボード",
+          "reminders": "自動リマインダーと依存関係警告",
+          "aiSuggestions": "ブリーフと会議からのAIタスク提案"
+        },
+        "imageAlt": "デザインフェーズ、タスクカード、担当者、進捗追跡を表示するカンバンボード"
+      },
+      "calendar": {
+        "title": "設置、現場訪問、マイルストーンをスケジュール",
+        "description": "アジェンダとタイムラインモードでプロジェクトの現実を反映するスタジオカレンダー。",
+        "bullets": {
+          "studioView": "イベント、期限、配送のスタジオ全体ビュー",
+          "attendees": "参加者と部屋の割り当て、時間記録、訪問追跡",
+          "sync": "タスクと調達ステータスと同期"
+        },
+        "imageAlt": "プロジェクトイベント、期限、チームスケジュール、KPI、アジェンダビューを表示するスタジオカレンダー"
+      },
+      "messages": {
+        "title": "クライアントとベンダーを同期",
+        "description": "メール、ポータルメッセージ、サプライヤースレッドを一元化。作業を前進させるクイックアクション。",
+        "bullets": {
+          "inbox": "プロジェクトごとのインボックス — 検索可能で整理済み",
+          "attachments": "添付ファイルをタスク、PO、ムードボードアイテムに変換",
+          "actionFilter": "要対応フィルターでブロッカーを素早く解消"
+        },
+        "imageAlt": "スレッド一覧と詳細会話、タスク作成・ファイル管理アクションボタンを表示するプロジェクトメッセージ"
+      },
+      "docs": {
+        "title": "図面、写真、ファイルを整理",
+        "description": "作業が行われる場所にドキュメントを保持。バージョン管理、プレビュー、タスクとPOへのリンク。",
+        "bullets": {
+          "templates": "繰り返し可能な整理のためのフォルダテンプレート",
+          "uploads": "クイックプレビュー付きドラッグ＆ドロップアップロード",
+          "recent": "最近のファイルと承認をすぐにアクセス"
+        },
+        "imageAlt": "デザインコンセプト、技術図面、調達ドキュメントの整理フォルダとステータス表示"
+      },
+      "procurement": {
+        "title": "仕様からPO、設置まで",
+        "description": "すべてのアイテムのリードタイム、配送、承認を追跡 — スプレッドシート不要。",
+        "bullets": {
+          "totals": "合計、数量、コスト、配送進捗",
+          "pos": "PO生成、領収書記録、ステータス同期",
+          "clientViews": "透明なセレクションのためのクライアント向けビュー"
+        },
+        "imageAlt": "製品仕様、コスト、配送ステータス、PO作成機能を表示する調達アイテムテーブル"
+      },
+      "finance": {
+        "title": "提案書、請求書、支払いを自動化",
+        "description": "ブランドドキュメント作成、期日追跡、会計同期。より早く入金。",
+        "bullets": {
+          "tracking": "一つのテーブルで請求書とPOを追跡",
+          "filters": "アクション用ステータスチップとクイックフィルター",
+          "sync": "Xero/QuickBooksと同期して帳簿を正確に"
+        },
+        "imageAlt": "支払ステータス、金額、会計同期オプションを表示する請求書・POテーブル"
+      },
+      "contractors": {
+        "title": "業者、RFI、スケジュールを同期",
+        "description": "情報要求、スケジュール、設置アイテムにわたる安全な共有ビューで現場チームを同期。",
+        "bullets": {
+          "rfi": "添付ファイルと承認付きRFI（情報提供依頼）スレッド",
+          "schedule": "フェーズ、部屋、日ごとのスケジュールと割り当て作業を表示",
+          "shareItems": "仕様、設置メモ、ステータス付き調達アイテムを共有"
+        },
+        "inviteContractor": "業者を招待",
+        "shareItem": "アイテムを共有",
+        "imageAlt": "プロジェクトKPI、週次スケジュール、最近のアクティビティ、業者調整クイックアクションを表示する業者ポータル"
+      }
+    },
+    "faq": {
+      "title": "よくある質問",
+      "subtitle": "インテリアデザイナー向けFocuspilotプロジェクト管理に関する一般的な質問。",
+      "items": {
+        "vsAsana": {
+          "question": "AsanaやMondayとの違いは？",
+          "answer": "汎用プロジェクト管理ツールとは異なり、Focuspilotはインテリアデザイナーと建築家向けに特化設計。調達追跡、クライアント承認ワークフロー、製品ライブラリ、財務ツールなど、AsanaやMondayにはない機能を備えています。デザインスタジオの実際の働き方に合わせて設計されています。"
+        },
+        "procurement": {
+          "question": "調達と発注書に対応していますか？",
+          "answer": "はい。製品ライブラリ、サプライヤー追跡、自動発注書、配送スケジュール、クライアント承認ワークフローを含む完全な調達管理。仕様から設置まですべてのアイテムを追跡できます。"
+        },
+        "clientApprovals": {
+          "question": "クライアントはアイテム承認と請求書支払いができますか？",
+          "answer": "もちろんです。クライアントはブランドポータルでセレクションを確認し、コメント付きで承認/却下、プロジェクト進捗を確認、Stripe経由で直接請求書を支払えます。メールのやり取りは不要です。"
+        },
+        "smallStudios": {
+          "question": "小規模スタジオにも適していますか？",
+          "answer": "はい、あらゆる規模のスタジオ向けに設計。ソロデザイナーはすべてが一箇所にあることを評価し、大規模チームは協業機能とロールベース権限の恩恵を受けます。料金はチーム規模に応じてスケールします。"
+        }
+      }
+    },
+    "relatedLinks": {
+      "title": "ワークフロー全体と連携",
+      "subtitle": "プロジェクトはFocuspilotプラットフォームの他の機能とシームレスに統合。",
+      "procurement": {
+        "title": "調達",
+        "desc": "製品調達とベンダー管理"
+      },
+      "finance": {
+        "title": "財務",
+        "desc": "予算と請求を追跡"
+      },
+      "clientPortal": {
+        "title": "クライアントポータル",
+        "desc": "更新を共有し承認を収集"
+      },
+      "pricing": {
+        "title": "料金を見る",
+        "desc": "全機能で無料開始"
+      }
+    },
+    "finalCta": {
+      "title": "すべてのプロジェクトを明確さとコントロールで運営。",
+      "subtitle": "インテリアデザインスタジオ向けに設計されたプロジェクト管理、ドキュメント、調達、請求。"
+    }
+  },
+  "platformFinance": {
+    "meta": {
+      "title": "インテリアデザイン請求・会計ソフトウェア | Xero連携 | Focuspilot",
+      "description": "デザインスタジオの財務を効率化。請求書作成、プロジェクト収益性追跡、Xero・QuickBooks同期。リアルタイム予算対実績。無料で開始。",
+      "ogDescription": "デザインスタジオの財務を効率化。請求書作成、プロジェクト収益性追跡、Xero・QuickBooks同期。",
+      "twitterDescription": "デザインスタジオの財務を効率化。請求書作成、プロジェクト収益性追跡、Xero・QuickBooks同期。",
+      "ogImageAlt": "インテリアデザインスタジオ向けFocuspilot財務ダッシュボード"
+    },
+    "hero": {
+      "badge": "財務と請求",
+      "title": "インテリアデザインスタジオ向け財務・請求ソフトウェア",
+      "subtitle": "予算、PO、請求書、キャッシュフローを一箇所に — プロジェクト、クライアントポータル、会計と連携。管理業務を自動化し、収益性を明確に。",
+      "imageAlt": "KPI、請求書、キャッシュフローを表示する財務ダッシュボード",
+      "integratesWith": "連携",
+      "stripeAlt": "インテリアデザイン請求向けStripe決済連携",
+      "xeroAlt": "インテリアデザイン財務向けXero会計ソフトウェア連携"
+    },
+    "kpis": {
+      "title": "キャッシュフロー、売上、マージンの明確化",
+      "description": "重要な指標を把握：発行・入金済み請求書、今後のPO、VAT、予測ランウェイ — すべてプロジェクトとスタジオビューにリンク。",
+      "bullets": {
+        "cashFlow": "入出金予定付きリアルタイムキャッシュフロー",
+        "budgetVsActual": "プロジェクトとスタジオレベルの予算対実績",
+        "reminders": "自動支払リマインダーと通知"
+      },
+      "tryAiAssistant": "AIアシスタントを試す",
+      "seeInvoices": "請求書を見る",
+      "tiles": {
+        "invoicesPaid": {
+          "label": "入金済み請求書（30日）",
+          "value": "£48,320",
+          "sublabel": "先月比 +12%"
+        },
+        "outstanding": {
+          "label": "未回収",
+          "value": "£18,560",
+          "sublabel": "12件の請求書 • 7件延滞"
+        },
+        "posThisMonth": {
+          "label": "今月のPO",
+          "value": "£26,410",
+          "sublabel": "順調"
+        },
+        "grossMargin": {
+          "label": "粗利益率（年初来）",
+          "value": "42%",
+          "sublabel": "前年比 +3pt"
+        }
+      },
+      "chartImageAlt": "売上指標、目標、差異、前年比チャートを表示する財務ダッシュボード"
+    },
+    "invoices": {
+      "title": "請求書と支払い — 自動化、同期、入金",
+      "description": "見積もりからワンクリックで請求書作成、クライアントポータルへ送信、Stripeでカード/ACH受付、すべての更新をXeroに自動同期。",
+      "bullets": {
+        "xeroSync": "新規・更新請求書のワンクリックXero同期",
+        "paymentLinks": "クライアントポータルからの支払リンクとリマインダー",
+        "statusChips": "回収管理のためのステータスチップとエージング"
+      },
+      "generateWithAi": "AIで生成",
+      "imageAlts": {
+        "summaryCards": "請求書合計£425,000、発注書£128,500のサマリーカード",
+        "actionButtons": "請求書作成とXero同期アクションボタン",
+        "costTracking": "総コスト、配送進捗、アクションボタンを表示するプロジェクトコスト追跡",
+        "invoiceList": "金額、ステータスバッジ、アクションドロップダウンを表示する請求書一覧"
+      }
+    },
+    "profitability": {
+      "title": "予算から実際の利益へ",
+      "description": "予算、承認済み支出、スタッフ時間を追跡し、プロジェクト別の正確な収益性を把握、スタジオビューに集約。",
+      "bullets": {
+        "budgetView": "予算、支出、確定POを一つのビューで",
+        "timeTracking": "正確なプロジェクトマージンのための時間追跡",
+        "studioProfit": "スタジオ収益性とトレンド分析"
+      },
+      "timeTrackingNote": "フェーズとタスク別の時間追跡で真のコストを把握",
+      "budgetImageAlt": "カテゴリ別コスト、月次予算対実績、ベンダー支出、コスト超過を表示する予算分析ダッシュボード",
+      "timeImageAlt": "アクティブタイマー、週次時間内訳、最近のプロジェクトエントリを表示する時間追跡ダッシュボード"
+    },
+    "aiAssistant": {
+      "title": "すべてのワークフローにわたる財務コパイロット",
+      "subtitle": "予算、請求書、キャッシュフローについて質問。これまで以上に速く下書き、送信、同期。",
+      "panelAria": "AI財務アシスタント",
+      "composerLabel": "AI財務アシスタントに質問",
+      "placeholder": "請求書の下書き、キャッシュフロー予測、リマインダー送信を依頼…",
+      "askAi": "AIに聞く",
+      "askAiAria": "AIに聞く",
+      "useSuggestionAria": "提案を使用: {suggestion}",
+      "suggestions": {
+        "invoice": "Oak Houseの請求書を作成 — Phase 2見積もりから30%デポジット",
+        "forecast": "プロジェクト別に今後60日間のキャッシュフローを予測",
+        "reminder": "INV-2053（7日延滞）の支払リマインダーを送信",
+        "po": "承認済みペンダントライトのPOを下書きしProject Aにリンク"
+      },
+      "responses": {
+        "invoice": "請求書 INV-3281 を下書き — Oak House • 30%デポジット • £12,600\n取得元: Phase 2見積もり\nステータス: 下書き（未送信）\n次: クライアントポータルへ送信 • Xero同期 • リマインダー設定",
+        "reminder": "リマインダーをキューに追加\nクライアント: Jane Smith • INV-2053 • £2,180 • 7日延滞\n9:00 AMにメール + ポータル通知\n未払いの場合3日後にフォローアップ",
+        "default": "キャッシュフロー予測（今後60日）\n入金予定: £86,400\n支出予定（PO + 給与）: £64,900\n予測: 健全\nヒント: 2件の保留承認を完了して第3週の流動性を改善"
+      }
+    },
+    "relatedLinks": {
+      "title": "スタジオワークフローと連携",
+      "subtitle": "財務はプロジェクト、調達、クライアント支払いと同期。",
+      "projects": {
+        "title": "プロジェクト",
+        "desc": "プロジェクトフェーズ別に予算を追跡"
+      },
+      "procurement": {
+        "title": "調達",
+        "desc": "POが会計に流れる"
+      },
+      "clientPortal": {
+        "title": "クライアントポータル",
+        "desc": "クライアントがオンラインで請求書を支払"
+      },
+      "pricing": {
+        "title": "料金を見る",
+        "desc": "全機能で無料開始"
+      }
+    },
+    "finalCta": {
+      "title": "プロジェクトを前進させ、利益を明確にする財務",
+      "subtitle": "XeroとStripe連携、自動請求書とPO、スピードのためのAIコパイロット。"
+    }
+  },
+  "platformCRM": {
+    "meta": {
+      "title": "インテリアデザインCRMソフトウェア | リードからプロジェクト | Focuspilot",
+      "description": "デザイナー向けCRMでリード、クライアント、提案書を一元管理。AI提案書、パイプライン追跡、シームレスなプロジェクト変換。無料で開始。",
+      "ogDescription": "デザイナー向けCRMでリード、クライアント、提案書を一元管理。AI提案書、パイプライン追跡、シームレスなプロジェクト変換。",
+      "twitterDescription": "デザイナー向けCRMでリード、クライアント、提案書を一元管理。AI提案書、パイプライン追跡。",
+      "ogImageAlt": "インテリアデザインスタジオ向けFocuspilot CRMダッシュボード"
+    },
+    "hero": {
+      "badge": "インテリアデザインスタジオ向けCRM",
+      "title": "インテリアデザインCRMソフトウェア",
+      "subtitle": "リード、クライアント、サプライヤーを一元化。最初の問い合わせから署名済み提案書までパイプラインを追跡し、すべてのプロジェクトを明確に開始。",
+      "note": "適切なプロジェクトを獲得し、すべてのクライアント関係を育てたいインテリアデザイナーと建築家のために構築。",
+      "seePipeline": "パイプラインを見る",
+      "manageLeads": "リードを管理"
+    },
+    "featureLabel": "CRM",
+    "features": {
+      "leads": {
+        "title": "スタジオに合ったリード獲得",
+        "body": "ウェブサイト、Instagram、紹介、イベントからの問い合わせをFocuspilotに直接取り込み。明確なステータス、ソース、スコアで迅速に選別。",
+        "bullets": {
+          "inbox": "ソース追跡付き新規問い合わせの単一インボックス。",
+          "statuses": "営業プロセスに合わせたカスタムリードステータス。",
+          "bulkImport": "一括操作とCSVインポートで過去データをオンボード。"
+        },
+        "imageAlt": "ソース追跡、ステータスチップ、連絡先詳細を表示するインテリアデザインCRMリード取込テーブル"
+      },
+      "pipeline": {
+        "title": "ドラッグ＆ドロップできる信頼のパイプライン",
+        "body": "NewからWonまで、デザインスタジオ向けに設計されたパイプラインで商談を移動 — 金額、担当者、勢いを一目で。",
+        "bullets": {
+          "forecast": "カスタム列と商談金額で売上予測。",
+          "dragDrop": "ステージ間のドラッグ＆ドロップ。キーボード操作対応。",
+          "views": "ボードとテーブルビューをワンクリックで切替。"
+        },
+        "imageAlt": "リードから受注までの商談ステージ、プロジェクトカード、売上金額を表示するパイプラインカンバン"
+      },
+      "contacts": {
+        "title": "クライアント、連絡先、サプライヤーを整理",
+        "body": "すべての関係を最新に。クライアント詳細、仕様担当者、ベンダー、業者を重要なメモ、メール、ファイルと統合。",
+        "bullets": {
+          "types": "柔軟なタイプ：リード、クライアント、パートナー、サプライヤー、業者。",
+          "profiles": "メール、電話、リンクプロジェクト付きリッチプロフィール。",
+          "bulkActions": "アウトリーチとGDPR対応エクスポートの一括操作。"
+        },
+        "imageAlt": "クライアントタイプ、会社名、コミュニケーションクイックアクションを表示するCRM連絡先ディレクトリ"
+      },
+      "proposals": {
+        "title": "仕事を獲得するAI提案書",
+        "body": "数分でインテリジェントなデータ駆動型提案書を作成。AIウィザードがブリーフと過去データを分析し、フェーズとマイルストーン別の詳細見積もりを生成、ブランドPDFとしてダウンロード可能。",
+        "bullets": {
+          "scopeDefinition": "ブリーフからのAIスコープ定義とスマート拡張提案。",
+          "pricing": "過去データ分析による正確な価格推奨。",
+          "milestones": "詳細明細付きフェーズベースのマイルストーン構造。",
+          "pdf": "クライアント送付可能なブランドPDF生成。"
+        },
+        "imageAlt": "明細、手数料、AIアシスタント提案を表示するAI提案書ウィザード"
+      }
+    },
+    "aiProposal": {
+      "badge": "AI提案書ウィザード",
+      "title": "ブリーフからブランド提案書まで数分",
+      "subtitle": "AIがプロジェクトブリーフを包括的で正確な価格設定の提案書に変換。詳細スコープ定義とマイルストーンベースの価格設定。",
+      "scopeTitle": "インテリジェントなスコープ定義",
+      "scopeDescription": "基本的なブリーフから始め、AIが包括的な作業範囲に拡張。テンプレート選択、カスタムコンテンツ、またはAIによる詳細プロジェクトフェーズ生成。",
+      "scopeBullets": {
+        "enhancement": "基本プロジェクトブリーフのAI拡張",
+        "formatting": "提案書向けプロフェッショナルMarkdownフォーマット",
+        "templates": "カスタムオプション付きテンプレートライブラリ"
+      },
+      "scopeImageAlt": "Markdownフォーマット、プロジェクトフェーズ、成果物概要を表示するAIスコープ定義インターフェース"
+    },
+    "onboarding": {
+      "title": "提案書からプロジェクトまで数分",
+      "subtitle": "オンボーディングウィザードですべての案件の基本要素を生成。セットアップ時間を減らし、デザインに集中。",
+      "steps": {
+        "createProject": {
+          "title": "プロジェクト作成",
+          "text": "住宅、商業、ステージング用テンプレートを選択。"
+        },
+        "inviteStakeholders": {
+          "title": "ステークホルダー招待",
+          "text": "クライアント、業者、パートナーを一つの安全な場所に。"
+        },
+        "seedDetails": {
+          "title": "詳細を設定",
+          "text": "部屋、予算、スタイル、初期マイルストーンを自動生成。"
+        },
+        "automations": {
+          "title": "自動化",
+          "text": "AI提案でタスク、承認、メッセージをキックスタート。"
+        }
+      }
+    },
+    "faq": {
+      "title": "よくある質問",
+      "subtitle": "インテリアデザイナー向けFocuspilot CRMに関する一般的な質問。",
+      "items": {
+        "vsHubspot": {
+          "question": "HubSpotやSalesforceとの違いは？",
+          "answer": "汎用CRMはデザインスタジオ向けに広範なカスタマイズが必要です。Focuspilot CRMはインテリアデザイナー向けに特化設計。パイプラインステージ、連絡先タイプ、提案ツールがデザインビジネスの実際の運用に合致。複雑なセットアップ不要。"
+        },
+        "proposals": {
+          "question": "提案書と見積もりを作成できますか？",
+          "answer": "はい。AI提案書ウィザードがプロジェクトブリーフからプロフェッショナルなブランド提案書を生成。過去データを分析して正確な価格設定を行い、フェーズベースのマイルストーン付き詳細スコープ文書をPDFダウンロード可能。"
+        },
+        "projectIntegration": {
+          "question": "プロジェクト管理と連携しますか？",
+          "answer": "もちろんです。商談を獲得したらワンクリックでプロジェクトに変換。クライアント情報、スコープ詳細、提案データがプロジェクトワークスペースにシームレスに流れ込みます。重複入力なし。"
+        },
+        "leadSources": {
+          "question": "リードの流入元を追跡できますか？",
+          "answer": "はい。Focuspilotはウェブサイト、Instagram、紹介、イベントなどリードソースを自動追跡。最良のクライアントをもたらすチャネルを把握し、マーケティングを最適化。"
+        }
+      }
+    },
+    "finalCta": {
+      "ariaLabel": "始める",
+      "title": "スタジオの関係性に明確さを。",
+      "subtitle": "リードを獲得し、商談を前進させ、プロジェクトを開始 — 承認、調達、財務とシームレスに連携。"
+    }
+  },
+  "platformClientPortal": {
+    "meta": {
+      "title": "インテリアデザイン向けクライアントポータル | 承認・決済 | Focuspilot",
+      "description": "セレクションの承認、配送追跡、請求書の支払いをブランド化されたポータルで。ワンクリック承認、リアルタイム更新、Stripe連携決済。無料でお試し。",
+      "ogDescription": "セレクションの承認、配送追跡、請求書の支払いをブランド化されたポータルで。ワンクリック承認、リアルタイム更新、Stripe連携決済。無料でお試し。",
+      "twitterDescription": "セレクションの承認、配送追跡、請求書の支払いをブランド化されたポータルで。ワンクリック承認、リアルタイム更新。",
+      "ogImageAlt": "インテリアデザイン承認向けFocuspilotクライアントポータル"
+    },
+    "hero": {
+      "badge": "クライアントコラボレーション",
+      "title": "インテリアデザイナー向けクライアントポータル",
+      "subtitle": "セレクションの確認、デザイナーとのメッセージ、請求書の閲覧を一か所で。製品やアイデアをコメント付きで承認・却下し、全員が同じ情報を共有できます。",
+      "note": "承認とコラボレーションにプレミアムなブランド体験を提供したいデザインスタジオのために構築されています。"
+    },
+    "kpis": {
+      "awaitingApproval": {
+        "label": "承認待ち",
+        "value": "2"
+      },
+      "messages": {
+        "label": "メッセージ",
+        "value": "12",
+        "sub": "+2 新着"
+      },
+      "invoices": {
+        "label": "請求書",
+        "value": "2",
+        "sub": "1 未払い"
+      },
+      "deliveries": {
+        "label": "配送",
+        "value": "3",
+        "sub": "配送中"
+      }
+    },
+    "approvals": {
+      "title": "レビューするセレクション",
+      "subtitle": "製品やアイデアを承認または却下。コメントや質問を残すと、デザイナーに即座に通知されます。",
+      "chips": {
+        "linkedToProject": "プロジェクトにリンク",
+        "notifiesDesigner": "デザイナーに通知",
+        "keepsHistory": "履歴を保持"
+      }
+    },
+    "status": {
+      "approved": "承認済み",
+      "declined": "却下",
+      "awaitingDecision": "判断待ち",
+      "paid": "支払済み",
+      "unpaid": "未払い"
+    },
+    "approvalCard": {
+      "imageAlt": "{title} - インテリアデザインプロジェクト承認用製品セレクション",
+      "commentLabel": "コメント（任意）",
+      "commentPlaceholder": "ご意見、変更点、代替案などをお聞かせください…",
+      "approve": "承認",
+      "decline": "却下"
+    },
+    "demo": {
+      "approvals": {
+        "chandelier": {
+          "id": "A-02",
+          "title": "オービタル真鍮シャンデリア",
+          "room": "ダイニング",
+          "vendor": "LUMINA DESIGN",
+          "price": "£1,450"
+        },
+        "art": {
+          "id": "A-03",
+          "title": "抽象キャンバスアート",
+          "room": "リビングルーム",
+          "vendor": "DECO ART",
+          "price": "£890"
+        }
+      },
+      "messages": {
+        "designer": {
+          "who": "デザイナー",
+          "text": "最終ペンダントライトのオプションをアップロードしました",
+          "meta": "2時間前",
+          "tag": "デザイン"
+        },
+        "client": {
+          "who": "あなた",
+          "text": "リネンチェアが気に入りました — 承認します",
+          "meta": "1日前",
+          "tag": "クライアント"
+        },
+        "vendor": {
+          "who": "ベンダー",
+          "text": "発送通知 • 注文 34821",
+          "meta": "2日前",
+          "tag": "配送"
+        }
+      },
+      "invoices": {
+        "phase2Deposit": {
+          "id": "2053",
+          "title": "フェーズ2 デポジット",
+          "amount": "2,180"
+        },
+        "approvedPendants": {
+          "id": "1972",
+          "title": "承認済みペンダント",
+          "amount": "1,260"
+        }
+      }
+    },
+    "clientView": {
+      "title": "クライアントビュー：シンプル、ブランド化、セキュア",
+      "subtitle": "メール、調達のワンクリック承認、メッセージングをすべてカスタマイズ可能なクライアントポータルから。シンプルなマジックリンクでアクセス。",
+      "imageAlt": "プロジェクトヒーロー、KPI、承認アクションを表示するクライアントポータルダッシュボード",
+      "chips": {
+        "magicLinkAccess": "マジックリンクアクセス",
+        "oneClickApprovals": "ワンクリック承認",
+        "brandedExperience": "ブランド体験"
+      }
+    },
+    "messages": {
+      "title": "メッセージとプロジェクト更新",
+      "subtitle": "更新、ファイル、承認のための共有フィード。メールとポータルメッセージが一緒に表示され、見落としがありません。",
+      "bullets": {
+        "postReply": "ポータルから直接投稿・返信",
+        "deliveryUpdates": "配送更新が自動的に表示",
+        "aiSummaries": "AIサマリーで全員が同じページに"
+      },
+      "snapshotTitle": "メッセージと更新",
+      "imageAlt": "スレッド、AIキーポイント、次のステップを表示するメッセージワークスペース"
+    },
+    "invoices": {
+      "title": "請求書と決済",
+      "subtitle": "安全に閲覧、ダウンロード、支払い。すべてがプロジェクトと承認と同期します。",
+      "chips": {
+        "stripeSecured": "Stripeセキュア",
+        "pdfCopies": "PDFコピー",
+        "statusUpdates": "ステータス更新"
+      },
+      "tags": {
+        "portal": "ポータル",
+        "invoice": "請求書"
+      },
+      "downloadPdf": "PDFをダウンロード",
+      "payNow": "今すぐ支払う",
+      "viewPdf": "PDFを表示"
+    },
+    "faq": {
+      "title": "よくある質問",
+      "subtitle": "Focuspilotクライアントポータルに関するよくある質問。",
+      "items": {
+        "branding": {
+          "question": "ポータルを自社ブランドでカスタマイズできますか？",
+          "answer": "はい。クライアントポータルにはスタジオのロゴ、カラー、ブランディングが表示されます。クライアントには、汎用のサードパーティツールではなく、ビジネスの延長のようなプロフェッショナルなブランド体験を提供できます。"
+        },
+        "approveSelections": {
+          "question": "クライアントは製品やセレクションをどのように承認しますか？",
+          "answer": "クライアントは部屋やカテゴリ別に整理されたセレクションを閲覧し、ワンクリックで各アイテムを承認または却下できます。判断理由を説明するコメントを追加でき、即座に通知されます。メールのやり取りやフィードバックの紛失はもうありません。"
+        },
+        "payInvoices": {
+          "question": "クライアントはポータルから請求書を支払えますか？",
+          "answer": "もちろんです。クライアントはすべての請求書を閲覧し、支払い履歴を確認し、クレジットカードまたは銀行振込でStripe経由で直接支払えます。迅速な入金とクライアントの利便性向上につながります。"
+        },
+        "secure": {
+          "question": "ポータルは安全ですか？",
+          "answer": "はい。各クライアントは自分のプロジェクトのみにアクセスできる、パスワード保護されたセキュアなアクセスを持ちます。すべてのデータは暗号化され、クライアントに表示する情報を正確に制御できます。エンタープライズグレードのセキュリティと消費者向けの使いやすさを両立しています。"
+        }
+      }
+    },
+    "related": {
+      "title": "スタジオ運営と連携",
+      "subtitle": "クライアントポータルはプロジェクト、調達、財務とシームレスに連携します。",
+      "items": {
+        "projects": {
+          "title": "プロジェクト",
+          "description": "クライアントと進捗を共有"
+        },
+        "procurement": {
+          "title": "調達",
+          "description": "承認が購買に連携"
+        },
+        "finance": {
+          "title": "財務",
+          "description": "決済が自動同期"
+        },
+        "pricing": {
+          "title": "料金を見る",
+          "description": "全機能を無料で開始"
+        }
+      }
+    },
+    "finalCta": {
+      "title": "クライアントとの落ち着いたコラボレーション",
+      "subtitle": "承認、メッセージ、請求書—調達とプロジェクト計画に連携。"
+    },
+    "toast": {
+      "approved": "承認済み",
+      "declined": "却下",
+      "noteWithComment": "メモ: \"{comment}\"",
+      "selectionStatus": "セレクション {status}."
+    }
+  },
+  "platformProcurement": {
+    "meta": {
+      "title": "インテリアデザイナー向けFF&E調達ソフトウェア | Focuspilot",
+      "description": "AI製品ソーシングでFF&E調達を効率化。PO自動生成、納品追跡、ベンダー管理。納期遵守率94%。3ヶ月無料トライアル。",
+      "ogDescription": "AI製品ソーシングでFF&E調達を効率化。PO自動生成、納品追跡、ベンダー管理。納期遵守率94%。3ヶ月無料トライアル。",
+      "twitterDescription": "AI製品ソーシングでFF&E調達を効率化。PO自動生成、納品追跡、ベンダー管理。",
+      "ogImageAlt": "インテリアデザイナー向けFocuspilot調達ダッシュボード"
+    },
+    "hero": {
+      "badge": "調達・購買",
+      "title": "インテリアデザイナー向けFF&E調達・購買ソフトウェア",
+      "subtitle": "製品ライブラリを構築し、クライアント承認を収集し、プロジェクトと同期する発注書を作成。",
+      "images": {
+        "loungeAlt": "承認済みステータスのブークレラウンジチェア — インテリアデザイン調達",
+        "centerAlt": "ラウンジチェアと真鍮フロアランプのモダンインテリア — 調達ワークフロー",
+        "lampAlt": "承認済みステータスの真鍮フロアランプ — インテリア仕様"
+      }
+    },
+    "kpis": {
+      "onTimeDeliveries": {
+        "label": "納期遵守",
+        "value": "94%"
+      },
+      "posAutoGenerated": {
+        "label": "自動生成PO",
+        "value": "1,204"
+      },
+      "approvedSelections": {
+        "label": "承認済み選定",
+        "value": "3,872"
+      },
+      "vendorsTracked": {
+        "label": "追跡ベンダー",
+        "value": "212"
+      }
+    },
+    "status": {
+      "approved": "承認済み",
+      "rejected": "却下"
+    },
+    "aiImport": {
+      "sectionTitle": "任意のURLからAIで製品を追加",
+      "sectionSubtitle": "製品ページのリンクを貼り付けると、AIが仕様、画像、価格、ベンダー情報をライブラリに取り込みます。",
+      "demoAria": "AI製品インポートのデモ",
+      "productUrlLabel": "製品URL",
+      "urlPlaceholder": "製品URLを貼り付け",
+      "aiTitle": "AI",
+      "buttons": {
+        "working": "処理中...",
+        "imported": "インポート完了",
+        "addWithAi": "AIで追加"
+      },
+      "loadingAria": "製品情報を読み込み中",
+      "badge": "AIインポート",
+      "sourceLabel": "ソース: {domain}",
+      "demoUrl": "https://www.myluxinterior.com/chair",
+      "product": {
+        "title": "Arc Marble Table",
+        "description": "柔らかな曲線とナチュラル仕上げの彫刻的なリブベース — ダイニングやリビングの主役に。",
+        "price": "£1,290",
+        "vendor": "My Lux Interior",
+        "imageAlt": "Arc Marble Table — 彫刻的なリブベースのAIインポート製品"
+      },
+      "specLabels": {
+        "material": "素材",
+        "finish": "仕上げ",
+        "dimensions": "寸法",
+        "leadTime": "リードタイム"
+      },
+      "specValues": {
+        "material": "無垢オーク",
+        "finish": "ナチュラル",
+        "dimensions": "W 560 x D 600 x H 820 mm",
+        "leadTime": "6〜8週間"
+      },
+      "addToLibrary": "ライブラリに追加",
+      "createPo": "POを作成"
+    },
+    "features": {
+      "sectionAria": "調達機能",
+      "learnMore": "詳しく見る",
+      "specSheets": {
+        "title": "仕様シート",
+        "desc": "寸法、仕上げ、サプライヤーリンク、部屋の文脈を一箇所に。",
+        "imgAlt": "インテリアデザイン製品の仕様シート画面"
+      },
+      "approvals": {
+        "title": "承認",
+        "desc": "選定を収集し、変更履歴付きでサインオフ。",
+        "imgAlt": "インテリアデザイン選定のクライアント承認画面"
+      },
+      "purchaseOrders": {
+        "title": "発注書",
+        "desc": "仕様からPOを作成し、ステータスを同期。",
+        "imgAlt": "インテリアデザイン調達の発注管理テーブル"
+      },
+      "vendorsDeliveries": {
+        "title": "ベンダーと納品",
+        "desc": "サプライヤー連絡先、見積、納品ウィンドウをスケジュールに連携。",
+        "imgAlt": "インテリアデザインプロジェクトのベンダー・納品追跡ダッシュボード"
+      },
+      "receipts": {
+        "title": "領収書",
+        "desc": "領収書と設置日を記録。遅延を早期に把握。",
+        "imgAlt": "インテリアデザイン調達の領収書追跡画面"
+      },
+      "linkToBudget": {
+        "title": "予算へのリンク",
+        "desc": "スプレッドシートなしで各アイテムを予算とクライアント請求に紐付け。",
+        "imgAlt": "調達とプロジェクト財務をつなぐ予算リンク画面"
+      }
+    },
+    "clientApprovals": {
+      "title": "クライアント承認",
+      "subtitle": "インテリアデザインプロジェクトのクライアント承認を簡単に管理・追跡。",
+      "thumbnailAlt": "{title} - {vendor}（{room}向け製品）",
+      "items": {
+        "brassLamp": {
+          "title": "真鍮フロアランプ",
+          "room": "リビング",
+          "vendor": "In Good Company",
+          "code": "DL-01"
+        },
+        "boucleChair": {
+          "title": "ブークレラウンジチェア",
+          "room": "ライブラリ",
+          "vendor": "Carlisle Brem",
+          "code": "PL-02"
+        }
+      }
+    },
+    "library": {
+      "sectionAria": "ライブラリカード",
+      "cardImageAlt": "{title}（{brand}）— {tag}、インテリアデザインプロジェクト向け",
+      "items": {
+        "chandelier": {
+          "title": "オービタル真鍮シャンデリア",
+          "brand": "LUMINA DESIGN",
+          "price": "£1,450",
+          "tag": "照明"
+        },
+        "canvasArt": {
+          "title": "抽象キャンバスアート",
+          "brand": "CONTEMPORARY ART CO",
+          "price": "£890",
+          "tag": "アクセサリー"
+        },
+        "accentChair": {
+          "title": "ミッドセンチュリーアクセントチェア",
+          "brand": "DANISH MODERN",
+          "price": "£1,650",
+          "tag": "家具"
+        }
+      }
+    },
+    "relatedLinks": {
+      "title": "ワークフロー全体と連携",
+      "subtitle": "調達はプロジェクト、財務、クライアント承認とつながります。",
+      "projects": {
+        "title": "プロジェクト",
+        "desc": "製品をプロジェクトフェーズにリンク"
+      },
+      "finance": {
+        "title": "財務",
+        "desc": "コストとマージンを追跡"
+      },
+      "clientPortal": {
+        "title": "クライアントポータル",
+        "desc": "選定承認を収集"
+      },
+      "pricing": {
+        "title": "料金を見る",
+        "desc": "全機能を無料で開始"
+      }
+    },
+    "finalCta": {
+      "title": "仕様と購買をプロジェクトに接続",
+      "subtitle": "手作業のスプレッドシートや紛失した請求書はもう不要。Focuspilotが資材を毎回時間通りに届けます。"
+    }
+  },
+  "termsPage": {
+    "meta": {
+      "title": "利用規約 | Focuspilot",
+      "description": "Focuspilotの利用規約。プラットフォーム利用の条件をご確認ください。"
+    },
+    "title": "利用規約",
+    "lastUpdated": "最終更新：2026年3月",
+    "sections": {
+      "acceptance": {
+        "title": "1. 規約への同意",
+        "body": "Focuspilotにアクセスまたは利用することで、本利用規約に拘束されることに同意したものとみなされます。"
+      },
+      "service": {
+        "title": "2. サービスの説明",
+        "body": "Focuspilotはインテリアデザインスタジオ向けのプロジェクト管理、調達、ビジネスツールを提供します。"
+      },
+      "accounts": {
+        "title": "3. ユーザーアカウント",
+        "body": "アカウントのセキュリティおよびアカウント下のすべての活動について責任を負います。"
+      },
+      "payment": {
+        "title": "4. 支払条件",
+        "body": "有料プランは前払いで請求されます。いつでもキャンセルでき、請求期間終了までアクセスは継続します。"
+      },
+      "ip": {
+        "title": "5. 知的財産",
+        "body": "お客様のデータの所有権はお客様に帰属します。Focuspilotプラットフォームの所有権は当社に帰属します。"
+      },
+      "contact": {
+        "title": "6. お問い合わせ",
+        "bodyBefore": "本規約に関するご質問は"
+      }
+    }
+  },
+  "changelogPage": {
+    "meta": {
+      "title": "変更履歴 | Focuspilot製品アップデート",
+      "description": "Focuspilotの新機能をご確認ください。"
+    },
+    "hero": {
+      "badge": "製品アップデート",
+      "title": "変更履歴",
+      "subtitle": "Focuspilotの新機能をご確認ください。プロジェクト、調達、クライアント関係をより効率的に管理できるよう、毎週アップデートをリリースしています。",
+      "note": "ニュースレター登録で更新情報を受け取れます。"
+    },
+    "typeBadges": {
+      "new": "新機能",
+      "improvement": "改善",
+      "fix": "修正"
+    },
+    "relatedLinks": {
+      "title": "プラットフォームを探索",
+      "subtitle": "Focuspilotがスタジオのワークフローをどう変えるかご覧ください。",
+      "projects": {
+        "title": "プロジェクト",
+        "desc": "タイムラインとタスクを管理"
+      },
+      "procurement": {
+        "title": "調達",
+        "desc": "製品の調達と追跡"
+      },
+      "clientPortal": {
+        "title": "クライアントポータル",
+        "desc": "共有と承認"
+      },
+      "finance": {
+        "title": "財務",
+        "desc": "請求と会計"
+      }
+    },
+    "finalCta": {
+      "ariaLabel": "始める",
+      "title": "スタジオを変革する準備はできましたか？",
+      "subtitle": "Focuspilotでワークフローを簡素化したインテリアデザイナーが数百社にのぼります。"
+    },
+    "updates": {
+      "v26": {
+        "date": "2026年5月",
+        "version": "2.6",
+        "changes": {
+          "zapierApi": {
+            "type": "new",
+            "title": "Zapier & スタジオAPI",
+            "description": "設定 → API & WebhooksでAPIキーと署名付きWebhookを作成。プロジェクトとクライアント向けRESTエンドポイント、新規プロジェクト・クライアント・請求書のイベント対応。"
+          },
+          "notionIntegration": {
+            "type": "new",
+            "title": "Notion連携",
+            "description": "スタジオ連携でNotionを接続—共有データベースを閲覧、プロジェクト同期用にマッピング、行をFocuspilotプロジェクトに取り込み。"
+          },
+          "integrationsSettings": {
+            "type": "improvement",
+            "title": "連携設定",
+            "description": "各アプリの接続/切断とNotion設定パネル（閲覧、マッピング、同期）を備えたすっきりした連携カード。"
+          }
+        }
+      },
+      "v25": {
+        "date": "2026年5月",
+        "version": "2.5",
+        "changes": {
+          "gmailIntegration": {
+            "type": "new",
+            "title": "Gmail連携",
+            "description": "設定 → スタジオ → 連携でGmailを接続し、メッセージをAIインボックスに同期。クライアントメールを一つのワークスペースに。"
+          },
+          "googleCalendar": {
+            "type": "new",
+            "title": "Googleカレンダー接続",
+            "description": "スタジオ連携からGoogleカレンダーをリンクし、スタジオカレンダーでマイカレンダーをオンにして個人のGoogleイベントを表示・追加。"
+          },
+          "projectCalendarEvents": {
+            "type": "new",
+            "title": "プロジェクトカレンダーイベント",
+            "description": "特定プロジェクトまたは全プロジェクトにイベントを追加—グリッドと日詳細パネルに表示。"
+          },
+          "calendarEventDisplay": {
+            "type": "improvement",
+            "title": "カレンダーイベント表示",
+            "description": "イベントチップはテキストと背景色を一致、長いタイトルは省略表示、ホバーで全文表示、他の日付に重ならない。"
+          },
+          "projectCalendarFiltering": {
+            "type": "fix",
+            "title": "プロジェクトカレンダーフィルター",
+            "description": "日付処理とプロジェクトフィルターを修正し、全プロジェクト・単一プロジェクトビューで正しい日にイベントが表示。"
+          }
+        }
+      },
+      "v24": {
+        "date": "2025年1月",
+        "version": "2.4",
+        "changes": {
+          "aiEmailDrafting": {
+            "type": "new",
+            "title": "AIメール下書き",
+            "description": "プロジェクトコンテキストとコミュニケーション履歴に基づきAIがクライアントメールを下書き。"
+          },
+          "bulkPoGeneration": {
+            "type": "new",
+            "title": "一括発注書作成",
+            "description": "調達スケジュールから複数の発注書を一度に作成。"
+          },
+          "fasterDashboard": {
+            "type": "improvement",
+            "title": "ダッシュボード高速化",
+            "description": "データ取得の最適化によりプロジェクトダッシュボードの読み込みが50%高速化。"
+          },
+          "contractorPortal": {
+            "type": "new",
+            "title": "施工業者ポータル",
+            "description": "施工業者に仕様、スケジュール、コミュニケーションへの安全なアクセスを提供。"
+          }
+        }
+      },
+      "v23": {
+        "date": "2024年12月",
+        "version": "2.3",
+        "changes": {
+          "clientPortalPayments": {
+            "type": "new",
+            "title": "クライアントポータル決済",
+            "description": "Stripe連携でクライアントがポータル内で請求書を直接支払い。"
+          },
+          "xeroTwoWaySync": {
+            "type": "new",
+            "title": "Xero双方向同期",
+            "description": "請求書と経費についてXero会計との完全双方向同期。"
+          },
+          "pdfExport": {
+            "type": "fix",
+            "title": "PDFエクスポート",
+            "description": "表と画像に影響する提案書PDFのフォーマット問題を修正。"
+          },
+          "mobileNavigation": {
+            "type": "improvement",
+            "title": "モバイルナビゲーション",
+            "description": "主要機能への素早いアクセスのためモバイルメニューを再設計。"
+          }
+        }
+      },
+      "v22": {
+        "date": "2024年11月",
+        "version": "2.2",
+        "changes": {
+          "aiProductSourcing": {
+            "type": "new",
+            "title": "AI製品調達",
+            "description": "サプライヤーカタログから代替製品と卸価格を自動検索。"
+          },
+          "mobileExperience": {
+            "type": "improvement",
+            "title": "モバイル体験",
+            "description": "オフライン対応の現場利用向けモバイルUIを再設計。"
+          },
+          "search": {
+            "type": "improvement",
+            "title": "検索",
+            "description": "あいまい一致でプロジェクト、製品、連絡先の検索が大幅に高速化。"
+          },
+          "calendarSync": {
+            "type": "fix",
+            "title": "カレンダー同期",
+            "description": "プロジェクトマイルストーンのGoogleカレンダー同期問題を解決。"
+          }
+        }
+      },
+      "v21": {
+        "date": "2024年10月",
+        "version": "2.1",
+        "changes": {
+          "projectTemplates": {
+            "type": "new",
+            "title": "プロジェクトテンプレート",
+            "description": "一貫したワークフローのためチーム間でプロジェクトテンプレートを作成・共有。"
+          },
+          "timeTracking": {
+            "type": "new",
+            "title": "時間トラッキング",
+            "description": "タスクごとに請求可能時間を記録し、請求書を自動生成。"
+          },
+          "clientPortal": {
+            "type": "improvement",
+            "title": "クライアントポータル",
+            "description": "コメントスレッドと改訂履歴を備えた新しい承認ワークフロー。"
+          }
+        }
+      }
+    }
+  },
+  "siteMeta": {
+    "title": "インテリアデザイン向けプロジェクト管理ソフトウェア | Focuspilot",
+    "description": "インテリアデザイナーと建築家向けのAI搭載プロジェクト管理。プロジェクト、調達、クライアント承認、請求を一つのワークスペースで。3ヶ月無料トライアル。",
+    "keywords": [
+      "インテリアデザイン ソフトウェア",
+      "デザインスタジオ 管理",
+      "デザイナー向け プロジェクト管理",
+      "インテリアデザイン CRM",
+      "調達 ソフトウェア",
+      "クライアントポータル",
+      "建築 プロジェクト管理",
+      "デザインスタジオ ワークフロー",
+      "インテリアデザイン ビジネス",
+      "デザインプロジェクト コラボレーション"
+    ],
+    "ogImageAlt": "インテリアデザイン向けプロジェクト管理ソフトウェア | Focuspilot",
+    "jsonLd": {
+      "organization": {
+        "description": "インテリアデザイナーと建築家のためのモダンなオペレーティングシステム。",
+        "contactType": "カスタマーサービス",
+        "availableLanguage": "日本語"
+      },
+      "software": {
+        "description": "プロジェクト管理、調達、クライアントコラボレーション、財務のためのインテリアデザインスタジオ管理ソフトウェア。",
+        "applicationSubCategory": "プロジェクト管理ソフトウェア",
+        "offerDescription": "無料ベータアクセス利用可能",
+        "features": {
+          "projectManagement": "プロジェクト管理",
+          "crm": "デザインスタジオ向けCRM",
+          "procurement": "AI搭載調達",
+          "clientPortal": "クライアントポータルと承認",
+          "finance": "財務と請求",
+          "library": "製品ライブラリ管理"
+        }
+      }
+    }
+  },
+  "authLayout": {
+    "meta": {
+      "title": "認証 | Focuspilot",
+      "description": "Focuspilotアカウントにサインインまたは新規作成"
+    }
+  },
+  "visuals": {
+    "finance": {
+      "heroAlt": "シェブロン木パネルと真鍮アクセントのエレガントなリビングルーム",
+      "paidSnippetAlt": "支払済み金額と緑のチップを表示するステータス",
+      "profitKpiAlt": "スタジオ利益KPI £45.2k、12%増",
+      "paidLabel": "支払済"
+    },
+    "pm": {
+      "heroAlt": "組み込み本棚と真鍮照明のあるエレガントなスタジオで働くインテリアデザイナー",
+      "calendarAlt": "カレンダー：現地訪問 - オフィススペース進捗",
+      "aiComposerAlt": "プロジェクト管理のクイックアクション付きAIコンポーザー",
+      "taskCardAlt": "タスク：最終コンセプトの提示"
+    }
+  },
+  "studioProfile": {
+    "meta": {
+      "notFoundTitle": "スタジオが見つかりません | Focuspilot",
+      "titleSuffix": " — インテリアデザインスタジオ",
+      "fallbackDescription": "{studioName}のポートフォリオ、チーム、クライアントレビューをご覧ください。",
+      "defaultDescription": "Focuspilotでこのデザインスタジオのプロフィールをご覧ください。"
+    },
+    "notFoundPage": {
+      "title": "スタジオプロフィールが見つかりません",
+      "description": "このプロフィールは非公開か、リンクが正しくない可能性があります。",
+      "backToFocuspilot": "Focuspilotに戻る"
+    },
+    "notFound": {
+      "title": "スタジオが見つかりません",
+      "description": "このスタジオプロフィールは存在しないか、公開されていません。",
+      "backHome": "ホームに戻る"
+    },
+    "designStudio": "デザインスタジオ",
+    "established": "設立 {year}年",
+    "teamSize": "チーム {count}名",
+    "starsLabel": "5段階中 {rating}",
+    "website": "ウェブサイト",
+    "linkedin": "LinkedIn",
+    "instagram": "Instagram",
+    "about": "概要",
+    "pastWork": "過去の実績",
+    "noImage": "画像なし",
+    "clientReviews": "クライアントレビュー",
+    "services": "サービス",
+    "specialties": "専門分野",
+    "team": "チーム",
+    "contact": "お問い合わせ",
+    "poweredBy": "Powered by",
+    "reviewsCount": "{rating}（{count}件のレビュー）",
+    "verified": "認証済みスタジオ",
+    "projects": "プロジェクト",
+    "location": "所在地",
+    "contactStudio": "スタジオに連絡",
+    "viewProjects": "プロジェクトを見る"
+  },
+  "resourcesAiPlaybook": {
+    "navAriaLabel": "プレイブックの章",
+    "quickWins": {
+      "inboxSummary": {
+        "title": "昨日の受信トレイを要約",
+        "body": "クライアントの決定、サプライヤーの遅延、タスクをプロジェクト別に箇条書きで取得。"
+      },
+      "phasedProposal": {
+        "title": "フェーズ別提案書を下書き",
+        "body": "ブリーフを提案書テンプレートに貼り付けられるスコープセクションに数分で変換。"
+      },
+      "ffeSchedule": {
+        "title": "FF&Eスケジュールを更新",
+        "body": "URLから仕様を抽出し、設置を妨げる前に長納期品目をフラグ。"
+      }
+    },
+    "chapters": {
+      "start": {
+        "title": "ここから始める",
+        "summary": "自動化の前にガードレールを設定—AIが下書きできること、人間が承認すべきこと、プロジェクトデータの所在を定義。",
+        "steps": {
+          "sourceOfTruth": {
+            "title": "Name one source of truth",
+            "body": "Keep briefs, selections, and approvals in your project tool. AI outputs should reference that record, not a loose chat thread."
+          },
+          "humanReview": {
+            "title": "Default to human review",
+            "body": "Use AI for first drafts: emails, task lists, spec summaries. A principal or PM approves anything client-facing."
+          },
+          "logDecisions": {
+            "title": "Log decisions on the project",
+            "body": "When AI suggests an alternate product or timeline shift, capture the decision in the project so procurement and finance stay aligned."
+          }
+        },
+        "prompts": {
+          "projectContext": {
+            "label": "Project context block",
+            "text": "You are assisting an interior design studio. Project: [name]. Phase: [concept/DD/procurement]. Budget band: [range]. Style: [keywords]. Only use facts from the notes below."
+          }
+        }
+      },
+      "email": {
+        "title": "メールとクライアントコミュニケーション",
+        "summary": "受信トレイのノイズをルーティングされたアクションに—正しいプロジェクトに紐づく要約、返信下書き、承認リマインダー。",
+        "steps": {
+          "routeByProject": {
+            "title": "Route by project",
+            "body": "Tag supplier threads separately from client threads. AI summaries should state which milestone or room they affect."
+          },
+          "draftDontSend": {
+            "title": "Draft, don't send",
+            "body": "Generate empathetic, concise replies with clear next steps and dates. Designer edits tone before send."
+          },
+          "surfaceBlockers": {
+            "title": "Surface blockers",
+            "body": "Ask AI to list open questions, missing selections, and overdue approvals from the last week of email."
+          }
+        },
+        "prompts": {
+          "clientUpdate": {
+            "label": "Client update email",
+            "text": "Draft a weekly client update for [project]. Tone: calm, professional. Include: completed this week, decisions needed, procurement status, next site date. Max 180 words."
+          },
+          "chaseApproval": {
+            "label": "Chase approval",
+            "text": "Write a polite follow-up asking the client to approve [item] in the portal by [date]. Mention the impact on lead time if delayed."
+          }
+        }
+      },
+      "procurement": {
+        "title": "調達と仕様",
+        "summary": "AIで代替品を比較し、リードタイムを確認し、重複入力なしでFF&Eスケジュールを最新に。",
+        "steps": {
+          "specFromSupplier": {
+            "title": "Spec from supplier pages",
+            "body": "Paste a product URL or cut sheet text; extract dimensions, finish, lead time, and compliance notes into your schedule format."
+          },
+          "alternateWhenDelayed": {
+            "title": "Alternate when delayed",
+            "body": "When lead time slips, request two alternates with cost and aesthetic trade-offs in the same message to the client."
+          },
+          "batchPoPrep": {
+            "title": "Batch PO prep",
+            "body": "Group line items by vendor and flag minimum order values before generating purchase orders."
+          }
+        },
+        "prompts": {
+          "alternateProduct": {
+            "label": "Alternate product",
+            "text": "Original: [product]. Constraint: must ship within [weeks], similar scale and finish. Suggest 2 alternates with pros/cons for a client email."
+          }
+        }
+      },
+      "tasks": {
+        "title": "タスクとタイムライン",
+        "summary": "ブリーフと議事録を担当者付きフェーズタスクに変換—日付がずれたらAIがタイムラインを正直に保つ。",
+        "steps": {
+          "kickoffTaskMap": {
+            "title": "Kickoff → task map",
+            "body": "Feed kickoff notes; output phases, tasks, owners, and due dates using your studio's standard phase names."
+          },
+          "weeklyReplan": {
+            "title": "Weekly replan",
+            "body": "Each Monday, list slipped tasks, dependencies at risk, and one recommended client communication."
+          }
+        },
+        "prompts": {
+          "kickoffTasks": {
+            "label": "Kickoff tasks",
+            "text": "From these kickoff notes, create tasks for Concept, DD, Procurement, and Install. Each task: owner role, due date (+buffer), dependency. Notes: [paste]."
+          }
+        }
+      },
+      "proposals": {
+        "title": "提案書とフィー",
+        "summary": "テンプレートと一貫した商業条件を保ちながら、フィー提案とスコープレターを加速。",
+        "steps": {
+          "scopeFromBrief": {
+            "title": "Scope from brief",
+            "body": "Turn a client brief into phased deliverables, exclusions, and assumptions before you price."
+          },
+          "alignWithTemplate": {
+            "title": "Align with template",
+            "body": "Merge AI scope output into your Letter of Agreement and Proposal templates so legal language stays consistent."
+          }
+        },
+        "prompts": {
+          "scopeOutline": {
+            "label": "Scope outline",
+            "text": "Create a scope outline for a [residential/commercial] interior project. Include deliverables per phase, client responsibilities, and explicit exclusions. Brief: [paste]."
+          }
+        }
+      },
+      "governance": {
+        "title": "ガバナンスと品質",
+        "summary": "クライアントの信頼を守る—プライバシー、正確性、ブランドボイスはスピードより重要。",
+        "steps": {
+          "noConfidentialUploads": {
+            "title": "No confidential uploads",
+            "body": "Do not paste client financials or personal data into public models. Use your studio's integrated AI where data stays in your workspace."
+          },
+          "verifyNumbers": {
+            "title": "Verify numbers",
+            "body": "AI must not invent dimensions, prices, or lead times. Confirm against supplier quotes and your library."
+          },
+          "brandVoiceChecklist": {
+            "title": "Brand voice checklist",
+            "body": "Before send: warm but precise, no over-promising on dates, British English if that is your studio default."
+          }
+        },
+        "prompts": {
+          "tonePass": {
+            "label": "Tone pass",
+            "text": "Rewrite this email to match a premium interior design studio: concise, confident, no jargon. Keep facts identical: [paste]."
+          }
+        }
+      }
+    },
+    "meta": {
+      "title": "インテリアデザインスタジオ向けAIプレイブック | Focuspilot",
+      "description": "インテリアデザインスタジオ向けの実践的AIワークフロー：メール、調達、提案、ガバナンス。今日から使えるプロンプトとガードレール。"
+    },
+    "hero": {
+      "badge": "リソース",
+      "title": "デザインスタジオ向けAIプレイブック",
+      "subtitle": "メール、調達、提案、納品にAIを活用する実践的ワークフロー、プロンプト、ガードレール—スタジオの声を失わずに。",
+      "exploreAi": "AI機能を見る"
+    },
+    "quickWinsTitle": "今週のクイックウィン",
+    "learnMore": "詳しく見る",
+    "onThisPage": "このページの内容",
+    "promptLibrary": "プロンプトライブラリ",
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "finalCta": {
+      "title": "Focuspilot内でプレイブックを実行",
+      "subtitle": "AIメールルーティング、調達支援、提案書ドラフト—空白のチャットではなく、プロジェクトに連携。",
+      "startFree": "無料で始める",
+      "browseTemplates": "テンプレートを見る"
+    },
+    "startFree": "無料で始める",
+    "viewTemplates": "テンプレートを見る"
+  },
+  "resourcesTemplates": {
+    "detail": {
+      "notFoundTitle": "テンプレートが見つかりません",
+      "metaTitleSuffix": " | 無料テンプレート | Focuspilot",
+      "whatsIncluded": "含まれる内容",
+      "previewStructure": "プレビュー構成"
+    },
+    "templates": {
+      "design-proposal": {
+        "format": "プレーンテキストアウトライン",
+        "includes": {
+          "executiveSummary": "エグゼクティブサマリー",
+          "scopeExclusions": "スコープと除外事項",
+          "feeOptions": "フィーオプション",
+          "timelinePayment": "タイムラインと支払スケジュール"
+        },
+        "preview": {
+          "projectOverview": "プロジェクト概要とデザイン意図",
+          "phaseBreakdown": "フェーズ内訳：コンセプト → DD → 調達 → 設置",
+          "feeDepositTerms": "固定フィーと時間単価オプション、デポジット条件"
+        },
+        "title": "デザイン提案書テンプレート",
+        "description": "スコープ、フェーズ別成果物、料金体系、条件を含むプロフェッショナルな提案書—住宅・商業プロジェクトのキックオフに。"
+      },
+      "letter-of-agreement": {
+        "format": "プレーンテキストアウトライン",
+        "includes": {
+          "servicesDeliverables": "サービスと成果物",
+          "feesExpenses": "フィーと経費",
+          "revisionPolicy": "修正ポリシー",
+          "legalClauses": "法的条項"
+        },
+        "preview": {
+          "partiesDate": "当事者、プロジェクト住所、発効日",
+          "designerObligations": "デザイナーの義務とクライアントの責任",
+          "paymentMilestones": "プロジェクトフェーズに紐づく支払マイルストーン"
+        },
+        "title": "契約書（合意書）",
+        "description": "サービス、料金、修正回数、責任、解約条項をカバーする契約テンプレート—インテリアデザインスタジオ向け。"
+      },
+      "project-brief": {
+        "format": "プレーンテキストアウトライン",
+        "includes": {
+          "goalsConstraints": "目標と制約",
+          "spaceProgram": "スペースプログラム",
+          "budgetBands": "予算帯",
+          "decisionMakers": "意思決定者"
+        },
+        "preview": {
+          "lifestyleReferences": "ライフスタイルと美学の参考",
+          "mustHaves": "必須 vs あれば良い",
+          "approvalProcess": "承認プロセスと主要日程"
+        },
+        "title": "プロジェクトブリーフテンプレート",
+        "description": "コンセプト作業前に予算、スケジュール、スタイル方向性、機能要件を記録。"
+      },
+      "ffe-schedule": {
+        "format": "プレーンテキストアウトライン",
+        "includes": {
+          "roomArea": "部屋 / エリア",
+          "itemSpec": "アイテム仕様",
+          "supplierSku": "サプライヤーとSKU",
+          "statusEta": "ステータスとETA"
+        },
+        "preview": {
+          "columnHeaders": "数量、寸法、仕上げ、コストの列ヘッダー",
+          "procurementStatus": "調達ステータス：指定 → 発注 → 納品",
+          "clientApprovalFlag": "行ごとのクライアント承認フラグ"
+        },
+        "title": "FF&Eスケジュールテンプレート",
+        "description": "仕様、サプライヤー、リードタイム、部屋割りをスタジオ標準の調達シートで管理。"
+      },
+      "client-questionnaire": {
+        "format": "プレーンテキストアウトライン",
+        "includes": {
+          "householdProfile": "世帯プロフィール",
+          "styleInspiration": "スタイルとインスピレーション",
+          "budgetSensitivity": "予算感度",
+          "projectLogistics": "プロジェクトロジスティクス"
+        },
+        "preview": {
+          "dailyRoutines": "日常ルーティンとおもてなしのニーズ",
+          "referencePrompts": "Pinterest / 参考画像のプロンプト",
+          "contactCadence": "希望する連絡頻度とチャネル"
+        },
+        "title": "クライアントアンケート",
+        "description": "ライフスタイル、予算感、コミュニケーション希望に関するヒアリング—初回ワークショップ前に使用。"
+      },
+      "invoice": {
+        "format": "プレーンテキストアウトライン",
+        "includes": {
+          "brandingBlock": "スタジオブランディングブロック",
+          "lineItemsTax": "明細と税",
+          "paymentTerms": "支払条件",
+          "remittanceDetails": "送金詳細"
+        },
+        "preview": {
+          "projectReference": "プロジェクト参照とマイルストーン説明",
+          "invoiceVariants": "デポジット vs 進捗 vs 最終請求書バリアント",
+          "latePaymentNotes": "延滞支払と通貨に関する注記"
+        },
+        "title": "請求書テンプレート",
+        "description": "明細、消費税、支払条件、銀行口座を含む請求書レイアウト—Focuspilot財務ワークフローに対応。"
+      }
+    },
+    "meta": {
+      "title": "スタジオテンプレート | 無料ダウンロード | Focuspilot",
+      "description": "提案書、契約書、ブリーフ、調達シートなど、インテリアデザインスタジオ向けの無料テンプレート。カスタマイズまたはFocuspilotで自動化。"
+    },
+    "hero": {
+      "badge": "無料ダウンロード",
+      "title": "スタジオテンプレート",
+      "subtitle": "提案書、契約書、ブリーフ、調達シート—カスタマイズできるアウトラインをダウンロード、またはFocuspilotでAI自動化。"
+    },
+    "categories": {
+      "All": "すべて",
+      "Proposals": "提案書",
+      "Contracts": "契約",
+      "Planning": "計画",
+      "Procurement": "調達",
+      "Discovery": "ヒアリング",
+      "Finance": "財務",
+      "Briefs": "ブリーフ"
+    },
+    "popular": "人気",
+    "download": "ダウンロード",
+    "preview": "プレビュー",
+    "cta": {
+      "title": "自動更新されるテンプレート",
+      "subtitle": "Focuspilotでは、提案書がCRMから取得され、FF&Eが調達に連携し、請求書が財務と同期—スプレッドシート間のコピペは不要。",
+      "startFree": "無料で始める",
+      "aiPlaybook": "AIプレイブック"
+    },
+    "formats": {
+      "plainTextOutline": "プレーンテキストアウトライン"
+    }
+  },
+  "blogPage": {
+    "postMeta": {
+      "notFoundTitle": "記事が見つかりません",
+      "titleSuffix": " | Focuspilot ブログ",
+      "defaultDescription": "Focuspilotブログでこの記事をお読みください。"
+    },
+    "breadcrumb": {
+      "home": "ホーム",
+      "blog": "ブログ"
+    },
+    "meta": {
+      "title": "ブログ | Focuspilot — インテリアデザインスタジオ向けインサイト",
+      "description": "インテリアデザインスタジオ向けのヒント、ガイド、インサイト。プロジェクト管理、調達、クライアント連携、ビジネス成長。"
+    },
+    "moreArticles": "その他の記事",
+    "emptyCategory": "このカテゴリの記事はまだありません。"
+  },
+  "templatesRedirect": {
+    "meta": {
+      "title": "インテリアデザイナー向け無料テンプレート | Focuspilot",
+      "description": "提案書、契約書、プロジェクトブリーフなど、インテリアデザインプロジェクト向けの無料テンプレートをダウンロード。プロ品質で今すぐ使えます。"
+    }
+  },
+  "blogCategories": {
+    "all": "すべて",
+    "workflow": "ワークフロー",
+    "studio-management": "スタジオ管理",
+    "studio-operations": "スタジオ運営",
+    "procurement": "調達",
+    "client-experience": "クライアント体験",
+    "finance": "財務",
+    "ai-automation": "AI・自動化",
+    "growth": "成長",
+    "industry-trends": "業界トレンド",
+    "best-practices": "ベストプラクティス",
+    "filterBy": "絞り込み："
+  },
+  "blogHero": {
+    "breadcrumbHome": "ホーム",
+    "breadcrumbBlog": "ブログ",
+    "badge": "スタジオインサイト",
+    "title": "モダンなデザインスタジオのための知見",
+    "subtitle": "ワークフロー、スタジオ運営、業界トレンドに関する実践ガイド—プロジェクト、調達、クライアント承認を一か所で管理するチーム向け。",
+    "statsArticles": "記事",
+    "statsTopics": "トピック",
+    "statsUpdated": "更新",
+    "statsUpdatedValue": "毎週",
+    "featuredLabel": "注目",
+    "readArticle": "記事を読む"
+  },
+  "blogPost": {
+    "backToBlog": "ブログに戻る",
+    "shareArticle": "この記事をシェア：",
+    "relatedArticles": "関連記事",
+    "readTime": "{minutes}分で読めます",
+    "publishedOn": "公開日 {date}",
+    "authorRole": "著者",
+    "shareTwitter": "Twitterでシェア",
+    "shareLinkedIn": "LinkedInでシェア",
+    "shareFacebook": "Facebookでシェア",
+    "copyLink": "リンクをコピー",
+    "tagged": "タグ：",
+    "continueReading": "続きを読む",
+    "finalCtaTitle": "スタジオを変革する準備はできましたか？",
+    "finalCtaSubtitle": "Focuspilotでワークフローを効率化している数千人のデザイナーに参加しましょう。"
+  },
+  "templateDetail": {
+    "freeOutline": "無料アウトライン — スタジオ向けにカスタマイズ",
+    "download": "ダウンロード",
+    "automateInFocuspilot": "Focuspilotで自動化",
+    "allTemplates": "← すべてのテンプレート"
+  },
+  "templateDownloadDialog": {
+    "title": "テンプレートをダウンロード",
+    "description": "メールアドレスを入力してテンプレートをダウンロード。スタジオ向けのヒントも occasionally お送りします—いつでも配信停止できます。",
+    "emailLabel": "メール",
+    "emailPlaceholder": "you@studio.com",
+    "submit": "ダウンロード",
+    "submitting": "ダウンロード中...",
+    "success": "ダウンロードリンクをメールでお送りしました。",
+    "downloadOutline": "アウトラインをダウンロード",
+    "useInFocuspilot": "Focuspilotで使用",
+    "formatDescription": "{format} — Word、Google Docsでカスタマイズ、またはFocuspilotの自動版を使用。",
+    "footerNote": "AI提案、承認、請求でこのテンプレートを自動化。",
+    "seeAiPlaybook": "AIプレイブックを見る",
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "error": "ダウンロードに失敗しました。もう一度お試しください。"
+  },
+  "privacyPage": {
+    "meta": {
+      "title": "プライバシーポリシー | Focuspilot",
+      "description": "Focuspilotのプライバシーポリシー。データの収集、利用、保護方法について。"
+    },
+    "title": "プライバシーポリシー",
+    "lastUpdated": "最終更新：2026年5月",
+    "sections": {
+      "collect": {
+        "title": "1. 収集する情報",
+        "p1": "アカウント情報、プロジェクトデータ、コミュニケーションなど、お客様が直接提供する情報を収集します。サービス改善のため利用データも収集します。",
+        "p2": "Google（GmailまたはGoogleカレンダー）を接続する場合、クライアントとのメールスレッド、カレンダーイベント、メッセージメタデータなど、利用する機能に必要なデータのみにアクセスします。それ以上の広範なアクセスは要求しません。"
+      },
+      "use": {
+        "title": "2. 情報の利用方法",
+        "body": "Focuspilotの提供・改善、お客様とのコミュニケーション、セキュリティ確保のために情報を利用します。個人データやGoogleユーザーデータを第三者に販売することはありません。"
+      },
+      "google": {
+        "title": "3. Googleユーザーデータ",
+        "p1": "GmailまたはGoogleカレンダーを接続すると、Focuspilot（「当社」）は、お客様が有効にしたスタジオインボックス、返信、カレンダーオーバーレイおよび関連生産性機能を提供するためにのみGoogleユーザーデータにアクセスします。クライアント関連メールスレッドの同期、アプリからの返信、カレンダーイベントの表示、AIサマリーや返信改善機能利用時の下書き生成に使用します。",
+        "p2": "Googleユーザーデータを汎用機械学習・AIモデルのトレーニングに使用しません。オプションのAI機能（スレッドサマリー、返信推敲など）は、結果を返すために限定的なメール内容をAIプロバイダーに送信しますが、お客様のデータを公開モデルのトレーニングに使用させません。",
+        "p3": "Googleユーザーデータは、サービス提供に必要な期間のみサーバーに保存します（例：スタジオとクライアントにリンクされたキャッシュメールスレッド）。設定 → 連携でいつでもGoogleを切断でき、新規アクセスを停止し、保存データの削除をリクエストできます。"
+      },
+      "sharing": {
+        "title": "4. Googleユーザーデータの共有・移転・開示",
+        "intro": "Googleユーザーデータを販売、賃貸、ライセンス供与しません。以下の限られた場合にのみ共有・移転・開示します：",
+        "processors": {
+          "label": "サービスプロバイダー（処理者）：",
+          "body": "Focuspilotの運営のために契約に基づきデータを処理するインフラ・ソフトウェアベンダーを使用します—クラウドホスティング、データベース、メール配信、（AIインボックス機能利用時）OpenAIによるオンデマンドサマリー・下書き支援など。これらのプロバイダーは当社のサービス実行のためのみGoogleユーザーデータにアクセスし、本ポリシーに沿って保護する必要があります。"
+        },
+        "team": {
+          "label": "スタジオチーム：",
+          "body": "Focuspilotに同期されたメール・カレンダー情報は、アカウント権限に応じてスタジオの他の認証済みメンバーに表示される場合があります。本製品はビジネス向け共有ワークスペースです。"
+        },
+        "google": {
+          "label": "Google：",
+          "body": "データはお客様の承認のもとGoogle APIを通じて取得されます。GoogleアカウントにはGoogle独自のプライバシーポリシーが適用されます。"
+        },
+        "legal": {
+          "label": "法令・安全：",
+          "body": "法令、規制、法的手続きにより要求される場合、またはFocuspilot、ユーザー、第三者の権利・安全・セキュリティを保護するために情報を開示する場合があります。"
+        },
+        "outro": "Googleユーザーデータを広告主、データブローカー、または第三者のマーケティング・製品開発のために共有しません。"
+      },
+      "security": {
+        "title": "5. データセキュリティ",
+        "body": "転送中・保存時の暗号化、アクセス制御、OAuthトークンの安全な保存など、業界標準のセキュリティ対策を実施しています。Google APIアクセスはOAuth 2.0を使用し、Googleアカウントのパスワードは保存しません。"
+      },
+      "rights": {
+        "title": "6. お客様の権利",
+        "bodyBefore": "GDPRおよび類似法令の下、Googleサービス由来のデータを含むデータへのアクセス、訂正、削除、エクスポートの権利があります。アプリ内でGoogleを切断するか、当社に連絡してアクセスを取り消し、保存されたGoogle由来データの削除をリクエストしてください。お問い合わせ："
+      },
+      "contactUs": {
+        "title": "7. お問い合わせ",
+        "bodyBefore": "プライバシーに関するご質問は",
+        "bodyAfter": "Focuspilotは英国から運営されています。Google API Servicesについて、Google APIから受け取った情報の利用・移転は",
+        "policyLinkText": "Google API Services User Data Policy",
+        "bodyEnd": "（Limited Use要件を含む）に準拠します。"
+      }
+    }
+  },
+  "knowledgePage": {
+    "meta": {
+      "title": "ナレッジセンター | Focuspilot ヘルプ & ガイド",
+      "description": "Focuspilotを最大限活用するためのガイド、チュートリアル、回答。"
+    },
+    "hero": {
+      "badge": "ヘルプ & ガイド",
+      "title": "ナレッジセンター",
+      "subtitle": "Focuspilotを最大限活用するためのガイド、チュートリアル、回答。",
+      "searchPlaceholder": "記事を検索..."
+    },
+    "categories": {
+      "gettingStarted": {
+        "title": "はじめに",
+        "description": "アカウント設定と基本操作",
+        "articles": {
+          "quickStart": {
+            "title": "クイックスタートガイド",
+            "time": "5分"
+          },
+          "accountSetup": {
+            "title": "アカウント設定",
+            "time": "3分"
+          },
+          "invitingTeam": {
+            "title": "チームメンバーの招待",
+            "time": "2分"
+          },
+          "firstProject": {
+            "title": "初めてのプロジェクトウォークスルー",
+            "time": "8分"
+          }
+        }
+      },
+      "features": {
+        "title": "機能",
+        "description": "Focuspilot機能の詳細ガイド",
+        "articles": {
+          "projectManagement": {
+            "title": "プロジェクト管理",
+            "time": "10分"
+          },
+          "procurementPos": {
+            "title": "調達 & 発注書",
+            "time": "8分"
+          },
+          "clientPortal": {
+            "title": "クライアントポータル",
+            "time": "6分"
+          },
+          "financeInvoicing": {
+            "title": "財務 & 請求",
+            "time": "7分"
+          }
+        }
+      },
+      "videoTutorials": {
+        "title": "動画チュートリアル",
+        "description": "自分のペースで視聴して学習",
+        "articles": {
+          "platformOverview": {
+            "title": "プラットフォーム概要",
+            "time": "12分"
+          },
+          "aiFeaturesDemo": {
+            "title": "AI機能デモ",
+            "time": "8分"
+          },
+          "clientPortalSetup": {
+            "title": "クライアントポータル設定",
+            "time": "6分"
+          },
+          "xeroIntegration": {
+            "title": "Xero連携",
+            "time": "5分"
+          }
+        }
+      },
+      "faq": {
+        "title": "FAQ",
+        "description": "よくある質問への回答",
+        "articles": {
+          "billingPricing": {
+            "title": "請求 & 料金",
+            "time": "3分"
+          },
+          "dataSecurity": {
+            "title": "データ & セキュリティ",
+            "time": "4分"
+          },
+          "integrations": {
+            "title": "連携",
+            "time": "3分"
+          },
+          "migrationHelp": {
+            "title": "移行サポート",
+            "time": "5分"
+          }
+        }
+      }
+    },
+    "support": {
+      "title": "お探しの情報が見つかりませんか？",
+      "subtitle": "サポートチームがお手伝いします。24時間以内に返信いたします。",
+      "contactSupport": "サポートに連絡",
+      "viewChangelog": "変更履歴を見る"
+    },
+    "relatedLinks": {
+      "title": "プラットフォームを探索",
+      "subtitle": "Focuspilotでできることをもっと知る。",
+      "projects": {
+        "title": "プロジェクト",
+        "desc": "タイムラインとタスクを管理"
+      },
+      "aiFeatures": {
+        "title": "AI機能",
+        "desc": "管理業務を自動化"
+      },
+      "integrations": {
+        "title": "連携",
+        "desc": "ツールを接続"
+      },
+      "pricing": {
+        "title": "料金",
+        "desc": "今日から無料で始める"
+      }
+    }
+  }
+}

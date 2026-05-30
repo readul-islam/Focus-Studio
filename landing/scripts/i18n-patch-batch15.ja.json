@@ -1,0 +1,79 @@
+{
+  "termsPage": {
+    "meta": {
+      "title": "利用規約 | Focuspilot",
+      "description": "Focuspilotの利用規約。プラットフォーム利用の条件をご確認ください。"
+    },
+    "title": "利用規約",
+    "lastUpdated": "最終更新：2026年3月",
+    "sections": {
+      "acceptance": {
+        "title": "1. 規約への同意",
+        "body": "Focuspilotにアクセスまたは利用することで、本利用規約に拘束されることに同意したものとみなされます。"
+      },
+      "service": {
+        "title": "2. サービスの説明",
+        "body": "Focuspilotはインテリアデザインスタジオ向けのプロジェクト管理、調達、ビジネスツールを提供します。"
+      },
+      "accounts": {
+        "title": "3. ユーザーアカウント",
+        "body": "アカウントのセキュリティおよびアカウント下のすべての活動について責任を負います。"
+      },
+      "payment": {
+        "title": "4. 支払条件",
+        "body": "有料プランは前払いで請求されます。いつでもキャンセルでき、請求期間終了までアクセスは継続します。"
+      },
+      "ip": {
+        "title": "5. 知的財産",
+        "body": "お客様のデータの所有権はお客様に帰属します。Focuspilotプラットフォームの所有権は当社に帰属します。"
+      },
+      "contact": {
+        "title": "6. お問い合わせ",
+        "bodyBefore": "本規約に関するご質問は"
+      }
+    }
+  },
+  "changelogPage": {
+    "meta": {
+      "title": "変更履歴 | Focuspilot製品アップデート",
+      "description": "Focuspilotの新機能をご確認ください。"
+    },
+    "hero": {
+      "badge": "製品アップデート",
+      "title": "変更履歴",
+      "subtitle": "Focuspilotの新機能をご確認ください。プロジェクト、調達、クライアント関係をより効率的に管理できるよう、毎週アップデートをリリースしています。",
+      "note": "ニュースレター登録で更新情報を受け取れます。"
+    },
+    "typeBadges": {
+      "new": "新機能",
+      "improvement": "改善",
+      "fix": "修正"
+    },
+    "relatedLinks": {
+      "title": "プラットフォームを探索",
+      "subtitle": "Focuspilotがスタジオのワークフローをどう変えるかご覧ください。",
+      "projects": {
+        "title": "プロジェクト",
+        "desc": "タイムラインとタスクを管理"
+      },
+      "procurement": {
+        "title": "調達",
+        "desc": "製品の調達と追跡"
+      },
+      "clientPortal": {
+        "title": "クライアントポータル",
+        "desc": "共有と承認"
+      },
+      "finance": {
+        "title": "財務",
+        "desc": "請求と会計"
+      }
+    },
+    "finalCta": {
+      "ariaLabel": "始める",
+      "title": "スタジオを変革する準備はできましたか？",
+      "subtitle": "Focuspilotでワークフローを簡素化したインテリアデザイナーが数百社にのぼります。"
+    },
+    "updates": {}
+  }
+}

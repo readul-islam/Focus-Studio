@@ -1,0 +1,83 @@
+{
+  "siteMeta": {
+    "title": "Interior Design Project Management Software | Focuspilot",
+    "description": "AI-powered project management for interior designers & architects. Manage projects, procurement, client approvals & invoicing in one workspace. Free 3-month trial.",
+    "keywords": [
+      "interior design software",
+      "design studio management",
+      "project management for designers",
+      "interior design CRM",
+      "design procurement software",
+      "client portal for designers",
+      "architecture project management",
+      "design studio workflow",
+      "interior design business software",
+      "design project collaboration"
+    ],
+    "ogImageAlt": "Interior Design Project Management Software | Focuspilot",
+    "jsonLd": {
+      "organization": {
+        "description": "The modern operating system for interior designers and architects.",
+        "contactType": "customer service",
+        "availableLanguage": "English"
+      },
+      "software": {
+        "description": "Interior design studio management software for project management, procurement, client collaboration, and finance.",
+        "applicationSubCategory": "Project Management Software",
+        "offerDescription": "Free beta access available",
+        "features": {
+          "projectManagement": "Project Management",
+          "crm": "CRM for Design Studios",
+          "procurement": "AI-Powered Procurement",
+          "clientPortal": "Client Portal & Approvals",
+          "finance": "Finance & Invoicing",
+          "library": "Product Library Management"
+        }
+      }
+    }
+  },
+  "authLoginPage": {
+    "meta": {
+      "title": "Login | Focuspilot",
+      "description": "Sign in to your Focuspilot account and access your design studio management tools."
+    }
+  },
+  "authSignupPage": {
+    "meta": {
+      "title": "Sign Up | Focuspilot",
+      "description": "Create your Focuspilot account and transform your design studio workflow with AI-powered tools."
+    }
+  },
+  "authLayout": {
+    "meta": {
+      "title": "Authentication | Focuspilot",
+      "description": "Sign in or create your Focuspilot account"
+    }
+  },
+  "visuals": {
+    "finance": {
+      "heroAlt": "Elegant living room with blonde woman reading, featuring chevron wood paneling and brass accents",
+      "paidSnippetAlt": "Paid status snippet showing amount and green paid chip",
+      "profitKpiAlt": "Studio Profit KPI showing £45.2k, up 12%",
+      "paidLabel": "Paid"
+    },
+    "pm": {
+      "heroAlt": "Interior designer working at wooden desk in elegant studio with built-in bookshelves and brass lighting",
+      "calendarAlt": "Calendar: Site Visit - Office Space Progress",
+      "aiComposerAlt": "AI composer with quick actions for project management",
+      "taskCardAlt": "Task: Present final concepts"
+    }
+  },
+  "studioProfile": {
+    "meta": {
+      "notFoundTitle": "Studio not found | Focuspilot",
+      "titleSuffix": " — Interior Design Studio",
+      "fallbackDescription": "View {studioName}'s portfolio, team, and client reviews."
+    },
+    "notFoundPage": {
+      "title": "Studio profile not found",
+      "description": "This profile may be unpublished or the link is incorrect.",
+      "backToFocuspilot": "Back to Focuspilot"
+    }
+  }
+}

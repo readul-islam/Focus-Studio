@@ -1,0 +1,127 @@
+{
+  "platformFinance": {
+    "meta": {
+      "title": "インテリアデザイン請求・会計ソフトウェア | Xero連携 | Focuspilot",
+      "description": "デザインスタジオの財務を効率化。請求書作成、プロジェクト収益性追跡、Xero・QuickBooks同期。リアルタイム予算対実績。無料で開始。",
+      "ogDescription": "デザインスタジオの財務を効率化。請求書作成、プロジェクト収益性追跡、Xero・QuickBooks同期。",
+      "twitterDescription": "デザインスタジオの財務を効率化。請求書作成、プロジェクト収益性追跡、Xero・QuickBooks同期。",
+      "ogImageAlt": "インテリアデザインスタジオ向けFocuspilot財務ダッシュボード"
+    },
+    "hero": {
+      "badge": "財務と請求",
+      "title": "インテリアデザインスタジオ向け財務・請求ソフトウェア",
+      "subtitle": "予算、PO、請求書、キャッシュフローを一箇所に — プロジェクト、クライアントポータル、会計と連携。管理業務を自動化し、収益性を明確に。",
+      "imageAlt": "KPI、請求書、キャッシュフローを表示する財務ダッシュボード",
+      "integratesWith": "連携",
+      "stripeAlt": "インテリアデザイン請求向けStripe決済連携",
+      "xeroAlt": "インテリアデザイン財務向けXero会計ソフトウェア連携"
+    },
+    "kpis": {
+      "title": "キャッシュフロー、売上、マージンの明確化",
+      "description": "重要な指標を把握：発行・入金済み請求書、今後のPO、VAT、予測ランウェイ — すべてプロジェクトとスタジオビューにリンク。",
+      "bullets": {
+        "cashFlow": "入出金予定付きリアルタイムキャッシュフロー",
+        "budgetVsActual": "プロジェクトとスタジオレベルの予算対実績",
+        "reminders": "自動支払リマインダーと通知"
+      },
+      "tryAiAssistant": "AIアシスタントを試す",
+      "seeInvoices": "請求書を見る",
+      "tiles": {
+        "invoicesPaid": {
+          "label": "入金済み請求書（30日）",
+          "value": "£48,320",
+          "sublabel": "先月比 +12%"
+        },
+        "outstanding": {
+          "label": "未回収",
+          "value": "£18,560",
+          "sublabel": "12件の請求書 • 7件延滞"
+        },
+        "posThisMonth": {
+          "label": "今月のPO",
+          "value": "£26,410",
+          "sublabel": "順調"
+        },
+        "grossMargin": {
+          "label": "粗利益率（年初来）",
+          "value": "42%",
+          "sublabel": "前年比 +3pt"
+        }
+      },
+      "chartImageAlt": "売上指標、目標、差異、前年比チャートを表示する財務ダッシュボード"
+    },
+    "invoices": {
+      "title": "請求書と支払い — 自動化、同期、入金",
+      "description": "見積もりからワンクリックで請求書作成、クライアントポータルへ送信、Stripeでカード/ACH受付、すべての更新をXeroに自動同期。",
+      "bullets": {
+        "xeroSync": "新規・更新請求書のワンクリックXero同期",
+        "paymentLinks": "クライアントポータルからの支払リンクとリマインダー",
+        "statusChips": "回収管理のためのステータスチップとエージング"
+      },
+      "generateWithAi": "AIで生成",
+      "imageAlts": {
+        "summaryCards": "請求書合計£425,000、発注書£128,500のサマリーカード",
+        "actionButtons": "請求書作成とXero同期アクションボタン",
+        "costTracking": "総コスト、配送進捗、アクションボタンを表示するプロジェクトコスト追跡",
+        "invoiceList": "金額、ステータスバッジ、アクションドロップダウンを表示する請求書一覧"
+      }
+    },
+    "profitability": {
+      "title": "予算から実際の利益へ",
+      "description": "予算、承認済み支出、スタッフ時間を追跡し、プロジェクト別の正確な収益性を把握、スタジオビューに集約。",
+      "bullets": {
+        "budgetView": "予算、支出、確定POを一つのビューで",
+        "timeTracking": "正確なプロジェクトマージンのための時間追跡",
+        "studioProfit": "スタジオ収益性とトレンド分析"
+      },
+      "timeTrackingNote": "フェーズとタスク別の時間追跡で真のコストを把握",
+      "budgetImageAlt": "カテゴリ別コスト、月次予算対実績、ベンダー支出、コスト超過を表示する予算分析ダッシュボード",
+      "timeImageAlt": "アクティブタイマー、週次時間内訳、最近のプロジェクトエントリを表示する時間追跡ダッシュボード"
+    },
+    "aiAssistant": {
+      "title": "すべてのワークフローにわたる財務コパイロット",
+      "subtitle": "予算、請求書、キャッシュフローについて質問。これまで以上に速く下書き、送信、同期。",
+      "panelAria": "AI財務アシスタント",
+      "composerLabel": "AI財務アシスタントに質問",
+      "placeholder": "請求書の下書き、キャッシュフロー予測、リマインダー送信を依頼…",
+      "askAi": "AIに聞く",
+      "askAiAria": "AIに聞く",
+      "useSuggestionAria": "提案を使用: {suggestion}",
+      "suggestions": {
+        "invoice": "Oak Houseの請求書を作成 — Phase 2見積もりから30%デポジット",
+        "forecast": "プロジェクト別に今後60日間のキャッシュフローを予測",
+        "reminder": "INV-2053（7日延滞）の支払リマインダーを送信",
+        "po": "承認済みペンダントライトのPOを下書きしProject Aにリンク"
+      },
+      "responses": {
+        "invoice": "請求書 INV-3281 を下書き — Oak House • 30%デポジット • £12,600\n取得元: Phase 2見積もり\nステータス: 下書き（未送信）\n次: クライアントポータルへ送信 • Xero同期 • リマインダー設定",
+        "reminder": "リマインダーをキューに追加\nクライアント: Jane Smith • INV-2053 • £2,180 • 7日延滞\n9:00 AMにメール + ポータル通知\n未払いの場合3日後にフォローアップ",
+        "default": "キャッシュフロー予測（今後60日）\n入金予定: £86,400\n支出予定（PO + 給与）: £64,900\n予測: 健全\nヒント: 2件の保留承認を完了して第3週の流動性を改善"
+      }
+    },
+    "relatedLinks": {
+      "title": "スタジオワークフローと連携",
+      "subtitle": "財務はプロジェクト、調達、クライアント支払いと同期。",
+      "projects": {
+        "title": "プロジェクト",
+        "desc": "プロジェクトフェーズ別に予算を追跡"
+      },
+      "procurement": {
+        "title": "調達",
+        "desc": "POが会計に流れる"
+      },
+      "clientPortal": {
+        "title": "クライアントポータル",
+        "desc": "クライアントがオンラインで請求書を支払"
+      },
+      "pricing": {
+        "title": "料金を見る",
+        "desc": "全機能で無料開始"
+      }
+    },
+    "finalCta": {
+      "title": "プロジェクトを前進させ、利益を明確にする財務",
+      "subtitle": "XeroとStripe連携、自動請求書とPO、スピードのためのAIコパイロット。"
+    }
+  }
+}

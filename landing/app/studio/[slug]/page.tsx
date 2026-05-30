@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { getTranslations } from "next-intl/server"
 import { getMarketingUrl } from "@/lib/env"
 import { fetchPublicStudioProfile } from "@/lib/public-profile"
 import { StudioPublicProfileClient } from "./StudioPublicProfileClient"
@@ -10,17 +11,18 @@ type Props = { params: { slug: string } }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = params
+  const t = await getTranslations("studioProfile.meta")
   const profile = await fetchPublicStudioProfile(slug)
   if (!profile) {
-    return { title: "Studio not found | Focuspilot" }
+    return { title: t("notFoundTitle") }
   }
   const title = profile.headline
     ? `${profile.headline} | ${profile.studio_name}`
-    : `${profile.studio_name} — Interior Design Studio`
+    : `${profile.studio_name}${t("titleSuffix")}`
   const description =
     profile.tagline ||
     profile.about?.slice(0, 160) ||
-    `View ${profile.studio_name}'s portfolio, team, and client reviews.`
+    t("fallbackDescription", { studioName: profile.studio_name })
   const image = profile.cover_image_url || profile.logo_url || "/images/og-image.png"
 
   return {

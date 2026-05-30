@@ -1,0 +1,114 @@
+{
+  "resourcesTemplates": {
+    "formats": {
+      "plainTextOutline": "Plain text outline"
+    },
+    "detail": {
+      "notFoundTitle": "Template not found",
+      "metaTitleSuffix": " | Free Template | Focuspilot",
+      "whatsIncluded": "What's included",
+      "previewStructure": "Preview structure"
+    },
+    "templates": {
+      "design-proposal": {
+        "format": "Plain text outline",
+        "includes": {
+          "executiveSummary": "Executive summary",
+          "scopeExclusions": "Scope & exclusions",
+          "feeOptions": "Fee options",
+          "timelinePayment": "Timeline & payment schedule"
+        },
+        "preview": {
+          "projectOverview": "Project overview and design intent",
+          "phaseBreakdown": "Phase breakdown: Concept → DD → Procurement → Install",
+          "feeDepositTerms": "Fixed-fee and hourly options with deposit terms"
+        }
+      },
+      "letter-of-agreement": {
+        "format": "Plain text outline",
+        "includes": {
+          "servicesDeliverables": "Services & deliverables",
+          "feesExpenses": "Fees & expenses",
+          "revisionPolicy": "Revision policy",
+          "legalClauses": "Legal clauses"
+        },
+        "preview": {
+          "partiesDate": "Parties, project address, and effective date",
+          "designerObligations": "Designer obligations and client responsibilities",
+          "paymentMilestones": "Payment milestones tied to project phases"
+        }
+      },
+      "project-brief": {
+        "format": "Plain text outline",
+        "includes": {
+          "goalsConstraints": "Goals & constraints",
+          "spaceProgram": "Space program",
+          "budgetBands": "Budget bands",
+          "decisionMakers": "Decision-makers"
+        },
+        "preview": {
+          "lifestyleReferences": "Lifestyle and aesthetic references",
+          "mustHaves": "Must-haves vs nice-to-haves",
+          "approvalProcess": "Approval process and key dates"
+        }
+      },
+      "ffe-schedule": {
+        "format": "Plain text outline",
+        "includes": {
+          "roomArea": "Room / area",
+          "itemSpec": "Item spec",
+          "supplierSku": "Supplier & SKU",
+          "statusEta": "Status & ETA"
+        },
+        "preview": {
+          "columnHeaders": "Column headers for qty, dimensions, finish, and cost",
+          "procurementStatus": "Procurement status: specified → ordered → delivered",
+          "clientApprovalFlag": "Client approval flag per line item"
+        }
+      },
+      "client-questionnaire": {
+        "format": "Plain text outline",
+        "includes": {
+          "householdProfile": "Household profile",
+          "styleInspiration": "Style & inspiration",
+          "budgetSensitivity": "Budget sensitivity",
+          "projectLogistics": "Project logistics"
+        },
+        "preview": {
+          "dailyRoutines": "Daily routines and entertaining needs",
+          "referencePrompts": "Pinterest / reference image prompts",
+          "contactCadence": "Preferred contact cadence and channels"
+        }
+      },
+      "invoice": {
+        "format": "Plain text outline",
+        "includes": {
+          "brandingBlock": "Studio branding block",
+          "lineItemsTax": "Line items & tax",
+          "paymentTerms": "Payment terms",
+          "remittanceDetails": "Remittance details"
+        },
+        "preview": {
+          "projectReference": "Project reference and milestone description",
+          "invoiceVariants": "Deposit vs progress vs final invoice variants",
+          "latePaymentNotes": "Late payment and currency notes"
+        }
+      }
+    }
+  },
+  "blogPage": {
+    "postMeta": {
+      "notFoundTitle": "Post Not Found"
+    },
+    "breadcrumb": {
+      "home": "Home",
+      "blog": "Blog"
+    }
+  },
+  "templatesRedirect": {
+    "meta": {
+      "title": "Free Templates for Interior Designers | Focuspilot",
+      "description": "Download free templates for interior design projects: proposals, contracts, project briefs, and more. Professionally designed and ready to use."
+    }
+  }
+}

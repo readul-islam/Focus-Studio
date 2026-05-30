@@ -1,12 +1,17 @@
 import type { Metadata } from "next"
+import type { ReactNode } from "react"
+import { getTranslations } from "next-intl/server"
+import { localeHreflangAlternates } from "@/lib/seo-alternates"
 
-export const metadata: Metadata = {
-  title: "Free Templates for Interior Design Studios | Focuspilot",
-  description:
-    "Download free proposal, contract, FF&E, and invoice templates for interior design studios. Use in Focuspilot with automation and AI.",
-  alternates: { canonical: "https://focuspilot.io/resources/templates" },
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("resourcesTemplates.meta")
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: localeHreflangAlternates("resources/templates"),
+  }
 }
 
-export default function ResourcesTemplatesLayout({ children }: { children: React.ReactNode }) {
+export default function ResourcesTemplatesLayout({ children }: { children: ReactNode }) {
   return children
 }

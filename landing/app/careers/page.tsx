@@ -1,27 +1,33 @@
 import type { Metadata } from "next"
 import { ArrowLeft } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 import { CtaButton } from "@/components/cta-button"
+import { localeHreflangAlternates } from "@/lib/seo-alternates"
 
-export const metadata: Metadata = {
-  title: "Careers at Focuspilot | Join Our Team",
-  description: "Join the Focuspilot team. We're building AI-powered software for interior designers and looking for passionate people to help us grow.",
-  alternates: { canonical: "https://focuspilot.io/careers" },
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("careersPage.meta")
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: localeHreflangAlternates("careers"),
+  }
 }
 
-export default function CareersPage() {
+export default async function CareersPage() {
+  const t = await getTranslations("careersPage")
+  const ts = await getTranslations("platformShared")
+
   return (
     <main className="min-h-screen bg-white">
       <div className="mx-auto max-w-3xl px-6 py-24 text-center">
-        <h1 className="text-[30px] sm:text-5xl md:text-[56px] font-medium tracking-tight leading-[1.1] text-stone-900">Careers at Focuspilot</h1>
-        <p className="mt-6 text-lg text-stone-600">
-          We're building tools that help interior designers focus on what they love. Join us if you're passionate about great software and beautiful design.
-        </p>
+        <h1 className="text-[30px] sm:text-5xl md:text-[56px] font-medium tracking-tight leading-[1.1] text-stone-900">
+          {t("title")}
+        </h1>
+        <p className="mt-6 text-lg text-stone-600">{t("intro")}</p>
         <div className="mt-12 rounded-xl border border-stone-200 bg-stone-50 p-8">
-          <p className="text-stone-600">
-            We're a small, growing team. While we don't have open positions listed right now, we're always interested in hearing from talented people.
-          </p>
+          <p className="text-stone-600">{t("noOpenings")}</p>
           <p className="mt-4 text-stone-600">
-            Send us an email at{" "}
+            {t("emailPrompt")}{" "}
             <a href="mailto:careers@focuspilot.io" className="text-stone-900 underline hover:no-underline">
               careers@focuspilot.io
             </a>
@@ -30,7 +36,7 @@ export default function CareersPage() {
         <div className="mt-8">
           <CtaButton href="/" variant="outline">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to home
+            {ts("backToHome")}
           </CtaButton>
         </div>
       </div>

@@ -1,0 +1,111 @@
+{
+  "resourcesTemplates": {
+    "detail": {
+      "notFoundTitle": "テンプレートが見つかりません",
+      "metaTitleSuffix": " | 無料テンプレート | Focuspilot",
+      "whatsIncluded": "含まれる内容",
+      "previewStructure": "プレビュー構成"
+    },
+    "templates": {
+      "design-proposal": {
+        "format": "プレーンテキストアウトライン",
+        "includes": {
+          "executiveSummary": "エグゼクティブサマリー",
+          "scopeExclusions": "スコープと除外事項",
+          "feeOptions": "フィーオプション",
+          "timelinePayment": "タイムラインと支払スケジュール"
+        },
+        "preview": {
+          "projectOverview": "プロジェクト概要とデザイン意図",
+          "phaseBreakdown": "フェーズ内訳：コンセプト → DD → 調達 → 設置",
+          "feeDepositTerms": "固定フィーと時間単価オプション、デポジット条件"
+        }
+      },
+      "letter-of-agreement": {
+        "format": "プレーンテキストアウトライン",
+        "includes": {
+          "servicesDeliverables": "サービスと成果物",
+          "feesExpenses": "フィーと経費",
+          "revisionPolicy": "修正ポリシー",
+          "legalClauses": "法的条項"
+        },
+        "preview": {
+          "partiesDate": "当事者、プロジェクト住所、発効日",
+          "designerObligations": "デザイナーの義務とクライアントの責任",
+          "paymentMilestones": "プロジェクトフェーズに紐づく支払マイルストーン"
+        }
+      },
+      "project-brief": {
+        "format": "プレーンテキストアウトライン",
+        "includes": {
+          "goalsConstraints": "目標と制約",
+          "spaceProgram": "スペースプログラム",
+          "budgetBands": "予算帯",
+          "decisionMakers": "意思決定者"
+        },
+        "preview": {
+          "lifestyleReferences": "ライフスタイルと美学の参考",
+          "mustHaves": "必須 vs あれば良い",
+          "approvalProcess": "承認プロセスと主要日程"
+        }
+      },
+      "ffe-schedule": {
+        "format": "プレーンテキストアウトライン",
+        "includes": {
+          "roomArea": "部屋 / エリア",
+          "itemSpec": "アイテム仕様",
+          "supplierSku": "サプライヤーとSKU",
+          "statusEta": "ステータスとETA"
+        },
+        "preview": {
+          "columnHeaders": "数量、寸法、仕上げ、コストの列ヘッダー",
+          "procurementStatus": "調達ステータス：指定 → 発注 → 納品",
+          "clientApprovalFlag": "行ごとのクライアント承認フラグ"
+        }
+      },
+      "client-questionnaire": {
+        "format": "プレーンテキストアウトライン",
+        "includes": {
+          "householdProfile": "世帯プロフィール",
+          "styleInspiration": "スタイルとインスピレーション",
+          "budgetSensitivity": "予算感度",
+          "projectLogistics": "プロジェクトロジスティクス"
+        },
+        "preview": {
+          "dailyRoutines": "日常ルーティンとおもてなしのニーズ",
+          "referencePrompts": "Pinterest / 参考画像のプロンプト",
+          "contactCadence": "希望する連絡頻度とチャネル"
+        }
+      },
+      "invoice": {
+        "format": "プレーンテキストアウトライン",
+        "includes": {
+          "brandingBlock": "スタジオブランディングブロック",
+          "lineItemsTax": "明細と税",
+          "paymentTerms": "支払条件",
+          "remittanceDetails": "送金詳細"
+        },
+        "preview": {
+          "projectReference": "プロジェクト参照とマイルストーン説明",
+          "invoiceVariants": "デポジット vs 進捗 vs 最終請求書バリアント",
+          "latePaymentNotes": "延滞支払と通貨に関する注記"
+        }
+      }
+    }
+  },
+  "blogPage": {
+    "postMeta": {
+      "notFoundTitle": "記事が見つかりません"
+    },
+    "breadcrumb": {
+      "home": "ホーム",
+      "blog": "ブログ"
+    }
+  },
+  "templatesRedirect": {
+    "meta": {
+      "title": "インテリアデザイナー向け無料テンプレート | Focuspilot",
+      "description": "提案書、契約書、プロジェクトブリーフなど、インテリアデザインプロジェクト向けの無料テンプレートをダウンロード。プロ品質で今すぐ使えます。"
+    }
+  }
+}

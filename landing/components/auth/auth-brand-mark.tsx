@@ -1,4 +1,7 @@
+"use client"
+
 import Image from "next/image"
+import { useTranslations } from "next-intl"
 import { cn } from "@/lib/utils"
 
 type AuthBrandMarkProps = {
@@ -7,11 +10,13 @@ type AuthBrandMarkProps = {
 
 /** Focuspilot logo + wordmark for auth pages (SSR-safe, no framer-motion). */
 export function AuthBrandMark({ className }: AuthBrandMarkProps) {
+  const t = useTranslations("authShared")
+
   return (
     <div className={cn("flex items-center gap-2", className)}>
       <Image
         src="/brand/Logo.png"
-        alt="Focuspilot"
+        alt={t("logoAlt")}
         width={35}
         height={35}
         className="object-contain"

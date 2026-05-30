@@ -1,0 +1,161 @@
+{
+  "resourcesAiPlaybook": {
+    "navAriaLabel": "Playbook chapters",
+    "quickWins": {
+      "inboxSummary": {
+        "title": "Summarise yesterday's inbox",
+        "body": "Get a bulleted list of client decisions, supplier delays, and tasks—grouped by project."
+      },
+      "phasedProposal": {
+        "title": "Draft a phased proposal",
+        "body": "Turn a brief into scope sections you can paste into your proposal template in minutes."
+      },
+      "ffeSchedule": {
+        "title": "Refresh the FF&E schedule",
+        "body": "Extract specs from URLs and flag long-lead items before they block install."
+      }
+    },
+    "chapters": {
+      "start": {
+        "title": "Start here",
+        "summary": "Set guardrails before you automate—define what AI may draft, what humans must approve, and where project data lives.",
+        "steps": {
+          "sourceOfTruth": {
+            "title": "Name one source of truth",
+            "body": "Keep briefs, selections, and approvals in your project tool. AI outputs should reference that record, not a loose chat thread."
+          },
+          "humanReview": {
+            "title": "Default to human review",
+            "body": "Use AI for first drafts: emails, task lists, spec summaries. A principal or PM approves anything client-facing."
+          },
+          "logDecisions": {
+            "title": "Log decisions on the project",
+            "body": "When AI suggests an alternate product or timeline shift, capture the decision in the project so procurement and finance stay aligned."
+          }
+        },
+        "prompts": {
+          "projectContext": {
+            "label": "Project context block",
+            "text": "You are assisting an interior design studio. Project: [name]. Phase: [concept/DD/procurement]. Budget band: [range]. Style: [keywords]. Only use facts from the notes below."
+          }
+        }
+      },
+      "email": {
+        "title": "Email & client comms",
+        "summary": "Turn inbox noise into routed actions—summaries, reply drafts, and approval reminders tied to the right project.",
+        "steps": {
+          "routeByProject": {
+            "title": "Route by project",
+            "body": "Tag supplier threads separately from client threads. AI summaries should state which milestone or room they affect."
+          },
+          "draftDontSend": {
+            "title": "Draft, don't send",
+            "body": "Generate empathetic, concise replies with clear next steps and dates. Designer edits tone before send."
+          },
+          "surfaceBlockers": {
+            "title": "Surface blockers",
+            "body": "Ask AI to list open questions, missing selections, and overdue approvals from the last week of email."
+          }
+        },
+        "prompts": {
+          "clientUpdate": {
+            "label": "Client update email",
+            "text": "Draft a weekly client update for [project]. Tone: calm, professional. Include: completed this week, decisions needed, procurement status, next site date. Max 180 words."
+          },
+          "chaseApproval": {
+            "label": "Chase approval",
+            "text": "Write a polite follow-up asking the client to approve [item] in the portal by [date]. Mention the impact on lead time if delayed."
+          }
+        }
+      },
+      "procurement": {
+        "title": "Procurement & specs",
+        "summary": "Use AI to compare alternates, sanity-check lead times, and keep FF&E schedules current without duplicate data entry.",
+        "steps": {
+          "specFromSupplier": {
+            "title": "Spec from supplier pages",
+            "body": "Paste a product URL or cut sheet text; extract dimensions, finish, lead time, and compliance notes into your schedule format."
+          },
+          "alternateWhenDelayed": {
+            "title": "Alternate when delayed",
+            "body": "When lead time slips, request two alternates with cost and aesthetic trade-offs in the same message to the client."
+          },
+          "batchPoPrep": {
+            "title": "Batch PO prep",
+            "body": "Group line items by vendor and flag minimum order values before generating purchase orders."
+          }
+        },
+        "prompts": {
+          "alternateProduct": {
+            "label": "Alternate product",
+            "text": "Original: [product]. Constraint: must ship within [weeks], similar scale and finish. Suggest 2 alternates with pros/cons for a client email."
+          }
+        }
+      },
+      "tasks": {
+        "title": "Tasks & timelines",
+        "summary": "Convert briefs and meeting notes into phased tasks with owners—then let AI keep the timeline honest as dates slip.",
+        "steps": {
+          "kickoffTaskMap": {
+            "title": "Kickoff → task map",
+            "body": "Feed kickoff notes; output phases, tasks, owners, and due dates using your studio's standard phase names."
+          },
+          "weeklyReplan": {
+            "title": "Weekly replan",
+            "body": "Each Monday, list slipped tasks, dependencies at risk, and one recommended client communication."
+          }
+        },
+        "prompts": {
+          "kickoffTasks": {
+            "label": "Kickoff tasks",
+            "text": "From these kickoff notes, create tasks for Concept, DD, Procurement, and Install. Each task: owner role, due date (+buffer), dependency. Notes: [paste]."
+          }
+        }
+      },
+      "proposals": {
+        "title": "Proposals & fees",
+        "summary": "Accelerate fee proposals and scope letters while keeping commercial terms consistent with your templates.",
+        "steps": {
+          "scopeFromBrief": {
+            "title": "Scope from brief",
+            "body": "Turn a client brief into phased deliverables, exclusions, and assumptions before you price."
+          },
+          "alignWithTemplate": {
+            "title": "Align with template",
+            "body": "Merge AI scope output into your Letter of Agreement and Proposal templates so legal language stays consistent."
+          }
+        },
+        "prompts": {
+          "scopeOutline": {
+            "label": "Scope outline",
+            "text": "Create a scope outline for a [residential/commercial] interior project. Include deliverables per phase, client responsibilities, and explicit exclusions. Brief: [paste]."
+          }
+        }
+      },
+      "governance": {
+        "title": "Governance & quality",
+        "summary": "Protect client trust—privacy, accuracy, and brand voice matter more than speed.",
+        "steps": {
+          "noConfidentialUploads": {
+            "title": "No confidential uploads",
+            "body": "Do not paste client financials or personal data into public models. Use your studio's integrated AI where data stays in your workspace."
+          },
+          "verifyNumbers": {
+            "title": "Verify numbers",
+            "body": "AI must not invent dimensions, prices, or lead times. Confirm against supplier quotes and your library."
+          },
+          "brandVoiceChecklist": {
+            "title": "Brand voice checklist",
+            "body": "Before send: warm but precise, no over-promising on dates, British English if that is your studio default."
+          }
+        },
+        "prompts": {
+          "tonePass": {
+            "label": "Tone pass",
+            "text": "Rewrite this email to match a premium interior design studio: concise, confident, no jargon. Keep facts identical: [paste]."
+          }
+        }
+      }
+    }
+  }
+}

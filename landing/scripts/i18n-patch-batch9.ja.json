@@ -1,0 +1,173 @@
+{
+  "platformAiEmail": {
+    "meta": {
+      "title": "AIメール・コミュニケーション | インテリアデザイナー向け | Focuspilot",
+      "description": "AIプロジェクトルーティング、スマート返信、自動メール分類を備えた統合インボックス。クライアントとのやり取りをプロジェクト単位で整理。",
+      "ogDescription": "インテリアデザインスタジオ向けAIプロジェクトルーティング統合インボックス。",
+      "twitterDescription": "インテリアデザインスタジオ向けAIプロジェクトルーティング統合インボックス。"
+    },
+    "hero": {
+      "badge": "コミュニケーション",
+      "title": "プロジェクトルーティング付き統合インボックス",
+      "subtitle": "Gmailと完全連携。プロジェクト固有およびサプライヤーのメールをFocuspilotにルーティングし、GDPR対応の共有設定でプロジェクトとチームに共有。",
+      "homeInbox": "ホームインボックス",
+      "projectMessages": "プロジェクトメッセージ",
+      "gmailConnected": "Gmail接続済み",
+      "projectMessagesImageAlt": "メールとポータルスレッドを含むプロジェクトメッセージフィード"
+    },
+    "howItWorks": {
+      "title": "効率的で協力的なコミュニケーション",
+      "subtitle": "見落としなし。取りこぼしなし。メール、ポータルメッセージ、契約、AIアラートを一つのフィードで。",
+      "steps": {
+        "connectGmail": {
+          "title": "Gmailを接続",
+          "description": "安全なOAuth接続。個人インボックスはそのまま維持。"
+        },
+        "smartRouting": {
+          "title": "スマートルーティング",
+          "description": "参加者、件名、ラベルによるプロジェクト検出—ベンダー認識も。"
+        },
+        "shareWithControl": {
+          "title": "制御付き共有",
+          "description": "ワンクリックでプロジェクトフィードに共有。参加者を編集、いつでも取り消し可能。"
+        }
+      }
+    },
+    "inbox": {
+      "share": "共有",
+      "shared": "共有済み",
+      "shareToProject": "プロジェクトに共有",
+      "shareAria": "プロジェクトに共有",
+      "sharedAria": "共有済み",
+      "toastTitle": "プロジェクトに共有しました",
+      "rows": {
+        "inGoodCompany": {
+          "from": "In Good Company",
+          "subject": "プロフォーマ請求書 • 真鍮フロアランプ",
+          "tag": "ベンダー"
+        },
+        "oakHouseClient": {
+          "from": "クライアント — Oak House",
+          "subject": "Re: ダイニングチェア仕上げ（リネン vs ブークレ）",
+          "tag": "クライアント"
+        },
+        "logistics": {
+          "from": "物流",
+          "subject": "発送通知 • 注文 34821",
+          "tag": "配送"
+        },
+        "stonecraft": {
+          "from": "Stonecraft Ltd",
+          "subject": "リードタイム更新 — 大理石スラブ",
+          "tag": "ベンダー"
+        }
+      },
+      "tags": {
+        "vendor": "ベンダー",
+        "client": "クライアント",
+        "delivery": "配送",
+        "design": "デザイン",
+        "email": "メール",
+        "shared": "共有済み",
+        "linkedToTask": "タスクにリンク"
+      }
+    },
+    "bento": {
+      "unifiedInbox": {
+        "title": "統合インボックス"
+      },
+      "projectRouting": {
+        "title": "プロジェクトルーティング",
+        "description": "参加者、件名、ラベルでプロジェクトへの自動提案。ワンクリックで確認。",
+        "exampleSubject": "「ダイニングチェア仕上げ（リネン vs ブークレ）」",
+        "projectLabel": "プロジェクト: Oak House",
+        "confirmRouting": "ルーティングを確認",
+        "change": "変更…"
+      },
+      "vendorTimeline": {
+        "title": "ベンダーメール → POタイムライン",
+        "description": "配送通知とリードタイム更新が調達に流れ、POステータスを自動更新。",
+        "items": {
+          "dispatch": {
+            "label": "発送通知 • 注文 34821",
+            "status": "配送中"
+          },
+          "leadTime": {
+            "label": "リードタイム更新 — 大理石スラブ",
+            "status": "ETA +3日"
+          }
+        }
+      },
+      "aiSummary": {
+        "title": "AI要約とアクション",
+        "summary": "要約: クライアントはリネンを希望、サンプル依頼。ペンダントライト承認、配送ウィンドウ確認。",
+        "actions": {
+          "orderSamples": "タスク作成: ファブリックサンプル発注",
+          "createPo": "PO作成: ペンダントライト（承認済み）",
+          "replyDelivery": "返信: 配送ウィンドウを確認"
+        },
+        "createTask": "タスク作成",
+        "createPo": "PO作成"
+      },
+      "shareControl": {
+        "title": "制御付き共有",
+        "description": "ワンクリックでプロジェクトフィードに共有。参加者を編集、いつでも取り消し可能。",
+        "chips": {
+          "redact": "個人メールを編集",
+          "audit": "監査ログ",
+          "shareToFeed": "共有先: プロジェクトフィード"
+        }
+      },
+      "unifiedMessages": {
+        "title": "統合メッセージ",
+        "description": "メールスレッドがポータルメッセージ、RFI、AIアラートと並んで表示 — 一箇所で協業。",
+        "imageAlt": "メールとポータルスレッドを組み合わせたプロジェクトメッセージフィード"
+      }
+    },
+    "kpis": {
+      "emailsCentralised": {
+        "label": "メール一元化",
+        "value": "100%"
+      },
+      "responseTime": {
+        "label": "応答時間",
+        "value": "−38%",
+        "sub": "ベースライン比中央値"
+      },
+      "sharedThreads": {
+        "label": "共有スレッド",
+        "value": "4.2x",
+        "sub": "可視性向上"
+      },
+      "autoActions": {
+        "label": "自動アクション",
+        "value": "2.8x",
+        "sub": "タスク/PO作成"
+      }
+    },
+    "collaboration": {
+      "title": "スタジオコミュニケーションのハブ",
+      "subtitle": "個人の「ホームインボックス」はそのまま。必要なときだけプロジェクトに共有 — 転送チェーンなしでチーム、業者、クライアントを同期。",
+      "bullets": {
+        "shareThreads": "ワンクリックでメールスレッドを共有",
+        "aiExtracts": "AIが次のアクションを抽出し返信を下書き",
+        "linkMessages": "メッセージをタスク、PO、ドキュメントに即リンク"
+      },
+      "mock": {
+        "projectTitle": "Oak House • セレクション",
+        "projectFeed": "プロジェクトフィード",
+        "fromClient": "送信元: クライアント",
+        "clientMessage": "「ダイニングチェアはリネンにしましょう。」",
+        "fromFocuspilot": "送信元: Focuspilot",
+        "aiSummary": "AI要約: ペンダントライト承認；ファブリックサンプル発注；配送ウィンドウ確認。",
+        "assign": "割り当て",
+        "createPo": "PO作成",
+        "feedImageAlt": "メール、ポータルメッセージ、AIアラートを含むメッセージフィード"
+      }
+    },
+    "finalCta": {
+      "title": "スタジオの働き方に合ったメール",
+      "subtitle": "統合インボックス、プロジェクトルーティング、サプライヤートラッキング、GDPR対応共有 — Focuspilotだけ。"
+    }
+  }
+}

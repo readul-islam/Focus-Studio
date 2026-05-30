@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { ArrowLeft, CheckCircle2, Loader2, Mail, RefreshCw } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { AuthBrandMark } from "@/components/auth/auth-brand-mark"
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
 import { apiErrorMessage, fetchData, postData } from "@/lib/api"
@@ -20,6 +21,7 @@ function maskEmail(email: string): string {
 }
 
 export default function VerifyOtpPage() {
+  const t = useTranslations("authVerifyOtpPage")
   const router = useRouter()
   const [email, setEmail] = useState("")
   const [otp, setOtp] = useState("")
@@ -43,8 +45,8 @@ export default function VerifyOtpPage() {
 
   useEffect(() => {
     if (resendCooldown <= 0) return
-    const t = setTimeout(() => setResendCooldown((c) => c - 1), 1000)
-    return () => clearTimeout(t)
+    const timer = setTimeout(() => setResendCooldown((c) => c - 1), 1000)
+    return () => clearTimeout(timer)
   }, [resendCooldown])
 
   const submitOtp = useCallback(
@@ -57,12 +59,12 @@ export default function VerifyOtpPage() {
         setStage("success")
         setTimeout(() => redirectToApp("/onboarding"), 1200)
       } catch (err) {
-        setError(apiErrorMessage(err, "Incorrect code. Please try again."))
+        setError(apiErrorMessage(err, t("incorrectCode")))
         setOtp("")
         setStage("entry")
       }
     },
-    [stage]
+    [stage, t],
   )
 
   useEffect(() => {
@@ -80,7 +82,7 @@ export default function VerifyOtpPage() {
       setResendCooldown(RESEND_COOLDOWN)
       setOtp("")
     } catch {
-      setError("Failed to resend. Try again.")
+      setError(t("resendFailed"))
     } finally {
       setIsResending(false)
     }
@@ -110,16 +112,14 @@ export default function VerifyOtpPage() {
           <div className="w-14 h-14 rounded-full bg-stone-100 flex items-center justify-center mx-auto mb-5">
             <Mail className="w-7 h-7 text-stone-400" />
           </div>
-          <h1 className="text-xl font-semibold text-stone-900 mb-2">Session expired</h1>
-          <p className="text-sm text-stone-500 mb-6">
-            Your verification session has expired. Please register again.
-          </p>
+          <h1 className="text-xl font-semibold text-stone-900 mb-2">{t("noSession.title")}</h1>
+          <p className="text-sm text-stone-500 mb-6">{t("noSession.message")}</p>
           <Link
             href="/signup"
             className="inline-flex items-center gap-2 text-sm font-medium text-stone-900 hover:underline"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to registration
+            {t("noSession.backToRegistration")}
           </Link>
         </div>
       </div>
@@ -133,13 +133,15 @@ export default function VerifyOtpPage() {
           <div className="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-5">
             <CheckCircle2 className="w-7 h-7 text-emerald-600" />
           </div>
-          <h1 className="text-xl font-semibold text-stone-900 mb-1">Email verified</h1>
-          <p className="text-sm text-stone-500">Opening your studio…</p>
+          <h1 className="text-xl font-semibold text-stone-900 mb-1">{t("success.title")}</h1>
+          <p className="text-sm text-stone-500">{t("success.message")}</p>
           <Loader2 className="w-5 h-5 animate-spin text-stone-400 mx-auto mt-4" />
         </div>
       </div>
     )
   }
+
+  const resendTime = `0:${String(resendCooldown).padStart(2, "0")}`
 
   return (
     <div className="min-h-screen flex">
@@ -151,9 +153,9 @@ export default function VerifyOtpPage() {
             <div className="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center mb-5">
               <Mail className="w-6 h-6 text-stone-600" />
             </div>
-            <h1 className="text-2xl font-semibold text-stone-900 mb-1.5">Check your email</h1>
+            <h1 className="text-2xl font-semibold text-stone-900 mb-1.5">{t("entry.title")}</h1>
             <p className="text-sm text-stone-500">
-              We sent a 6-digit code to <span className="font-medium text-stone-800">{maskEmail(email)}</span>
+              {t("entry.message", { email: maskEmail(email) })}
             </p>
           </div>
 
@@ -184,22 +186,17 @@ export default function VerifyOtpPage() {
             {stage === "submitting" ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Verifying…
+                {t("entry.verifying")}
               </>
             ) : (
-              "Verify email"
+              t("entry.verifyEmail")
             )}
           </button>
 
           <div className="text-center mb-6">
-            <p className="text-sm text-stone-500 mb-1">Didn&apos;t receive a code?</p>
+            <p className="text-sm text-stone-500 mb-1">{t("entry.noCode")}</p>
             {resendCooldown > 0 ? (
-              <p className="text-sm text-stone-400">
-                Resend in{" "}
-                <span className="font-medium text-stone-600 tabular-nums">
-                  0:{String(resendCooldown).padStart(2, "0")}
-                </span>
-              </p>
+              <p className="text-sm text-stone-400">{t("entry.resendIn", { time: resendTime })}</p>
             ) : (
               <button
                 type="button"
@@ -208,7 +205,7 @@ export default function VerifyOtpPage() {
                 className="inline-flex items-center gap-1.5 text-sm font-medium text-stone-900 hover:underline disabled:opacity-50"
               >
                 {isResending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5" />}
-                Resend code
+                {t("entry.resendCode")}
               </button>
             )}
           </div>
@@ -219,7 +216,7 @@ export default function VerifyOtpPage() {
               onClick={handleUseDifferentAccount}
               className="text-sm text-stone-400 hover:text-stone-600"
             >
-              Use a different account
+              {t("entry.useDifferentAccount")}
             </button>
           </div>
         </div>
@@ -228,13 +225,11 @@ export default function VerifyOtpPage() {
       <div className="hidden lg:flex flex-col justify-center w-[52%] bg-[#1a2e2a] px-14 py-10 relative overflow-hidden">
         <div className="relative z-10">
           <h2 className="text-4xl font-bold text-white leading-tight mb-5">
-            One step away
+            {t("hero.titleLine1")}
             <br />
-            from your studio
+            {t("hero.titleLine2")}
           </h2>
-          <p className="text-white/60 text-base leading-relaxed max-w-sm">
-            Confirm your email to unlock Focuspilot and start managing your design projects.
-          </p>
+          <p className="text-white/60 text-base leading-relaxed max-w-sm">{t("hero.subtitle")}</p>
         </div>
       </div>
     </div>

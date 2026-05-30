@@ -1,15 +1,17 @@
 import type { Metadata } from "next"
+import type { ReactNode } from "react"
+import { getTranslations } from "next-intl/server"
+import { localeHreflangAlternates } from "@/lib/seo-alternates"
 
-export const metadata: Metadata = {
-  title: "Knowledge Centre | Focuspilot Help & Guides",
-  description: "Learn how to use Focuspilot with our guides, tutorials, and help articles. Get the most out of your interior design project management software.",
-  alternates: { canonical: "https://focuspilot.io/knowledge" },
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("knowledgePage.meta")
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: localeHreflangAlternates("knowledge"),
+  }
 }
 
-export default function KnowledgeLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function KnowledgeLayout({ children }: { children: ReactNode }) {
   return children
 }

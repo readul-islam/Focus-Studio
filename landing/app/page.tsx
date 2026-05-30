@@ -4,7 +4,7 @@ import type React from "react"
 
 import Link from "next/link"
 import Image from "next/image"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useMemo } from "react"
 import * as LucideReact from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -15,6 +15,7 @@ import AttentionBanner from "@/components/sections/attention-banner"
 import SloganBanner from "@/components/sections/slogan-banner"
 import { CtaButton } from "@/components/cta-button"
 import { LandingHeroBackground } from "@/components/landing-hero-background"
+import { useTranslations } from "next-intl"
 
 const container = "mx-auto max-w-[1200px] px-6 sm:px-8"
 // Hero headline — balanced size, semibold, tight tracking (aligned with Focuspilot client landing)
@@ -93,6 +94,7 @@ function Reveal({ children, className, delay = 0 }: { children: React.ReactNode;
 }
 
 function Hero() {
+  const t = useTranslations("homePage.hero")
   const parallaxRef = useParallax(0.03)
   return (
     <section id="overview" className="relative isolate overflow-hidden bg-stone-50">
@@ -101,32 +103,26 @@ function Hero() {
       <div className={cn(container, "relative z-10 pb-10 pt-8 sm:pb-16 sm:pt-12 md:pt-16")}>
         <Reveal className="mx-auto max-w-5xl text-center">
           <span className="inline-flex items-center rounded-full border border-stone-300/60 bg-white px-3 py-1 text-xs text-stone-700">
-            <span className="sm:hidden">{"AI Project Management"}</span>
-            <span className="hidden sm:inline">{"Projects • Procurement • Payments"}</span>
+            <span className="sm:hidden">{t("badgeMobile")}</span>
+            <span className="hidden sm:inline">{t("badgeDesktop")}</span>
           </span>
           <h1 id="landing-hero-heading" className={cn("mx-auto mt-6 max-w-5xl text-center", TITLE_H1)}>
             <span className="sm:hidden">
-              AI-powered project management for{" "}
-              <span className="text-[#C96A4A]">interior designers</span>
+              {t("titleMobileBefore")}{" "}
+              <span className="text-[#C96A4A]">{t("titleAccent")}</span>
             </span>
             <span className="hidden sm:inline">
-              AI-powered project management software
+              {t("titleDesktopLine1")}
               <br />
-              for <span className="text-[#C96A4A]">interior designers</span>
+              {t("titleDesktopLine2Before")} <span className="text-[#C96A4A]">{t("titleAccent")}</span>
             </span>
           </h1>
           <p className="mx-auto mt-5 max-w-4xl text-center text-base leading-relaxed text-stone-600 sm:text-lg sm:leading-relaxed">
-            <span className="sm:hidden">
-              {"From first brief to final invoice - timelines, budgets, and approvals handled automatically."}
-            </span>
-            <span className="hidden sm:inline">
-              {
-                "From first inquiry to final invoice, Focuspilot transforms chaotic spreadsheets and endless emails into live timelines, real-time budgets, and one-click client approvals."
-              }
-            </span>
+            <span className="sm:hidden">{t("subtitleMobile")}</span>
+            <span className="hidden sm:inline">{t("subtitleDesktop")}</span>
           </p>
           <div className="mx-auto mt-5 flex justify-center">
-            <CtaButton href="/signup" variant="slate" label="Start for free" showArrow arrowVariant="white" />
+            <CtaButton href="/signup" variant="slate" label={t("cta")} showArrow arrowVariant="white" />
           </div>
         </Reveal>
 
@@ -137,7 +133,7 @@ function Hero() {
                 <div className="relative w-full">
                   <Image
                     src="/images/app/dashboard-projects-board.png"
-                    alt="Focuspilot project management dashboard showing active interior design projects including Chelsea Penthouse, Cotswold Country Home, and Bath Boutique Hotel with progress tracking, budgets, and team assignments"
+                    alt={t("dashboardAlt")}
                     width={1600}
                     height={900}
                     priority={true}
@@ -155,50 +151,27 @@ function Hero() {
 }
 
 function LogoCloud() {
+  const t = useTranslations("homePage.logoCloud")
   const logos = [
-    {
-      src: "/logos/ten-interiors.png",
-      alt: "TEN interiors design studio logo",
-      name: "TEN interiors",
-    },
-    {
-      src: "/logos/sarah-long-design.png",
-      alt: "Sarah Long Design Studio logo",
-      name: "Sarah Long Design Studio",
-    },
-    {
-      src: "/logos/souq-studio.png",
-      alt: "Souq.Studio design studio logo",
-      name: "Souq.Studio",
-    },
-    {
-      src: "/logos/your-design-studio.png",
-      alt: "Your Design Studio logo",
-      name: "Your Design Studio",
-    },
-    {
-      src: "/logos/arc-architects.png",
-      alt: "ARC architects studio logo",
-      name: "ARC architects",
-    },
-    {
-      src: "/logos/dl-arch-design.png",
-      alt: "DL ARCH + DESIGN studio logo",
-      name: "DL ARCH + DESIGN",
-    },
+    { src: "/logos/ten-interiors.png", name: "TEN interiors" },
+    { src: "/logos/sarah-long-design.png", name: "Sarah Long Design Studio" },
+    { src: "/logos/souq-studio.png", name: "Souq.Studio" },
+    { src: "/logos/your-design-studio.png", name: "Your Design Studio" },
+    { src: "/logos/arc-architects.png", name: "ARC architects" },
+    { src: "/logos/dl-arch-design.png", name: "DL ARCH + DESIGN" },
   ]
   return (
     <section className="bg-white py-12" aria-labelledby="trusted-studios">
       <div className={container}>
         <h2 id="trusted-studios" className="text-center text-xl font-medium text-stone-500">
-          Powering the industry's most innovative studios
+          {t("title")}
         </h2>
         <div className="mt-6 grid grid-cols-2 items-center gap-6 sm:grid-cols-3 md:grid-cols-6">
           {logos.map((logo, idx) => (
             <Image
               key={idx}
               src={logo.src || "/placeholder.svg"}
-              alt={logo.alt}
+              alt={t("logoAlt", { name: logo.name })}
               width={200}
               height={200}
               loading="lazy"
@@ -213,54 +186,57 @@ function LogoCloud() {
 }
 
 function AiLayer() {
-  const cards = [
-    {
-      icon: LucideReact.Wand2,
-      title: "AI assistant",
-      text: "Ask AI to draft your email, create a task, summarise a meeting or reorganise your day.",
-      iconColor: "text-stone-600",
-    },
-    {
-      icon: LucideReact.GitBranch,
-      title: "AI tasks",
-      text: "Instantly turn that brief into a task map—complete with dependencies, dates, and owners.",
-      iconColor: "text-stone-600",
-    },
-    {
-      icon: LucideReact.ShoppingCart,
-      title: "AI procurement",
-      text: "Web-clip any product, pull specs & pricing, and raise the PO (with tracking) in one click.",
-      iconColor: "text-stone-600",
-    },
-    {
-      icon: LucideReact.AudioLines,
-      title: "AI note-taker",
-      text: "Auto-transcribe meetings or site visits into action-items, RFIs, and searchable project notes.",
-      iconColor: "text-stone-600",
-    },
-  ]
+  const t = useTranslations("homePage.aiLayer")
 
-  const pills = [
-    { label: "Library", href: "/platform/features/library", icon: LucideReact.BookOpen },
-    { label: "Workflow", href: "/platform/projects", icon: LucideReact.GitBranch },
-    { label: "AI", href: "/platform/ai", icon: LucideReact.Sparkles, active: true },
-    { label: "Insights", href: "/platform/finance", icon: LucideReact.BarChart3 },
-    { label: "Automation", href: "/platform/features/ai-email", icon: LucideReact.Bot },
-  ]
+  const cards = useMemo(
+    () => [
+      {
+        icon: LucideReact.Wand2,
+        title: t("cards.assistant.title"),
+        text: t("cards.assistant.text"),
+        iconColor: "text-stone-600",
+      },
+      {
+        icon: LucideReact.GitBranch,
+        title: t("cards.tasks.title"),
+        text: t("cards.tasks.text"),
+        iconColor: "text-stone-600",
+      },
+      {
+        icon: LucideReact.ShoppingCart,
+        title: t("cards.procurement.title"),
+        text: t("cards.procurement.text"),
+        iconColor: "text-stone-600",
+      },
+      {
+        icon: LucideReact.AudioLines,
+        title: t("cards.noteTaker.title"),
+        text: t("cards.noteTaker.text"),
+        iconColor: "text-stone-600",
+      },
+    ],
+    [t],
+  )
+
+  const pills = useMemo(
+    () => [
+      { label: t("pills.library"), href: "/platform/features/library", icon: LucideReact.BookOpen },
+      { label: t("pills.workflow"), href: "/platform/projects", icon: LucideReact.GitBranch },
+      { label: t("pills.ai"), href: "/platform/ai", icon: LucideReact.Sparkles, active: true },
+      { label: t("pills.insights"), href: "/platform/finance", icon: LucideReact.BarChart3 },
+      { label: t("pills.automation"), href: "/platform/features/ai-email", icon: LucideReact.Bot },
+    ],
+    [t],
+  )
 
   return (
     <section id="ai" className="relative bg-white py-16 text-stone-900 sm:py-20" aria-labelledby="ai-features">
       <div className={container}>
-        {/* Header & sub-line */}
         <div className="mx-auto max-w-3xl text-center">
           <h2 id="ai-features" className="text-2xl sm:text-[30px] md:text-4xl font-medium tracking-tight">
-            The future of design management is intelligent
+            {t("title")}
           </h2>
-          <p className="mt-3 text-left sm:text-center text-base sm:text-lg text-stone-600">
-            {
-              "Move beyond standard project tools. Focuspilot is the first interior design platform with an intelligent AI layer that automates admin, anticipates needs, and frees you up to focus on creative work."
-            }
-          </p>
+          <p className="mt-3 text-left sm:text-center text-base sm:text-lg text-stone-600">{t("subtitle")}</p>
         </div>
 
         {/* Washed painted container */}
@@ -322,14 +298,13 @@ function AiLayer() {
           </div>
         </div>
 
-        {/* Section nav pills (light theme) */}
         <nav
           className="mx-auto mt-10 flex max-w-6xl flex-wrap items-center justify-center gap-3"
-          aria-label="Platform features"
+          aria-label={t("navAria")}
         >
           {pills.map((p) => {
             const Icon = p.icon
-            const active = Boolean((p as any).active)
+            const active = Boolean((p as { active?: boolean }).active)
             return (
               <Button
                 key={p.label}
@@ -341,7 +316,7 @@ function AiLayer() {
                     : "h-12 rounded-full border-stone-300 bg-white px-6 text-stone-800 hover:bg-stone-50 focus-visible:ring-2 focus-visible:ring-stone-300"
                 }
               >
-                <Link href={p.href} aria-current={active ? "page" : undefined} aria-label={`${p.label} features`}>
+                <Link href={p.href} aria-current={active ? "page" : undefined} aria-label={t("pillFeaturesAria", { label: p.label })}>
                   <span className="inline-flex items-center gap-2">
                     {Icon ? (
                       <Icon
@@ -363,33 +338,41 @@ function AiLayer() {
 }
 
 function DesignerTestimonials() {
-  const people = [
-    {
-      name: "Tess H.",
-      role: "Design studio",
-      avatar:
-        "/images/u5454174911-i-need-a-thumbnail-image-of-a-headshot-of-a-femai-25209f6b-0e97-4edd-95f6-51427c50486b-3.png",
-      studioLogo: "/logos/souq-studio.png",
-      quote: "From proposal to payment, it just works.",
-    },
-    {
-      name: "Sarah",
-      role: "Interior designer",
-      avatar:
-        "/images/u5454174911-i-need-a-thumbnail-image-of-a-headshot-of-a-femai-25209f6b-0e97-4edd-95f6-51427c50486b-1.png",
-      studioLogo: "/logos/studio-mind.png",
-      quote:
-        "Focuspilot transformed the way I manage my business. I can now focus more on creativity and less on admin!",
-    },
-    {
-      name: "James",
-      role: "Design studio owner",
-      avatar:
-        "/images/u5454174911-i-need-a-thumbnail-image-of-a-headshot-of-a-profe-5caf6ba9-5e7d-4e36-ad28-1af76d277ba5-3.png",
-      studioLogo: "/logos/houzz-black.png",
-      quote: "Clients love the clarity. We love the speed.",
-    },
-  ]
+  const t = useTranslations("homePage.testimonials")
+
+  const people = useMemo(
+    () => [
+      {
+        id: "tess",
+        name: t("people.tess.name"),
+        role: t("people.tess.role"),
+        avatar:
+          "/images/u5454174911-i-need-a-thumbnail-image-of-a-headshot-of-a-femai-25209f6b-0e97-4edd-95f6-51427c50486b-3.png",
+        studioLogo: "/logos/souq-studio.png",
+        quote: t("people.tess.quote"),
+      },
+      {
+        id: "sarah",
+        name: t("people.sarah.name"),
+        role: t("people.sarah.role"),
+        avatar:
+          "/images/u5454174911-i-need-a-thumbnail-image-of-a-headshot-of-a-femai-25209f6b-0e97-4edd-95f6-51427c50486b-1.png",
+        studioLogo: "/logos/studio-mind.png",
+        quote: t("people.sarah.quote"),
+      },
+      {
+        id: "james",
+        name: t("people.james.name"),
+        role: t("people.james.role"),
+        avatar:
+          "/images/u5454174911-i-need-a-thumbnail-image-of-a-headshot-of-a-profe-5caf6ba9-5e7d-4e36-ad28-1af76d277ba5-3.png",
+        studioLogo: "/logos/houzz-black.png",
+        quote: t("people.james.quote"),
+      },
+    ],
+    [t],
+  )
+
   const [active, setActive] = useState(0)
   const current = people[active]
 
@@ -398,25 +381,23 @@ function DesignerTestimonials() {
       <div className={container}>
         <Reveal className="mx-auto max-w-4xl text-center">
           <h2 id="testimonials" className={TITLE_H2}>
-            How designers are saving 10+ hours a week
+            {t("title")}
           </h2>
         </Reveal>
 
         <Reveal className="mt-10">
-          {/* Ensure equal column heights */}
           <div className="grid items-stretch gap-6 md:grid-cols-12 lg:gap-8">
-            {/* Left: Partner logos list (enlarged, uniform, no arrows here) */}
             <div className="md:col-span-3">
               <div className="h-full rounded-3xl border border-stone-200 bg-white p-5 sm:p-6">
                 <ul
                   className="flex h-full flex-col justify-between gap-5"
                   role="tablist"
-                  aria-label="Customer testimonials"
+                  aria-label={t("tablistAria")}
                 >
                   {people.map((p, i) => {
                     const isActive = i === active
                     return (
-                      <li key={p.name} role="presentation">
+                      <li key={p.id} role="presentation">
                         <button
                           onClick={() => setActive(i)}
                           className={cn(
@@ -429,11 +410,11 @@ function DesignerTestimonials() {
                           role="tab"
                           aria-selected={isActive}
                           aria-controls={`testimonial-${i}`}
-                          aria-label={`View testimonial from ${p.name} at ${p.role}`}
+                          aria-label={t("viewTestimonialAria", { name: p.name, role: p.role })}
                         >
                           <Image
                             src={p.studioLogo || "/placeholder.svg?height=56&width=240&query=partner%20logo"}
-                            alt={`${p.name}'s studio logo`}
+                            alt={t("studioLogoAlt", { name: p.name })}
                             width={320}
                             height={96}
                             className={cn(
@@ -456,7 +437,7 @@ function DesignerTestimonials() {
               <div className="h-full overflow-hidden rounded-3xl border border-stone-200 bg-white">
                 <Image
                   src={current.avatar || "/placeholder.svg"}
-                  alt={`Portrait of ${current.name}, ${current.role}`}
+                  alt={t("portraitAlt", { name: current.name, role: current.role })}
                   width={1000}
                   height={1250}
                   className="h-full w-full object-cover"
@@ -493,7 +474,7 @@ function DesignerTestimonials() {
               variant="outline"
               className="h-11 w-11 rounded-full p-0 bg-white"
               onClick={() => setActive((prev) => (prev - 1 + people.length) % people.length)}
-              aria-label="Previous testimonial"
+              aria-label={t("prev")}
             >
               <LucideReact.ChevronLeft className="h-5 w-5" aria-hidden="true" />
             </Button>
@@ -502,7 +483,7 @@ function DesignerTestimonials() {
               variant="outline"
               className="h-11 w-11 rounded-full p-0 bg-white"
               onClick={() => setActive((prev) => (prev + 1) % people.length)}
-              aria-label="Next testimonial"
+              aria-label={t("next")}
             >
               <LucideReact.ChevronRight className="h-5 w-5" aria-hidden="true" />
             </Button>
@@ -514,6 +495,8 @@ function DesignerTestimonials() {
 }
 
 function BigCTA() {
+  const t = useTranslations("homePage.bigCta")
+
   return (
     <section
       id="waitlist"
@@ -530,15 +513,13 @@ function BigCTA() {
         <Reveal>
           <div className="mx-auto max-w-3xl text-center">
             <h2 id="cta-heading" className="text-2xl sm:text-[28px] md:text-[32px] font-medium tracking-tight">
-              {"Get visibility over your studio, team and projects."}
+              {t("title")}
             </h2>
-            <p className="mt-3 text-base sm:text-lg text-stone-300">
-              {"Wave goodbye to uncertainty with Focuspilot - your AI-powered studio operating system"}
-            </p>
+            <p className="mt-3 text-base sm:text-lg text-stone-300">{t("subtitle")}</p>
             <div className="mt-8 flex justify-center">
-              <CtaButton href="/signup" variant="white" label="Start for free" showArrow arrowVariant="black" />
+              <CtaButton href="/signup" variant="white" label={t("cta")} showArrow arrowVariant="black" />
             </div>
-            <p className="mt-3 text-xs sm:text-sm text-stone-400">{"No credit card required"}</p>
+            <p className="mt-3 text-xs sm:text-sm text-stone-400">{t("noCreditCard")}</p>
           </div>
         </Reveal>
       </div>

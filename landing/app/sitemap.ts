@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next"
-import { getAllPosts } from "@/lib/blog-data"
+import { getAllPostsFromMessages } from "@/lib/blog-data"
+import { loadBlogMessages } from "@/lib/blog-messages"
 import { studioTemplates } from "@/lib/resources-data"
 
 const baseUrl = "https://focuspilot.io"
 
-/** Regional SEO articles (also listed via getAllPosts() — no duplicate static paths). */
+/** Regional SEO articles (also listed via blog posts — no duplicate static paths). */
 const REGIONAL_SEO_BLOG_SLUGS = new Set([
   "best-interior-design-software-uk",
   "best-interior-design-software-us",
@@ -59,6 +60,8 @@ function toUrl(path: string): string {
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const builtAt = new Date()
+  const { blogPosts, blogAuthors } = loadBlogMessages("en-US")
+  const posts = getAllPostsFromMessages(blogPosts, blogAuthors)
 
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.map(
     ({ path, changeFrequency, priority }) => ({
@@ -69,7 +72,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   )
 
-  const blogEntries: MetadataRoute.Sitemap = getAllPosts().map((post) => ({
+  const blogEntries: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: new Date(post.publishedAt),
     changeFrequency: "monthly",

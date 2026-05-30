@@ -1,0 +1,233 @@
+{
+  "platformShared": {
+    "seeItInAction": "実際の画面を見る",
+    "exploreFeatures": "機能を探索",
+    "tryAiProposals": "AI提案を試す",
+    "viewTemplates": "テンプレートを見る",
+    "paymentOptions": "支払いオプション",
+    "viewIntegrations": "連携を見る",
+    "seeClientPortal": "クライアントポータルを見る",
+    "delightYourClients": "クライアントを喜ばせる"
+  },
+  "platformAiProcurement": {
+    "meta": {
+      "title": "AI製品調達｜インテリアデザイナー向け | Focuspilot",
+      "description": "AI搭載のWebクリッパーがあらゆるウェブサイトから製品詳細を即座に抽出。インテリジェントな製品調達とベンダーマッチングで仕様書作成を加速。",
+      "ogDescription": "AI搭載のWebクリッパーがあらゆるウェブサイトから製品詳細を即座に抽出。インテリアデザイナー向け。",
+      "twitterDescription": "AI搭載のWebクリッパーがあらゆるウェブサイトから製品詳細を即座に抽出。インテリアデザイナー向け。"
+    },
+    "hero": {
+      "badge": "AI搭載の調達",
+      "title": "AI製品調達 — Webクリッパーと即時ライブラリの融合。",
+      "subtitle": "あらゆるウェブサイトから仕様、価格、ベンダー情報を即座に抽出するAIで製品調達を変革。製品ライブラリを手軽に構築。",
+      "imageAlt": "Webクリッパーが製品仕様と詳細を抽出するAI製品調達画面"
+    },
+    "procurementFlow": {
+      "title": "AI調達の仕組み",
+      "subtitle": "発見からライブラリまで数秒。製品データ入力の煩雑な作業はAIにお任せ。",
+      "steps": {
+        "browseAndClip": {
+          "title": "閲覧＆クリップ",
+          "description": "ブラウザ拡張機能で、あらゆるベンダーサイトからワンクリックで製品をキャプチャ。"
+        },
+        "aiExtractsDetails": {
+          "title": "AIが詳細を抽出",
+          "description": "AIが仕様、価格、寸法、ベンダー情報を即座に取得。"
+        },
+        "reviewAndOrganize": {
+          "title": "確認＆整理",
+          "description": "抽出データを検証し、コレクションとプロジェクトライブラリに整理。"
+        },
+        "addToProjects": {
+          "title": "プロジェクトに追加",
+          "description": "クライアントプレゼンと調達リストにシームレスに製品を追加。"
+        }
+      }
+    },
+    "featureBlocks": {
+      "instantDataExtraction": {
+        "title": "即時データ抽出",
+        "description": "AIがあらゆるウェブサイトから製品仕様、価格、寸法、素材、ベンダー詳細を自動キャプチャ。",
+        "benefits": {
+          "automaticSpecSheets": "仕様書の自動生成",
+          "priceTracking": "価格追跡と更新",
+          "vendorContact": "ベンダー連絡先情報",
+          "productImages": "製品画像とドキュメント"
+        },
+        "imageAlt": "家具サイトから仕様と価格を抽出するAI製品詳細画面"
+      },
+      "smartProductLibrary": {
+        "title": "スマート製品ライブラリ",
+        "description": "AIによる分類、検索、レコメンドで包括的な製品データベースを構築。",
+        "benefits": {
+          "intelligentCategorization": "インテリジェントな製品分類",
+          "advancedSearch": "高度な検索とフィルタリング",
+          "similarProducts": "類似製品の提案",
+          "customTags": "カスタムタグとコレクション"
+        },
+        "imageAlt": "整理されたコレクションとAI検索を表示する製品ライブラリ画面"
+      },
+      "projectIntegration": {
+        "title": "プロジェクト連携",
+        "description": "クライアントプレゼン、ムードボード、調達リストにシームレスに製品を追加。",
+        "benefits": {
+          "oneClickAddition": "ワンクリックでプロジェクトに追加",
+          "automatedLists": "調達リストの自動化",
+          "clientPresentations": "クライアントプレゼンツール",
+          "budgetTracking": "予算追跡の連携"
+        },
+        "imageAlt": "クライアントプレゼンに追加された製品を表示するプロジェクト調達画面"
+      }
+    },
+    "benefitsGrid": {
+      "title": "デザイナーがAI調達を愛する理由",
+      "subtitle": "あなたの好みを学習するインテリジェントな自動化で調達ワークフローを変革。",
+      "items": {
+        "saveHoursDaily": {
+          "title": "毎日の時間を節約",
+          "description": "手動データ入力と製品リサーチを排除。管理ではなくデザインに集中。"
+        },
+        "buildYourLibrary": {
+          "title": "ライブラリを構築",
+          "description": "プロジェクトごとに成長する包括的な製品データベースを作成。"
+        },
+        "instantAccuracy": {
+          "title": "即時の正確性",
+          "description": "AIがすべてのプロジェクトで一貫した正確な製品データを保証。"
+        },
+        "universalCompatibility": {
+          "title": "ユニバーサル互換性",
+          "description": "業界専用から小売プラットフォームまで、あらゆるベンダーサイトに対応。"
+        },
+        "professionalPresentations": {
+          "title": "プロフェッショナルなプレゼン",
+          "description": "美しい仕様書とクライアントプレゼンを自動生成。"
+        },
+        "alwaysUpToDate": {
+          "title": "常に最新",
+          "description": "保存したすべての製品の価格変動と在庫状況の更新を追跡。"
+        }
+      }
+    },
+    "bigCta": {
+      "title": "より少ない労力で美しいプロジェクトを届ける",
+      "subtitle": "仕様、承認、発注書、領収書を一つの連携ワークフローで。"
+    }
+  },
+  "platformInvoicing": {
+    "meta": {
+      "title": "提案書＆請求書｜インテリアデザイナー向け | Focuspilot",
+      "description": "プロフェッショナルな提案書を作成し、請求を自動化してより早く入金。AIによる価格提案とブランド付きPDF生成でインテリアデザインスタジオを支援。",
+      "ogDescription": "インテリアデザインスタジオ向けのプロフェッショナルな提案書作成と請求自動化。",
+      "twitterDescription": "インテリアデザインスタジオ向けのプロフェッショナルな提案書作成と請求自動化。"
+    },
+    "hero": {
+      "badge": "提案書＆請求書",
+      "title": "提案から入金まで、数日ではなく数分で",
+      "subtitle": "魅力的な提案書を作成し、プロフェッショナルな請求書を生成、自動化ワークフローでより早く入金。プロジェクトとクライアントポータルにシームレスに連携。",
+      "imageAlt": "プロジェクト詳細、スコープ定義、価格自動化を表示するAI提案作成画面"
+    },
+    "workflow": {
+      "title": "Focuspilotでの提案書と請求の仕組み",
+      "subtitle": "プロジェクトブリーフをプロフェッショナルな提案書とシームレスな入金に変える効率化プロセス。",
+      "steps": {
+        "createProposal": {
+          "title": "提案書を作成",
+          "description": "AIでプロジェクトブリーフから正確なスコープと価格のプロフェッショナルな提案書を起草。"
+        },
+        "clientReviews": {
+          "title": "クライアントがレビュー",
+          "description": "クライアントはポータルでブランド付き提案書を受け取り、明確な条件と簡単な承認プロセス。"
+        },
+        "generateInvoice": {
+          "title": "請求書を生成",
+          "description": "承認された提案書が自動的に支払いリンクと追跡付きの請求書に。"
+        },
+        "getPaid": {
+          "title": "入金",
+          "description": "クライアントはStripeで安全に支払い。領収書の自動生成と会計同期。"
+        }
+      }
+    },
+    "aiProposals": {
+      "title": "AI搭載の提案書作成",
+      "description": "プロジェクトブリーフを数分でプロフェッショナルな提案書に変換。AIはデザインワークフローを理解し、市場相場に基づく正確なスコープ定義を作成。",
+      "bullets": {
+        "detailedScope": "プロジェクト要件から詳細なスコープを生成",
+        "automaticPricing": "プロジェクトの複雑さと市場相場に基づく自動価格設定",
+        "professionalTemplates": "ブランド付きのプロフェッショナルテンプレート",
+        "versionControl": "バージョン管理と改訂追跡"
+      },
+      "imageAlts": {
+        "scopeDefinition": "自動プロジェクト分解とフェーズ計画を表示するAIスコープ定義画面",
+        "pricingCalculator": "自動コスト見積もりと料金体系を表示するAI価格計算画面"
+      }
+    },
+    "automatedInvoicing": {
+      "title": "自動請求と支払い",
+      "description": "承認された提案書を即座に請求書に。支払いスケジュールの設定、自動リマインダー、Stripe連携でより早く入金。",
+      "bullets": {
+        "oneClickGeneration": "提案書からワンクリックで請求書を生成",
+        "paymentSchedules": "自動支払いスケジュールとマイルストーン請求",
+        "stripeIntegration": "安全なカード・ACH決済のStripe連携",
+        "xeroSync": "シームレスな会計のためのXero自動同期"
+      },
+      "imageAlts": {
+        "invoiceDashboard": "請求書と発注書の合計を表示する請求ダッシュボード",
+        "invoiceButtons": "作成とXero同期のための請求書アクションボタン",
+        "costTracking": "納品進捗と予算監視を表示するプロジェクトコスト追跡"
+      }
+    },
+    "clientExperience": {
+      "title": "シームレスなクライアント体験",
+      "description": "クライアントはブランド付きポータルで提案書と請求書を受け取り。レビュー、承認、支払いがすべて一つのプロフェッショナルな体験で、スタジオの品質を反映。",
+      "bullets": {
+        "brandedPortal": "スタジオのアイデンティティを反映したブランド付きクライアントポータル",
+        "oneClickApproval": "ワンクリックの提案承認と電子署名",
+        "securePayments": "即時領収書付きの安全な決済処理",
+        "realtimeUpdates": "リアルタイムのステータス更新と通知"
+      },
+      "imageAlt": "提案レビューと承認ワークフローを表示するクライアントポータル画面"
+    },
+    "benefitsGrid": {
+      "title": "スタジオがFocuspilotの提案書・請求を選ぶ理由",
+      "subtitle": "時間を節約し、キャッシュフローを改善し、クライアントを喜ばせるプロフェッショナルツール。",
+      "items": {
+        "fasterProposals": {
+          "title": "より速い提案書",
+          "description": "AI搭載の提案書生成で作成時間を数時間から数分に短縮し、プロフェッショナルな品質を維持。"
+        },
+        "betterCashFlow": {
+          "title": "キャッシュフローの改善",
+          "description": "自動支払いリマインダーと簡単なオンライン決済で、平均40%早く入金。"
+        },
+        "professionalBranding": {
+          "title": "プロフェッショナルなブランディング",
+          "description": "完全にカスタマイズ可能なテンプレートで、すべての提案書と請求書がスタジオのブランドと品質を反映。"
+        },
+        "clientSatisfaction": {
+          "title": "クライアント満足度",
+          "description": "効率化された承認プロセスと透明なコミュニケーションでクライアントを満足させ、関与を維持。"
+        },
+        "automatedWorkflows": {
+          "title": "自動化ワークフロー",
+          "description": "支払いスケジュール、リマインダー、フォローアップをバックグラウンドで自動実行。"
+        },
+        "seamlessIntegration": {
+          "title": "シームレスな連携",
+          "description": "Xero、Stripe、プロジェクト管理と接続し、統合されたビジネスワークフローを実現。"
+        }
+      }
+    },
+    "imageBlock": {
+      "line1": "提案書は、プロフェッショナルに。",
+      "line2": "請求書は、自動化。",
+      "line3": "入金は、より速く。",
+      "imageAlt": "大理石のカウンターと温かみのある木製キャビネットのモダンなラグジュアリーキッチン"
+    },
+    "finalCta": {
+      "title": "プロフェッショナルな提案書とより速い入金はここから",
+      "subtitle": "Focuspilotで提案書と請求ワークフローを効率化しているスタジオに参加。"
+    }
+  }
+}

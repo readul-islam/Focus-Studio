@@ -1,0 +1,127 @@
+{
+  "platformFinance": {
+    "meta": {
+      "title": "Interior Design Invoicing & Accounting Software | Xero Integration | Focuspilot",
+      "description": "Streamline interior design studio finances. Create invoices, track project profitability, sync with Xero & QuickBooks. Real-time budget vs actual tracking. Start free.",
+      "ogDescription": "Streamline interior design studio finances. Create invoices, track project profitability, sync with Xero & QuickBooks. Real-time budget vs actual tracking.",
+      "twitterDescription": "Streamline interior design studio finances. Create invoices, track project profitability, sync with Xero & QuickBooks.",
+      "ogImageAlt": "Focuspilot finance dashboard for interior design studios"
+    },
+    "hero": {
+      "badge": "Finance & Billing",
+      "title": "Finance & Invoicing Software for Interior Design Studios",
+      "subtitle": "Budgets, POs, invoices and cash flow in one place all connected to projects, the client portal, and accounting. Automate the busywork and keep profitability clear.",
+      "imageAlt": "Finance dashboard showing KPIs, invoices and cash flow",
+      "integratesWith": "Integrates with",
+      "stripeAlt": "Stripe payment processing integration for interior design invoicing",
+      "xeroAlt": "Xero accounting software integration for interior design finance"
+    },
+    "kpis": {
+      "title": "Clarity on cash flow, revenue and margins",
+      "description": "Stay on top of what matters: invoices issued and paid, upcoming POs, VAT, and projected runway all linked to projects and the studio view.",
+      "bullets": {
+        "cashFlow": "Real‑time cash flow with upcoming ins and outs",
+        "budgetVsActual": "Budget vs actual at project and studio level",
+        "reminders": "Automated payment reminders and notifications"
+      },
+      "tryAiAssistant": "Try the AI assistant",
+      "seeInvoices": "See invoices",
+      "tiles": {
+        "invoicesPaid": {
+          "label": "Invoices paid (30d)",
+          "value": "£48,320",
+          "sublabel": "+12% vs last month"
+        },
+        "outstanding": {
+          "label": "Outstanding",
+          "value": "£18,560",
+          "sublabel": "12 invoices • 7 overdue"
+        },
+        "posThisMonth": {
+          "label": "POs this month",
+          "value": "£26,410",
+          "sublabel": "On track"
+        },
+        "grossMargin": {
+          "label": "Gross margin (YTD)",
+          "value": "42%",
+          "sublabel": "+3 pts vs LY"
+        }
+      },
+      "chartImageAlt": "Finance dashboard showing revenue metrics, targets, variance, and YoY comparison charts"
+    },
+    "invoices": {
+      "title": "Invoices and payments automated, synced, paid",
+      "description": "Create invoices from estimates in one click, send them to the client portal, accept cards or ACH via Stripe, and sync every update to Xero automatically.",
+      "bullets": {
+        "xeroSync": "1‑click Xero sync for new and updated invoices",
+        "paymentLinks": "Payment links and reminders from the client portal",
+        "statusChips": "Status chips and aging to keep collections tight"
+      },
+      "generateWithAi": "Generate with AI",
+      "imageAlts": {
+        "summaryCards": "Invoice summary showing total invoices £425,000 and purchase orders £128,500",
+        "actionButtons": "Create Invoice and Sync with Xero action buttons",
+        "costTracking": "Project cost tracking showing total cost, delivery progress, and action buttons",
+        "invoiceList": "Invoice list showing amounts, status badges, and action dropdown menu"
+      }
+    },
+    "profitability": {
+      "title": "From budgets to real‑world profit",
+      "description": "Track budgets, approved spend and staff time to see accurate profitability by project and roll it up to the studio view.",
+      "bullets": {
+        "budgetView": "Budget, spend and committed POs in one view",
+        "timeTracking": "Time tracking for accurate project margins",
+        "studioProfit": "Studio profitability and trend analysis"
+      },
+      "timeTrackingNote": "Track time by phase and task for true costs",
+      "budgetImageAlt": "Budget analysis dashboard showing cost by category, monthly cost vs budget, vendor spend, and cost overruns",
+      "timeImageAlt": "Time tracking dashboard showing active timer, weekly hours breakdown, and recent project entries"
+    },
+    "aiAssistant": {
+      "title": "Your finance copilot, across every workflow",
+      "subtitle": "Ask questions about budgets, invoices, and cash flow. Draft, send, and sync faster than ever.",
+      "panelAria": "AI finance assistant",
+      "composerLabel": "Ask the AI finance assistant",
+      "placeholder": "Ask to draft an invoice, forecast cash flow, or send a reminder…",
+      "askAi": "Ask AI",
+      "askAiAria": "Ask AI",
+      "useSuggestionAria": "Use suggestion: {suggestion}",
+      "suggestions": {
+        "invoice": "Create an invoice for Oak House — 30% deposit from Phase 2 estimate",
+        "forecast": "Forecast cash flow for the next 60 days by project",
+        "reminder": "Send a payment reminder for INV-2053 (7 days overdue)",
+        "po": "Draft a PO for approved pendant lights and link to Project A"
+      },
+      "responses": {
+        "invoice": "Drafted invoice INV-3281 for Oak House • 30% deposit • £12,600\nItems pulled from: Phase 2 estimate\nStatus: Draft (unsent)\nNext: Send to client portal • Sync to Xero • Schedule reminder",
+        "reminder": "Reminder queued\nClient: Jane Smith • INV-2053 • £2,180 • 7 days overdue\nEmail + portal notification at 9:00 AM\nFollow up in 3 days if unpaid",
+        "default": "Cash flow forecast (next 60 days)\nIncoming: £86,400\nExpected spend (POs + payroll): £64,900\nProjection: Healthy\nTip: Close 2 pending approvals to improve Week 3 liquidity"
+      }
+    },
+    "relatedLinks": {
+      "title": "Connected to your studio workflow",
+      "subtitle": "Finance syncs with projects, procurement, and client payments.",
+      "projects": {
+        "title": "Projects",
+        "desc": "Track budgets by project phase"
+      },
+      "procurement": {
+        "title": "Procurement",
+        "desc": "POs flow into your accounts"
+      },
+      "clientPortal": {
+        "title": "Client Portal",
+        "desc": "Clients pay invoices online"
+      },
+      "pricing": {
+        "title": "See Pricing",
+        "desc": "Start free with all features"
+      }
+    },
+    "finalCta": {
+      "title": "Finance that keeps projects moving and profits clear",
+      "subtitle": "Xero and Stripe integrations, automated invoices and POs, and an AI copilot for speed."
+    }
+  }
+}

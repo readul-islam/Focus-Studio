@@ -1,0 +1,228 @@
+{
+  "platformShared": {
+    "noCreditCardRequired": "No credit card required",
+    "breadcrumb": {
+      "ai": "AI",
+      "approvals": "Approvals"
+    }
+  },
+  "platformAI": {
+    "meta": {
+      "title": "AI for Interior Design Studios | Focuspilot",
+      "description": "AI built for design studios: daily brief, email routing, procurement assist, and proposals — connected to your projects. Human approval on every client-facing output.",
+      "ogDescription": "Daily brief, smart inbox, procurement assist, and AI proposals — project context first, human approval always.",
+      "twitterDescription": "AI built for design studios — inbox, procurement, and proposals tied to real project data."
+    },
+    "breadcrumbLabel": "AI",
+    "hero": {
+      "badge": "AI for design studios",
+      "title": "AI built for design studios",
+      "subtitle": "Focuspilot AI works inside your projects — not in a disconnected chat window. Trim inbox noise, keep procurement accurate, and move proposals faster while your team stays in control.",
+      "imageAlt": "Focuspilot dashboard showing projects, tasks, and studio overview with AI-assisted workflows",
+      "seeAiFeatures": "See AI features"
+    },
+    "features": {
+      "title": "AI across your studio workflow",
+      "subtitle": "Four places where AI saves hours every week — each tied to real project data in Focuspilot.",
+      "showcasesHeading": "Inside the product",
+      "showcasesSubtitle": "Screenshots from the live studio app — the same AI tools you get after signup.",
+      "cards": {
+        "dailyBrief": {
+          "title": "Daily brief",
+          "description": "Start each morning with a project-aware summary: overdue tasks, client decisions waiting, procurement risks, and what to tackle first.",
+          "linkLabel": "See daily brief"
+        },
+        "emailRouting": {
+          "title": "Email routing & drafts",
+          "description": "Route threads to the right project, summarise long chains, and draft replies in your studio tone — ready for you to send.",
+          "linkLabel": "Explore AI email"
+        },
+        "procurementAssist": {
+          "title": "Procurement assist",
+          "description": "Extract specs from supplier pages, flag long-lead items, and suggest alternates when timelines slip — tied to your FF&E schedule.",
+          "linkLabel": "See AI procurement"
+        },
+        "proposalsDocuments": {
+          "title": "Proposals & documents",
+          "description": "Turn briefs and selections into scoped proposals and invoice-ready line items with checks that match your templates.",
+          "linkLabel": "Proposals & invoicing"
+        }
+      },
+      "showcases": {
+        "studioDashboard": {
+          "title": "Studio dashboard",
+          "caption": "Project health, tasks, and your daily brief in one view.",
+          "alt": "Focuspilot studio dashboard with project overview and KPIs"
+        },
+        "aiInbox": {
+          "title": "AI inbox",
+          "caption": "Threads routed to projects with context-aware drafts.",
+          "alt": "Project messages and email threads in Focuspilot"
+        },
+        "procurementAssist": {
+          "title": "Procurement assist",
+          "caption": "Import specs from supplier pages into your schedule.",
+          "alt": "AI extracting product specifications for FF&E procurement"
+        },
+        "aiProposals": {
+          "title": "AI proposals",
+          "caption": "Scope and pricing drafts from your brief and history.",
+          "alt": "AI proposal wizard with phased pricing for interior design studios"
+        }
+      }
+    },
+    "dailyBrief": {
+      "title": "Your morning brief, project by project",
+      "description": "Open Focuspilot and see what matters today: blocked approvals, slipping milestones, supplier delays, and client messages that need a reply — grouped by project, not buried in email.",
+      "bullets": {
+        "summarisesEmail": "Summarises overnight email and task changes",
+        "highlightsRisks": "Highlights budget and timeline risks before site meetings",
+        "availableAfterSignup": "Available in the studio app after you sign up"
+      },
+      "imageAlt": "Focuspilot daily brief and project dashboard for interior design studios",
+      "cta": "Try daily brief"
+    },
+    "howItWorks": {
+      "title": "How it works",
+      "subtitle": "Context first, drafts second, your approval last — the same pattern across email, procurement, and docs.",
+      "steps": {
+        "projectContext": {
+          "title": "Project context",
+          "body": "AI reads your active projects — phases, selections, messages, and budgets — so suggestions stay specific, not generic."
+        },
+        "draft": {
+          "title": "Draft",
+          "body": "Get summaries, reply drafts, spec extractions, or proposal sections you can edit in seconds instead of starting from a blank page."
+        },
+        "humanApprove": {
+          "title": "Human approve",
+          "body": "Nothing goes to clients or suppliers until you confirm. You stay in control; AI handles the repetitive first pass."
+        }
+      }
+    },
+    "playbook": {
+      "title": "Free AI Playbook for studios",
+      "description": "Practical workflows, copy-paste prompts, and guardrails for email, procurement, proposals, and governance — no fluff, ready to use with Focuspilot.",
+      "linkLabel": "Open the AI Playbook",
+      "cta": "Browse playbook"
+    },
+    "finalCta": {
+      "ariaLabel": "Get started",
+      "title": "Ship beautiful work with less admin",
+      "subtitle": "Join studios using Focuspilot AI for inbox, procurement, and proposals — connected to one project workspace.",
+      "playbookLink": "Read the AI Playbook"
+    }
+  },
+  "platformApprovals": {
+    "meta": {
+      "title": "Client Approval Software for Interior Designers | Focuspilot",
+      "description": "Streamline client sign-offs with beautiful approval workflows. Get faster decisions on selections, budgets, and design directions with Focuspilot approval tools.",
+      "ogDescription": "Streamline client sign-offs with beautiful approval workflows for interior design projects.",
+      "twitterDescription": "Streamline client sign-offs with beautiful approval workflows for interior design projects."
+    },
+    "hero": {
+      "badge": "Client approvals made simple",
+      "title": "Get client sign-off faster with seamless approvals.",
+      "subtitle": "Transform endless email chains and missed approvals into a streamlined workflow. Get real-time notifications, track progress, and keep projects moving forward.",
+      "imageAlt": "Focuspilot approval workflow showing client portal with pending approvals, comments, and real-time status updates"
+    },
+    "approvalFlow": {
+      "title": "How approvals work in Focuspilot",
+      "subtitle": "A simple, visual process that keeps everyone aligned and projects on track.",
+      "steps": {
+        "shareForApproval": {
+          "title": "Share for approval",
+          "description": "Upload designs, samples, or documents directly to your project. Set approval deadlines and add context."
+        },
+        "clientReviews": {
+          "title": "Client reviews",
+          "description": "Clients receive instant notifications and can review, comment, and approve from any device."
+        },
+        "trackProgress": {
+          "title": "Track progress",
+          "description": "See approval status in real-time. Get notified when decisions are made or deadlines approach."
+        },
+        "moveForward": {
+          "title": "Move forward",
+          "description": "Approved items automatically update project timelines. Keep momentum with automated next steps."
+        }
+      }
+    },
+    "featureBlocks": {
+      "realTimeNotifications": {
+        "title": "Real-time notifications",
+        "description": "Never miss an approval again. Get instant notifications when clients review, comment, or approve items.",
+        "benefits": {
+          "instantNotifications": "Instant email and in-app notifications",
+          "reminderSchedules": "Customizable reminder schedules",
+          "mobileLinks": "Mobile-friendly approval links",
+          "deadlineTracking": "Deadline tracking and alerts"
+        },
+        "imageAlt": "Real-time notification system showing approval requests and status updates"
+      },
+      "visualApprovalWorkflow": {
+        "title": "Visual approval workflow",
+        "description": "Present designs beautifully with context. Clients can see exactly what they're approving with full project context.",
+        "benefits": {
+          "imageGalleries": "High-resolution image galleries",
+          "sideBySide": "Side-by-side comparisons",
+          "projectContext": "Contextual project information",
+          "mobileViewing": "Mobile-optimized viewing"
+        },
+        "imageAlt": "Visual approval interface showing design presentations and client feedback"
+      },
+      "versionControlHistory": {
+        "title": "Version control & history",
+        "description": "Keep track of every revision and decision. Never lose sight of what was approved when.",
+        "benefits": {
+          "approvalHistory": "Complete approval history",
+          "versionComparison": "Version comparison tools",
+          "auditTrail": "Audit trail for all decisions",
+          "rollback": "Rollback to previous versions"
+        },
+        "imageAlt": "Document version control showing approval history and revision tracking"
+      }
+    },
+    "imageBlock": {
+      "line1": "Your clients, delighted.",
+      "line2": "Your approvals, streamlined.",
+      "line3": "Your projects, on time.",
+      "cta": "Transform approvals",
+      "imageAlt": "Modern interior design studio with natural lighting and organized workspace"
+    },
+    "benefitsGrid": {
+      "title": "Why designers love Focuspilot approvals",
+      "subtitle": "Transform client communication from chaos to clarity with features built for design professionals.",
+      "items": {
+        "fasterDecisions": {
+          "title": "Faster decisions",
+          "description": "Reduce approval time from days to hours with streamlined workflows and instant notifications."
+        },
+        "secureCompliant": {
+          "title": "Secure & compliant",
+          "description": "Enterprise-grade security with audit trails and compliance features for professional peace of mind."
+        },
+        "betterClientExperience": {
+          "title": "Better client experience",
+          "description": "Give clients a professional, easy-to-use portal that makes them feel involved and informed."
+        },
+        "neverMissDeadlines": {
+          "title": "Never miss deadlines",
+          "description": "Automated reminders and deadline tracking ensure approvals don't become project bottlenecks."
+        },
+        "completeTransparency": {
+          "title": "Complete transparency",
+          "description": "Everyone sees the same information. No more confusion about what's been approved or pending."
+        },
+        "automatedWorkflows": {
+          "title": "Automated workflows",
+          "description": "Approvals trigger next steps automatically, keeping your projects moving without manual intervention."
+        }
+      }
+    },
+    "bigCta": {
+      "title": "Stop chasing approvals. Start designing.",
+      "subtitle": "Join hundreds of design studios using Focuspilot to streamline client approvals and keep projects on track."
+    }
+  }
+}

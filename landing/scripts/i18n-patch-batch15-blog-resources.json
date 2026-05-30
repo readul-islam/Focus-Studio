@@ -1,0 +1,176 @@
+{
+  "blogPage": {
+    "meta": {
+      "title": "Blog | Focuspilot — Interior Design Studio Insights",
+      "description": "Tips, guides, and insights for interior design studios. Project management, procurement, client collaboration, and business growth."
+    },
+    "moreArticles": "More articles",
+    "emptyCategory": "No articles in this category yet.",
+    "postMeta": {
+      "titleSuffix": " | Focuspilot Blog",
+      "defaultDescription": "Read this article on the Focuspilot blog."
+    }
+  },
+  "blogCategories": {
+    "all": "All",
+    "workflow": "Workflow",
+    "studio-management": "Studio Management",
+    "industry-trends": "Industry Trends",
+    "best-practices": "Best Practices",
+    "filterBy": "Filter by:"
+  },
+  "blogHero": {
+    "breadcrumbHome": "Home",
+    "breadcrumbBlog": "Blog",
+    "badge": "Studio insights",
+    "title": "Insights for modern design studios",
+    "subtitle": "Practical guides on workflow, studio operations, and industry trends—written for teams who run projects, procurement, and client approvals in one place.",
+    "statsArticles": "Articles",
+    "statsTopics": "Topics",
+    "statsUpdated": "Updated",
+    "statsUpdatedValue": "Weekly",
+    "featuredLabel": "Featured",
+    "readArticle": "Read article"
+  },
+  "blogPost": {
+    "backToBlog": "Back to Blog",
+    "shareArticle": "Share this article:",
+    "shareTwitter": "Share on Twitter",
+    "shareLinkedIn": "Share on LinkedIn",
+    "shareFacebook": "Share on Facebook",
+    "copyLink": "Copy link",
+    "tagged": "Tagged:",
+    "continueReading": "Continue Reading",
+    "finalCtaTitle": "Ready to transform your studio?",
+    "finalCtaSubtitle": "Join thousands of designers streamlining their workflows with Focuspilot."
+  },
+  "resourcesTemplates": {
+    "meta": {
+      "title": "Studio Templates | Free Downloads | Focuspilot",
+      "description": "Download free interior design studio templates—proposals, contracts, briefs, and procurement sheets. Customise or automate in Focuspilot."
+    },
+    "hero": {
+      "badge": "Free downloads",
+      "title": "Studio templates",
+      "subtitle": "Proposals, contracts, briefs, and procurement sheets—download outlines you can customise, or run them automatically in Focuspilot with AI."
+    },
+    "categories": {
+      "All": "All",
+      "Proposals": "Proposals",
+      "Contracts": "Contracts",
+      "Planning": "Planning",
+      "Procurement": "Procurement",
+      "Discovery": "Discovery",
+      "Finance": "Finance"
+    },
+    "templates": {
+      "design-proposal": {
+        "title": "Design Proposal Template",
+        "description": "Professional proposal with scope, phased deliverables, fee structure, and terms—ready for residential or commercial kickoffs."
+      },
+      "letter-of-agreement": {
+        "title": "Letter of Agreement",
+        "description": "Contract template covering services, fees, revisions, liability, and termination—structured for interior design studios."
+      },
+      "project-brief": {
+        "title": "Project Brief Template",
+        "description": "Capture budget, timeline, style direction, and functional requirements before concept work begins."
+      },
+      "ffe-schedule": {
+        "title": "FF&E Schedule Template",
+        "description": "Track specifications, suppliers, lead times, and room assignments in a studio-standard procurement sheet."
+      },
+      "client-questionnaire": {
+        "title": "Client Questionnaire",
+        "description": "Discovery questions for lifestyle, budget comfort, and communication preferences—use before the first workshop."
+      },
+      "invoice": {
+        "title": "Invoice Template",
+        "description": "Invoice layout with line items, VAT notes, payment terms, and bank details—aligned with Focuspilot finance workflows."
+      }
+    },
+    "popular": "Popular",
+    "download": "Download",
+    "preview": "Preview",
+    "cta": {
+      "title": "Templates that update themselves",
+      "subtitle": "In Focuspilot, proposals pull from your CRM, FF&E links to procurement, and invoices sync to finance—no copy-paste between spreadsheets.",
+      "startFree": "Start for free",
+      "aiPlaybook": "AI Playbook"
+    }
+  },
+  "resourcesAiPlaybook": {
+    "meta": {
+      "title": "AI Playbook for Interior Design Studios | Focuspilot",
+      "description": "Practical AI workflows for interior design studios: email, procurement, proposals, and governance. Prompts and guardrails you can use today."
+    },
+    "hero": {
+      "badge": "Resources",
+      "title": "AI Playbook for design studios",
+      "subtitle": "Practical workflows, prompts, and guardrails to use AI across email, procurement, proposals, and delivery—without losing your studio's voice.",
+      "exploreAi": "Explore AI features"
+    },
+    "quickWinsTitle": "Quick wins this week",
+    "learnMore": "Learn more",
+    "onThisPage": "On this page",
+    "promptLibrary": "Prompt library",
+    "copy": "Copy",
+    "copied": "Copied",
+    "finalCta": {
+      "title": "Run the playbook inside Focuspilot",
+      "subtitle": "AI email routing, procurement assistance, and proposal drafts—connected to your projects, not a blank chat window.",
+      "startFree": "Start for free",
+      "browseTemplates": "Browse templates"
+    }
+  },
+  "templateDetail": {
+    "freeOutline": "Free outline — customise for your studio",
+    "download": "Download",
+    "automateInFocuspilot": "Automate in Focuspilot",
+    "allTemplates": "← All templates"
+  },
+  "templateDownloadDialog": {
+    "title": "Download template",
+    "description": "Enter your email to download this template. We'll also send occasional studio tips—you can unsubscribe anytime.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@studio.com",
+    "submit": "Download",
+    "submitting": "Downloading...",
+    "success": "Check your inbox for the download link.",
+    "downloadOutline": "Download outline",
+    "useInFocuspilot": "Use in Focuspilot",
+    "formatDescription": "{format} — customise in Word, Google Docs, or use the automated version in Focuspilot.",
+    "footerNote": "Automate this template with AI proposals, approvals, and invoicing.",
+    "seeAiPlaybook": "See AI Playbook",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "studioProfile": {
+    "meta": {
+      "titleSuffix": " | Focuspilot Studio",
+      "defaultDescription": "View this design studio profile on Focuspilot."
+    },
+    "notFound": {
+      "title": "Studio not found",
+      "description": "This studio profile doesn't exist or is no longer public.",
+      "backHome": "Back to home"
+    },
+    "designStudio": "Design Studio",
+    "established": "Est. {year}",
+    "teamSize": "{count} team members",
+    "starsLabel": "{rating} out of 5 stars",
+    "website": "Website",
+    "linkedin": "LinkedIn",
+    "instagram": "Instagram",
+    "about": "About",
+    "pastWork": "Past work",
+    "noImage": "No image",
+    "clientReviews": "Client reviews",
+    "services": "Services",
+    "specialties": "Specialties",
+    "team": "Team",
+    "contact": "Contact",
+    "poweredBy": "Powered by",
+    "reviewsCount": "{rating} ({count} reviews)"
+  }
+}

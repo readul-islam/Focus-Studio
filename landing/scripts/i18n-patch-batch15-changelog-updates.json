@@ -1,0 +1,157 @@
+{
+  "changelogPage": {
+    "updates": {
+      "v26": {
+        "date": "May 2026",
+        "version": "2.6",
+        "changes": {
+          "zapierApi": {
+            "type": "new",
+            "title": "Zapier & Studio API",
+            "description": "Create API keys and signed webhooks in Settings → API & webhooks. REST endpoints for projects and clients, with events for new projects, clients, and invoices."
+          },
+          "notionIntegration": {
+            "type": "new",
+            "title": "Notion Integration",
+            "description": "Connect Notion in Studio Integrations — browse shared databases, map a database to project sync, and pull rows into Focuspilot projects."
+          },
+          "integrationsSettings": {
+            "type": "improvement",
+            "title": "Integrations Settings",
+            "description": "Cleaner integration cards with connect/disconnect on each app and a settings panel for Notion (browse, mapping, and sync)."
+          }
+        }
+      },
+      "v25": {
+        "date": "May 2026",
+        "version": "2.5",
+        "changes": {
+          "gmailIntegration": {
+            "type": "new",
+            "title": "Gmail Integration",
+            "description": "Connect Gmail in Settings → Studio → Integrations to sync messages into AI Inbox and keep client email in one workspace."
+          },
+          "googleCalendar": {
+            "type": "new",
+            "title": "Google Calendar Connection",
+            "description": "Link Google Calendar from Studio Integrations and toggle My Calendar on the studio calendar to view and add personal Google events."
+          },
+          "projectCalendarEvents": {
+            "type": "new",
+            "title": "Project Calendar Events",
+            "description": "Add events to a specific project or browse All Projects — schedule entries show on the grid and in the day detail panel."
+          },
+          "calendarEventDisplay": {
+            "type": "improvement",
+            "title": "Calendar Event Display",
+            "description": "Event chips use matching text and background colors, truncate long titles with ellipsis, and show the full event on hover without bleeding into other dates."
+          },
+          "projectCalendarFiltering": {
+            "type": "fix",
+            "title": "Project Calendar Filtering",
+            "description": "Fixed date handling and project filters so events appear on the correct day in All Projects and single-project views."
+          }
+        }
+      },
+      "v24": {
+        "date": "January 2025",
+        "version": "2.4",
+        "changes": {
+          "aiEmailDrafting": {
+            "type": "new",
+            "title": "AI Email Drafting",
+            "description": "Let AI draft client emails based on project context and communication history"
+          },
+          "bulkPoGeneration": {
+            "type": "new",
+            "title": "Bulk PO Generation",
+            "description": "Create multiple purchase orders at once from your procurement schedule"
+          },
+          "fasterDashboard": {
+            "type": "improvement",
+            "title": "Faster Dashboard",
+            "description": "50% faster loading for project dashboards with optimized data fetching"
+          },
+          "contractorPortal": {
+            "type": "new",
+            "title": "Contractor Portal",
+            "description": "Give contractors secure access to specs, schedules, and communication"
+          }
+        }
+      },
+      "v23": {
+        "date": "December 2024",
+        "version": "2.3",
+        "changes": {
+          "clientPortalPayments": {
+            "type": "new",
+            "title": "Client Portal Payments",
+            "description": "Clients can pay invoices directly in the portal with Stripe integration"
+          },
+          "xeroTwoWaySync": {
+            "type": "new",
+            "title": "Xero Two-Way Sync",
+            "description": "Full bidirectional sync with Xero accounting for invoices and expenses"
+          },
+          "pdfExport": {
+            "type": "fix",
+            "title": "PDF Export",
+            "description": "Fixed formatting issues in proposal PDFs affecting tables and images"
+          },
+          "mobileNavigation": {
+            "type": "improvement",
+            "title": "Mobile Navigation",
+            "description": "Redesigned mobile menu for faster access to key features"
+          }
+        }
+      },
+      "v22": {
+        "date": "November 2024",
+        "version": "2.2",
+        "changes": {
+          "aiProductSourcing": {
+            "type": "new",
+            "title": "AI Product Sourcing",
+            "description": "Find alternative products and trade pricing automatically from supplier catalogs"
+          },
+          "mobileExperience": {
+            "type": "improvement",
+            "title": "Mobile Experience",
+            "description": "Redesigned mobile interface for on-site use with offline support"
+          },
+          "search": {
+            "type": "improvement",
+            "title": "Search",
+            "description": "Much faster search across projects, products, and contacts with fuzzy matching"
+          },
+          "calendarSync": {
+            "type": "fix",
+            "title": "Calendar Sync",
+            "description": "Resolved sync issues with Google Calendar for project milestones"
+          }
+        }
+      },
+      "v21": {
+        "date": "October 2024",
+        "version": "2.1",
+        "changes": {
+          "projectTemplates": {
+            "type": "new",
+            "title": "Project Templates",
+            "description": "Create and share project templates across your team for consistent workflows"
+          },
+          "timeTracking": {
+            "type": "new",
+            "title": "Time Tracking",
+            "description": "Track billable hours per task with automatic invoice generation"
+          },
+          "clientPortal": {
+            "type": "improvement",
+            "title": "Client Portal",
+            "description": "New approval workflow with comment threads and revision history"
+          }
+        }
+      }
+    }
+  }
+}

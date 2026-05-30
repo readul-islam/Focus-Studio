@@ -1,0 +1,173 @@
+{
+  "platformAiEmail": {
+    "meta": {
+      "title": "AI Email & Communication Tools for Interior Designers | Focuspilot",
+      "description": "Unified inbox with AI-powered project routing, smart replies, and automatic email categorization. Keep all client communication organized by project.",
+      "ogDescription": "Unified inbox with AI-powered project routing for interior design studios.",
+      "twitterDescription": "Unified inbox with AI-powered project routing for interior design studios."
+    },
+    "hero": {
+      "badge": "Communication",
+      "title": "Unified inbox with project routing",
+      "subtitle": "Fully integrated with Gmail. Route project‑specific and supplier emails into Focuspilot, then share to the project and team with GDPR‑aware controls.",
+      "homeInbox": "Home inbox",
+      "projectMessages": "Project messages",
+      "gmailConnected": "Gmail connected",
+      "projectMessagesImageAlt": "Project messages feed with email and portal threads"
+    },
+    "howItWorks": {
+      "title": "Streamlined, collaborative communication",
+      "subtitle": "Nothing missed. Nothing dropped. One feed for emails, portal messages, contracts and AI alerts.",
+      "steps": {
+        "connectGmail": {
+          "title": "Connect Gmail",
+          "description": "Secure OAuth connection; keep your personal inbox intact."
+        },
+        "smartRouting": {
+          "title": "Smart routing",
+          "description": "Project detection by participants, subject and labels—plus vendor recognition."
+        },
+        "shareWithControl": {
+          "title": "Share with control",
+          "description": "Share to a project feed with one click; redact participants; revoke anytime."
+        }
+      }
+    },
+    "inbox": {
+      "share": "Share",
+      "shared": "Shared",
+      "shareToProject": "Share to project",
+      "shareAria": "Share to project",
+      "sharedAria": "Shared",
+      "toastTitle": "Shared to project",
+      "rows": {
+        "inGoodCompany": {
+          "from": "In Good Company",
+          "subject": "Proforma invoice • Brass floor lamp",
+          "tag": "Vendor"
+        },
+        "oakHouseClient": {
+          "from": "Client — Oak House",
+          "subject": "Re: Dining chair finishes (linen vs boucle)",
+          "tag": "Client"
+        },
+        "logistics": {
+          "from": "Logistics",
+          "subject": "Dispatch notice • Order 34821",
+          "tag": "Delivery"
+        },
+        "stonecraft": {
+          "from": "Stonecraft Ltd",
+          "subject": "Lead time update — marble slab",
+          "tag": "Vendor"
+        }
+      },
+      "tags": {
+        "vendor": "Vendor",
+        "client": "Client",
+        "delivery": "Delivery",
+        "design": "Design",
+        "email": "Email",
+        "shared": "Shared",
+        "linkedToTask": "Linked to task"
+      }
+    },
+    "bento": {
+      "unifiedInbox": {
+        "title": "Unified inbox"
+      },
+      "projectRouting": {
+        "title": "Project routing",
+        "description": "Emails are auto‑suggested to a project using participants, subject and labels. Confirm in one click.",
+        "exampleSubject": "“Dining chair finishes (linen vs boucle)”",
+        "projectLabel": "Project: Oak House",
+        "confirmRouting": "Confirm routing",
+        "change": "Change…"
+      },
+      "vendorTimeline": {
+        "title": "Vendor emails → PO timeline",
+        "description": "Delivery notices and lead time updates flow into Procurement and update PO status automatically.",
+        "items": {
+          "dispatch": {
+            "label": "Dispatch notice • Order 34821",
+            "status": "In transit"
+          },
+          "leadTime": {
+            "label": "Lead time update — marble slab",
+            "status": "ETA shifted +3d"
+          }
+        }
+      },
+      "aiSummary": {
+        "title": "AI summary & actions",
+        "summary": "Summary: Client prefers linen, requests sample. Approve pendant lights, confirm dispatch window.",
+        "actions": {
+          "orderSamples": "Create a task: Order fabric samples",
+          "createPo": "Create a PO: Pendant lights (approved)",
+          "replyDelivery": "Reply: Confirm delivery window"
+        },
+        "createTask": "Create task",
+        "createPo": "Create PO"
+      },
+      "shareControl": {
+        "title": "Share with control",
+        "description": "Share to a project feed with one click; redact participants; revoke anytime.",
+        "chips": {
+          "redact": "Redact personal emails",
+          "audit": "Audit trail",
+          "shareToFeed": "Share to: Project feed"
+        }
+      },
+      "unifiedMessages": {
+        "title": "Unified messages",
+        "description": "Email threads sit next to portal messages, RFIs and AI alerts — one place to collaborate.",
+        "imageAlt": "Project messages feed combining emails and portal threads"
+      }
+    },
+    "kpis": {
+      "emailsCentralised": {
+        "label": "Emails centralised",
+        "value": "100%"
+      },
+      "responseTime": {
+        "label": "Response time",
+        "value": "−38%",
+        "sub": "median vs baseline"
+      },
+      "sharedThreads": {
+        "label": "Shared threads",
+        "value": "4.2x",
+        "sub": "more visibility"
+      },
+      "autoActions": {
+        "label": "Auto actions",
+        "value": "2.8x",
+        "sub": "tasks/POs created"
+      }
+    },
+    "collaboration": {
+      "title": "One hub for studio communication",
+      "subtitle": "Your personal \"Home inbox\" stays yours. Share to the project when it matters - so teams, contractors, and clients stay aligned without forwarding chains.",
+      "bullets": {
+        "shareThreads": "Share email threads with one click",
+        "aiExtracts": "AI extracts next actions and drafts replies",
+        "linkMessages": "Link messages to tasks, POs, and documents instantly"
+      },
+      "mock": {
+        "projectTitle": "Oak House • Selections",
+        "projectFeed": "Project feed",
+        "fromClient": "From: Client",
+        "clientMessage": "“Let’s go with linen on the dining chairs.”",
+        "fromFocuspilot": "From: Focuspilot",
+        "aiSummary": "AI summary: Approve pendant lights; order fabric samples; confirm delivery window.",
+        "assign": "Assign",
+        "createPo": "Create PO",
+        "feedImageAlt": "Messages feed including emails, portal messages and AI alerts"
+      }
+    },
+    "finalCta": {
+      "title": "Email that works like your studio does",
+      "subtitle": "Unified inbox, project routing, supplier tracking and GDPR‑aware sharing—only in Focuspilot."
+    }
+  }
+}

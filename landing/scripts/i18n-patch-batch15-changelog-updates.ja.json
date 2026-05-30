@@ -1,0 +1,157 @@
+{
+  "changelogPage": {
+    "updates": {
+      "v26": {
+        "date": "2026年5月",
+        "version": "2.6",
+        "changes": {
+          "zapierApi": {
+            "type": "new",
+            "title": "Zapier & スタジオAPI",
+            "description": "設定 → API & WebhooksでAPIキーと署名付きWebhookを作成。プロジェクトとクライアント向けRESTエンドポイント、新規プロジェクト・クライアント・請求書のイベント対応。"
+          },
+          "notionIntegration": {
+            "type": "new",
+            "title": "Notion連携",
+            "description": "スタジオ連携でNotionを接続—共有データベースを閲覧、プロジェクト同期用にマッピング、行をFocuspilotプロジェクトに取り込み。"
+          },
+          "integrationsSettings": {
+            "type": "improvement",
+            "title": "連携設定",
+            "description": "各アプリの接続/切断とNotion設定パネル（閲覧、マッピング、同期）を備えたすっきりした連携カード。"
+          }
+        }
+      },
+      "v25": {
+        "date": "2026年5月",
+        "version": "2.5",
+        "changes": {
+          "gmailIntegration": {
+            "type": "new",
+            "title": "Gmail連携",
+            "description": "設定 → スタジオ → 連携でGmailを接続し、メッセージをAIインボックスに同期。クライアントメールを一つのワークスペースに。"
+          },
+          "googleCalendar": {
+            "type": "new",
+            "title": "Googleカレンダー接続",
+            "description": "スタジオ連携からGoogleカレンダーをリンクし、スタジオカレンダーでマイカレンダーをオンにして個人のGoogleイベントを表示・追加。"
+          },
+          "projectCalendarEvents": {
+            "type": "new",
+            "title": "プロジェクトカレンダーイベント",
+            "description": "特定プロジェクトまたは全プロジェクトにイベントを追加—グリッドと日詳細パネルに表示。"
+          },
+          "calendarEventDisplay": {
+            "type": "improvement",
+            "title": "カレンダーイベント表示",
+            "description": "イベントチップはテキストと背景色を一致、長いタイトルは省略表示、ホバーで全文表示、他の日付に重ならない。"
+          },
+          "projectCalendarFiltering": {
+            "type": "fix",
+            "title": "プロジェクトカレンダーフィルター",
+            "description": "日付処理とプロジェクトフィルターを修正し、全プロジェクト・単一プロジェクトビューで正しい日にイベントが表示。"
+          }
+        }
+      },
+      "v24": {
+        "date": "2025年1月",
+        "version": "2.4",
+        "changes": {
+          "aiEmailDrafting": {
+            "type": "new",
+            "title": "AIメール下書き",
+            "description": "プロジェクトコンテキストとコミュニケーション履歴に基づきAIがクライアントメールを下書き。"
+          },
+          "bulkPoGeneration": {
+            "type": "new",
+            "title": "一括発注書作成",
+            "description": "調達スケジュールから複数の発注書を一度に作成。"
+          },
+          "fasterDashboard": {
+            "type": "improvement",
+            "title": "ダッシュボード高速化",
+            "description": "データ取得の最適化によりプロジェクトダッシュボードの読み込みが50%高速化。"
+          },
+          "contractorPortal": {
+            "type": "new",
+            "title": "施工業者ポータル",
+            "description": "施工業者に仕様、スケジュール、コミュニケーションへの安全なアクセスを提供。"
+          }
+        }
+      },
+      "v23": {
+        "date": "2024年12月",
+        "version": "2.3",
+        "changes": {
+          "clientPortalPayments": {
+            "type": "new",
+            "title": "クライアントポータル決済",
+            "description": "Stripe連携でクライアントがポータル内で請求書を直接支払い。"
+          },
+          "xeroTwoWaySync": {
+            "type": "new",
+            "title": "Xero双方向同期",
+            "description": "請求書と経費についてXero会計との完全双方向同期。"
+          },
+          "pdfExport": {
+            "type": "fix",
+            "title": "PDFエクスポート",
+            "description": "表と画像に影響する提案書PDFのフォーマット問題を修正。"
+          },
+          "mobileNavigation": {
+            "type": "improvement",
+            "title": "モバイルナビゲーション",
+            "description": "主要機能への素早いアクセスのためモバイルメニューを再設計。"
+          }
+        }
+      },
+      "v22": {
+        "date": "2024年11月",
+        "version": "2.2",
+        "changes": {
+          "aiProductSourcing": {
+            "type": "new",
+            "title": "AI製品調達",
+            "description": "サプライヤーカタログから代替製品と卸価格を自動検索。"
+          },
+          "mobileExperience": {
+            "type": "improvement",
+            "title": "モバイル体験",
+            "description": "オフライン対応の現場利用向けモバイルUIを再設計。"
+          },
+          "search": {
+            "type": "improvement",
+            "title": "検索",
+            "description": "あいまい一致でプロジェクト、製品、連絡先の検索が大幅に高速化。"
+          },
+          "calendarSync": {
+            "type": "fix",
+            "title": "カレンダー同期",
+            "description": "プロジェクトマイルストーンのGoogleカレンダー同期問題を解決。"
+          }
+        }
+      },
+      "v21": {
+        "date": "2024年10月",
+        "version": "2.1",
+        "changes": {
+          "projectTemplates": {
+            "type": "new",
+            "title": "プロジェクトテンプレート",
+            "description": "一貫したワークフローのためチーム間でプロジェクトテンプレートを作成・共有。"
+          },
+          "timeTracking": {
+            "type": "new",
+            "title": "時間トラッキング",
+            "description": "タスクごとに請求可能時間を記録し、請求書を自動生成。"
+          },
+          "clientPortal": {
+            "type": "improvement",
+            "title": "クライアントポータル",
+            "description": "コメントスレッドと改訂履歴を備えた新しい承認ワークフロー。"
+          }
+        }
+      }
+    }
+  }
+}

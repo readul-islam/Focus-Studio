@@ -7,14 +7,15 @@ import {
   MapPin, Globe, Mail, Phone, Star, Linkedin, Instagram,
   ExternalLink, Users, Calendar,
 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import type { PublicStudioProfile } from "@/lib/public-profile"
 import { cn } from "@/lib/utils"
 
 const container = "mx-auto max-w-[1100px] px-6 sm:px-8"
 
-function Stars({ rating }: { rating: number }) {
+function Stars({ rating, label }: { rating: number; label: string }) {
   return (
-    <div className="flex gap-0.5" aria-label={`${rating} out of 5 stars`}>
+    <div className="flex gap-0.5" aria-label={label}>
       {[1, 2, 3, 4, 5].map((i) => (
         <Star
           key={i}
@@ -42,6 +43,7 @@ function SocialLink({ href, label, icon }: { href: string; label: string; icon: 
 }
 
 export function StudioPublicProfileClient({ profile }: { profile: PublicStudioProfile }) {
+  const t = useTranslations("studioProfile")
   const featured = profile.portfolio.filter((p) => p.is_featured)
   const rest = profile.portfolio.filter((p) => !p.is_featured)
   const orderedPortfolio = [...featured, ...rest]
@@ -79,7 +81,7 @@ export function StudioPublicProfileClient({ profile }: { profile: PublicStudioPr
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium uppercase tracking-wider text-stone-500 mb-1">Design Studio</p>
+              <p className="text-xs font-medium uppercase tracking-wider text-stone-500 mb-1">{t("designStudio")}</p>
               <h1 className="text-2xl sm:text-3xl font-medium tracking-tight text-stone-900">
                 {profile.studio_name}
               </h1>
@@ -100,7 +102,7 @@ export function StudioPublicProfileClient({ profile }: { profile: PublicStudioPr
                 {profile.founded_year ? (
                   <span className="inline-flex items-center gap-1.5">
                     <Calendar className="size-4" />
-                    Est. {profile.founded_year}
+                    {t("established", { year: profile.founded_year })}
                   </span>
                 ) : null}
                 {profile.team_size_display ? (
@@ -111,21 +113,21 @@ export function StudioPublicProfileClient({ profile }: { profile: PublicStudioPr
                 ) : null}
                 {profile.average_rating != null && profile.review_count > 0 ? (
                   <span className="inline-flex items-center gap-2">
-                    <Stars rating={Math.round(profile.average_rating)} />
-                    <span>{profile.average_rating} ({profile.review_count} reviews)</span>
+                    <Stars rating={Math.round(profile.average_rating)} label={t("starsLabel", { rating: Math.round(profile.average_rating) })} />
+                    <span>{t("reviewsCount", { rating: profile.average_rating, count: profile.review_count })}</span>
                   </span>
                 ) : null}
               </div>
 
               <div className="mt-5 flex flex-wrap gap-4">
                 {profile.website_url ? (
-                  <SocialLink href={profile.website_url} label="Website" icon={<Globe className="size-4" />} />
+                  <SocialLink href={profile.website_url} label={t("website")} icon={<Globe className="size-4" />} />
                 ) : null}
                 {profile.linkedin_url ? (
-                  <SocialLink href={profile.linkedin_url} label="LinkedIn" icon={<Linkedin className="size-4" />} />
+                  <SocialLink href={profile.linkedin_url} label={t("linkedin")} icon={<Linkedin className="size-4" />} />
                 ) : null}
                 {profile.instagram_url ? (
-                  <SocialLink href={profile.instagram_url} label="Instagram" icon={<Instagram className="size-4" />} />
+                  <SocialLink href={profile.instagram_url} label={t("instagram")} icon={<Instagram className="size-4" />} />
                 ) : null}
               </div>
             </div>
@@ -136,14 +138,14 @@ export function StudioPublicProfileClient({ profile }: { profile: PublicStudioPr
           <div className="lg:col-span-2 space-y-10">
             {profile.about ? (
               <section>
-                <h2 className="text-xl font-medium text-stone-900 mb-4">About</h2>
+                <h2 className="text-xl font-medium text-stone-900 mb-4">{t("about")}</h2>
                 <p className="text-stone-600 leading-relaxed whitespace-pre-wrap">{profile.about}</p>
               </section>
             ) : null}
 
             {orderedPortfolio.length > 0 ? (
               <section>
-                <h2 className="text-xl font-medium text-stone-900 mb-6">Past work</h2>
+                <h2 className="text-xl font-medium text-stone-900 mb-6">{t("pastWork")}</h2>
                 <div className="grid sm:grid-cols-2 gap-6">
                   {orderedPortfolio.map((item) => (
                     <article
@@ -155,7 +157,7 @@ export function StudioPublicProfileClient({ profile }: { profile: PublicStudioPr
                           <Image src={item.image_url} alt={item.title} fill className="object-cover" unoptimized />
                         ) : (
                           <div className="absolute inset-0 flex items-center justify-center text-stone-400 text-sm">
-                            No image
+                            {t("noImage")}
                           </div>
                         )}
                       </div>
@@ -183,7 +185,7 @@ export function StudioPublicProfileClient({ profile }: { profile: PublicStudioPr
 
             {profile.reviews.length > 0 ? (
               <section>
-                <h2 className="text-xl font-medium text-stone-900 mb-6">Client reviews</h2>
+                <h2 className="text-xl font-medium text-stone-900 mb-6">{t("clientReviews")}</h2>
                 <div className="space-y-4">
                   {profile.reviews.map((r) => (
                     <blockquote
@@ -208,7 +210,7 @@ export function StudioPublicProfileClient({ profile }: { profile: PublicStudioPr
               <section className="bg-white rounded-xl border border-stone-200/80 p-5 shadow-sm">
                 {profile.services?.length > 0 ? (
                   <>
-                    <h3 className="text-sm font-medium text-stone-900 mb-3">Services</h3>
+                    <h3 className="text-sm font-medium text-stone-900 mb-3">{t("services")}</h3>
                     <ul className="flex flex-wrap gap-2 mb-4">
                       {profile.services.map((s) => (
                         <li key={s} className="text-xs px-2.5 py-1 rounded-full bg-stone-100 text-stone-700">
@@ -220,7 +222,7 @@ export function StudioPublicProfileClient({ profile }: { profile: PublicStudioPr
                 ) : null}
                 {profile.specialties?.length > 0 ? (
                   <>
-                    <h3 className="text-sm font-medium text-stone-900 mb-3">Specialties</h3>
+                    <h3 className="text-sm font-medium text-stone-900 mb-3">{t("specialties")}</h3>
                     <ul className="flex flex-wrap gap-2">
                       {profile.specialties.map((s) => (
                         <li key={s} className="text-xs px-2.5 py-1 rounded-full bg-[#f0ebe3] text-stone-700">
@@ -235,7 +237,7 @@ export function StudioPublicProfileClient({ profile }: { profile: PublicStudioPr
 
             {profile.team?.length > 0 ? (
               <section className="bg-white rounded-xl border border-stone-200/80 p-5 shadow-sm">
-                <h3 className="text-sm font-medium text-stone-900 mb-4">Team</h3>
+                <h3 className="text-sm font-medium text-stone-900 mb-4">{t("team")}</h3>
                 <ul className="space-y-3">
                   {profile.team.map((m, i) => (
                     <li key={i} className="flex items-center gap-3">
@@ -260,7 +262,7 @@ export function StudioPublicProfileClient({ profile }: { profile: PublicStudioPr
 
             {(profile.contact_email_public || profile.contact_phone_public) ? (
               <section className="bg-white rounded-xl border border-stone-200/80 p-5 shadow-sm">
-                <h3 className="text-sm font-medium text-stone-900 mb-3">Contact</h3>
+                <h3 className="text-sm font-medium text-stone-900 mb-3">{t("contact")}</h3>
                 <div className="space-y-2 text-sm">
                   {profile.contact_email_public ? (
                     <a
@@ -285,9 +287,9 @@ export function StudioPublicProfileClient({ profile }: { profile: PublicStudioPr
             ) : null}
 
             <p className="text-xs text-stone-400 text-center">
-              Powered by{" "}
+              {t("poweredBy")}{" "}
               <Link href="https://focuspilot.io" className="underline hover:text-stone-600">
-                Focuspilot
+                {t("focuspilot")}
               </Link>
             </p>
           </aside>

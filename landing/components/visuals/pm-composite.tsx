@@ -1,5 +1,6 @@
 "use client"
 import Image from "next/image"
+import { useTranslations } from "next-intl"
 import { cn } from "@/lib/utils"
 
 /**
@@ -15,12 +16,14 @@ export function PmComposite({
   className?: string
   ratio?: string
 }) {
+  const t = useTranslations("visuals.pm")
+
   return (
     <div className={cn("relative w-full", ratio, className)}>
       {/* Base studio hero image */}
       <Image
         src="/images/overlays/designer-hero-new.png"
-        alt="Interior designer working at wooden desk in elegant studio with built-in bookshelves and brass lighting"
+        alt={t("heroAlt")}
         fill
         sizes="(max-width: 768px) 100vw, (max-width: 1280px) 55vw, 640px"
         className="rounded-xl object-cover"
@@ -47,7 +50,7 @@ export function PmComposite({
         <div className="overflow-hidden rounded-[12px] bg-white/60 backdrop-blur-md ring-1 ring-white/65 shadow-[0_10px_24px_rgba(0,0,0,0.2)]">
           <Image
             src="/images/overlays/calendar-card.png"
-            alt="Calendar: Site Visit - Office Space Progress"
+            alt={t("calendarAlt")}
             width={454}
             height={432}
             sizes="(max-width: 768px) 24vw, (max-width: 1280px) 22vw, 260px"
@@ -67,7 +70,7 @@ export function PmComposite({
         <div className="overflow-hidden rounded-[12px] bg-white/85 backdrop-blur-md ring-1 ring-white/75 shadow-[0_10px_24px_rgba(0,0,0,0.22)]">
           <Image
             src="/images/overlays/ai-composer.png"
-            alt="AI composer with quick actions for project management"
+            alt={t("aiComposerAlt")}
             width={764}
             height={272}
             sizes="(max-width: 768px) 36vw, (max-width: 1280px) 30vw, 380px"
@@ -91,7 +94,7 @@ export function PmComposite({
         <div className="overflow-hidden rounded-[12px] bg-white/70 backdrop-blur-md ring-1 ring-white/70 shadow-[0_12px_26px_rgba(0,0,0,0.2)]">
           <Image
             src="/images/overlays/task-card.png"
-            alt="Task: Present final concepts"
+            alt={t("taskCardAlt")}
             width={900}
             height={360}
             sizes="(max-width: 768px) 34vw, (max-width: 1280px) 24vw, 320px"

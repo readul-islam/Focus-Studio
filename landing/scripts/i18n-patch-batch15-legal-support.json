@@ -1,0 +1,195 @@
+{
+  "termsPage": {
+    "meta": {
+      "title": "Terms of Service | Focuspilot",
+      "description": "Focuspilot terms of service. Read our terms and conditions for using the platform."
+    },
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: March 2026",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "body": "By accessing or using Focuspilot, you agree to be bound by these Terms of Service. If you disagree with any part, you may not use our service."
+      },
+      "service": {
+        "title": "2. Description of Service",
+        "body": "Focuspilot provides project management, procurement, and business tools for interior design studios. We reserve the right to modify or discontinue features with reasonable notice."
+      },
+      "accounts": {
+        "title": "3. User Accounts",
+        "body": "You are responsible for maintaining the security of your account and all activities under it. You must provide accurate information and keep it updated."
+      },
+      "payment": {
+        "title": "4. Payment Terms",
+        "body": "Paid plans are billed in advance. You can cancel at any time; access continues until the end of your billing period. Refunds are handled on a case-by-case basis."
+      },
+      "ip": {
+        "title": "5. Intellectual Property",
+        "body": "You retain ownership of your data. We retain ownership of the Focuspilot platform, including software, design, and documentation."
+      },
+      "contact": {
+        "title": "6. Contact",
+        "bodyBefore": "For questions about these terms, contact us at"
+      }
+    }
+  },
+  "privacyPage": {
+    "meta": {
+      "title": "Privacy Policy | Focuspilot",
+      "description": "Focuspilot privacy policy. Learn how we collect, use, and protect your data."
+    },
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: May 2026",
+    "sections": {
+      "collect": {
+        "title": "1. Information We Collect",
+        "p1": "We collect information you provide directly, including account details, project data, and communications. We also collect usage data to improve our service.",
+        "p2": "If you connect Google (Gmail or Google Calendar), we access only the data needed for the features you use, such as email threads with your clients, calendar events, and message metadata. We do not request broader access than required for those features."
+      },
+      "use": {
+        "title": "2. How We Use Your Information",
+        "body": "We use your information to provide and improve Focuspilot, communicate with you, and ensure security. We never sell your personal data or Google user data to third parties."
+      },
+      "google": {
+        "title": "3. Google User Data",
+        "p1": "When you connect Gmail or Google Calendar, Focuspilot (\"we\", \"us\") accesses Google user data only to provide studio inbox, reply, calendar overlay, and related productivity features you enable. We use this data to sync client-related email threads, send replies from the app, show calendar events, and generate optional AI summaries or draft improvements when you use those features.",
+        "p2": "We do not use Google user data to train generalized machine-learning or artificial-intelligence models. Optional AI features (such as thread summaries or reply polish) send limited email content to our AI provider solely to return a result for your request; we do not permit that provider to use your data to train its public models.",
+        "p3": "Google user data is stored on our servers only as long as needed to provide the service (for example, cached email threads linked to your studio and clients). You can disconnect Google at any time in Settings → Integrations, which stops new access and allows you to request deletion of stored copies."
+      },
+      "sharing": {
+        "title": "4. Sharing, Transfer, and Disclosure of Google User Data",
+        "intro": "We do not sell, rent, or license Google user data. We share, transfer, or disclose Google user data only in the limited circumstances below:",
+        "processors": {
+          "label": "Service providers (processors):",
+          "body": "We use infrastructure and software vendors that process data on our behalf under contract, solely to operate Focuspilot—for example cloud hosting, databases, email delivery, and (when you use AI inbox features) OpenAI for on-demand summarization or draft assistance. These providers may access Google user data only to perform services for us and must protect it consistent with this policy."
+        },
+        "team": {
+          "label": "Your studio team:",
+          "body": "Email and calendar information synced into Focuspilot may be visible to other authenticated members of your studio according to your account permissions, because the product is a shared workspace for your business."
+        },
+        "google": {
+          "label": "Google:",
+          "body": "Data is obtained through Google's APIs under your authorization; Google's own privacy policy applies to your Google account."
+        },
+        "legal": {
+          "label": "Legal and safety:",
+          "body": "We may disclose information if required by law, regulation, legal process, or to protect the rights, safety, and security of Focuspilot, our users, or others."
+        },
+        "outro": "We do not share Google user data with advertisers, data brokers, or unrelated third parties for their own marketing or product development."
+      },
+      "security": {
+        "title": "5. Data Security",
+        "body": "We implement industry-standard security measures to protect your data, including encryption in transit and at rest, access controls, and secure storage of OAuth tokens. Google API access uses OAuth 2.0; we do not store your Google account password."
+      },
+      "rights": {
+        "title": "6. Your Rights",
+        "bodyBefore": "Under GDPR and similar laws, you have the right to access, correct, delete, or export your data, including data derived from Google services. Disconnect Google in the app or contact us to revoke access and request deletion of stored Google-derived data. Contact"
+      },
+      "contactUs": {
+        "title": "7. Contact Us",
+        "bodyBefore": "For privacy-related questions, contact us at",
+        "bodyAfter": "Focuspilot is operated from the United Kingdom. For Google API Services, our use and transfer of information received from Google APIs adheres to the",
+        "policyLinkText": "Google API Services User Data Policy",
+        "bodyEnd": ", including the Limited Use requirements."
+      }
+    }
+  },
+  "changelogPage": {
+    "meta": {
+      "title": "Changelog | Focuspilot Product Updates",
+      "description": "See what's new in Focuspilot. Weekly updates for project management, procurement, and client collaboration."
+    },
+    "hero": {
+      "badge": "Product updates",
+      "title": "Changelog",
+      "subtitle": "See what's new in Focuspilot. We ship updates weekly to help you manage projects, procurement, and client relationships more efficiently.",
+      "note": "Subscribe to our newsletter to get updates delivered to your inbox."
+    },
+    "typeBadges": {
+      "new": "new",
+      "improvement": "improvement",
+      "fix": "fix"
+    },
+    "relatedLinks": {
+      "title": "Explore the platform",
+      "subtitle": "Discover how Focuspilot can transform your design studio workflow.",
+      "projects": { "title": "Projects", "desc": "Manage timelines and tasks" },
+      "procurement": { "title": "Procurement", "desc": "Source and track products" },
+      "clientPortal": { "title": "Client Portal", "desc": "Share and get approvals" },
+      "finance": { "title": "Finance", "desc": "Invoicing and accounting" }
+    },
+    "finalCta": {
+      "ariaLabel": "Get started",
+      "title": "Ready to transform your studio?",
+      "subtitle": "Join hundreds of interior designers who've simplified their workflow with Focuspilot."
+    }
+  },
+  "knowledgePage": {
+    "meta": {
+      "title": "Knowledge Centre | Focuspilot Help & Guides",
+      "description": "Guides, tutorials, and answers to help you get the most from Focuspilot."
+    },
+    "hero": {
+      "badge": "Help & guides",
+      "title": "Knowledge Centre",
+      "subtitle": "Guides, tutorials, and answers to help you get the most from Focuspilot.",
+      "searchPlaceholder": "Search articles..."
+    },
+    "categories": {
+      "gettingStarted": {
+        "title": "Getting Started",
+        "description": "Set up your account and learn the basics",
+        "articles": {
+          "quickStart": { "title": "Quick start guide", "time": "5 min" },
+          "accountSetup": { "title": "Account setup", "time": "3 min" },
+          "invitingTeam": { "title": "Inviting team members", "time": "2 min" },
+          "firstProject": { "title": "First project walkthrough", "time": "8 min" }
+        }
+      },
+      "features": {
+        "title": "Features",
+        "description": "Deep dives into Focuspilot features",
+        "articles": {
+          "projectManagement": { "title": "Project management", "time": "10 min" },
+          "procurementPos": { "title": "Procurement & POs", "time": "8 min" },
+          "clientPortal": { "title": "Client portal", "time": "6 min" },
+          "financeInvoicing": { "title": "Finance & invoicing", "time": "7 min" }
+        }
+      },
+      "videoTutorials": {
+        "title": "Video Tutorials",
+        "description": "Watch and learn at your own pace",
+        "articles": {
+          "platformOverview": { "title": "Platform overview", "time": "12 min" },
+          "aiFeaturesDemo": { "title": "AI features demo", "time": "8 min" },
+          "clientPortalSetup": { "title": "Client portal setup", "time": "6 min" },
+          "xeroIntegration": { "title": "Xero integration", "time": "5 min" }
+        }
+      },
+      "faq": {
+        "title": "FAQ",
+        "description": "Quick answers to common questions",
+        "articles": {
+          "billingPricing": { "title": "Billing & pricing", "time": "3 min" },
+          "dataSecurity": { "title": "Data & security", "time": "4 min" },
+          "integrations": { "title": "Integrations", "time": "3 min" },
+          "migrationHelp": { "title": "Migration help", "time": "5 min" }
+        }
+      }
+    },
+    "support": {
+      "title": "Can't find what you're looking for?",
+      "subtitle": "Our support team is here to help. Get in touch and we'll respond within 24 hours.",
+      "contactSupport": "Contact support",
+      "viewChangelog": "View changelog"
+    },
+    "relatedLinks": {
+      "title": "Explore the platform",
+      "subtitle": "Learn more about what Focuspilot can do.",
+      "projects": { "title": "Projects", "desc": "Manage timelines and tasks" },
+      "aiFeatures": { "title": "AI Features", "desc": "Automate the admin" },
+      "integrations": { "title": "Integrations", "desc": "Connect your tools" },
+      "pricing": { "title": "Pricing", "desc": "Start free today" }
+    }
+  }
+}

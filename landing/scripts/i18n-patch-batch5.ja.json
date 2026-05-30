@@ -1,0 +1,145 @@
+{
+  "platformShared": {
+    "startFreeTrial": "無料トライアルを開始",
+    "seeAllFeatures": "すべての機能を見る",
+    "startForFree": "無料で開始",
+    "startFreeTrialCaps": "無料トライアルを開始",
+    "startBuildingLibrary": "ライブラリ構築を開始",
+    "breadcrumb": {
+      "home": "ホーム",
+      "platform": "プラットフォーム",
+      "features": "機能"
+    }
+  },
+  "platformContractorPortal": {
+    "meta": {
+      "title": "業者ポータル｜インテリアデザイナー向け業者管理 | Focuspilot",
+      "description": "業者にプロジェクトスケジュール、仕様書、ドキュメントへのアクセスを提供。インテリアデザインプロジェクトでの業者とのコミュニケーションを効率化。",
+      "ogDescription": "業者にプロジェクトスケジュール、仕様書、ドキュメントへのアクセスを提供。業者とのコミュニケーションを効率化。",
+      "twitterTitle": "業者ポータル | Focuspilot",
+      "twitterDescription": "インテリアデザインプロジェクトでの業者とのコミュニケーションを効率化。"
+    },
+    "hero": {
+      "title": "業者ポータル",
+      "subtitle": "業者にプロジェクトスケジュール、仕様書、ドキュメントへの制御されたアクセスを提供。終わりのないメールなしで全員を同期。"
+    },
+    "features": {
+      "title": "業者を簡単に調整",
+      "items": {
+        "schedules": {
+          "title": "共有スケジュール",
+          "description": "業者はタスク、期限、依存関係をリアルタイムで確認"
+        },
+        "documents": {
+          "title": "ドキュメントアクセス",
+          "description": "仕様書、図面、製品シートを適切な業者と共有"
+        },
+        "messaging": {
+          "title": "プロジェクトメッセージ",
+          "description": "プロジェクト固有のスレッドでコミュニケーションを文脈内に保持"
+        },
+        "coordination": {
+          "title": "チーム調整",
+          "description": "複数の業種を調整し、設置進捗を追跡"
+        }
+      }
+    },
+    "benefits": {
+      "title": "業者に好評の理由",
+      "items": {
+        "relevantScope": "自分の担当範囲に関連する情報のみ表示",
+        "anyDevice": "あらゆるデバイスからスケジュールとドキュメントにアクセス",
+        "notifications": "自分に影響する変更の通知を受信",
+        "siteUpdates": "現場から更新と写真を提出",
+        "noInstall": "アプリのインストール不要"
+      }
+    },
+    "cta": {
+      "title": "業者調整を効率化する準備はできましたか？",
+      "subtitle": "無料トライアルを開始し、数分で最初の業者を招待。"
+    }
+  },
+  "platformProductLibrary": {
+    "meta": {
+      "title": "製品ライブラリ｜インテリアデザイナー向けAI調達 | Focuspilot",
+      "description": "スタジオの集中型製品データベース。AI調達で製品を保存、整理し、ワンクリックでプロジェクトに追加。仕様書作成を10倍速く。",
+      "ogDescription": "スタジオの集中型製品データベース。AI調達で製品を保存、整理し、ワンクリックでプロジェクトに追加。",
+      "twitterDescription": "AI調達機能付きの集中型製品データベース。"
+    },
+    "hero": {
+      "badge": "製品ライブラリ",
+      "title": "スタジオの記憶バンク。混沌なし。",
+      "subtitle": "AI調達で集中型製品データベースを構築。あらゆるソースから製品を保存し、スマートタグで整理、ワンクリックでプロジェクトに追加。"
+    },
+    "organise": {
+      "title": "自分の方法で製品を整理",
+      "subtitle": "カテゴリでフィルタ、名前やブランドで検索、数秒で必要なものを発見。",
+      "imageAlt": "カテゴリ別製品とフィルターを表示する製品ライブラリグリッド画面"
+    },
+    "benefits": {
+      "aiSourcing": {
+        "title": "AI調達",
+        "description": "製品URLを入力するだけで、AIが仕様、価格、サプライヤー情報を即座に抽出。"
+      },
+      "smartOrganisation": {
+        "title": "スマート整理",
+        "description": "インテリジェントタグとカスタムコレクションで製品を自動分類し、簡単に発見。"
+      },
+      "oneClickProcurement": {
+        "title": "ワンクリック調達",
+        "description": "ライブラリの製品をプロジェクト調達リストに即座に追加—再入力不要。"
+      }
+    },
+    "intelligence": {
+      "title": "完全な製品インテリジェンス",
+      "subtitle": "ライブラリの各製品には、価格、仕様、サプライヤー情報、在庫状況など包括的な詳細が含まれ—すべて自動キャプチャされ最新状態に維持。",
+      "imageAlt": "包括的な製品情報と仕様を表示する詳細製品ビュー",
+      "items": {
+        "pricing": {
+          "title": "小売・業者価格",
+          "description": "クライアント価格と原価の両方を追跡し、正確なマージンを把握"
+        },
+        "supplier": {
+          "title": "サプライヤー詳細",
+          "description": "直接連絡先、リードタイム、発注要件"
+        },
+        "stock": {
+          "title": "在庫・可用性",
+          "description": "リアルタイムの在庫状況とサンプル可用性"
+        }
+      }
+    },
+    "sources": {
+      "title": "あらゆるソースからライブラリを構築",
+      "subtitle": "製品追加方法は複数：AIウェブクリッパー、過去プロジェクトからのインポート、手動入力。",
+      "webClipper": {
+        "title": "AIウェブクリッパー",
+        "description": "製品URLを入力するだけで、AIが仕様、価格、画像、サプライヤー情報を即座に抽出。",
+        "badge": "30秒 vs 15-20分"
+      },
+      "importProjects": {
+        "title": "プロジェクトからインポート",
+        "description": "既存プロジェクトのスケジュールから製品をワンクリックでライブラリに保存。",
+        "badge": "一括インポート対応"
+      },
+      "manualEntry": {
+        "title": "手動入力",
+        "description": "カスタム製品、業者限定品、特注品を完全な仕様管理で追加。",
+        "badge": "カスタムフィールド対応"
+      }
+    },
+    "stats": {
+      "title": "混沌を整理された効率に変える",
+      "kpis": {
+        "fasterSourcing": { "label": "調達速度向上", "value": "95%" },
+        "timeToAdd": { "label": "製品追加時間", "value": "30秒" },
+        "dataAccuracy": { "label": "データ精度", "value": "100%" },
+        "storage": { "label": "ストレージ容量", "value": "∞" }
+      }
+    },
+    "cta": {
+      "title": "製品ライブラリを構築する準備はできましたか？",
+      "subtitle": "今日から製品を整理。既存プロジェクトからインポート、AIウェブクリッパー、手動追加—お好みの方法で。"
+    }
+  }
+}

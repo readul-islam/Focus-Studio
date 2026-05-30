@@ -1,0 +1,193 @@
+{
+  "contactPage": {
+    "meta": {
+      "title": "Focuspilotへのお問い合わせ | ご連絡",
+      "description": "Focuspilotチームへのお問い合わせ。インテリアデザインソフトについてのご質問やデモのご予約など、お気軽にご連絡ください。"
+    },
+    "title": "お問い合わせ",
+    "subtitle": "Focuspilotについてご質問がありますか？デモをご希望ですか？お気軽にご連絡ください。",
+    "email": {
+      "title": "メールで連絡",
+      "description": "一般的なお問い合わせとサポート"
+    },
+    "demo": {
+      "title": "デモを予約",
+      "description": "Focuspilotの実際の操作をご覧ください",
+      "cta": "デモを予約"
+    }
+  },
+  "comparePage": {
+    "meta": {
+      "title": "インテリアデザインソフト比較 | Focuspilot vs 競合",
+      "description": "FocuspilotをPrograma、Houzz Pro、Studio Designer、DesignFilesなどと比較。インテリアデザイナーがFocuspilotを選ぶ理由をご覧ください。",
+      "ogDescription": "FocuspilotをPrograma、Houzz Pro、Studio Designer、DesignFilesなどと比較。インテリアデザイナーがFocuspilotを選ぶ理由をご覧ください。",
+      "twitterDescription": "Focuspilotと主要なインテリアデザインソフトを比較。詳細な機能比較をご覧ください。"
+    },
+    "breadcrumb": {
+      "home": "ホーム",
+      "compare": "比較"
+    },
+    "badge": "ソフトウェア比較",
+    "title": "Focuspilotを比較",
+    "subtitle": "Focuspilotが他のインテリアデザインソフトとどう違うかをご確認ください。透明性を大切にし、スタジオに最適なツールを見つけてください。",
+    "detailedTitle": "詳細比較",
+    "vsLabel": "Focuspilot vs {name}",
+    "advantageLabel": "Focuspilotの優位点：",
+    "competitors": {
+      "programa": {
+        "description": "米国で調達とプロジェクト管理に人気",
+        "advantage": "Xeroネイティブ連携、AI機能、Stripe決済に対応したグローバル向け設計"
+      },
+      "designManager": {
+        "description": "インテリアデザイナー向けのレガシーデスクトップソフト",
+        "advantage": "モダンなクラウドベース、モバイル対応、インストール不要"
+      },
+      "houzzPro": {
+        "description": "Houzzマーケットプレイスと連携したオールインワンプラットフォーム",
+        "advantage": "独立したプラットフォーム、専任サポート、柔軟性"
+      },
+      "studioDesigner": {
+        "description": "クラウドベースのデザインビジネス管理",
+        "advantage": "AI機能、優れた調達、多通貨対応"
+      },
+      "designfiles": {
+        "description": "デザイナー向けのシンプルなプロジェクト管理",
+        "advantage": "より包括的な機能、AI自動化、スケーラビリティ"
+      }
+    },
+    "whySwitch": {
+      "title": "スタジオがFocuspilotに移行する理由",
+      "subtitle": "インテリアデザイナーが他社製品の代わりにFocuspilotを選ぶ主な理由",
+      "reasons": {
+        "worldwide": {
+          "title": "世界中のデザインスタジオ向けに設計",
+          "description": "Xeroネイティブ連携、多通貨対応、VAT処理、専任サポート。"
+        },
+        "ai": {
+          "title": "AIによる自動化",
+          "description": "AIメール作成、製品調達、提案書生成で毎週数時間を節約。"
+        },
+        "mobile": {
+          "title": "モダン＆モバイル",
+          "description": "クラウドベースであらゆるデバイスで動作。デスクトップソフトのインストールや更新は不要。"
+        },
+        "allInOne": {
+          "title": "オールインワンプラットフォーム",
+          "description": "CRM、プロジェクト、調達、クライアントポータル、財務を一つのワークスペースに。"
+        },
+        "migration": {
+          "title": "無料移行サポート",
+          "description": "既存ソフトからのデータ移行を追加費用なしでサポート。"
+        },
+        "pricing": {
+          "title": "透明な料金体系",
+          "description": "シンプルなユーザー単位の料金。隠れた費用やプロジェクト単位の課金なし。"
+        }
+      }
+    },
+    "cta": {
+      "title": "Focuspilotの実際の操作をご覧になりますか？",
+      "subtitle": "3ヶ月無料トライアルを開始し、スタジオがFocuspilotに移行する理由を体験してください。",
+      "startTrial": "無料トライアルを開始",
+      "viewPricing": "料金を見る"
+    }
+  },
+  "pricingPage": {
+    "meta": {
+      "title": "Focuspilot料金 | インテリアデザインソフト £49/ユーザー〜 | 無料トライアル",
+      "description": "インテリアデザインスタジオ向けのシンプルで透明な料金。3ヶ月無料ベータまたは£49/ユーザー/月のProfessional。AI機能すべて込み。初期費用なし。今すぐ無料で開始。",
+      "ogDescription": "インテリアデザインスタジオ向けのシンプルで透明な料金。3ヶ月無料ベータまたは£49/ユーザー/月のProfessional。AI機能すべて込み。初期費用なし。",
+      "twitterDescription": "インテリアデザインスタジオ向けのシンプルで透明な料金。3ヶ月無料ベータまたは£49/ユーザー/月のProfessional。AI機能すべて込み。"
+    },
+    "hero": {
+      "badge": "ベータプログラム受付中",
+      "title": "シンプルで透明な料金",
+      "subtitle": "早期参加でベータ期間中は無制限アクセス。スタジオの成長に合わせて安心してスケール。"
+    },
+    "plans": {
+      "beta": {
+        "name": "ベータアクセス",
+        "badge": "限定枠",
+        "price": "無料",
+        "description": "ベータ期間中のフルプラットフォームアクセス",
+        "features": {
+          "users": "ベータ期間中はユーザー数無制限",
+          "ai": "すべてのAI機能込み",
+          "projects": "プロジェクト管理とCRM",
+          "portal": "クライアントポータルと承認",
+          "procurement": "AI調達とライブラリ",
+          "support": "優先サポートとフィードバック"
+        },
+        "cta": "ベータ待機リストに参加"
+      },
+      "professional": {
+        "name": "Professional",
+        "badge": "最も人気",
+        "price": "£49",
+        "priceUnit": "/ユーザー/月",
+        "description": "最初の5ユーザー • 追加ユーザーは£39/ユーザー",
+        "features": {
+          "everything": "ベータのすべての機能を永久に",
+          "unlimited": "プロジェクトとクライアント数無制限",
+          "automation": "高度なAI自動化",
+          "branding": "カスタムブランディングとホワイトラベル",
+          "support": "優先サポートとオンボーディング",
+          "sla": "99.9%稼働率SLA"
+        },
+        "cta": "無料トライアルを開始"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "badge": "20ユーザー以上",
+        "price": "カスタム",
+        "description": "大規模スタジオとネットワーク向けのカスタム料金",
+        "features": {
+          "everything": "Professionalのすべての機能",
+          "unlimited": "ユーザー数とプロジェクト数無制限",
+          "security": "SSOと高度なセキュリティ",
+          "api": "APIアクセスとカスタム連携",
+          "manager": "専任アカウントマネージャー",
+          "billing": "年間請求と請求書払いオプション"
+        },
+        "cta": "営業に問い合わせ"
+      }
+    },
+    "note": "すべてのプランに14日間の無料トライアル付き。クレジットカード不要。ベータユーザーは正式リリース時に固定料金を適用。",
+    "faq": {
+      "title": "よくある質問",
+      "subtitle": "料金とプランについて知っておくべきこと",
+      "items": {
+        "afterBeta": {
+          "question": "ベータ期間終了後はどうなりますか？",
+          "answer": "ベータユーザーには特別料金と、正式リリース前に料金を固定するオプションが提供されます。課金開始前に十分なお知らせを行います。"
+        },
+        "userPricing": {
+          "question": "ユーザー単位の料金はどのように機能しますか？",
+          "answer": "最初の5ユーザーは£49/ユーザー/月。6ユーザー以降は£39/ユーザー/月。アクティブユーザーのみ課金され、いつでもユーザーの追加・削除が可能です。"
+        },
+        "tryBeforeBuy": {
+          "question": "購入前に試せますか？",
+          "answer": "ベータに無料参加するか、Professionalプランの14日間無料トライアルを開始できます。ベータアクセスにクレジットカードは不要です。"
+        },
+        "paymentMethods": {
+          "question": "どの支払い方法に対応していますか？",
+          "answer": "主要なクレジットカードとデビットカードに対応。年間請求オプションも割引付きで利用可能。請求書払いやその他の支払い方法についてはお問い合わせください。"
+        },
+        "setupFee": {
+          "question": "初期費用や契約期間はありますか？",
+          "answer": "初期費用なし、隠れたコストなし、長期契約なし。月払いでいつでもキャンセル可能。毎月お客様の信頼を勝ち取ることを大切にしています。"
+        },
+        "annualBilling": {
+          "question": "年間請求の割引はありますか？",
+          "answer": "はい！年間請求で2ヶ月分お得（16%オフ相当）。20ユーザー以上のスタジオ向けカスタムEnterprise料金については営業チームにお問い合わせください。"
+        }
+      }
+    },
+    "cta": {
+      "title": "スタジオを変革する準備はできましたか？",
+      "subtitle": "すでにFocuspilotを使用しているデザインスタジオに参加し、時間を節約し、管理業務を削減し、より良いクライアント体験を提供しましょう。",
+      "button": "無料で開始",
+      "noCreditCard": "クレジットカード不要"
+    }
+  }
+}

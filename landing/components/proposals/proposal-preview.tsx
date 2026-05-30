@@ -29,7 +29,7 @@ export function ProposalPreview({
   from = {
     name: "Focuspilot Studio",
     address: "123 Interior Way, London",
-    contact: "hello@techstyles.com · +44 20 7123 4567",
+    contact: "hello@focuspilot.io · +44 20 7123 4567",
   },
   to = {
     name: "Johnson Family Trust",
@@ -123,7 +123,7 @@ export function ProposalPreview({
       {/* Footer — lean, no extra padding */}
       <div className="flex items-center justify-between gap-3 border-t border-stone-200 px-4 py-2">
         <div className="text-[12px] text-stone-600">
-          By accepting, you agree to our standard terms. Questions? hello@techstyles.com
+          By accepting, you agree to our standard terms. Questions? hello@focuspilot.io
         </div>
         <button
           type="button"

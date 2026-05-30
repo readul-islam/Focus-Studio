@@ -1,0 +1,186 @@
+{
+  "blogPage": {
+    "meta": {
+      "title": "ブログ | Focuspilot — インテリアデザインスタジオ向けインサイト",
+      "description": "インテリアデザインスタジオ向けのヒント、ガイド、インサイト。プロジェクト管理、調達、クライアント連携、ビジネス成長。"
+    },
+    "moreArticles": "その他の記事",
+    "emptyCategory": "このカテゴリの記事はまだありません。",
+    "postMeta": {
+      "titleSuffix": " | Focuspilot ブログ",
+      "defaultDescription": "Focuspilotブログでこの記事をお読みください。"
+    }
+  },
+  "blogCategories": {
+    "all": "すべて",
+    "workflow": "ワークフロー",
+    "studio-management": "スタジオ管理",
+    "studio-operations": "スタジオ運営",
+    "procurement": "調達",
+    "client-experience": "クライアント体験",
+    "finance": "財務",
+    "ai-automation": "AI・自動化",
+    "growth": "成長",
+    "industry-trends": "業界トレンド",
+    "best-practices": "ベストプラクティス",
+    "filterBy": "絞り込み："
+  },
+  "blogHero": {
+    "breadcrumbHome": "ホーム",
+    "breadcrumbBlog": "ブログ",
+    "badge": "スタジオインサイト",
+    "title": "モダンなデザインスタジオのための知見",
+    "subtitle": "ワークフロー、スタジオ運営、業界トレンドに関する実践ガイド—プロジェクト、調達、クライアント承認を一か所で管理するチーム向け。",
+    "statsArticles": "記事",
+    "statsTopics": "トピック",
+    "statsUpdated": "更新",
+    "statsUpdatedValue": "毎週",
+    "featuredLabel": "注目",
+    "readArticle": "記事を読む"
+  },
+  "blogPost": {
+    "backToBlog": "ブログに戻る",
+    "shareArticle": "この記事をシェア：",
+    "relatedArticles": "関連記事",
+    "readTime": "{minutes}分で読めます",
+    "publishedOn": "公開日 {date}",
+    "authorRole": "著者",
+    "shareTwitter": "Twitterでシェア",
+    "shareLinkedIn": "LinkedInでシェア",
+    "shareFacebook": "Facebookでシェア",
+    "copyLink": "リンクをコピー",
+    "tagged": "タグ：",
+    "continueReading": "続きを読む",
+    "finalCtaTitle": "スタジオを変革する準備はできましたか？",
+    "finalCtaSubtitle": "Focuspilotでワークフローを効率化している数千人のデザイナーに参加しましょう。"
+  },
+  "resourcesTemplates": {
+    "meta": {
+      "title": "スタジオテンプレート | 無料ダウンロード | Focuspilot",
+      "description": "提案書、契約書、ブリーフ、調達シートなど、インテリアデザインスタジオ向けの無料テンプレート。カスタマイズまたはFocuspilotで自動化。"
+    },
+    "hero": {
+      "badge": "無料ダウンロード",
+      "title": "スタジオテンプレート",
+      "subtitle": "提案書、契約書、ブリーフ、調達シート—カスタマイズできるアウトラインをダウンロード、またはFocuspilotでAI自動化。"
+    },
+    "categories": {
+      "All": "すべて",
+      "Proposals": "提案書",
+      "Contracts": "契約",
+      "Planning": "計画",
+      "Procurement": "調達",
+      "Discovery": "ヒアリング",
+      "Finance": "財務"
+    },
+    "templates": {
+      "design-proposal": {
+        "title": "デザイン提案書テンプレート",
+        "description": "スコープ、フェーズ別成果物、料金体系、条件を含むプロフェッショナルな提案書—住宅・商業プロジェクトのキックオフに。"
+      },
+      "letter-of-agreement": {
+        "title": "契約書（合意書）",
+        "description": "サービス、料金、修正回数、責任、解約条項をカバーする契約テンプレート—インテリアデザインスタジオ向け。"
+      },
+      "project-brief": {
+        "title": "プロジェクトブリーフテンプレート",
+        "description": "コンセプト作業前に予算、スケジュール、スタイル方向性、機能要件を記録。"
+      },
+      "ffe-schedule": {
+        "title": "FF&Eスケジュールテンプレート",
+        "description": "仕様、サプライヤー、リードタイム、部屋割りをスタジオ標準の調達シートで管理。"
+      },
+      "client-questionnaire": {
+        "title": "クライアントアンケート",
+        "description": "ライフスタイル、予算感、コミュニケーション希望に関するヒアリング—初回ワークショップ前に使用。"
+      },
+      "invoice": {
+        "title": "請求書テンプレート",
+        "description": "明細、消費税、支払条件、銀行口座を含む請求書レイアウト—Focuspilot財務ワークフローに対応。"
+      }
+    },
+    "popular": "人気",
+    "download": "ダウンロード",
+    "preview": "プレビュー",
+    "cta": {
+      "title": "自動更新されるテンプレート",
+      "subtitle": "Focuspilotでは、提案書がCRMから取得され、FF&Eが調達に連携し、請求書が財務と同期—スプレッドシート間のコピペは不要。",
+      "startFree": "無料で始める",
+      "aiPlaybook": "AIプレイブック"
+    }
+  },
+  "resourcesAiPlaybook": {
+    "meta": {
+      "title": "インテリアデザインスタジオ向けAIプレイブック | Focuspilot",
+      "description": "インテリアデザインスタジオ向けの実践的AIワークフロー：メール、調達、提案、ガバナンス。今日から使えるプロンプトとガードレール。"
+    },
+    "hero": {
+      "badge": "リソース",
+      "title": "デザインスタジオ向けAIプレイブック",
+      "subtitle": "メール、調達、提案、納品にAIを活用する実践的ワークフロー、プロンプト、ガードレール—スタジオの声を失わずに。",
+      "exploreAi": "AI機能を見る"
+    },
+    "quickWinsTitle": "今週のクイックウィン",
+    "learnMore": "詳しく見る",
+    "onThisPage": "このページの内容",
+    "promptLibrary": "プロンプトライブラリ",
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "finalCta": {
+      "title": "Focuspilot内でプレイブックを実行",
+      "subtitle": "AIメールルーティング、調達支援、提案書ドラフト—空白のチャットではなく、プロジェクトに連携。",
+      "startFree": "無料で始める",
+      "browseTemplates": "テンプレートを見る"
+    }
+  },
+  "templateDetail": {
+    "freeOutline": "無料アウトライン — スタジオ向けにカスタマイズ",
+    "download": "ダウンロード",
+    "automateInFocuspilot": "Focuspilotで自動化",
+    "allTemplates": "← すべてのテンプレート"
+  },
+  "templateDownloadDialog": {
+    "title": "テンプレートをダウンロード",
+    "description": "メールアドレスを入力してテンプレートをダウンロード。スタジオ向けのヒントも occasionally お送りします—いつでも配信停止できます。",
+    "emailLabel": "メール",
+    "emailPlaceholder": "you@studio.com",
+    "submit": "ダウンロード",
+    "submitting": "ダウンロード中...",
+    "success": "ダウンロードリンクをメールでお送りしました。",
+    "downloadOutline": "アウトラインをダウンロード",
+    "useInFocuspilot": "Focuspilotで使用",
+    "formatDescription": "{format} — Word、Google Docsでカスタマイズ、またはFocuspilotの自動版を使用。",
+    "footerNote": "AI提案、承認、請求でこのテンプレートを自動化。",
+    "seeAiPlaybook": "AIプレイブックを見る",
+    "copy": "コピー",
+    "copied": "コピーしました"
+  },
+  "studioProfile": {
+    "meta": {
+      "titleSuffix": " | Focuspilot スタジオ",
+      "defaultDescription": "Focuspilotでこのデザインスタジオのプロフィールをご覧ください。"
+    },
+    "notFound": {
+      "title": "スタジオが見つかりません",
+      "description": "このスタジオプロフィールは存在しないか、公開されていません。",
+      "backHome": "ホームに戻る"
+    },
+    "designStudio": "デザインスタジオ",
+    "established": "設立 {year}年",
+    "teamSize": "チーム {count}名",
+    "starsLabel": "5段階中 {rating}",
+    "website": "ウェブサイト",
+    "linkedin": "LinkedIn",
+    "instagram": "Instagram",
+    "about": "概要",
+    "pastWork": "過去の実績",
+    "noImage": "画像なし",
+    "clientReviews": "クライアントレビュー",
+    "services": "サービス",
+    "specialties": "専門分野",
+    "team": "チーム",
+    "contact": "お問い合わせ",
+    "poweredBy": "Powered by",
+    "reviewsCount": "{rating}（{count}件のレビュー）"
+  }
+}

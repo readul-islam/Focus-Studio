@@ -1,0 +1,167 @@
+{
+  "siteFooter": {
+    "tagline": "インテリアデザインスタジオと建築家のための、落ち着いたプレミアムツール。",
+    "platform": "プラットフォーム",
+    "compare": "比較",
+    "resources": "リソース",
+    "company": "会社",
+    "stayInLoop": "最新情報を受け取る",
+    "emailPlaceholder": "メールアドレスを入力",
+    "emailAria": "メールアドレスを入力",
+    "copyright": "© {year} Focuspilot. All rights reserved.",
+    "privacyPolicy": "プライバシーポリシー",
+    "termsOfUse": "利用規約",
+    "sitemap": "サイトマップ",
+    "social": {
+      "facebook": "FacebookでFocuspilotをフォロー",
+      "twitter": "TwitterでFocuspilotをフォロー",
+      "linkedin": "LinkedInでFocuspilotをフォロー",
+      "instagram": "InstagramでFocuspilotをフォロー"
+    },
+    "links": {
+      "projectManagement": "プロジェクト管理",
+      "procurementFfe": "調達とFF&E",
+      "clientPortal": "クライアントポータル",
+      "contractorPortal": "業者ポータル",
+      "financeInvoicing": "財務と請求",
+      "crmPipeline": "CRMとパイプライン",
+      "aiFeatures": "AI機能",
+      "vsHouzzPro": "vs Houzz Pro",
+      "vsPrograma": "vs Programa",
+      "vsStudioDesigner": "vs Studio Designer",
+      "vsDesignFiles": "vs DesignFiles",
+      "allComparisons": "すべての比較",
+      "blog": "ブログ",
+      "knowledgeCentre": "ナレッジセンター",
+      "customerStories": "お客様の声",
+      "changelog": "変更履歴",
+      "templates": "テンプレート",
+      "aiPlaybook": "AIプレイブック",
+      "about": "会社概要",
+      "pricing": "料金",
+      "contact": "お問い合わせ",
+      "careers": "採用",
+      "integrations": "連携"
+    }
+  },
+  "megaNavPlatform": {
+    "trigger": "プラットフォーム",
+    "menuAria": "プラットフォーム",
+    "promoImageAlt": "{title} - {desc}",
+    "columns": {
+      "coreWorkflows": "コアワークフロー",
+      "studioOperations": "スタジオ運営",
+      "keyFeatures": "主要機能"
+    },
+    "items": {
+      "projectManagement": { "label": "プロジェクト管理", "desc": "フェーズ、タスク、タイムライン" },
+      "procurement": { "label": "調達", "desc": "仕入れ、発注、追跡" },
+      "finance": { "label": "財務", "desc": "提案書、請求書、支払い" },
+      "clientPortal": { "label": "クライアントポータル", "desc": "承認、ファイル、メッセージ" },
+      "crm": { "label": "CRM", "desc": "リードからプロジェクトへのパイプライン" },
+      "schedulingInstalls": { "label": "スケジュールと設置", "desc": "プロジェクトタイムラインと設置スケジュール" },
+      "resourcePlanning": { "label": "リソース計画", "desc": "チーム配分とキャパシティ管理" },
+      "vendorDeliveries": { "label": "ベンダーと配送", "desc": "サプライヤー管理と配送追跡" },
+      "docsTemplates": { "label": "ドキュメントとテンプレート", "desc": "ドキュメントライブラリとプロジェクトテンプレート" },
+      "communication": { "label": "コミュニケーション", "desc": "プロジェクト連携付き統合受信箱" },
+      "approvals": { "label": "承認", "desc": "クライアントのサインオフと意思決定の追跡" },
+      "aiProcurement": { "label": "AI製品調達", "desc": "AI抽出付きウェブクリッパー" },
+      "productLibrary": { "label": "製品ライブラリ", "desc": "AIソーシング付き集中製品データベース" },
+      "proposalsInvoices": { "label": "提案書と請求書", "desc": "AI提案書と自動請求" }
+    },
+    "promos": {
+      "overview": {
+        "title": "プラットフォーム概要",
+        "desc": "リード、プロジェクト、調達、請求を1つの落ち着いたワークスペースに。"
+      },
+      "tour": {
+        "title": "製品ツアー",
+        "desc": "UIのガイドツアー — スタジオがプロジェクトを端到端で運営する方法をご覧ください。"
+      },
+      "whatsNew": {
+        "title": "新機能",
+        "desc": "最近リリースした機能と今後の予定を確認。"
+      }
+    }
+  },
+  "resourcesMenu": {
+    "trigger": "リソース",
+    "menuAria": "リソース",
+    "links": {
+      "blog": { "label": "ブログ", "desc": "アイデアとスタジオのワークフロー。" },
+      "customerStories": { "label": "お客様の声", "desc": "素晴らしい仕事を届けるスタジオ。" },
+      "knowledgeCentre": { "label": "ナレッジセンター", "desc": "ガイドとハウツー。" },
+      "changelog": { "label": "変更履歴", "desc": "毎週リリースする内容。" },
+      "templates": { "label": "テンプレート", "desc": "すぐ使えるドキュメント。" },
+      "aiPlaybook": { "label": "AIプレイブック", "desc": "スタジオ全体でAIを活用。" }
+    }
+  },
+  "authLoginPage": {
+    "loading": "読み込み中…",
+    "heroTitle": "デザインスタジオへようこそ",
+    "heroSubtitle": "インテリアデザイナー向けに構築されたFocuspilotで、プロジェクト管理を続けましょう。",
+    "heroImageAlt": "美しいモダンキッチンのインテリアデザイン",
+    "form": {
+      "title": "おかえりなさい",
+      "subtitle": "Focuspilotスタジオアカウントにサインイン",
+      "invalidCredentials": "メールまたはパスワードが正しくありません。もう一度お試しください。",
+      "googleSignIn": "Googleでサインイン",
+      "orDivider": "または",
+      "email": "メール",
+      "password": "パスワード",
+      "emailPlaceholder": "メールアドレスを入力",
+      "passwordPlaceholder": "パスワードを入力",
+      "rememberMe": "ログイン状態を保持",
+      "forgotPassword": "パスワードをお忘れですか？",
+      "signingIn": "サインイン中…",
+      "signIn": "サインイン",
+      "noAccount": "アカウントをお持ちでないですか？",
+      "signUp": "新規登録"
+    }
+  },
+  "authSignupPage": {
+    "heroTitle": "デザインスタジオのワークフローを変える",
+    "heroSubtitle": "プロジェクト、クライアント、調達を1か所で管理するインテリアデザイナーに参加しましょう。",
+    "heroImageAlt": "モダンキッチンデザイン",
+    "form": {
+      "title": "アカウントを作成",
+      "subtitle": "無料トライアルを開始 — メールを確認して続行",
+      "registrationFailed": "登録に失敗しました。もう一度お試しください。",
+      "googleSignUp": "Googleで登録",
+      "orDivider": "または",
+      "fullName": "氏名",
+      "email": "メールアドレス",
+      "password": "パスワード",
+      "confirmPassword": "パスワード確認",
+      "strengthLabel": "強度: {level}",
+      "agreeTermsBefore": "以下に同意します：",
+      "termsOfService": "利用規約",
+      "and": "および",
+      "privacyPolicy": "プライバシーポリシー",
+      "creatingAccount": "アカウント作成中…",
+      "createAccount": "アカウントを作成",
+      "hasAccount": "すでにアカウントをお持ちですか？",
+      "signIn": "サインイン",
+      "validation": {
+        "nameRequired": "名前は必須です",
+        "nameInvalid": "有効な名前を入力してください",
+        "emailRequired": "メールは必須です",
+        "emailInvalid": "有効なメールアドレスを入力してください",
+        "passwordRequired": "パスワードは必須です",
+        "passwordMinLength": "8文字以上必要です",
+        "passwordUppercase": "大文字を1文字以上含めてください",
+        "passwordLowercase": "小文字を1文字以上含めてください",
+        "passwordNumber": "数字を1文字以上含めてください",
+        "passwordSpecial": "特殊文字を1文字以上含めてください（@$!%*?&）",
+        "confirmRequired": "パスワードを確認してください",
+        "confirmMismatch": "パスワードが一致しません"
+      },
+      "strength": {
+        "weak": "弱い",
+        "fair": "普通",
+        "good": "良好",
+        "strong": "強い"
+      }
+    }
+  }
+}

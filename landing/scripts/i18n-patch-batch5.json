@@ -1,0 +1,145 @@
+{
+  "platformShared": {
+    "startFreeTrial": "Start free trial",
+    "seeAllFeatures": "See all features",
+    "startForFree": "Start for free",
+    "startFreeTrialCaps": "Start Free Trial",
+    "startBuildingLibrary": "Start Building Library",
+    "breadcrumb": {
+      "home": "Home",
+      "platform": "Platform",
+      "features": "Features"
+    }
+  },
+  "platformContractorPortal": {
+    "meta": {
+      "title": "Contractor Portal for Interior Designers | Manage Trades | Focuspilot",
+      "description": "Give contractors access to project schedules, specifications, and documents. Streamline communication with trades on interior design projects.",
+      "ogDescription": "Give contractors access to project schedules, specifications, and documents. Streamline communication with trades.",
+      "twitterTitle": "Contractor Portal | Focuspilot",
+      "twitterDescription": "Streamline communication with contractors on interior design projects."
+    },
+    "hero": {
+      "title": "Contractor Portal",
+      "subtitle": "Give contractors controlled access to project schedules, specifications, and documents. Keep everyone aligned without endless emails."
+    },
+    "features": {
+      "title": "Coordinate trades effortlessly",
+      "items": {
+        "schedules": {
+          "title": "Shared Schedules",
+          "description": "Contractors see their tasks, deadlines, and dependencies in real-time"
+        },
+        "documents": {
+          "title": "Document Access",
+          "description": "Share specs, drawings, and product sheets with the right contractors"
+        },
+        "messaging": {
+          "title": "Project Messaging",
+          "description": "Keep all communication in context with project-specific threads"
+        },
+        "coordination": {
+          "title": "Team Coordination",
+          "description": "Coordinate multiple trades and track installation progress"
+        }
+      }
+    },
+    "benefits": {
+      "title": "Why contractors love it",
+      "items": {
+        "relevantScope": "See only what's relevant to their scope",
+        "anyDevice": "Access schedules and documents from any device",
+        "notifications": "Get notified of changes that affect them",
+        "siteUpdates": "Submit updates and photos from site",
+        "noInstall": "No app installation required"
+      }
+    },
+    "cta": {
+      "title": "Ready to streamline contractor coordination?",
+      "subtitle": "Start your free trial and invite your first contractor in minutes."
+    }
+  },
+  "platformProductLibrary": {
+    "meta": {
+      "title": "Product Library for Interior Designers | AI-Powered Sourcing | Focuspilot",
+      "description": "Your studio's centralized product database. Save, organise, and instantly add products to any project with AI-powered sourcing. Build specs 10x faster.",
+      "ogDescription": "Your studio's centralized product database. Save, organise, and instantly add products to any project with AI-powered sourcing.",
+      "twitterDescription": "Your studio's centralized product database with AI-powered sourcing."
+    },
+    "hero": {
+      "badge": "Product Library",
+      "title": "Your studio's memory bank. Without the chaos.",
+      "subtitle": "Build your centralized product database with AI-powered sourcing. Save products from any source, organise with smart tagging, and add to projects with one click."
+    },
+    "organise": {
+      "title": "Organise products your way",
+      "subtitle": "Filter by category, search by name or brand, and find exactly what you need in seconds.",
+      "imageAlt": "Product library grid interface showing categorized products with filters"
+    },
+    "benefits": {
+      "aiSourcing": {
+        "title": "AI-Powered Sourcing",
+        "description": "Drop any product URL and watch AI instantly extract specs, pricing, and supplier details."
+      },
+      "smartOrganisation": {
+        "title": "Smart Organisation",
+        "description": "Auto-categorise products with intelligent tagging and custom collections for easy discovery."
+      },
+      "oneClickProcurement": {
+        "title": "One-Click Procurement",
+        "description": "Add any library product to project procurement lists instantly—no re-entering details."
+      }
+    },
+    "intelligence": {
+      "title": "Complete product intelligence",
+      "subtitle": "Every product in your library includes comprehensive details: pricing, specifications, supplier information, and availability—all automatically captured and kept up to date.",
+      "imageAlt": "Detailed product view showing comprehensive product information and specifications",
+      "items": {
+        "pricing": {
+          "title": "Retail & Trade Pricing",
+          "description": "Track both client and cost pricing for accurate margins"
+        },
+        "supplier": {
+          "title": "Supplier Details",
+          "description": "Direct contact info, lead times, and ordering requirements"
+        },
+        "stock": {
+          "title": "Stock & Availability",
+          "description": "Real-time inventory status and sample availability"
+        }
+      }
+    },
+    "sources": {
+      "title": "Build your library from any source",
+      "subtitle": "Multiple ways to add products: AI web clipper, import from past projects, or manual entry.",
+      "webClipper": {
+        "title": "AI Web Clipper",
+        "description": "Drop any product URL and AI extracts all details instantly—specs, pricing, images, supplier info.",
+        "badge": "30 seconds vs 15-20 minutes"
+      },
+      "importProjects": {
+        "title": "Import from Projects",
+        "description": "Save products from any existing project schedule directly to your library with one click.",
+        "badge": "Bulk import available"
+      },
+      "manualEntry": {
+        "title": "Manual Entry",
+        "description": "Add custom products, trade-only items, or bespoke pieces with full specification control.",
+        "badge": "Custom fields supported"
+      }
+    },
+    "stats": {
+      "title": "Turn chaos into organised efficiency",
+      "kpis": {
+        "fasterSourcing": { "label": "Faster sourcing", "value": "95%" },
+        "timeToAdd": { "label": "Time to add product", "value": "30s" },
+        "dataAccuracy": { "label": "Data accuracy", "value": "100%" },
+        "storage": { "label": "Storage capacity", "value": "∞" }
+      }
+    },
+    "cta": {
+      "title": "Ready to build your product library?",
+      "subtitle": "Start organising your products today. Import from existing projects, use our AI web clipper, or add manually—your choice."
+    }
+  }
+}

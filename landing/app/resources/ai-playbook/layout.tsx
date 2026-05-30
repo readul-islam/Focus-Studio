@@ -1,12 +1,17 @@
 import type { Metadata } from "next"
+import type { ReactNode } from "react"
+import { getTranslations } from "next-intl/server"
+import { localeHreflangAlternates } from "@/lib/seo-alternates"
 
-export const metadata: Metadata = {
-  title: "AI Playbook for Interior Design Studios | Focuspilot",
-  description:
-    "Practical AI workflows for interior design studios: email, procurement, proposals, and governance. Prompts and guardrails you can use today.",
-  alternates: { canonical: "https://focuspilot.io/resources/ai-playbook" },
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("resourcesAiPlaybook.meta")
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: localeHreflangAlternates("resources/ai-playbook"),
+  }
 }
 
-export default function AiPlaybookLayout({ children }: { children: React.ReactNode }) {
+export default function AiPlaybookLayout({ children }: { children: ReactNode }) {
   return children
 }

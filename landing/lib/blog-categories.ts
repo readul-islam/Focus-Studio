@@ -1,27 +1,20 @@
-export type BlogCategoryId = "workflow" | "studio-management" | "industry-trends" | "best-practices"
+"use client"
 
-export type BlogCategoryFilter = "all" | BlogCategoryId
+import { useTranslations } from "next-intl"
+import { BLOG_CATEGORY_TABS, type BlogCategoryFilter, type BlogCategoryId } from "./blog-categories-base"
 
-export const BLOG_CATEGORY_TABS: { id: BlogCategoryFilter; label: string }[] = [
-  { id: "all", label: "All" },
-  { id: "workflow", label: "Workflow" },
-  { id: "studio-management", label: "Studio Management" },
-  { id: "industry-trends", label: "Industry Trends" },
-  { id: "best-practices", label: "Best Practices" },
-]
+export type { BlogCategoryFilter, BlogCategoryId }
+export { BLOG_CATEGORY_TABS, getCategoryLabel, isBlogCategoryFilter } from "./blog-categories-base"
 
-const LABELS: Record<BlogCategoryId, string> = {
-  workflow: "Workflow",
-  "studio-management": "Studio Management",
-  "industry-trends": "Industry Trends",
-  "best-practices": "Best Practices",
+export function useBlogCategoryTabs() {
+  const t = useTranslations("blogCategories")
+  return BLOG_CATEGORY_TABS.map((tab) => ({
+    id: tab.id,
+    label: tab.id === "all" ? t("all") : t(tab.id),
+  }))
 }
 
-export function getCategoryLabel(id: BlogCategoryId): string {
-  return LABELS[id]
-}
-
-export function isBlogCategoryFilter(value: string | null | undefined): value is BlogCategoryFilter {
-  if (!value || value === "all") return value === "all"
-  return value in LABELS
+export function useCategoryLabel(id: BlogCategoryId): string {
+  const t = useTranslations("blogCategories")
+  return t(id)
 }

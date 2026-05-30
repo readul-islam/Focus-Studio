@@ -1,0 +1,160 @@
+{
+  "platformProjects": {
+    "meta": {
+      "title": "Interior Design Project Management Software | Track Projects | Focuspilot",
+      "description": "Manage interior design projects from concept to completion. Track timelines, budgets, tasks & team collaboration. Purpose-built for interior design studios. Start free.",
+      "ogDescription": "Manage interior design projects from concept to completion. Track timelines, budgets, tasks & team collaboration. Purpose-built for interior design studios.",
+      "twitterDescription": "Manage interior design projects from concept to completion. Track timelines, budgets, tasks & team collaboration. Purpose-built for interior design studios.",
+      "ogImageAlt": "Focuspilot project management dashboard for interior designers"
+    },
+    "hero": {
+      "badge": "Project Management",
+      "title": "Interior design project management software",
+      "subtitle": "Plan phases, track tasks and timelines, manage budgets, approvals and communication in one calm workspace.",
+      "note": "Built for interior designers, architects, and design studios who want to replace spreadsheets and scattered tools with one calm workspace.",
+      "imageAlt": "Project overview dashboard showing KPIs, timeline, and procurement status for interior design project management"
+    },
+    "tabs": {
+      "navAria": "Project sections",
+      "sectionAria": "{label} section",
+      "overview": "Overview",
+      "tasks": "Tasks",
+      "calendar": "Calendar",
+      "messages": "Messages",
+      "docs": "Docs",
+      "procurement": "Procurement",
+      "finance": "Finance",
+      "contractors": "Contractors"
+    },
+    "sections": {
+      "overview": {
+        "title": "Everything in one live overview",
+        "description": "Keep status clear across teams budget, margin, tasks, POs, and milestones update in real time.",
+        "bullets": {
+          "kpis": "At‑a‑glance KPIs for each project",
+          "timeline": "Visual timeline for phases and installs",
+          "deepDive": "One click to deep‑dive into tasks, docs or procurement"
+        },
+        "imageAlt": "Chelsea Penthouse project overview showing budget utilization, profit margin, task completion, and project timeline with KPI cards and phase tracking"
+      },
+      "tasks": {
+        "title": "Plan phases. Track tasks. Stay on schedule.",
+        "description": "Kanban, list or Gantt view, assign owners, set priorities, and keep work moving with smart reminders.",
+        "bullets": {
+          "phaseBoards": "Phase boards with badges, dates and assignees",
+          "reminders": "Auto reminders and dependency warnings",
+          "aiSuggestions": "AI task suggestions from briefs and meetings"
+        },
+        "imageAlt": "Tasks Kanban board showing design phases with task cards, assignees, and progress tracking"
+      },
+      "calendar": {
+        "title": "Schedule installs, site visits, and milestones",
+        "description": "A studio calendar that reflects the reality of projects with agenda and timeline modes.",
+        "bullets": {
+          "studioView": "Studio‑wide view of events, deadlines and deliveries",
+          "attendees": "Assign attendees and rooms, log hours, track visits",
+          "sync": "Syncs with tasks and procurement statuses"
+        },
+        "imageAlt": "Studio calendar interface showing project events, deadlines, and team scheduling with KPIs and agenda view"
+      },
+      "messages": {
+        "title": "Keep clients and vendors aligned",
+        "description": "Centralise email, portal messages, and supplier threads with quick actions that drive work forward.",
+        "bullets": {
+          "inbox": "One inbox per project—searchable and organised",
+          "attachments": "Convert attachments into tasks, POs, or moodboard items",
+          "actionFilter": "Action‑required filter to clear blockers fast"
+        },
+        "imageAlt": "Project messages interface showing thread list and detailed conversation with action buttons for task creation and file management"
+      },
+      "docs": {
+        "title": "Drawings, photos, and files organised",
+        "description": "Keep documents where the work happens. Versioned, previewable, and linked to tasks and POs.",
+        "bullets": {
+          "templates": "Folder templates for repeatable organisation",
+          "uploads": "Drag‑and‑drop uploads with quick previews",
+          "recent": "Recent files and approvals at your fingertips"
+        },
+        "imageAlt": "Documents workspace showing organized folders for Design Concepts, Technical Drawings, and Procurement Documents with notes list and status indicators"
+      },
+      "procurement": {
+        "title": "From spec to PO to install",
+        "description": "Track lead times, deliveries, and approvals across every item - no spreadsheets required.",
+        "bullets": {
+          "totals": "Totals, quantities, costs and delivery progress",
+          "pos": "Generate POs, log receipts, and sync statuses",
+          "clientViews": "Client‑ready views for transparent selections"
+        },
+        "imageAlt": "Procurement items table showing product specifications, costs, delivery status, and Create PO functionality"
+      },
+      "finance": {
+        "title": "Proposals, invoices and payments automated",
+        "description": "Create branded docs, track due dates, and sync with accounting. Get paid faster.",
+        "bullets": {
+          "tracking": "Invoice and PO tracking in one table",
+          "filters": "Status chips and quick filters for action",
+          "sync": "Sync to Xero/QuickBooks to keep books tight"
+        },
+        "imageAlt": "Finance dashboard showing invoices and purchase orders table with payment status, amounts, and accounting sync options"
+      },
+      "contractors": {
+        "title": "Contractors, RFIs, and schedules in sync",
+        "description": "Keep site teams aligned with a secure, shared view across information requests, schedules, and items to install.",
+        "bullets": {
+          "rfi": "Request for Information (RFI) threads with attachments and approvals",
+          "schedule": "See the schedule and assigned work by phase, room, and day",
+          "shareItems": "Share procurement items with specs, install notes, and status"
+        },
+        "inviteContractor": "Invite a contractor",
+        "shareItem": "Share an item",
+        "imageAlt": "Contractor portal dashboard showing project KPIs, weekly schedule, recent activity, and quick actions for trade coordination"
+      }
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "Common questions about Focuspilot project management for interior designers.",
+      "items": {
+        "vsAsana": {
+          "question": "How is Focuspilot different from Asana or Monday?",
+          "answer": "Unlike generic project management tools, Focuspilot is purpose-built for interior designers and architects. It includes procurement tracking, client approval workflows, product libraries, and financial tools that Asana and Monday simply don't offer. Everything is designed around how design studios actually work."
+        },
+        "procurement": {
+          "question": "Does it handle procurement and purchase orders?",
+          "answer": "Yes. Focuspilot includes full procurement management with product libraries, supplier tracking, automated purchase orders, delivery scheduling, and client approval workflows. You can track every item from specification to installation."
+        },
+        "clientApprovals": {
+          "question": "Can clients approve items and pay invoices?",
+          "answer": "Absolutely. Your clients get a branded portal where they can review selections, approve or decline products with comments, view project progress, and pay invoices directly via Stripe. No more back-and-forth emails."
+        },
+        "smallStudios": {
+          "question": "Is Focuspilot suitable for small studios?",
+          "answer": "Yes, we're designed for studios of all sizes. Solo designers love having everything in one place, while larger teams benefit from collaboration features and role-based permissions. Our pricing scales with your team."
+        }
+      }
+    },
+    "relatedLinks": {
+      "title": "Connected to your entire workflow",
+      "subtitle": "Projects integrates seamlessly with the rest of the Focuspilot platform.",
+      "procurement": {
+        "title": "Procurement",
+        "desc": "Source products and manage vendors"
+      },
+      "finance": {
+        "title": "Finance",
+        "desc": "Track budgets and invoicing"
+      },
+      "clientPortal": {
+        "title": "Client Portal",
+        "desc": "Share updates and collect approvals"
+      },
+      "pricing": {
+        "title": "See Pricing",
+        "desc": "Start free with all features"
+      }
+    },
+    "finalCta": {
+      "title": "Run every project with clarity and control.",
+      "subtitle": "Project management, docs, procurement and billing designed for interior design studios."
+    }
+  }
+}
