@@ -131,6 +131,7 @@ function mapApiContractorToProjectContractor(apiContractor: ApiContractor): Proj
 export default function ProjectContractorsPage({ params }: { params: { id: string } }) {
   const t = useTranslations('projectContractorsPage');
   const tc = useTranslations('common');
+  const tTrades = useTranslations('contractorTrades');
   const [contractors, setContractors] = useState<ProjectContractor[]>([]);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [addTab, setAddTab] = useState<'new' | 'existing'>('new');
@@ -206,29 +207,29 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
   // Add new contractor mutation
   const { mutate: addContractor, isPending: isAdding } = usePost({
     onSuccess: (data: any) => {
-      const accessCode = data?.access_code || 'N/A';
+      const accessCode = data?.access_code || tc('notAvailable');
       if (data?.invite_sent === false) {
-        toast.warning(`Contractor added (access code: ${accessCode}). Invite email could not be sent.`);
+        toast.warning(t('toasts.addedInviteFailed', { code: accessCode }));
       } else {
-        toast.success(`Contractor added. Invite sent — access code: ${accessCode}`);
+        toast.success(t('toasts.addedWithInvite', { code: accessCode }));
       }
       refetch();
       closeAddDialog();
     },
     onError: (error: any) => {
-      toast.error(error?.message || 'Failed to add contractor');
+      toast.error(error?.message || t('toasts.addFailed'));
     },
   });
 
   // Link existing contractor mutation
   const { mutate: linkContractor, isPending: isLinking } = usePost({
     onSuccess: () => {
-      toast.success('Contractor linked to project');
+      toast.success(t('toasts.linkedSuccess'));
       refetch();
       closeAddDialog();
     },
     onError: (error: any) => {
-      toast.error(error?.message || 'Failed to link contractor');
+      toast.error(error?.message || t('toasts.linkFailed'));
     },
   });
 
@@ -267,16 +268,16 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
 
   const handleCopyLink = () => {
     if (!projectPortalUrl) {
-      toast.error('Project portal link is not available yet');
+      toast.error(t('toasts.portalLinkUnavailable'));
       return;
     }
     navigator.clipboard.writeText(projectPortalUrl);
-    toast.success('Project portal link copied');
+    toast.success(t('toasts.portalLinkCopied'));
   };
 
   const handleOpenPortal = () => {
     if (!projectPortalUrl) {
-      toast.error('Project portal link is not available yet');
+      toast.error(t('toasts.portalLinkUnavailable'));
       return;
     }
     window.open(projectPortalUrl, '_blank');
@@ -285,25 +286,25 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
   // Delete mutations using POST
   const { mutate: deleteProcurement, isPending: isDeletingProcurement } = usePost({
     onSuccess: () => {
-      toast.success('Item removed successfully');
+      toast.success(t('toasts.itemRemoved'));
       refetch();
       setDeleteDialogOpen(false);
       setDeleteTarget(null);
     },
     onError: (error: any) => {
-      toast.error(error?.message || 'Failed to remove item');
+      toast.error(error?.message || t('toasts.itemRemoveFailed'));
     },
   });
 
   const { mutate: deleteDocument, isPending: isDeletingDocument } = usePost({
     onSuccess: () => {
-      toast.success('Drawing removed successfully');
+      toast.success(t('toasts.drawingRemoved'));
       refetch();
       setDeleteDialogOpen(false);
       setDeleteTarget(null);
     },
     onError: (error: any) => {
-      toast.error(error?.message || 'Failed to remove drawing');
+      toast.error(error?.message || t('toasts.drawingRemoveFailed'));
     },
   });
 
@@ -419,10 +420,10 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
               <Tabs value={addTab} onValueChange={v => setAddTab(v as 'new' | 'existing')} className="flex-1 flex flex-col min-h-0">
                 <TabsList className="grid grid-cols-2 w-full bg-muted/65 p-1 rounded-xl border border-border/20">
                   <TabsTrigger value="new" className="flex items-center gap-1.5 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm font-semibold py-1.5 transition-all">
-                    <UserPlus className="w-3.5 h-3.5" /> Create New
+                    <UserPlus className="w-3.5 h-3.5" /> {t('tabCreateNew')}
                   </TabsTrigger>
                   <TabsTrigger value="existing" className="flex items-center gap-1.5 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm font-semibold py-1.5 transition-all">
-                    <Link2 className="w-3.5 h-3.5" /> Link Existing
+                    <Link2 className="w-3.5 h-3.5" /> {t('tabLinkExisting')}
                   </TabsTrigger>
                 </TabsList>
 
@@ -432,7 +433,7 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
                         <Label htmlFor="name" className="text-sm font-semibold text-foreground/80">
-                          First Name <span className="text-red-500">*</span>
+                          {t('firstName')} <span className="text-red-500">*</span>
                         </Label>
                         <Input
                           id="name"
@@ -444,7 +445,7 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                       </div>
                       <div className="space-y-1.5">
                         <Label htmlFor="surname" className="text-sm font-semibold text-foreground/80">
-                          Surname <span className="text-muted-foreground font-normal">(for access code)</span>
+                          {tc('surname')} <span className="text-muted-foreground font-normal">{t('surnameAccessCodeHint')}</span>
                         </Label>
                         <Input
                           id="surname"
@@ -467,7 +468,7 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="email" className="text-sm font-semibold text-foreground/80">
-                        Email <span className="text-red-500">*</span>
+                        {t('email')} <span className="text-red-500">*</span>
                       </Label>
                       <Input
                         id="email"
@@ -491,7 +492,7 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="trade" className="text-sm font-semibold text-foreground/80">
-                        Trade <span className="text-red-500">*</span>
+                        {t('trade')} <span className="text-red-500">*</span>
                       </Label>
                       <Select value={newContractor.trade} onValueChange={value => setNewContractor(prev => ({ ...prev, trade: value }))}>
                         <SelectTrigger className="bg-background border-border/60 text-foreground rounded-xl focus:ring-primary">
@@ -499,7 +500,7 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                         </SelectTrigger>
                         <SelectContent className="bg-card border-border text-foreground rounded-xl">
                           {TRADE_OPTIONS.map((trade) => (
-                            <SelectItem key={trade} value={trade} className="hover:bg-accent/40 focus:bg-accent/40 rounded-lg">{trade}</SelectItem>
+                            <SelectItem key={trade} value={trade} className="hover:bg-accent/40 focus:bg-accent/40 rounded-lg">{tTrades(trade)}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -554,7 +555,7 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                               <div className="flex items-center justify-between w-full">
                                 <div className="min-w-0">
                                   <p className="text-sm font-semibold text-foreground truncate">{fullName || c.company_name}</p>
-                                  <p className="text-xs text-muted-foreground truncate">{c.company_name}{c.trade ? ` · ${c.trade}` : ''}</p>
+                                  <p className="text-xs text-muted-foreground truncate">{c.company_name}{c.trade ? ` · ${tTrades(c.trade as typeof TRADE_OPTIONS[number])}` : ''}</p>
                                 </div>
                                 <div className="flex items-center gap-2.5 shrink-0 ml-3">
                                   <span className="text-xs font-mono text-muted-foreground">{c.access_code}</span>
@@ -659,11 +660,15 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
           setDeleteTarget(null);
         }}
         onConfirm={confirmDelete}
-        title={`Remove Shared ${deleteTarget?.type === 'item' ? 'Item' : 'Drawing'}`}
-        description={`Are you sure you want to remove "${deleteTarget?.itemName}" from this contractor? They will no longer have access to this ${deleteTarget?.type === 'item' ? 'item' : 'drawing'}.`}
+        title={deleteTarget?.type === 'item' ? t('deleteDialog.removeSharedItemTitle') : t('deleteDialog.removeSharedDrawingTitle')}
+        description={
+          deleteTarget?.type === 'item'
+            ? t('deleteDialog.removeSharedItemDescription', { itemName: deleteTarget?.itemName ?? '' })
+            : t('deleteDialog.removeSharedDrawingDescription', { itemName: deleteTarget?.itemName ?? '' })
+        }
         itemName={deleteTarget?.itemName}
         requireConfirmation={false}
-        confirmText="Remove"
+        confirmText={tc('remove')}
         isDeleting={isDeletingProcurement || isDeletingDocument}
       />
 

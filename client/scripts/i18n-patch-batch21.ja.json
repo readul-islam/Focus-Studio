@@ -1,0 +1,37 @@
+{
+  "contractorSelectDialog": {
+    "toasts": {
+      "sharedItems": "{name}に{count}件のアイテムを共有しました",
+      "sharedWith": "{name}と共有しました",
+      "sharedDocuments": "{name}に{count}件のドキュメントを共有しました",
+      "shareProcurementsFailed": "調達品の共有に失敗しました",
+      "shareProcurementFailed": "調達品の共有に失敗しました",
+      "shareDocumentsFailed": "ドキュメントの共有に失敗しました",
+      "shareDocumentFailed": "ドキュメントの共有に失敗しました"
+    }
+  },
+  "shareItemsDialog": {
+    "title": "{name}とアイテムを共有",
+    "searchPlaceholder": "アイテムを検索…",
+    "selectAll": "すべて選択 ({count})",
+    "selectedCount": "{count}件選択",
+    "noItemsFound": "アイテムが見つかりません",
+    "roomQty": "{room} · 数量: {quantity}",
+    "sharedBadge": "共有済み",
+    "cancel": "キャンセル",
+    "sharing": "共有中…",
+    "share": "共有",
+    "shareCount": "共有 ({count})"
+  },
+  "contractorSidebar": {
+    "overview": "概要",
+    "items": "アイテム",
+    "drawings": "図面",
+    "schedule": "スケジュール",
+    "messages": "メッセージ",
+    "builderGc": "ビルダー / ゼネコン",
+    "helpContact": "ヘルプと連絡",
+    "collapse": "折りたたむ",
+    "poweredBy": "{brand}提供"
+  }
+}

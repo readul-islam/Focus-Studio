@@ -1,0 +1,37 @@
+{
+  "contractorSelectDialog": {
+    "toasts": {
+      "sharedItems": "Shared {count, plural, one {# item} other {# items}} with {name}",
+      "sharedWith": "Shared with {name}",
+      "sharedDocuments": "Shared {count, plural, one {# document} other {# documents}} with {name}",
+      "shareProcurementsFailed": "Failed to share procurements",
+      "shareProcurementFailed": "Failed to share procurement",
+      "shareDocumentsFailed": "Failed to share documents",
+      "shareDocumentFailed": "Failed to share document"
+    }
+  },
+  "shareItemsDialog": {
+    "title": "Share Items with {name}",
+    "searchPlaceholder": "Search items...",
+    "selectAll": "Select all ({count})",
+    "selectedCount": "{count} selected",
+    "noItemsFound": "No items found",
+    "roomQty": "{room} · Qty: {quantity}",
+    "sharedBadge": "Shared",
+    "cancel": "Cancel",
+    "sharing": "Sharing...",
+    "share": "Share",
+    "shareCount": "Share ({count})"
+  },
+  "contractorSidebar": {
+    "overview": "Overview",
+    "items": "Items",
+    "drawings": "Drawings",
+    "schedule": "Schedule",
+    "messages": "Messages",
+    "builderGc": "Builder / GC",
+    "helpContact": "Help & Contact",
+    "collapse": "Collapse",
+    "poweredBy": "Powered by {brand}"
+  }
+}

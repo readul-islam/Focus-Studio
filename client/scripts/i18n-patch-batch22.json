@@ -1,0 +1,76 @@
+{
+  "builderCoordinationDashboard": {
+    "stats": {
+      "progress": "Progress",
+      "activeNow": "Active Now",
+      "tradesWorking": "trades working",
+      "deliveries": "Deliveries",
+      "itemsPending": "items pending",
+      "totalItems": "Total Items",
+      "acrossAllTrades": "across all trades"
+    },
+    "tradeSchedule": "Trade Schedule",
+    "upcomingDeliveries": "Upcoming Deliveries",
+    "allItemsDelivered": "All items delivered",
+    "itemsByTrade": "Items by Trade",
+    "deliveredCount": "{count} delivered",
+    "pendingCount": "{count} pending",
+    "workInProgress": "Work in Progress",
+    "workInProgressItem": "{contractor} ({trade} - {phase})",
+    "phases": {
+      "rough_in": "Rough-In",
+      "first_fix": "First Fix",
+      "installation": "Installation",
+      "finishing": "Finishing"
+    },
+    "statuses": {
+      "pending": "Pending",
+      "in_progress": "In Progress",
+      "complete": "Complete"
+    },
+    "deliveryStatuses": {
+      "in_transit": "In Transit",
+      "ordered": "Ordered"
+    },
+    "eta": "ETA {date}"
+  },
+  "contractorActivityFeed": {
+    "empty": "No activity yet.",
+    "newBadge": "New",
+    "justNow": "Just now",
+    "hoursAgo": "{count, plural, one {# hour ago} other {# hours ago}}",
+    "daysAgo": "{count, plural, one {# day ago} other {# days ago}}"
+  },
+  "contractorProcurementTable": {
+    "empty": "No procurement items assigned to you.",
+    "columns": {
+      "item": "Item",
+      "room": "Room",
+      "qty": "Qty",
+      "status": "Status",
+      "etaDelivered": "ETA / Delivered",
+      "notes": "Notes"
+    },
+    "statuses": {
+      "ordered": "Ordered",
+      "in_transit": "In Transit",
+      "delivered": "Delivered",
+      "on_site": "On Site",
+      "installed": "Installed"
+    }
+  },
+  "contractorDrawingsGrid": {
+    "empty": "No drawings shared with you yet.",
+    "awaitingSurvey": "Awaiting Survey Confirmation",
+    "surveyedDrawings": "Surveyed Drawings",
+    "generalRoom": "General",
+    "surveyedBadge": "Surveyed",
+    "pendingBadge": "Pending",
+    "revisedOn": "Revised {date}",
+    "addedOn": "Added {date}",
+    "confirmedBy": "Confirmed by {name} on {date}",
+    "confirmedByYou": "You",
+    "view": "View",
+    "markSurveyed": "Mark Surveyed"
+  }
+}

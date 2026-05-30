@@ -336,10 +336,10 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
 
           {/* {(isClient || contact?.contact_type === 'CL') && (
             <div className="space-y-2">
-              <Label htmlFor="project">Project</Label>
+              <Label htmlFor="project">{tc('project')}</Label>
               <Select onValueChange={value => handleSelectChange('project', value)} value={formValues.project || ''}>
                 <SelectTrigger className="bg-white rounded-[10px] w-full px-3 py-[10px] border">
-                  <SelectValue placeholder="Select Project" />
+                  <SelectValue placeholder={t('selectProject')} />
                 </SelectTrigger>
                 <SelectContent className="bg-white">
                   {projects.map(item => (

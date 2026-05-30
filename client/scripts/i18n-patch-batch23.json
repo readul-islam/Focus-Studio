@@ -1,0 +1,68 @@
+{
+  "projectContractorsPage": {
+    "tabCreateNew": "Create New",
+    "tabLinkExisting": "Link Existing",
+    "surnameAccessCodeHint": "(for access code)",
+    "email": "Email",
+    "trade": "Trade",
+    "toasts": {
+      "addedInviteFailed": "Contractor added (access code: {code}). Invite email could not be sent.",
+      "addedWithInvite": "Contractor added. Invite sent — access code: {code}",
+      "addFailed": "Failed to add contractor",
+      "linkedSuccess": "Contractor linked to project",
+      "linkFailed": "Failed to link contractor",
+      "portalLinkUnavailable": "Project portal link is not available yet",
+      "portalLinkCopied": "Project portal link copied",
+      "itemRemoved": "Item removed successfully",
+      "itemRemoveFailed": "Failed to remove item",
+      "drawingRemoved": "Drawing removed successfully",
+      "drawingRemoveFailed": "Failed to remove drawing"
+    },
+    "deleteDialog": {
+      "removeSharedItemTitle": "Remove Shared Item",
+      "removeSharedDrawingTitle": "Remove Shared Drawing",
+      "removeSharedItemDescription": "Are you sure you want to remove \"{itemName}\" from this contractor? They will no longer have access to this item.",
+      "removeSharedDrawingDescription": "Are you sure you want to remove \"{itemName}\" from this contractor? They will no longer have access to this drawing."
+    }
+  },
+  "contractorTrades": {
+    "Builder": "Builder",
+    "Electrician": "Electrician",
+    "Plumber": "Plumber",
+    "Joiner": "Joiner",
+    "Plasterer": "Plasterer",
+    "Decorator": "Decorator",
+    "Other": "Other"
+  },
+  "projectCalendarPage": {
+    "weekdays": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "progress": "Progress",
+    "progressDone": "{percent}% done",
+    "deliveryLabel": "{product} Delivery",
+    "projectLabel": "Project: {name}",
+    "etaLabel": "ETA: {date}",
+    "phaseColumn": "Phase",
+    "noEvents": "No events",
+    "sidebarSummary": {
+      "activePhases": "{count, plural, one {# active phase} other {# active phases}}",
+      "deliveries": "{count, plural, one {# delivery} other {# deliveries}}"
+    },
+    "activePhasesBadge": "{count, plural, one {# Active Phase} other {# Active Phases}}",
+    "activeDeliveriesBadge": "{count, plural, one {# Delivery} other {# Deliveries}}",
+    "dayEmpty": "No phases or deliveries scheduled for this day.",
+    "sidebarEmpty": "No active phases or deliveries for this date."
+  },
+  "projectPlanPage": {
+    "noDate": "No date",
+    "statusLabel": "Status: {status}",
+    "statusPending": "Pending"
+  }
+}

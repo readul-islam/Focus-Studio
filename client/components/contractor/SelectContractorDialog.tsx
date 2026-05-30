@@ -95,12 +95,15 @@ export function SelectContractorDialog({
           },
           {
             onSuccess: () => {
-              toast.success(`Shared ${procurementIds.length} item${procurementIds.length > 1 ? 's' : ''} with ${contractor.name} ${contractor.surname}`);
+              toast.success(t('toasts.sharedItems', {
+                count: procurementIds.length,
+                name: `${contractor.name} ${contractor.surname}`.trim(),
+              }));
               onSelect(contractor);
               handleClose();
               queryClient.refetchQueries({ queryKey: [`contractor_portal/project/${projectId}/contractors/`] });
             },
-            onError: (error: any) => toast.error(error?.message || 'Failed to share procurements'),
+            onError: (error: any) => toast.error(error?.message || t('toasts.shareProcurementsFailed')),
             onSettled: () => setIsSubmitting(false),
           }
         );
@@ -117,11 +120,13 @@ export function SelectContractorDialog({
           },
           {
             onSuccess: () => {
-              toast.success(`Shared with ${contractor.name} ${contractor.surname}`);
+              toast.success(t('toasts.sharedWith', {
+                name: `${contractor.name} ${contractor.surname}`.trim(),
+              }));
               onSelect(contractor);
               handleClose();
             },
-            onError: (error: any) => toast.error(error?.message || 'Failed to share procurement'),
+            onError: (error: any) => toast.error(error?.message || t('toasts.shareProcurementFailed')),
             onSettled: () => setIsSubmitting(false),
           }
         );
@@ -142,11 +147,14 @@ export function SelectContractorDialog({
           },
           {
             onSuccess: () => {
-              toast.success(`Shared ${documentIds.length} document${documentIds.length > 1 ? 's' : ''} with ${contractor.name} ${contractor.surname}`);
+              toast.success(t('toasts.sharedDocuments', {
+                count: documentIds.length,
+                name: `${contractor.name} ${contractor.surname}`.trim(),
+              }));
               onSelect(contractor);
               handleClose();
             },
-            onError: (error: any) => toast.error(error?.message || 'Failed to share documents'),
+            onError: (error: any) => toast.error(error?.message || t('toasts.shareDocumentsFailed')),
             onSettled: () => setIsSubmitting(false),
           }
         );
@@ -167,11 +175,13 @@ export function SelectContractorDialog({
           },
           {
             onSuccess: () => {
-              toast.success(`Shared with ${contractor.name} ${contractor.surname}`);
+              toast.success(t('toasts.sharedWith', {
+                name: `${contractor.name} ${contractor.surname}`.trim(),
+              }));
               onSelect(contractor);
               handleClose();
             },
-            onError: (error: any) => toast.error(error?.message || 'Failed to share document'),
+            onError: (error: any) => toast.error(error?.message || t('toasts.shareDocumentFailed')),
             onSettled: () => setIsSubmitting(false),
           }
         );

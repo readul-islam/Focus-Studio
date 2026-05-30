@@ -1,5 +1,7 @@
 'use client';
 
+import { useMemo } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -35,42 +37,53 @@ const TRADE_COLORS: Record<TradeType, string> = {
   General: 'bg-greige-500',
 };
 
-const PHASE_LABELS: Record<TradeScheduleItem['phase'], string> = {
-  rough_in: 'Rough-In',
-  first_fix: 'First Fix',
-  installation: 'Installation',
-  finishing: 'Finishing',
+const STATUS_CLASSNAMES: Record<TradeScheduleItem['status'], string> = {
+  pending: 'bg-stone-100 text-neutral-600',
+  in_progress: 'bg-ochre-100 text-ochre-700',
+  complete: 'bg-sage-100 text-sage-700',
 };
 
-const STATUS_CONFIG: Record<TradeScheduleItem['status'], { label: string; className: string }> = {
-  pending: { label: 'Pending', className: 'bg-stone-100 text-neutral-600' },
-  in_progress: { label: 'In Progress', className: 'bg-ochre-100 text-ochre-700' },
-  complete: { label: 'Complete', className: 'bg-sage-100 text-sage-700' },
-};
-
-function formatDate(dateString: string): string {
+function formatDate(dateString: string, locale: string): string {
   const date = new Date(dateString);
-  return date.toLocaleDateString('en-GB', {
+  return date.toLocaleDateString(locale, {
     day: 'numeric',
     month: 'short',
   });
 }
 
 export function BuilderCoordinationDashboard({ data }: BuilderCoordinationDashboardProps) {
+  const t = useTranslations('builderCoordinationDashboard');
+  const locale = useLocale();
   const { trade_schedule, upcoming_deliveries, all_trades_summary } = data;
 
-  // Calculate overall progress
+  const phaseLabels = useMemo(
+    () => ({
+      rough_in: t('phases.rough_in'),
+      first_fix: t('phases.first_fix'),
+      installation: t('phases.installation'),
+      finishing: t('phases.finishing'),
+    }),
+    [t]
+  );
+
+  const statusLabels = useMemo(
+    () => ({
+      pending: t('statuses.pending'),
+      in_progress: t('statuses.in_progress'),
+      complete: t('statuses.complete'),
+    }),
+    [t]
+  );
+
   const completedPhases = trade_schedule.filter(s => s.status === 'complete').length;
   const totalPhases = trade_schedule.length;
   const overallProgress = Math.round((completedPhases / totalPhases) * 100);
 
-  // Get current and upcoming work
   const currentWork = trade_schedule.filter(s => s.status === 'in_progress');
   const upcomingWork = trade_schedule.filter(s => s.status === 'pending').slice(0, 3);
 
   return (
     <div className="space-y-6">
-      {/* Overview Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="p-4 border-greige-500/30">
           <div className="flex items-center gap-3">
@@ -78,7 +91,7 @@ export function BuilderCoordinationDashboard({ data }: BuilderCoordinationDashbo
               <CheckCircle className="w-5 h-5 text-sage-600" />
             </div>
             <div>
-              <p className="text-xs text-neutral-500 uppercase tracking-wide">Progress</p>
+              <p className="text-xs text-neutral-500 uppercase tracking-wide">{t('stats.progress')}</p>
               <p className="text-2xl font-semibold text-neutral-900">{overallProgress}%</p>
             </div>
           </div>
@@ -91,9 +104,9 @@ export function BuilderCoordinationDashboard({ data }: BuilderCoordinationDashbo
               <Clock className="w-5 h-5 text-ochre-600" />
             </div>
             <div>
-              <p className="text-xs text-neutral-500 uppercase tracking-wide">Active Now</p>
+              <p className="text-xs text-neutral-500 uppercase tracking-wide">{t('stats.activeNow')}</p>
               <p className="text-2xl font-semibold text-neutral-900">{currentWork.length}</p>
-              <p className="text-xs text-neutral-500">trades working</p>
+              <p className="text-xs text-neutral-500">{t('stats.tradesWorking')}</p>
             </div>
           </div>
         </Card>
@@ -104,9 +117,9 @@ export function BuilderCoordinationDashboard({ data }: BuilderCoordinationDashbo
               <Truck className="w-5 h-5 text-slatex-600" />
             </div>
             <div>
-              <p className="text-xs text-neutral-500 uppercase tracking-wide">Deliveries</p>
+              <p className="text-xs text-neutral-500 uppercase tracking-wide">{t('stats.deliveries')}</p>
               <p className="text-2xl font-semibold text-neutral-900">{upcoming_deliveries.length}</p>
-              <p className="text-xs text-neutral-500">items pending</p>
+              <p className="text-xs text-neutral-500">{t('stats.itemsPending')}</p>
             </div>
           </div>
         </Card>
@@ -117,28 +130,26 @@ export function BuilderCoordinationDashboard({ data }: BuilderCoordinationDashbo
               <Package className="w-5 h-5 text-neutral-600" />
             </div>
             <div>
-              <p className="text-xs text-neutral-500 uppercase tracking-wide">Total Items</p>
+              <p className="text-xs text-neutral-500 uppercase tracking-wide">{t('stats.totalItems')}</p>
               <p className="text-2xl font-semibold text-neutral-900">
-                {all_trades_summary.reduce((sum, t) => sum + t.total_items, 0)}
+                {all_trades_summary.reduce((sum, trade) => sum + trade.total_items, 0)}
               </p>
-              <p className="text-xs text-neutral-500">across all trades</p>
+              <p className="text-xs text-neutral-500">{t('stats.acrossAllTrades')}</p>
             </div>
           </div>
         </Card>
       </div>
 
-      {/* Trade Schedule Timeline */}
       <Card className="border-greige-500/30 overflow-hidden">
         <div className="p-4 border-b border-greige-500/30 bg-stone-50">
           <div className="flex items-center gap-2">
             <Calendar className="w-5 h-5 text-slatex-600" />
-            <h2 className="font-semibold text-neutral-900">Trade Schedule</h2>
+            <h2 className="font-semibold text-neutral-900">{t('tradeSchedule')}</h2>
           </div>
         </div>
         <div className="divide-y divide-greige-500/20">
           {trade_schedule.map((schedule, index) => {
             const TradeIcon = TRADE_ICONS[schedule.trade];
-            const status = STATUS_CONFIG[schedule.status];
             const tradeColor = TRADE_COLORS[schedule.trade];
 
             return (
@@ -148,34 +159,29 @@ export function BuilderCoordinationDashboard({ data }: BuilderCoordinationDashbo
                   schedule.status === 'in_progress' ? 'bg-ochre-50/50' : ''
                 }`}
               >
-                {/* Trade indicator */}
                 <div className={`w-1 h-12 rounded-full ${tradeColor}`} />
 
-                {/* Trade icon */}
                 <div className="p-2 bg-white border border-greige-500/30 rounded-lg">
                   <TradeIcon className="w-4 h-4 text-neutral-600" />
                 </div>
 
-                {/* Details */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-neutral-900">{schedule.trade}</span>
                     <span className="text-neutral-400">·</span>
-                    <span className="text-sm text-neutral-600">{PHASE_LABELS[schedule.phase]}</span>
+                    <span className="text-sm text-neutral-600">{phaseLabels[schedule.phase]}</span>
                   </div>
                   <p className="text-sm text-neutral-500 truncate">{schedule.contractor_name}</p>
                 </div>
 
-                {/* Dates */}
                 <div className="text-right text-sm">
                   <p className="text-neutral-900 font-medium">
-                    {formatDate(schedule.start_date)} - {formatDate(schedule.end_date)}
+                    {formatDate(schedule.start_date, locale)} - {formatDate(schedule.end_date, locale)}
                   </p>
                 </div>
 
-                {/* Status */}
-                <Badge className={`text-xs ${status.className}`}>
-                  {status.label}
+                <Badge className={`text-xs ${STATUS_CLASSNAMES[schedule.status]}`}>
+                  {statusLabels[schedule.status]}
                 </Badge>
               </div>
             );
@@ -183,21 +189,19 @@ export function BuilderCoordinationDashboard({ data }: BuilderCoordinationDashbo
         </div>
       </Card>
 
-      {/* Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Upcoming Deliveries */}
         <Card className="border-greige-500/30 overflow-hidden">
           <div className="p-4 border-b border-greige-500/30 bg-stone-50">
             <div className="flex items-center gap-2">
               <Truck className="w-5 h-5 text-slatex-600" />
-              <h2 className="font-semibold text-neutral-900">Upcoming Deliveries</h2>
+              <h2 className="font-semibold text-neutral-900">{t('upcomingDeliveries')}</h2>
             </div>
           </div>
           <div className="divide-y divide-greige-500/20 max-h-[320px] overflow-y-auto">
             {upcoming_deliveries.length === 0 ? (
               <div className="p-8 text-center">
                 <CheckCircle className="w-8 h-8 text-sage-400 mx-auto mb-2" />
-                <p className="text-sm text-neutral-500">All items delivered</p>
+                <p className="text-sm text-neutral-500">{t('allItemsDelivered')}</p>
               </div>
             ) : (
               upcoming_deliveries.map((item) => {
@@ -221,11 +225,13 @@ export function BuilderCoordinationDashboard({ data }: BuilderCoordinationDashbo
                             : 'bg-stone-100 text-neutral-600'
                         }`}
                       >
-                        {item.status === 'in_transit' ? 'In Transit' : 'Ordered'}
+                        {item.status === 'in_transit'
+                          ? t('deliveryStatuses.in_transit')
+                          : t('deliveryStatuses.ordered')}
                       </Badge>
                       {item.eta && (
                         <p className="text-xs text-neutral-500 mt-1">
-                          ETA {formatDate(item.eta)}
+                          {t('eta', { date: formatDate(item.eta, locale) })}
                         </p>
                       )}
                     </div>
@@ -236,12 +242,11 @@ export function BuilderCoordinationDashboard({ data }: BuilderCoordinationDashbo
           </div>
         </Card>
 
-        {/* Trade Summary */}
         <Card className="border-greige-500/30 overflow-hidden">
           <div className="p-4 border-b border-greige-500/30 bg-stone-50">
             <div className="flex items-center gap-2">
               <Package className="w-5 h-5 text-slatex-600" />
-              <h2 className="font-semibold text-neutral-900">Items by Trade</h2>
+              <h2 className="font-semibold text-neutral-900">{t('itemsByTrade')}</h2>
             </div>
           </div>
           <div className="p-4 space-y-4">
@@ -259,9 +264,13 @@ export function BuilderCoordinationDashboard({ data }: BuilderCoordinationDashbo
                       <span className="text-sm font-medium text-neutral-900">{summary.trade}</span>
                     </div>
                     <div className="flex items-center gap-3 text-xs">
-                      <span className="text-sage-600">{summary.delivered} delivered</span>
+                      <span className="text-sage-600">
+                        {t('deliveredCount', { count: summary.delivered })}
+                      </span>
                       <span className="text-neutral-400">|</span>
-                      <span className="text-neutral-500">{summary.pending} pending</span>
+                      <span className="text-neutral-500">
+                        {t('pendingCount', { count: summary.pending })}
+                      </span>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -277,15 +286,22 @@ export function BuilderCoordinationDashboard({ data }: BuilderCoordinationDashbo
         </Card>
       </div>
 
-      {/* Current Work Alert */}
       {currentWork.length > 0 && (
         <Card className="border-ochre-200 bg-ochre-50/50 p-4">
           <div className="flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-ochre-600 flex-shrink-0 mt-0.5" />
             <div>
-              <h3 className="font-medium text-ochre-900">Work in Progress</h3>
+              <h3 className="font-medium text-ochre-900">{t('workInProgress')}</h3>
               <p className="text-sm text-ochre-700 mt-1">
-                {currentWork.map(w => `${w.contractor_name} (${w.trade} - ${PHASE_LABELS[w.phase]})`).join(', ')}
+                {currentWork
+                  .map(w =>
+                    t('workInProgressItem', {
+                      contractor: w.contractor_name,
+                      trade: w.trade,
+                      phase: phaseLabels[w.phase],
+                    })
+                  )
+                  .join(', ')}
               </p>
             </div>
           </div>

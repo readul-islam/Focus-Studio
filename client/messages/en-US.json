@@ -3217,7 +3217,32 @@
     "linking": "Linking...",
     "linkToProject": "Link to Project",
     "noContractorsYet": "No contractors added yet",
-    "noSearchMatch": "No contractors match your search"
+    "noSearchMatch": "No contractors match your search",
+    "tabCreateNew": "Create New",
+    "tabLinkExisting": "Link Existing",
+    "surnameAccessCodeHint": "(for access code)",
+    "email": "Email",
+    "trade": "Trade",
+    "toasts": {
+      "addedInviteFailed": "Contractor added (access code: {code}). Invite email could not be sent.",
+      "addedWithInvite": "Contractor added. Invite sent — access code: {code}",
+      "addFailed": "Failed to add contractor",
+      "linkedSuccess": "Contractor linked to project",
+      "linkFailed": "Failed to link contractor",
+      "portalLinkUnavailable": "Project portal link is not available yet",
+      "portalLinkCopied": "Project portal link copied",
+      "itemRemoved": "Item removed successfully",
+      "itemRemoveFailed": "Failed to remove item",
+      "drawingRemoved": "Drawing removed successfully",
+      "drawingRemoveFailed": "Failed to remove drawing"
+    },
+    "deleteDialog": {
+      "removeSharedItemTitle": "Remove Shared Item",
+      "removeSharedDrawingTitle": "Remove Shared Drawing",
+      "removeSharedDescription": "Are you sure you want to remove \"{itemName}\" from this contractor? They will no longer have access to this {type}.",
+      "removeSharedItemDescription": "Are you sure you want to remove \"{itemName}\" from this contractor? They will no longer have access to this item.",
+      "removeSharedDrawingDescription": "Are you sure you want to remove \"{itemName}\" from this contractor? They will no longer have access to this drawing."
+    }
   },
   "projectNotFound": {
     "title": "Project Not Found",
@@ -3554,7 +3579,10 @@
     "quarter": "Quarter",
     "phasesHeader": "Phases & Work Packages",
     "loading": "Loading plan...",
-    "noPhases": "No phases with dates yet"
+    "noPhases": "No phases with dates yet",
+    "noDate": "No date",
+    "statusLabel": "Status: {status}",
+    "statusPending": "Pending"
   },
   "projectCalendarPage": {
     "today": "Today",
@@ -3568,7 +3596,31 @@
     "filterPhases": "Phases",
     "filterDelivery": "Delivery dates",
     "addEvent": "Add event",
-    "loading": "Loading calendar..."
+    "loading": "Loading calendar...",
+    "weekdays": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "progress": "Progress",
+    "progressDone": "{percent}% done",
+    "deliveryLabel": "{product} Delivery",
+    "projectLabel": "Project: {name}",
+    "etaLabel": "ETA: {date}",
+    "phaseColumn": "Phase",
+    "noEvents": "No events",
+    "sidebarSummary": {
+      "activePhases": "{count, plural, one {# active phase} other {# active phases}}",
+      "deliveries": "{count, plural, one {# delivery} other {# deliveries}}"
+    },
+    "activePhasesBadge": "{count, plural, one {# Active Phase} other {# Active Phases}}",
+    "activeDeliveriesBadge": "{count, plural, one {# Delivery} other {# Deliveries}}",
+    "dayEmpty": "No phases or deliveries scheduled for this day.",
+    "sidebarEmpty": "No active phases or deliveries for this date."
   },
   "projectTeamPage": {
     "documentTitle": "Team | Focuspilot",
@@ -3892,7 +3944,16 @@
     "loading": "Loading contractors...",
     "empty": "No contractors found",
     "shareSuccess": "Shared successfully",
-    "shareFailed": "Failed to share"
+    "shareFailed": "Failed to share",
+    "toasts": {
+      "sharedItems": "Shared {count, plural, one {# item} other {# items}} with {name}",
+      "sharedWith": "Shared with {name}",
+      "sharedDocuments": "Shared {count, plural, one {# document} other {# documents}} with {name}",
+      "shareProcurementsFailed": "Failed to share procurements",
+      "shareProcurementFailed": "Failed to share procurement",
+      "shareDocumentsFailed": "Failed to share documents",
+      "shareDocumentFailed": "Failed to share document"
+    }
   },
   "projectProcurementTable": {
     "statusUpdated": "Status Updated",
@@ -4503,5 +4564,112 @@
     "unit": "1 unit",
     "units": "{count} units",
     "submit": "Add to Project"
+  },
+  "shareItemsDialog": {
+    "title": "Share Items with {name}",
+    "searchPlaceholder": "Search items...",
+    "selectAll": "Select all ({count})",
+    "selectedCount": "{count} selected",
+    "noItemsFound": "No items found",
+    "roomQty": "{room} · Qty: {quantity}",
+    "sharedBadge": "Shared",
+    "cancel": "Cancel",
+    "sharing": "Sharing...",
+    "share": "Share",
+    "shareCount": "Share ({count})"
+  },
+  "contractorSidebar": {
+    "overview": "Overview",
+    "items": "Items",
+    "drawings": "Drawings",
+    "schedule": "Schedule",
+    "messages": "Messages",
+    "builderGc": "Builder / GC",
+    "helpContact": "Help & Contact",
+    "collapse": "Collapse",
+    "poweredBy": "Powered by {brand}"
+  },
+  "builderCoordinationDashboard": {
+    "stats": {
+      "progress": "Progress",
+      "activeNow": "Active Now",
+      "tradesWorking": "trades working",
+      "deliveries": "Deliveries",
+      "itemsPending": "items pending",
+      "totalItems": "Total Items",
+      "acrossAllTrades": "across all trades"
+    },
+    "tradeSchedule": "Trade Schedule",
+    "upcomingDeliveries": "Upcoming Deliveries",
+    "allItemsDelivered": "All items delivered",
+    "itemsByTrade": "Items by Trade",
+    "deliveredCount": "{count} delivered",
+    "pendingCount": "{count} pending",
+    "workInProgress": "Work in Progress",
+    "workInProgressItem": "{contractor} ({trade} - {phase})",
+    "phases": {
+      "rough_in": "Rough-In",
+      "first_fix": "First Fix",
+      "installation": "Installation",
+      "finishing": "Finishing"
+    },
+    "statuses": {
+      "pending": "Pending",
+      "in_progress": "In Progress",
+      "complete": "Complete"
+    },
+    "deliveryStatuses": {
+      "in_transit": "In Transit",
+      "ordered": "Ordered"
+    },
+    "eta": "ETA {date}"
+  },
+  "contractorActivityFeed": {
+    "empty": "No activity yet.",
+    "newBadge": "New",
+    "justNow": "Just now",
+    "hoursAgo": "{count, plural, one {# hour ago} other {# hours ago}}",
+    "daysAgo": "{count, plural, one {# day ago} other {# days ago}}"
+  },
+  "contractorProcurementTable": {
+    "empty": "No procurement items assigned to you.",
+    "columns": {
+      "item": "Item",
+      "room": "Room",
+      "qty": "Qty",
+      "status": "Status",
+      "etaDelivered": "ETA / Delivered",
+      "notes": "Notes"
+    },
+    "statuses": {
+      "ordered": "Ordered",
+      "in_transit": "In Transit",
+      "delivered": "Delivered",
+      "on_site": "On Site",
+      "installed": "Installed"
+    }
+  },
+  "contractorDrawingsGrid": {
+    "empty": "No drawings shared with you yet.",
+    "awaitingSurvey": "Awaiting Survey Confirmation",
+    "surveyedDrawings": "Surveyed Drawings",
+    "generalRoom": "General",
+    "surveyedBadge": "Surveyed",
+    "pendingBadge": "Pending",
+    "revisedOn": "Revised {date}",
+    "addedOn": "Added {date}",
+    "confirmedBy": "Confirmed by {name} on {date}",
+    "confirmedByYou": "You",
+    "view": "View",
+    "markSurveyed": "Mark Surveyed"
+  },
+  "contractorTrades": {
+    "Builder": "Builder",
+    "Electrician": "Electrician",
+    "Plumber": "Plumber",
+    "Joiner": "Joiner",
+    "Plasterer": "Plasterer",
+    "Decorator": "Decorator",
+    "Other": "Other"
   }
 }

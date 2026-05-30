@@ -1,0 +1,68 @@
+{
+  "projectContractorsPage": {
+    "tabCreateNew": "新規作成",
+    "tabLinkExisting": "既存をリンク",
+    "surnameAccessCodeHint": "（アクセスコード用）",
+    "email": "メール",
+    "trade": "工種",
+    "toasts": {
+      "addedInviteFailed": "業者を追加しました（アクセスコード: {code}）。招待メールを送信できませんでした。",
+      "addedWithInvite": "業者を追加しました。招待を送信 — アクセスコード: {code}",
+      "addFailed": "業者の追加に失敗しました",
+      "linkedSuccess": "業者をプロジェクトにリンクしました",
+      "linkFailed": "業者のリンクに失敗しました",
+      "portalLinkUnavailable": "プロジェクトポータルリンクはまだ利用できません",
+      "portalLinkCopied": "プロジェクトポータルリンクをコピーしました",
+      "itemRemoved": "アイテムを削除しました",
+      "itemRemoveFailed": "アイテムの削除に失敗しました",
+      "drawingRemoved": "図面を削除しました",
+      "drawingRemoveFailed": "図面の削除に失敗しました"
+    },
+    "deleteDialog": {
+      "removeSharedItemTitle": "共有アイテムを削除",
+      "removeSharedDrawingTitle": "共有図面を削除",
+      "removeSharedItemDescription": "「{itemName}」をこの業者から削除しますか？このアイテムへのアクセス権が失われます。",
+      "removeSharedDrawingDescription": "「{itemName}」をこの業者から削除しますか？この図面へのアクセス権が失われます。"
+    }
+  },
+  "contractorTrades": {
+    "Builder": "建築業者",
+    "Electrician": "電気工",
+    "Plumber": "配管工",
+    "Joiner": "大工",
+    "Plasterer": "左官",
+    "Decorator": "装飾業者",
+    "Other": "その他"
+  },
+  "projectCalendarPage": {
+    "weekdays": {
+      "sun": "日",
+      "mon": "月",
+      "tue": "火",
+      "wed": "水",
+      "thu": "木",
+      "fri": "金",
+      "sat": "土"
+    },
+    "progress": "進捗",
+    "progressDone": "{percent}% 完了",
+    "deliveryLabel": "{product} 配送",
+    "projectLabel": "プロジェクト: {name}",
+    "etaLabel": "到着予定: {date}",
+    "phaseColumn": "フェーズ",
+    "noEvents": "イベントなし",
+    "sidebarSummary": {
+      "activePhases": "アクティブフェーズ {count}件",
+      "deliveries": "配送 {count}件"
+    },
+    "activePhasesBadge": "アクティブフェーズ {count}件",
+    "activeDeliveriesBadge": "配送 {count}件",
+    "dayEmpty": "この日に予定されているフェーズや配送はありません。",
+    "sidebarEmpty": "この日のアクティブなフェーズや配送はありません。"
+  },
+  "projectPlanPage": {
+    "noDate": "日付なし",
+    "statusLabel": "ステータス: {status}",
+    "statusPending": "保留"
+  }
+}

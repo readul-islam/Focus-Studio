@@ -35,6 +35,7 @@ import { useTranslations } from 'next-intl';
 
 export default function CalendarStudioPage() {
   const t = useTranslations('projectCalendarPage');
+  const tc = useTranslations('common');
   const params = useParams();
   const projectId = params?.id;
 
@@ -45,6 +46,11 @@ export default function CalendarStudioPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState<'all' | 'phases' | 'delivery_dates'>('all');
+
+  const weekdayLabels = useMemo(
+    () => [t('weekdays.sun'), t('weekdays.mon'), t('weekdays.tue'), t('weekdays.wed'), t('weekdays.thu'), t('weekdays.fri'), t('weekdays.sat')],
+    [t]
+  );
 
   // Fetch Phases
   const { data: phasesData, isLoading: phasesLoading } = useFetch(projectId ? `projects/project-phases/?project_id=${projectId}` : null);
@@ -222,7 +228,7 @@ export default function CalendarStudioPage() {
       <div className="flex flex-col h-full border border-gray-200 rounded-lg overflow-y-scroll bg-white shadow-sm">
         {/* Header */}
         <div className="grid grid-cols-7 border-b border-gray-200 bg-white">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
+          {weekdayLabels.map(d => (
             <div key={d} className="py-2 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
               {d}
             </div>
@@ -289,12 +295,12 @@ export default function CalendarStudioPage() {
                                         className={`absolute w-[calc(100%-6px)] ${filterType === 'delivery_dates' ? 'bottom-9' : 'bottom-[3px]'} left-[6px] !z-[9999]`}
                                       >
                                         <div className="bg-blue-100 text-blue-700 text-[10px] font-normal px-2 py-0.5 rounded-[12px] truncate cursor-pointer h-7 flex items-center">
-                                          {delivery.product_name} Delivery
+                                          {t('deliveryLabel', { product: delivery.product_name })}
                                         </div>
                                       </TooltipTrigger>
                                       <TooltipContent className="!z-[9999] relative">
                                         <div className="text-xs">
-                                          <div className="font-normal">{delivery.product_name} Delivery</div>
+                                          <div className="font-normal">{t('deliveryLabel', { product: delivery.product_name })}</div>
                                           {/* <div className="text-gray-500">ETA: {format(delivery.etaDate, 'MMM d, yyyy')}</div> */}
                                         </div>
                                       </TooltipContent>
@@ -367,7 +373,7 @@ export default function CalendarStudioPage() {
                                   <div className="text-xs">
                                     {format(phase.startDate, 'MMM d')} - {format(phase.endDate, 'MMM d')}
                                   </div>
-                                  <div className="text-xs mt-1">Progress: {phase.progress}%</div>
+                                  <div className="text-xs mt-1">{t('progress')}: {phase.progress}%</div>
                                 </TooltipContent>
                               </Tooltip>
                             </TooltipProvider>
@@ -424,12 +430,12 @@ export default function CalendarStudioPage() {
           <div className="flex gap-2">
             {activePhases.length > 0 && (
               <Badge variant="outline" className="px-3 py-1 text-sm">
-                {activePhases.length} Active Phase{activePhases.length !== 1 ? 's' : ''}
+                {t('activePhasesBadge', { count: activePhases.length })}
               </Badge>
             )}
             {activeDeliveries.length > 0 && (
               <Badge variant="outline" className="px-3 py-1 text-sm bg-blue-50 text-blue-700 border-blue-200">
-                {activeDeliveries.length} Delivery{activeDeliveries.length !== 1 ? 's' : ''}
+                {t('activeDeliveriesBadge', { count: activeDeliveries.length })}
               </Badge>
             )}
           </div>
@@ -438,7 +444,7 @@ export default function CalendarStudioPage() {
         {activePhases.length === 0 && activeDeliveries.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
             <CalendarIcon className="w-12 h-12 mb-3 opacity-20" />
-            <p>No phases or deliveries scheduled for this day.</p>
+            <p>{t('dayEmpty')}</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -459,7 +465,7 @@ export default function CalendarStudioPage() {
 
                 <div className="mt-4">
                   <div className="flex justify-between text-xs text-gray-500 mb-1">
-                    <span>Progress</span>
+                    <span>{t('progress')}</span>
                     <span>{phase.progress}%</span>
                   </div>
                   <div className="w-full bg-stone-200 h-2 rounded-full overflow-hidden">
@@ -479,11 +485,11 @@ export default function CalendarStudioPage() {
               >
                 <div className="flex items-start justify-between">
                   <div>
-                    <h3 className="font-semibold text-blue-900">{delivery.product_name} Delivery</h3>
-                    <p className="text-sm text-blue-700 mt-1">Project: {delivery.project_name}</p>
+                    <h3 className="font-semibold text-blue-900">{t('deliveryLabel', { product: delivery.product_name })}</h3>
+                    <p className="text-sm text-blue-700 mt-1">{t('projectLabel', { name: delivery.project_name })}</p>
                   </div>
                   <div className="px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-700">
-                    ETA: {format(delivery.etaDate, 'MMM d')}
+                    {t('etaLabel', { date: format(delivery.etaDate, 'MMM d') })}
                   </div>
                 </div>
               </div>
@@ -509,7 +515,7 @@ export default function CalendarStudioPage() {
     return (
       <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col h-full">
         <div className="border-b border-gray-200 bg-white flex">
-          <div className="w-48 p-4 border-r border-gray-200 font-medium text-sm text-gray-700 bg-white z-20 shrink-0">Phase</div>
+          <div className="w-48 p-4 border-r border-gray-200 font-medium text-sm text-gray-700 bg-white z-20 shrink-0">{t('phaseColumn')}</div>
           <div className="flex-1 overflow-x-auto relative">
             <div className="flex" style={{ minWidth: '100%' }}>
               {months.map(m => (
@@ -601,7 +607,7 @@ export default function CalendarStudioPage() {
                     onClick={() => setView('month')}
                     className={`h-8 px-3 rounded-md text-xs font-medium transition-all ${view === 'month' ? 'bg-stone-100 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-stone-50'}`}
                   >
-                    Month
+                    {t('month')}
                   </Button>
                   <Button
                     variant="ghost"
@@ -609,7 +615,7 @@ export default function CalendarStudioPage() {
                     onClick={() => setView('week')}
                     className={`h-8 px-3 rounded-md text-xs font-medium transition-all ${view === 'week' ? 'bg-stone-100 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-stone-50'}`}
                   >
-                    Week
+                    {t('week')}
                   </Button>
                   <Button
                     variant="ghost"
@@ -617,7 +623,7 @@ export default function CalendarStudioPage() {
                     onClick={() => setView('day')}
                     className={`h-8 px-3 rounded-md text-xs font-medium transition-all ${view === 'day' ? 'bg-stone-100 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-stone-50'}`}
                   >
-                    Day
+                    {t('day')}
                   </Button>
                 </div>
               </div>
@@ -655,15 +661,13 @@ export default function CalendarStudioPage() {
               <SelectTrigger className=" lg:w-auto w-20  min-w-[162px] h-9 bg-stone-50 border-gray-200">
                 <div className="flex items-center gap-1">
                   <Filter className="w-4 h-4 mr-2" />
-                  <SelectValue placeholder="Filter" className="" />
+                  <SelectValue placeholder={tc('filter')} className="" />
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="phases">Phases</SelectItem>
-                <SelectItem value="delivery_dates">
-                  Delivery <span className="hidden lg:inline">Dates</span>
-                </SelectItem>
+                <SelectItem value="all">{t('filterAll')}</SelectItem>
+                <SelectItem value="phases">{t('filterPhases')}</SelectItem>
+                <SelectItem value="delivery_dates">{t('filterDelivery')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -680,12 +684,19 @@ export default function CalendarStudioPage() {
               <div className="p-4 border-b border-gray-100">
                 <h2 className="font-semibold text-lg">{format(selectedDate, 'EEEE, MMM do')}</h2>
                 <p className="text-sm text-gray-500">
-                  {(filterType === 'all' || filterType === 'phases') && `${phasesForSelectedDate.length} active phases`}
-                  {filterType === 'all' && phasesForSelectedDate.length > 0 && deliveryDatesForSelectedDate.length > 0 && ', '}
+                  {(filterType === 'all' || filterType === 'phases') &&
+                    phasesForSelectedDate.length > 0 &&
+                    t('sidebarSummary.activePhases', { count: phasesForSelectedDate.length })}
+                  {filterType === 'all' &&
+                    phasesForSelectedDate.length > 0 &&
+                    deliveryDatesForSelectedDate.length > 0 &&
+                    ', '}
                   {(filterType === 'all' || filterType === 'delivery_dates') &&
                     deliveryDatesForSelectedDate.length > 0 &&
-                    `${deliveryDatesForSelectedDate.length} deliveries`}
-                  {phasesForSelectedDate.length === 0 && deliveryDatesForSelectedDate.length === 0 && 'No events'}
+                    t('sidebarSummary.deliveries', { count: deliveryDatesForSelectedDate.length })}
+                  {phasesForSelectedDate.length === 0 &&
+                    deliveryDatesForSelectedDate.length === 0 &&
+                    t('noEvents')}
                 </p>
               </div>
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -699,7 +710,7 @@ export default function CalendarStudioPage() {
                           <h3 className={`font-medium text-sm`}>{phase.name}</h3>
                           <p className="text-xs opacity-80 mt-1 lines-clamp-2">{phase.description}</p>
                           <div className="mt-3 flex items-center justify-between text-xs font-medium opacity-70">
-                            <span>{phase.progress}% done</span>
+                            <span>{t('progressDone', { percent: phase.progress })}</span>
                             <span>{format(phase.endDate, 'MMM d')}</span>
                           </div>
                           <div className="w-full bg-white/50 h-1.5 rounded-full mt-2 overflow-hidden">
@@ -714,8 +725,8 @@ export default function CalendarStudioPage() {
                         <div key={delivery.id} className="p-3 rounded-lg border border-blue-100 bg-blue-50/50">
                           <div className="flex items-start justify-between">
                             <div>
-                              <h3 className="font-medium text-sm text-blue-900">{delivery.product_name} Delivery</h3>
-                              <p className="text-xs text-blue-700 mt-1">Project: {delivery.project_name}</p>
+                              <h3 className="font-medium text-sm text-blue-900">{t('deliveryLabel', { product: delivery.product_name })}</h3>
+                              <p className="text-xs text-blue-700 mt-1">{t('projectLabel', { name: delivery.project_name })}</p>
                             </div>
                           </div>
                           {/* <div className="mt-2 flex items-center text-xs font-medium text-blue-600">
@@ -728,7 +739,7 @@ export default function CalendarStudioPage() {
                 ) : (
                   <div className="text-center py-10 bg-white rounded-lg border border-dashed border-gray-200">
                     <Clock className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-                    <p className="text-sm text-gray-500">No active phases or deliveries for this date.</p>
+                    <p className="text-sm text-gray-500">{t('sidebarEmpty')}</p>
                   </div>
                 )}
               </div>

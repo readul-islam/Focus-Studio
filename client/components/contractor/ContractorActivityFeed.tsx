@@ -1,5 +1,6 @@
 'use client';
 
+import { useLocale, useTranslations } from 'next-intl';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -42,7 +43,11 @@ const activityConfig: Record<
   },
 };
 
-function formatTimestamp(timestamp: string): string {
+function formatTimestamp(
+  timestamp: string,
+  locale: string,
+  t: ReturnType<typeof useTranslations<'contractorActivityFeed'>>
+): string {
   const date = new Date(timestamp);
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
@@ -50,25 +55,29 @@ function formatTimestamp(timestamp: string): string {
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
   if (diffHours < 1) {
-    return 'Just now';
-  } else if (diffHours < 24) {
-    return `${diffHours} hour${diffHours === 1 ? '' : 's'} ago`;
-  } else if (diffDays < 7) {
-    return `${diffDays} day${diffDays === 1 ? '' : 's'} ago`;
-  } else {
-    return date.toLocaleDateString('en-GB', {
-      day: 'numeric',
-      month: 'short',
-    });
+    return t('justNow');
   }
+  if (diffHours < 24) {
+    return t('hoursAgo', { count: diffHours });
+  }
+  if (diffDays < 7) {
+    return t('daysAgo', { count: diffDays });
+  }
+  return date.toLocaleDateString(locale, {
+    day: 'numeric',
+    month: 'short',
+  });
 }
 
 export function ContractorActivityFeed({ activities }: ContractorActivityFeedProps) {
+  const t = useTranslations('contractorActivityFeed');
+  const locale = useLocale();
+
   if (activities.length === 0) {
     return (
       <Card className="p-8 text-center border-greige-500/30">
         <Bell className="w-12 h-12 text-neutral-300 mx-auto mb-4" />
-        <p className="text-neutral-500">No activity yet.</p>
+        <p className="text-neutral-500">{t('empty')}</p>
       </Card>
     );
   }
@@ -99,7 +108,7 @@ export function ContractorActivityFeed({ activities }: ContractorActivityFeedPro
                   </h4>
                   {!activity.read && (
                     <Badge className="bg-clay-600 text-white text-[10px] px-1.5 py-0">
-                      New
+                      {t('newBadge')}
                     </Badge>
                   )}
                 </div>
@@ -109,7 +118,7 @@ export function ContractorActivityFeed({ activities }: ContractorActivityFeedPro
                   </p>
                 )}
                 <p className="text-xs text-neutral-400 mt-1">
-                  {formatTimestamp(activity.timestamp)}
+                  {formatTimestamp(activity.timestamp, locale, t)}
                 </p>
               </div>
             </div>

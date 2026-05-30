@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { Search, Package, Check, Loader2 } from 'lucide-react';
 import ProductImage from '@/components/project/ProductImage';
 import type { ContractorProcurementItem, ContractorShare } from '@/lib/contractor/types';
+import { useTranslations } from 'next-intl';
 
 interface ShareItemsDialogProps {
   isOpen: boolean;
@@ -33,6 +34,8 @@ export function ShareItemsDialog({
   alreadyShared,
   contractorName,
 }: ShareItemsDialogProps) {
+  const t = useTranslations('shareItemsDialog');
+  const tc = useTranslations('common');
   const [searchText, setSearchText] = useState('');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(false);
@@ -101,23 +104,21 @@ export function ShareItemsDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Package className="w-5 h-5 text-slatex-600" />
-            Share Items with {contractorName}
+            {t('title', { name: contractorName })}
           </DialogTitle>
         </DialogHeader>
 
         <div className="flex-1 overflow-hidden flex flex-col">
-          {/* Search */}
           <div className="relative mb-4">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
             <Input
               value={searchText}
               onChange={e => setSearchText(e.target.value)}
-              placeholder="Search items..."
+              placeholder={t('searchPlaceholder')}
               className="pl-10"
             />
           </div>
 
-          {/* Select All */}
           {availableItems.length > 0 && (
             <div className="flex items-center justify-between mb-3 pb-3 border-b border-neutral-200">
               <button
@@ -128,21 +129,20 @@ export function ShareItemsDialog({
                   checked={selectedIds.size === availableItems.length && availableItems.length > 0}
                   className="data-[state=checked]:bg-umber-900 data-[state=checked]:border-umber-900"
                 />
-                Select all ({availableItems.length})
+                {t('selectAll', { count: availableItems.length })}
               </button>
               {selectedIds.size > 0 && (
                 <Badge className="bg-umber-100 text-umber-800">
-                  {selectedIds.size} selected
+                  {t('selectedCount', { count: selectedIds.size })}
                 </Badge>
               )}
             </div>
           )}
 
-          {/* Items List */}
           <div className="flex-1 overflow-y-auto space-y-2 pr-2">
             {filteredItems.length === 0 ? (
               <div className="text-center py-8 text-neutral-500">
-                No items found
+                {t('noItemsFound')}
               </div>
             ) : (
               filteredItems.map(item => {
@@ -178,13 +178,13 @@ export function ShareItemsDialog({
                         {item.product_name}
                       </p>
                       <p className="text-xs text-neutral-500">
-                        {item.room} · Qty: {item.quantity}
+                        {t('roomQty', { room: item.room, quantity: item.quantity })}
                       </p>
                     </div>
                     {isShared && (
                       <Badge className="bg-sage-100 text-sage-700 text-xs">
                         <Check className="w-3 h-3 mr-1" />
-                        Shared
+                        {t('sharedBadge')}
                       </Badge>
                     )}
                   </div>
@@ -196,7 +196,7 @@ export function ShareItemsDialog({
 
         <DialogFooter className="mt-4">
           <Button variant="outline" onClick={handleClose}>
-            Cancel
+            {tc('cancel')}
           </Button>
           <Button
             onClick={handleShare}
@@ -206,10 +206,12 @@ export function ShareItemsDialog({
             {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Sharing...
+                {t('sharing')}
               </>
+            ) : selectedIds.size > 0 ? (
+              t('shareCount', { count: selectedIds.size })
             ) : (
-              <>Share {selectedIds.size > 0 ? `(${selectedIds.size})` : ''}</>
+              t('share')
             )}
           </Button>
         </DialogFooter>

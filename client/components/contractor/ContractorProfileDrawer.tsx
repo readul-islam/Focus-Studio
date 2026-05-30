@@ -71,6 +71,7 @@ export function ContractorProfileDrawer({
   projectId,
 }: ContractorProfileDrawerProps) {
   const t = useTranslations('contractorProfileDrawer');
+  const tTrades = useTranslations('contractorTrades');
   const [formData, setFormData] = useState({
     name: '',
     surname: '',
@@ -316,7 +317,7 @@ export function ContractorProfileDrawer({
               <SelectContent>
                 {TRADE_OPTIONS.map((trade) => (
                   <SelectItem key={trade} value={trade}>
-                    {trade}
+                    {tTrades(trade)}
                   </SelectItem>
                 ))}
               </SelectContent>

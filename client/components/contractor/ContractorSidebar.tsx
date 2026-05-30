@@ -20,6 +20,7 @@ import {
   MessageSquare,
 } from 'lucide-react';
 import type { TradeType } from '@/lib/contractor/types';
+import { useTranslations } from 'next-intl';
 
 interface ContractorSidebarProps {
   projectId: string;
@@ -54,6 +55,7 @@ export function ContractorSidebar({
   pendingDrawings = 0,
   unreadMessages = 0,
 }: ContractorSidebarProps) {
+  const t = useTranslations('contractorSidebar');
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -64,29 +66,29 @@ export function ContractorSidebar({
 
   const navItems = [
     {
-      label: 'Overview',
+      label: t('overview'),
       href: basePath + tradeParam,
       icon: LayoutDashboard,
       exact: true,
     },
     {
-      label: 'Items',
+      label: t('items'),
       href: `${basePath}/items${tradeParam}`,
       icon: Package,
     },
     {
-      label: 'Drawings',
+      label: t('drawings'),
       href: `${basePath}/drawings${tradeParam}`,
       icon: FileText,
       badge: pendingDrawings > 0 ? pendingDrawings : undefined,
     },
     {
-      label: 'Schedule',
+      label: t('schedule'),
       href: `${basePath}/schedule${tradeParam}`,
       icon: Calendar,
     },
     {
-      label: 'Messages',
+      label: t('messages'),
       href: `${basePath}/messages${tradeParam}`,
       icon: MessageSquare,
       badge: unreadMessages > 0 ? unreadMessages : undefined,
@@ -122,7 +124,7 @@ export function ContractorSidebar({
                 {contractorName}
               </p>
               <p className="text-xs text-neutral-500 truncate">
-                {trade === 'General' ? 'Builder / GC' : trade}
+                {trade === 'General' ? t('builderGc') : trade}
               </p>
             </div>
           )}
@@ -180,7 +182,7 @@ export function ContractorSidebar({
           )}
         >
           <HelpCircle className="w-5 h-5 flex-shrink-0" />
-          {!isCollapsed && <span className="text-sm">Help & Contact</span>}
+          {!isCollapsed && <span className="text-sm">{t('helpContact')}</span>}
         </Link>
 
         <button
@@ -192,7 +194,7 @@ export function ContractorSidebar({
           ) : (
             <>
               <ChevronLeft className="w-5 h-5" />
-              <span className="text-sm">Collapse</span>
+              <span className="text-sm">{t('collapse')}</span>
             </>
           )}
         </button>
@@ -202,7 +204,7 @@ export function ContractorSidebar({
       {!isCollapsed && (
         <div className="px-4 py-3 border-t border-neutral-100">
           <p className="text-xs text-neutral-400">
-            Powered by <span className="font-medium text-neutral-500">Focuspilot</span>
+            {t('poweredBy', { brand: 'Focuspilot' })}
           </p>
         </div>
       )}

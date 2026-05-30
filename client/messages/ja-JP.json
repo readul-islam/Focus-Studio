@@ -3217,7 +3217,32 @@
     "linking": "リンク中...",
     "linkToProject": "プロジェクトへのリンク",
     "noContractorsYet": "請負業者はまだ追加されていません",
-    "noSearchMatch": "検索に一致する請負業者はありません"
+    "noSearchMatch": "検索に一致する請負業者はありません",
+    "tabCreateNew": "新規作成",
+    "tabLinkExisting": "既存をリンク",
+    "surnameAccessCodeHint": "（アクセスコード用）",
+    "email": "メール",
+    "trade": "工種",
+    "toasts": {
+      "addedInviteFailed": "業者を追加しました（アクセスコード: {code}）。招待メールを送信できませんでした。",
+      "addedWithInvite": "業者を追加しました。招待を送信 — アクセスコード: {code}",
+      "addFailed": "業者の追加に失敗しました",
+      "linkedSuccess": "業者をプロジェクトにリンクしました",
+      "linkFailed": "業者のリンクに失敗しました",
+      "portalLinkUnavailable": "プロジェクトポータルリンクはまだ利用できません",
+      "portalLinkCopied": "プロジェクトポータルリンクをコピーしました",
+      "itemRemoved": "アイテムを削除しました",
+      "itemRemoveFailed": "アイテムの削除に失敗しました",
+      "drawingRemoved": "図面を削除しました",
+      "drawingRemoveFailed": "図面の削除に失敗しました"
+    },
+    "deleteDialog": {
+      "removeSharedItemTitle": "共有アイテムを削除",
+      "removeSharedDrawingTitle": "共有図面を削除",
+      "removeSharedDescription": "「{itemName}」をこの業者から削除しますか？この{type}へのアクセス権が失われます。",
+      "removeSharedItemDescription": "「{itemName}」をこの業者から削除しますか？このアイテムへのアクセス権が失われます。",
+      "removeSharedDrawingDescription": "「{itemName}」をこの業者から削除しますか？この図面へのアクセス権が失われます。"
+    }
   },
   "projectNotFound": {
     "title": "プロジェクトが見つかりません",
@@ -3554,7 +3579,10 @@
     "quarter": "四半期",
     "phasesHeader": "フェーズとワークパッケージ",
     "loading": "プランを読み込み中...",
-    "noPhases": "日付のあるフェーズはまだありません"
+    "noPhases": "日付のあるフェーズはまだありません",
+    "noDate": "日付なし",
+    "statusLabel": "ステータス: {status}",
+    "statusPending": "保留"
   },
   "projectCalendarPage": {
     "today": "今日",
@@ -3568,7 +3596,31 @@
     "filterPhases": "フェーズ",
     "filterDelivery": "配送日",
     "addEvent": "イベントを追加",
-    "loading": "カレンダーを読み込み中..."
+    "loading": "カレンダーを読み込み中...",
+    "weekdays": {
+      "sun": "日",
+      "mon": "月",
+      "tue": "火",
+      "wed": "水",
+      "thu": "木",
+      "fri": "金",
+      "sat": "土"
+    },
+    "progress": "進捗",
+    "progressDone": "{percent}% 完了",
+    "deliveryLabel": "{product} 配送",
+    "projectLabel": "プロジェクト: {name}",
+    "etaLabel": "到着予定: {date}",
+    "phaseColumn": "フェーズ",
+    "noEvents": "イベントなし",
+    "sidebarSummary": {
+      "activePhases": "アクティブフェーズ {count}件",
+      "deliveries": "配送 {count}件"
+    },
+    "activePhasesBadge": "アクティブフェーズ {count}件",
+    "activeDeliveriesBadge": "配送 {count}件",
+    "dayEmpty": "この日に予定されているフェーズや配送はありません。",
+    "sidebarEmpty": "この日のアクティブなフェーズや配送はありません。"
   },
   "projectTeamPage": {
     "documentTitle": "チーム | Focuspilot",
@@ -3892,7 +3944,16 @@
     "loading": "請負業者を読み込み中...",
     "empty": "請負業者が見つかりません",
     "shareSuccess": "共有しました",
-    "shareFailed": "共有に失敗しました"
+    "shareFailed": "共有に失敗しました",
+    "toasts": {
+      "sharedItems": "{name}に{count}件のアイテムを共有しました",
+      "sharedWith": "{name}と共有しました",
+      "sharedDocuments": "{name}に{count}件のドキュメントを共有しました",
+      "shareProcurementsFailed": "調達品の共有に失敗しました",
+      "shareProcurementFailed": "調達品の共有に失敗しました",
+      "shareDocumentsFailed": "ドキュメントの共有に失敗しました",
+      "shareDocumentFailed": "ドキュメントの共有に失敗しました"
+    }
   },
   "projectProcurementTable": {
     "statusUpdated": "ステータスを更新しました",
@@ -4503,5 +4564,112 @@
     "unit": "1個",
     "units": "{count}個",
     "submit": "プロジェクトに追加"
+  },
+  "shareItemsDialog": {
+    "title": "{name}とアイテムを共有",
+    "searchPlaceholder": "アイテムを検索…",
+    "selectAll": "すべて選択 ({count})",
+    "selectedCount": "{count}件選択",
+    "noItemsFound": "アイテムが見つかりません",
+    "roomQty": "{room} · 数量: {quantity}",
+    "sharedBadge": "共有済み",
+    "cancel": "キャンセル",
+    "sharing": "共有中…",
+    "share": "共有",
+    "shareCount": "共有 ({count})"
+  },
+  "contractorSidebar": {
+    "overview": "概要",
+    "items": "アイテム",
+    "drawings": "図面",
+    "schedule": "スケジュール",
+    "messages": "メッセージ",
+    "builderGc": "ビルダー / ゼネコン",
+    "helpContact": "ヘルプと連絡",
+    "collapse": "折りたたむ",
+    "poweredBy": "{brand}提供"
+  },
+  "builderCoordinationDashboard": {
+    "stats": {
+      "progress": "進捗",
+      "activeNow": "現在作業中",
+      "tradesWorking": "工種が作業中",
+      "deliveries": "配送",
+      "itemsPending": "件保留",
+      "totalItems": "総アイテム数",
+      "acrossAllTrades": "全工種合計"
+    },
+    "tradeSchedule": "工種スケジュール",
+    "upcomingDeliveries": "今後の配送",
+    "allItemsDelivered": "すべて配送済み",
+    "itemsByTrade": "工種別アイテム",
+    "deliveredCount": "{count}件配送済み",
+    "pendingCount": "{count}件保留",
+    "workInProgress": "作業中",
+    "workInProgressItem": "{contractor}（{trade} - {phase}）",
+    "phases": {
+      "rough_in": "ラフイン",
+      "first_fix": "ファーストフィックス",
+      "installation": "設置",
+      "finishing": "仕上げ"
+    },
+    "statuses": {
+      "pending": "保留",
+      "in_progress": "進行中",
+      "complete": "完了"
+    },
+    "deliveryStatuses": {
+      "in_transit": "配送中",
+      "ordered": "発注済み"
+    },
+    "eta": "到着予定 {date}"
+  },
+  "contractorActivityFeed": {
+    "empty": "アクティビティはまだありません。",
+    "newBadge": "新着",
+    "justNow": "たった今",
+    "hoursAgo": "{count}時間前",
+    "daysAgo": "{count}日前"
+  },
+  "contractorProcurementTable": {
+    "empty": "割り当てられた調達品はありません。",
+    "columns": {
+      "item": "アイテム",
+      "room": "部屋",
+      "qty": "数量",
+      "status": "ステータス",
+      "etaDelivered": "到着予定 / 配送日",
+      "notes": "メモ"
+    },
+    "statuses": {
+      "ordered": "発注済み",
+      "in_transit": "配送中",
+      "delivered": "配送済み",
+      "on_site": "現場到着",
+      "installed": "設置済み"
+    }
+  },
+  "contractorDrawingsGrid": {
+    "empty": "共有された図面はまだありません。",
+    "awaitingSurvey": "現地確認待ち",
+    "surveyedDrawings": "確認済み図面",
+    "generalRoom": "一般",
+    "surveyedBadge": "確認済み",
+    "pendingBadge": "保留",
+    "revisedOn": "改訂 {date}",
+    "addedOn": "追加 {date}",
+    "confirmedBy": "{name}が{date}に確認",
+    "confirmedByYou": "あなた",
+    "view": "表示",
+    "markSurveyed": "確認済みにする"
+  },
+  "contractorTrades": {
+    "Builder": "建築業者",
+    "Electrician": "電気工",
+    "Plumber": "配管工",
+    "Joiner": "大工",
+    "Plasterer": "左官",
+    "Decorator": "装飾業者",
+    "Other": "その他"
   }
 }

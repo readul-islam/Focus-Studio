@@ -413,7 +413,7 @@ export default function ProjectPlanPage() {
                                                         <div>
                                                             <div className="text-sm font-medium text-gray-900 truncate">{phase.name}</div>
                                                             <div className="text-xs text-gray-500">
-                                                                {phase.startDate ? format(phase.startDate, 'MMM d') : 'No date'} - {phase.endDate ? format(phase.endDate, 'MMM d') : 'No date'}
+                                                                {phase.startDate ? format(phase.startDate, 'MMM d') : t('noDate')} - {phase.endDate ? format(phase.endDate, 'MMM d') : t('noDate')}
                                                             </div>
                                                         </div>
                                                         <div>
@@ -527,7 +527,7 @@ export default function ProjectPlanPage() {
                                                                                 <span>{formatShort(task.endDate)}</span>
                                                                             </div>
                                                                             <div className="text-xs text-muted-foreground">
-                                                                                Status: {task.status || 'Pending'}
+                                                                                {t('statusLabel', { status: task.status || t('statusPending') })}
                                                                             </div>
                                                                         </div>
                                                                     </HoverCardContent>

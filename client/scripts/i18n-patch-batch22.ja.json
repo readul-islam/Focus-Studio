@@ -1,0 +1,76 @@
+{
+  "builderCoordinationDashboard": {
+    "stats": {
+      "progress": "進捗",
+      "activeNow": "現在作業中",
+      "tradesWorking": "工種が作業中",
+      "deliveries": "配送",
+      "itemsPending": "件保留",
+      "totalItems": "総アイテム数",
+      "acrossAllTrades": "全工種合計"
+    },
+    "tradeSchedule": "工種スケジュール",
+    "upcomingDeliveries": "今後の配送",
+    "allItemsDelivered": "すべて配送済み",
+    "itemsByTrade": "工種別アイテム",
+    "deliveredCount": "{count}件配送済み",
+    "pendingCount": "{count}件保留",
+    "workInProgress": "作業中",
+    "workInProgressItem": "{contractor}（{trade} - {phase}）",
+    "phases": {
+      "rough_in": "ラフイン",
+      "first_fix": "ファーストフィックス",
+      "installation": "設置",
+      "finishing": "仕上げ"
+    },
+    "statuses": {
+      "pending": "保留",
+      "in_progress": "進行中",
+      "complete": "完了"
+    },
+    "deliveryStatuses": {
+      "in_transit": "配送中",
+      "ordered": "発注済み"
+    },
+    "eta": "到着予定 {date}"
+  },
+  "contractorActivityFeed": {
+    "empty": "アクティビティはまだありません。",
+    "newBadge": "新着",
+    "justNow": "たった今",
+    "hoursAgo": "{count}時間前",
+    "daysAgo": "{count}日前"
+  },
+  "contractorProcurementTable": {
+    "empty": "割り当てられた調達品はありません。",
+    "columns": {
+      "item": "アイテム",
+      "room": "部屋",
+      "qty": "数量",
+      "status": "ステータス",
+      "etaDelivered": "到着予定 / 配送日",
+      "notes": "メモ"
+    },
+    "statuses": {
+      "ordered": "発注済み",
+      "in_transit": "配送中",
+      "delivered": "配送済み",
+      "on_site": "現場到着",
+      "installed": "設置済み"
+    }
+  },
+  "contractorDrawingsGrid": {
+    "empty": "共有された図面はまだありません。",
+    "awaitingSurvey": "現地確認待ち",
+    "surveyedDrawings": "確認済み図面",
+    "generalRoom": "一般",
+    "surveyedBadge": "確認済み",
+    "pendingBadge": "保留",
+    "revisedOn": "改訂 {date}",
+    "addedOn": "追加 {date}",
+    "confirmedBy": "{name}が{date}に確認",
+    "confirmedByYou": "あなた",
+    "view": "表示",
+    "markSurveyed": "確認済みにする"
+  }
+}
