@@ -23,6 +23,7 @@ import useUser from '@/hooks/useUser';
 import { useCurrency } from '@/lib/getCurrencySymbol';
 import { usePost } from '@/hooks/usePost';
 import { AddToProjectDialog } from '@/components/product/AddToProjectDialog';
+import { useTranslations } from 'next-intl';
 
 type ProductImage = {
   src: string;
@@ -74,16 +75,19 @@ export type ProductDetailSheetProps = {
   product?: ProductDetails;
 };
 
-function StatCard({ label, value, className }: { label: string; value?: React.ReactNode; className?: string }) {
+function StatCard({ label, value, className, emptyLabel }: { label: string; value?: React.ReactNode; className?: string; emptyLabel: string }) {
   return (
     <div className={cn('rounded-lg border border-greige-500/30 bg-stone-50 p-4', className)}>
       <div className="text-xs  truncate font-medium text-neutral-500">{label}</div>
-      <div className="mt-1 text-sm capitalize font-semibold text-neutral-900">{value || 'Not Available'}</div>
+      <div className="mt-1 text-sm capitalize font-semibold text-neutral-900">{value || emptyLabel}</div>
     </div>
   );
 }
 
 export function ProductDetailSheet({ open, onOpenChange, product,libraryPermission }: ProductDetailSheetProps) {
+  const t = useTranslations('productDetailSheet');
+  const tc = useTranslations('common');
+  const tl = useTranslations('libraryProductModal');
 const data = {
   ...product,
   priceMember: product?.tader_price,
@@ -126,12 +130,12 @@ const data = {
       { url: 'projects/procurements/', data: { quantity: data.quantity, project: data.projectId, room: data.roomId, product: data.productId, studio: user?.studio?.id, created_by: user?.id, updated_by: user?.id } },
       {
         onSuccess: () => {
-          toast.success('Product added to project');
+          toast.success(t('toasts.addedToProject'));
           queryClient.refetchQueries({ queryKey: [`projects/project-procurements/?project_id=${data.projectId}`] });
         },
         onError: (error: any) => {
           console.error(error);
-          toast.error('Failed to add product');
+          toast.error(t('toasts.addFailed'));
         },
       }
     );
@@ -145,10 +149,10 @@ const data = {
  
   function copyUrl() {
     if (!data?.product_url){
-      return toast.error('No URL available');
+      return toast.error(t('toasts.noUrl'));
     };
     navigator.clipboard.writeText(data.product_url).catch(() => {});
-    toast.success('Copied !');
+    toast.success(t('toasts.copied'));
   }
 
   if (!data) {
@@ -166,19 +170,20 @@ const data = {
   
   // Format prices with currency symbol
   const formatPrice = (price: string) => {
-    if (price === null || price === undefined || price === '') return 'Not Available';
+    if (price === null || price === undefined || price === '') return tc('notAvailable');
     return `${!currencyLoading && (productCurrency?.symbol || '£')} ${Number(price).toLocaleString('en-GB', {
       maximumFractionDigits: 2,
       minimumFractionDigits: 2,
     })}`;
   };
 
-  // Format boolean values
   const formatBoolean = (value: string) => {
-    if (value === 'true' || true) return 'Yes';
-    if (value === 'false' || false) return 'No';
-    return value || 'Not Available';
+    if (value === 'true') return tl('yes');
+    if (value === 'false') return tl('no');
+    return value || tc('notAvailable');
   };
+
+  const emptyLabel = tc('notAvailable');
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -186,7 +191,11 @@ const data = {
         <div className="flex h-full flex-col">
           <SheetHeader className="px-6 pt-6">
             <SheetTitle className="text-xl font-semibold text-neutral-900">{data?.name}</SheetTitle>
-            {product?.supplier ? <div className="text-sm text-neutral-600">Supplier: {product?.supplier?.company_name}</div> : null}
+            {product?.supplier ? (
+              <div className="text-sm text-neutral-600">
+                {t('supplierLabel', { name: product?.supplier?.company_name })}
+              </div>
+            ) : null}
           </SheetHeader>
 
           <Separator className="mt-4" />
@@ -194,7 +203,7 @@ const data = {
           <div className="flex-1 overflow-y-auto overflow-x-hidden">
             <div className="grid gap-6 p-6 md:grid-cols-2 min-w-0">
               {/* Left: gallery */}
-              <section aria-label="Product images" className="min-w-0 w-full">
+              <section aria-label={t('productImages')} className="min-w-0 w-full">
                 <div className="overflow-hidden rounded-xl border border-greige-500/30 bg-white w-full">
                   <Swiper
                     onSwiper={setSwiper}
@@ -210,7 +219,7 @@ const data = {
                         <SwiperSlide key={idx} className="select-none">
                           <div className="relative h-56 sm:h-64 md:h-80 w-full bg-white">
                             <ProductImage
-                              alt="Product Image"
+                              alt={t('productImageAlt')}
                               src={img?.image}
                               fill
                               className="object-contain"
@@ -222,7 +231,7 @@ const data = {
                     ) : (
                       <SwiperSlide className="select-none">
                         <div className="relative h-56 sm:h-64 md:h-80 w-full bg-white">
-                          <Image src={errorImage} alt="Placeholder" fill className="object-contain" />
+                          <Image src={errorImage} alt={t('placeholderAlt')} fill className="object-contain" />
                         </div>
                       </SwiperSlide>
                     )}
@@ -240,9 +249,9 @@ const data = {
                           'relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition',
                           idx === activeIdx ? 'border-clay-600 ' : 'border-greige-500/30 hover:border-greige-500/60'
                         )}
-                        aria-label={`Show image ${idx + 1}`}
+                        aria-label={t('showImage', { index: idx + 1 })}
                       >
-                      {img?.image &&   <Image width={200} alt="Thumbnail" height={200} src={img?.image} className="h-full w-full object-cover" />}
+                      {img?.image &&   <Image width={200} alt={t('thumbnailAlt')} height={200} src={img?.image} className="h-full w-full object-cover" />}
                       </button>
                     ))}
                   </div>
@@ -254,7 +263,7 @@ const data = {
       { data?.product_url &&         <div className="flex flex-wrap items-center gap-2">
                   <Button variant="outline" className="border-greige-500/30 bg-white" onClick={copyUrl}>
                     <LinkIcon className="mr-2 h-4 w-4" />
-                    Copy Link
+                    {t('copyLink')}
                   </Button>
                   <Link
                     href={data?.product_url || '#'}
@@ -263,65 +272,65 @@ const data = {
                     className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 border-greige-500/30 bg-white"
                   >
                     <Globe className="mr-2 h-4 w-4" />
-                    Website
+                    {t('website')}
                   </Link>
                 </div>}
 
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <StatCard label="Retail Price" value={`${formatPrice(parsePrice(data?.priceRegular))}`} />
-                  <StatCard label="Trade Price" value={formatPrice(parsePrice(data?.priceMember))} />
-                  <StatCard label="Supplier" value={product?.supplier?.company_name} />
-                  <StatCard label="Product Type" value={data?.type} />
-                  <StatCard label="Materials" value={data?.materials} />
-                  <StatCard label="Dimensions" value={data.dimensions} />
-                  <StatCard label="Weight" value={data.weight} />
-                  <StatCard label="Status" value={data.status} />
-                  <StatCard label="Sample" value={data.sample} />
-                  <StatCard label="Quantity" value={data.qty} />
+                  <StatCard label={tl('fields.regularPrice')} value={`${formatPrice(parsePrice(data?.priceRegular))}`} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.tradePrice')} value={formatPrice(parsePrice(data?.priceMember))} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.supplier')} value={product?.supplier?.company_name} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.productType')} value={data?.type} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.materials')} value={data?.materials} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.dimensions')} value={data.dimensions} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.weight')} value={data.weight} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.status')} value={data.status} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.sample')} value={data.sample} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.quantity')} value={data.qty} emptyLabel={emptyLabel} />
                 </div>
                 {data.measurements && (
                   <div className="mt-2">
-                    <h3 className="text-base font-semibold text-neutral-900">Measurements</h3>
+                    <h3 className="text-base font-semibold text-neutral-900">{t('measurementsSection')}</h3>
                     <p className="mt-1 text-sm text-neutral-600">{data.measurements}</p>
                   </div>
                 )}
                 {data.description ? (
                   <div className="mt-2">
-                    <h3 className="text-base font-semibold text-neutral-900">Description</h3>
+                    <h3 className="text-base font-semibold text-neutral-900">{t('descriptionSection')}</h3>
                     <p className="mt-1 text-sm leading-6 text-neutral-700">{data.description}</p>
                   </div>
                 ) : null}
                 {/* Additional product details */}
                 <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <StatCard label="Assembly Required" value={formatBoolean(data.assemblyRequired)} />
-                  <StatCard label="Removable Cushions" value={formatBoolean(data.removableCushions)} />
-                  <StatCard label="Removable Legs" value={formatBoolean(data.removableLegs)} />
-                  <StatCard label="Seat Depth" value={data.seatDepth} />
-                  <StatCard label="Seat Height" value={data.seatHeight} />
-                  <StatCard label="Seat Width" value={data.seatWidth} />
-                  <StatCard label="Feet" value={data.feet} />
-                  <StatCard label="Filling" value={data.filling} />
-                  <StatCard label="Frame" value={data.frame} />
-                  <StatCard label="Composition" value={data.composition} />
-                  <StatCard label="Construction" value={data.construction} />
+                  <StatCard label={tl('fields.assemblyRequired')} value={formatBoolean(data.assemblyRequired)} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.removableCushions')} value={formatBoolean(data.removableCushions)} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.removableLegs')} value={formatBoolean(data.removableLegs)} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.seatDepth')} value={data.seatDepth} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.seatHeight')} value={data.seatHeight} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.seatWidth')} value={data.seatWidth} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.feet')} value={data.feet} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.filling')} value={data.filling} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.frame')} value={data.frame} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.composition')} value={data.composition} emptyLabel={emptyLabel} />
+                  <StatCard label={tl('fields.construction')} value={data.construction} emptyLabel={emptyLabel} />
                 </div>
                 {/* Packaging information */}
                 <div className="mt-2">
-                  <h3 className="text-base font-semibold text-neutral-900">Packaging Details</h3>
+                  <h3 className="text-base font-semibold text-neutral-900">{t('packagingSection')}</h3>
                   <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    <StatCard label="Boxed Dimensions" value={data.boxedDimensions} />
-                    <StatCard label="Boxed Weight" value={data.boxedWeight} />
+                    <StatCard label={tl('fields.boxedDimensions')} value={data.boxedDimensions} emptyLabel={emptyLabel} />
+                    <StatCard label={tl('fields.boxedWeight')} value={data.boxedWeight} emptyLabel={emptyLabel} />
                   </div>
                 </div>
                 {data.instructions && (
                   <div className="mt-2">
-                    <h3 className="text-base font-semibold text-neutral-900">Instructions</h3>
+                    <h3 className="text-base font-semibold text-neutral-900">{t('instructionsSection')}</h3>
                     <p className="mt-1 text-sm leading-6 text-neutral-700">{data.instructions}</p>
                   </div>
                 )}
                 {/* Tags section */}
                 <div className="mt-2">
-                  <h3 className="text-base font-semibold text-neutral-900">Product Details</h3>
+                  <h3 className="text-base font-semibold text-neutral-900">{t('productDetailsSection')}</h3>
                   <div className="mt-2 flex flex-wrap gap-2">
                     {data.type && (
                       <Badge variant="secondary" className="rounded-md bg-greige-100 text-taupe-700">
@@ -330,17 +339,17 @@ const data = {
                     )}
                     {data.status && (
                       <Badge variant="secondary" className="rounded-md bg-greige-100 text-taupe-700">
-                        Status: <span className=" capitalize">{data.status}</span>
+                        {t('statusBadge', { status: data.status })}
                       </Badge>
                     )}
                     {data.initialStatus && (
                       <Badge variant="secondary" className="rounded-md bg-greige-100 text-taupe-700">
-                        Initial Status: {data.initialStatus}
+                        {t('initialStatusBadge', { status: data.initialStatus })}
                       </Badge>
                     )}
                     {data.sendToClient !== undefined && (
                       <Badge variant="secondary" className="rounded-md bg-greige-100 text-taupe-700">
-                        Send to Client: {data.sendToClient ? 'Yes' : 'No'}
+                        {t('sendToClientBadge', { value: data.sendToClient ? tl('yes') : tl('no') })}
                       </Badge>
                     )}
                   </div>
@@ -352,7 +361,7 @@ const data = {
           {/* Sticky footer actions */}
           <div className="border-t border-greige-500/30 bg-white p-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="text-sm text-neutral-600">Add this product to a project.</div>
+              <div className="text-sm text-neutral-600">{t('footerHint')}</div>
               <div className="flex gap-2">
                 {data.product_url ? (
                   <a
@@ -361,7 +370,7 @@ const data = {
                     rel="noopener noreferrer"
                     className="inline-flex flex-shrink-0 items-center rounded-md border border-greige-500/30 bg-white px-4 py-2 text-sm text-neutral-700 hover:bg-stone-50"
                   >
-                    View Product
+                    {t('viewProduct')}
                     <ExternalLink className="ml-2 h-4 w-4" />
                   </a>
                 ) : null}
@@ -371,7 +380,7 @@ const data = {
                   className="bg-clay-600 text-white hover:bg-clay-700"
                 >
                   <Plus className="mr-2 h-4 w-4" />
-                  Add to Project
+                  {t('addToProject')}
                 </Button>}
               </div>
             </div>

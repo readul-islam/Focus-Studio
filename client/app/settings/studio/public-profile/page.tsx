@@ -19,6 +19,7 @@ import {
   Copy, ExternalLink, Globe, Loader2, Plus, Star, Trash2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 const PROFILE_URL = '/public_profiles/me/';
 const PORTFOLIO_URL = '/public_profiles/me/portfolio/';
@@ -99,6 +100,7 @@ function publicProfileBase(publicUrl: string | undefined, slug: string | undefin
 }
 
 function PublicProfilePageContent() {
+  const t = useTranslations('settingsPublicProfilePage');
   const queryClient = useQueryClient();
   const { user } = useUser();
   const { data: profile, isLoading } = useFetch(PROFILE_URL) as { data?: Profile; isLoading: boolean };
@@ -127,9 +129,9 @@ function PublicProfilePageContent() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [PROFILE_URL] });
       queryClient.invalidateQueries({ queryKey: ['users', user?.email] });
-      toast.success('Profile saved');
+      toast.success(t('toasts.profileSaved'));
     },
-    onError: () => toast.error('Could not save profile'),
+    onError: () => toast.error(t('toasts.profileSaveFailed')),
   });
 
   const publishProfile = useMutation({
@@ -137,10 +139,10 @@ function PublicProfilePageContent() {
       postData({ url: '/public_profiles/me/publish/', data: { is_published } }),
     onSuccess: (data: Profile) => {
       queryClient.invalidateQueries({ queryKey: [PROFILE_URL] });
-      toast.success(data.is_published ? 'Profile published' : 'Profile unpublished');
+      toast.success(data.is_published ? t('toasts.profilePublished') : t('toasts.profileUnpublished'));
     },
     onError: (e: { response?: { data?: { detail?: string } } }) => {
-      toast.error(e?.response?.data?.detail || 'Could not update publish status');
+      toast.error(e?.response?.data?.detail || t('toasts.publishStatusFailed'));
     },
   });
 
@@ -190,7 +192,7 @@ function PublicProfilePageContent() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [PORTFOLIO_URL] });
       queryClient.invalidateQueries({ queryKey: [CANDIDATES_URL] });
-      toast.success('Projects added to portfolio');
+      toast.success(t('toasts.projectsImported'));
     },
   });
 
@@ -198,7 +200,7 @@ function PublicProfilePageContent() {
     mutationFn: (id: number) => deleteData({ url: `${PORTFOLIO_URL}${id}/` }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [PORTFOLIO_URL] });
-      toast.success('Removed from portfolio');
+      toast.success(t('toasts.portfolioRemoved'));
     },
   });
 
@@ -208,7 +210,7 @@ function PublicProfilePageContent() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [REVIEWS_URL] });
       setNewReview({ author_name: '', author_title: '', rating: 5, body: '' });
-      toast.success('Review added');
+      toast.success(t('toasts.reviewAdded'));
     },
   });
 
@@ -243,7 +245,7 @@ function PublicProfilePageContent() {
   function copyPublicLink() {
     if (profile?.public_url) {
       navigator.clipboard.writeText(profile.public_url);
-      toast.success('Link copied');
+      toast.success(t('toasts.linkCopied'));
     }
   }
 
@@ -262,15 +264,15 @@ function PublicProfilePageContent() {
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h1 className="text-xl font-semibold">Public profile</h1>
+        <h1 className="text-xl font-semibold">{t('title')}</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Build a LinkedIn-style page to showcase your studio, portfolio, and reviews. Anyone with the link can view it when published.
+          {t('description')}
         </p>
       </div>
 
       <Section
-        title="Publish"
-        description={profile?.is_published ? 'Your profile is live on the web.' : 'Save your profile, then publish when ready.'}
+        title={t('publishTitle')}
+        description={profile?.is_published ? t('publishDescriptionLive') : t('publishDescriptionDraft')}
         action={
           <div className="flex items-center gap-2">
             <Switch
@@ -278,20 +280,20 @@ function PublicProfilePageContent() {
               onCheckedChange={(v) => publishProfile.mutate(v)}
               disabled={publishProfile.isPending}
             />
-            <span className="text-sm">{profile?.is_published ? 'Published' : 'Draft'}</span>
+            <span className="text-sm">{profile?.is_published ? t('published') : t('draft')}</span>
           </div>
         }
       >
         <div className="flex flex-wrap gap-2">
           <Button type="button" variant="outline" size="sm" onClick={copyPublicLink} disabled={!profile?.public_url}>
             <Copy className="size-4 mr-1" />
-            Copy link
+            {t('copyLink')}
           </Button>
           {profile?.public_url && profile.is_published ? (
             <Button type="button" variant="outline" size="sm" asChild>
               <a href={profile.public_url} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="size-4 mr-1" />
-                View live
+                {t('viewLive')}
               </a>
             </Button>
           ) : null}
@@ -301,18 +303,18 @@ function PublicProfilePageContent() {
 
       <Tabs defaultValue="profile">
         <TabsList>
-          <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
-          <TabsTrigger value="reviews">Reviews</TabsTrigger>
+          <TabsTrigger value="profile">{t('tabs.profile')}</TabsTrigger>
+          <TabsTrigger value="portfolio">{t('tabs.portfolio')}</TabsTrigger>
+          <TabsTrigger value="reviews">{t('tabs.reviews')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile" className="space-y-6 mt-4">
-          <Section title="URL & branding">
+          <Section title={t('urlBrandingTitle')}>
             <div className="space-y-6">
               <div className="grid sm:grid-cols-2 gap-8">
                 <ImageCropUpload
-                  label="Studio logo"
-                  description="Shown on your public profile header. PNG or JPG, max 5MB. Same as Settings → General → Primary logo."
+                  label={t('studioLogo')}
+                  description={t('studioLogoDescription')}
                   imageUrl={profile?.logo_url || brandingData?.primary_logo}
                   fallbackLetter={form.studio_name || profile?.studio_name || 'S'}
                   aspect={1}
@@ -323,8 +325,8 @@ function PublicProfilePageContent() {
                   }}
                 />
                 <ImageCropUpload
-                  label="Cover image"
-                  description="Wide banner at the top of your public page. Recommended 1200×400px or similar."
+                  label={t('coverImage')}
+                  description={t('coverImageDescription')}
                   imageUrl={profile?.cover_image_url}
                   fallbackLetter=""
                   aspect={3}
@@ -337,7 +339,7 @@ function PublicProfilePageContent() {
               </div>
 
               <div>
-                <Label>Public URL slug</Label>
+                <Label>{t('publicUrlSlug')}</Label>
                 <div className="flex gap-2 mt-1">
                   <span className="text-sm text-muted-foreground py-2 shrink-0">{profileUrlPrefix}</span>
                   <Input
@@ -350,75 +352,75 @@ function PublicProfilePageContent() {
                     className="max-w-xs"
                   />
                 </div>
-                {slugCheck === 'ok' && <p className="text-xs text-green-600 mt-1">Available</p>}
-                {slugCheck === 'taken' && <p className="text-xs text-destructive mt-1">Already taken</p>}
+                {slugCheck === 'ok' && <p className="text-xs text-green-600 mt-1">{t('slugAvailable')}</p>}
+                {slugCheck === 'taken' && <p className="text-xs text-destructive mt-1">{t('slugTaken')}</p>}
               </div>
             </div>
           </Section>
 
-          <Section title="Studio story">
+          <Section title={t('studioStoryTitle')}>
             <div className="space-y-4">
               <div>
-                <Label>Studio name</Label>
+                <Label>{t('studioName')}</Label>
                 <p className="text-xs text-muted-foreground mt-0.5 mb-1">
-                  Shown as the main title on your public page. Same as Settings → General.
+                  {t('studioNameHint')}
                 </p>
                 <Input
                   value={form.studio_name || ''}
                   onChange={(e) => setForm((f) => ({ ...f, studio_name: e.target.value }))}
-                  placeholder="Your studio name"
+                  placeholder={t('placeholders.studioName')}
                   className="mt-1"
                 />
               </div>
               <div>
-                <Label>Headline</Label>
+                <Label>{t('headline')}</Label>
                 <Input
                   value={form.headline || ''}
                   onChange={(e) => setForm((f) => ({ ...f, headline: e.target.value }))}
-                  placeholder="Award-winning residential interior design"
+                  placeholder={t('placeholders.headline')}
                   className="mt-1"
                 />
               </div>
               <div>
-                <Label>Tagline</Label>
+                <Label>{t('tagline')}</Label>
                 <Input
                   value={form.tagline || ''}
                   onChange={(e) => setForm((f) => ({ ...f, tagline: e.target.value }))}
-                  placeholder="Creating spaces that feel like home"
+                  placeholder={t('placeholders.tagline')}
                   className="mt-1"
                 />
               </div>
               <div>
-                <Label>About</Label>
+                <Label>{t('about')}</Label>
                 <Textarea
                   value={form.about || ''}
                   onChange={(e) => setForm((f) => ({ ...f, about: e.target.value }))}
                   rows={6}
                   className="mt-1"
-                  placeholder="Tell visitors about your studio, approach, and experience..."
+                  placeholder={t('placeholders.about')}
                 />
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <Label>Location (public)</Label>
+                  <Label>{t('locationPublic')}</Label>
                   <Input
                     value={form.location_display || ''}
                     onChange={(e) => setForm((f) => ({ ...f, location_display: e.target.value }))}
-                    placeholder="London, UK"
+                    placeholder={t('placeholders.location')}
                     className="mt-1"
                   />
                 </div>
                 <div>
-                  <Label>Team size</Label>
+                  <Label>{t('teamSize')}</Label>
                   <Input
                     value={form.team_size_display || ''}
                     onChange={(e) => setForm((f) => ({ ...f, team_size_display: e.target.value }))}
-                    placeholder="8 designers"
+                    placeholder={t('placeholders.teamSize')}
                     className="mt-1"
                   />
                 </div>
                 <div>
-                  <Label>Founded year</Label>
+                  <Label>{t('foundedYear')}</Label>
                   <Input
                     type="number"
                     value={form.founded_year ?? ''}
@@ -433,31 +435,39 @@ function PublicProfilePageContent() {
                 </div>
               </div>
               <div>
-                <Label>Services (comma-separated)</Label>
+                <Label>{t('servicesComma')}</Label>
                 <Input value={servicesText} onChange={(e) => setServicesText(e.target.value)} className="mt-1" />
               </div>
               <div>
-                <Label>Specialties (comma-separated)</Label>
+                <Label>{t('specialtiesComma')}</Label>
                 <Input value={specialtiesText} onChange={(e) => setSpecialtiesText(e.target.value)} className="mt-1" />
               </div>
             </div>
           </Section>
 
-          <Section title="Links & contact">
+          <Section title={t('linksContactTitle')}>
             <div className="grid sm:grid-cols-2 gap-4">
-              {(['website_url', 'linkedin_url', 'instagram_url', 'pinterest_url', 'houzz_url'] as const).map((key) => (
+              {(
+                [
+                  ['website_url', 'website'],
+                  ['linkedin_url', 'linkedin'],
+                  ['instagram_url', 'instagram'],
+                  ['pinterest_url', 'pinterest'],
+                  ['houzz_url', 'houzz'],
+                ] as const
+              ).map(([key, labelKey]) => (
                 <div key={key}>
-                  <Label className="capitalize">{key.replace('_url', '').replace('_', ' ')}</Label>
+                  <Label>{t(`linkLabels.${labelKey}`)}</Label>
                   <Input
                     value={(form[key] as string) || ''}
                     onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
                     className="mt-1"
-                    placeholder="https://"
+                    placeholder={t('placeholders.url')}
                   />
                 </div>
               ))}
               <div>
-                <Label>Public email</Label>
+                <Label>{t('publicEmail')}</Label>
                 <Input
                   value={form.contact_email_public || ''}
                   onChange={(e) => setForm((f) => ({ ...f, contact_email_public: e.target.value }))}
@@ -465,7 +475,7 @@ function PublicProfilePageContent() {
                 />
               </div>
               <div>
-                <Label>Public phone</Label>
+                <Label>{t('publicPhone')}</Label>
                 <Input
                   value={form.contact_phone_public || ''}
                   onChange={(e) => setForm((f) => ({ ...f, contact_phone_public: e.target.value }))}
@@ -478,23 +488,23 @@ function PublicProfilePageContent() {
                 checked={form.show_team !== false}
                 onCheckedChange={(v) => setForm((f) => ({ ...f, show_team: v }))}
               />
-              <Label>Show team on public profile</Label>
+              <Label>{t('showTeamOnProfile')}</Label>
             </div>
           </Section>
 
           <Button onClick={handleSave} disabled={saveProfile.isPending}>
             {saveProfile.isPending ? <Loader2 className="size-4 animate-spin mr-2" /> : null}
-            Save profile
+            {t('saveProfile')}
           </Button>
         </TabsContent>
 
         <TabsContent value="portfolio" className="space-y-6 mt-4">
           <Section
-            title="Import from projects"
-            description="Add completed or archived projects to your public portfolio."
+            title={t('importProjectsTitle')}
+            description={t('importProjectsDescription')}
           >
             {importable.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No projects available to import (complete or archive a project first).</p>
+              <p className="text-sm text-muted-foreground">{t('noProjectsToImport')}</p>
             ) : (
               <ul className="space-y-2 max-h-48 overflow-y-auto">
                 {importable.map((p) => (
@@ -506,7 +516,7 @@ function PublicProfilePageContent() {
                       onClick={() => importProjects.mutate([p.id])}
                       disabled={importProjects.isPending}
                     >
-                      Add
+                      {t('add')}
                     </Button>
                   </li>
                 ))}
@@ -514,9 +524,9 @@ function PublicProfilePageContent() {
             )}
           </Section>
 
-          <Section title="Portfolio items">
+          <Section title={t('portfolioItemsTitle')}>
             {portfolio.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No portfolio items yet.</p>
+              <p className="text-sm text-muted-foreground">{t('noPortfolioItems')}</p>
             ) : (
               <ul className="space-y-3">
                 {portfolio.map((item) => (
@@ -549,20 +559,20 @@ function PublicProfilePageContent() {
         </TabsContent>
 
         <TabsContent value="reviews" className="space-y-6 mt-4">
-          <Section title="Add review">
+          <Section title={t('addReviewTitle')}>
             <div className="space-y-3">
               <Input
-                placeholder="Client name"
+                placeholder={t('placeholders.clientName')}
                 value={newReview.author_name}
                 onChange={(e) => setNewReview((r) => ({ ...r, author_name: e.target.value }))}
               />
               <Input
-                placeholder="Role / project (e.g. Homeowner, Chelsea)"
+                placeholder={t('placeholders.authorTitle')}
                 value={newReview.author_title}
                 onChange={(e) => setNewReview((r) => ({ ...r, author_title: e.target.value }))}
               />
               <div className="flex items-center gap-2">
-                <Label>Rating</Label>
+                <Label>{t('rating')}</Label>
                 {[1, 2, 3, 4, 5].map((n) => (
                   <button
                     key={n}
@@ -575,7 +585,7 @@ function PublicProfilePageContent() {
                 ))}
               </div>
               <Textarea
-                placeholder="Review text"
+                placeholder={t('placeholders.reviewText')}
                 value={newReview.body}
                 onChange={(e) => setNewReview((r) => ({ ...r, body: e.target.value }))}
                 rows={3}
@@ -586,14 +596,14 @@ function PublicProfilePageContent() {
                 disabled={!newReview.author_name || !newReview.body || addReview.isPending}
               >
                 <Plus className="size-4 mr-1" />
-                Add review
+                {t('addReview')}
               </Button>
             </div>
           </Section>
 
-          <Section title="Published reviews">
+          <Section title={t('publishedReviewsTitle')}>
             {reviews.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No reviews yet.</p>
+              <p className="text-sm text-muted-foreground">{t('noReviews')}</p>
             ) : (
               <ul className="space-y-3">
                 {reviews.map((r) => (

@@ -1,0 +1,125 @@
+{
+  "settingsIntegrationsPage": {
+    "shared": {
+      "connecting": "接続中...",
+      "disconnecting": "切断中...",
+      "continue": "続行",
+      "done": "完了",
+      "refresh": "更新",
+      "none": "なし",
+      "syncing": "同期中..."
+    },
+    "notion": {
+      "outboundDescLong": "新しいFocuspilotプロジェクトはNotionページを作成します。プロジェクトのタスクはページ上のタスクテーブルに行として追加されます。{workspacePart}",
+      "inboundDescLong": "下の共有データベースをマッピングして、Notion行をFocuspilotプロジェクトとしてインポートします（手動同期）。",
+      "workspacePart": " ワークスペース: {workspace}。",
+      "parentPageLabelOptional": "新規プロジェクトの親ページ（任意）",
+      "lastSyncAt": " · 最終同期 {date}",
+      "mapDatabaseHint": "Notionデータベース（例: タスクトラッカー）をマッピングしてFocuspilotプロジェクトを作成・更新します。",
+      "lastRunSummary": "最終実行: {created}件作成、{updated}件更新{tasksPart}{pagesPart}。",
+      "tasksFromNotionPart": "、Notionから{count}件のタスク",
+      "rowsInNotionPart": "（Notionに{count}行）",
+      "setupProjectSync": "プロジェクト同期を設定",
+      "editProjectSyncMapping": "プロジェクト同期マッピングを編集",
+      "syncProjectsNow": "今すぐプロジェクトを同期",
+      "disconnectTitle": "Notionの接続を解除しますか？",
+      "disconnectDescLong": "FocuspilotはNotionワークスペースへのアクセスを失います。いつでも再接続できます。",
+      "connectTitle": "Notionに接続",
+      "connectDescLong": "NotionでFocuspilotを認可し、使用するデータベースを共有してください。",
+      "cardDescProjectSync": "プロジェクト同期: {database}{workspacePart}",
+      "cardDescWorkspace": "ワークスペース: {workspace}。設定からデータベースを参照してプロジェクトを同期してください。",
+      "cardDescBrowse": "設定からデータベースを参照してプロジェクトを同期してください。",
+      "cardDescDisconnected": "Notionワークスペースに接続してデータベースを参照し、プロジェクトを同期してください。",
+      "mappingDialogTitle": "Notionデータベース → プロジェクトをマッピング",
+      "mappingDialogDesc": "データベースの各行がFocuspilotプロジェクトになります。再同期で名前とステータスが更新されます。",
+      "databaseLabel": "データベース",
+      "nameFieldLabel": "名前フィールド（タイトル列）",
+      "statusFieldLabel": "ステータスフィールド（任意）",
+      "statusMappingHint": "Done/Complete → 完了 · In progress → 進行中",
+      "browseDialogTitle": "Notionデータベース",
+      "browseDialogDesc": "Notion接続時に共有したデータベースのみ表示されます。Zapier用にIDをコピーするか、Notionで開いてください。",
+      "databasesLoadFailed": "Notionからデータベースを読み込めませんでした。",
+      "reconnectHint": "この環境でNotionを再接続してください（localhostは独自のトークンを使用します）。",
+      "noDatabasesFound": "データベースが見つかりません。Notionでデータベースを開き → ••• → 接続先 → Focuspilot統合を選択してください。",
+      "useForProjectSync": "プロジェクト同期に使用",
+      "copyDatabaseId": "データベースIDをコピー",
+      "openInNotion": "Notionで開く",
+      "syncBtn": "同期"
+    },
+    "googleCalendar": {
+      "disconnect": "切断",
+      "disconnectTitle": "Googleカレンダーの接続を解除しますか？",
+      "disconnectDesc": "Googleの接続が解除されます（Gmail受信箱は同じOAuth接続を使用します）。",
+      "connectWithGoogleCalendar": "Googleカレンダーに接続",
+      "connectTitle": "Googleカレンダーに接続",
+      "connectDesc": "Google OAuthを使用します（Gmailと同じ）。Google Cloud ConsoleでCalendar APIを有効にしてください。",
+      "continueWithGoogle": "Googleで続行",
+      "gmailMissingCalendarWarning": "Gmailは接続されていますが、カレンダーアクセスがありません。再接続してカレンダー権限を許可してください。"
+    },
+    "xero": {
+      "disconnect": "切断",
+      "disconnectTitle": "Xeroの接続を解除しますか？",
+      "disconnectDesc": "FocuspilotはXeroとの同期を停止します。いつでも再接続できます。",
+      "connectWithXero": "Xeroに接続"
+    }
+  },
+  "settingsRolesPage": {
+    "matrix": {
+      "roles": {
+        "admin": "管理者",
+        "manager": "マネージャー",
+        "member": "メンバー"
+      },
+      "columns": {
+        "view": "表示",
+        "edit": "編集",
+        "delete": "削除"
+      },
+      "resources": {
+        "projects": {
+          "label": "プロジェクト",
+          "desc": "プロジェクト概要、フェーズ、タイムライン"
+        },
+        "tasks": {
+          "label": "タスク",
+          "desc": "タスクの作成と割り当て"
+        },
+        "finance": {
+          "label": "財務",
+          "desc": "請求書、発注書、経費"
+        },
+        "clients": {
+          "label": "クライアント",
+          "desc": "CRM連絡先とクライアント記録"
+        },
+        "library": {
+          "label": "ライブラリ",
+          "desc": "製品、材料、仕様"
+        },
+        "team": {
+          "label": "チーム",
+          "desc": "メンバー管理とロール"
+        },
+        "documents": {
+          "label": "ドキュメント",
+          "desc": "プロジェクトファイル、フォルダ、メモ"
+        },
+        "reports": {
+          "label": "レポート",
+          "desc": "スタジオ分析とエクスポート"
+        },
+        "design": {
+          "label": "デザイン",
+          "desc": "AIデザインワークスペースと画像生成"
+        },
+        "settings": {
+          "label": "設定",
+          "desc": "スタジオ全体の設定と構成"
+        }
+      }
+    }
+  },
+  "projectSettingsPage": {
+    "qrPrintTitle": "コントラクターQR — {name}"
+  }
+}

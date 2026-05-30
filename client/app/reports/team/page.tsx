@@ -2,6 +2,7 @@
 import { PermissionGuard } from '@/components/PermissionGuard';
 
 import React, { useState, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ReportBreadcrumb } from '@/components/reports/ReportBreadcrumb';
@@ -21,6 +22,7 @@ import { ReportPageHeader } from '@/components/reports/ReportPageHeader';
 const C = '£';
 
 function TeamPageContent() {
+  const t = useTranslations('reportsTeamPage');
   const [activeTab, setActiveTab] = useState('hours');
   const { period, setPeriod, setCustomRange, customRange, dateRange, startDate, endDate } = useReportFilters('month');
 
@@ -69,9 +71,9 @@ function TeamPageContent() {
       <div className="report-print-area max-w-7xl mx-auto space-y-6">
 
         <ReportPageHeader
-          title="Team"
-          subtitle="Hours, utilisation and timesheet management"
-          printTitle="Team Report"
+          title={t('title')}
+          subtitle={t('subtitle')}
+          printTitle={t('printTitle')}
         />
 
         <ReportFilterBar
@@ -85,13 +87,13 @@ function TeamPageContent() {
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-3 bg-stone-100 border border-stone-200 rounded-lg p-1">
             <TabsTrigger value="hours" className="flex items-center gap-2">
-              <Clock className="w-4 h-4" /> Hours
+              <Clock className="w-4 h-4" /> {t('tabHours')}
             </TabsTrigger>
             <TabsTrigger value="utilisation" className="flex items-center gap-2">
-              <Target className="w-4 h-4" /> Utilisation
+              <Target className="w-4 h-4" /> {t('tabUtilisation')}
             </TabsTrigger>
             <TabsTrigger value="timesheet" className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" /> Timesheet
+              <Calendar className="w-4 h-4" /> {t('tabTimesheet')}
             </TabsTrigger>
           </TabsList>
 
@@ -111,15 +113,15 @@ function TeamPageContent() {
             {!isLoading && (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                  <KpiCard label="Team Average" value={`${teamAverage.toFixed(1)}%`} sub="Target: 80%" icon={Target} />
-                  <KpiCard label="High Performers" value={utilisationData.filter((u: any) => u.utilisation >= 80).length} sub="≥80% utilisation" icon={Users} />
-                  <KpiCard label="Under-utilised" value={utilisationData.filter((u: any) => u.utilisation < 60).length} sub="<60% utilisation" icon={Users} alert={utilisationData.filter((u: any) => u.utilisation < 60).length > 0} />
-                  <KpiCard label="Total Hours" value={formatHours(team?.studio_total_seconds || 0)} sub="This period" icon={Clock} />
+                  <KpiCard label={t('teamAverage')} value={`${teamAverage.toFixed(1)}%`} sub={t('targetSub')} icon={Target} />
+                  <KpiCard label={t('highPerformers')} value={utilisationData.filter((u: any) => u.utilisation >= 80).length} sub={t('highPerformersSub')} icon={Users} />
+                  <KpiCard label={t('underUtilised')} value={utilisationData.filter((u: any) => u.utilisation < 60).length} sub={t('underUtilisedSub')} icon={Users} alert={utilisationData.filter((u: any) => u.utilisation < 60).length > 0} />
+                  <KpiCard label={t('totalHours')} value={formatHours(team?.studio_total_seconds || 0)} sub={t('thisPeriod')} icon={Clock} />
                 </div>
 
                 <Card className="bg-white border-gray-200 rounded-xl shadow-sm">
                   <CardHeader>
-                    <CardTitle className="text-base font-semibold text-gray-900">Team Utilisation</CardTitle>
+                    <CardTitle className="text-base font-semibold text-gray-900">{t('teamUtilisation')}</CardTitle>
                     <p className="text-sm text-gray-500">Individual utilisation rates with 80% target line</p>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -149,15 +151,15 @@ function TeamPageContent() {
           <TabsContent value="timesheet" className="space-y-6 mt-6">
             <Card className="bg-white border-gray-200 rounded-xl shadow-sm">
               <CardHeader>
-                <CardTitle className="text-base font-semibold text-gray-900">Weekly Timesheet</CardTitle>
-                <p className="text-sm text-gray-500">Hours logged per person per week</p>
+                <CardTitle className="text-base font-semibold text-gray-900">{t('weeklyTimesheet')}</CardTitle>
+                <p className="text-sm text-gray-500">{t('weeklyTimesheetSub')}</p>
               </CardHeader>
               <CardContent>
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead className="w-40">Team Member</TableHead>
+                        <TableHead className="w-40">{t('teamMember')}</TableHead>
                         {Array.from({ length: Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24 * 7)) }, (_, i) => {
                           const ws = new Date(startDate);
                           ws.setDate(ws.getDate() + i * 7);
@@ -167,7 +169,7 @@ function TeamPageContent() {
                             </TableHead>
                           );
                         })}
-                        <TableHead className="text-center font-semibold">Total</TableHead>
+                        <TableHead className="text-center font-semibold">{t('total')}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -179,7 +181,7 @@ function TeamPageContent() {
                         </TableRow>
                       ))}
                       <TableRow className="border-t-2 font-semibold">
-                        <TableCell>Total</TableCell>
+                        <TableCell>{t('total')}</TableCell>
                         {Array.from({ length: timesheetData[0]?.weeks.length || 0 }, (_, wi) => (
                           <TableCell key={wi} className="text-center tabular-nums">
                             {timesheetData.reduce((s, r) => s + r.weeks[wi], 0).toFixed(1)}

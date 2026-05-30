@@ -43,7 +43,7 @@ import useFetch from '@/hooks/useFetch';
 import { usePost } from '@/hooks/usePost';
 import { DateRangePicker } from '../ui/DateRangePicker';
 import { motion, AnimatePresence } from 'framer-motion';
-import { z } from 'zod';
+import { useTranslations } from 'next-intl';
 
 interface NewProjectDialogProps {
   open: boolean;
@@ -95,61 +95,15 @@ interface ProjectData {
   logistics_country?: string;
 }
 
-// Validation schema
-const projectValidationSchema = z.object({
-  name: z.string().min(2, 'Project name must be at least 2 characters'),
-  projectType: z.string().min(1, 'Please select a project type'),
-  client: z.string().min(1, 'Please select a client'),
-  startDate: z.string().min(1, 'Start date is required'),
-  endDate: z.string().min(1, 'End date is required'),
-  budget: z.number().min(0, 'Budget must be a positive number'),
-  ffne: z.number().min(0).max(100, 'FF&E must be between 0 and 100'),
-  vt_rate: z.number().min(0).max(100, 'VAT rate must be between 0 and 100'),
-});
+// Validation schema — messages resolved in validateStep via translations
 
-const projectTypes = [
-  {
-    id: 'RS',
-    name: 'Residential',
-    icon: Home,
-    description: 'Homes, apartments, and living spaces',
-  },
-  {
-    id: 'CM',
-    name: 'Commercial',
-    icon: Building2,
-    description: 'Offices, retail, and business spaces',
-  },
-  {
-    id: 'HS',
-    name: 'Hospitality',
-    icon: Store,
-    description: 'Hotels, restaurants, and entertainment',
-  },
-];
+const PROJECT_TYPE_OPTIONS = [
+  { id: 'RS', icon: Home },
+  { id: 'CM', icon: Building2 },
+  { id: 'HS', icon: Store },
+] as const;
 
-const paymentSchedules = [
-  {
-    id: 'FF',
-    name: '50/50 Split',
-    description: '50% upfront, 50% on completion',
-  },
-  {
-    id: 'TP',
-    name: 'Three Payments',
-    description: '33% upfront, 33% midway, 34% completion',
-  },
-  {
-    id: 'PF',
-    name: 'Per Phase',
-    description: 'Payment aligned with project phases',
-  },
-  {
-    id: 'M',
-    name: 'Monthly',
-    description: 'Equal monthly payments over project duration',
-  },
-];
+const PAYMENT_SCHEDULE_IDS = ['FF', 'TP', 'PF', 'M'] as const;
 
 // Animation variants
 const stepVariants = {
@@ -394,13 +348,14 @@ function ClientSelect({
   onSelect: (clientId: string) => void;
   error?: string;
 }) {
+  const t = useTranslations('newProjectDialog');
   const [open, setOpen] = useState(false);
 
   const selectedClient = clients?.find((c: any) => String(c.id) === String(selectedClientId));
 
   const getClientDisplayName = (client: any) => {
     const fullName = [client?.name, client?.surname].filter(Boolean).join(' ');
-    return fullName || client?.company_name || 'Unnamed Client';
+    return fullName || client?.company_name || t('unnamedClient');
   };
 
   return (
@@ -422,7 +377,7 @@ function ClientSelect({
             ) : (
               <span className="flex items-center gap-2 text-muted-foreground/60">
                 <Search className="h-3.5 w-3.5" />
-                Search clients…
+                {t('searchClients')}
               </span>
             )}
           </span>
@@ -431,10 +386,10 @@ function ClientSelect({
       <PopoverContent className="p-0 w-[360px] rounded-xl border border-border/85 bg-card shadow-2xl overflow-hidden z-[9999]" align="start">
         <Command className="max-h-[400px] bg-transparent">
           <CommandInput
-            placeholder="Search clients…"
+            placeholder={t('searchClients')}
             className="focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none text-[13px] bg-transparent"
           />
-          <CommandEmpty className="text-xs text-muted-foreground py-3 px-4">No clients found</CommandEmpty>
+          <CommandEmpty className="text-xs text-muted-foreground py-3 px-4">{t('noClients')}</CommandEmpty>
           <CommandList
             className="max-h-[300px] overflow-y-auto"
             style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
@@ -543,6 +498,8 @@ const initialProject: ProjectData = {
 };
 
 export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) {
+  const t = useTranslations('newProjectDialog');
+  const tc = useTranslations('common');
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState(0);
   const { user, isLoading: userLoading } = useUser();
@@ -570,6 +527,11 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
   const { mutateAsync: postPhaseAsync } = usePost();
 
   const queryClient = useQueryClient();
+
+  const stepLabels = useMemo(
+    () => [t('steps.details'), t('steps.address'), t('steps.timeline'), t('steps.budgetTeam')],
+    [t]
+  );
 
   // Extract existing project codes
   const existingCodes = useMemo(() => {
@@ -640,13 +602,13 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
 
     if (stepNum === 1) {
       if (!data.name || data.name.trim().length < 2) {
-        newErrors.name = 'Project name must be at least 2 characters';
+        newErrors.name = t('validation.nameMin');
       }
       if (!data.projectType) {
-        newErrors.projectType = 'Please select a project type';
+        newErrors.projectType = t('validation.projectTypeRequired');
       }
       if (!data.client) {
-        newErrors.client = 'Please select a client';
+        newErrors.client = t('validation.clientRequired');
       }
     }
 
@@ -654,28 +616,28 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
 
     if (stepNum === 3) {
       if (!data.startDate) {
-        newErrors.startDate = 'Start date is required';
+        newErrors.startDate = t('validation.startDateRequired');
       }
       if (!data.endDate) {
-        newErrors.endDate = 'End date is required';
+        newErrors.endDate = t('validation.endDateRequired');
       }
       if (data.startDate && data.endDate && new Date(data.startDate) > new Date(data.endDate)) {
-        newErrors.endDate = 'End date must be after start date';
+        newErrors.endDate = t('validation.endDateAfterStart');
       }
     }
 
     if (stepNum === 4) {
       if (data.ffne < 0 || data.ffne > 100) {
-        newErrors.ffne = 'FF&E must be between 0 and 100';
+        newErrors.ffne = t('validation.ffneRange');
       }
       if (data.vt_rate < 0 || data.vt_rate > 100) {
-        newErrors.vt_rate = 'VAT rate must be between 0 and 100';
+        newErrors.vt_rate = t('validation.vatRange');
       }
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  }, [data]);
+  }, [data, t]);
 
   const toggleSection = (section: keyof typeof expandedSections) => {
     setExpandedSections(prev => ({
@@ -787,12 +749,12 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
         { url: 'projects/projects/', data: finalData },
         {
           onSuccess: () => {
-            toast.success('Project created successfully');
+            toast.success(t('toasts.created'));
             queryClient.refetchQueries({ queryKey: ['projects/user-projects/'] });
             handleClose();
           },
           onError: () => {
-            toast.error('Failed to create project');
+            toast.error(t('toasts.failed'));
           },
           onSettled: () => {
             setIsSubmitting(false);
@@ -801,7 +763,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
       );
     } catch (error) {
       console.error("Error creating project or phases:", error);
-      toast.error('Failed to create project phases');
+      toast.error(t('toasts.phasesFailed'));
       setIsSubmitting(false);
     }
   };
@@ -829,8 +791,6 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
     }
   };
 
-  const stepLabels = ['Details', 'Address', 'Timeline', 'Budget & Team'];
-
   const renderStep = () => {
     switch (step) {
       case 1:
@@ -844,11 +804,11 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <motion.div className="space-y-1.5" variants={fadeInUp}>
                 <Label htmlFor="name" className="text-sm font-medium text-foreground/90">
-                  Project Name <span className="text-red-500">*</span>
+                  {t('projectName')} <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="name"
-                  placeholder="e.g., Chelsea Penthouse Renovation"
+                  placeholder={t('projectNamePlaceholder')}
                   value={data.name}
                   onChange={e => updateData({ name: e.target.value })}
                   onBlur={() => markTouched('name')}
@@ -875,27 +835,29 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
               <motion.div className="space-y-1.5" variants={fadeInUp}>
                 <Label htmlFor="projectCode" className="text-sm font-medium text-foreground/90 flex items-center gap-2">
                   <Hash className="w-3.5 h-3.5 text-muted-foreground/60" />
-                  Project Code
+                  {t('projectCode')}
                 </Label>
                 <Input
                   id="projectCode"
                   value={data.projectCode}
                   onChange={e => updateData({ projectCode: e.target.value.toUpperCase() })}
-                  placeholder="e.g., TP-001"
+                  placeholder={t('projectCodePlaceholder')}
                   className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 />
-                <p className="text-xs text-muted-foreground mt-0.5 font-medium">Auto-generated, but you can customize it</p>
+                <p className="text-xs text-muted-foreground mt-0.5 font-medium">{t('projectCodeHint')}</p>
               </motion.div>
             </div>
 
             <motion.div className="space-y-1.5" variants={fadeInUp}>
               <Label className="text-sm font-medium text-foreground/90">
-                Project Type <span className="text-red-500">*</span>
+                {t('projectType')} <span className="text-red-500">*</span>
               </Label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                {projectTypes.map(type => {
+                {PROJECT_TYPE_OPTIONS.map(type => {
                   const IconComponent = type.icon;
                   const isSelected = data.projectType === type.id;
+                  const typeName = t(`projectTypes.${type.id}.name` as 'projectTypes.RS.name');
+                  const typeDescription = t(`projectTypes.${type.id}.description` as 'projectTypes.RS.description');
                   return (
                     <motion.div
                       key={type.id}
@@ -919,8 +881,8 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                               <IconComponent className="w-5 h-5" />
                             </div>
                             <div>
-                              <h4 className={cn("font-bold text-[13px] tracking-tight transition-colors", isSelected ? 'text-primary' : 'text-foreground/90')}>{type.name}</h4>
-                              <p className="text-[11px] text-muted-foreground mt-1 max-w-[160px] leading-normal">{type.description}</p>
+                              <h4 className={cn("font-bold text-[13px] tracking-tight transition-colors", isSelected ? 'text-primary' : 'text-foreground/90')}>{typeName}</h4>
+                              <p className="text-[11px] text-muted-foreground mt-1 max-w-[160px] leading-normal">{typeDescription}</p>
                             </div>
                           </div>
                         </CardContent>
@@ -947,7 +909,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
             <motion.div variants={fadeInUp}>
               <div className="space-y-1.5">
                 <Label htmlFor="client" className="text-sm font-medium text-foreground/90">
-                  Client <span className="text-red-500">*</span>
+                  {t('client')} <span className="text-red-500">*</span>
                 </Label>
                 <ClientSelect
                   clients={clientData || []}
@@ -973,11 +935,11 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
 
             <motion.div className="space-y-1.5" variants={fadeInUp}>
               <Label htmlFor="description" className="text-sm font-medium text-foreground/90">
-                Project Description
+                {t('projectDescription')}
               </Label>
               <Textarea
                 id="description"
-                placeholder="Brief description of the project scope and objectives..."
+                placeholder={t('descriptionPlaceholder')}
                 value={data.description}
                 onChange={e => updateData({ description: e.target.value })}
                 className="rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors min-h-[80px] resize-none"
@@ -995,29 +957,29 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
             animate="animate"
           >
             <motion.div variants={fadeInUp}>
-              <p className="text-sm text-ink-muted mb-4">Add delivery, billing, and logistics addresses for this project. You can skip this and fill it in later from project settings.</p>
+              <p className="text-sm text-ink-muted mb-4">{t('addressIntro')}</p>
               <Tabs defaultValue="delivery">
                 <TabsList className="grid w-full grid-cols-3 mb-4">
-                  <TabsTrigger value="delivery">Delivery</TabsTrigger>
-                  <TabsTrigger value="billing">Billing</TabsTrigger>
-                  <TabsTrigger value="logistics">Logistics</TabsTrigger>
+                  <TabsTrigger value="delivery">{t('addressTabs.delivery')}</TabsTrigger>
+                  <TabsTrigger value="billing">{t('addressTabs.billing')}</TabsTrigger>
+                  <TabsTrigger value="logistics">{t('addressTabs.logistics')}</TabsTrigger>
                 </TabsList>
                 {(['delivery', 'billing', 'logistics'] as const).map(prefix => (
                   <TabsContent key={prefix} value={prefix}>
                     <div className="space-y-4">
                       <div className="space-y-2">
-                        <Label className="text-sm font-medium text-ink">Address Line 1</Label>
+                        <Label className="text-sm font-medium text-ink">{t('addressLine1')}</Label>
                         <Input
-                          placeholder="Street address"
+                          placeholder={t('streetPlaceholder')}
                           value={(data as any)[`${prefix}_address_line_1`] ?? ''}
                           onChange={e => updateData({ [`${prefix}_address_line_1`]: e.target.value } as any)}
                           className="bg-white border-borderSoft focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label className="text-sm font-medium text-ink">Address Line 2</Label>
+                        <Label className="text-sm font-medium text-ink">{t('addressLine2')}</Label>
                         <Input
-                          placeholder="Apartment, suite, etc."
+                          placeholder={t('suitePlaceholder')}
                           value={(data as any)[`${prefix}_address_line_2`] ?? ''}
                           onChange={e => updateData({ [`${prefix}_address_line_2`]: e.target.value } as any)}
                           className="bg-white border-borderSoft focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
@@ -1025,18 +987,18 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label className="text-sm font-medium text-ink">City</Label>
+                          <Label className="text-sm font-medium text-ink">{tc('city')}</Label>
                           <Input
-                            placeholder="City"
+                            placeholder={tc('city')}
                             value={(data as any)[`${prefix}_city`] ?? ''}
                             onChange={e => updateData({ [`${prefix}_city`]: e.target.value } as any)}
                             className="bg-white border-borderSoft focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label className="text-sm font-medium text-ink">Postcode</Label>
+                          <Label className="text-sm font-medium text-ink">{tc('postcode')}</Label>
                           <Input
-                            placeholder="Postcode"
+                            placeholder={tc('postcode')}
                             value={(data as any)[`${prefix}_postcode`] ?? ''}
                             onChange={e => updateData({ [`${prefix}_postcode`]: e.target.value } as any)}
                             className="bg-white border-borderSoft focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
@@ -1045,18 +1007,18 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label className="text-sm font-medium text-ink">County</Label>
+                          <Label className="text-sm font-medium text-ink">{tc('county')}</Label>
                           <Input
-                            placeholder="County"
+                            placeholder={tc('county')}
                             value={(data as any)[`${prefix}_county`] ?? ''}
                             onChange={e => updateData({ [`${prefix}_county`]: e.target.value } as any)}
                             className="bg-white border-borderSoft focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label className="text-sm font-medium text-ink">Country</Label>
+                          <Label className="text-sm font-medium text-ink">{tc('country')}</Label>
                           <Input
-                            placeholder="Country"
+                            placeholder={tc('country')}
                             value={(data as any)[`${prefix}_country`] ?? ''}
                             onChange={e => updateData({ [`${prefix}_country`]: e.target.value } as any)}
                             className="bg-white border-borderSoft focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
@@ -1081,7 +1043,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
           >
             <motion.div className="grid grid-cols-1 gap-4" variants={fadeInUp}>
               <div className="space-y-2">
-                <Labeled label="Project Duration" required>
+                <Labeled label={t('projectDuration')} required>
                   <DateRangePicker
                     onUpdate={(values) => {
                       if (values.range.from) {
@@ -1145,14 +1107,14 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                               </div>
                               <span className="font-medium truncate">{tpl?.name}</span>
                               <span className="text-clay-500 text-xs flex-shrink-0">
-                                {phases.length} phase{phases.length !== 1 ? 's' : ''}
+                                {t('phaseCount', { count: phases.length })}
                               </span>
                             </>
                           );
                         })() : (
                           <>
-                            <span className="text-ink-muted">Select a template</span>
-                            <span className="text-xs text-ink-muted/60">— optional</span>
+                            <span className="text-ink-muted">{t('selectTemplate')}</span>
+                            <span className="text-xs text-ink-muted/60">{t('optionalSuffix')}</span>
                           </>
                         )}
                       </div>
@@ -1163,7 +1125,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                             onClick={(e) => { e.stopPropagation(); applyTemplate(null); }}
                             className="text-xs text-clay-500 hover:text-clay-700 px-1.5 py-0.5 rounded hover:bg-clay-100 transition-colors"
                           >
-                            Clear
+                            {t('clear')}
                           </span>
                         )}
                         <ChevronDown className="w-4 h-4 text-ink-muted" />
@@ -1177,12 +1139,12 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                   >
                     <Command>
                       <CommandInput
-                        placeholder="Search templates…"
+                        placeholder={t('searchTemplates')}
                         className="text-sm focus-visible:ring-0 focus-visible:ring-offset-0"
                       />
                       <CommandList className="max-h-[280px] overflow-y-auto">
                         <CommandEmpty className="py-6 text-center text-sm text-ink-muted">
-                          No templates found
+                          {t('noTemplates')}
                         </CommandEmpty>
                         <CommandGroup>
                           {(studioTemplates as any[]).map((tpl: any) => {
@@ -1209,7 +1171,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                                 </div>
                                 <div className="flex items-center gap-2 flex-shrink-0">
                                   <span className="text-xs text-ink-muted">
-                                    {phases.length} phase{phases.length !== 1 ? 's' : ''}
+                                    {t('phaseCount', { count: phases.length })}
                                   </span>
                                   {isSelected && <Check className="w-3.5 h-3.5 text-clay-600" />}
                                 </div>
@@ -1230,7 +1192,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-ink-muted" />
                   <span className="text-sm font-medium text-ink">
-                    Project Phases
+                    {t('projectPhases')}
                     {data.phases.length > 0 && (
                       <span className="ml-1.5 text-ink-muted font-normal">({data.phases.length})</span>
                     )}
@@ -1245,13 +1207,13 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                     updateData({
                       phases: [
                         ...data.phases,
-                        { name: `Phase ${data.phases.length + 1}`, color: '#9CA3AF', description: '', duration: '', tasks: [] },
+                        { name: t('defaultPhaseName', { number: data.phases.length + 1 }), color: '#9CA3AF', description: '', duration: '', tasks: [] },
                       ],
                     });
                   }}
                 >
                   <Plus className="w-3.5 h-3.5" />
-                  Add Phase
+                  {t('addPhase')}
                 </Button>
               </div>
 
@@ -1263,7 +1225,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                     exit={{ opacity: 0 }}
                     className="text-center py-8 text-ink-muted text-sm border border-dashed border-borderSoft rounded-xl"
                   >
-                    No phases yet. Select a template or add phases manually.
+                    {t('noPhasesHint')}
                   </motion.div>
                 )}
                 {data.phases.map((phase, index) => (
@@ -1281,7 +1243,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                           {/* Header row */}
                           <div className="flex items-center justify-between">
                             <Badge variant="outline" className="bg-greige-50 text-ink-muted border-borderSoft">
-                              Phase {index + 1}
+                              {t('phaseLabel', { number: index + 1 })}
                             </Badge>
                             <button
                               type="button"
@@ -1303,12 +1265,12 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                                   type="button"
                                   className="w-8 h-8 rounded-lg border border-borderSoft flex-shrink-0 transition-opacity hover:opacity-80"
                                   style={{ backgroundColor: phase.color || '#9CA3AF' }}
-                                  title="Pick phase color"
+                                  title={t('pickPhaseColor')}
                                 />
                               </PopoverTrigger>
                               <PopoverContent className="w-auto p-3" align="start">
                                 <div className="space-y-2">
-                                  <p className="text-xs font-medium text-ink-muted mb-2">Phase color</p>
+                                  <p className="text-xs font-medium text-ink-muted mb-2">{t('phaseColor')}</p>
                                   <div className="grid grid-cols-6 gap-1.5">
                                     {[
                                       '#9CA3AF','#EF4444','#F97316','#EAB308',
@@ -1342,7 +1304,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                                       }}
                                       className="w-8 h-8 rounded cursor-pointer border-0 p-0"
                                     />
-                                    <span className="text-xs text-ink-muted">Custom color</span>
+                                    <span className="text-xs text-ink-muted">{t('customColor')}</span>
                                   </div>
                                 </div>
                               </PopoverContent>
@@ -1355,7 +1317,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                                 updated[index] = { ...phase, name: e.target.value };
                                 updateData({ phases: updated });
                               }}
-                              placeholder="Phase name"
+                              placeholder={t('phaseNamePlaceholder')}
                               className="font-medium bg-white border-borderSoft focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
                             />
                           </div>
@@ -1367,7 +1329,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                               updated[index] = { ...phase, description: e.target.value };
                               updateData({ phases: updated });
                             }}
-                            placeholder="Phase description (optional)"
+                            placeholder={t('phaseDescriptionPlaceholder')}
                             className="text-sm bg-white border-borderSoft focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0 resize-none"
                             rows={2}
                           />
@@ -1408,7 +1370,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
               className="text-xs text-ink-muted ml-2"
               variants={fadeInUp}
             >
-              Tip: You can customize phases later from project settings
+              {t('phasesTip')}
             </motion.p>
           </motion.div>
         );
@@ -1433,11 +1395,11 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                             <DollarSign className="w-5 h-5 text-ink-muted" />
                           </div>
                           <div>
-                            <h4 className="font-medium text-ink">Budget & Payment</h4>
+                            <h4 className="font-medium text-ink">{t('budgetPayment')}</h4>
                             <p className="text-sm text-ink-muted">
                               {data.budget > 0
                                 ? `${data?.currency?.symbol || '£'}${formatNumber(data.budget)}`
-                                : 'Click to configure'}
+                                : t('clickToConfigure')}
                             </p>
                           </div>
                         </div>
@@ -1460,7 +1422,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                   >
                     <div className="space-y-2">
                       <Label htmlFor="budget" className="text-sm font-medium text-ink">
-                        Total Budget
+                        {t('totalBudget')}
                       </Label>
                       <NumberInput
                         id="budget"
@@ -1473,7 +1435,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
 
                     <div className="space-y-2">
                       <Label htmlFor="currency" className="text-sm font-medium text-ink">
-                        Currency
+                        {tc('currency')}
                       </Label>
                       <CurrencySelector data={data} onChange={updateData} />
                     </div>
@@ -1488,7 +1450,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                     <div className="space-y-2">
                       <Label htmlFor="ffne" className="text-sm font-medium text-ink flex items-center gap-2">
                         {/* <Percent className="w-3.5 h-3.5 text-ink-muted" /> */}
-                        FF&E (%)
+                        {t('ffneLabel')}
                       </Label>
                       <NumberInput
                         id="ffne"
@@ -1500,7 +1462,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                         max={100}
                         allowDecimals={true}
                       />
-                      <p className="text-xs text-ink-muted">Furniture, Fixtures & Equipment allocation</p>
+                      <p className="text-xs text-ink-muted">{t('ffneHint')}</p>
                       <AnimatePresence>
                         {errors.ffne && (
                           <motion.div
@@ -1519,7 +1481,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                     <div className="space-y-2">
                       <Label htmlFor="vt_rate" className="text-sm font-medium text-ink flex items-center gap-2">
                         {/* <Percent className="w-3.5 h-3.5 text-ink-muted" /> */}
-                        VAT Rate (%)
+                        {t('vatRateLabel')}
                       </Label>
                       <NumberInput
                         id="vt_rate"
@@ -1531,7 +1493,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                         max={100}
                         allowDecimals={true}
                       />
-                      <p className="text-xs text-ink-muted">Value Added Tax rate</p>
+                      <p className="text-xs text-ink-muted">{t('vatHint')}</p>
                       <AnimatePresence>
                         {errors.vt_rate && (
                           <motion.div
@@ -1554,13 +1516,15 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
                   >
-                    <Label className="text-sm font-medium text-ink">Payment Schedule</Label>
+                    <Label className="text-sm font-medium text-ink">{t('paymentSchedule')}</Label>
                     <div className="grid grid-cols-2 gap-2">
-                      {paymentSchedules.map((schedule, index) => {
-                        const isSelected = data.paymentSchedule === schedule.id;
+                      {PAYMENT_SCHEDULE_IDS.map((scheduleId, index) => {
+                        const isSelected = data.paymentSchedule === scheduleId;
+                        const scheduleName = t(`paymentSchedules.${scheduleId}.name` as 'paymentSchedules.FF.name');
+                        const scheduleDescription = t(`paymentSchedules.${scheduleId}.description` as 'paymentSchedules.FF.description');
                         return (
                           <motion.div
-                            key={schedule.id}
+                            key={scheduleId}
                             // whileHover={{ scale: 1.01 }}
                             whileTap={{ scale: 0.99 }}
                             initial={{ opacity: 0, y: 10 }}
@@ -1574,13 +1538,13 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                                   ? 'border-clay-600 bg-clay-50 shadow-sm'
                                   : 'border-borderSoft bg-white hover:bg-greige-50 hover:border-clay-300'
                               )}
-                              onClick={() => updateData({ paymentSchedule: schedule.id })}
+                              onClick={() => updateData({ paymentSchedule: scheduleId })}
                             >
                               <CardContent className="p-3">
                                 <div className="flex items-center justify-between">
                                   <div>
-                                    <h5 className="font-medium text-ink text-sm">{schedule.name}</h5>
-                                    <p className="text-xs text-ink-muted">{schedule.description}</p>
+                                    <h5 className="font-medium text-ink text-sm">{scheduleName}</h5>
+                                    <p className="text-xs text-ink-muted">{scheduleDescription}</p>
                                   </div>
                                   {isSelected && (
                                     <motion.div
@@ -1612,8 +1576,8 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                       <Users className="w-5 h-5 text-ink-muted" />
                     </div>
                     <div>
-                      <h4 className="font-medium text-ink">Team Assignment</h4>
-                      <p className="text-sm text-ink-muted">Assign team members to this project</p>
+                      <h4 className="font-medium text-ink">{t('teamAssignment')}</h4>
+                      <p className="text-sm text-ink-muted">{t('teamAssignmentHint')}</p>
                     </div>
                   </div>
                   <TeammateSearchPopover
@@ -1641,7 +1605,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
       >
         <DialogHeader className="px-6 pt-6 pb-4 border-b border-border/40 bg-card flex-shrink-0">
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-[16px] font-bold text-foreground tracking-tight">Create New Project</DialogTitle>
+            <DialogTitle className="text-[16px] font-bold text-foreground tracking-tight">{t('title')}</DialogTitle>
           </div>
         </DialogHeader>
 
@@ -1690,7 +1654,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
               className="h-10 px-5 rounded-xl text-[13px] font-medium text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors"
               disabled={isSubmitting}
             >
-              Cancel
+              {t('cancel')}
             </Button>
             {step > 1 && (
               <motion.div
@@ -1704,7 +1668,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                   className="h-10 px-5 rounded-xl text-[13px] font-medium text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors"
                   disabled={isSubmitting}
                 >
-                  Back
+                  {t('back')}
                 </Button>
               </motion.div>
             )}
@@ -1718,7 +1682,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                 disabled={isSubmitting}
                 className="h-10 px-4 rounded-xl text-[13px] font-medium text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors"
               >
-                Skip
+                {t('skip')}
               </Button>
             )}
             {step < 4 ? (
@@ -1727,7 +1691,7 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                 disabled={!canProceed()}
                 className="h-10 px-6 rounded-xl text-[13px] font-medium bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/95 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-[100px]"
               >
-                Continue
+                {t('continue')}
               </Button>
             ) : (
               <Button
@@ -1738,10 +1702,10 @@ export function NewProjectDialog({ open, onOpenChange }: NewProjectDialogProps) 
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                    Creating...
+                    {t('creating')}
                   </>
                 ) : (
-                  'Create Project'
+                  t('createProject')
                 )}
               </Button>
             )}

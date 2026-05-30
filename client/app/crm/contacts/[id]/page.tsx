@@ -44,6 +44,7 @@ import { CrmNav } from '@/components/crm-nav';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
 import { useEditGuard } from '@/hooks/useEditGuard';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 
 export type ClientNote = {
   id: number;
@@ -89,13 +90,6 @@ export type ContactDetails = {
     email: string;
     phone: string;
   }>;
-};
-
-const STATUS_CONFIG: Record<string, { label: string; class: string }> = {
-  NE: { label: 'New', class: 'bg-blue-100 text-blue-700 border-blue-200' },
-  AC: { label: 'Active', class: 'bg-green-100 text-green-700 border-green-200' },
-  QA: { label: 'Qualified', class: 'bg-purple-100 text-purple-700 border-purple-200' },
-  NG: { label: 'Negotiation', class: 'bg-amber-100 text-amber-700 border-amber-200' },
 };
 
 // Clean field row — label on left, value on right, icon optional
@@ -164,6 +158,16 @@ function Card({
 }
 
 function ContactDetailPageContent({ params }: { params: { id: string } }) {
+  const t = useTranslations('crmContactDetailPage');
+  const tc = useTranslations('common');
+  const tf = useTranslations('contactFormModal');
+
+  const STATUS_CONFIG: Record<string, { label: string; class: string }> = {
+    NE: { label: t('statusNew'), class: 'bg-blue-100 text-blue-700 border-blue-200' },
+    AC: { label: t('statusActive'), class: 'bg-green-100 text-green-700 border-green-200' },
+    QA: { label: t('statusQualified'), class: 'bg-purple-100 text-purple-700 border-purple-200' },
+    NG: { label: t('statusNegotiation'), class: 'bg-amber-100 text-amber-700 border-amber-200' },
+  };
   const router = useRouter();
   const { setLeadPreFillData } = useProposalsStore();
   const [notes, setNotes] = useState<ClientNote[]>([]);
@@ -244,10 +248,10 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
       ]);
       setNewNote('');
       setIsAddingNote(false);
-      toast.success('Note added');
+      toast.success(t('toasts.noteAdded'));
       refetch();
     } catch {
-      toast.error('Failed to add note');
+      toast.error(t('toasts.noteAddFailed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -261,7 +265,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
       setNotes(notes.map(n => (n.id === noteId ? { ...n, note: editingNoteText, updated_at: new Date().toISOString() } : n)));
       setEditingNoteId(null);
       setEditingNoteText('');
-      toast.success('Note updated');
+      toast.success(t('toasts.noteUpdated'));
     } catch {
     } finally {
       setIsSubmitting(false);
@@ -276,9 +280,9 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
     try {
       await deleteData({ url: `/crm/clients/${data.id}/notes/${noteId}/delete/` });
       setNotes(notes.filter(n => n.id !== noteId));
-      toast.success('Note deleted');
+      toast.success(t('toasts.noteDeleted'));
     } catch {
-      toast.error('Failed to delete note');
+      toast.error(t('toasts.noteDeleteFailed'));
     } finally {
       setDeletingNoteId(null);
     }
@@ -381,7 +385,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
       }
 
       await patchData({ url: `crm/clients/${data.id}/`, data: payload });
-      toast.success('Contact updated');
+      toast.success(t('toasts.contactUpdated'));
       refetch();
       queryClient.refetchQueries({ queryKey: ['crm/studio-clients/'] });
       queryClient.refetchQueries({ queryKey: ['crm/studio-suppliers/'] });
@@ -411,7 +415,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
               onClick={() => router.push('/crm/contacts')}
               className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 mb-2 transition-colors"
             >
-              <ArrowLeft className="w-3 h-3" /> Contacts
+              <ArrowLeft className="w-3 h-3" /> {t('backToContacts')}
             </button>
             <div className="flex items-center gap-3 flex-wrap">
               <h1 className="text-2xl font-bold text-gray-900">
@@ -436,20 +440,20 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
           <div className="flex items-center gap-2 shrink-0 flex-wrap justify-end">
             {data.contact_type === 'CL' && (
               <Button variant="outline" size="sm" onClick={handleCreateLead} className="gap-1.5">
-                <UserPlus className="w-4 h-4" /> Create Lead
+                <UserPlus className="w-4 h-4" /> {t('createLead')}
               </Button>
             )}
             {data.email && (
               <Link href={`mailto:${data.email}`}>
                 <Button variant="outline" size="sm" className="gap-1.5">
-                  <Mail className="w-4 h-4" /> Email
+                  <Mail className="w-4 h-4" /> {tc('email')}
                 </Button>
               </Link>
             )}
             {data.phone && (
               <Link href={`tel:${data.phone}`}>
                 <Button size="sm" className="bg-clay-600 hover:bg-clay-700 text-white gap-1.5">
-                  <Phone className="w-4 h-4" /> Call
+                  <Phone className="w-4 h-4" /> {tc('call')}
                 </Button>
               </Link>
             )}
@@ -462,7 +466,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
           <div className="lg:col-span-2 space-y-6">
             {/* Contact Information */}
             <Card
-              title="Contact Information"
+              title={t('contactInformation')}
               actions={
                 editingSection === 'contact' ? (
                   <>
@@ -483,46 +487,46 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
               {editingSection === 'contact' ? (
                 <div className="space-y-4 py-3">
                   <div>
-                    <label className="text-xs text-gray-500 mb-1 block">Contact Type</label>
+                    <label className="text-xs text-gray-500 mb-1 block">{tf('contactType')}</label>
                     <Select value={editValues.contact_type || ''} onValueChange={value => setEditValues({ ...editValues, contact_type: value })}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Type" />
+                        <SelectValue placeholder={tf('selectType')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="CL">Client</SelectItem>
-                        <SelectItem value="SP">Supplier</SelectItem>
-                        <SelectItem value="CN">Contractor</SelectItem>
+                        <SelectItem value="CL">{tc('client')}</SelectItem>
+                        <SelectItem value="SP">{tc('supplier')}</SelectItem>
+                        <SelectItem value="CN">{tc('contractor')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <label className="text-xs text-gray-500 mb-1 block">Company Name</label>
+                    <label className="text-xs text-gray-500 mb-1 block">{tf('companyName')}</label>
                     <Input
                       value={editValues.company_name || ''}
                       onChange={e => setEditValues({ ...editValues, company_name: e.target.value })}
-                      placeholder="Company name"
+                      placeholder={tf('placeholders.companyName')}
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="text-xs text-gray-500 mb-1 block">First Name</label>
+                      <label className="text-xs text-gray-500 mb-1 block">{t('firstName')}</label>
                       <Input
                         value={editValues.name || ''}
                         onChange={e => setEditValues({ ...editValues, name: e.target.value })}
-                        placeholder="First name"
+                        placeholder={t('firstName')}
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-gray-500 mb-1 block">Last Name</label>
+                      <label className="text-xs text-gray-500 mb-1 block">{t('lastName')}</label>
                       <Input
                         value={editValues.surname || ''}
                         onChange={e => setEditValues({ ...editValues, surname: e.target.value })}
-                        placeholder="Last name"
+                        placeholder={t('lastName')}
                       />
                     </div>
                   </div>
                   <div>
-                    <label className="text-xs text-gray-500 mb-1 block">Email</label>
+                    <label className="text-xs text-gray-500 mb-1 block">{tc('email')}</label>
                     <Input
                       type="email"
                       value={editValues.email || ''}
@@ -531,7 +535,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-gray-500 mb-1 block">Phone</label>
+                    <label className="text-xs text-gray-500 mb-1 block">{tc('phone')}</label>
                     <Input
                       type="tel"
                       value={editValues.phone || ''}
@@ -540,54 +544,54 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-gray-500 mb-1 block">Address Line 1</label>
+                    <label className="text-xs text-gray-500 mb-1 block">{tf('addressLine1')}</label>
                     <Input
                       value={editValues.address_line_1 || ''}
                       onChange={e => setEditValues({ ...editValues, address_line_1: e.target.value })}
-                      placeholder="Street address"
+                      placeholder={tf('placeholders.street')}
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-gray-500 mb-1 block">Address Line 2</label>
+                    <label className="text-xs text-gray-500 mb-1 block">{tf('addressLine2')}</label>
                     <Input
                       value={editValues.address_line_2 || ''}
                       onChange={e => setEditValues({ ...editValues, address_line_2: e.target.value })}
-                      placeholder="Apt, suite, etc (optional)"
+                      placeholder={t('addressLine2Optional')}
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="text-xs text-gray-500 mb-1 block">City</label>
+                      <label className="text-xs text-gray-500 mb-1 block">{tc('city')}</label>
                       <Input
                         value={editValues.city || ''}
                         onChange={e => setEditValues({ ...editValues, city: e.target.value })}
-                        placeholder="City"
+                        placeholder={tf('placeholders.city')}
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-gray-500 mb-1 block">County</label>
+                      <label className="text-xs text-gray-500 mb-1 block">{tc('county')}</label>
                       <Input
                         value={editValues.county || ''}
                         onChange={e => setEditValues({ ...editValues, county: e.target.value })}
-                        placeholder="County"
+                        placeholder={tf('placeholders.county')}
                       />
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="text-xs text-gray-500 mb-1 block">Postcode</label>
+                      <label className="text-xs text-gray-500 mb-1 block">{tc('postcode')}</label>
                       <Input
                         value={editValues.postcode || ''}
                         onChange={e => setEditValues({ ...editValues, postcode: e.target.value })}
-                        placeholder="Postcode"
+                        placeholder={tf('placeholders.postcode')}
                       />
                     </div>
                     <div>
-                      <label className="text-xs text-gray-500 mb-1 block">Country</label>
+                      <label className="text-xs text-gray-500 mb-1 block">{tc('country')}</label>
                       <Input
                         value={editValues.country || ''}
                         onChange={e => setEditValues({ ...editValues, country: e.target.value })}
-                        placeholder="Country"
+                        placeholder={tf('placeholders.country')}
                       />
                     </div>
                   </div>
@@ -665,7 +669,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
 
             {/* Additional Details */}
             <Card
-              title="Additional Details"
+              title={t('additionalDetails')}
               actions={
                 editingSection === 'details' ? (
                   <>
@@ -686,23 +690,23 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
               {editingSection === 'details' ? (
                 <div className="space-y-4 py-3">
                   <div>
-                    <label className="text-xs text-gray-500 mb-1 block">Connection</label>
+                    <label className="text-xs text-gray-500 mb-1 block">{tc('connection')}</label>
                     <Input
                       value={editValues.connection || ''}
                       onChange={e => setEditValues({ ...editValues, connection: e.target.value })}
-                      placeholder="How did you meet?"
+                      placeholder={t('howDidYouMeet')}
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-gray-500 mb-1 block">Found Via</label>
+                    <label className="text-xs text-gray-500 mb-1 block">{t('foundVia')}</label>
                     <Input
                       value={editValues.find || ''}
                       onChange={e => setEditValues({ ...editValues, find: e.target.value })}
-                      placeholder="Where did you find them?"
+                      placeholder={t('whereDidYouFind')}
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-gray-500 mb-1 block">Budget</label>
+                    <label className="text-xs text-gray-500 mb-1 block">{tc('budget')}</label>
                     <Input
                       type="number"
                       value={editValues.budget || ''}
@@ -711,7 +715,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-gray-500 mb-1 block">Currency</label>
+                    <label className="text-xs text-gray-500 mb-1 block">{tc('currency')}</label>
                     <CurrencySelector
                       value={editValues.currency || ''}
                       data={{ currency: editValues.currency || '' }}
@@ -719,7 +723,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-gray-500 mb-1 block">Status</label>
+                    <label className="text-xs text-gray-500 mb-1 block">{tc('status')}</label>
                     <Select value={editValues.status || 'NE'} onValueChange={value => setEditValues({ ...editValues, status: value })}>
                       <SelectTrigger>
                         <SelectValue />
@@ -736,7 +740,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
               ) : (
                 <>
                   <FieldRow label="Connection" value={data.connection || undefined} />
-                  <FieldRow label="Found Via" value={data.find || undefined} />
+                  <FieldRow label={t('foundVia')} value={data.find || undefined} />
                   {formatBudget(data.budget) && (
                     <FieldRow label="Budget" value={formatBudget(data.budget)!} icon={<DollarSign className="w-4 h-4" />} />
                   )}
@@ -776,7 +780,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
                   {editingSection === 'trade' ? (
                     <div className="space-y-4 py-3">
                       <div>
-                        <label className="text-xs text-gray-500 mb-1 block">Website / Trade Portal URL</label>
+                        <label className="text-xs text-gray-500 mb-1 block">{t('websiteTradePortal')}</label>
                         <Input
                           value={editValues.trade_login_url || ''}
                           onChange={e => setEditValues({ ...editValues, trade_login_url: e.target.value })}
@@ -784,7 +788,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
                         />
                       </div>
                       <div>
-                        <label className="text-xs text-gray-500 mb-1 block">Login Username</label>
+                        <label className="text-xs text-gray-500 mb-1 block">{t('loginUsername')}</label>
                         <Input
                           value={editValues.supplier_user_id || ''}
                           onChange={e => setEditValues({ ...editValues, supplier_user_id: e.target.value })}
@@ -792,7 +796,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
                         />
                       </div>
                       <div>
-                        <label className="text-xs text-gray-500 mb-1 block">Login Password</label>
+                        <label className="text-xs text-gray-500 mb-1 block">{t('loginPassword')}</label>
                         <div className="flex items-center gap-2">
                           <Input
                             type={showEditPassword ? 'text' : 'password'}
@@ -857,18 +861,18 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
             )}
 
             {/* Notes */}
-            <Card title="Notes">
+            <Card title={tc('notes')}>
               <div className="pt-2 pb-1">
                 {!isAddingNote && (
                   <Button variant="outline" size="sm" onClick={() => setIsAddingNote(true)} className="gap-1.5 mb-3">
-                    <Plus className="w-4 h-4" /> Add Note
+                    <Plus className="w-4 h-4" /> {t('addNote')}
                   </Button>
                 )}
 
                 {isAddingNote && (
                   <div className="mb-4 p-4 rounded-lg border border-gray-200 bg-gray-50 space-y-3">
                     <Textarea
-                      placeholder="Add a note..."
+                      placeholder={t('notePlaceholder')}
                       value={newNote}
                       onChange={e => setNewNote(e.target.value)}
                       onKeyDown={e => {
@@ -889,7 +893,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
                         className="bg-clay-600 hover:bg-clay-700 text-white"
                       >
                         {isSubmitting && <Loader2 className="w-4 h-4 mr-1 animate-spin" />}
-                        Save Note
+                        {t('saveNote')}
                       </Button>
                       <Button
                         variant="outline"
@@ -990,7 +994,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
 
           {/* Right column (1/3) — quick summary */}
           <div className="space-y-6">
-            <Card title="Summary">
+            <Card title={tc('summary')}>
               <FieldRow label="Type" value={displayType} />
               <FieldRow
                 label="Email"
@@ -1010,7 +1014,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
             </Card>
 
             {isSupplier && (
-              <Card title="Quick Access">
+              <Card title={t('quickAccess')}>
                 {data.supplier_url ? (
                   <FieldRow
                     label="Trade Portal"
@@ -1034,7 +1038,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
       >
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Delete Note</DialogTitle>
+            <DialogTitle>{t('deleteNoteTitle')}</DialogTitle>
             <DialogDescription>Are you sure? This cannot be undone.</DialogDescription>
           </DialogHeader>
           <DialogFooter>

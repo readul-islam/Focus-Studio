@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { ThumbsDown, ThumbsUp } from 'lucide-react';
 import { postData } from '@/lib/Api';
 import { gooeyToast as toast } from 'goey-toast';
+import { useTranslations } from 'next-intl';
 
 const STORAGE_PREFIX = 'help-feedback:';
 
@@ -15,6 +16,7 @@ interface HelpArticleFeedbackProps {
 }
 
 export function HelpArticleFeedback({ category, articleSlug }: HelpArticleFeedbackProps) {
+  const t = useTranslations('helpArticleFeedback');
   const storageKey = `${STORAGE_PREFIX}${category}/${articleSlug}`;
   const [submitted, setSubmitted] = useState(false);
   const [rating, setRating] = useState<'helpful' | 'not_helpful' | null>(null);
@@ -51,29 +53,29 @@ export function HelpArticleFeedback({ category, articleSlug }: HelpArticleFeedba
           /* ignore */
         }
         setSubmitted(true);
-        toast.success('Thanks for your feedback!');
+        toast.success(t('toasts.thanks'));
       } catch {
-        toast.error('Could not save feedback. Please try again.');
+        toast.error(t('toasts.saveFailed'));
         setRating(null);
       } finally {
         setIsSubmitting(false);
       }
     },
-    [category, articleSlug, comment, isSubmitting, storageKey, submitted]
+    [category, articleSlug, comment, isSubmitting, storageKey, submitted, t]
   );
 
   if (submitted) {
     return (
       <div className="mt-12 pt-8 border-t border-gray-200 rounded-lg bg-gray-50 px-6 py-5 text-center">
-        <p className="text-sm font-medium text-gray-900">Thank you for your feedback</p>
-        <p className="text-sm text-gray-500 mt-1">It helps us improve this article.</p>
+        <p className="text-sm font-medium text-gray-900">{t('thanksTitle')}</p>
+        <p className="text-sm text-gray-500 mt-1">{t('thanksDescription')}</p>
       </div>
     );
   }
 
   return (
     <div className="mt-12 pt-8 border-t border-gray-200">
-      <p className="text-base font-medium text-gray-900 mb-4">Was this article helpful?</p>
+      <p className="text-base font-medium text-gray-900 mb-4">{t('question')}</p>
       <div className="flex flex-wrap items-center gap-3">
         <Button
           type="button"
@@ -91,7 +93,7 @@ export function HelpArticleFeedback({ category, articleSlug }: HelpArticleFeedba
           className="gap-2"
         >
           <ThumbsUp className="w-4 h-4" />
-          Yes
+          {t('yes')}
         </Button>
         <Button
           type="button"
@@ -105,7 +107,7 @@ export function HelpArticleFeedback({ category, articleSlug }: HelpArticleFeedba
           className="gap-2"
         >
           <ThumbsDown className="w-4 h-4" />
-          No
+          {t('no')}
         </Button>
       </div>
 
@@ -114,8 +116,8 @@ export function HelpArticleFeedback({ category, articleSlug }: HelpArticleFeedba
           <Textarea
             placeholder={
               rating === 'not_helpful'
-                ? 'What was missing or unclear? (optional)'
-                : 'Anything we could improve? (optional)'
+                ? t('placeholderNotHelpful')
+                : t('placeholderHelpful')
             }
             value={comment}
             onChange={e => setComment(e.target.value)}
@@ -128,7 +130,7 @@ export function HelpArticleFeedback({ category, articleSlug }: HelpArticleFeedba
             disabled={isSubmitting}
             onClick={() => void submit(rating, true)}
           >
-            {isSubmitting ? 'Sending…' : 'Submit feedback'}
+            {isSubmitting ? t('sending') : t('submit')}
           </Button>
         </div>
       )}

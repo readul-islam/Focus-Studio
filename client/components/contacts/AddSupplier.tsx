@@ -1,5 +1,6 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { gooeyToast as toast } from 'goey-toast';
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -9,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '../ui/textarea';
 import { usePost } from '@/hooks/usePost';
 import useUser from '@/hooks/useUser';
+import { useQueryClient } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 
 const initialValue = {
   name: '',
@@ -21,20 +24,23 @@ const initialValue = {
   address: '',
 };
 
-const AddSupplier = ({ 
-  refetchSupplier, 
-  open: controlledOpen, 
+const AddSupplier = ({
+  refetchSupplier,
+  open: controlledOpen,
   onOpenChange: setControlledOpen,
-  renderTrigger = true 
-}: { 
-  refetchSupplier: any, 
-  open?: boolean, 
-  onOpenChange?: (open: boolean) => void,
-  renderTrigger?: boolean
+  renderTrigger = true,
+}: {
+  refetchSupplier: unknown;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  renderTrigger?: boolean;
 }) => {
+  const t = useTranslations('addSupplier');
+  const tc = useTranslations('contactFormModal');
+  const tCommon = useTranslations('common');
   const [internalOpen, setInternalOpen] = useState(false);
   const open = controlledOpen !== undefined ? controlledOpen : internalOpen;
-  
+
   const setOpen = (val: boolean) => {
     if (setControlledOpen) {
       setControlledOpen(val);
@@ -45,39 +51,41 @@ const AddSupplier = ({
 
   const queryClient = useQueryClient();
   const { user } = useUser();
-  
-    const { mutate: createContact, isPending: isCreating } = usePost({
-      onSuccess: () => {
-        queryClient.refetchQueries({ queryKey: ['crm/studio-contacts/'] });
-        queryClient.refetchQueries({ queryKey: ['crm/studio-clients/'] });
-        queryClient.refetchQueries({ queryKey: ['crm/studio-suppliers/'] });
-        toast('Contact created successfully!');
-        setOpen(false);
-      },
-      onError: () => {
-        toast('Error! Try again');
-      },
-    });
+
+  const { mutate: createContact, isPending: isCreating } = usePost({
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['crm/studio-contacts/'] });
+      queryClient.refetchQueries({ queryKey: ['crm/studio-clients/'] });
+      queryClient.refetchQueries({ queryKey: ['crm/studio-suppliers/'] });
+      toast(t('createdSuccess'));
+      setOpen(false);
+    },
+    onError: () => {
+      toast(t('createFailed'));
+    },
+  });
 
   const [defaultValue, setDefaultValue] = useState(initialValue);
 
-
-  const updateTask = React.useCallback((e: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: string } }) => {
-    const { name, value } = e.target;
-    setDefaultValue(prevTask => ({
-      ...prevTask,
-      [name]: value,
-    }));
-  }, []);
+  const updateTask = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: string } }) => {
+      const { name, value } = e.target;
+      setDefaultValue(prevTask => ({
+        ...prevTask,
+        [name]: value,
+      }));
+    },
+    []
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (defaultValue.name.length < 2) {
-      toast.error('First Name Required');
+      toast.error(t('firstNameRequired'));
       return;
     }
     if (defaultValue.company_name.length < 1) {
-      toast.error('Company Required');
+      toast.error(t('companyRequired'));
       return;
     }
 
@@ -93,46 +101,44 @@ const AddSupplier = ({
     <Dialog open={open} onOpenChange={setOpen}>
       {renderTrigger && (
         <DialogTrigger asChild>
-          <button 
-            className="text-sm w-full border-t px-2 py-3 text-center hover:bg-stone-100 transition-colors font-medium text-blue-600"
-          >
-            Add Supplier
+          <button className="text-sm w-full border-t px-2 py-3 text-center hover:bg-stone-100 transition-colors font-medium text-blue-600">
+            {t('trigger')}
           </button>
         </DialogTrigger>
       )}
       <DialogContent className="sm:max-w-[625px] z-[10000]">
         <DialogHeader>
-          <DialogTitle>Add Supplier</DialogTitle>
+          <DialogTitle>{t('title')}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 ">
           <div className="grid grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">{tCommon('name')}</Label>
               <Input
                 onChange={updateTask}
                 value={defaultValue?.name}
                 className="bg-white rounded-lg"
                 id="name"
                 name="name"
-                placeholder="John Doe"
+                placeholder={tc('placeholders.fullName')}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="name">Surname</Label>
+              <Label htmlFor="surname">{tCommon('surname')}</Label>
               <Input
                 onChange={updateTask}
                 value={defaultValue?.surname}
                 className="bg-white rounded-lg"
                 id="surname"
                 name="surname"
-                placeholder="Johh"
+                placeholder={tc('placeholders.surname')}
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{tCommon('email')}</Label>
               <Input
                 onChange={updateTask}
                 value={defaultValue?.email}
@@ -140,25 +146,25 @@ const AddSupplier = ({
                 id="email"
                 name="email"
                 type="email"
-                placeholder="john@example.com"
+                placeholder={tc('placeholders.email')}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone</Label>
+              <Label htmlFor="phone">{tCommon('phone')}</Label>
               <Input
                 onChange={updateTask}
                 value={defaultValue?.phone}
                 className="bg-white rounded-lg"
                 id="phone"
                 name="phone"
-                placeholder="+1 234 567 890"
+                placeholder={tc('placeholders.phone')}
               />
             </div>
           </div>
           <div className="grid grid-cols-4 gap-4">
             <div className={`space-y-2 col-span-2`}>
-              <Label htmlFor="status">Status</Label>
+              <Label htmlFor="status">{tCommon('status')}</Label>
               <Select
                 value={defaultValue.status}
                 onValueChange={value => {
@@ -171,44 +177,45 @@ const AddSupplier = ({
                 }}
               >
                 <SelectTrigger className="bg-white rounded-[10px] w-full px-3 py-[10px] border">
-                  <SelectValue placeholder="Select Status" />
+                  <SelectValue placeholder={tc('selectStatus')} />
                 </SelectTrigger>
                 <SelectContent className="bg-white z-[9999]">
-                  <SelectItem value="NE">New</SelectItem>
-                  <SelectItem value="AC">Active</SelectItem>
-                  <SelectItem value="QA">Qualified</SelectItem>
-                  <SelectItem value="NG">Negotiation</SelectItem>
+                  <SelectItem value="NE">{tc('statusNew')}</SelectItem>
+                  <SelectItem value="AC">{tc('statusActive')}</SelectItem>
+                  <SelectItem value="QA">{tc('statusQualified')}</SelectItem>
+                  <SelectItem value="NG">{tc('statusNegotiation')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2 col-span-2">
-              <Label htmlFor="company">Company</Label>
+              <Label htmlFor="company">{tCommon('company')}</Label>
               <Input
                 onChange={updateTask}
                 value={defaultValue?.company_name}
                 className="bg-white rounded-lg"
                 id="company_name"
                 name="company_name"
-                placeholder="Company Name"
+                placeholder={tc('placeholders.companyName')}
                 required
               />
             </div>
           </div>
 
           <div className="space-y-2 col-span-2">
-            <Label htmlFor="budget">Address</Label>
+            <Label htmlFor="address">{tc('addressLine1')}</Label>
             <Textarea
               onChange={updateTask}
               value={defaultValue?.address}
               className="bg-white rounded-lg"
               id="address"
               name="address"
-              placeholder="e.g. Street	53060 N Carolina 12
-"
+              placeholder={t('addressPlaceholder')}
             />
           </div>
           <div className="mt-4 flex justify-end">
-            <Button onClick={handleSubmit}>Add</Button>
+            <Button onClick={handleSubmit} disabled={isCreating}>
+              {tCommon('add')}
+            </Button>
           </div>
         </div>
       </DialogContent>

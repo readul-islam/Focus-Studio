@@ -11,8 +11,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Command, CommandInput, CommandList, CommandItem, CommandEmpty } from '@/components/ui/command';
 import { Check, ChevronsUpDown } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 const MemberProjectBreakdown = ({ trackingData, trackingLoading, user, month }: any) => {
+  const t = useTranslations('reportsMemberBreakdown');
   const [trackedProject, setTrackedProject] = useState<any[]>([]);
   const [customLoading, setCustomLoading] = useState(true);
   const [totalItem, setTotalItem] = useState<any[]>([]);
@@ -232,22 +234,22 @@ const MemberProjectBreakdown = ({ trackingData, trackingLoading, user, month }: 
       <CardHeader className="space-y-1">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-base font-semibold text-gray-900">Tracking Breakdown</CardTitle>
-            <CardDescription className="text-gray-600">Breakdown of current month</CardDescription>
+            <CardTitle className="text-base font-semibold text-gray-900">{t('title')}</CardTitle>
+            <CardDescription className="text-gray-600">{t('description')}</CardDescription>
           </div>
           <div className="flex items-center space-x-2">
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" size="sm" className="flex items-center gap-2">
-                  {selectedProject || 'All projects'} <ChevronsUpDown className="h-4 w-4" />
+                  {selectedProject || t('allProjects')} <ChevronsUpDown className="h-4 w-4" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[260px] p-0">
                 <Command>
-                  <CommandInput placeholder="Search projects..." />
+                  <CommandInput placeholder={t('searchProjects')} />
                   <CommandList>
                     <CommandEmpty>
-                      <p className="py-2 px-4 text-sm">No project found.</p>
+                      <p className="py-2 px-4 text-sm">{t('noProjectFound')}</p>
                     </CommandEmpty>
                     <CommandItem
                       value=""
@@ -276,7 +278,7 @@ const MemberProjectBreakdown = ({ trackingData, trackingLoading, user, month }: 
               </PopoverContent>
             </Popover>
             <Button size="sm" onClick={handleExport}>
-              <Download className="mr-2 h-4 w-4" /> Export
+              <Download className="mr-2 h-4 w-4" /> {t('export')}
             </Button>
           </div>
         </div>
@@ -287,11 +289,11 @@ const MemberProjectBreakdown = ({ trackingData, trackingLoading, user, month }: 
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-200">
-                <th className="px-6 py-4 text-left text-sm font-medium text-gray-500  ">Date</th>
-                <th className="px-6 py-4  text-sm text-center font-medium text-gray-500  ">Task Name</th>
-                <th className="px-6 py-4  text-sm font-medium text-gray-500  ">Project Name</th>
-                <th className="px-6 py-4  text-sm font-medium text-gray-500  ">Hours Logged</th>
-                <th className="px-6 py-4  text-sm font-medium text-gray-500  ">% of Total Time</th>
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-500  ">{t('date')}</th>
+                <th className="px-6 py-4  text-sm text-center font-medium text-gray-500  ">{t('taskName')}</th>
+                <th className="px-6 py-4  text-sm font-medium text-gray-500  ">{t('projectName')}</th>
+                <th className="px-6 py-4  text-sm font-medium text-gray-500  ">{t('hoursLogged')}</th>
+                <th className="px-6 py-4  text-sm font-medium text-gray-500  ">{t('percentTotal')}</th>
               </tr>
             </thead>
             <tbody className="text-sm">

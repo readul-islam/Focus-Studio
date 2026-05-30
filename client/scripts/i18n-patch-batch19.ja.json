@@ -1,0 +1,133 @@
+{
+  "newProjectDialog": {
+    "steps": {
+      "details": "詳細",
+      "address": "住所",
+      "timeline": "スケジュール",
+      "budgetTeam": "予算とチーム"
+    },
+    "back": "戻る",
+    "continue": "続ける",
+    "skip": "スキップ",
+    "cancel": "キャンセル",
+    "projectNamePlaceholder": "例: チェルシー・ペントハウス改修",
+    "projectCodeHint": "自動生成されますが、変更できます",
+    "projectCodePlaceholder": "例: TP-001",
+    "projectType": "プロジェクト種別",
+    "client": "クライアント",
+    "projectDescription": "プロジェクト概要",
+    "descriptionPlaceholder": "プロジェクトの範囲と目的の簡単な説明…",
+    "unnamedClient": "名前未設定のクライアント",
+    "searchClients": "クライアントを検索…",
+    "addressIntro": "配送・請求・物流の住所を追加します。後からプロジェクト設定で入力することもできます。",
+    "addressTabs": {
+      "delivery": "配送",
+      "billing": "請求",
+      "logistics": "物流"
+    },
+    "addressLine1": "住所1",
+    "addressLine2": "住所2",
+    "streetPlaceholder": "番地・通り",
+    "suitePlaceholder": "建物名・部屋番号など",
+    "projectDuration": "プロジェクト期間",
+    "selectTemplate": "テンプレートを選択",
+    "optionalSuffix": "— 任意",
+    "clear": "クリア",
+    "searchTemplates": "テンプレートを検索…",
+    "noTemplates": "テンプレートが見つかりません",
+    "phaseCount": "{count}フェーズ",
+    "projectPhases": "プロジェクトフェーズ",
+    "addPhase": "フェーズを追加",
+    "noPhasesHint": "フェーズがありません。テンプレートを選ぶか、手動で追加してください。",
+    "phaseLabel": "フェーズ {number}",
+    "phaseNamePlaceholder": "フェーズ名",
+    "phaseDescriptionPlaceholder": "フェーズの説明（任意）",
+    "pickPhaseColor": "フェーズの色を選択",
+    "phaseColor": "フェーズの色",
+    "customColor": "カスタム色",
+    "phasesTip": "ヒント: フェーズは後からプロジェクト設定で変更できます",
+    "defaultPhaseName": "フェーズ {number}",
+    "budgetPayment": "予算と支払い",
+    "clickToConfigure": "クリックして設定",
+    "totalBudget": "総予算",
+    "ffneLabel": "FF&E (%)",
+    "ffneHint": "家具・什器・設備の配分",
+    "vatRateLabel": "VAT率 (%)",
+    "vatHint": "付加価値税率",
+    "paymentSchedule": "支払いスケジュール",
+    "teamAssignment": "チーム割り当て",
+    "teamAssignmentHint": "このプロジェクトにチームメンバーを割り当て",
+    "projectTypes": {
+      "RS": {
+        "name": "住宅",
+        "description": "住宅、マンション、居住空間"
+      },
+      "CM": {
+        "name": "商業",
+        "description": "オフィス、小売、ビジネス空間"
+      },
+      "HS": {
+        "name": "ホスピタリティ",
+        "description": "ホテル、レストラン、エンターテインメント"
+      }
+    },
+    "paymentSchedules": {
+      "FF": {
+        "name": "50/50分割",
+        "description": "着手時50%、完了時50%"
+      },
+      "TP": {
+        "name": "3回払い",
+        "description": "着手33%、中間33%、完了34%"
+      },
+      "PF": {
+        "name": "フェーズごと",
+        "description": "プロジェクトフェーズに連動した支払い"
+      },
+      "M": {
+        "name": "月次",
+        "description": "プロジェクト期間中の均等な月次支払い"
+      }
+    },
+    "validation": {
+      "nameMin": "プロジェクト名は2文字以上必要です",
+      "projectTypeRequired": "プロジェクト種別を選択してください",
+      "clientRequired": "クライアントを選択してください",
+      "startDateRequired": "開始日は必須です",
+      "endDateRequired": "終了日は必須です",
+      "endDateAfterStart": "終了日は開始日より後である必要があります",
+      "ffneRange": "FF&Eは0〜100の間である必要があります",
+      "vatRange": "VAT率は0〜100の間である必要があります"
+    },
+    "toasts": {
+      "created": "プロジェクトを作成しました",
+      "failed": "プロジェクトの作成に失敗しました",
+      "phasesFailed": "プロジェクトフェーズの作成に失敗しました"
+    }
+  },
+  "subscriptionGate": {
+    "betaBadge": "ベータアクセスは無料 — 有料プランには{days}日間のトライアル付き",
+    "title": "スタジオプランを選択",
+    "descriptionAdmin": "Focuspilotを利用するプランを選択してください。ベータはカード不要。有料プランはトライアル終了まで課金されません。",
+    "descriptionMember": "スタジオに有効なサブスクリプションが必要です。管理者にプラン選択を依頼してください。",
+    "stripeNotConfigured": "この環境ではStripe請求が設定されていません。サーバーにSTRIPE_*変数を設定してください。",
+    "contactAdmin": "スタジオ管理者に連絡してサブスクライブしてください。",
+    "backToDashboard": "ダッシュボードに戻る",
+    "stripeFooterBefore": "Stripeによる安全なチェックアウト。いつでもキャンセル可能 —",
+    "stripeFooterAfter": "から。",
+    "upgradePlanLink": "プランをアップグレード",
+    "trialLabel": "{days}日間トライアルを開始",
+    "toasts": {
+      "adminOnly": "サブスクリプションプランを選択できるのはスタジオ管理者のみです。",
+      "billingNotConfigured": "請求が設定されていません。サポートにお問い合わせください。",
+      "betaActivated": "ベータアクセスが有効になりました。",
+      "activateFailed": "プランを有効化できませんでした。",
+      "checkoutFailed": "チェックアウトを開始できませんでした。"
+    }
+  },
+  "crmContactDetailPage": {
+    "sendEmail": "メールを送信",
+    "callNow": "今すぐ電話",
+    "deleteNoteDescription": "このメモを削除してもよろしいですか？この操作は元に戻せません。"
+  }
+}

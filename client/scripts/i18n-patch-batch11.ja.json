@@ -1,0 +1,82 @@
+{
+  "projectSettingsPage": {
+    "unnamedContractor": "名前未設定のコントラクター",
+    "contractorGeneral": "一般",
+    "portalAccess": "ポータルアクセス",
+    "noAccess": "アクセスなし",
+    "lastLogin": "最終ログイン",
+    "never": "なし",
+    "sharedItems": "共有アイテム:",
+    "sharedDrawings": "共有図面:",
+    "inviteToPortal": "ポータルに招待",
+    "noContractorsYet": "コントラクターはまだ割り当てられていません。コントラクターページで管理してください。",
+    "inviteContractorTitle": "{name}を招待",
+    "tasksLabel": "タスク",
+    "tasksCount": "{count}件のタスク",
+    "noTasksYet": "タスクはまだありません — 下に追加してください",
+    "scheduleNoPhasesHint": "左パネルの + をクリックして最初のフェーズを追加してください。",
+    "addPhaseBtn": "フェーズを追加",
+    "newPhaseName": "新しいフェーズ",
+    "phaseFallback": "フェーズ {number}",
+    "deleteProjectDesc": "「{name}」と関連するすべてのタスクとデータが完全に削除されます。この操作は元に戻せません。",
+    "deletePhaseDesc": "フェーズ「{name}」を削除してもよろしいですか？この操作は元に戻せません。",
+    "searchClientsPlaceholder": "クライアントを検索…"
+  },
+  "crmPipelinePage": {
+    "daysCount": "{count}日"
+  },
+  "richTextEditor": {
+    "bold": "太字",
+    "italic": "斜体",
+    "underline": "下線",
+    "strikethrough": "取り消し線",
+    "bulletList": "箇条書き",
+    "numberedList": "番号付きリスト",
+    "insertLink": "リンクを挿入",
+    "clearFormatting": "書式をクリア",
+    "linkUrlPrompt": "リンクURL",
+    "defaultPlaceholder": "返信を入力..."
+  },
+  "settingsIntegrationsPage": {
+    "notion": {
+      "toasts": {
+        "connectFailed": "Notionに接続できませんでした。サーバーのNOTION_*環境変数を確認してください。",
+        "connected": "Notionに接続しました。",
+        "cancelled": "Notion接続がキャンセルされました。",
+        "statusNotUpdated": "Notionは認可されましたが、ステータスが更新されませんでした。もう一度お試しください。",
+        "disconnected": "Notionの接続を解除しました。",
+        "disconnectFailed": "Notionの接続解除に失敗しました。",
+        "databaseIdCopied": "データベースIDをコピーしました。",
+        "copyFailed": "コピーに失敗しました。",
+        "selectDatabaseFirst": "先にデータベースを選択してください。",
+        "syncConfigured": "プロジェクト同期を設定しました。",
+        "saveMappingFailed": "マッピングを保存できませんでした。",
+        "parentPageSaved": "Notion親ページを保存しました。",
+        "saveParentPageFailed": "親ページを保存できませんでした。",
+        "syncFailed": "同期に失敗しました。",
+        "syncDone": "同期完了: {created}件作成、{updated}件更新、{skipped}件変更なし{taskPart}。",
+        "tasksUpdatedFromNotion": " · Notionから{count}件のタスクを更新"
+      }
+    },
+    "googleCalendar": {
+      "toasts": {
+        "blockedAccess": "Googleがアクセスをブロックしました。OAuth → テストユーザーにメールを追加してください。",
+        "connectFailed": "接続できませんでした。サーバーのGMAIL_*環境変数を確認してください。",
+        "connected": "Googleカレンダーに接続しました。",
+        "cancelled": "カレンダー接続がキャンセルされました。",
+        "statusNotUpdated": "Googleカレンダーは接続されましたが、ステータスが更新されませんでした。もう一度お試しください。",
+        "disconnected": "Googleカレンダーの接続を解除しました。",
+        "disconnectFailed": "接続解除に失敗しました。"
+      }
+    },
+    "xero": {
+      "toasts": {
+        "connected": "Xeroに接続しました。",
+        "cancelled": "Xero接続がキャンセルされました。",
+        "statusNotUpdated": "Xeroは認可されましたが、ステータスが更新されませんでした。もう一度お試しください。",
+        "disconnected": "Xeroの接続を解除しました。",
+        "disconnectFailed": "Xeroの接続解除に失敗しました。"
+      }
+    }
+  }
+}

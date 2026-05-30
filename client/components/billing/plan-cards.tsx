@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import type { BillingPlan, PlanTier, SubscriptionState } from '@/lib/billing/types';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Check, Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface PlanCardsProps {
   plans: BillingPlan[];
@@ -25,9 +26,12 @@ export function PlanCards({
   onSelect,
   disabled,
   compact,
-  trialLabel = 'Start 14-day trial',
+  trialLabel,
   className,
 }: PlanCardsProps) {
+  const t = useTranslations('planCards');
+  const resolvedTrialLabel = trialLabel ?? t('defaultTrialLabel');
+
   return (
     <div
       className={cn(
@@ -61,7 +65,7 @@ export function PlanCards({
             {isCurrent ? (
               <div className="absolute right-4 top-4">
                 <span className="rounded-full bg-primary px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-primary-foreground">
-                  Current plan
+                  {t('currentPlan')}
                 </span>
               </div>
             ) : null}
@@ -93,7 +97,7 @@ export function PlanCards({
             </CardHeader>
 
             <CardContent className={cn('flex-1 space-y-2 px-4 pb-3', !compact && 'space-y-3 px-5 pb-4')}>
-              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Includes</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{t('includes')}</p>
               <ul className={cn('space-y-1.5', !compact && 'space-y-2')}>
                 {plan.features.map((line) => (
                   <li
@@ -121,12 +125,12 @@ export function PlanCards({
             >
               {isCurrent ? (
                 <Button variant="outline" className="w-full rounded-lg" disabled>
-                  Current plan
+                  {t('currentPlan')}
                 </Button>
               ) : plan.contact_sales && !plan.checkout_available ? (
                 <Button variant="outline" asChild className="w-full rounded-lg">
                   <a href="mailto:sales@focuspilot.io?subject=Enterprise%20plan">
-                    Contact sales
+                    {t('contactSales')}
                   </a>
                 </Button>
               ) : (
@@ -143,15 +147,15 @@ export function PlanCards({
                   {isLoading ? (
                     <>
                       <Loader2 className="size-4 animate-spin" />
-                      {plan.no_payment_required ? 'Activating…' : 'Redirecting…'}
+                      {plan.no_payment_required ? t('activating') : t('redirecting')}
                     </>
                   ) : (
                     <>
                       {currentTier
-                        ? 'Upgrade'
+                        ? t('upgrade')
                         : plan.no_payment_required
-                          ? 'Activate beta access'
-                          : trialLabel}
+                          ? t('activateBeta')
+                          : resolvedTrialLabel}
                       <ArrowRight className="size-4" />
                     </>
                   )}
@@ -172,33 +176,38 @@ export function CurrentPlanSummary({
   subscription: SubscriptionState;
   planName?: string;
 }) {
+  const t = useTranslations('planCards.currentPlanSummary');
+  const tc = useTranslations('common');
+
   const statusLabel =
     subscription.status === 'trialing'
-      ? 'Free trial'
+      ? t('statusTrialing')
       : subscription.status === 'active'
-        ? 'Active'
+        ? t('statusActive')
         : subscription.status === 'past_due'
-          ? 'Past due'
-          : subscription.status ?? 'No plan';
+          ? t('statusPastDue')
+          : subscription.status ?? t('statusNone');
 
   return (
     <div className="rounded-xl border border-gray-200 bg-gradient-to-br from-white via-stone-50 to-clay-50/50 p-5 shadow-sm">
-      <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">Current plan</p>
-      <p className="mt-1 text-xl font-bold text-gray-900">{planName ?? '—'}</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{t('label')}</p>
+      <p className="mt-1 text-xl font-bold text-gray-900">{planName ?? tc('notAvailable')}</p>
       <p className="mt-1 text-sm text-gray-600">
-        Status: <span className="font-medium text-gray-800">{statusLabel}</span>
+        {t('statusLabel')} <span className="font-medium text-gray-800">{statusLabel}</span>
       </p>
       {subscription.trial_ends_at && subscription.status === 'trialing' ? (
         <p className="mt-1 text-xs text-clay-700">
-          Trial ends{' '}
-          {new Date(subscription.trial_ends_at).toLocaleDateString(undefined, { dateStyle: 'medium' })}
+          {t('trialEnds', {
+            date: new Date(subscription.trial_ends_at).toLocaleDateString(undefined, { dateStyle: 'medium' }),
+          })}
         </p>
       ) : null}
       {subscription.current_period_end && subscription.status === 'active' ? (
         <p className="mt-1 text-xs text-gray-500">
-          Renews{' '}
-          {new Date(subscription.current_period_end).toLocaleDateString(undefined, { dateStyle: 'medium' })}
-          {subscription.cancel_at_period_end ? ' (cancels at period end)' : ''}
+          {t('renews', {
+            date: new Date(subscription.current_period_end).toLocaleDateString(undefined, { dateStyle: 'medium' }),
+          })}
+          {subscription.cancel_at_period_end ? t('cancelsAtPeriodEnd') : ''}
         </p>
       ) : null}
     </div>

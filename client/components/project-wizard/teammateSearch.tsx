@@ -6,19 +6,23 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Search, Check } from 'lucide-react';
 import { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from '@/components/ui/command';
-import { Checkbox } from '@/components/ui/checkbox'; // shadcn checkbox
+import { Checkbox } from '@/components/ui/checkbox';
 import { TypeChip } from '../chip';
+import { useTranslations } from 'next-intl';
 
-// Utility: get initials
-const getInitials = name => name.split(' ').map(n => n[0]).join('').toUpperCase();
+const getInitials = (name: string) => name.split(' ').map(n => n[0]).join('').toUpperCase();
 
-const TeamAssignment = ({ users, selectedTeammates, setSelectedTeammates }) => {
+const TeamAssignment = ({ users, selectedTeammates, setSelectedTeammates }: {
+  users: any[];
+  selectedTeammates: any[];
+  setSelectedTeammates: (teammates: any[]) => void;
+}) => {
+  const t = useTranslations('teammateSearch');
   const [openPop, setOpenPop] = useState(false);
 
-  // Toggle teammate selection
-  const toggleTeammate = teammate => {
-    if (selectedTeammates.some(t => t.id === teammate.id)) {
-      setSelectedTeammates(selectedTeammates.filter(t => t.id !== teammate.id));
+  const toggleTeammate = (teammate: any) => {
+    if (selectedTeammates.some(tm => tm.id === teammate.id)) {
+      setSelectedTeammates(selectedTeammates.filter(tm => tm.id !== teammate.id));
     } else {
       setSelectedTeammates([...selectedTeammates, teammate]);
     }
@@ -48,14 +52,16 @@ const TeamAssignment = ({ users, selectedTeammates, setSelectedTeammates }) => {
                       ))}
                     </div>
                     <span className="truncate text-sm text-gray-600">
-                      {selectedTeammates.length} selected
-                      {selectedTeammates.length > 4 ? ' +' + (selectedTeammates.length - 4) : ''}
+                      {t('selectedCount', { count: selectedTeammates.length })}
+                      {selectedTeammates.length > 4
+                        ? ` ${t('selectedOverflow', { extra: selectedTeammates.length - 4 })}`
+                        : ''}
                     </span>
                   </>
                 ) : (
                   <span className="flex items-center gap-2 text-gray-500">
                     <Search className="h-4 w-4" />
-                    Search teammates…
+                    {t('searchPlaceholder')}
                   </span>
                 )}
               </span>
@@ -65,10 +71,10 @@ const TeamAssignment = ({ users, selectedTeammates, setSelectedTeammates }) => {
           <PopoverContent className="p-0 w-[360px] rounded-xl border border-gray-200 shadow-md" align="start">
             <Command>
               <CommandInput
-                placeholder="Search teammates…"
+                placeholder={t('searchPlaceholder')}
                 className="focus-visible:ring-gray-300 focus-visible:ring-offset-0 focus:outline-none"
               />
-              <CommandEmpty>No people found.</CommandEmpty>
+              <CommandEmpty>{t('noPeopleFound')}</CommandEmpty>
               <CommandList className="max-h-64">
                 <CommandGroup>
                   {users?.map(m => {
@@ -97,26 +103,16 @@ const TeamAssignment = ({ users, selectedTeammates, setSelectedTeammates }) => {
 
         {selectedTeammates?.length > 0 && (
           <Button type="button" variant="ghost" size="sm" onClick={() => setSelectedTeammates([])}>
-            Clear
+            {t('clear')}
           </Button>
         )}
       </div>
 
-      {/* {selectedTeammates?.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {selectedTeammates.map(m => (
-            <span key={m.id} onClick={() => toggleTeammate(m)}>
-              <span className="px-2 py-1 bg-stone-100 rounded-md text-sm cursor-pointer hover:bg-stone-200">{m.name}</span>
-            </span>
-          ))}
-        </div>
-      )} */}
-
       {selectedTeammates?.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {selectedTeammates?.map(m => (
-            <span onClick={() => toggleTeammate(m)}>
-              <TypeChip key={m?.id} label={m?.name} className="cursor-pointer" />
+            <span key={m?.id} onClick={() => toggleTeammate(m)}>
+              <TypeChip label={m?.name} className="cursor-pointer" />
             </span>
           ))}
         </div>

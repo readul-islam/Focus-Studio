@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { StatusBadge } from "@/components/chip"
+import { useTranslations } from 'next-intl'
 
 type Severity = "low" | "medium" | "high"
 
@@ -54,11 +55,8 @@ const seeded: Log[] = [
   },
 ]
 
-function titleCase(s: string) {
-  return s.charAt(0).toUpperCase() + s.slice(1)
-}
-
 function AuditLogsPageContent() {
+  const t = useTranslations('settingsAuditLogsPage')
   const [query, setQuery] = useState("")
   const [severity, setSeverity] = useState<"all" | Severity>("all")
 
@@ -70,32 +68,38 @@ function AuditLogsPageContent() {
     )
   }, [query, severity])
 
+  const severityLabel = (value: Severity) => {
+    if (value === 'low') return t('severityLow')
+    if (value === 'medium') return t('severityMedium')
+    return t('severityHigh')
+  }
+
   return (
     <div className="space-y-6 md:space-y-8">
       <div>
-        <h1 className="text-base font-semibold text-gray-900">Audit logs</h1>
-        <p className="text-sm text-gray-600">Track important changes across your studio.</p>
+        <h1 className="text-base font-semibold text-gray-900">{t('title')}</h1>
+        <p className="text-sm text-gray-600">{t('description')}</p>
       </div>
 
-      <Section title="Activity" description="Search and filter by severity.">
+      <Section title={t('activityTitle')} description={t('activityDescription')}>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <Input
-            placeholder="Search by actor, action, or target..."
+            placeholder={t('searchPlaceholder')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="sm:w-[320px]"
           />
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Severity</span>
+            <span className="text-sm text-gray-600">{t('severity')}</span>
             <Select defaultValue="all" onValueChange={(v: "all" | Severity) => setSeverity(v)}>
               <SelectTrigger className="w-[160px]">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="high">High</SelectItem>
+                <SelectItem value="all">{t('severityAll')}</SelectItem>
+                <SelectItem value="low">{t('severityLow')}</SelectItem>
+                <SelectItem value="medium">{t('severityMedium')}</SelectItem>
+                <SelectItem value="high">{t('severityHigh')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -105,11 +109,11 @@ function AuditLogsPageContent() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Actor</TableHead>
-                <TableHead>Action</TableHead>
-                <TableHead>Target</TableHead>
-                <TableHead>Severity</TableHead>
-                <TableHead>Date</TableHead>
+                <TableHead>{t('table.actor')}</TableHead>
+                <TableHead>{t('table.action')}</TableHead>
+                <TableHead>{t('table.target')}</TableHead>
+                <TableHead>{t('table.severity')}</TableHead>
+                <TableHead>{t('table.date')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -119,8 +123,7 @@ function AuditLogsPageContent() {
                   <TableCell>{l.action}</TableCell>
                   <TableCell>{l.target}</TableCell>
                   <TableCell>
-                    {/* Use global StatusBadge for consistent pill shape/colors */}
-                    <StatusBadge status={l.severity} label={titleCase(l.severity)} />
+                    <StatusBadge status={l.severity} label={severityLabel(l.severity)} />
                   </TableCell>
                   <TableCell>{l.date}</TableCell>
                 </TableRow>
@@ -128,7 +131,7 @@ function AuditLogsPageContent() {
               {filtered.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} className="text-center text-sm text-gray-500">
-                    No results.
+                    {t('noResults')}
                   </TableCell>
                 </TableRow>
               ) : null}

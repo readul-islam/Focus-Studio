@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent } from "@/components/ui/card"
 import { FileText } from "lucide-react"
 import type { ProposalData } from "../proposal-drawer"
+import { useTranslations } from "next-intl"
 
 interface DetailsStepProps {
   data: ProposalData
@@ -15,6 +16,7 @@ interface DetailsStepProps {
 }
 
 export function DetailsStep({ data, onUpdate }: DetailsStepProps) {
+  const t = useTranslations('crmProposalDetailsStep')
   // Set default currency on mount if not already set
   useEffect(() => {
     if (!data.currency) {
@@ -25,15 +27,15 @@ export function DetailsStep({ data, onUpdate }: DetailsStepProps) {
   const templates = [
     {
       id: "residential-design",
-      name: "Residential Design Package",
-      description: "Complete interior design for residential spaces",
+      name: t('templates.residentialName'),
+      description: t('templates.residentialDesc'),
     },
     {
       id: "commercial-fitout",
-      name: "Commercial Fit-out",
-      description: "Office and retail space design and implementation",
+      name: t('templates.commercialName'),
+      description: t('templates.commercialDesc'),
     },
-    { id: "consultation", name: "Design Consultation", description: "Professional design advice and recommendations" },
+    { id: "consultation", name: t('templates.consultationName'), description: t('templates.consultationDesc') },
   ]
 
   return (
@@ -44,14 +46,14 @@ export function DetailsStep({ data, onUpdate }: DetailsStepProps) {
           <FileText className="w-5 h-5 text-clay-600" />
         </div>
         <div>
-          <h3 className="font-semibold text-ink">Project Details</h3>
-          <p className="text-sm text-ink-muted">Basic information about this proposal</p>
+          <h3 className="font-semibold text-ink">{t('projectDetails')}</h3>
+          <p className="text-sm text-ink-muted">{t('projectDetailsSubtitle')}</p>
         </div>
       </div>
 
       {/* Quick Templates */}
       <div className="space-y-4">
-        <Label className="text-sm font-medium text-ink">Quick Start Templates</Label>
+        <Label className="text-sm font-medium text-ink">{t('quickStartTemplates')}</Label>
         <div className="grid grid-cols-1 gap-3">
           {templates.map((template) => (
             <Card

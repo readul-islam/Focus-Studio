@@ -9,15 +9,18 @@ import { TwoFactorSection } from '@/components/settings/TwoFactorSection';
 import { Eye, EyeOff } from 'lucide-react';
 import { gooeyToast as toast } from 'goey-toast';
 import { usePost } from '@/hooks/usePost';
+import { useTranslations } from 'next-intl';
 
 export default function UserSecurityPage() {
+  const t = useTranslations('settingsSecurityPage');
+  const tc = useTranslations('common');
   const [fields, setFields] = useState({ current: '', new: '', confirm: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showPassword, setShowPassword] = useState({ current: false, new: false, confirm: false });
 
   const { mutate: changePassword, isPending } = usePost({
     onSuccess: () => {
-      toast('Password updated', { description: 'Your password has been changed successfully.' });
+      toast(t('toasts.passwordUpdated'), { description: t('toasts.passwordUpdatedDescription') });
       setFields({ current: '', new: '', confirm: '' });
       setErrors({});
     },
@@ -29,12 +32,12 @@ export default function UserSecurityPage() {
           return;
         }
         const mapped: Record<string, string> = {};
-        if (detail.current_password) mapped.current = detail.current_password[0] ?? 'Invalid current password.';
-        if (detail.new_password) mapped.new = detail.new_password[0] ?? 'Invalid new password.';
-        if (detail.confirm_new_password) mapped.confirm = detail.confirm_new_password[0] ?? 'Passwords do not match.';
+        if (detail.current_password) mapped.current = detail.current_password[0] ?? t('validation.invalidCurrent');
+        if (detail.new_password) mapped.new = detail.new_password[0] ?? t('validation.invalidNew');
+        if (detail.confirm_new_password) mapped.confirm = detail.confirm_new_password[0] ?? t('validation.mismatch');
         if (Object.keys(mapped).length) { setErrors(mapped); return; }
       }
-      toast.error('Failed to update password.');
+      toast.error(t('toasts.updateFailed'));
     },
   });
 
@@ -45,9 +48,9 @@ export default function UserSecurityPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const errs: Record<string, string> = {};
-    if (!fields.current) errs.current = 'Current password is required.';
-    if (fields.new.length < 8) errs.new = 'New password must be at least 8 characters.';
-    if (fields.confirm !== fields.new) errs.confirm = 'Passwords do not match.';
+    if (!fields.current) errs.current = t('validation.currentRequired');
+    if (fields.new.length < 8) errs.new = t('validation.newMinLength');
+    if (fields.confirm !== fields.new) errs.confirm = t('validation.mismatch');
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setErrors({});
     changePassword({
@@ -59,17 +62,17 @@ export default function UserSecurityPage() {
   return (
     <div className="space-y-6 md:space-y-8">
       <div>
-        <h1 className="text-base font-semibold text-gray-900">Security</h1>
-        <p className="text-sm text-gray-600">Protect your account by updating your password and enabling 2FA.</p>
+        <h1 className="text-base font-semibold text-gray-900">{t('title')}</h1>
+        <p className="text-sm text-gray-600">{t('description')}</p>
       </div>
 
       {/* ---------- Password Section ---------- */}
-      <Section title="Password" description="Use a strong password you don’t reuse elsewhere.">
+      <Section title={t('passwordSectionTitle')} description={t('passwordSectionDescription')}>
         <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">
           {(['current', 'new', 'confirm'] as const).map(field => (
             <div key={field} className="relative">
               <Label htmlFor={field}>
-                {field === 'current' ? 'Current password' : field === 'new' ? 'New password' : 'Confirm new password'}
+                {field === 'current' ? t('currentPassword') : field === 'new' ? t('newPassword') : t('confirmPassword')}
               </Label>
               <Input
                 id={field}
@@ -90,7 +93,7 @@ export default function UserSecurityPage() {
             </div>
           ))}
           <div className="sm:col-span-2 flex justify-end">
-            <Button type="submit" disabled={isPending}>{isPending ? 'Saving...' : 'Update password'}</Button>
+            <Button type="submit" disabled={isPending}>{isPending ? tc('saving') : t('updatePassword')}</Button>
           </div>
         </form>
       </Section>

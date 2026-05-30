@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Search, Loader2, Users, Mail, Phone, Building2 } from 'lucide-react';
 import useFetch from '@/hooks/useFetch';
 import { usePost } from '@/hooks/usePost';
+import { useTranslations } from 'next-intl';
 import { gooeyToast as toast } from 'goey-toast';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -46,12 +47,14 @@ export function SelectContractorDialog({
   isOpen,
   onClose,
   onSelect,
-  title = 'Select Contractor',
+  title,
   procurementId,
   procurementIds,
   documentId,
   documentIds,
 }: SelectContractorDialogProps) {
+  const t = useTranslations('contractorSelectDialog');
+  const dialogTitle = title ?? t('title');
   const [searchText, setSearchText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
@@ -194,7 +197,7 @@ export function SelectContractorDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Users className="w-5 h-5 text-umber-600" />
-            {title}
+            {dialogTitle}
           </DialogTitle>
         </DialogHeader>
 
@@ -204,7 +207,7 @@ export function SelectContractorDialog({
             <Input
               value={searchText}
               onChange={e => setSearchText(e.target.value)}
-              placeholder="Search contractors..."
+              placeholder={t('searchPlaceholder')}
               className="pl-10"
             />
           </div>
@@ -216,7 +219,7 @@ export function SelectContractorDialog({
               </div>
             ) : contractors.length === 0 ? (
               <div className="text-center py-8 text-neutral-500">
-                {searchText ? 'No contractors match your search' : 'No contractors found'}
+                {t('empty')}
               </div>
             ) : (
               contractors.map(contractor => {

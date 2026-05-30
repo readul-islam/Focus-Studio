@@ -1,6 +1,7 @@
 'use client';
 import { PermissionGuard } from '@/components/PermissionGuard';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
@@ -44,6 +45,10 @@ const parseDateFromString = (dateString: string) => {
 
 
 const EditInvoiceContent = ({ params }: any) => {
+  const t = useTranslations('invoiceEditorPage');
+  const tCommon = useTranslations('common');
+  const tFinance = useTranslations('financePage');
+
   const [invoiceData, setInvoiceData] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const form2 = useForm({});
@@ -64,7 +69,7 @@ const EditInvoiceContent = ({ params }: any) => {
       queryClient.refetchQueries({ queryKey: [`finance/invoices/${id}/`] });
       queryClient.refetchQueries({ queryKey: ['finance/studio-finance/'] });
       router.push('/finance');
-      toast('Invoice Updated');
+      toast(t('toasts.updated'));
     },
   });
 
@@ -181,7 +186,7 @@ const EditInvoiceContent = ({ params }: any) => {
   if (invoiceLoading || !invoiceData) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <p>Loading...</p>
+        <p>{tCommon('loading')}</p>
       </div>
     );
   }
@@ -195,16 +200,16 @@ const EditInvoiceContent = ({ params }: any) => {
             {/* Heading */}
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-[#091E42] font-semibold mb-1 text-2xl">Edit Invoice</h1>
+                <h1 className="text-[#091E42] font-semibold mb-1 text-2xl">{t('editTitle')}</h1>
                 <h4 className="text-xl">#{invoiceData?.display_invoice}</h4>
                 <div className="my-8 text-[14px] leading-[180%]">
-                  Issue Date : {invoiceData?.date ? new Date(invoiceData.date).toLocaleDateString('en-GB') : '-'}
+                  {t('issueDate')} : {invoiceData?.date ? new Date(invoiceData.date).toLocaleDateString('en-GB') : '-'}
                   <br />
-                  Due Date : {invoiceData?.due_date ? new Date(invoiceData.due_date).toLocaleDateString('en-GB') : '-'}
+                  {t('dueDate')} : {invoiceData?.due_date ? new Date(invoiceData.due_date).toLocaleDateString('en-GB') : '-'}
                   <br />
-                  Client : {invoiceData?.client?.company_name || `${invoiceData?.client?.name} ${invoiceData?.client?.surname}`} <br />
+                  {tCommon('client')} : {invoiceData?.client?.company_name || `${invoiceData?.client?.name} ${invoiceData?.client?.surname}`} <br />
                   <br />
-                  Project : {invoiceData?.project?.project_name}
+                  {tCommon('project')} : {invoiceData?.project?.project_name}
                 </div>
               </div>
               <div>
@@ -220,7 +225,7 @@ const EditInvoiceContent = ({ params }: any) => {
             <div className="grid grid-cols-4 gap-4">
               <div className="space-y-2 col-span-2">
                 <Label className="font-normal text-[#091E42] text-sm " htmlFor="poNumber">
-                  Issue Date
+                  {t('issueDate')}
                 </Label>
                 <Form {...form}>
                   <form className="flex items-end gap-4 justify-center">
@@ -239,7 +244,7 @@ const EditInvoiceContent = ({ params }: any) => {
                                     !field.value && 'text-[#595F69]'
                                   )}
                                 >
-                                  {field.value ? format(field.value, 'MMM dd, yyyy') : <span>Pick a date</span>}
+                                  {field.value ? format(field.value, 'MMM dd, yyyy') : <span>{t('pickDate')}</span>}
                                   <CalendarIcon className="mr-2 h-4 w-4" />
                                 </Button>
                               </PopoverTrigger>
@@ -270,7 +275,7 @@ const EditInvoiceContent = ({ params }: any) => {
               {/* Due Date */}
               <div className="space-y-2  col-span-2">
                 <Label className="font-normal text-[#091E42] text-sm " htmlFor="poNumber">
-                  Due Date
+                  {t('dueDate')}
                 </Label>
                 <Form {...form2}>
                   <form className="flex items-end gap-4 justify-center">
@@ -289,7 +294,7 @@ const EditInvoiceContent = ({ params }: any) => {
                                     !field.value && 'text-[#595F69]'
                                   )}
                                 >
-                                  {field.value ? format(field.value, 'MMM dd, yyyy') : <span>Pick a date</span>}
+                                  {field.value ? format(field.value, 'MMM dd, yyyy') : <span>{t('pickDate')}</span>}
                                   <CalendarIcon className="mr-2 h-4 w-4" />
                                 </Button>
                               </PopoverTrigger>
@@ -320,7 +325,7 @@ const EditInvoiceContent = ({ params }: any) => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="project">Project</Label>
+              <Label htmlFor="project">{tCommon('project')}</Label>
               <Input
                 value={invoiceData?.project?.project_name || ''}
                 className="border disabled:opacity-100 rounded-lg text-sm font-medium text-black"
@@ -332,7 +337,7 @@ const EditInvoiceContent = ({ params }: any) => {
             <div className="pt-8 mt-8 border-t">
               {/* <h2 className="text-[#091E42] uppercase font-medium mb-5 text-base">Client:</h2> */}
               <div className="space-y-2">
-                <Label htmlFor="client">Client</Label>
+                <Label htmlFor="client">{tCommon('client')}</Label>
                 <Input
                   value={invoiceData?.client?.company_name || `${invoiceData?.client?.name} ${invoiceData?.client?.surname}` || ''}
                   className="border disabled:opacity-100 rounded-lg text-sm font-medium text-black"
@@ -418,7 +423,7 @@ const EditInvoiceContent = ({ params }: any) => {
                     <tr className="p-2">
                       <td></td>
                       <td>
-                        <div className="border p-3 rounded-lg">{invoiceData?.ffne_desc || 'FF&E'}</div>
+                        <div className="border p-3 rounded-lg">{invoiceData?.ffne_desc || t('ffe')}</div>
                       </td>
                       <td >
                         <div className="border p-3 rounded-lg">1</div>
@@ -439,20 +444,20 @@ const EditInvoiceContent = ({ params }: any) => {
               <div className="grid grid-cols-1 gap-4">
                 <div>
                   <Label className="font-normal block mb-2 text-[#091E42] text-sm " htmlFor="status">
-                    Status :
+                    {tCommon('status')} :
                   </Label>
                   <Select
                     value={invoiceData?.status || 'DFT'}
                     onValueChange={updateStatus}
                   >
                     <SelectTrigger className="bg-white focus:ring-0 focus:ring-offset-0 text-sm py-1 font-medium w-full focus:border-0 focus-visible:outline-0">
-                      <SelectValue placeholder="Select Status" />
+                      <SelectValue placeholder={t('selectStatus')} />
                     </SelectTrigger>
                     <SelectContent className="bg-white z-[99]">
-                      <SelectItem value="DFT">Draft</SelectItem>
-                      <SelectItem value="SNT">Sent</SelectItem>
-                      <SelectItem value="PD">Paid</SelectItem>
-                      <SelectItem value="OVD">Overdue</SelectItem>
+                      <SelectItem value="DFT">{tFinance('status.draft')}</SelectItem>
+                      <SelectItem value="SNT">{tFinance('status.sent')}</SelectItem>
+                      <SelectItem value="PD">{tFinance('status.paid')}</SelectItem>
+                      <SelectItem value="OVD">{tFinance('status.overdue')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -577,7 +582,7 @@ const EditInvoiceContent = ({ params }: any) => {
               type="button"
               className="bg-white rounded-[10px] hover:bg-stone-50 text-gray-700 px-8 py-2"
             >
-              Cancel
+              {tCommon('cancel')}
             </Button>
             <Button type="button" disabled={isUpdating} onClick={() => {
               if (invoiceData?.status !== 'DFT') {
@@ -587,16 +592,16 @@ const EditInvoiceContent = ({ params }: any) => {
               }
             }} className="bg-[#1e1e1e] rounded-[10px] hover:bg-[#2d2d2d] text-white px-8 py-2 flex items-center gap-2">
               {isUpdating && <Loader2 size={15} className="animate-spin" />}
-              {isUpdating ? 'Saving...' : 'Save'}
+              {isUpdating ? tCommon('saving') : t('save')}
             </Button>
           </div>
           <DeleteDialog
             isOpen={isDialogOpen}
             onClose={() => setIsDialogOpen(false)}
             onConfirm={handleConfirmSave}
-            title="Confirm Changes"
-            description="The invoice has been approved  from Xero, the changes made here won’t be reflected on the Xero invoice"
-            confirmText="Submit"
+            title={t('confirmChangesTitle')}
+            description={t('confirmInvoiceXero')}
+            confirmText={t('submit')}
             requireConfirmation={false}
             isArchive={true}
           />

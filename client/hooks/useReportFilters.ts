@@ -41,6 +41,9 @@ export function getDateRange(period: QuickPeriod, custom?: DateRange): DateRange
   }
 }
 
+export const QUICK_PERIOD_KEYS: QuickPeriod[] = ['week', 'month', 'quarter', 'year', 'custom'];
+
+/** @deprecated Use QUICK_PERIOD_KEYS with reportsCommon translations in UI */
 export const QUICK_PERIODS: { key: QuickPeriod; label: string }[] = [
   { key: 'week', label: 'This Week' },
   { key: 'month', label: 'This Month' },

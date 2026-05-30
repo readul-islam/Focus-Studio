@@ -1,0 +1,50 @@
+{
+  "teammateSearch": {
+    "searchPlaceholder": "チームメイトを検索…",
+    "selectedCount": "{count}件選択",
+    "selectedOverflow": "+{extra}",
+    "noPeopleFound": "該当者が見つかりません。",
+    "clear": "クリア"
+  },
+  "planCards": {
+    "currentPlan": "現在のプラン",
+    "includes": "含まれる内容",
+    "contactSales": "営業に問い合わせ",
+    "activating": "有効化中…",
+    "redirecting": "リダイレクト中…",
+    "upgrade": "アップグレード",
+    "activateBeta": "ベータアクセスを有効化",
+    "defaultTrialLabel": "14日間トライアルを開始",
+    "currentPlanSummary": {
+      "label": "現在のプラン",
+      "statusLabel": "ステータス:",
+      "statusTrialing": "無料トライアル",
+      "statusActive": "有効",
+      "statusPastDue": "支払い遅延",
+      "statusNone": "プランなし",
+      "trialEnds": "トライアル終了: {date}",
+      "renews": "更新日: {date}",
+      "cancelsAtPeriodEnd": "（期間終了時に解約）"
+    }
+  },
+  "addToProjectDialog": {
+    "titleProject": "プロジェクトに追加",
+    "titleRoom": "部屋を選択",
+    "descProject": "この商品を追加するプロジェクトを選択",
+    "descRoom": "{projectName} に追加",
+    "searchPlaceholder": "プロジェクト名、場所、クライアントで検索…",
+    "noProjectsFound": "プロジェクトが見つかりません",
+    "noActiveProjects": "アクティブなプロジェクトがありません",
+    "tryDifferentSearch": "別の検索語を試してください",
+    "createProjectHint": "プロジェクトを作成して始めましょう",
+    "noDetails": "詳細なし",
+    "selectRoom": "部屋を選択",
+    "noRoomsFound": "部屋が見つかりません",
+    "addRoomsHint": "先にプロジェクト設定で部屋を追加してください",
+    "quantity": "数量",
+    "quantityHint": "追加する数量は？",
+    "unit": "1個",
+    "units": "{count}個",
+    "submit": "プロジェクトに追加"
+  }
+}

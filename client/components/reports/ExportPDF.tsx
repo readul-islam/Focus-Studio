@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface ExportPDFProps {
   title: string;
@@ -9,6 +10,7 @@ interface ExportPDFProps {
 }
 
 export function ExportPDF({ title, className }: ExportPDFProps) {
+  const t = useTranslations('reportsCommon');
   const handlePrint = () => {
     const previousTitle = document.title;
     document.title = `${title} — Focuspilot`;
@@ -24,7 +26,7 @@ export function ExportPDF({ title, className }: ExportPDFProps) {
       className={`border-borderSoft ${className}`}
     >
       <Download className="w-4 h-4 mr-2" />
-      Export PDF
+      {t('exportPdf')}
     </Button>
   );
 }

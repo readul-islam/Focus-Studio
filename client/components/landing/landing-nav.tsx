@@ -5,19 +5,21 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 const NAV_LINKS = [
-  { href: '/#product', label: 'Product' },
-  { href: '/#features', label: 'Features' },
-  { href: '/#workflow', label: 'Workflow' },
-  { href: '/pricing', label: 'Pricing' },
-] as const;
+  { href: '/#product', labelKey: 'product' as const },
+  { href: '/#features', labelKey: 'features' as const },
+  { href: '/#workflow', labelKey: 'workflow' as const },
+  { href: '/pricing', labelKey: 'pricing' as const },
+];
 
 export function LandingNav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const t = useTranslations('landingPage.nav');
 
   const linkClass = (href: string) =>
     cn(
@@ -47,32 +49,32 @@ export function LandingNav() {
 
         <nav
           className="hidden md:flex items-center gap-1 text-sm font-medium text-gray-600"
-          aria-label="Main"
+          aria-label={t('mainAria')}
         >
-          {NAV_LINKS.map(({ href, label }) => (
+          {NAV_LINKS.map(({ href, labelKey }) => (
             <Link
               key={href}
               href={href}
               className={linkClass(href)}
               {...(pathname === href ? { 'aria-current': 'page' as const } : {})}
             >
-              {label}
+              {t(labelKey)}
             </Link>
           ))}
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
           <Button variant="ghost" asChild className="rounded-lg text-gray-700">
-            <Link href="/login">Sign in</Link>
+            <Link href="/login">{t('signIn')}</Link>
           </Button>
           <Button asChild className="rounded-lg shadow-sm">
-            <Link href="/register">Get started</Link>
+            <Link href="/register">{t('getStarted')}</Link>
           </Button>
         </div>
 
         <div className="flex md:hidden items-center gap-2">
           <Button asChild size="sm" className="rounded-lg shadow-sm">
-            <Link href="/register">Start</Link>
+            <Link href="/register">{t('start')}</Link>
           </Button>
           <button
             type="button"
@@ -81,7 +83,7 @@ export function LandingNav() {
             aria-controls="landing-mobile-nav"
             onClick={() => setOpen((v) => !v)}
           >
-            <span className="sr-only">Menu</span>
+            <span className="sr-only">{t('menu')}</span>
             {open ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
@@ -95,7 +97,7 @@ export function LandingNav() {
         )}
       >
         <div className="flex flex-col gap-1">
-          {NAV_LINKS.map(({ href, label }) => (
+          {NAV_LINKS.map(({ href, labelKey }) => (
             <Link
               key={href}
               href={href}
@@ -106,7 +108,7 @@ export function LandingNav() {
               onClick={() => setOpen(false)}
               {...(pathname === href ? { 'aria-current': 'page' as const } : {})}
             >
-              {label}
+              {t(labelKey)}
             </Link>
           ))}
           <hr className="my-2 border-gray-100" />
@@ -115,7 +117,7 @@ export function LandingNav() {
             className="rounded-lg px-3 py-3 text-sm font-medium text-gray-700 hover:bg-stone-50"
             onClick={() => setOpen(false)}
           >
-            Sign in
+            {t('signIn')}
           </Link>
         </div>
       </div>

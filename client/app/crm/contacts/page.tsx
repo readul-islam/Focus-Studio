@@ -39,6 +39,7 @@ import { useContactsStore } from '@/store/useContactsStore';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { usePermissions } from '@/hooks/usePermissions';
 import { gooeyToast } from 'goey-toast';
+import { useTranslations } from 'next-intl';
 
 const ContactRow = React.memo(function ContactRow({
   contact,
@@ -59,6 +60,8 @@ const ContactRow = React.memo(function ContactRow({
   clientsPermission: boolean;
   clientsDeletePermission: boolean;
 }) {
+  const t = useTranslations('crmContactsPage');
+  const tc = useTranslations('common');
   const router = useRouter();
 
   return (
@@ -87,12 +90,12 @@ const ContactRow = React.memo(function ContactRow({
       </td>
       <td className="px-4 py-3">
         <div className="flex flex-col gap-1 min-w-0">
-          <div className="flex items-center gap-2 text-muted-foreground whitespace-nowrap truncate" title={contact?.email || 'Not available'}>
+          <div className="flex items-center gap-2 text-muted-foreground whitespace-nowrap truncate" title={contact?.email || tc('notAvailable')}>
             {contact?.email ? <>
               <Mail className="w-4 h-4 shrink-0 text-muted-foreground/60" />
               <span className="truncate">{contact?.email}</span></> : '-'}
           </div>
-          <div className="flex items-center gap-2 text-muted-foreground whitespace-nowrap truncate" title={contact?.phone || 'Not available'}>
+          <div className="flex items-center gap-2 text-muted-foreground whitespace-nowrap truncate" title={contact?.phone || tc('notAvailable')}>
             {contact?.phone ? <>
               <Phone className="w-4 h-4 shrink-0 text-muted-foreground/60" />
               <span className="truncate">{contact?.phone}</span></> : '-'}
@@ -118,7 +121,7 @@ const ContactRow = React.memo(function ContactRow({
             <DropdownMenuItem onClick={(e) => {
               e.stopPropagation();
               router.push(`/crm/contacts/${contact.id}`);
-            }}>View Profile</DropdownMenuItem>
+            }}>{t('viewProfile')}</DropdownMenuItem>
 
         {clientsPermission &&    <DropdownMenuItem
               onClick={e => {
@@ -126,7 +129,7 @@ const ContactRow = React.memo(function ContactRow({
                 onEdit(contact);
               }}
             >
-              Edit Contact
+              {t('editContact')}
             </DropdownMenuItem>}
            {clientsDeletePermission &&  <DropdownMenuSeparator />}
          {clientsDeletePermission &&   <DropdownMenuItem
@@ -136,7 +139,7 @@ const ContactRow = React.memo(function ContactRow({
                 onDelete(contact);
               }}
             >
-              Delete
+              {tc('delete')}
             </DropdownMenuItem>}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -153,20 +156,22 @@ const contactTypeMap: Record<string, string> = {
   contractors: 'CN',
 };
 
-const mapContactType = (type: string) => {
-  switch (type) {
-    case 'CL':
-      return 'Client';
-    case 'SP':
-      return 'Supplier';
-    case 'CN':
-      return 'Contractor';
-    default:
-      return type;
-  }
-};
-
 function ContactsPageContent() {
+  const t = useTranslations('crmContactsPage');
+  const tc = useTranslations('common');
+
+  const mapContactType = (type: string) => {
+    switch (type) {
+      case 'CL':
+        return tc('client');
+      case 'SP':
+        return tc('supplier');
+      case 'CN':
+        return tc('contractor');
+      default:
+        return type;
+    }
+  };
 
   const {
   selectedContact,
@@ -224,7 +229,12 @@ function ContactsPageContent() {
   // Clear selection when tab changes
   useEffect(() => { clearSelection(); }, [activeTab]);
 
-  const contactFilters = ['All', 'Clients', 'Suppliers', 'Contractors'];
+  const contactFilters = [
+    { label: tc('all'), val: 'all' },
+    { label: tc('clients'), val: 'clients' },
+    { label: tc('suppliers'), val: 'suppliers' },
+    { label: tc('contractors'), val: 'contractors' },
+  ];
   const queryClient = useQueryClient();
   const { guard } = useEditGuard('clients.edit');
   const {can} = usePermissions();
@@ -271,13 +281,13 @@ function ContactsPageContent() {
 
   const { mutate } = useDeleteData({
     onSuccess: () => {
-      gooeyToast.success('Contact Deleted!');
+      gooeyToast.success(t('toasts.contactDeleted'));
       refetch();
       queryClient.refetchQueries({ queryKey: ['crm/studio-clients/'] });
       queryClient.refetchQueries({ queryKey: ['crm/studio-suppliers/'] });
     },
     onError: () => {
-      toast('Error! Could not delete contact.');
+      toast(t('toasts.deleteFailed'));
     },
   });
 
@@ -290,14 +300,14 @@ function ContactsPageContent() {
 
   const { mutate: bulkDeleteContacts, isPending: isDeletingContacts } = useDeleteData({
     onSuccess: () => {
-      toast.success('Contacts deleted successfully');
+      toast.success(t('toasts.bulkDeleted'));
       clearSelection();
       refetch();
       queryClient.refetchQueries({ queryKey: ['crm/studio-clients/'] });
       queryClient.refetchQueries({ queryKey: ['crm/studio-suppliers/'] });
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to delete contacts');
+      toast.error(error.message || t('toasts.bulkDeleteFailed'));
     },
   });
 
@@ -307,7 +317,7 @@ const handleCheckAll = (checked: boolean) => {
 
   const handleBulkDelete = () => {
     if(!clientsDeletePermission){
-      toast.error("You don't have permission to delete this item")
+      toast.error(tc('noPermissionDelete'))
       return;
     }
     if (checkedItems.length === 0) return;
@@ -316,7 +326,7 @@ const handleCheckAll = (checked: boolean) => {
 
   const confirmBulkDelete = () => {
     if(!clientsDeletePermission){
-      toast.error("You don't have permission to delete this item")
+      toast.error(tc('noPermissionDelete'))
       return;
     }
     const ids = checkedItems.map(c => c.id);
@@ -341,34 +351,31 @@ const handleCheckAll = (checked: boolean) => {
                 <Button variant="outline" size="sm" className="h-9 rounded-xl border border-border/60 bg-background text-foreground text-[13px] hover:bg-muted/40 hover:border-primary/30 focus:ring-0 focus:outline-none transition-colors">
                   <Filter className="w-4 h-4 mr-2 text-muted-foreground/60" />
                   {activeTab === 'all'
-                    ? 'Filter'
+                    ? tc('filter')
                     : activeTab === 'clients'
-                      ? 'Clients'
+                      ? tc('clients')
                       : activeTab === 'suppliers'
-                        ? 'Suppliers'
-                        : 'Contractors'}
+                        ? tc('suppliers')
+                        : tc('contractors')}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-40">
-                {contactFilters.map(label => {
-                  const val = label === 'All' ? 'all' : label.toLowerCase();
-                  return (
+                {contactFilters.map(({ label, val }) => (
                     <DropdownMenuItem
-                      key={label}
+                      key={val}
                       onClick={() => updateUrl({ tab: val, page: 1 })}
                       className={activeTab === val ? 'font-semibold text-black' : ''}
                     >
                       {label}
                     </DropdownMenuItem>
-                  );
-                })}
+                  ))}
               </DropdownMenuContent>
             </DropdownMenu>
 
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/60" />
               <Input
-                placeholder="Search contacts..."
+                placeholder={t('searchPlaceholder')}
                 value={inputValue}
                 onChange={e => setInputValue(e.target.value)}
                 className="pl-10 h-9 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
@@ -393,7 +400,7 @@ const handleCheckAll = (checked: boolean) => {
                 className="bg-primary text-primary-foreground hover:opacity-90 h-9 px-4 rounded-xl shadow-sm font-semibold transition-all gap-2"
               >
                 <Plus className="w-4 h-4" />
-                Add Contact
+                {t('addContact')}
               </Button>
             </motion.div> }
             <AnimatePresence mode="popLayout">
@@ -411,7 +418,7 @@ const handleCheckAll = (checked: boolean) => {
                 >
                   <Button variant="destructive" size="sm" onClick={handleBulkDelete} disabled={isDeletingContacts}>
                     <Trash2 className="w-4 h-4 mr-2" />
-                    {isDeletingContacts ? 'Deleting...' : 'Delete'}
+                    {isDeletingContacts ? tc('deleting') : tc('delete')}
                   </Button>
                 </motion.div>
               )}
@@ -433,16 +440,16 @@ const handleCheckAll = (checked: boolean) => {
                     />
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-semibold text-muted-foreground" style={{ width: 320 }}>
-                    Contact
+                    {t('contactColumn')}
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-semibold text-muted-foreground" style={{ width: 360 }}>
-                    Contact Info
+                    {t('contactInfoColumn')}
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-semibold text-muted-foreground" style={{ width: 140 }}>
-                    Type
+                    {tc('type')}
                   </th>
                   <th className="pl-4 pr-6 py-3 text-right text-sm font-semibold text-muted-foreground" style={{ width: 96 }}>
-                    Actions
+                    {tc('actions')}
                   </th>
                 </tr>
               </thead>
@@ -455,15 +462,15 @@ const handleCheckAll = (checked: boolean) => {
                           <Users className="w-6 h-6" />
                         </div>
                         <div>
-                          <p className="text-sm font-bold text-foreground">No contacts yet</p>
-                          <p className="text-sm text-muted-foreground mt-1">Add your first contact to get started</p>
+                          <p className="text-sm font-bold text-foreground">{t('emptyTitle')}</p>
+                          <p className="text-sm text-muted-foreground mt-1">{t('emptySubtitle')}</p>
                         </div>
                         <Button
                           onClick={() => openContactModal()}
                           className="mt-2 bg-primary text-primary-foreground hover:opacity-90 h-9 px-4 rounded-xl shadow-sm font-semibold transition-all gap-2"
                         >
                           <Plus className="w-4 h-4" />
-                          Add Contact
+                          {t('addContact')}
                         </Button>
                       </div>
                     </td>
@@ -560,8 +567,8 @@ const handleCheckAll = (checked: boolean) => {
         isOpen={isDeleteOpen}
         onClose={() => closeAllModals()}
         onConfirm={() => handleDelete(selectedContact?.id)}
-        title="Delete Contact"
-        description="Are you sure you want to delete this contact? This action cannot be undone."
+        title={t('deleteContactTitle')}
+        description={t('deleteContactDescription')}
         itemName={selectedContact?.name}
         requireConfirmation={false}
       />
@@ -569,9 +576,9 @@ const handleCheckAll = (checked: boolean) => {
         isOpen={isBulkDeleteOpen}
         onClose={() => closeAllModals()}
         onConfirm={confirmBulkDelete}
-        title="Delete Selected Contacts?"
-        description={`Are you sure you want to delete ${checkedItems.length} selected contact${checkedItems.length > 1 ? 's' : ''}? This action cannot be undone.`}
-        itemName={`${checkedItems.length} Contact${checkedItems.length > 1 ? 's' : ''}`}
+        title={t('deleteSelectedTitle')}
+        description={t('deleteSelectedDescription', { count: checkedItems.length })}
+        itemName={`${checkedItems.length} ${checkedItems.length > 1 ? tc('contacts') : tc('contact')}`}
         requireConfirmation={false}
       />
     </div>

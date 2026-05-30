@@ -45,8 +45,11 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DeleteDialog } from '@/components/DeleteDialog';
 import useUser from '@/hooks/useUser';
+import { useTranslations } from 'next-intl';
 
 export default function TeamsPage() {
+    const t = useTranslations('teamsPage');
+    const tc = useTranslations('common');
     const router = useRouter();
     const { isAdmin, userLoading } = useAdmin();
     const { can, isLoading: permLoading } = usePermissions();
@@ -81,17 +84,17 @@ export default function TeamsPage() {
       queryClient.refetchQueries({ queryKey: ['user/studio/members/'] });
       queryClient.refetchQueries({ queryKey: ['projects/studio-members-phases/'] });
       setIsDeleteOpen(false);
-      toast.info("Member removed successfully");
+      toast.info(t('toasts.memberRemoved'));
     },
     onError: () => {
-      toast('Error! Try again');
+      toast(t('toasts.errorTryAgain'));
     },
   });
     
     
       const { mutate: inviteUser, isPending: isInviting } = usePost({
         onSuccess: () => {
-          toast.success('Invitation sent successfully');
+          toast.success(t('toasts.inviteSent'));
           setShowAddMemberPopover(false);
           setEmailInput('');
           setInviteRole('member');
@@ -100,7 +103,7 @@ export default function TeamsPage() {
         },
         onError: (error) => {
     
-          toast.error('Failed to send invitation');
+          toast.error(t('toasts.inviteFailed'));
         },
       });
 
@@ -110,13 +113,13 @@ export default function TeamsPage() {
           if (emailInput && emailInput.includes('@')) {
             inviteUser({ url: '/user/invite/', data: { email: emailInput, role: inviteRole } });
           } else {
-            toast.error('Please enter a valid email address');
+            toast.error(t('toasts.invalidEmail'));
           }
         };
         
      const handleDelete = id => {
     if(!teamsDeletePermission){
-      toast.error("You don't have permission to perform this action")
+      toast.error(tc('noPermissionAction'))
       return;
     }
     if (!id) return;
@@ -261,10 +264,10 @@ export default function TeamsPage() {
     };
 
     const getWorkloadStatus = (utilisation: number) => {
-        if (utilisation >= 90) return { label: 'Stretched', bgClass: 'bg-[#e07a57]/20', textClass: 'text-[#c45a3a]' };
-        if (utilisation >= 70) return { label: 'Stretched', bgClass: 'bg-[#e07a57]/10', textClass: 'text-[#c45a3a]' };
-        if (utilisation >= 30) return { label: 'Healthy', bgClass: 'bg-[#8fa58f]/20', textClass: 'text-[#5a6f5a]' };
-        return { label: 'Available', bgClass: 'bg-white', textClass: 'text-gray-600' };
+        if (utilisation >= 90) return { label: t('workloadStatus.stretched'), bgClass: 'bg-[#e07a57]/20', textClass: 'text-[#c45a3a]' };
+        if (utilisation >= 70) return { label: t('workloadStatus.stretched'), bgClass: 'bg-[#e07a57]/10', textClass: 'text-[#c45a3a]' };
+        if (utilisation >= 30) return { label: t('workloadStatus.healthy'), bgClass: 'bg-[#8fa58f]/20', textClass: 'text-[#5a6f5a]' };
+        return { label: t('workloadStatus.available'), bgClass: 'bg-white', textClass: 'text-gray-600' };
     };
 
     // Render Workload View
@@ -274,7 +277,7 @@ export default function TeamsPage() {
                 <div className="flex flex-col gap-4">
                     <TeamSummaryDashboard teamMembers={[]} isLoading={true} />
                     <div className="flex items-center justify-center h-64 text-gray-500">
-                        Loading team data...
+                        {t('loadingTeam')}
                     </div>
                 </div>
             );
@@ -286,7 +289,7 @@ export default function TeamsPage() {
                     <TeamSummaryDashboard teamMembers={[]} />
                     <div className="flex flex-col items-center justify-center h-64 text-gray-400">
                         <Users2 className="w-12 h-12 mb-3 opacity-20" />
-                        <p>No team members found.</p>
+                        <p>{t('noMembers')}</p>
                     </div>
                 </div>
             );
@@ -300,25 +303,25 @@ export default function TeamsPage() {
                 <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
                     {/* Header */}
                     <div className="flex items-center justify-between p-4 border-b border-gray-100">
-                        <h3 className="text-sm font-semibold text-gray-900">Team Members</h3>
+                        <h3 className="text-sm font-semibold text-gray-900">{t('teamMembers')}</h3>
                         <div className="relative">
                             
                           {teamsPermission &&  <Popover>
                                 <PopoverTrigger>
                                     <Button  variant="outline" size="sm" className="h-8 gap-1.5 text-xs">
                             <UserPlus className="w-3.5 h-3.5" />
-                            Invite Member
+                            {t('inviteMember')}
                         </Button>
                                 </PopoverTrigger>
                                 <PopoverContent side='left' className="w-80 p-4">
-                                  <h3 className="font-medium text-gray-900 mb-3">Invite Team Member</h3>
+                                  <h3 className="font-medium text-gray-900 mb-3">{t('inviteTitle')}</h3>
                                   <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                                    Email address
+                                    {t('emailAddress')}
                                   </label>
                                   <div className="flex gap-2">
                                     <input
                                       type="email"
-                                      placeholder="Enter email address"
+                                      placeholder={t('emailPlaceholder')}
                                       className="flex-1 px-3 py-2 text-sm rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent"
                                       value={emailInput}
                                       onChange={(e) => setEmailInput(e.target.value)}
@@ -331,20 +334,20 @@ export default function TeamsPage() {
                                       onClick={handleInvite}
                                       disabled={isInviting}
                                       className="bg-clay-600 text-white hover:bg-clay-700">
-                                      {isInviting ? 'Sending...' : 'Invite'}
+                                      {isInviting ? t('sending') : t('invite')}
                                     </Button>
                                   </div>
                                   <label className="block text-sm font-medium text-gray-700 mt-3 mb-1.5">
-                                    Role
+                                    {t('role')}
                                   </label>
                                   <Select value={inviteRole} onValueChange={(v) => setInviteRole(v as 'admin' | 'manager' | 'member')}>
                                     <SelectTrigger className="h-9 text-sm">
                                       <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                      <SelectItem value="admin">Admin</SelectItem>
-                                      <SelectItem value="manager">Manager</SelectItem>
-                                      <SelectItem value="member">Member</SelectItem>
+                                      <SelectItem value="admin">{t('roles.admin')}</SelectItem>
+                                      <SelectItem value="manager">{t('roles.manager')}</SelectItem>
+                                      <SelectItem value="member">{t('roles.member')}</SelectItem>
                                     </SelectContent>
                                   </Select>
                                 </PopoverContent>
@@ -356,15 +359,15 @@ export default function TeamsPage() {
 
                     {/* Table Header — hidden on mobile */}
                     <div className="hidden md:grid md:grid-cols-12 gap-3 px-4 py-3 bg-white border-b border-gray-100 text-sm font-medium text-gray-600">
-                        <div className="col-span-4">Team Member</div>
+                        <div className="col-span-4">{t('columns.teamMember')}</div>
                         <div className="col-span-2">
                             <TooltipProvider>
                                 <Tooltip delayDuration={500}>
                                     <TooltipTrigger className="cursor-help">
-                                        Active Projects
+                                        {t('columns.activeProjects')}
                                     </TooltipTrigger>
                                     <TooltipContent side="top" className="max-w-xs text-xs">
-                                        <p>Number of projects with phases currently in progress. A project is considered active if it has at least one phase where today falls between the start and end date.</p>
+                                        <p>{t('tooltips.activeProjects')}</p>
                                     </TooltipContent>
                                 </Tooltip>
                             </TooltipProvider>
@@ -373,10 +376,10 @@ export default function TeamsPage() {
                             <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger className="cursor-help">
-                                        Workload
+                                        {t('columns.workload')}
                                     </TooltipTrigger>
                                     <TooltipContent side="top" className="max-w-xs text-xs">
-                                        <p>Percentage of capacity being used, calculated based on active projects. Each active project adds 20% to workload (5 projects = 100% capacity).</p>
+                                        <p>{t('tooltips.workload')}</p>
                                     </TooltipContent>
                                 </Tooltip>
                             </TooltipProvider>
@@ -385,17 +388,15 @@ export default function TeamsPage() {
                             <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger className="cursor-help">
-                                        Status
+                                        {t('columns.status')}
                                     </TooltipTrigger>
                                     <TooltipContent side="top" className="max-w-xs text-xs">
-                                        <p><strong>Available:</strong> Less than 30% workload — ready for new projects.<br />
-                                        <strong>Healthy:</strong> 30-70% workload — balanced capacity.<br />
-                                        <strong>Stretched:</strong> Over 70% workload — near or at full capacity.</p>
+                                        <p>{t('tooltips.status')}</p>
                                     </TooltipContent>
                                 </Tooltip>
                             </TooltipProvider>
                         </div>
-                        {teamsDeletePermission && <div className="col-span-1 flex justify-center">Action</div>}
+                        {teamsDeletePermission && <div className="col-span-1 flex justify-center">{t('columns.action')}</div>}
                     </div>
 
                     {/* Team Members */}
@@ -414,16 +415,16 @@ export default function TeamsPage() {
                                             </Avatar>
                                             <div className="min-w-0">
                                                 <div className="font-medium text-gray-900 text-sm truncate">{member.name}</div>
-                                                <div className="text-xs text-gray-500 truncate">{member.title || 'Team Member'}</div>
+                                                <div className="text-xs text-gray-500 truncate">{member.title || t('defaultTitle')}</div>
                                             </div>
                                         </div>
                                         <div className="col-span-2">
                                             {member.activeProjects.length > 0 ? (
                                                 <div className="text-sm text-gray-600">
-                                                    {member.activeProjects.length} project{member.activeProjects.length !== 1 ? 's' : ''}
+                                                    {t('projectCount', { count: member.activeProjects.length })}
                                                 </div>
                                             ) : (
-                                                <span className="text-gray-400 text-sm">None</span>
+                                                <span className="text-gray-400 text-sm">{t('none')}</span>
                                             )}
                                         </div>
                                         <div className="col-span-3">
@@ -452,7 +453,7 @@ export default function TeamsPage() {
                                                     onClick={() => openDeleteModal(member)}
                                                     className="text-red-500 cursor-pointer hover:text-red-700 hover:bg-red-50"
                                                 >
-                                                    Remove
+                                                    {t('remove')}
                                                 </Button>
                                             </div>
                                         )}
@@ -469,7 +470,7 @@ export default function TeamsPage() {
                                                 </Avatar>
                                                 <div className="min-w-0">
                                                     <div className="font-medium text-gray-900 text-sm truncate">{member.name}</div>
-                                                    <div className="text-xs text-gray-500 truncate">{member.title || 'Team Member'}</div>
+                                                    <div className="text-xs text-gray-500 truncate">{member.title || t('defaultTitle')}</div>
                                                 </div>
                                             </div>
                                             <span className={`shrink-0 inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${status.bgClass} ${status.textClass}`}>
@@ -490,8 +491,8 @@ export default function TeamsPage() {
                                         <div className="flex items-center justify-between">
                                             <span className="text-xs text-gray-500">
                                                 {member.activeProjects.length > 0
-                                                    ? `${member.activeProjects.length} active project${member.activeProjects.length !== 1 ? 's' : ''}`
-                                                    : 'No active projects'}
+                                                    ? t('activeProjectCount', { count: member.activeProjects.length })
+                                                    : t('noActiveProjects')}
                                             </span>
                                             {teamsDeletePermission && (
                                                 <Button
@@ -500,7 +501,7 @@ export default function TeamsPage() {
                                                     onClick={() => openDeleteModal(member)}
                                                     className="h-7 text-xs text-red-500 hover:text-red-700 hover:bg-red-50 px-2"
                                                 >
-                                                    Remove
+                                                    {t('remove')}
                                                 </Button>
                                             )}
                                         </div>
@@ -551,7 +552,7 @@ export default function TeamsPage() {
                 columns.push({
                     label: (
                         <div className="flex flex-col items-center justify-center">
-                            <span className="text-[10px] text-gray-400">W{weekNum}</span>
+                            <span className="text-[10px] text-gray-400">{t('weekLabel', { number: weekNum })}</span>
                             <span className="text-xs font-medium text-gray-600">{format(weekStart, 'MMM d')}</span>
                         </div>
                     ),
@@ -631,7 +632,7 @@ export default function TeamsPage() {
                                 className="sticky left-0 z-50 bg-white border-r border-gray-200 flex items-center px-4 font-semibold text-sm text-gray-700 shadow-sm"
                                 style={{ width: `${MEMBER_COL_WIDTH}px`, minWidth: `${MEMBER_COL_WIDTH}px` }}
                             >
-                                Team Members
+                                {t('teamMembers')}
                             </div>
                             <div className="flex w-fit relative">
                                 {columns.map((col, i) => {
@@ -671,7 +672,7 @@ export default function TeamsPage() {
                                         </Avatar>
                                         <div className="min-w-0 overflow-hidden">
                                             <div className="text-sm font-semibold text-gray-900 truncate">{member.name}</div>
-                                            <div className="text-xs text-gray-500 truncate">{member.title || 'Team Member'}</div>
+                                            <div className="text-xs text-gray-500 truncate">{member.title || t('defaultTitle')}</div>
                                         </div>
                                     </div>
 
@@ -757,7 +758,7 @@ export default function TeamsPage() {
                                                                         <div className="text-xs opacity-70 mt-1">
                                                                             {format(phase.startDate, 'MMM d, yyyy')} - {format(phase.endDate, 'MMM d, yyyy')}
                                                                         </div>
-                                                                        <div className="text-xs mt-1">Progress: {phase.progress}%</div>
+                                                                        <div className="text-xs mt-1">{t('progress', { percent: phase.progress })}</div>
                                                                     </TooltipContent>
                                                                 </Tooltip>
                                                             </TooltipProvider>
@@ -773,7 +774,7 @@ export default function TeamsPage() {
 
                         {members.length === 0 && (
                             <div className="p-12 text-center text-gray-400 bg-gray-50/50">
-                                No team members found.
+                                {t('noMembers')}
                             </div>
                         )}
                     </div>
@@ -786,7 +787,7 @@ export default function TeamsPage() {
     if (userLoading) {
         return (
             <div className="flex-1 bg-stone-50 p-6 flex items-center justify-center">
-                <div className="text-gray-500">Loading...</div>
+                <div className="text-gray-500">{t('loading')}</div>
             </div>
         );
     }
@@ -820,7 +821,7 @@ export default function TeamsPage() {
                                 className={`h-8 px-3 rounded-md text-sm font-medium transition-all flex items-center gap-1.5 ${mode === 'workload' ? 'bg-stone-100 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-stone-50'}`}
                             >
                                 <BarChart3 className="h-4 w-4" />
-                                Workload
+                                {t('modes.workload')}
                             </Button>
                             <Button
                                 variant="ghost"
@@ -829,7 +830,7 @@ export default function TeamsPage() {
                                 className={`h-8 px-3 rounded-md text-sm font-medium transition-all flex items-center gap-1.5 ${mode === 'timeline' ? 'bg-stone-100 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-stone-50'}`}
                             >
                                 <Calendar className="h-4 w-4" />
-                                Timeline
+                                {t('modes.timeline')}
                             </Button>
                         </div>
 
@@ -842,7 +843,7 @@ export default function TeamsPage() {
                                     onClick={() => setView('year')}
                                     className={`h-8 px-3 rounded-md text-xs font-medium transition-all ${view === 'year' ? 'bg-stone-100 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-stone-50'}`}
                                 >
-                                    Year
+                                    {t('views.year')}
                                 </Button>
                                 <Button
                                     variant="ghost"
@@ -850,7 +851,7 @@ export default function TeamsPage() {
                                     onClick={() => setView('quarter')}
                                     className={`h-8 px-3 rounded-md text-xs font-medium transition-all ${view === 'quarter' ? 'bg-stone-100 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-stone-50'}`}
                                 >
-                                    Quarter
+                                    {t('views.quarter')}
                                 </Button>
                                 <Button
                                     variant="ghost"
@@ -858,7 +859,7 @@ export default function TeamsPage() {
                                     onClick={() => setView('month')}
                                     className={`h-8 px-3 rounded-md text-xs font-medium transition-all ${view === 'month' ? 'bg-stone-100 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-stone-50'}`}
                                 >
-                                    Month
+                                    {t('views.month')}
                                 </Button>
                             </div>
                         )}
@@ -889,7 +890,7 @@ export default function TeamsPage() {
                             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                             <Input
                                 className="h-9 w-40 sm:w-64 pl-9 bg-white border-gray-200"
-                                placeholder="Search team members..."
+                                placeholder={t('searchPlaceholder')}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -908,9 +909,9 @@ export default function TeamsPage() {
                             isOpen={isDeleteOpen}
                             onClose={() => setIsDeleteOpen(false)}
                             onConfirm={() => handleDelete(selectedTeamMember?.id)}
-                            title="Remove Member"
-                            confirmText="Remove"
-                            description={`Are you sure you want to remove ${selectedTeamMember?.name} from this studio? Removing this member will revoke their access to all projects and tasks associated with this studio.`}
+                            title={t('removeMemberTitle')}
+                            confirmText={t('removeMemberConfirm')}
+                            description={t('removeMemberDescription', { name: selectedTeamMember?.name ?? '' })}
                             itemName={selectedTeamMember?.name}
                             requireConfirmation={true} 
                           />

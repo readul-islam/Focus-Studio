@@ -18,6 +18,7 @@ import { CreditCard, Loader2, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 const BILLING_EXEMPT_PREFIXES = [
   '/billing/',
@@ -33,6 +34,7 @@ function isExemptPath(pathname: string | null): boolean {
 }
 
 export function SubscriptionGate({ children }: { children: React.ReactNode }) {
+  const t = useTranslations('subscriptionGate');
   const pathname = usePathname();
   const router = useRouter();
   const { user, isLoading: userLoading } = useUser();
@@ -68,7 +70,7 @@ export function SubscriptionGate({ children }: { children: React.ReactNode }) {
   const handleSelect = useCallback(
     async (tier: PlanTier) => {
       if (!isAdmin) {
-        toast.error('Only studio admins can choose a subscription plan.');
+        toast.error(t('toasts.adminOnly'));
         return;
       }
 
@@ -76,7 +78,7 @@ export function SubscriptionGate({ children }: { children: React.ReactNode }) {
       const noPayment = plan?.no_payment_required === true;
 
       if (!noPayment && !stripeConfigured) {
-        toast.error('Billing is not configured. Contact support.');
+        toast.error(t('toasts.billingNotConfigured'));
         return;
       }
 
@@ -86,7 +88,7 @@ export function SubscriptionGate({ children }: { children: React.ReactNode }) {
           await activatePlan.mutateAsync(tier);
           invalidate();
           markProductTourPendingAfterPlan();
-          toast.success('Beta access activated.');
+          toast.success(t('toasts.betaActivated'));
           router.replace('/home/dashboard');
         } else {
           await checkout.mutateAsync(tier);
@@ -94,12 +96,12 @@ export function SubscriptionGate({ children }: { children: React.ReactNode }) {
       } catch (err: unknown) {
         const msg =
           (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-          (noPayment ? 'Could not activate plan.' : 'Could not start checkout.');
+          (noPayment ? t('toasts.activateFailed') : t('toasts.checkoutFailed'));
         toast.error(msg);
         setLoadingTier(null);
       }
     },
-    [activatePlan, checkout, invalidate, isAdmin, planByTier, router, stripeConfigured]
+    [activatePlan, checkout, invalidate, isAdmin, planByTier, router, stripeConfigured, t]
   );
 
   if (userLoading || (user?.studio && billingLoading && !exempt)) {
@@ -129,15 +131,13 @@ export function SubscriptionGate({ children }: { children: React.ReactNode }) {
             <DialogHeader className="relative space-y-2 text-left">
               <div className="inline-flex items-center gap-2 rounded-full border border-clay-200/80 bg-white/90 px-3 py-1 text-xs font-medium text-clay-800">
                 <Sparkles className="size-3.5" />
-                Beta access is free — paid plans include a {trialDays}-day trial
+                {t('betaBadge', { days: trialDays })}
               </div>
               <DialogTitle className="text-2xl font-bold text-gray-900">
-                Choose your studio plan
+                {t('title')}
               </DialogTitle>
               <DialogDescription className="text-base text-gray-600">
-                {isAdmin
-                  ? 'Select a plan to unlock Focuspilot. Beta access requires no card; paid plans are not charged until your trial ends.'
-                  : 'Your studio needs an active subscription. Please ask a studio admin to choose a plan.'}
+                {isAdmin ? t('descriptionAdmin') : t('descriptionMember')}
               </DialogDescription>
             </DialogHeader>
           </div>
@@ -145,8 +145,7 @@ export function SubscriptionGate({ children }: { children: React.ReactNode }) {
           <div className="px-5 py-6 sm:px-8 sm:py-7">
             {!stripeConfigured ? (
               <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-                Stripe billing is not configured for this environment. Set{' '}
-                <code className="text-xs">STRIPE_*</code> variables on the server.
+                {t('stripeNotConfigured')}
               </div>
             ) : null}
 
@@ -161,25 +160,25 @@ export function SubscriptionGate({ children }: { children: React.ReactNode }) {
                   (!stripeConfigured && !plans.some((p) => p.no_payment_required))
                 }
                 compact
-                trialLabel={`Start ${trialDays}-day trial`}
+                trialLabel={t('trialLabel', { days: trialDays })}
               />
             ) : (
               <div className="rounded-xl border border-gray-200 bg-stone-50 p-6 text-center text-sm text-gray-600">
                 <CreditCard className="mx-auto mb-3 size-8 text-gray-400" />
-                <p>Contact your studio administrator to subscribe.</p>
+                <p>{t('contactAdmin')}</p>
                 <Button variant="outline" className="mt-4 rounded-lg" asChild>
-                  <Link href="/home/dashboard">Back to dashboard</Link>
+                  <Link href="/home/dashboard">{t('backToDashboard')}</Link>
                 </Button>
               </div>
             )}
 
             {isAdmin ? (
               <p className="mt-4 text-center text-xs text-gray-500">
-                Secure checkout powered by Stripe. Cancel anytime from{' '}
+                {t('stripeFooterBefore')}{' '}
                 <Link href="/settings/studio/billing" className="font-medium text-clay-700 hover:underline">
-                  Upgrade plan
+                  {t('upgradePlanLink')}
                 </Link>
-                .
+                {t('stripeFooterAfter')}
               </p>
             ) : null}
           </div>

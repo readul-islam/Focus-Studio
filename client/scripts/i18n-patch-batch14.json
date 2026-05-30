@@ -1,0 +1,33 @@
+{
+  "imageCropUpload": {
+    "change": "Change",
+    "cropTitle": "Crop {label}",
+    "removeAriaLabel": "Remove {label}",
+    "imageRemoved": "Image removed",
+    "removeFailed": "Could not remove image",
+    "updated": "{label} updated",
+    "uploadFailed": "Could not upload image",
+    "unsupportedFileType": "Unsupported file type. Use PNG, JPG or WEBP.",
+    "fileTooLarge": "File too large. Maximum 5MB."
+  },
+  "settingsProfilePage": {
+    "altProfileCover": "Profile cover",
+    "altProfilePhoto": "Profile photo",
+    "removeCoverAria": "Remove cover image",
+    "deleteProfilePictureAria": "Delete profile picture",
+    "placeholders": {
+      "name": "Jane Designer",
+      "designation": "Designer",
+      "role": "Member"
+    }
+  },
+  "settingsPublicProfilePage": {
+    "linkLabels": {
+      "website": "Website",
+      "linkedin": "Linkedin",
+      "instagram": "Instagram",
+      "pinterest": "Pinterest",
+      "houzz": "Houzz"
+    }
+  }
+}

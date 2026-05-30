@@ -1,0 +1,82 @@
+{
+  "projectSettingsPage": {
+    "unnamedContractor": "Unnamed Contractor",
+    "contractorGeneral": "General",
+    "portalAccess": "Portal Access",
+    "noAccess": "No Access",
+    "lastLogin": "Last Login",
+    "never": "Never",
+    "sharedItems": "Shared Items:",
+    "sharedDrawings": "Shared Drawings:",
+    "inviteToPortal": "Invite to Portal",
+    "noContractorsYet": "No contractors assigned yet. Go to the Contractors page to manage contractors.",
+    "inviteContractorTitle": "Invite {name}",
+    "tasksLabel": "Tasks",
+    "tasksCount": "{count} tasks",
+    "noTasksYet": "No tasks yet — add one below",
+    "scheduleNoPhasesHint": "Click + in the panel on the left to add your first phase.",
+    "addPhaseBtn": "Add phase",
+    "newPhaseName": "New Phase",
+    "phaseFallback": "Phase {number}",
+    "deleteProjectDesc": "This will permanently delete \"{name}\" along with all its tasks and related data. This action cannot be undone.",
+    "deletePhaseDesc": "Are you sure you want to delete phase \"{name}\"? This cannot be undone.",
+    "searchClientsPlaceholder": "Search clients…"
+  },
+  "crmPipelinePage": {
+    "daysCount": "{count} days"
+  },
+  "richTextEditor": {
+    "bold": "Bold",
+    "italic": "Italic",
+    "underline": "Underline",
+    "strikethrough": "Strikethrough",
+    "bulletList": "Bullet list",
+    "numberedList": "Numbered list",
+    "insertLink": "Insert link",
+    "clearFormatting": "Clear formatting",
+    "linkUrlPrompt": "Link URL",
+    "defaultPlaceholder": "Write a reply..."
+  },
+  "settingsIntegrationsPage": {
+    "notion": {
+      "toasts": {
+        "connectFailed": "Could not connect Notion. Check server NOTION_* env vars.",
+        "connected": "Notion connected.",
+        "cancelled": "Notion connection was cancelled.",
+        "statusNotUpdated": "Notion authorized but status did not update. Please try again.",
+        "disconnected": "Notion disconnected.",
+        "disconnectFailed": "Failed to disconnect Notion.",
+        "databaseIdCopied": "Database ID copied.",
+        "copyFailed": "Copy failed.",
+        "selectDatabaseFirst": "Select a database first.",
+        "syncConfigured": "Project sync configured.",
+        "saveMappingFailed": "Could not save mapping.",
+        "parentPageSaved": "Notion parent page saved.",
+        "saveParentPageFailed": "Could not save parent page.",
+        "syncFailed": "Sync failed.",
+        "syncDone": "Sync done: {created} created, {updated} updated, {skipped} unchanged{taskPart}.",
+        "tasksUpdatedFromNotion": " · {count} task(s) updated from Notion"
+      }
+    },
+    "googleCalendar": {
+      "toasts": {
+        "blockedAccess": "Google blocked access. Add your email under OAuth → Test users.",
+        "connectFailed": "Could not connect. Check server GMAIL_* env vars.",
+        "connected": "Google Calendar connected.",
+        "cancelled": "Calendar connection was cancelled.",
+        "statusNotUpdated": "Calendar connected to Google but status did not update. Please try again.",
+        "disconnected": "Google Calendar disconnected.",
+        "disconnectFailed": "Failed to disconnect."
+      }
+    },
+    "xero": {
+      "toasts": {
+        "connected": "Xero connected.",
+        "cancelled": "Xero connection was cancelled.",
+        "statusNotUpdated": "Xero authorized but status did not update. Please try again.",
+        "disconnected": "Xero disconnected.",
+        "disconnectFailed": "Failed to disconnect Xero."
+      }
+    }
+  }
+}

@@ -66,7 +66,7 @@ import { InviteClientDialog } from '@/components/InviteClientDialog';
 import { InviteContractorDialog } from '@/components/InviteContractorDialog';
 import { usePermissions } from '@/hooks/usePermissions';
 import { getProjectPortalUrl } from '@/lib/contractor-portal-url';
-
+import { useTranslations } from 'next-intl';
 
 // Format Date to YYYY-MM-DD in local timezone (not UTC)
 function formatDateToLocal(date: Date): string {
@@ -88,13 +88,14 @@ function ClientSelect({
   onSelect: (clientId: string) => void;
   projectEditPermission: boolean;
 }) {
+  const t = useTranslations('projectSettingsPage');
   const [open, setOpen] = useState(false);
 
   const selectedClient = clients?.find((c: any) => String(c.id) === String(selectedClientId));
 
   const getClientDisplayName = (client: any) => {
     const fullName = [client?.name, client?.surname].filter(Boolean).join(' ');
-    return fullName || client?.company_name || 'Unnamed Client';
+    return fullName || client?.company_name || t('unnamedClient');
   };
 
   return (
@@ -114,7 +115,7 @@ function ClientSelect({
             ) : (
               <span className="flex items-center gap-2 text-gray-500">
                 <Search className="h-4 w-4" />
-                Search clients…
+                {t('searchClientsPlaceholder')}
               </span>
             )}
           </span>
@@ -123,10 +124,10 @@ function ClientSelect({
       <PopoverContent className="p-0 w-[360px] rounded-xl border border-gray-200 shadow-md overflow-hidden" align="start">
         <Command className="max-h-[400px]">
           <CommandInput
-            placeholder="Search clients…"
+            placeholder={t('searchClients')}
             className="focus-visible:ring-gray-300 focus-visible:ring-offset-0 focus:outline-none"
           />
-          <CommandEmpty>No clients found</CommandEmpty>
+          <CommandEmpty>{t('noClientsFound')}</CommandEmpty>
           <CommandList
             className="max-h-[300px] overflow-y-auto"
             style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
@@ -187,15 +188,18 @@ type SectionKey =
   | 'financial'
   | 'settings';
 
-const sections: { key: SectionKey; label: string; icon: any }[] = [
-  { key: 'overview', label: 'Overview', icon: Settings },
-  { key: 'people', label: 'People', icon: Users },
-  { key: 'delivery', label: 'Delivery & Billing', icon: Truck },
-  { key: 'rooms', label: 'Rooms', icon: ClipboardList },
-  { key: 'schedule', label: 'Schedule', icon: CalendarIcon2 },
-  { key: 'financial', label: 'Financial', icon: DollarSign },
-  { key: 'settings', label: 'Preferences', icon: SlidersHorizontal },
-];
+function useSettingsSections() {
+  const t = useTranslations('projectSettingsPage.sections');
+  return [
+    { key: 'overview' as SectionKey, label: t('overview'), icon: Settings },
+    { key: 'people' as SectionKey, label: t('people'), icon: Users },
+    { key: 'delivery' as SectionKey, label: t('delivery'), icon: Truck },
+    { key: 'rooms' as SectionKey, label: t('rooms'), icon: ClipboardList },
+    { key: 'schedule' as SectionKey, label: t('schedule'), icon: CalendarIcon2 },
+    { key: 'financial' as SectionKey, label: t('financial'), icon: DollarSign },
+    { key: 'settings' as SectionKey, label: t('settings'), icon: SlidersHorizontal },
+  ];
+}
 
 function initialsOf(name: string): string {
   if (!name) return '';
@@ -212,6 +216,9 @@ function initialsOf(name: string): string {
 }
 
 export default function ProjectSettingsPage() {
+  const t = useTranslations('projectSettingsPage');
+  const tc = useTranslations('common');
+  const sections = useSettingsSections();
   const params = useParams<{ id: string }>();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -255,12 +262,12 @@ export default function ProjectSettingsPage() {
   const { mutate: updateProject } = useMutation({
     mutationFn: (data: any) => patchData({ url: `projects/projects/${params?.id}/`, data }),
     onSuccess: () => {
-      toast.success('Project Updated');
+      toast.success(t('projectUpdated'));
       queryClient.refetchQueries({ queryKey: [`projects/projects/${params?.id}/`] });
     },
     onError: (error: any) => {
       console.error(error);
-      toast.error('Error updating project');
+      toast.error(t('updateError'));
     },
   });
   
@@ -290,8 +297,8 @@ export default function ProjectSettingsPage() {
       });
 
       navigator.clipboard.write([clipboardItem])
-        .then(() => toast.success('Client info copied'))
-        .catch(() => toast.error('Failed to copy to clipboard'));
+        .then(() => toast.success(t('clientInfoCopied')))
+        .catch(() => toast.error(t('copyFailed')));
     } else {
       // Fallback for older browsers - wait for API then copy
       textPromise
@@ -304,9 +311,9 @@ export default function ProjectSettingsPage() {
           textarea.select();
           document.execCommand('copy');
           document.body.removeChild(textarea);
-          toast.success('Client info copied');
+          toast.success(t('clientInfoCopied'));
         })
-        .catch(() => toast.error('Error copying client info'));
+        .catch(() => toast.error(t('copyError')));
     }
   };
 
@@ -333,8 +340,8 @@ export default function ProjectSettingsPage() {
       });
 
       navigator.clipboard.write([clipboardItem])
-        .then(() => toast.success('Client info copied'))
-        .catch(() => toast.error('Failed to copy to clipboard'));
+        .then(() => toast.success(t('clientInfoCopied')))
+        .catch(() => toast.error(t('copyFailed')));
     } else {
       textPromise
         .then((text) => {
@@ -346,9 +353,9 @@ export default function ProjectSettingsPage() {
           textarea.select();
           document.execCommand('copy');
           document.body.removeChild(textarea);
-          toast.success('Client info copied');
+          toast.success(t('clientInfoCopied'));
         })
-        .catch(() => toast.error('Error copying client info'));
+        .catch(() => toast.error(t('copyError')));
     }
   }
 
@@ -377,31 +384,31 @@ export default function ProjectSettingsPage() {
     if (Object.keys(changes).length > 0) {
       updateProject(changes);
     } else {
-      toast.info('No changes to save');
+      toast.info(t('noChanges'));
     }
   }
 
   const handleArchive = id => {
     if(!projectEditPermission) {
-      toast.error('You do not have permission to archive this project');
+      toast.error(t('archiveDenied'));
       return;
     }
     updateProject({ project_status: 'ARC' });
-    toast.success('Moved to Archive');
+    toast.success(t('movedArchive'));
   };
 
   const handleUnArchive = id => {
     if(!projectEditPermission) {
-      toast.error('You do not have permission to unarchive this project');
+      toast.error(t('unarchiveDenied'));
       return;
     }
     updateProject({ project_status: 'AC' });
-    toast.success('Moved to Active');
+    toast.success(t('movedActive'));
   };
 
   const handleDelete = id => {
     if(!projectDeletePermission) {
-      toast.error('You do not have permission to delete this project');
+      toast.error(t('deleteDenied'));
       return;
     }
     deleteProjectApi(
@@ -412,10 +419,10 @@ export default function ProjectSettingsPage() {
           // Use refetchQueries to immediately refetch the data
           queryClient.refetchQueries({ queryKey: ['projects/user-projects/'] });
           queryClient.refetchQueries({ queryKey: ['projects'] });
-          toast.success('Project deleted');
+          toast.success(t('projectDeleted'));
         },
         onError: () => {
-          toast.error('Failed to delete project');
+          toast.error(t('deleteFailed'));
         },
       },
     );
@@ -440,12 +447,12 @@ export default function ProjectSettingsPage() {
       },
       {
         onSuccess: () => {
-          toast.success('Invitation sent to client!');
+          toast.success(t('inviteSent'));
           setOpenInviteClientDialog(false);
           setIsSendingInvite(false);
         },
         onError: () => {
-          toast.error('Failed to send invitation');
+          toast.error(t('inviteFailed'));
           setIsSendingInvite(false);
         },
       },
@@ -458,7 +465,7 @@ export default function ProjectSettingsPage() {
         {/* Header with CTA and onboarding progress */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-6">
           <div>
-            <h1 className="text-xl font-semibold">Project Settings</h1>
+            <h1 className="text-xl font-semibold">{t('title')}</h1>
             {/* <div className="mt-1 flex items-center gap-2">
               <Badge variant={missing.length === 0 ? 'default' : 'secondary'}>
                 {missing.length === 0 ? 'Onboarding complete' : `${missing.length} fields remaining`}
@@ -471,7 +478,7 @@ export default function ProjectSettingsPage() {
           {projectEditPermission && <Button className="bg-clay-500 hover:bg-clay-600 text-white" onClick={()=> setOpenInviteClientDialog(true)}>
             {/* {inviteLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Rocket className="w-4 h-4 mr-2" />}
             {inviteLoading ? 'Inviting...' : 'Invite Client to Onboard'} */}
-            Invite Client to Onboard
+            {inviteLoading ? t('inviting') : t('inviteClient')}
           </Button>}
           {/* <InviteOnboardDialog projectId={projectId} onStartWizard={() => setWizardOpen(true)} /> */}
         </div>
@@ -503,7 +510,7 @@ export default function ProjectSettingsPage() {
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap flex-shrink-0 bg-white border border-gray-200 text-green-700 hover:bg-green-50 transition-colors"
               >
                 <Trash className="w-3.5 h-3.5" />
-                {selectedProject?.project_status === 'ARC' ? 'Unarchive' : 'Archive'}
+                {selectedProject?.project_status === 'ARC' ? t('unarchive') : t('archive')}
               </button>
             )}
             {projectDeletePermission && (
@@ -512,7 +519,7 @@ export default function ProjectSettingsPage() {
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap flex-shrink-0 bg-white border border-red-200 text-red-600 hover:bg-red-50 transition-colors"
               >
                 <Trash className="w-3.5 h-3.5" />
-                Delete
+                {t('delete')}
               </button>
             )}
           </div>
@@ -523,7 +530,7 @@ export default function ProjectSettingsPage() {
           <aside className="hidden lg:block lg:col-span-3">
             <Card className="sticky top-4">
               <CardHeader>
-                <CardTitle className="text-sm">Sections</CardTitle>
+                <CardTitle className="text-sm">{t('sectionsTitle')}</CardTitle>
               </CardHeader>
               <CardContent className="p-2">
                 <nav className="grid gap-1">
@@ -549,7 +556,7 @@ export default function ProjectSettingsPage() {
                     onClick={() => setOpenArchive(true)}
                   >
                     <Trash className="w-4 h-4 mr-2" />
-                    {selectedProject?.project_status === 'ARC' ? 'Unarchive' : 'Archive'}
+                    {selectedProject?.project_status === 'ARC' ? t('unarchive') : t('archive')}
                   </Button>}
 
               {projectDeletePermission && <Button
@@ -558,7 +565,7 @@ export default function ProjectSettingsPage() {
                     onClick={() => openDialog(selectedProject?.id)}
                   >
                     <Trash className="w-4 h-4 mr-2" />
-                    Delete
+                    {t('delete')}
                   </Button>}
                 </nav>
               </CardContent>
@@ -586,14 +593,14 @@ export default function ProjectSettingsPage() {
             {selected === 'people' && (
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">People</CardTitle>
+                  <CardTitle className="text-base">{t('peopleTitle')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Tabs defaultValue="clients" className="w-full">
                     <TabsList className="grid w-full grid-cols-3 mb-4">
-                      <TabsTrigger value="clients">Clients</TabsTrigger>
-                      <TabsTrigger value="team">Team</TabsTrigger>
-                      <TabsTrigger value="contractors">Contractors</TabsTrigger>
+                      <TabsTrigger value="clients">{t('tabs.clients')}</TabsTrigger>
+                      <TabsTrigger value="team">{t('teamTab')}</TabsTrigger>
+                      <TabsTrigger value="contractors">{t('contractorsTab')}</TabsTrigger>
                     </TabsList>
                     <TabsContent value="clients" className="mt-4">
                       <ContactsForm
@@ -671,13 +678,13 @@ export default function ProjectSettingsPage() {
             {selected === 'settings' && (
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Settings</CardTitle>
+                  <CardTitle className="text-base">{t('settingsTitle')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Tabs defaultValue="preferences" className="w-full">
                     <TabsList className="grid w-full grid-cols-2 mb-4">
-                      <TabsTrigger value="preferences">Preferences</TabsTrigger>
-                      <TabsTrigger value="automation">Automation</TabsTrigger>
+                      <TabsTrigger value="preferences">{t('preferencesTab')}</TabsTrigger>
+                      <TabsTrigger value="automation">{t('automationTab')}</TabsTrigger>
                     </TabsList>
                     <TabsContent value="preferences" className="mt-4">
                       <PreferencesForm
@@ -726,9 +733,12 @@ export default function ProjectSettingsPage() {
         itemName={selectedProject?.name}
         requireConfirmation={false}
         confirmationText={selectedProject?.name}
-        title={selectedProject?.project_status === 'ARC' ? 'Unarchive Project' : 'Archive Project'}
-        confirmText={'Confirm'}
-        description={`Move  ${selectedProject?.name} to ${selectedProject?.project_status === 'ARC' ? 'Active' : 'Archive'} .`}
+        title={selectedProject?.project_status === 'ARC' ? t('unarchiveProject') : t('archiveProject')}
+        confirmText={t('confirm')}
+        description={t('archiveMoveDesc', {
+          name: selectedProject?.name ?? '',
+          destination: selectedProject?.project_status === 'ARC' ? t('destinationActive') : t('destinationArchive'),
+        })}
         isArchive={true}
       />
 
@@ -740,8 +750,8 @@ export default function ProjectSettingsPage() {
         itemName={selectedProject?.name}
         requireConfirmation={true}
         confirmationText={selectedProject?.name}
-        title="Delete Project"
-        description={`This will permanently delete "${selectedProject?.name}" along with all its tasks and related data. This action cannot be undone.`}
+        title={t("deleteProjectTitle")}
+        description={t('deleteProjectDesc', { name: selectedProject?.name ?? '' })}
       />
     </main>
   );
@@ -750,37 +760,38 @@ export default function ProjectSettingsPage() {
 /* Forms — lightweight, aligned to global UI */
 
 function OverviewForm({ value, onChange, onSave, projectEditPermission }: { value: any; onChange: (v: any) => void; onSave: (p: any) => void; projectEditPermission: boolean }) {
+  const t = useTranslations('projectSettingsPage');
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Overview</CardTitle>
+        <CardTitle className="text-base">{t('overviewTitle')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <Label htmlFor="title">Project title</Label>
+          <Label htmlFor="title">{t('projectTitle')}</Label>
           <Input
             id="title"
             className="mt-1 disabled:opacity-100"
-            placeholder="Chelsea Penthouse"
+            placeholder={t('projectTitlePlaceholder')}
             value={value?.project_name}
             onChange={e => onChange({ project_name: e.target.value })}
             disabled={!projectEditPermission}
           />
         </div>
         <div>
-          <Label htmlFor="code">Project code</Label>
+          <Label htmlFor="code">{t('projectCode')}</Label>
           <Input
             id="code"
             className="mt-1 disabled:opacity-100"
-            placeholder="LUX-001"
+            placeholder={t('projectCodePlaceholder')}
             value={value?.project_code}
             onChange={e => onChange({ project_code: e.target.value })}
             disabled={!projectEditPermission}
           />
-          <p className="text-xs text-ink-muted mt-1">Used in file names and POs.</p>
+          <p className="text-xs text-ink-muted mt-1">{t('codeHint')}</p>
         </div>
         <div>
-          <Label htmlFor="type">Project type</Label>
+          <Label htmlFor="type">{t('projectType')}</Label>
           <Select value={value?.project_type} onValueChange={val => onChange({ project_type: val })} disabled={!projectEditPermission}>
             <SelectTrigger className="mt-1 bg-white border-borderSoft focus:ring-0 focus:border-borderSoft disabled:opacity-100">
               <SelectValue />
@@ -789,31 +800,31 @@ function OverviewForm({ value, onChange, onSave, projectEditPermission }: { valu
               <SelectItem value="RS" className="focus:bg-greige-50 focus:text-ink">
                 <div className="flex items-center">
                   <Home className="w-4 h-4 mr-2" />
-                  Residential
+                  {t('residential')}
                 </div>
               </SelectItem>
               <SelectItem value="CM" className="focus:bg-greige-50 focus:text-ink">
                 <div className="flex items-center">
                   <Building className="w-4 h-4 mr-2" />
-                  Commercial
+                  {t('commercial')}
                 </div>
               </SelectItem>
               <SelectItem value="HS" className="focus:bg-greige-50 focus:text-ink">
                 <div className="flex items-center">
                   <Store className="w-4 h-4 mr-2" />
-                  Hospitality
+                  {t('hospitality')}
                 </div>
               </SelectItem>
             </SelectContent>
           </Select>
         </div>
         <div>
-          <Label htmlFor="summary">Summary</Label>
+          <Label htmlFor="summary">{t('summary')}</Label>
           <Textarea
             id="summary"
             className="mt-1 disabled:opacity-100"
             rows={4}
-            placeholder="Short project summary…"
+            placeholder={t('summaryPlaceholder')}
             value={value?.project_description}
             onChange={e => onChange({ project_description: e.target.value })}
             disabled={!projectEditPermission}
@@ -822,7 +833,7 @@ function OverviewForm({ value, onChange, onSave, projectEditPermission }: { valu
       {projectEditPermission &&  <div className="flex pt-3 items-center justify-end">
           <Button size={'sm'} onClick={() => onSave(value)}>
             <Save />
-            Save
+            {t('save')}
           </Button>
         </div>}
       </CardContent>
@@ -846,12 +857,13 @@ function ContactsForm({
   handleCopyClientInfo: () => void;
   handleCopySecondaryClientInfo: (clientId: string | number) => void;
 }) {
+  const t = useTranslations('projectSettingsPage');
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [clientToRemove, setClientToRemove] = useState<number | null>(null);
 
   const getClientDisplayName = (client: any) => {
     const fullName = [client?.name, client?.surname].filter(Boolean).join(' ');
-    return fullName || client?.company_name || 'Unnamed Client';
+    return fullName || client?.company_name || t('unnamedClient');
   };
 
   const secondaryClients = value?.secondary_client || [];
@@ -888,19 +900,19 @@ function ContactsForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Contacts & Access</CardTitle>
+        <CardTitle className="text-base">{t("contactsTitle")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="client" className="text-sm mb-4 flex items-center justify-between font-medium text-ink">
             <span className="">
-              Select Primary Client <span className="text-red-500">*</span>
+              {t("selectPrimaryClient")} <span className="text-red-500">*</span>
             </span>
             <button
               onClick={handleCopyClientInfo}
               className="border duration-200 hover:bg-black hover:text-white flex-shrink-0 rounded-xl py-1 text-xs font-medium px-3"
             >
-              Copy Portal Info
+              {t("copyPortalInfo")}
             </button>
           </Label>
           <ClientSelect
@@ -915,7 +927,7 @@ function ContactsForm({
 
         {/* Secondary Clients Section */}
         <div className="space-y-3">
-          <Label className="text-sm font-medium text-ink">Secondary Client</Label>
+          <Label className="text-sm font-medium text-ink">{t('secondaryClient')}</Label>
 
           {/* Add Secondary Client Select */}
           <div className="flex items-center gap-2">
@@ -960,7 +972,7 @@ function ContactsForm({
                         onClick={() => handleCopySecondaryClientInfo(clientId)}
                         className="border duration-200 hover:bg-black hover:text-white flex-shrink-0 rounded-xl py-1 text-xs font-medium px-3"
                       >
-                        Copy Portal Info
+                        {t("copyPortalInfo")}
                       </button>
                       <Button
                         variant="destructive"
@@ -978,7 +990,7 @@ function ContactsForm({
           )}
 
           {secondaryClients.length === 0 && (
-            <p className="text-sm text-muted-foreground">No secondary clients added. Use the dropdown above to add secondary clients.</p>
+            <p className="text-sm text-muted-foreground">{t('noSecondaryClientsHint')}</p>
           )}
         </div>
 
@@ -987,7 +999,7 @@ function ContactsForm({
         <div className="flex pt-3 items-center justify-end">
           <Button size={'sm'} onClick={() => onSave(value)}>
             <Save />
-            Save
+            {t('save')}
           </Button>
         </div>}
       </CardContent>
@@ -999,8 +1011,8 @@ function ContactsForm({
           setClientToRemove(null);
         }}
         onConfirm={() => clientToRemove && removeSecondaryClient(clientToRemove)}
-        title="Remove Secondary Client"
-        confirmText="Remove"
+        title={t("removeSecondaryClientTitle")}
+        confirmText={t("remove")}
         description={`Are you sure you want to remove ${clientToRemoveData ? getClientDisplayName(clientToRemoveData) : 'this client'} from secondary clients?`}
         itemName={clientToRemoveData ? getClientDisplayName(clientToRemoveData) : ''}
         requireConfirmation={false}
@@ -1010,6 +1022,7 @@ function ContactsForm({
 }
 
 function PropertyForm({ value, onChange, onSave, projectEditPermission }: { value: any; onChange: (v: any) => void; onSave: (p: any) => void; projectEditPermission: boolean }) {
+  const t = useTranslations('projectSettingsPage');
   type NominatimPlace = {
     display_name: string;
     lat: string;
@@ -1065,16 +1078,16 @@ function PropertyForm({ value, onChange, onSave, projectEditPermission }: { valu
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Property</CardTitle>
+        <CardTitle className="text-base">{t('propertyTitle')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <Label>Site address</Label>
+          <Label>{t('siteAddress')}</Label>
           <div className="relative">
             <Input
               className="mt-1 disabled:opacity-100"
               disabled={!projectEditPermission}
-              placeholder="Search address…"
+              placeholder={t('searchAddress')}
               value={addressQuery}
               onChange={e => {
                 const next = e.target.value;
@@ -1092,9 +1105,9 @@ function PropertyForm({ value, onChange, onSave, projectEditPermission }: { valu
                 <Command>
                   <CommandList>
                     {addressLoading ? (
-                      <div className="py-3 text-sm text-muted-foreground text-center">Searching…</div>
+                      <div className="py-3 text-sm text-muted-foreground text-center">{t('searching')}</div>
                     ) : addressSuggestions.length === 0 ? (
-                      <div className="py-3 text-sm text-muted-foreground text-center">No addresses found</div>
+                      <div className="py-3 text-sm text-muted-foreground text-center">{t("noAddressesFound")}</div>
                     ) : (
                       <CommandGroup>
                         {addressSuggestions.map(place => (
@@ -1124,7 +1137,7 @@ function PropertyForm({ value, onChange, onSave, projectEditPermission }: { valu
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label>Access & parking notes</Label>
+            <Label>{t("accessParkingNotes")}</Label>
             <Textarea
               className="mt-1 disabled:opacity-100"
               disabled={!projectEditPermission}
@@ -1139,7 +1152,7 @@ function PropertyForm({ value, onChange, onSave, projectEditPermission }: { valu
             />
           </div>
           <div>
-            <Label>Building restrictions</Label>
+            <Label>{t("buildingRestrictions")}</Label>
             <Textarea
               className="mt-1 disabled:opacity-100"
               disabled={!projectEditPermission}
@@ -1157,7 +1170,7 @@ function PropertyForm({ value, onChange, onSave, projectEditPermission }: { valu
       {projectEditPermission &&  <div className="flex pt-3 items-center justify-end">
           <Button size={'sm'} onClick={() => onSave(value)}>
             <Save />
-            Save
+            {t('save')}
           </Button>
         </div>}
       </CardContent>
@@ -1229,6 +1242,7 @@ function RoomItem({
 }
 
 function RoomsForm({ value, onChange, onSave , projectEditPermission }: { value: any; onChange: (v: any) => void; onSave: (p: any) => void ; projectEditPermission: boolean }) {
+  const t = useTranslations('projectSettingsPage');
   const { user } = useUser();
   const queryClient = useQueryClient();
   const { mutate: createRoom, isPending: isCreating } = usePost();
@@ -1252,11 +1266,11 @@ function RoomsForm({ value, onChange, onSave , projectEditPermission }: { value:
             onChange({ ...value, rooms: next });
           }
           queryClient.invalidateQueries({ queryKey: [`projects/rooms/${roomId}/`] });
-          toast.success('Room deleted successfully');
+          toast.success(t('roomDeleted'));
         },
         onError: (error: any) => {
           console.error('Error deleting room:', error);
-          toast.error('Failed to delete room');
+          toast.error(t('roomDeleteFailed'));
         },
       },
     );
@@ -1265,7 +1279,7 @@ function RoomsForm({ value, onChange, onSave , projectEditPermission }: { value:
   const handleCreateRoom = async () => {
     if (!newRoomName.trim()) return;
     if (!user?.studio?.id || !user?.id) {
-      toast.error('User information not available');
+      toast.error(t('userUnavailable'));
       return;
     }
 
@@ -1283,11 +1297,11 @@ function RoomsForm({ value, onChange, onSave , projectEditPermission }: { value:
           const rooms = [...(value?.rooms ?? []), response.id];
           onChange({ ...value, rooms });
           setNewRoomName('');
-          toast.success('Room created successfully');
+          toast.success(t('roomCreated'));
         },
         onError: (error: any) => {
           console.error('Error creating room:', error);
-          toast.error('Failed to create room');
+          toast.error(t('roomCreateFailed'));
         },
       },
     );
@@ -1299,9 +1313,9 @@ function RoomsForm({ value, onChange, onSave , projectEditPermission }: { value:
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base">Rooms</CardTitle>
+          <CardTitle className="text-base">{t('roomsTitle')}</CardTitle>
           <Badge variant="outline" className="bg-clay-50 text-clay-700 border-clay-200">
-            {rooms.length} {rooms.length === 1 ? 'Room' : 'Rooms'}
+            {rooms.length} {rooms.length === 1 ? t("roomSingular") : t("roomsPlural")}
           </Badge>
         </div>
       </CardHeader>
@@ -1309,7 +1323,7 @@ function RoomsForm({ value, onChange, onSave , projectEditPermission }: { value:
         {/* Add new room */}
       {projectEditPermission &&  <div className="flex items-center gap-2">
           <Input
-            placeholder="Enter room name..."
+            placeholder={t("enterRoomName")}
             value={newRoomName}
             onChange={e => setNewRoomName(e.target.value)}
             onKeyDown={e => {
@@ -1350,8 +1364,8 @@ function RoomsForm({ value, onChange, onSave , projectEditPermission }: { value:
           ) : (
             <div className="text-center py-8 text-muted-foreground border border-dashed border-borderSoft rounded-lg">
               <Home className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-              <p>No rooms added yet.</p>
-              <p className="text-xs mt-1">Add rooms to organize your project spaces.</p>
+              <p>{t('noRoomsYet')}</p>
+              <p className="text-xs mt-1">{t('addRoomsHint')}</p>
             </div>
           )}
         </div>
@@ -1360,7 +1374,7 @@ function RoomsForm({ value, onChange, onSave , projectEditPermission }: { value:
        {projectEditPermission && <div className="flex pt-3 items-center justify-end">
           <Button size={'sm'} onClick={() => onSave({ rooms: value?.rooms })}>
             <Save />
-            Save
+            {t('save')}
           </Button>
         </div>}
       </CardContent>
@@ -1370,9 +1384,9 @@ function RoomsForm({ value, onChange, onSave , projectEditPermission }: { value:
         onClose={closeDialog}
         onConfirm={onConfirmDelete}
         id={item}
-        title="Delete Room"
-        description="Are you sure you want to delete this room? This action cannot be undone."
-        confirmText="Delete"
+        title={t("deleteRoomTitle")}
+        description={t("deleteRoomDesc")}
+        confirmText={t("delete")}
         requireConfirmation={false}
       />
     </Card>
@@ -1388,6 +1402,7 @@ function AddressAutocomplete({
   value: string;
   onChange: (val: string) => void;
 }) {
+  const t = useTranslations('projectSettingsPage');
   type NominatimPlace = { display_name: string; lat: string; lon: string };
   const [query, setQuery] = useState<string>(value ?? '');
   const [loading, setLoading] = useState(false);
@@ -1423,7 +1438,7 @@ function AddressAutocomplete({
       <div className="relative">
         <Input
           className="mt-1"
-          placeholder="Search address…"
+          placeholder={t('searchAddress')}
           value={query}
           onChange={e => { setQuery(e.target.value); onChange(e.target.value); setOpen(true); }}
         />
@@ -1432,9 +1447,9 @@ function AddressAutocomplete({
             <Command>
               <CommandList>
                 {loading ? (
-                  <div className="py-3 text-sm text-muted-foreground text-center">Searching…</div>
+                  <div className="py-3 text-sm text-muted-foreground text-center">{t('searching')}</div>
                 ) : suggestions.length === 0 ? (
-                  <div className="py-3 text-sm text-muted-foreground text-center">No addresses found</div>
+                  <div className="py-3 text-sm text-muted-foreground text-center">{t("noAddressesFound")}</div>
                 ) : (
                   <CommandGroup>
                     {suggestions.map(place => (
@@ -1458,36 +1473,37 @@ function AddressAutocomplete({
 }
 
 function AddressFields({ prefix, value, onChange,projectEditPermission }: { prefix: string; value: any; onChange: (v: any) => void,projectEditPermission:boolean }) {
+  const t = useTranslations('projectSettingsPage');
   const f = (field: string) => `${prefix}_${field}`;
   const update = (field: string, val: string) => onChange({ ...value, [f(field)]: val });
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label>Address Line 1</Label>
-        <Input disabled={!projectEditPermission} className="bg-white disabled:opacity-100" value={value?.[f('address_line_1')] ?? ''} onChange={e => update('address_line_1', e.target.value)} placeholder="Street address" />
+        <Label>{t('addressLine1')}</Label>
+        <Input disabled={!projectEditPermission} className="bg-white disabled:opacity-100" value={value?.[f('address_line_1')] ?? ''} onChange={e => update('address_line_1', e.target.value)} placeholder={t("streetAddress")} />
       </div>
       <div className="space-y-2">
-        <Label>Address Line 2</Label>
-        <Input disabled={!projectEditPermission} className="bg-white disabled:opacity-100" value={value?.[f('address_line_2')] ?? ''} onChange={e => update('address_line_2', e.target.value)} placeholder="Apartment, suite, etc." />
+        <Label>{t('addressLine2Label')}</Label>
+        <Input disabled={!projectEditPermission} className="bg-white disabled:opacity-100" value={value?.[f('address_line_2')] ?? ''} onChange={e => update('address_line_2', e.target.value)} placeholder={t("addressLine2")} />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label>City</Label>
-          <Input disabled={!projectEditPermission} className="bg-white disabled:opacity-100" value={value?.[f('city')] ?? ''} onChange={e => update('city', e.target.value)} placeholder="City" />
+          <Label>{t('city')}</Label>
+          <Input disabled={!projectEditPermission} className="bg-white disabled:opacity-100" value={value?.[f('city')] ?? ''} onChange={e => update('city', e.target.value)} placeholder={t("city")} />
         </div>
         <div className="space-y-2">
-          <Label>Postcode</Label>
-          <Input disabled={!projectEditPermission} className="bg-white disabled:opacity-100" value={value?.[f('postcode')] ?? ''} onChange={e => update('postcode', e.target.value)} placeholder="Postcode" />
+          <Label>{t('postcode')}</Label>
+          <Input disabled={!projectEditPermission} className="bg-white disabled:opacity-100" value={value?.[f('postcode')] ?? ''} onChange={e => update('postcode', e.target.value)} placeholder={t("postcode")} />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label>County</Label>
-          <Input disabled={!projectEditPermission} className="bg-white disabled:opacity-100" value={value?.[f('county')] ?? ''} onChange={e => update('county', e.target.value)} placeholder="County" />
+          <Label>{t('county')}</Label>
+          <Input disabled={!projectEditPermission} className="bg-white disabled:opacity-100" value={value?.[f('county')] ?? ''} onChange={e => update('county', e.target.value)} placeholder={t("county")} />
         </div>
         <div className="space-y-2">
-          <Label>Country</Label>
-          <Input disabled={!projectEditPermission} className="bg-white disabled:opacity-100" value={value?.[f('country')] ?? ''} onChange={e => update('country', e.target.value)} placeholder="Country" />
+          <Label>{t('country')}</Label>
+          <Input disabled={!projectEditPermission} className="bg-white disabled:opacity-100" value={value?.[f('country')] ?? ''} onChange={e => update('country', e.target.value)} placeholder={t("country")} />
         </div>
       </div>
     </div>
@@ -1495,17 +1511,18 @@ function AddressFields({ prefix, value, onChange,projectEditPermission }: { pref
 }
 
 function DeliveryForm({ value, onChange, onSave,projectEditPermission }: { value: any; onChange: (v: any) => void; onSave: (p: any) => void,projectEditPermission:boolean }) {
+  const t = useTranslations('projectSettingsPage');
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Addresses</CardTitle>
+        <CardTitle className="text-base">{t('addressesTitle')}</CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="delivery">
           <TabsList className="grid w-full grid-cols-3 mb-4">
-            <TabsTrigger value="delivery">Delivery</TabsTrigger>
-            <TabsTrigger value="billing">Billing</TabsTrigger>
-            <TabsTrigger value="logistics">Logistics</TabsTrigger>
+            <TabsTrigger value="delivery">{t('deliveryTab')}</TabsTrigger>
+            <TabsTrigger value="billing">{t('billingTab')}</TabsTrigger>
+            <TabsTrigger value="logistics">{t('logisticsTab')}</TabsTrigger>
           </TabsList>
           <TabsContent value="delivery">
             <AddressFields projectEditPermission={projectEditPermission} prefix="delivery" value={value} onChange={onChange} />
@@ -1520,7 +1537,7 @@ function DeliveryForm({ value, onChange, onSave,projectEditPermission }: { value
        {projectEditPermission && <div className="flex pt-3 items-center justify-end">
           <Button size={'sm'} onClick={() => onSave(value)}>
             <Save />
-            Save
+            {t('save')}
           </Button>
         </div>}
       </CardContent>
@@ -1538,18 +1555,19 @@ function PreferencesForm({
   onChange: (v: OnboardingData) => void;
   onSave: (p: any) => void;
 }) {
+  const t = useTranslations('projectSettingsPage');
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Preferences & Consent</CardTitle>
+        <CardTitle className="text-base">{t('preferencesConsentTitle')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <Label>Style tags</Label>
+          <Label>{t('styleTags')}</Label>
           <Input
             className="mt-1 disabled:opacity-100 disabled:cursor-not-allowed"
             disabled={!projectEditPermission}
-            placeholder="modern, warm minimalism"
+            placeholder={t("styleKeywords")}
             value={value?.preferences?.styleTags ?? ''}
             onChange={e =>
               onChange({
@@ -1563,11 +1581,11 @@ function PreferencesForm({
           />
         </div>
         <div>
-          <Label>Preferred vendors</Label>
+          <Label>{t('preferredVendorsLabel')}</Label>
           <Input
             className="mt-1 disabled:opacity-100 disabled:cursor-not-allowed"
             disabled={!projectEditPermission}
-            placeholder="Vendor A, Vendor B"
+            placeholder={t("preferredVendors")}
             value={value?.preferences?.preferredVendors ?? ' '}
             onChange={e =>
               onChange({
@@ -1593,7 +1611,7 @@ function PreferencesForm({
                 })
               }
             />
-            <span className="text-sm">Marketing opt‑in</span>
+            <span className="text-sm">{t('marketingOptIn')}</span>
           </div>
           {/* <div className="flex items-center gap-3 text-sm">
             <label className="flex items-center gap-2">
@@ -1643,7 +1661,7 @@ function PreferencesForm({
     {projectEditPermission && <div className="flex pt-3 items-center justify-end">
           <Button size={'sm'} onClick={() => onSave(value)}>
             <Save />
-            Save
+            {t('save')}
           </Button>
         </div>}
       </CardContent>
@@ -1652,6 +1670,7 @@ function PreferencesForm({
 }
 
 function TimelineForm({ value, onChange, onSave }: { value: any; onChange: (v: any) => void; onSave: (p: any) => void }) {
+  const t = useTranslations('projectSettingsPage');
   // Format date for display in input
   const formatDateForInput = (dateString: string) => {
     if (!dateString) return '';
@@ -1662,11 +1681,11 @@ function TimelineForm({ value, onChange, onSave }: { value: any; onChange: (v: a
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Timeline</CardTitle>
+        <CardTitle className="text-base">{t('timelineTitle')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <Label className="block mb-2">Project Duration</Label>
+          <Label className="block mb-2">{t('projectDuration')}</Label>
           <DateRangePicker
             key={`timeline-${value?.start_date}-${value?.end_date}`}
             onUpdate={values => {
@@ -1685,7 +1704,7 @@ function TimelineForm({ value, onChange, onSave }: { value: any; onChange: (v: a
           />
         </div>
         <div>
-          <Label htmlFor="timezone">Timezone</Label>
+          <Label htmlFor="timezone">{t('timezone')}</Label>
           <Select value={value?.timezone} onValueChange={val => onChange({ timezone: val })}>
             <SelectTrigger id="timezone" className="mt-1 bg-white border-borderSoft focus:ring-0 focus:border-borderSoft">
               <SelectValue />
@@ -1694,19 +1713,19 @@ function TimelineForm({ value, onChange, onSave }: { value: any; onChange: (v: a
               <SelectItem value="Europe/London" className="focus:bg-greige-50 focus:text-ink">
                 <div className="flex items-center">
                   <Clock className="w-4 h-4 mr-2" />
-                  London (GMT)
+                  {t('timezoneLondon')}
                 </div>
               </SelectItem>
               <SelectItem value="America/New_York" className="focus:bg-greige-50 focus:text-ink">
                 <div className="flex items-center">
                   <Clock className="w-4 h-4 mr-2" />
-                  New York (EST)
+                  {t('timezoneNewYork')}
                 </div>
               </SelectItem>
               <SelectItem value="Europe/Paris" className="focus:bg-greige-50 focus:text-ink">
                 <div className="flex items-center">
                   <Clock className="w-4 h-4 mr-2" />
-                  Paris (CET)
+                  {t('timezoneParis')}
                 </div>
               </SelectItem>
             </SelectContent>
@@ -1715,7 +1734,7 @@ function TimelineForm({ value, onChange, onSave }: { value: any; onChange: (v: a
         <div className="flex pt-3 items-center justify-end">
           <Button size={'sm'} onClick={() => onSave(value)}>
             <Save />
-            Save
+            {t('save')}
           </Button>
         </div>
       </CardContent>
@@ -1724,6 +1743,7 @@ function TimelineForm({ value, onChange, onSave }: { value: any; onChange: (v: a
 }
 
 function FinancialForm({ value, onChange, onSave,projectEditPermission }: { value: any; onChange: (v: any) => void; onSave: (p: any) => void }) {
+  const t = useTranslations('projectSettingsPage');
   const updateData = updates => {
     const raw = updates?.currency ?? updates;
     const currency = raw?.value ?? raw;
@@ -1735,28 +1755,28 @@ function FinancialForm({ value, onChange, onSave,projectEditPermission }: { valu
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Financial</CardTitle>
+        <CardTitle className="text-base">{t('financialTitle')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="budget">Budget</Label>
+            <Label htmlFor="budget">{t('budget')}</Label>
             <Input
               id="budget"
               disabled={!projectEditPermission}
               className="mt-1 disabled:opacity-100 disabled:cursor-not-allowed"
-              placeholder="850000"
+              placeholder={t("budgetPlaceholder")}
               value={value?.total_budget}
               onChange={e => onChange({ total_budget: e.target.value })}
             />
           </div>
           <div>
-            <Label htmlFor="taxRate">Tax/VAT rate (%)</Label>
+            <Label htmlFor="taxRate">{t('taxRate')}</Label>
             <Input
               id="taxRate"
               disabled={!projectEditPermission}
               className="mt-1 disabled:opacity-100 disabled:cursor-not-allowed"
-              placeholder="20"
+              placeholder={t("marginPlaceholder")}
               value={value?.vt_rate}
               onChange={e => onChange({ vt_rate: e.target.value })}
             />
@@ -1766,14 +1786,14 @@ function FinancialForm({ value, onChange, onSave,projectEditPermission }: { valu
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="">
             <Label htmlFor="ffne" className="text-sm font-medium text-ink">
-              FF&E (%)
+              {t('ffnePercent')}
             </Label>
             <Input
               id="ffne"
               type="number"
               disabled={!projectEditPermission}
               className="mt-1 disabled:opacity-100 disabled:cursor-not-allowed"
-              placeholder="0"
+              placeholder={t("contingencyPlaceholder")}
               value={value?.ffne}
               onChange={e => onChange({ ffne: e.target.value })}
               className="bg-white border-borderSoft focus:ring-0 focus:border-clay-300"
@@ -1782,7 +1802,7 @@ function FinancialForm({ value, onChange, onSave,projectEditPermission }: { valu
             </div> */}
           </div>
           <div>
-            <Label htmlFor="currency">Currency</Label>
+            <Label htmlFor="currency">{t('currency')}</Label>
 
             <CurrencySelector disabled={!projectEditPermission} value={value?.currency} onChange={updateData} />
           </div>
@@ -1791,7 +1811,7 @@ function FinancialForm({ value, onChange, onSave,projectEditPermission }: { valu
      {projectEditPermission &&   <div className="flex pt-3 items-center justify-end">
           <Button size={'sm'} onClick={() => onSave(value)}>
             <Save />
-            Save
+            {t('save')}
           </Button>
         </div>}
       </CardContent>
@@ -1800,26 +1820,27 @@ function FinancialForm({ value, onChange, onSave,projectEditPermission }: { valu
 }
 
 function AutomationForm({ onSave, projectEditPermission }: { onSave: (p: any) => void, projectEditPermission: boolean }) {
+  const t = useTranslations('projectSettingsPage');
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Automation</CardTitle>
+        <CardTitle className="text-base">{t('automationTitle')}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="border rounded-lg p-3">
-            <div className="text-sm font-medium">Kickoff Pack</div>
-            <p className="text-sm text-muted-foreground mt-1">{'Auto‑generate tasks when onboarding completes.'}</p>
+            <div className="text-sm font-medium">{t('kickoffPack')}</div>
+            <p className="text-sm text-muted-foreground mt-1">{t('automationKickoffDesc')}</p>
           </div>
           <div className="border rounded-lg p-3">
-            <div className="text-sm font-medium">Notifications</div>
-            <p className="text-sm text-muted-foreground mt-1">{'Notify team when clients join the portal.'}</p>
+            <div className="text-sm font-medium">{t('notifications')}</div>
+            <p className="text-sm text-muted-foreground mt-1">{t('automationNotificationsDesc')}</p>
           </div>
         </div>
       {projectEditPermission &&  <div className="flex pt-3 items-center justify-end">
           <Button size={'sm'} onClick={() => onSave({})}>
             <Save />
-            Save
+            {t('save')}
           </Button>
         </div>}
       </CardContent>
@@ -1828,6 +1849,7 @@ function AutomationForm({ onSave, projectEditPermission }: { onSave: (p: any) =>
 }
 
 function TeamForm({ value, onChange, onSave, users,projectEditPermission }: { value: any; onChange: (v: any) => void; onSave: (p: any) => void; users: any,projectEditPermission:boolean }) {
+  const t = useTranslations('projectSettingsPage');
   const [openPop, setOpenPop] = React.useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedTeamMember, setSelectedTeamMember] = useState(null);
@@ -1859,7 +1881,7 @@ function TeamForm({ value, onChange, onSave, users,projectEditPermission }: { va
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base mb-5">Team Members</CardTitle>
+          <CardTitle className="text-base mb-5">{t('teamMembersTitle')}</CardTitle>
           {/* <Button onClick={addTeamMember} size="sm" className="bg-clay-600 hover:bg-clay-700 text-white">
             <Plus className="w-4 h-4 mr-1" />
             Add Member
@@ -1881,7 +1903,7 @@ function TeamForm({ value, onChange, onSave, users,projectEditPermission }: { va
                     <span className="flex items-center gap-2 overflow-hidden">
                       <span className="flex items-center gap-2 text-gray-500">
                         <Search className="h-4 w-4" />
-                        Enter name...
+                        {t('enterNamePlaceholder')}
                       </span>
                     </span>
                   </Button>
@@ -1889,10 +1911,10 @@ function TeamForm({ value, onChange, onSave, users,projectEditPermission }: { va
                 <PopoverContent className="p-0 w-[360px] rounded-xl border border-gray-200 shadow-md" align="start">
                   <Command>
                     <CommandInput
-                      placeholder="Search teammates…"
+                      placeholder={t("searchTeammates")}
                       className=" focus-visible:ring-gray-300 focus-visible:ring-offset-0 focus:outline-none"
                     />
-                    <CommandEmpty>No people found.</CommandEmpty>
+                    <CommandEmpty>{t('noPeopleFound')}</CommandEmpty>
                     <CommandList className="max-h-64">
                       <CommandGroup>
                         {users?.map(m => {
@@ -1946,14 +1968,14 @@ function TeamForm({ value, onChange, onSave, users,projectEditPermission }: { va
             </div>
           ))}
           {(!value?.assignees || value?.assignees.length === 0) && (
-            <div className="text-center py-8 text-muted-foreground">No team members assigned yet. Click "Add Member" to get started.</div>
+            <div className="text-center py-8 text-muted-foreground">{t("noTeamMembers")}</div>
           )}
         </div>
 
       { projectEditPermission &&  <div className="flex pt-3 items-center justify-end">
           <Button size={'sm'} onClick={() => onSave(value)}>
             <Save />
-            Save
+            {t('save')}
           </Button>
         </div>}
       </CardContent>
@@ -1962,9 +1984,9 @@ function TeamForm({ value, onChange, onSave, users,projectEditPermission }: { va
         isOpen={isDeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
         onConfirm={() => handleDelete(selectedTeamMember)}
-        title="Remove Member"
-        confirmText="Remove"
-        description={`Are you sure you want to remove ${selectedTeamMember?.name} from this studio? Removing this member will revoke their access to all projects and tasks associated with this studio.`}
+        title={t("removeMemberTitle")}
+        confirmText={t("remove")}
+        description={t('removeMemberDesc', { name: selectedTeamMember?.name ?? '' })}
         itemName={selectedTeamMember?.name}
         requireConfirmation={true} // 👈 disables the typing step
       />
@@ -1975,6 +1997,8 @@ function TeamForm({ value, onChange, onSave, users,projectEditPermission }: { va
 
 // Contractor Access QR Code Section
 function ContractorAccessSection({ projectData }: { projectData: any }) {
+  const t = useTranslations('projectSettingsPage');
+  const tc = useTranslations('common');
   const qrRef = useRef<HTMLDivElement>(null);
 
   // BACKEND NOTE: This component expects 'access_token' field in the project API response.
@@ -2013,11 +2037,11 @@ function ContractorAccessSection({ projectData }: { projectData: any }) {
 
   const handleCopyLink = () => {
     if (!contractorPortalUrl) {
-      toast.error('Access token not available yet');
+      toast.error(t('accessTokenUnavailable'));
       return;
     }
     navigator.clipboard.writeText(contractorPortalUrl);
-    toast.success('Link copied to clipboard');
+    toast.success(t('linkCopied'));
   };
 
   const handlePrint = () => {
@@ -2027,11 +2051,12 @@ function ContractorAccessSection({ projectData }: { projectData: any }) {
     const svgData = new XMLSerializer().serializeToString(svg);
     const win = window.open('', '_blank');
     if (!win) return;
+    const projectName = projectData?.project_name || tc('project');
     win.document.write(`
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Contractor QR — ${projectData?.project_name || 'Project'}</title>
+          <title>${t('qrPrintTitle', { name: projectName })}</title>
           <style>
             body { margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; font-family: Arial, sans-serif; }
             h2 { font-size: 18px; margin-bottom: 8px; color: #111; }
@@ -2041,8 +2066,8 @@ function ContractorAccessSection({ projectData }: { projectData: any }) {
           </style>
         </head>
         <body>
-          <h2>${projectData?.project_name || 'Project'}</h2>
-          <p>Scan to access the contractor portal</p>
+          <h2>${projectName}</h2>
+          <p>${t('scanContractorPortal')}</p>
           ${svgData}
           <p>${contractorPortalUrl}</p>
           <script>window.onload = () => { window.print(); window.onafterprint = () => window.close(); }<\/script>
@@ -2057,7 +2082,7 @@ function ContractorAccessSection({ projectData }: { projectData: any }) {
       <CardHeader>
         <div className="flex items-center gap-2">
           <QrCode className="w-5 h-5 text-clay-600" />
-          <CardTitle className="text-base">Contractor Access</CardTitle>
+          <CardTitle className="text-base">{t('contractorAccessTitle')}</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -2075,7 +2100,7 @@ function ContractorAccessSection({ projectData }: { projectData: any }) {
                 </div>
                 <div className="text-center space-y-2 w-full">
                   <p className="text-sm text-neutral-600">
-                    Scan this QR code on site to access the contractor portal
+                    {t('scanQrOnSite')}
                   </p>
                   <div className="bg-white border border-neutral-300 rounded-md p-2 text-xs font-mono text-neutral-700 break-all">
                     {contractorPortalUrl}
@@ -2091,7 +2116,7 @@ function ContractorAccessSection({ projectData }: { projectData: any }) {
                 className="flex-1"
               >
                 <Copy className="w-4 h-4 mr-2" />
-                Copy Link
+                {t('copyLink')}
               </Button>
               <Button
                 variant="outline"
@@ -2100,18 +2125,18 @@ function ContractorAccessSection({ projectData }: { projectData: any }) {
                 className="flex-1"
               >
                 <Printer className="w-4 h-4 mr-2" />
-                Print
+                {t('print')}
               </Button>
             </div>
             <p className="text-xs text-neutral-500 italic">
-              Note: Print this QR code and display it on site. Contractors can scan to access their project files.
+              {t('qrPrintNote')}
             </p>
           </>
         ) : (
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800">
-            <p className="font-medium">Access token pending</p>
+            <p className="font-medium">{t('accessTokenPending')}</p>
             <p className="text-xs mt-1">
-              The project access token will be available soon. Contact support if this persists.
+              {t('accessTokenPendingHint')}
             </p>
           </div>
         )}
@@ -2121,6 +2146,8 @@ function ContractorAccessSection({ projectData }: { projectData: any }) {
 }
 
 function ContractorsForm({ value, onChange, onSave,projectEditPermission }: { value: any; onChange: (v: any) => void; onSave: (p: any) => void,projectEditPermission:boolean }) {
+  const t = useTranslations('projectSettingsPage');
+  const tc = useTranslations('common');
   const params = useParams<{ id: string }>();
   const [openInviteContractorDialog, setOpenInviteContractorDialog] = useState(false);
   const [selectedContractor, setSelectedContractor] = useState<any>(null);
@@ -2159,8 +2186,8 @@ function ContractorsForm({ value, onChange, onSave,projectEditPermission }: { va
       });
 
       navigator.clipboard.write([clipboardItem])
-        .then(() => toast.success('Contractor info copied'))
-        .catch(() => toast.error('Failed to copy to clipboard'));
+        .then(() => toast.success(t('contractorInfoCopied')))
+        .catch(() => toast.error(t('copyFailed')));
     } else {
       textPromise
         .then((text) => {
@@ -2172,9 +2199,9 @@ function ContractorsForm({ value, onChange, onSave,projectEditPermission }: { va
           textarea.select();
           document.execCommand('copy');
           document.body.removeChild(textarea);
-          toast.success('Contractor info copied');
+          toast.success(t('contractorInfoCopied'));
         })
-        .catch(() => toast.error('Error copying contractor info'));
+        .catch(() => toast.error(t('copyError')));
     }
   };
 
@@ -2194,14 +2221,14 @@ function ContractorsForm({ value, onChange, onSave,projectEditPermission }: { va
       },
       {
         onSuccess: () => {
-          toast.success('Invitation sent to contractor!');
+          toast.success(t('inviteContractorSent'));
           setOpenInviteContractorDialog(false);
           setSelectedContractor(null);
           setIsSendingInvite(false);
           refetch();
         },
         onError: () => {
-          toast.error('Failed to send invitation');
+          toast.error(t('inviteFailed'));
           setIsSendingInvite(false);
         },
       }
@@ -2212,7 +2239,7 @@ function ContractorsForm({ value, onChange, onSave,projectEditPermission }: { va
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Contractors</CardTitle>
+          <CardTitle className="text-base">{t('contractorsTitle')}</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center py-12">
           <Loader2 className="w-8 h-8 animate-spin text-neutral-400" />
@@ -2259,11 +2286,11 @@ function ContractorsForm({ value, onChange, onSave,projectEditPermission }: { va
                         <div className="flex items-center gap-2">
                           {hasPortalAccess ? (
                             <Badge variant="default" className="bg-green-100 text-green-800 border-green-200">
-                              Portal Access
+                              {t('portalAccess')}
                             </Badge>
                           ) : (
                             <Badge variant="outline" className="bg-white text-gray-600 border-gray-200">
-                              No Access
+                              {t('noAccess')}
                             </Badge>
                           )}
                         </div>
@@ -2271,22 +2298,22 @@ function ContractorsForm({ value, onChange, onSave,projectEditPermission }: { va
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <Label className="text-sm text-muted-foreground">Name</Label>
+                          <Label className="text-sm text-muted-foreground">{tc('name')}</Label>
                           <div className="mt-1 text-sm font-medium">{displayName}</div>
                         </div>
                         <div>
-                          <Label className="text-sm text-muted-foreground">Email</Label>
+                          <Label className="text-sm text-muted-foreground">{tc('email')}</Label>
                           <div className="mt-1 text-sm font-medium">{contractor.email || '—'}</div>
                         </div>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <Label className="text-sm text-muted-foreground">Phone</Label>
+                          <Label className="text-sm text-muted-foreground">{tc('phone')}</Label>
                           <div className="mt-1 text-sm font-medium">{contractor.phone || '—'}</div>
                         </div>
                         <div>
-                          <Label className="text-sm text-muted-foreground">Last Login</Label>
+                          <Label className="text-sm text-muted-foreground">{t('lastLogin')}</Label>
                           <div className="mt-1 text-sm font-medium">
                             {contractor.last_login
                               ? new Date(contractor.last_login).toLocaleDateString('en-GB', {
@@ -2294,7 +2321,7 @@ function ContractorsForm({ value, onChange, onSave,projectEditPermission }: { va
                                   month: 'short',
                                   year: 'numeric',
                                 })
-                              : 'Never'}
+                              : t('never')}
                           </div>
                         </div>
                       </div>
@@ -2302,11 +2329,11 @@ function ContractorsForm({ value, onChange, onSave,projectEditPermission }: { va
                       <div className="pt-2 border-t border-borderSoft">
                         <div className="grid grid-cols-2 gap-4 text-sm mb-3">
                           <div>
-                            <span className="text-muted-foreground">Shared Items: </span>
+                            <span className="text-muted-foreground">{t('sharedItems')} </span>
                             <span className="font-medium">{contractor.item_count || 0}</span>
                           </div>
                           <div>
-                            <span className="text-muted-foreground">Shared Drawings: </span>
+                            <span className="text-muted-foreground">{t('sharedDrawings')} </span>
                             <span className="font-medium">{contractor.drawing_count || 0}</span>
                           </div>
                         </div>
@@ -2322,7 +2349,7 @@ function ContractorsForm({ value, onChange, onSave,projectEditPermission }: { va
                             }}
                             className="flex-1"
                           >
-                            Invite to Portal
+                            {t('inviteToPortal')}
                           </Button>}
                           <Button
                             size="sm"
@@ -2330,7 +2357,7 @@ function ContractorsForm({ value, onChange, onSave,projectEditPermission }: { va
                             onClick={() => handleCopyContractorInfo(contractor.id)}
                             className="flex-1"
                           >
-                            Copy Portal Info
+                            {t("copyPortalInfo")}
                           </Button>
                         </div>
                       </div>
@@ -2341,7 +2368,7 @@ function ContractorsForm({ value, onChange, onSave,projectEditPermission }: { va
             })
           ) : (
             <div className="text-center py-8 text-muted-foreground">
-              No contractors assigned yet. Go to the Contractors page to manage contractors.
+              {t('noContractorsYet')}
             </div>
           )}
         </div>
@@ -2356,8 +2383,8 @@ function ContractorsForm({ value, onChange, onSave,projectEditPermission }: { va
       projectId={params?.id}
       contractorId={selectedContractor?.id}
       isSendingEmail={isSendingInvite}
-      title={`Invite ${selectedContractor?.name || selectedContractor?.company_name || 'Contractor'}`}
-      description="Send invitation email to contractor portal"
+      title={t('inviteContractorTitle', { name: selectedContractor?.name || selectedContractor?.company_name || t('unnamedContractor') })}
+      description={t("inviteContractorDesc")}
     />
     </>
   );
@@ -2365,6 +2392,7 @@ function ContractorsForm({ value, onChange, onSave,projectEditPermission }: { va
 
 /* PhaseTaskEditor — inline task list per phase in project schedule */
 function PhaseTaskEditor({ phaseId, projectId }: { phaseId: number; projectId: string }) {
+  const t = useTranslations('projectSettingsPage');
   const { data: allTasks, refetch } = useFetch(
     projectId ? `task/user-tasks-project?project_id=${projectId}` : null
   );
@@ -2384,20 +2412,20 @@ function PhaseTaskEditor({ phaseId, projectId }: { phaseId: number; projectId: s
     if (!name) return;
     createTask(
       { url: 'task/tasks/', data: { name, phase: phaseId, project: projectId, status: 'todo', assignees: [] } },
-      { onSuccess: () => { refetch(); setDraft(''); inputRef.current?.focus(); }, onError: () => toast.error('Failed to add task') }
+      { onSuccess: () => { refetch(); setDraft(''); inputRef.current?.focus(); }, onError: () => toast.error(t('addTaskFailed')) }
     );
   }
 
   function removeTask(id: number) {
-    deleteTask({ url: `task/tasks/${id}/` }, { onSuccess: () => refetch(), onError: () => toast.error('Failed to delete task') });
+    deleteTask({ url: `task/tasks/${id}/` }, { onSuccess: () => refetch(), onError: () => toast.error(t('deleteTaskFailed')) });
   }
 
   return (
     <div className="space-y-2 pt-2">
       <div className="flex items-center gap-1.5 mb-1">
         <CheckSquare className="h-3.5 w-3.5 text-stone-400" />
-        <p className="text-xs font-medium text-stone-500">Tasks</p>
-        <span className="ml-auto text-[10px] text-stone-400">{phaseTasks.length} tasks</span>
+        <p className="text-xs font-medium text-stone-500">{t('tasksLabel')}</p>
+        <span className="ml-auto text-[10px] text-stone-400">{t('tasksCount', { count: phaseTasks.length })}</span>
       </div>
 
       <div className="space-y-1 max-h-48 overflow-y-auto">
@@ -2414,7 +2442,7 @@ function PhaseTaskEditor({ phaseId, projectId }: { phaseId: number; projectId: s
           </div>
         ))}
         {phaseTasks.length === 0 && (
-          <p className="text-xs text-stone-400 py-2 text-center">No tasks yet — add one below</p>
+          <p className="text-xs text-stone-400 py-2 text-center">{t('noTasksYet')}</p>
         )}
       </div>
 
@@ -2423,7 +2451,7 @@ function PhaseTaskEditor({ phaseId, projectId }: { phaseId: number; projectId: s
           ref={inputRef}
           type="text"
           className="flex-1 h-8 px-3 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:border-gray-400 placeholder:text-stone-300"
-          placeholder="Add a task..."
+          placeholder={t("addTaskPlaceholder")}
           value={draft}
           onChange={e => setDraft(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTask(); } }}
@@ -2452,6 +2480,7 @@ function ScheduleSection({
   onSave: (section: string, p: any) => void;
   projectEditPermission: boolean
 }) {
+  const t = useTranslations('projectSettingsPage');
   const [activeNav, setActiveNav] = useState<'phases' | 'timeline'>('phases');
   const [selectedPhaseId, setSelectedPhaseId] = useState<number | null>(null);
 
@@ -2461,13 +2490,13 @@ function ScheduleSection({
   const { mutate: deletePhaseApi } = useDeleteData();
   const { mutate: updatePhaseMutation } = useMutation({
     mutationFn: ({ id, data }: { id: number; data: any }) => patchData({ url: `projects/phases/${id}/`, data }),
-    onSuccess: () => { toast.success('Phase updated'); refetch(); },
-    onError: () => toast.error('Failed to update phase'),
+    onSuccess: () => { toast.success(t('phaseUpdated')); refetch(); },
+    onError: () => toast.error(t('phaseUpdateFailed')),
   });
   const { mutate: updateProject } = useMutation({
     mutationFn: (data: any) => patchData({ url: `projects/projects/${value?.id}/`, data }),
     onSuccess: () => { refetch(); },
-    onError: () => toast.error('Error updating project'),
+    onError: () => toast.error(t('updateError')),
   });
   const queryClient = useQueryClient();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -2482,8 +2511,8 @@ function ScheduleSection({
 
   function addPhase() {
     postPhase(
-      { url: 'projects/phases/', data: { name: 'New Phase', description: '', progress: 0, start_date: new Date().toISOString().split('T')[0], end_date: new Date().toISOString().split('T')[0] } },
-      { onSuccess: (data: any) => { updateProject({ phases: [...(value?.phases || []), data?.id] }); setSelectedPhaseId(data?.id); }, onError: () => toast.error('Failed to add phase') }
+      { url: 'projects/phases/', data: { name: t('newPhaseName'), description: '', progress: 0, start_date: new Date().toISOString().split('T')[0], end_date: new Date().toISOString().split('T')[0] } },
+      { onSuccess: (data: any) => { updateProject({ phases: [...(value?.phases || []), data?.id] }); setSelectedPhaseId(data?.id); }, onError: () => toast.error(t('addPhaseFailed')) }
     );
   }
 
@@ -2492,7 +2521,7 @@ function ScheduleSection({
     if (!phaseToDelete) return;
     deletePhaseApi(
       { url: `projects/phases/${phaseToDelete.id}/` },
-      { onSuccess: () => { toast.success('Phase deleted'); refetch(); setIsDeleteOpen(false); setPhaseToDelete(null); setSelectedPhaseId(null); }, onError: () => toast.error('Failed to delete phase') }
+      { onSuccess: () => { toast.success(t('phaseDeleted')); refetch(); setIsDeleteOpen(false); setPhaseToDelete(null); setSelectedPhaseId(null); }, onError: () => toast.error(t('deletePhaseFailed')) }
     );
   }
 
@@ -2505,8 +2534,8 @@ function ScheduleSection({
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-base font-semibold text-gray-900">Schedule</h2>
-        <p className="text-sm text-gray-500">Manage phases and timeline for this project.</p>
+        <h2 className="text-base font-semibold text-gray-900">{t('scheduleTitle')}</h2>
+        <p className="text-sm text-gray-500">{t('scheduleSubtitle')}</p>
       </div>
 
       <div className="grid grid-cols-[240px_1fr] rounded-xl border border-gray-200 bg-white overflow-hidden" style={{ minHeight: 640 }}>
@@ -2521,7 +2550,7 @@ function ScheduleSection({
               activeNav === 'phases' ? 'bg-stone-100 text-gray-900 font-medium' : 'text-stone-500 hover:bg-stone-50'
             }`}
           >
-            Phases
+            {t('schedulePhases')}
           </button>
           <button
             onClick={() => setActiveNav('timeline')}
@@ -2529,15 +2558,15 @@ function ScheduleSection({
               activeNav === 'timeline' ? 'bg-stone-100 text-gray-900 font-medium' : 'text-stone-500 hover:bg-stone-50'
             }`}
           >
-            Timeline
+            {t('scheduleTimeline')}
           </button>
 
           {/* Phase list */}
           {activeNav === 'phases' && (
             <>
               <div className="px-4 py-2 border-b border-gray-100 bg-stone-50/60 flex items-center justify-between">
-                <span className="text-xs text-stone-400">Project phases</span>
-               {projectEditPermission && <button onClick={addPhase} className="text-stone-400 hover:text-gray-700 transition-colors" title="Add phase">
+                <span className="text-xs text-stone-400">{t('projectPhasesNav')}</span>
+               {projectEditPermission && <button onClick={addPhase} className="text-stone-400 hover:text-gray-700 transition-colors" title={t("addPhaseTitle")}>
                   <Plus className="h-3.5 w-3.5" />
                 </button>}
               </div>
@@ -2552,7 +2581,7 @@ function ScheduleSection({
                         : 'text-stone-500 hover:bg-stone-50 border-l-2 border-l-transparent'
                     }`}
                   >
-                    <span className="truncate">{phase.name || `Phase ${i + 1}`}</span>
+                    <span className="truncate">{phase.name || t('phaseFallback', { number: i + 1 })}</span>
                    {projectEditPermission && <button
                       onClick={e => { e.stopPropagation(); confirmDelete(phase); }}
                       className="opacity-0 group-hover:opacity-100 text-stone-300 hover:text-red-400 transition-all flex-shrink-0"
@@ -2562,7 +2591,7 @@ function ScheduleSection({
                   </button>
                 ))}
                 {phaseList.length === 0 && (
-                  <p className="px-4 py-5 text-xs text-stone-400">No phases yet {projectEditPermission ? '— click + to add one.' : ''}</p>
+                  <p className="px-4 py-5 text-xs text-stone-400">{t('noPhasesYet')} {projectEditPermission ? t('noPhasesClickAdd') : ''}</p>
                 )}
               </div>
             </>
@@ -2575,11 +2604,11 @@ function ScheduleSection({
           {/* Timeline */}
           {activeNav === 'timeline' && (
             <div className="p-6 space-y-5 max-w-xl">
-              <p className="text-sm font-medium text-gray-900">Timeline</p>
-              <p className="text-xs text-stone-400 -mt-3">Set the overall project start and end dates.</p>
+              <p className="text-sm font-medium text-gray-900">{t('timelineTitle')}</p>
+              <p className="text-xs text-stone-400 -mt-3">{t('timelinePanelDesc')}</p>
 
               <div className="space-y-1">
-                <Label className="text-sm">Project duration</Label>
+                <Label className="text-sm">{t('projectDuration')}</Label>
                 <DateRangePicker
                   key={`timeline-${value?.start_date}-${value?.end_date}`}
                   onUpdate={vals => {
@@ -2595,21 +2624,21 @@ function ScheduleSection({
               </div>
 
               <div className="space-y-1">
-                <Label className="text-sm">Timezone</Label>
+                <Label className="text-sm">{t('timezone')}</Label>
                 <Select value={value?.timezone} onValueChange={val => onChange({ timezone: val })}>
                   <SelectTrigger disabled={!projectEditPermission} className="mt-1 bg-white border-gray-200 focus:ring-0 disabled:opacity-100 disabled:cursor-not-allowed">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-white">
-                    <SelectItem value="Europe/London"><div className="flex items-center gap-2"><Clock className="w-4 h-4" />London (GMT)</div></SelectItem>
-                    <SelectItem value="America/New_York"><div className="flex items-center gap-2"><Clock className="w-4 h-4" />New York (EST)</div></SelectItem>
-                    <SelectItem value="Europe/Paris"><div className="flex items-center gap-2"><Clock className="w-4 h-4" />Paris (CET)</div></SelectItem>
+                    <SelectItem value="Europe/London"><div className="flex items-center gap-2"><Clock className="w-4 h-4" />{t('timezoneLondon')}</div></SelectItem>
+                    <SelectItem value="America/New_York"><div className="flex items-center gap-2"><Clock className="w-4 h-4" />{t('timezoneNewYork')}</div></SelectItem>
+                    <SelectItem value="Europe/Paris"><div className="flex items-center gap-2"><Clock className="w-4 h-4" />{t('timezoneParis')}</div></SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
              {projectEditPermission && <div className="flex justify-end pt-2">
-                <Button size="sm" onClick={() => onSave('timeline', value)}><Save className="w-3.5 h-3.5 mr-1.5" />Save</Button>
+                <Button size="sm" onClick={() => onSave('timeline', value)}><Save className="w-3.5 h-3.5 mr-1.5" />{t('save')}</Button>
               </div>}
             </div>
           )}
@@ -2621,8 +2650,8 @@ function ScheduleSection({
               {/* Phase header */}
               <div className="flex items-center justify-between mb-5">
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">{selectedPhase.name || 'Phase'}</p>
-                  <p className="text-xs text-stone-400 mt-0.5">Phase {phaseList.findIndex(p => p.id === selectedPhase.id) + 1} of {phaseList.length}</p>
+                  <p className="text-sm font-semibold text-gray-900">{selectedPhase.name || t('phaseLabel')}</p>
+                  <p className="text-xs text-stone-400 mt-0.5">{t('phaseOfTotal', { current: phaseList.findIndex(p => p.id === selectedPhase.id) + 1, total: phaseList.length })}</p>
                 </div>
               </div>
 
@@ -2630,11 +2659,11 @@ function ScheduleSection({
               <div className="space-y-4">
 
                 <div className="space-y-1">
-                  <Label className="text-sm">Phase name</Label>
+                  <Label className="text-sm">{t('phaseNameLabel')}</Label>
                   <Input
                   disabled={!projectEditPermission}
                     className="mt-1 bg-white disabled:opacity-100 disabled:cursor-not-allowed"
-                    placeholder="e.g. Discovery & Planning"
+                    placeholder={t("phaseNamePlaceholder")}
                     defaultValue={selectedPhase.name}
                     key={`name-${selectedPhase.id}`}
                     onBlur={e => { if (e.target.value !== selectedPhase.name) updatePhaseMutation({ id: selectedPhase.id, data: { name: e.target.value } }); }}
@@ -2642,12 +2671,12 @@ function ScheduleSection({
                 </div>
 
                 <div className="space-y-1">
-                  <Label className="text-sm">Description</Label>
+                  <Label className="text-sm">{t('descriptionLabel')}</Label>
                   <Textarea
                   disabled={!projectEditPermission}
                     className="mt-1 bg-white disabled:opacity-100 disabled:cursor-not-allowed"
                     rows={2}
-                    placeholder="Brief description..."
+                    placeholder={t("phaseDescPlaceholder")}
                     defaultValue={selectedPhase.description}
                     key={`desc-${selectedPhase.id}`}
                     onBlur={e => { if (e.target.value !== selectedPhase.description) updatePhaseMutation({ id: selectedPhase.id, data: { description: e.target.value } }); }}
@@ -2656,12 +2685,12 @@ function ScheduleSection({
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <Label className="text-sm">Budget {value?.currency ? `(${value.currency})` : ''}</Label>
+                    <Label className="text-sm">{t('budgetLabel')} {value?.currency ? `(${value.currency})` : ''}</Label>
                     <Input
                       type="text"
                       disabled={!projectEditPermission}
                     className="mt-1 bg-white disabled:opacity-100 disabled:cursor-not-allowed"
-                      placeholder="0"
+                      placeholder={t("contingencyPlaceholder")}
                       value={budgetDisplay}
                       onChange={e => {
                         const clean = e.target.value.replace(/[^0-9.]/g, '');
@@ -2675,12 +2704,12 @@ function ScheduleSection({
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label className="text-sm">Budgeted hours</Label>
+                    <Label className="text-sm">{t('budgetedHours')}</Label>
                     <Input
                       type="number"
                       disabled={!projectEditPermission}
                     className="mt-1 bg-white disabled:opacity-100 disabled:cursor-not-allowed"
-                      placeholder="0"
+                      placeholder={t("contingencyPlaceholder")}
                       defaultValue={selectedPhase.hour_budget}
                       key={`hours-${selectedPhase.id}`}
                       onBlur={e => { if (e.target.value !== selectedPhase.hour_budget) updatePhaseMutation({ id: selectedPhase.id, data: { hour_budget: e.target.value } }); }}
@@ -2689,7 +2718,7 @@ function ScheduleSection({
                 </div>
 
                 <div className="space-y-1">
-                  <Label className="text-sm">Phase duration</Label>
+                  <Label className="text-sm">{t('phaseDuration')}</Label>
                   <div className="mt-1">
                     <DateRangePicker
                     disabled={!projectEditPermission}
@@ -2714,9 +2743,9 @@ function ScheduleSection({
           {activeNav === 'phases' && phaseList.length === 0 && (
             <div className="flex flex-col items-center justify-center h-full text-center p-12">
               <CalendarIcon2 className="w-10 h-10 text-stone-200 mb-4" />
-              <p className="text-sm font-medium text-stone-500">No phases yet</p>
-           { projectEditPermission &&   <p className="text-xs text-stone-400 mt-1 mb-4">Click + in the panel on the left to add your first phase.</p>}
-              {projectEditPermission && <Button size="sm" variant="outline" onClick={addPhase}><Plus className="w-3.5 h-3.5 mr-1.5" />Add phase</Button>}
+              <p className="text-sm font-medium text-stone-500">{t('noPhasesYet')}</p>
+           { projectEditPermission &&   <p className="text-xs text-stone-400 mt-1 mb-4">{t('scheduleNoPhasesHint')}</p>}
+              {projectEditPermission && <Button size="sm" variant="outline" onClick={addPhase}><Plus className="w-3.5 h-3.5 mr-1.5" />{t('addPhaseBtn')}</Button>}
             </div>
           )}
         </div>
@@ -2726,9 +2755,9 @@ function ScheduleSection({
         isOpen={isDeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
         onConfirm={handleDeletePhase}
-        title="Delete Phase"
-        confirmText="Delete"
-        description={`Are you sure you want to delete phase "${phaseToDelete?.name}"? This cannot be undone.`}
+        title={t("deletePhaseTitle")}
+        confirmText={t("delete")}
+        description={t('deletePhaseDesc', { name: phaseToDelete?.name ?? '' })}
         itemName={phaseToDelete?.name}
         requireConfirmation={true}
       />

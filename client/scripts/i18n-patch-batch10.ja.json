@@ -1,0 +1,42 @@
+{
+  "projectSettingsPage": {
+    "copyLink": "リンクをコピー",
+    "automationKickoffDesc": "オンボーディング完了時にタスクを自動生成します。",
+    "automationNotificationsDesc": "クライアントがポータルに参加したらチームに通知します。",
+    "enterNamePlaceholder": "名前を入力...",
+    "removeMemberDesc": "{name}をこのスタジオから削除しますか？削除すると、このスタジオのすべてのプロジェクトとタスクへのアクセスが取り消されます。",
+    "scanQrOnSite": "現場でこのQRコードをスキャンしてコントラクターポータルにアクセス",
+    "scheduleSubtitle": "このプロジェクトのフェーズとタイムラインを管理します。",
+    "projectPhasesNav": "プロジェクトフェーズ",
+    "noPhasesYet": "フェーズはまだありません",
+    "noPhasesClickAdd": "— + をクリックして追加。",
+    "timelinePanelDesc": "プロジェクト全体の開始日と終了日を設定します。",
+    "phaseNameLabel": "フェーズ名",
+    "descriptionLabel": "説明",
+    "phaseLabel": "フェーズ",
+    "phaseOfTotal": "フェーズ {current} / {total}",
+    "budgetLabel": "予算",
+    "budgetedHours": "予算時間",
+    "phaseDuration": "フェーズ期間",
+    "ffnePercent": "FF&E (%)",
+    "archiveProject": "プロジェクトをアーカイブ",
+    "unarchiveProject": "プロジェクトのアーカイブ解除",
+    "archive": "アーカイブ",
+    "unarchive": "アーカイブ解除",
+    "confirm": "確認",
+    "archiveMoveDesc": "{name}を{destination}に移動します。",
+    "destinationActive": "アクティブ",
+    "destinationArchive": "アーカイブ"
+  },
+  "inboxReplyComposer": {
+    "replyPlaceholder": "返信を入力...",
+    "sendReply": "返信を送信",
+    "writeReplyFirst": "先に返信を入力してから、AIアシスタントを使用してください。",
+    "replyPolished": "AIが返信を推敲しました",
+    "aiAssistantFailed": "AIアシスタントに失敗しました",
+    "aiAssistantTitle": "AIアシスタント — 文法を修正し返信を整理",
+    "attachFileTitle": "画像またはファイルを添付",
+    "removeFile": "{name}を削除",
+    "hintText": "スパークル: AI推敲 · クリップ: ファイル添付（各最大25 MB）"
+  }
+}

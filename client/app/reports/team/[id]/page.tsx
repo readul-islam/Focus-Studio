@@ -13,8 +13,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { ViewCurrencySymbol } from '@/components/ViewCurrencySymbol';
 import ExportButton from '@/components/ui/ExportButton';
 import { useCurrency } from '@/lib/getCurrencySymbol';
+import { useTranslations } from 'next-intl';
 
 const UserDetailsPageContent = () => {
+    const t = useTranslations('reportsTeamDetailPage');
     const params = useParams();
     const searchParams = useSearchParams();
     const userId = params.id;
@@ -88,7 +90,7 @@ const UserDetailsPageContent = () => {
         return (
             <main className="flex-1 bg-stone-50 p-6">
                 <div className="max-w-7xl mx-auto">
-                    <div className="text-muted-foreground">No data found.</div>
+                    <div className="text-muted-foreground">{t('noData')}</div>
                 </div>
             </main>
         );
@@ -103,9 +105,9 @@ const UserDetailsPageContent = () => {
                     <div>
                         <h1 className="text-xl font-semibold text-gray-900">{userData.user_name}</h1>
                         <div className="text-sm text-gray-500 mt-1 flex flex-wrap items-center gap-3">
-                            <span>Total: <span className="font-medium text-gray-900">{userData.user_total_time.hours}h {userData.user_total_time.minutes}m</span></span>
+                            <span>{t('total')} <span className="font-medium text-gray-900">{userData.user_total_time.hours}h {userData.user_total_time.minutes}m</span></span>
                             {userData.user_total_cost !== undefined && (
-                                <span>Cost: <span className="font-medium text-gray-900"><ViewCurrencySymbol code={userData.currency || ''} />{userData.user_total_cost.toLocaleString()}</span></span>
+                                <span>{t('cost')} <span className="font-medium text-gray-900"><ViewCurrencySymbol code={userData.currency || ''} />{userData.user_total_cost.toLocaleString()}</span></span>
                             )}
                             {paramStartDate && paramEndDate && (
                                 <span className="text-xs border border-gray-200 rounded-full px-2 py-0.5 bg-white">{paramStartDate} → {paramEndDate}</span>
@@ -119,7 +121,7 @@ const UserDetailsPageContent = () => {
                     <div className="relative w-full md:w-72">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                         <Input
-                            placeholder="Search tasks..."
+                            placeholder={t('searchTasks')}
                             className="pl-9 bg-white"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
@@ -139,8 +141,8 @@ const UserDetailsPageContent = () => {
                     <div className="lg:col-span-1">
                         <Card className="shadow-sm">
                             <CardHeader className="pb-3">
-                                <CardTitle className="text-base font-semibold text-gray-900">Projects</CardTitle>
-                                <CardDescription>{uniqueProjects.length} projects</CardDescription>
+                                <CardTitle className="text-base font-semibold text-gray-900">{t('projects')}</CardTitle>
+                                <CardDescription>{t('projectsCount', { count: uniqueProjects.length })}</CardDescription>
                             </CardHeader>
                             <CardContent className="p-0">
                                 <div className="divide-y divide-gray-100">
@@ -148,7 +150,7 @@ const UserDetailsPageContent = () => {
                                         onClick={() => setProjectFilter('all')}
                                         className={`w-full flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50 transition-colors text-left ${projectFilter === 'all' ? 'bg-gray-50 font-semibold text-gray-900' : 'text-gray-700'}`}
                                     >
-                                        <span>All Projects</span>
+                                        <span>{t('allProjects')}</span>
                                         <span className="text-xs text-gray-500 font-medium">{userData.user_total_time.hours}h {userData.user_total_time.minutes}m</span>
                                     </button>
                                     {projectStats.map(proj => (
@@ -171,18 +173,18 @@ const UserDetailsPageContent = () => {
                         <Card className="shadow-sm">
                             <CardHeader className="pb-3">
                                 <CardTitle className="text-base font-semibold text-gray-900">
-                                    {projectFilter === 'all' ? 'All Tasks' : projectFilter}
+                                    {projectFilter === 'all' ? t('allTasks') : projectFilter}
                                 </CardTitle>
-                                <CardDescription>{filteredTasks.length} tasks</CardDescription>
+                                <CardDescription>{t('tasksCount', { count: filteredTasks.length })}</CardDescription>
                             </CardHeader>
                             <CardContent className="p-0">
                                 <Table>
                                     <TableHeader>
                                         <TableRow className="bg-gray-50">
-                                            {projectFilter === 'all' && <TableHead className="text-xs font-medium text-gray-600">Project</TableHead>}
-                                            <TableHead className="text-xs font-medium text-gray-600">Task</TableHead>
-                                            <TableHead className="text-right text-xs font-medium text-gray-600">Cost</TableHead>
-                                            <TableHead className="text-right text-xs font-medium text-gray-600 whitespace-nowrap">Time</TableHead>
+                                            {projectFilter === 'all' && <TableHead className="text-xs font-medium text-gray-600">{t('projects')}</TableHead>}
+                                            <TableHead className="text-xs font-medium text-gray-600">{t('task')}</TableHead>
+                                            <TableHead className="text-right text-xs font-medium text-gray-600">{t('cost')}</TableHead>
+                                            <TableHead className="text-right text-xs font-medium text-gray-600 whitespace-nowrap">{t('time')}</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -199,7 +201,7 @@ const UserDetailsPageContent = () => {
                                             ))
                                         ) : (
                                             <TableRow>
-                                                <TableCell colSpan={4} className="text-center h-24 text-sm text-gray-500">No tasks found.</TableCell>
+                                                <TableCell colSpan={4} className="text-center h-24 text-sm text-gray-500">{t('noTasksFound')}</TableCell>
                                             </TableRow>
                                         )}
                                     </TableBody>

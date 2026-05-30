@@ -63,6 +63,7 @@ import { DeleteDialog } from '@/components/DeleteDialog';
 import { useEditGuard } from '@/hooks/useEditGuard';
 import { usePermissions } from '@/hooks/usePermissions';
 import { TaskComments } from '@/components/tasks/TaskComments';
+import { useTranslations } from 'next-intl';
 
 const PhaseSelect = React.memo(function PhaseSelect({
   projectId,
@@ -73,6 +74,7 @@ const PhaseSelect = React.memo(function PhaseSelect({
   selectedPhase: string | number | null | undefined;
   onSelect: (value: { id: string | number; name: string } | null) => void;
 }) {
+  const t = useTranslations('taskModal');
   type PhaseItem = { id: string | number; name: string };
   const pid = String(projectId);
   const phasesUrl = pid ? `projects/project-phases/?project_id=${pid}` : null;
@@ -114,16 +116,16 @@ const PhaseSelect = React.memo(function PhaseSelect({
   }, [pid, isLoading, error, phaseList.length, refetch, selectedPhase]);
 
   if (isLoading || seeding) {
-    return <div className="text-sm text-gray-500">Loading phases...</div>;
+    return <div className="text-sm text-gray-500">{t('loadingPhases')}</div>;
   }
   if (error) {
-    return <div className="text-sm text-red-500">Failed to load phases</div>;
+    return <div className="text-sm text-red-500">{t('phasesLoadFailed')}</div>;
   }
 
   if (phaseList.length === 0) {
     return (
       <div className="space-y-2">
-        <p className="text-xs text-gray-500">This project has no phases yet.</p>
+        <p className="text-xs text-gray-500">{t('noPhases')}</p>
         <Button
           type="button"
           variant="outline"
@@ -140,15 +142,15 @@ const PhaseSelect = React.memo(function PhaseSelect({
               await refetch();
               const first = res?.phases?.[0];
               if (first) onSelect(first);
-              toast.success('Default phases added');
+              toast.success(t('toasts.defaultPhasesAdded'));
             } catch {
-              toast.error('Could not add phases');
+              toast.error(t('toasts.phasesAddFailed'));
             } finally {
               setSeeding(false);
             }
           }}
         >
-          Add default phases
+          {t('addDefaultPhases')}
         </Button>
       </div>
     );
@@ -165,11 +167,11 @@ const PhaseSelect = React.memo(function PhaseSelect({
       }}
     >
       <SelectTrigger className="w-full bg-white h-9 text-sm rounded-xl">
-        <SelectValue placeholder="Select phase">
+        <SelectValue placeholder={t('selectPhase')}>
           {(() => {
-            if (selectedPhase == null) return 'Select phase';
+            if (selectedPhase == null) return t('selectPhase');
             const selected = phaseList.find((p) => String(p.id) === String(selectedPhase));
-            return selected?.name || 'Select phase';
+            return selected?.name || t('selectPhase');
           })()}
         </SelectValue>
       </SelectTrigger>
@@ -193,6 +195,8 @@ const ProjectSelect = React.memo(function ProjectSelect({
   selectedProjectId: string | number | null | undefined;
   onSelect: (project: any) => void;
 }) {
+  const t = useTranslations('taskModal');
+  const tHome = useTranslations('homeTasksPage');
   const [open, setOpen] = React.useState(false);
 
   const selectedProject = React.useMemo(() => {
@@ -216,7 +220,7 @@ const ProjectSelect = React.memo(function ProjectSelect({
             ) : (
               <span className="flex items-center gap-2 text-gray-500">
                 <Search className="h-4 w-4" />
-                Search projects…
+                {t('searchProjects')}
               </span>
             )}
           </span>
@@ -225,10 +229,10 @@ const ProjectSelect = React.memo(function ProjectSelect({
       <PopoverContent className="p-0 w-[360px] rounded-xl border border-gray-200 shadow-md overflow-hidden" align="start">
         <Command className="max-h-[400px]">
           <CommandInput
-            placeholder="Search projects…"
+            placeholder={t('searchProjects')}
             className="focus-visible:ring-gray-300 focus-visible:ring-offset-0 focus:outline-none"
           />
-          <CommandEmpty>No projects found</CommandEmpty>
+          <CommandEmpty>{tHome('noProjectsFound')}</CommandEmpty>
           <CommandList
             className="max-h-[300px] overflow-y-auto"
             style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
@@ -326,6 +330,10 @@ const toShortStatus = (status?: string) => {
 
 
 export function TaskModal({ open, onOpenChange, projectId, projectName, team, phase, taskToEdit, onSave, status, refetchTasks }: Props) {
+  const t = useTranslations('taskModal');
+  const tCommon = useTranslations('common');
+  const tHome = useTranslations('homeTasksPage');
+
   // Zustand store
   const taskValues = useTaskModalStore((state) => state.taskValues);
   const setTaskValues = useTaskModalStore((state) => state.setTaskValues);
@@ -426,7 +434,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
   // Subtask mutations
   const { mutate: createSubtask } = usePost({
     onSuccess: (data: any) => {
-      toast.success('Subtask created');
+      toast.success(t('toasts.subtaskCreated'));
      
       
       // 1. Update task's subtask array with the new subtask ID
@@ -472,7 +480,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
     },
 
     onError: () => {
-      toast.error('Error creating subtask');
+      toast.error(t('toasts.subtaskCreateFailed'));
     }
   });
 
@@ -480,39 +488,39 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
   const { mutate: updateSubtask } = useMutation({
     mutationFn: (data: any) => patchData({ url: `task/subtasks/${data.id}/`, data }),
     onSuccess: () => {
-      toast.success('Subtask updated');
+      toast.success(t('toasts.subtaskUpdated'));
       queryClient.refetchQueries({
         queryKey: ['task/user-tasks/']
       });
     },
     onError: () => {
-      toast.error('Error updating subtask');
+      toast.error(t('toasts.subtaskUpdateFailed'));
     },
   });
 
   const { mutate: deleteSubtask } = useDeleteData({
     onSuccess: () => {
-      toast.success('Subtask deleted');
+      toast.success(t('toasts.subtaskDeleted'));
       // queryClient.refetchQueries({ queryKey: ['task/subtasks/'] });
       queryClient.refetchQueries({
         queryKey: ['task/user-tasks/']
       });
     },
     onError: () => {
-      toast.error('Error deleting subtask');
+      toast.error(t('toasts.subtaskDeleteFailed'));
     },
   });
 
   const { mutate: deleteTask } = useDeleteData({
     onSuccess: () => {
-      toast.success('Task deleted');
+      toast.success(t('toasts.taskDeleted'));
       queryClient.refetchQueries({ queryKey: [`task/user-tasks-project?project_id=${projectId}`] });
       queryClient.refetchQueries({ queryKey: ['task/user-tasks/'] });
       queryClient.refetchQueries({ queryKey: ['task/task-datacards/'] });
       handleCloseModal();
     },
     onError: () => {
-      toast.error('Error deleting task');
+      toast.error(t('toasts.taskDeleteFailed'));
     },
   });
 
@@ -532,10 +540,10 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
           await uploadTaskFiles(data.id, pending);
           setPendingAttachmentFiles([]);
         } catch {
-          toast.error('Task created but attachment upload failed');
+          toast.error(t('toasts.taskCreatedAttachmentsFailed'));
         }
       }
-      toast.success('Task Created');
+      toast.success(t('toasts.taskCreated'));
       queryClient.refetchQueries({ queryKey: ['task/user-tasks/'] });
       queryClient.refetchQueries({ queryKey: [`task/user-tasks-project?project_id=${projectId}`] });
       queryClient.refetchQueries({ queryKey: [`task/task-datacards/`] });
@@ -543,7 +551,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
       setIsSubmitting(false);
     },
     onError: () => {
-      toast.error('Error creating task');
+      toast.error(t('toasts.taskCreateFailed'));
       setIsSubmitting(false);
     },
   });
@@ -552,13 +560,13 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
   const { mutate: updateTask } = useMutation({
     mutationFn: (data: any) => patchData({ url: `task/tasks/${data.id}/`, data }),
     onSuccess: () => {
-      toast.success('Task Updated');
+      toast.success(t('toasts.taskUpdated'));
       queryClient.invalidateQueries({ queryKey: ['task/user-tasks/'] });
       queryClient.invalidateQueries({ queryKey: [`task/user-tasks-project?project_id=${projectId}`] });
       queryClient.invalidateQueries({ queryKey: [`task/task-datacards/`] });
     },
     onError: () => {
-      toast.error('Error updating task');
+      toast.error(t('toasts.taskUpdateFailed'));
     },
   });
 
@@ -573,7 +581,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
         ...prev,
         isArchived: true,
       }));
-      toast.success('Task Moved To Archive');
+      toast.success(t('toasts.archived'));
       handleCloseModal();
     }
   }, [taskValues?.id, updateTask, setTaskValues, handleCloseModal]);
@@ -588,7 +596,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
         ...prev,
         isArchived: false,
       }));
-      toast.success('Task Restored');
+      toast.success(t('toasts.restored'));
       handleCloseModal();
     }
   }, [taskValues?.id, updateTask, setTaskValues, handleCloseModal]);
@@ -619,15 +627,14 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
 
     // Task name is required
     if (!taskValues?.name?.trim()) {
-      newErrors.name = 'Task name is required';
+      newErrors.name = t('validation.nameRequired');
     } else if (taskValues.name.trim().length > 60) {
-      // Task name cannot be more than 60 characters
-      newErrors.name = 'Task name cannot exceed 60 characters';
+      newErrors.name = t('validation.nameMaxLength');
     }
 
     // If project is selected, phase is required
     if (taskValues?.projectID && !taskValues?.phase) {
-      newErrors.phase = 'Phase is required when a project is selected';
+      newErrors.phase = t('validation.phaseRequired');
     }
 
     // If both dates are provided, start date must be before end date
@@ -635,13 +642,13 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
       const startDate = new Date(taskValues.startDate);
       const endDate = new Date(taskValues.dueDate);
       if (startDate > endDate) {
-        newErrors.dates = 'Start date must be before end date';
+        newErrors.dates = t('validation.startBeforeEnd');
       }
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  }, [taskValues?.name, taskValues?.projectID, taskValues?.phase, taskValues?.startDate, taskValues?.dueDate]);
+  }, [taskValues?.name, taskValues?.projectID, taskValues?.phase, taskValues?.startDate, taskValues?.dueDate, t]);
 
   // Task submit
   const handleSubmit = React.useCallback(() => {
@@ -712,7 +719,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
     const newComment = {
       ...comment,
       time: new Date().toLocaleString(),
-      name: user?.name || 'Anonymous',
+      name: user?.name || t('anonymous'),
       profileImg: user?.profile_picture || '',
     };
 
@@ -938,7 +945,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
                   ) : (
                     <span className="flex items-center gap-2 text-gray-500">
                       <Search className="h-4 w-4" />
-                      Search teammates…
+                      {t('searchTeammates')}
                     </span>
                   )}
                 </span>
@@ -947,10 +954,10 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
             <PopoverContent className="p-0 w-[360px] rounded-xl border border-gray-200 shadow-md overflow-hidden" align="start">
               <Command className="max-h-[400px]">
                 <CommandInput
-                  placeholder="Search teammates…"
+                  placeholder={t('searchTeammates')}
                   className=" focus-visible:ring-gray-300 focus-visible:ring-offset-0 focus:outline-none"
                 />
-                <CommandEmpty>No member on this project</CommandEmpty>
+                <CommandEmpty>{tHome('noMembers')}</CommandEmpty>
                 <CommandList 
                   className="max-h-[300px] overflow-y-auto" 
                   style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
@@ -1048,7 +1055,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
             className="h-8 px-2 text-gray-500 hover:text-gray-600 hover:bg-stone-50 gap-2"
           >
             <Archive size={17} />
-            Archive
+            {tCommon('deleteDialog.archive')}
           </Button>
         )}
         {canDelete && taskValues?.id && (
@@ -1059,7 +1066,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
             onClick={() => setIsDeleteDialogOpen(true)}
           >
             <Trash2 size={17} />
-            Delete
+            {tCommon('delete')}
           </Button>
         )}
        </div>
@@ -1069,14 +1076,14 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
           onSubmit={e => handleSave(e)}
           onKeyDown={handleKeyDown}
           className="flex-1 pt-5 overflow-auto thin-scrollbar pr-2 overscroll-contain pb-20"
-          aria-label="Task form"
+          aria-label={t('taskFormAria')}
         >
           {/* Title row */}
           <div className="pb-6">
             <div className="grid grid-cols-[130px_1fr] gap-4 items-center">
               <div className="flex  items-center gap-2 text-[13px] text-gray-600">
                 <TypeIcon className="h-4 w-4 text-gray-500" />
-                <span>Task Title</span>
+                <span>{tCommon('name')}</span>
               </div>
               <div className="space-y-1">
                 <Input
@@ -1086,7 +1093,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
                   onChange={handleUpdateTask}
                   onBlur={() => handleSubmitOnBlur()}
                   autoFocus={false}
-                  placeholder="Add task name..."
+                  placeholder={t('addTaskName')}
                   className={cn(
                     'bg-white h-10 text-[16px] md:text-[17px] font-medium rounded-xl',
                     errors.name && touched && 'border-red-300 focus-visible:ring-red-200'
@@ -1103,7 +1110,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
           {/* Details */}
           <div className="space-y-4">
             {/* project select */}
-            <Labeled icon={<Folder className="h-4 w-4" />} label="Project">
+            <Labeled icon={<Folder className="h-4 w-4" />} label={t('project')}>
               <ProjectSelect
                 projects={projectId ? projectsData?.filter((item: any) => item.id == projectId) : projectsData}
                 selectedProjectId={taskValues?.projectID || projectId}
@@ -1133,7 +1140,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.25, ease: 'easeOut' }}
                 >
-                  <Labeled icon={<GitBranch className="h-4 w-4" />} label="Phase">
+                  <Labeled icon={<GitBranch className="h-4 w-4" />} label={t('phase')}>
                     {/* Fetch phases for the selected project */}
                     {taskValues?.projectID && (
                       <div className="space-y-1">
@@ -1156,7 +1163,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
             </AnimatePresence>
 
             {/* status select */}
-            <Labeled icon={<CircleDot className="h-4 w-4" />} label="Status">
+            <Labeled icon={<CircleDot className="h-4 w-4" />} label={t('status')}>
               <Select
                 value={toShortStatus(taskValues?.status || '')}
                 onValueChange={value => {
@@ -1170,19 +1177,19 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
                 }}
               >
                 <SelectTrigger className="w-full bg-white h-9 text-sm rounded-xl">
-                  <SelectValue placeholder="Select status" />
+                  <SelectValue placeholder={t('selectStatus')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="TD">To‑do</SelectItem>
-                  <SelectItem value="IP">In progress</SelectItem>
-                  <SelectItem value="IR">In review</SelectItem>
-                  <SelectItem value="D">Done</SelectItem>
+                  <SelectItem value="TD">{t('statuses.todo')}</SelectItem>
+                  <SelectItem value="IP">{t('statuses.inProgress')}</SelectItem>
+                  <SelectItem value="IR">{t('statuses.inReview')}</SelectItem>
+                  <SelectItem value="D">{t('statuses.done')}</SelectItem>
                 </SelectContent>
               </Select>
             </Labeled>
 
             {/* priority select */}
-            <Labeled icon={<Flag className="h-4 w-4" />} label="Priority">
+            <Labeled icon={<Flag className="h-4 w-4" />} label={t('priority')}>
               <Select
                 value={taskValues?.priority || ''}
                 onValueChange={value => {
@@ -1196,18 +1203,18 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
                 }}
               >
                 <SelectTrigger className="w-full bg-white h-9 text-sm rounded-xl">
-                  <SelectValue placeholder="Select priority" />
+                  <SelectValue placeholder={t('selectPriority')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="L">Low</SelectItem>
-                  <SelectItem value="M">Medium</SelectItem>
-                  <SelectItem value="H">High</SelectItem>
+                  <SelectItem value="L">{tHome('priority.low')}</SelectItem>
+                  <SelectItem value="M">{tHome('priority.medium')}</SelectItem>
+                  <SelectItem value="H">{tHome('priority.high')}</SelectItem>
                 </SelectContent>
               </Select>
             </Labeled>
 
             {/* start date */}
-            <Labeled icon={<CalendarIcon className="h-4 w-4" />} label="Start Date">
+            <Labeled icon={<CalendarIcon className="h-4 w-4" />} label={t('startDate')}>
               <div className="flex items-center gap-2">
                 <Popover>
                   <PopoverTrigger asChild>
@@ -1221,7 +1228,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4 text-gray-500" />
-                      {taskValues?.startDate ? format(toDateFromYMD(taskValues?.startDate), 'PPP') : 'Pick start date'}
+                      {taskValues?.startDate ? format(toDateFromYMD(taskValues?.startDate), 'PPP') : t('pickStartDate')}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="p-0 rounded-xl border border-gray-200 shadow-md" align="start">
@@ -1240,7 +1247,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
                   </PopoverContent>
                 </Popover>
                 {taskValues?.startDate && (
-                  <Button type="button" variant="ghost" size="sm" onClick={() => setTaskValues(prev => ({ ...prev, startDate: null }))}>
+                    <Button type="button" variant="ghost" size="sm" onClick={() => setTaskValues(prev => ({ ...prev, startDate: null }))}>
                     Clear
                   </Button>
                 )}
@@ -1248,7 +1255,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
             </Labeled>
 
 
-            <Labeled icon={<CalendarIcon className="h-4 w-4" />} label="Due Date">
+            <Labeled icon={<CalendarIcon className="h-4 w-4" />} label={t('dueDate')}>
               <div className="grid grid-cols-1 sm:grid-cols-1 gap-2.5">
                 <div className="flex items-center gap-2">
                   <Popover>
@@ -1263,7 +1270,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
                         )}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4 text-gray-500" />
-                        {taskValues?.dueDate ? format(toDateFromYMD(taskValues?.dueDate), 'PPP') : 'Pick due date'}
+                        {taskValues?.dueDate ? format(toDateFromYMD(taskValues?.dueDate), 'PPP') : t('pickDueDate')}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="p-0 rounded-xl border border-gray-200 shadow-md" align="start">
@@ -1358,7 +1365,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
             </Labeled> */}
 
             {/* assignees */}
-            <Labeled icon={<Users className="h-4 w-4" />} label="Assignees">
+            <Labeled icon={<Users className="h-4 w-4" />} label={t('assignees')}>
               <AssigneesMultiSelect
                 users={React.useMemo(() => {
                   const projectAssigneeIds = projectsData?.find((item: any) => item.id == taskValues?.projectID)?.assignees || [];
@@ -1374,11 +1381,11 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
                 <span className="text-gray-500">
                   <TypeIcon className="h-4 w-4" />
                 </span>
-                <span className="truncate">Description</span>
+                <span className="truncate">{tCommon('summary')}</span>
               </div>
               <div>
                 <Textarea
-                  placeholder="Add details of the project . Attach files below."
+                  placeholder={t('descriptionPlaceholder')}
                   id="description"
                   name="description"
                   rows={5}
@@ -1402,7 +1409,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
             />
 
             {/* sub tasks */}
-            <Labeled icon={<ListTodo className="h-4 w-4" />} label="Sub Tasks" alignTop>
+            <Labeled icon={<ListTodo className="h-4 w-4" />} label={t('subTasks')} alignTop>
               <DraggableSubtasks2
                 member={teamMembers}
                 taskId={taskValues?.id}
@@ -1537,7 +1544,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
         <div className="flex-shrink-0 border-t border-gray-200 bg-stone-50">
           <div className="h-16 px-7 md:px-7 flex items-center justify-end gap-2">
             <Button type="button" variant="ghost" className="h-10" onClick={handleCloseModal}>
-              Cancel
+              {tCommon('cancel')}
             </Button>
             {canEdit && (
               <Button
@@ -1546,7 +1553,7 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
                 disabled={isSubmitting}
                 onClick={() => formRef.current?.requestSubmit()}
               >
-                {isSubmitting ? 'Saving…' : 'Save'}
+                {isSubmitting ? tCommon('saving') : tCommon('save')}
                 <span className="ml-2 text-xs opacity-70">{'⌘⏎'}</span>
               </Button>
             )}
@@ -1609,11 +1616,11 @@ export function TaskModal({ open, onOpenChange, projectId, projectName, team, ph
           handleDeleteTask();
           setIsDeleteDialogOpen(false);
         }}
-        title="Delete Task"
-        description="Are you sure you want to delete this task? This action cannot be undone."
+        title={t('deleteTaskTitle')}
+        description={t('deleteTaskDescription')}
         itemName={taskValues?.name}
         requireConfirmation={false}
-        confirmText="Delete"
+        confirmText={tCommon('delete')}
       />
     </Sheet>
   );

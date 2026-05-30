@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Plus, Trash2, Sparkles, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -63,6 +64,8 @@ function buildAiPayload(data: ProposalData) {
 }
 
 export function PricingStep({ data, onUpdate }: PricingStepProps) {
+  const t = useTranslations('crmProposalSteps');
+  const tc = useTranslations('common');
   const [lineItems, setLineItems] = useState<LineItem[]>(
     data.lineItems?.length
       ? data.lineItems
@@ -162,7 +165,7 @@ export function PricingStep({ data, onUpdate }: PricingStepProps) {
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <Label className="text-sm font-semibold text-gray-900">
-            Line Items <span className="text-red-500">*</span>
+            {t('lineItems')} <span className="text-red-500">*</span>
           </Label>
           <div className="flex items-center gap-2">
             <Button
@@ -210,7 +213,7 @@ export function PricingStep({ data, onUpdate }: PricingStepProps) {
                 <tr key={item.id} className="bg-white">
                   <td className="px-4 py-2">
                     <Input
-                      placeholder="Description of work or deliverable..."
+                      placeholder={t('descriptionPlaceholder')}
                       value={item.description}
                       onChange={e => updateLineItem(item.id, 'description', e.target.value)}
                       className="border-0 p-0 h-8 focus-visible:ring-0 bg-transparent text-sm"
@@ -267,7 +270,7 @@ export function PricingStep({ data, onUpdate }: PricingStepProps) {
       {/* Totals */}
       <div className="border border-gray-200 rounded-lg p-6 space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-500">Subtotal</span>
+          <span className="text-sm text-gray-500">{t('subtotal')}</span>
           <span className="text-sm font-medium tabular-nums text-gray-900">
             {currencySymbol}{subtotal.toLocaleString()}
           </span>
@@ -275,7 +278,7 @@ export function PricingStep({ data, onUpdate }: PricingStepProps) {
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-500">Tax</span>
+            <span className="text-sm text-gray-500">{t('tax')}</span>
             <Select
               value={taxRate.toString()}
               onValueChange={value => {
@@ -302,7 +305,7 @@ export function PricingStep({ data, onUpdate }: PricingStepProps) {
 
         <div className="border-t border-gray-200 pt-3">
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-gray-900">Total</span>
+            <span className="font-semibold text-gray-900">{t('total')}</span>
             <span className="font-bold text-lg tabular-nums text-gray-900">
               {currencySymbol}{total.toLocaleString()}
             </span>

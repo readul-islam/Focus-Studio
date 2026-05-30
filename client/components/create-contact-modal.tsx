@@ -14,6 +14,7 @@ import { patchData } from '@/lib/Api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { gooeyToast as toast } from 'goey-toast';
 import useFetch from '@/hooks/useFetch';
+import { useTranslations } from 'next-intl';
 
 const initialValue = {
   name: '',
@@ -50,6 +51,8 @@ interface ContactFormModalProps {
 }
 
 export function ContactFormModal({ refetch, open, onOpenChange, contact }: ContactFormModalProps) {
+  const t = useTranslations('contactFormModal');
+  const tc = useTranslations('common');
   const [formValues, setFormValues] = React.useState(contact ? contact : initialValue);
   const [isClient, setIsClient] = React.useState(contact?.contact_type === 'CL' ? true : false);
   const queryClient = useQueryClient();
@@ -74,12 +77,12 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
       queryClient.refetchQueries({ queryKey: ['crm/studio-contacts/'] });
       queryClient.refetchQueries({ queryKey: ['crm/studio-clients/'] });
       queryClient.refetchQueries({ queryKey: ['crm/studio-suppliers/'] });
-      toast('Contact created successfully!');
+      toast(t('createdSuccess'));
       refetch?.();
       handleClose(false);
     },
     onError: () => {
-      toast('Error! Try again');
+      toast(tc('errorTryAgain'));
     },
   });
 
@@ -89,12 +92,12 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
       queryClient.refetchQueries({ queryKey: ['crm/studio-contacts/'] });
       queryClient.refetchQueries({ queryKey: ['crm/studio-clients/'] });
       queryClient.refetchQueries({ queryKey: ['crm/studio-suppliers/'] });
-      toast.success('Contact updated successfully!');
+      toast.success(t('updatedSuccess'));
       refetch?.();
       handleClose(false);
     },
     onError: () => {
-      toast.error('Error! Try again');
+      toast.error(tc('errorTryAgain'));
     },
   });
 
@@ -140,7 +143,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
 
     const currencyCode = formValues.currency?.code || formValues.currency;
     if (!currencyCode) {
-      toast.error('Please select a currency');
+      toast.error(t('selectCurrency'));
       return;
     }
     const isSupplier = formValues.contact_type === 'SP';
@@ -175,32 +178,35 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
       >
         <DialogHeader className="px-6 pt-6 pb-4 border-b border-border/40 bg-card flex-shrink-0">
           <DialogTitle className="text-[16px] font-bold text-foreground tracking-tight">
-            {contact ? 'Edit Contact' : 'Add New Contact'}
+            {contact ? t('editTitle') : t('addTitle')}
           </DialogTitle>
           <DialogDescription className="text-xs text-muted-foreground mt-1">
-            {contact ? 'Update the contact information below.' : 'Fill in the details to create a new contact.'}
+            {contact ? t('editDescription') : t('addDescription')}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex-1 flex flex-col overflow-hidden m-0">
           <div className="flex-1 overflow-y-auto px-6 py-6 scrollbar-thin scrollbar-thumb-rounded pr-2 bg-card space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="contact_type">Contact Type</Label>
+            <Label htmlFor="contact_type">{t('contactType')}</Label>
             <Select onValueChange={value => handleSelectChange('contact_type', value)} value={formValues.contact_type || ''}>
               <SelectTrigger className="h-10 rounded-xl border border-border/20 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors w-full px-3 py-[10px]">
-                <SelectValue placeholder="Select Type" />
+                <SelectValue placeholder={t('selectType')} />
               </SelectTrigger>
               <SelectContent className="border border-border/20 bg-card text-foreground z-[999]">
-                <SelectItem value="CL">Client</SelectItem>
-                <SelectItem value="SP">Supplier</SelectItem>
-                <SelectItem value="CN">Contractor</SelectItem>
+                <SelectItem value="CL">{tc('client')}</SelectItem>
+                <SelectItem value="SP">{tc('supplier')}</SelectItem>
+                <SelectItem value="CN">{tc('contractor')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="company_name">
-              Company {(isClient || contact?.contact_type === 'CL') && <span className="text-xs text-gray-500">(optional)</span>}
+              {tc('company')}{' '}
+              {(isClient || contact?.contact_type === 'CL') && (
+                <span className="text-xs text-gray-500">({tc('optional')})</span>
+              )}
             </Label>
             <Input
               onChange={handleInputChange}
@@ -208,40 +214,40 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
               className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
               id="company_name"
               name="company_name"
-              placeholder="Company Name"
+              placeholder={t('placeholders.companyName')}
               required={isClient || contact?.contact_type === 'CL' ? false : true}
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">{tc('name')}</Label>
               <Input
                 onChange={handleInputChange}
                 value={formValues.name}
                 className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 id="name"
                 name="name"
-                placeholder="John Doe"
+                placeholder={t('placeholders.fullName')}
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="surname">Surname</Label>
+              <Label htmlFor="surname">{tc('surname')}</Label>
               <Input
                 onChange={handleInputChange}
                 value={formValues.surname}
                 className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 id="surname"
                 name="surname"
-                placeholder="Smith"
+                placeholder={t('placeholders.surname')}
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{tc('email')}</Label>
               <Input
                 onChange={handleInputChange}
                 value={formValues.email}
@@ -249,20 +255,20 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                 id="email"
                 name="email"
                 type="email"
-                placeholder="john@example.com"
+                placeholder={t('placeholders.email')}
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone</Label>
+              <Label htmlFor="phone">{tc('phone')}</Label>
               <Input
                 onChange={handleInputChange}
                 value={formValues.phone}
                 className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 id="phone"
                 name="phone"
-                placeholder="+1 234 567 890"
+                placeholder={t('placeholders.phone')}
               />
             </div>
           </div>
@@ -270,26 +276,26 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
           {(isClient || contact?.contact_type === 'CL') && (
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="connection">Connection</Label>
+                <Label htmlFor="connection">{tc('connection')}</Label>
                 <Input
                   onChange={handleInputChange}
                   value={formValues.connection}
                   className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                   id="connection"
                   name="connection"
-                  placeholder="Very strong with john doe.."
+                  placeholder={t('placeholders.connection')}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="find">How did they find us</Label>
+                <Label htmlFor="find">{t('howDidTheyFindUs')}</Label>
                 <Input
                   onChange={handleInputChange}
                   value={formValues.find}
                   className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                   id="find"
                   name="find"
-                  placeholder="e.g. Via Linkedin"
+                  placeholder={t('placeholders.findVia')}
                 />
               </div>
             </div>
@@ -298,7 +304,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
           <div className="grid grid-cols-2 gap-4">
             {(isClient || contact?.contact_type === 'CL') && (
               <div className="space-y-2">
-                <Label htmlFor="budget">Budget</Label>
+                <Label htmlFor="budget">{tc('budget')}</Label>
                 <Input
                   onChange={handleInputChange}
                   value={formValues.budget}
@@ -306,23 +312,23 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                   id="budget"
                   name="budget"
                   type="number"
-                  placeholder="e.g. 20000"
+                  placeholder={t('placeholders.budget')}
                   required
                 />
               </div>
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
+              <Label htmlFor="status">{tc('status')}</Label>
               <Select onValueChange={value => handleSelectChange('status', value)} value={formValues.status || ''}>
                 <SelectTrigger className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors w-full px-3 py-[10px]">
-                  <SelectValue placeholder="Select Status" />
+                  <SelectValue placeholder={t('selectStatus')} />
                 </SelectTrigger>
                 <SelectContent className="border border-border/85 bg-card text-foreground z-[999]">
-                  <SelectItem value="NE">New</SelectItem>
-                  <SelectItem value="AC">Active</SelectItem>
-                  <SelectItem value="QA">Qualified</SelectItem>
-                  <SelectItem value="NG">Negotiation</SelectItem>
+                  <SelectItem value="NE">{t('statusNew')}</SelectItem>
+                  <SelectItem value="AC">{t('statusActive')}</SelectItem>
+                  <SelectItem value="QA">{t('statusQualified')}</SelectItem>
+                  <SelectItem value="NG">{t('statusNegotiation')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -348,16 +354,16 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
 
           <div className="space-y-2">
             <Label htmlFor="currency">
-              Currency <span className="text-red-500">*</span>
+              {tc('currency')} <span className="text-red-500">*</span>
             </Label>
             <CurrencySelector value={formValues.currency} onChange={handleCurrencyChange} data={formValues} />
           </div>
 
           {formValues.contact_type === 'SP' && (
             <div className="space-y-4 rounded-lg border border-dashed border-gray-200 p-4">
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Trade Portal</p>
+              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">{t('tradePortal')}</p>
               <div className="space-y-2">
-                <Label htmlFor="trade_login_url">Login URL</Label>
+                <Label htmlFor="trade_login_url">{t('loginUrl')}</Label>
                 <Input
                   onChange={handleInputChange}
                   value={formValues.trade_login_url || ''}
@@ -365,23 +371,23 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                   id="trade_login_url"
                   name="trade_login_url"
                   type="url"
-                  placeholder="https://trade.supplier.com/login"
+                  placeholder={t('placeholders.loginUrl')}
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="supplier_user_id">Username / User ID</Label>
+                  <Label htmlFor="supplier_user_id">{t('usernameUserId')}</Label>
                   <Input
                     onChange={handleInputChange}
                     value={formValues.supplier_user_id || ''}
                     className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                     id="supplier_user_id"
                     name="supplier_user_id"
-                    placeholder="e.g. studio_account"
+                    placeholder={t('placeholders.username')}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="supplier_password">Password</Label>
+                  <Label htmlFor="supplier_password">{tc('password')}</Label>
                   <Input
                     onChange={handleInputChange}
                     value={formValues.supplier_password || ''}
@@ -389,7 +395,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                     id="supplier_password"
                     name="supplier_password"
                     type="password"
-                    placeholder="••••••••"
+                    placeholder={t('placeholders.password')}
                   />
                 </div>
               </div>
@@ -397,77 +403,77 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="address_line_1">Address Line 1</Label>
+            <Label htmlFor="address_line_1">{t('addressLine1')}</Label>
             <Input
               onChange={handleInputChange}
               value={formValues.address_line_1}
               className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
               id="address_line_1"
               name="address_line_1"
-              placeholder="Street address"
+              placeholder={t('placeholders.street')}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="address_line_2">Address Line 2</Label>
+            <Label htmlFor="address_line_2">{t('addressLine2')}</Label>
             <Input
               onChange={handleInputChange}
               value={formValues.address_line_2}
               className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
               id="address_line_2"
               name="address_line_2"
-              placeholder="Apartment, suite, etc."
+              placeholder={t('placeholders.addressLine2')}
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="city">City</Label>
+              <Label htmlFor="city">{tc('city')}</Label>
               <Input
                 onChange={handleInputChange}
                 value={formValues.city}
                 className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 id="city"
                 name="city"
-                placeholder="City"
+                placeholder={t('placeholders.city')}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="postcode">Postcode</Label>
+              <Label htmlFor="postcode">{tc('postcode')}</Label>
               <Input
                 onChange={handleInputChange}
                 value={formValues.postcode}
                 className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 id="postcode"
                 name="postcode"
-                placeholder="Postcode"
+                placeholder={t('placeholders.postcode')}
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="county">County</Label>
+              <Label htmlFor="county">{tc('county')}</Label>
               <Input
                 onChange={handleInputChange}
                 value={formValues.county}
                 className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 id="county"
                 name="county"
-                placeholder="County"
+                placeholder={t('placeholders.county')}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="country">Country</Label>
+              <Label htmlFor="country">{tc('country')}</Label>
               <Input
                 onChange={handleInputChange}
                 value={formValues.country}
                 className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                 id="country"
                 name="country"
-                placeholder="Country"
+                placeholder={t('placeholders.country')}
               />
             </div>
           </div>
@@ -475,7 +481,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
           {/* Additional Contacts Section */}
           <div className="pt-4 border-t border-gray-200">
             <div className="flex items-center justify-between mb-4">
-              <Label className="text-base">Additional Contacts</Label>
+              <Label className="text-base">{t('additionalContacts')}</Label>
               <Button
                 type="button"
                 variant="outline"
@@ -488,7 +494,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                 }}
                 className="gap-1.5"
               >
-                Add Contact
+                {t('addAdditionalContact')}
               </Button>
             </div>
 
@@ -510,7 +516,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                     </button>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor={`additional_contact_name_${index}`}>Name</Label>
+                        <Label htmlFor={`additional_contact_name_${index}`}>{tc('name')}</Label>
                         <Input
                           value={contact.name}
                           onChange={e => {
@@ -520,12 +526,12 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                           }}
                           className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                           id={`additional_contact_name_${index}`}
-                          placeholder="Contact name"
+                          placeholder={t('placeholders.contactName')}
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor={`additional_contact_relationship_${index}`}>Relationship</Label>
+                        <Label htmlFor={`additional_contact_relationship_${index}`}>{t('relationship')}</Label>
                         <Input
                           value={contact.relationship}
                           onChange={e => {
@@ -535,12 +541,12 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                           }}
                           className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                           id={`additional_contact_relationship_${index}`}
-                          placeholder="e.g. Wife, Director, PA"
+                          placeholder={t('placeholders.relationship')}
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor={`additional_contact_email_${index}`}>Email</Label>
+                        <Label htmlFor={`additional_contact_email_${index}`}>{tc('email')}</Label>
                         <Input
                           value={contact.email}
                           onChange={e => {
@@ -551,12 +557,12 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                           className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                           id={`additional_contact_email_${index}`}
                           type="email"
-                          placeholder="contact@example.com"
+                          placeholder={t('placeholders.additionalEmail')}
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor={`additional_contact_phone_${index}`}>Phone</Label>
+                        <Label htmlFor={`additional_contact_phone_${index}`}>{tc('phone')}</Label>
                         <Input
                           value={contact.phone}
                           onChange={e => {
@@ -566,7 +572,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                           }}
                           className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                           id={`additional_contact_phone_${index}`}
-                          placeholder="+1 234 567 890"
+                          placeholder={t('placeholders.phone')}
                         />
                       </div>
                     </div>
@@ -577,9 +583,9 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
           </div>
           {formValues.contact_type === 'SP' && (
             <div className="space-y-4 rounded-xl border border-dashed border-border/40 p-4 bg-muted/10">
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Trade Portal</p>
+              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">{t('tradePortal')}</p>
               <div className="space-y-2">
-                <Label htmlFor="trade_login_url">Login URL</Label>
+                <Label htmlFor="trade_login_url">{t('loginUrl')}</Label>
                 <Input
                   onChange={handleInputChange}
                   value={formValues.trade_login_url}
@@ -587,23 +593,23 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                   id="trade_login_url"
                   name="trade_login_url"
                   type="url"
-                  placeholder="https://trade.supplier.com/login"
+                  placeholder={t('placeholders.loginUrl')}
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="supplier_user_id">Username / User ID</Label>
+                  <Label htmlFor="supplier_user_id">{t('usernameUserId')}</Label>
                   <Input
                     onChange={handleInputChange}
                     value={formValues.supplier_user_id}
                     className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors"
                     id="supplier_user_id"
                     name="supplier_user_id"
-                    placeholder="e.g. studio_account"
+                    placeholder={t('placeholders.username')}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="supplier_password">Password</Label>
+                  <Label htmlFor="supplier_password">{tc('password')}</Label>
                   <Input
                     onChange={handleInputChange}
                     value={formValues.supplier_password}
@@ -611,7 +617,7 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
                     id="supplier_password"
                     name="supplier_password"
                     type="text"
-                    placeholder="••••••••"
+                    placeholder={t('placeholders.password')}
                   />
                 </div>
               </div>
@@ -626,14 +632,14 @@ export function ContactFormModal({ refetch, open, onOpenChange, contact }: Conta
               variant="outline"
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              {tc('cancel')}
             </Button>
             <Button
               className="h-10 px-6 rounded-xl text-[13px] font-semibold bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/95 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-[150px]"
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? 'Processing...' : contact ? 'Update Contact' : 'Create Contact'}
+              {isLoading ? tc('processing') : contact ? t('updateContact') : t('createContact')}
             </Button>
           </div>
         </form>

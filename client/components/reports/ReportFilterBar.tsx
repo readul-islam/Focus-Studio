@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import { QUICK_PERIODS, QuickPeriod } from '@/hooks/useReportFilters';
+import { QUICK_PERIOD_KEYS, QuickPeriod } from '@/hooks/useReportFilters';
 import { Input } from '@/components/ui/input';
+import { useTranslations } from 'next-intl';
 
 interface ReportFilterBarProps {
   period: QuickPeriod;
@@ -26,21 +27,30 @@ export function ReportFilterBar({
   customTo,
   extra,
 }: ReportFilterBarProps) {
+  const t = useTranslations('reportsCommon');
+  const periodLabels: Record<QuickPeriod, string> = {
+    week: t('periodWeek'),
+    month: t('periodMonth'),
+    quarter: t('periodQuarter'),
+    year: t('periodYear'),
+    custom: t('periodCustom'),
+  };
+
   return (
     <div className="no-print flex flex-wrap items-center gap-3">
       {/* Period toggle */}
       <div className="flex items-center gap-1 bg-stone-100 rounded-lg p-1">
-        {QUICK_PERIODS.map(p => (
+        {QUICK_PERIOD_KEYS.map(key => (
           <button
-            key={p.key}
-            onClick={() => onPeriodChange(p.key)}
+            key={key}
+            onClick={() => onPeriodChange(key)}
             className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-              period === p.key
+              period === key
                 ? 'bg-white text-neutral-900 shadow-sm font-medium'
                 : 'text-neutral-600 hover:text-neutral-900'
             }`}
           >
-            {p.label}
+            {periodLabels[key]}
           </button>
         ))}
       </div>

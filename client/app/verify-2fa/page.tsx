@@ -3,12 +3,12 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { fetchData, postData } from '@/lib/Api';
-import { gooeyToast as toast } from 'goey-toast';
 import { ArrowLeft, Loader2, Shield } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 function maskEmail(email: string): string {
   const [local, domain] = email.split('@');
@@ -18,6 +18,7 @@ function maskEmail(email: string): string {
 }
 
 export default function Verify2FAPage() {
+  const t = useTranslations('verify2faPage');
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
@@ -39,7 +40,7 @@ export default function Verify2FAPage() {
 
   const submitCode = useCallback(
     async (value: string) => {
-      if (value.length < 6 || stage === 'submitting') return; // TOTP or backup code
+      if (value.length < 6 || stage === 'submitting') return;
       setStage('submitting');
       setError('');
       try {
@@ -47,12 +48,12 @@ export default function Verify2FAPage() {
         const next = new URLSearchParams(window.location.search).get('next');
         router.push(next && next.startsWith('/') ? next : '/home/dashboard');
       } catch {
-        setError('Invalid code. Try your authenticator app or a backup code.');
+        setError(t('invalidCode'));
         setCode('');
         setStage('entry');
       }
     },
-    [router, stage]
+    [router, stage, t],
   );
 
   useEffect(() => {
@@ -72,9 +73,9 @@ export default function Verify2FAPage() {
   if (stage === 'no-session') {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-white">
-        <p className="text-gray-600 mb-4">No active sign-in session. Please log in again.</p>
+        <p className="text-gray-600 mb-4">{t('noSession')}</p>
         <Link href="/login" className="text-sm font-medium text-gray-900 underline">
-          Back to login
+          {t('backToLogin')}
         </Link>
       </div>
     );
@@ -88,22 +89,22 @@ export default function Verify2FAPage() {
           <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-4">
             <Shield className="w-6 h-6 text-gray-700" />
           </div>
-          <h1 className="text-xl font-semibold text-gray-900">Two-factor authentication</h1>
+          <h1 className="text-xl font-semibold text-gray-900">{t('title')}</h1>
           <p className="text-sm text-gray-500 mt-2">
-            Enter the 6-digit code from your authenticator app
-            {email ? ` for ${maskEmail(email)}` : ''}.
+            {t('subtitle')}
+            {email ? ` ${t('subtitleFor', { email: maskEmail(email) })}` : ''}.
           </p>
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="twofa-code" className="sr-only">
-            Verification code
+            {t('codeLabel')}
           </Label>
           <Input
             id="twofa-code"
             value={code}
             onChange={e => setCode(e.target.value.replace(/\s/g, '').toUpperCase())}
-            placeholder="000000 or backup code"
+            placeholder={t('codePlaceholder')}
             className="text-center text-lg tracking-widest font-mono h-12"
             autoComplete="one-time-code"
             autoFocus
@@ -112,9 +113,7 @@ export default function Verify2FAPage() {
 
         {error && <p className="text-sm text-red-600 text-center">{error}</p>}
 
-        <p className="text-xs text-gray-500 text-center">
-          You can also enter an 8-character backup code (with or without dashes).
-        </p>
+        <p className="text-xs text-gray-500 text-center">{t('backupHint')}</p>
 
         <div className="flex flex-col gap-2">
           <button
@@ -123,13 +122,13 @@ export default function Verify2FAPage() {
             onClick={() => void submitCode(code)}
             className="w-full py-2.5 rounded-lg bg-gray-900 text-white text-sm font-medium disabled:opacity-50"
           >
-            {stage === 'submitting' ? 'Verifying…' : 'Continue'}
+            {stage === 'submitting' ? t('verifying') : t('continue')}
           </button>
           <Link
             href="/login"
             className="flex items-center justify-center gap-1 text-sm text-gray-500 hover:text-gray-900"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to login
+            <ArrowLeft className="w-4 h-4" /> {t('backToLogin')}
           </Link>
         </div>
       </div>

@@ -31,6 +31,184 @@ const AUTHORS = {
 }
 
 export const blogPosts: BlogPost[] = [
+  // —— Project management & construction (SEO) ——
+  {
+    slug: "interior-design-project-management-guide",
+    title: "Interior Design Project Management: The Ultimate Guide for Designers",
+    excerpt:
+      "Beautiful design is only half the job. Learn how scope, communication, jobsite leadership, client vetting, and systems turn creative vision into profitable, stress-free project delivery.",
+    category: "best-practices",
+    tags: [
+      "Interior Design Project Management",
+      "Project Management",
+      "Client Management",
+      "Jobsite",
+      "Scope of Work",
+      "Profitability",
+    ],
+    publishedAt: "2026-05-28",
+    readTime: "18 min",
+    featured: true,
+    featuredImage: "/blog/interior-design-project-management.jpg",
+    author: AUTHORS.elena,
+    content: `
+      <p>As an interior designer, beautiful design is only one part of a successful business. The real magic—and sometimes the real challenge—happens in <strong>project management</strong>. Managing design projects effectively determines how profitable, sustainable, and enjoyable your career can be.</p>
+      <p>Solid systems, clear communication, and confident leadership can transform not just a single project, but an entire design practice. This guide covers what it takes to manage design projects like a professional: from setting boundaries to leading on the jobsite, from working with contractors to navigating client emotions.</p>
+      <p>Whether you are a new designer or a seasoned professional refining your systems, use this as your reference for <strong>interior design project management</strong> that protects margin and builds trust.</p>
+      <h2>Why project management is the foundation of a thriving studio</h2>
+      <p>Interior design project management is where creativity meets structure. Without it, even the most beautiful concept can crumble under missed deadlines, miscommunications, or blown budgets.</p>
+      <p>Project management gives you control. It helps you balance creative inspiration with logistical precision, ensuring designs are visionary, buildable, profitable, and aligned with client expectations.</p>
+      <p>Good project management means:</p>
+      <ul>
+        <li>Delivering what you promised, when you promised it</li>
+        <li>Maintaining clarity across clients, trades, and team members</li>
+        <li>Avoiding unnecessary stress and costly mistakes</li>
+        <li>Building trust—clients see you as a project leader, not only a stylist</li>
+      </ul>
+      <h2>Setting the foundation: scope, value, and expectations</h2>
+      <h3>Defining your scope of work</h3>
+      <p>A clear scope of work is the backbone of profitable delivery. It defines deliverables, clarifies involvement, and prevents misunderstandings. Vague scopes lead to scope creep.</p>
+      <p>Be specific about what is included and what is not. Outline design phases, meetings, and revision limits. Document everything in writing and have clients approve before work begins.</p>
+      <h3>Evaluating project value</h3>
+      <p>Not every project deserves a yes. Before accepting work, ask:</p>
+      <ul>
+        <li>Does this align with my business values and expertise?</li>
+        <li>Is the client’s communication style compatible with mine?</li>
+        <li>Is there a healthy budget and realistic timeline?</li>
+      </ul>
+      <p>Knowing when to decline is as important as knowing when to accept.</p>
+      <h3>Setting clear expectations early</h3>
+      <p>From the first meeting, establish how you work, how you bill, and what communication you expect. Confidence in your systems sets the tone for mutual respect.</p>
+      <h2>Communication, logistics, and leadership</h2>
+      <h3>The power of assertive communication</h3>
+      <p>Assertive communication is clear and confident—not pushy. Whether you are talking to clients, contractors, or vendors, expressing expectations firmly and professionally shapes how others perceive your authority.</p>
+      <ul>
+        <li>Replace apologetic language with factual statements</li>
+        <li>Do not overexplain your fees; your value shows in results</li>
+        <li>Lead with calm confidence when issues arise</li>
+      </ul>
+      <h3>Logistics and planning</h3>
+      <p>Behind every seamless project is meticulous planning: scheduling trades, tracking orders, managing deliveries. Create systems that support you—checklists, digital boards, regular jobsite updates—and keep a detailed project record so the whole team stays aligned.</p>
+      <p>Studios that centralise tasks, procurement status, and client approvals in one platform reduce the friction of scattered email and spreadsheets. Tools built for <strong>interior design workflows</strong>—like <a href="https://focuspilot.io">Focuspilot</a>—connect phases, FF&amp;E, and client portals so logistics do not live in three different places.</p>
+      <h2>Managing the human side</h2>
+      <h3>Work-life balance and boundaries</h3>
+      <p>Managing projects while maintaining a life outside work takes intentional boundaries. Prioritise what matters and delegate what does not. Lean on systems, your team, and your community—needing help is not a weakness.</p>
+      <h3>The emotional cycle of a project</h3>
+      <p>Every project has emotional phases: excitement, stress, overwhelm, frustration, and eventually joy and pride. Knowing these stages are normal helps you stay grounded and support clients through their own anxiety. When things feel chaotic, return to your systems—they are your anchor.</p>
+      <h3>Seasonal energy management</h3>
+      <ul>
+        <li><strong>Q4:</strong> Holiday deadlines and client stress—plan early and communicate timeline limits clearly</li>
+        <li><strong>Spring:</strong> Workload ramps up; manage capacity intentionally to prevent burnout</li>
+        <li><strong>Summer:</strong> Use slower months to rest, refine systems, and invest in marketing</li>
+      </ul>
+      <p>Downtime is not wasted time; it is when you regroup and strengthen the systems that support creativity long term.</p>
+      <h2>Client management: choosing, guiding, and protecting relationships</h2>
+      <h3>Vetting clients and projects</h3>
+      <p>A good client fit can make or break a project. Look for clients who trust your expertise, communicate clearly, and understand that good design takes time. If you sense misalignment early, decline gracefully rather than endure a toxic project later.</p>
+      <h3>Managing budgets and expectations</h3>
+      <p>Never assume a client’s budget. Ask, clarify, and get agreements in writing. Discuss allowances and contingencies upfront—these murky areas are where your guidance sets you apart.</p>
+      <p>If budget shifts mid-project, pause and realign before proceeding. Uncomfortable conversations protect profit and professionalism.</p>
+      <h3>Handling difficult clients</h3>
+      <p>When a project becomes emotionally draining, your wellbeing comes first. Set boundaries, document every decision, and if necessary, exit professionally. Protecting your energy is one of your most valuable resources.</p>
+      <h2>On-site management: leadership in action</h2>
+      <p>There is no substitute for being physically present. On the jobsite you catch details others miss, strengthen contractor relationships, and understand construction realities. Each visit builds confidence and earns respect from trades.</p>
+      <p>When mistakes happen—wrong tile ordered, misaligned specs, vendor issues—stay calm and focus on solutions. Your response sets the tone. Document everything, communicate proactively, and avoid rushing construction; shortcuts usually create more cost than they save.</p>
+      <p>Clear boundaries are tools for respect, not barriers. Lead with professionalism and your team will mirror that tone.</p>
+      <h2>Pricing, profitability, and systems</h2>
+      <h3>Pricing projects the right way</h3>
+      <p>Price for value and complexity: client demands, team size, vendor reliability, scope and unknowns. Price for the profit you need—not survival. Confidence in your process communicates expertise without line-by-line fee justification.</p>
+      <h3>Systems and documentation</h3>
+      <p>Systems turn chaos into order. Standardised proposals, repeatable workflows, contracts, and communication records protect you legally and let you scale without losing control.</p>
+      <h3>Communicating your value</h3>
+      <p>Part of project management is teaching clients how much you coordinate. When they understand dozens of details behind the scenes, they see your true worth. Every conversation is a chance to reinforce that value.</p>
+      <h2>Growth and longevity</h2>
+      <p>Construction and design delivery have a learning curve; every mistake is a lesson. Ask questions, observe how builders and architects problem-solve, and keep learning. Humility paired with curiosity makes great designers unstoppable.</p>
+      <p>Build industry relationships beyond the surface—understand contractor and vendor pain points, be reliable, communicate respectfully. Over time, say yes to projects that energise you and no to those that pull you away from your goals.</p>
+      <h2>Final thoughts</h2>
+      <p>Project management is leadership in action. It turns creative ideas into tangible, livable spaces. As interior designers, we guide, coordinate, and lead. When we embrace that role, we elevate our businesses and our industry.</p>
+      <p>Set boundaries. Communicate clearly. Keep learning. You deserve to be seen, respected, and valued as the professional you are.</p>
+      <p>Ready to put systems behind your leadership? <a href="https://focuspilot.io">Start a free trial of Focuspilot</a>—projects, procurement, client portal, and finance in one workspace built for design studios.</p>
+    `,
+  },
+  {
+    slug: "construction-management-interior-designers",
+    title: "Construction Management for Interior Designers: Build a Predictable Practice",
+    excerpt:
+      "Offering design alone rarely scales. Learn why construction management matters, how designers fit on the jobsite, and how to build a trade team that protects your projects and profit.",
+    category: "studio-management",
+    tags: [
+      "Construction Management",
+      "Interior Designers",
+      "Jobsite",
+      "General Contractor",
+      "Team Building",
+      "Studio Growth",
+    ],
+    publishedAt: "2026-05-26",
+    readTime: "14 min",
+    featured: true,
+    featuredImage: "/blog/construction-management-interior-designers.jpg",
+    author: AUTHORS.elena,
+    content: `
+      <p>Many interior designers want to build a sustainable practice aligned with who they are—then hit a reality check: <strong>design services alone</strong> often are not enough to get there. Decades of studio experience show that diversification matters, and one of the highest-leverage additions is <strong>construction management</strong>.</p>
+      <p>Introducing construction management can keep revenue more predictable and reduce the anxiety of projects that live only in drawings until install week. After years of supply-chain disruption and timeline volatility, feeling in control of delivery is not a luxury—it is business survival.</p>
+      <p>This guide explains why construction project management is the foundation of a thriving interior design business, where you fit among GCs and architects, and how to start adding the service without drowning in complexity.</p>
+      <h2>Why construction project management matters for designers</h2>
+      <p>Interior design project management is where creativity meets structure. Construction management extends that structure through build-out—ensuring concepts are buildable, on budget, and coordinated with trades.</p>
+      <p>When you manage construction phases confidently, clients view you as a true project leader. That trust supports higher fees, repeat work, and referrals from builders who want designers who understand site realities.</p>
+      <h2>Understanding your role on construction projects</h2>
+      <p>Many designers underestimate their influence on site. In practice, interior designers often bridge the client’s vision and the contractor’s execution.</p>
+      <h3>Your role as a designer</h3>
+      <ul>
+        <li>Review architectural plans early to anticipate spatial or finish conflicts</li>
+        <li>Coordinate with trades to clarify details</li>
+        <li>Manage communication between client, architect, and general contractor</li>
+        <li>Translate client goals into functional, coordinated decisions</li>
+      </ul>
+      <h3>Clarifying roles on the jobsite</h3>
+      <p>Understanding how each professional contributes prevents overlap and conflict:</p>
+      <ul>
+        <li><strong>General Contractor (GC):</strong> Oversees construction, labor, and materials</li>
+        <li><strong>Project Manager:</strong> Handles timelines, budgets, and execution (sometimes within the GC team)</li>
+        <li><strong>Architect:</strong> Focuses on structure and compliance</li>
+        <li><strong>Interior Designer:</strong> Focuses on aesthetics, functionality, and client experience</li>
+      </ul>
+      <p>Knowing the difference between a general contractor and a project manager helps you define your own scope—and choose when to step into PM-style delivery versus pure design. Define scope clearly at project start and communicate professional boundaries without apology.</p>
+      <h2>Collaboration across trades</h2>
+      <p>Strong collaboration turns average projects into exceptional ones. The best outcomes often come from partnerships with architects and builders who respect design input. Understanding their pain points—and inviting them to understand yours—creates harmony on site.</p>
+      <p>Everyone shares the same goal: a finished space that brings the design to life, delights the client, and functions flawlessly. Document decisions in a shared project record so “I thought we agreed on brass” does not become a Friday-night argument.</p>
+      <h2>Building a construction team that supports you</h2>
+      <p>Construction management requires expertise beyond boards and renderings. Knowing how to build your team is as important as any service you offer.</p>
+      <ul>
+        <li>What questions do you ask before hiring a specialist?</li>
+        <li>What red flags should you never ignore?</li>
+        <li>What should you expect from key members of the construction team?</li>
+      </ul>
+      <p>These decisions determine project outcomes and spare headaches when something goes wrong. Being prepared is one of your best insurance policies.</p>
+      <h2>Scope and expectations for construction services</h2>
+      <p>A written scope for construction management should spell out site visit frequency, reporting rhythm, who issues RFIs, and how change orders are priced and approved. Vague “we will help oversee the build” language is where margin disappears.</p>
+      <p>Evaluate each job for fit: budget realism, client respect for process, and whether your current trade relationships can support the location and scale. Declining a poor-fit build is cheaper than rescuing one.</p>
+      <h2>On-site leadership in practice</h2>
+      <p>Physical presence matters. Site visits catch misordered materials, dimension conflicts, and finish errors before they are buried behind drywall. They also signal to trades that design intent is non-negotiable—not a suggestion.</p>
+      <p>When vendors go rogue or supply chains slip, document, communicate options the same day, and stay adaptable without panic. The designer who stays solution-focused earns loyalty from GCs who manage dozens of jobs at once.</p>
+      <h2>Systems that scale construction management</h2>
+      <p>You cannot oversee five active builds from memory. Standardise:</p>
+      <ol>
+        <li>Phase templates from demo through punch list</li>
+        <li>Procurement tracking tied to install sequence</li>
+        <li>Client-visible status for long-lead items</li>
+        <li>Change-order logs with schedule and cost impact</li>
+      </ol>
+      <p>Software built for design studios—not generic construction ERP—keeps designers in the tool daily. <a href="https://focuspilot.io">Focuspilot</a> unifies project phases, FF&amp;E procurement, jobsite-ready documentation, and client portal approvals so construction management does not mean another spreadsheet beside your design files.</p>
+      <h2>Is construction management right for your studio?</h2>
+      <p>Not every designer must offer full CM on day one. Start with a single project where you already have strong GC relationships, clear scope, and a client who values coordination. Debrief honestly: did margin improve? Did stress decrease? Did the client refer you?</p>
+      <p>If yes, formalise the service in your proposals and train the team on site protocols. If no, fix systems before scaling—not ego.</p>
+      <h2>Where to go next</h2>
+      <p>Construction management is complex, but it is learnable. Pair site curiosity with documented systems and respectful trade relationships, and you add a service layer that many studios never master.</p>
+      <p>For the full picture on client communication, pricing, and emotional project cycles, read our <a href="https://focuspilot.io/blog/interior-design-project-management-guide">Interior Design Project Management guide</a>. To run your next build with connected tasks, procurement, and client approvals, <a href="https://focuspilot.io">try Focuspilot free</a>.</p>
+    `,
+  },
+
   // —— Regional SEO (UK & US) ——
   {
     slug: "best-interior-design-software-uk",

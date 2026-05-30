@@ -37,16 +37,7 @@ import { useNotionTaskSync } from '@/hooks/useNotionTaskSync';
 import { CircleFilled } from '@/components/Delete Animation/DeletionAnimations';
 import { usePermissions } from '@/hooks/usePermissions';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-
-// Map priority codes to full names
-const getPriorityLabel = (priority: string) => {
-  const priorityMap: Record<string, string> = {
-    L: 'Low',
-    M: 'Medium',
-    H: 'High',
-  };
-  return priorityMap[priority] || priority;
-};
+import { useTranslations } from 'next-intl';
 
 const updateTaskListFromPhases = (data: any[], phases: any[]) => {
   if (!Array.isArray(phases)) return [];
@@ -212,6 +203,13 @@ function displayDue(iso?: string) {
 }
 
 function ProjectTasksPageContent({ params }: { params: { id: string } }) {
+  const t = useTranslations('projectTasksPage');
+  const tp = useTranslations('homeTasksPage.priority');
+  const tTask = useTranslations('taskModal');
+  const getPriorityLabel = (priority: string) => {
+    const map: Record<string, string> = { L: tp('low'), M: tp('medium'), H: tp('high') };
+    return map[priority] || priority;
+  };
   const projectId = params.id;
   const [tasks, setTasks] = React.useState<UITask[]>([]);
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -410,7 +408,7 @@ function ProjectTasksPageContent({ params }: { params: { id: string } }) {
     if (!taskId || !sourceColumn || sourceColumn === targetColumn) return;
 
     // Show success message after UI update
-    toast.success(`Task moved to ${getPhaseName(targetColumn)}`);
+    toast.success(t('taskMoved', { phase: getPhaseName(targetColumn) }));
 
     const phase = phasesData?.find((p: any) => p.name === targetColumn).id;
 
@@ -425,7 +423,7 @@ function ProjectTasksPageContent({ params }: { params: { id: string } }) {
       await modifyTaskMutation.mutateAsync(modifyInfo);
     } catch (error) {
 
-      toast.error('Failed to update task on server');
+      toast.error(t('taskMoveFailed'));
     }
   };
 
@@ -441,7 +439,7 @@ function ProjectTasksPageContent({ params }: { params: { id: string } }) {
                 activeTab === 'board' ? 'text-white bg-gray-900' : 'text-gray-600 hover:text-gray-900 hover:bg-stone-100'
               }`}
             >
-              Board
+              {t('board')}
             </button>
             {/* <button
               onClick={() => setActiveTab('list')}
@@ -457,7 +455,7 @@ function ProjectTasksPageContent({ params }: { params: { id: string } }) {
                 activeTab === 'timeline' ? 'text-white bg-gray-900' : 'text-gray-600 hover:text-gray-900 hover:bg-stone-100'
               }`}
             >
-              Timeline
+              {t('timeline')}
             </button>
           </div>
 
@@ -465,7 +463,7 @@ function ProjectTasksPageContent({ params }: { params: { id: string } }) {
     
             <Button className="bg-gray-900 text-white hover:bg-gray-800 rounded-md" onClick={() => openNewTask()}>
               <Plus className="w-4 h-4 mr-2" />
-              New Task
+              {t('newTask')}
             </Button>
           </div>}
         </div>
@@ -495,8 +493,8 @@ function ProjectTasksPageContent({ params }: { params: { id: string } }) {
                               variant="ghost"
                               size="sm"
                               className="w-6 h-6 p-0 text-gray-400 hover:text-gray-600"
-                              title="Add task"
-                              aria-label="Add task"
+                              title={t('addTaskTitle')}
+                              aria-label={t('addTaskTitle')}
                               onClick={() => openNewTask(col?.id)}
                             >
                               <Plus className="w-4 h-4" />
@@ -521,7 +519,7 @@ function ProjectTasksPageContent({ params }: { params: { id: string } }) {
                                   onDragStart={e => {
                                     if (!canDrag) {
                                       e.preventDefault();
-                                      toast.warning("You do not have permission to perform this action.");
+                                      toast.warning(t('noPermission'));
                                       return;
                                     }
                                     handleDragStart(e, task?.id, col?.name);
@@ -578,8 +576,8 @@ function ProjectTasksPageContent({ params }: { params: { id: string } }) {
                                           e.stopPropagation();
                                           openDeleteModal(task);
                                         }}
-                                        title="Delete"
-                                        aria-label="Delete"
+                                        title={t('delete')}
+                                        aria-label={t('delete')}
                                       >
                                         <Trash2 className="w-3 h-3" />
                                       </Button>}
@@ -591,8 +589,8 @@ function ProjectTasksPageContent({ params }: { params: { id: string } }) {
                                           e.stopPropagation();
                                           openEditTask(task);
                                         }}
-                                        title="More"
-                                        aria-label="More"
+                                        title={t('more')}
+                                        aria-label={t('more')}
                                       >
                                         <MoreHorizontal className="w-3 h-3" />
                                       </Button>
@@ -601,7 +599,7 @@ function ProjectTasksPageContent({ params }: { params: { id: string } }) {
                                 </div>
                                   </TooltipTrigger>
                                   <TooltipContent side="top">
-                                    <p>View Only</p>
+                                    <p>{t('viewOnly')}</p>
                                   </TooltipContent>
                                 </Tooltip>
                               );
@@ -618,7 +616,7 @@ function ProjectTasksPageContent({ params }: { params: { id: string } }) {
                               onClick={() => openNewTask(col?.id)}
                             >
                               <Plus className="w-4 h-4 mr-2" />
-                              Add Task
+                              {t('addTask')}
                             </Button>}
                           </div>
                         </div>
@@ -671,8 +669,8 @@ function ProjectTasksPageContent({ params }: { params: { id: string } }) {
         isOpen={isDeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
         onConfirm={handleDeleteTask}
-        title="Delete Task"
-        description="Are you sure you want to delete this task? This action cannot be undone."
+        title={tTask('deleteTaskTitle')}
+        description={tTask('deleteTaskDescription')}
         requireConfirmation={false}
       />
     </div>

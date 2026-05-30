@@ -10,6 +10,7 @@ import { fetchData, patchData, postData } from '@/lib/Api';
 import { gooeyToast as toast } from 'goey-toast';
 import useUser from '@/hooks/useUser';
 import { COLLAB_POLL_MS } from '@/hooks/useProjectCollaboration';
+import { useTranslations } from 'next-intl';
 
 interface CommentUser {
   id: number;
@@ -42,6 +43,7 @@ export function TaskComments({
   projectId?: string | null;
   teamMembers: { id: number; name: string }[];
 }) {
+  const t = useTranslations('taskComments');
   const { user } = useUser();
   const queryClient = useQueryClient();
   const [text, setText] = React.useState('');
@@ -99,7 +101,7 @@ export function TaskComments({
         }
       }
     },
-    onError: () => toast.error('Failed to add comment'),
+    onError: () => toast.error(t('toasts.addFailed')),
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -143,13 +145,13 @@ export function TaskComments({
 
   return (
     <div className="mt-6">
-      <h3 className="text-sm font-medium text-gray-900 mb-3">Comments</h3>
+      <h3 className="text-sm font-medium text-gray-900 mb-3">{t('title')}</h3>
       <form onSubmit={handleSubmit} className="rounded-2xl border border-gray-200 bg-white relative">
         <Textarea
           ref={textareaRef}
           value={text}
           onChange={handleChange}
-          placeholder="Add comment (@mention to notify)"
+          placeholder={t('placeholder')}
           className="min-h-[80px] border-0 focus-visible:ring-0 resize-none"
         />
         {showMentionDropdown && filteredUsers.length > 0 && (
@@ -170,12 +172,12 @@ export function TaskComments({
         )}
         <div className="flex justify-end p-3 pt-0">
           <Button type="submit" size="sm" disabled={!text.trim() || createCommentMutation.isPending}>
-            Comment
+            {t('submit')}
           </Button>
         </div>
       </form>
 
-      {isLoading && <p className="text-sm text-gray-500 mt-3">Loading comments…</p>}
+      {isLoading && <p className="text-sm text-gray-500 mt-3">{t('loading')}</p>}
 
       <ul className="mt-4 space-y-3">
         {comments.map(c => (
@@ -188,7 +190,7 @@ export function TaskComments({
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 text-sm">
                   <span className="font-medium text-gray-900">
-                    {c.user?.id === user?.id ? 'You' : c.user?.name}
+                    {c.user?.id === user?.id ? t('you') : c.user?.name}
                   </span>
                   <span className="text-xs text-gray-500">
                     {formatDistanceToNow(new Date(c.created_at), { addSuffix: true })}
@@ -200,7 +202,7 @@ export function TaskComments({
           </li>
         ))}
         {!isLoading && comments.length === 0 && (
-          <p className="text-sm text-gray-500">No comments yet.</p>
+          <p className="text-sm text-gray-500">{t('empty')}</p>
         )}
       </ul>
     </div>

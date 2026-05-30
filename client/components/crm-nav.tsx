@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { NavPills } from '@/components/shared/nav-pills';
+import { useTranslations } from 'next-intl';
 
 /**
  * CRM nav — order and routes preserved.
@@ -9,11 +10,12 @@ import { NavPills } from '@/components/shared/nav-pills';
  */
 export function CrmNav() {
   const pathname = usePathname();
+  const t = useTranslations('crmNav');
 
   const items = [
-    { label: 'Contacts', href: '/crm/contacts' },
-    { label: 'Pipeline', href: '/crm/pipeline' },
-    { label: 'Proposals', href: '/crm/proposals' },
+    { label: t('contacts'), href: '/crm/contacts' },
+    { label: t('pipeline'), href: '/crm/pipeline' },
+    { label: t('proposals'), href: '/crm/proposals' },
   ];
 
   return <NavPills id="crm-nav" items={items} activeHref={pathname} />;

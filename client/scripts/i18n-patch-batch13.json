@@ -1,0 +1,30 @@
+{
+  "settingsIntegrationsPage": {
+    "gmail": {
+      "disconnect": "Disconnect",
+      "disconnectTitle": "Disconnect Gmail?",
+      "disconnectDesc": "This will stop syncing your emails. You can reconnect from Settings or Inbox.",
+      "connectWithGmail": "Connect with Gmail",
+      "connectTitle": "Connect Gmail",
+      "connectDesc": "Sign in with Google and allow access to Gmail. Connect Google Calendar separately under Integrations if needed.",
+      "accessBlockedHint": "If Google shows \"Access blocked\" (403), add your account under OAuth consent screen → Test users in Google Cloud Console.",
+      "continueWithGoogle": "Continue with Google",
+      "connect": "Connect",
+      "toasts": {
+        "blockedAccess": "Google blocked access. Add your email under OAuth consent screen → Test users in Google Cloud Console.",
+        "connectFailed": "Could not connect Gmail. Check server GMAIL_* env vars.",
+        "connected": "Gmail connected.",
+        "cancelled": "Gmail connection was cancelled.",
+        "statusNotUpdated": "Gmail connected to Google but status did not update. Please try again.",
+        "disconnected": "Gmail disconnected.",
+        "disconnectFailed": "Failed to disconnect Gmail."
+      }
+    },
+    "zapier": {
+      "title": "Zapier & API",
+      "description": "Create API keys and webhooks to connect Focuspilot with Zapier, Make, or your own scripts.",
+      "manageApiWebhooks": "Manage API & webhooks",
+      "setupApiWebhooks": "Set up API & webhooks"
+    }
+  }
+}

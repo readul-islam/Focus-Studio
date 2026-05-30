@@ -22,6 +22,7 @@ import {
   validateRasterImageFile,
 } from '@/lib/image-crop';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 interface UserData {
   id?: number;
@@ -37,6 +38,9 @@ interface UserData {
 type CropTarget = 'profile' | 'cover' | null;
 
 export default function UserProfilePage() {
+  const t = useTranslations('settingsProfilePage');
+  const tc = useTranslations('common');
+  const tImage = useTranslations('imageCropUpload');
   const { user, isLoading } = useUser();
   const [currentUser, setCurrentUser] = useState<UserData | null>(null);
   const [profilePreview, setProfilePreview] = useState<string | null>(null);
@@ -67,10 +71,10 @@ export default function UserProfilePage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user/self/'] });
-      toast.success('Profile Updated');
+      toast.success(t('profileUpdatedToast'));
     },
     onError: () => {
-      toast.error('Error! Try again');
+      toast.error(tc('errorTryAgain'));
     },
   });
 
@@ -85,7 +89,7 @@ export default function UserProfilePage() {
   const pickImage = (file: File, target: 'profile' | 'cover') => {
     const v = validateRasterImageFile(file);
     if (!v.ok) {
-      toast.error(v.message);
+      toast.error(v.code === 'unsupportedType' ? tImage('unsupportedFileType') : tImage('fileTooLarge'));
       return;
     }
     const reader = new FileReader();
@@ -101,13 +105,13 @@ export default function UserProfilePage() {
 
   const profileDisplayUrl = profilePreview || user?.profile_picture;
   const coverDisplayUrl = coverPreview || user?.cover_image;
-  const displayName = currentUser?.name?.trim() || user?.name || 'Your name';
-  const displayTitle = currentUser?.title?.trim() || user?.title || '';
+  const displayName = currentUser?.name?.trim() || user?.name || t('yourName');
+  const displayTitle = currentUser?.title?.trim() || user?.title || t('addDesignation');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentUser?.name?.trim()) {
-      toast.error('Name is required');
+      toast.error(t('nameRequired'));
       return;
     }
     mutation.mutate(currentUser as UserData);
@@ -124,11 +128,11 @@ export default function UserProfilePage() {
   };
 
   const cropAspect = cropTarget === 'cover' ? 4 : 1;
-  const cropTitle = cropTarget === 'cover' ? 'Crop cover photo' : 'Crop profile photo';
+  const cropTitle = cropTarget === 'cover' ? t('cropCover') : t('cropProfile');
 
   return (
     <>
-      <SettingsPageHeader title="Profile" description="Update your personal information." />
+      <SettingsPageHeader title={t('title')} description={t('description')} />
 
       {/* LinkedIn-style profile header */}
       <div className="mb-8 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
@@ -137,7 +141,7 @@ export default function UserProfilePage() {
           {coverDisplayUrl ? (
             <img
               src={coverDisplayUrl}
-              alt="Profile cover"
+              alt={t('altProfileCover')}
               className="h-full w-full object-cover"
             />
           ) : (
@@ -152,7 +156,7 @@ export default function UserProfilePage() {
           <div className="absolute right-3 top-3 flex gap-2 opacity-0 transition-opacity group-hover:opacity-100 sm:opacity-100">
             <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-white/30 bg-black/55 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm hover:bg-black/70">
               <Camera className="size-3.5" />
-              {coverDisplayUrl ? 'Change cover' : 'Add cover'}
+              {coverDisplayUrl ? t('changeCover') : t('addCover')}
               <input
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
@@ -170,16 +174,16 @@ export default function UserProfilePage() {
                 onClick={async () => {
                   try {
                     await clearImageOnServer('cover_image');
-                    toast.success('Cover image removed');
+                    toast.success(t('coverRemoved'));
                   } catch {
-                    toast.error('Failed to remove cover image');
+                    toast.error(t('coverRemoveFailed'));
                   }
                 }}
                 className="inline-flex items-center gap-1.5 rounded-md border border-white/30 bg-black/55 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm hover:bg-red-900/70"
-                aria-label="Remove cover image"
+                aria-label={t('removeCoverAria')}
               >
                 <Trash2 className="size-3.5" />
-                Remove
+                {tc('remove')}
               </button>
             )}
           </div>
@@ -202,7 +206,7 @@ export default function UserProfilePage() {
                   {profileDisplayUrl ? (
                     <img
                       src={profileDisplayUrl}
-                      alt="Profile"
+                      alt={t('altProfilePhoto')}
                       className="size-full object-cover"
                     />
                   ) : (
@@ -222,7 +226,7 @@ export default function UserProfilePage() {
                 >
                   <label className="inline-flex cursor-pointer items-center gap-1 rounded-full bg-white/15 px-3 py-1.5 text-[11px] font-medium text-white backdrop-blur-sm hover:bg-white/25">
                     <Camera className="size-3.5" />
-                    {profileDisplayUrl ? 'Change' : 'Upload'}
+                    {profileDisplayUrl ? tc('change') : tc('upload')}
                     <input
                       type="file"
                       accept="image/png,image/jpeg,image/webp"
@@ -245,16 +249,16 @@ export default function UserProfilePage() {
                         }
                         try {
                           await clearImageOnServer('profile_picture');
-                          toast.success('Profile picture removed');
+                          toast.success(t('profileRemoved'));
                         } catch {
-                          toast.error('Failed to remove profile picture');
+                          toast.error(t('profileRemoveFailed'));
                         }
                       }}
                       className="inline-flex items-center gap-1 rounded-full bg-red-600/90 px-3 py-1.5 text-[11px] font-medium text-white hover:bg-red-700"
-                      aria-label="Delete profile picture"
+                      aria-label={t('deleteProfilePictureAria')}
                     >
                       <Trash2 className="size-3.5" />
-                      Delete
+                      {tc('delete')}
                     </button>
                   )}
                 </div>
@@ -268,7 +272,7 @@ export default function UserProfilePage() {
               {displayTitle ? (
                 <p className="truncate text-sm text-muted-foreground">{displayTitle}</p>
               ) : (
-                <p className="text-sm text-muted-foreground">Add your designation below</p>
+                <p className="text-sm text-muted-foreground">{t('addDesignation')}</p>
               )}
             </div>
           </div>
@@ -276,9 +280,9 @@ export default function UserProfilePage() {
           <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-xs text-gray-500">
             <span className="inline-flex items-center gap-1">
               <ImageIcon className="size-3.5" />
-              Cover: PNG, JPG up to 5MB · Recommended 1584×396px
+              {t('coverHint')}
             </span>
-            <span>Photo: PNG, JPG up to 5MB · Recommended 400×400px</span>
+            <span>{t('photoHint')}</span>
           </div>
         </div>
       </div>
@@ -332,7 +336,7 @@ export default function UserProfilePage() {
               }}
               disabled={isUploadingImage}
             >
-              Cancel
+              {tc('cancel')}
             </Button>
             <Button
               size="sm"
@@ -369,12 +373,12 @@ export default function UserProfilePage() {
                   setCropImage(null);
                   toast.success(
                     cropTarget === 'cover'
-                      ? 'Cover image updated'
-                      : 'Profile picture updated',
+                      ? t('coverUpdated')
+                      : t('profileUpdated'),
                   );
                 } catch (err: unknown) {
                   console.error(err);
-                  toast.error('Could not upload the image');
+                  toast.error(t('uploadFailed'));
                 } finally {
                   setIsUploadingImage(false);
                 }
@@ -383,16 +387,16 @@ export default function UserProfilePage() {
               {isUploadingImage ? (
                 <Loader2 className="mr-1 size-4 animate-spin" />
               ) : null}
-              {isUploadingImage ? 'Uploading...' : 'Upload'}
+              {isUploadingImage ? tc('uploading') : tc('upload')}
             </Button>
           </div>
         </DialogContent>
       </Dialog>
 
-      <SettingsSection title="Basic information" description="This will be visible to your team.">
+      <SettingsSection title={t('basicInfoTitle')} description={t('basicInfoDescription')}>
         <form className="grid grid-cols-1 gap-4 md:grid-cols-2" onSubmit={handleSubmit}>
           <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">{tc('name')}</Label>
             <Input
               value={currentUser?.name ?? ''}
               onChange={(value) => {
@@ -401,11 +405,11 @@ export default function UserProfilePage() {
                 } as React.ChangeEvent<HTMLInputElement>);
               }}
               id="name"
-              placeholder="Jane Designer"
+              placeholder={t('placeholders.name')}
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="title">Designation</Label>
+            <Label htmlFor="title">{t('designation')}</Label>
             <Input
               onChange={(value) => {
                 handleUpdate({
@@ -414,11 +418,11 @@ export default function UserProfilePage() {
               }}
               value={currentUser?.title ?? ''}
               id="title"
-              placeholder="Designer"
+              placeholder={t('placeholders.designation')}
             />
           </div>
           <div className="space-y-2 md:col-span-2">
-            <Label htmlFor="phone_number">Phone Number</Label>
+            <Label htmlFor="phone_number">{t('phoneNumber')}</Label>
             <Input
               onChange={(value) => {
                 handleUpdate({
@@ -431,7 +435,7 @@ export default function UserProfilePage() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{tc('email')}</Label>
             <Input
               disabled
               readOnly
@@ -441,11 +445,11 @@ export default function UserProfilePage() {
               placeholder="jane@focuspilot.io"
             />
             <p className="ml-2 text-xs text-muted-foreground opacity-70">
-              Email cannot be changed
+              {t('emailCannotChange')}
             </p>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="role">Role</Label>
+            <Label htmlFor="role">{t('role')}</Label>
             <Input
               disabled
               readOnly
@@ -455,15 +459,15 @@ export default function UserProfilePage() {
                   : ''
               }
               id="role"
-              placeholder="Member"
+              placeholder={t('placeholders.role')}
             />
             <p className="ml-2 text-xs text-muted-foreground opacity-70">
-              Managed by your studio admin
+              {t('managedByAdmin')}
             </p>
           </div>
           <div className="flex justify-end sm:col-span-2">
             <Button disabled={mutation.isPending}>
-              {mutation.isPending ? 'Saving...' : 'Save'}
+              {mutation.isPending ? tc('saving') : tc('save')}
             </Button>
           </div>
         </form>

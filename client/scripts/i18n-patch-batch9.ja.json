@@ -1,0 +1,30 @@
+{
+  "designChatPanel": {
+    "designStudio": "デザインスタジオ",
+    "interior": "インテリア",
+    "exterior": "エクステリア",
+    "download": "ダウンロード",
+    "shareOrAttach": "共有または添付",
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "generate": "生成",
+    "enterToSendHint": "Enterで送信 · Shift+Enterで改行",
+    "aiDisclaimer": "AI生成デザインはクライアント提示前に専門家の確認が必要な場合があります。",
+    "analyzingSketch": "スケッチを分析中…",
+    "renderingDesign": "デザインをレンダリング中…",
+    "generationFailed": "生成に失敗しました",
+    "removeFile": "{name}を削除",
+    "sketchLabel": "スケッチ"
+  },
+  "crmPipelinePage": {
+    "stage": "ステージ",
+    "createProposal": "提案書を作成",
+    "email": "メール",
+    "viewProject": "プロジェクトを表示",
+    "owner": "担当者:",
+    "unassigned": "未割り当て"
+  },
+  "projectDocsPage": {
+    "uploadDocumentsDescFolder": "このフォルダにファイルをアップロードします。複数ファイルを一度に選択できます。"
+  }
+}

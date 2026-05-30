@@ -20,6 +20,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { ViewCurrencySymbol } from '@/components/ViewCurrencySymbol';
 import { PermissionGuard } from '@/components/PermissionGuard';
 import { usePermissions } from '@/hooks/usePermissions';
+import { useTranslations } from 'next-intl';
 
 type Member = {
   id: string | number;
@@ -35,6 +36,8 @@ type Member = {
 type WageType = 'Hourly' | 'Monthly' | 'Annual';
 
 function TeamPageContent() {
+  const t = useTranslations('settingsTeamPage');
+  const tc = useTranslations('common');
   const { user, isLoading: userLoading } = useUser();
   const queryClient = useQueryClient();
   const {can} = usePermissions()
@@ -56,15 +59,15 @@ function TeamPageContent() {
 
   const { mutate: changeRole } = usePatch({
     onSuccess: () => {
-      toast.success('Role updated');
+      toast.success(t('toasts.roleUpdated'));
       queryClient.refetchQueries({ queryKey: ['user/studio/members/'] });
     },
-    onError: () => toast.error('Failed to update role'),
+    onError: () => toast.error(t('toasts.roleUpdateFailed')),
   });
 
   const { mutate: inviteUser, isPending: isInviting } = usePost({
     onSuccess: () => {
-      toast.success('Invitation sent successfully');
+      toast.success(t('toasts.invitationSent'));
       setShowAddMemberPopover(false);
       setEmailInput('');
       setInviteRole('member');
@@ -77,7 +80,7 @@ function TeamPageContent() {
     },
     onError: (error) => {
 
-      toast.error('Failed to send invitation');
+      toast.error(t('toasts.invitationFailed'));
     },
   });
 
@@ -85,20 +88,20 @@ function TeamPageContent() {
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['user/studio/members/'] });
       setIsDeleteOpen(false);
-      toast.info("Member deleted successfully");
+      toast.info(t('toasts.memberDeleted'));
     },
     onError: () => {
-      toast('Error! Try again');
+      toast(t('toasts.deleteFailed'));
     },
   });
 
   const { mutate: updatePayPerHour } = usePost({
     onSuccess: () => {
-      toast.success('Pay rate updated');
+      toast.success(t('toasts.payRateUpdated'));
       queryClient.refetchQueries({ queryKey: ['user/studio/members/'] });
     },
     onError: () => {
-      toast.error('Failed to update pay rate');
+      toast.error(t('toasts.payRateUpdateFailed'));
     },
   });
 
@@ -106,7 +109,7 @@ function TeamPageContent() {
     if (emailInput && emailInput.includes('@')) {
       inviteUser({ url: '/user/invite/', data: { email: emailInput, role: inviteRole } });
     } else {
-      toast.error('Please enter a valid email address');
+      toast.error(t('toasts.invalidEmail'));
     }
   };
 
@@ -139,7 +142,7 @@ function TeamPageContent() {
 
   const handleDelete = id => {
     if (!teamsDeletePermission) {
-      toast.error('You do not have permission to delete this member');
+      toast.error(t('toasts.noDeletePermission'));
       return;
     }
     if (!id) return;
@@ -173,7 +176,7 @@ function TeamPageContent() {
 
     const hourlyRate = calculateHourlyRate(wageType, numAmount);
     const symbol = getCurrencySymbol(currencyCode);
-    return `≈ ${symbol}${hourlyRate.toFixed(2)}/hr`;
+    return t('hourlyHint', { symbol, rate: hourlyRate.toFixed(2) });
   };
 
   // Import getCurrencySymbol helper
@@ -216,17 +219,22 @@ function TeamPageContent() {
   };
 
   if (userLoading || membersLoading) {
-    return <div>Loading...</div>;
+    return <div>{tc('loading')}</div>;
   }
 
+  const wageTypeLabel = (type: WageType) => {
+    if (type === 'Hourly') return t('wageTypes.hourly');
+    if (type === 'Monthly') return t('wageTypes.monthly');
+    return t('wageTypes.annual');
+  };
 
   return (
     <>
-      <SettingsPageHeader title="Team" description="Manage members, invites, and statuses." />
+      <SettingsPageHeader title={t('title')} description={t('description')} />
 
       <SettingsSection
-        title="Members"
-        description="Add, remove, and manage studio members."
+        title={t('membersTitle')}
+        description={t('membersDescription')}
         action={
           <div className="relative">
             <Button
@@ -235,23 +243,23 @@ function TeamPageContent() {
               onClick={() => setShowAddMemberPopover(!showAddMemberPopover)}
             // disabled={inviteMutation.isLoading}
             >
-              {'Add member'}
+              {t('addMember')}
             </Button>
             {showAddMemberPopover && (
               <div className="absolute top-full right-0 mt-2 w-80 bg-white border border-gray-300 rounded-xl shadow-lg z-10 overflow-hidden">
                 <div className="p-4 border-b border-gray-200">
-                  <h3 className="font-medium text-gray-900">Invite Team Member</h3>
+                  <h3 className="font-medium text-gray-900">{t('inviteTitle')}</h3>
                 </div>
 
                 <div className="p-4">
                   <div className="mb-3">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Email address
+                      {t('emailAddress')}
                     </label>
                     <div className="flex gap-2">
                       <input
                         type="email"
-                        placeholder="Enter email address"
+                        placeholder={t('emailPlaceholder')}
                         className="flex-1 px-3 py-2 text-sm rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent"
                         value={emailInput}
                         onChange={(e) => setEmailInput(e.target.value)}
@@ -264,22 +272,22 @@ function TeamPageContent() {
                         onClick={handleInvite}
                         disabled={isInviting}
                         className="bg-clay-600 text-white hover:bg-clay-700">
-                        {isInviting ? 'Sending...' : 'Invite'}
+                        {isInviting ? t('sending') : t('invite')}
                       </Button>
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Role
+                      {t('role')}
                     </label>
                     <Select value={inviteRole} onValueChange={(v) => setInviteRole(v as 'admin' | 'manager' | 'member')}>
                       <SelectTrigger className="h-9 text-sm">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="admin">Admin</SelectItem>
-                        <SelectItem value="manager">Manager</SelectItem>
-                        <SelectItem value="member">Member</SelectItem>
+                        <SelectItem value="admin">{t('roles.admin')}</SelectItem>
+                        <SelectItem value="manager">{t('roles.manager')}</SelectItem>
+                        <SelectItem value="member">{t('roles.member')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -294,11 +302,11 @@ function TeamPageContent() {
           <table className="hidden md:table w-full text-sm">
             <thead className="bg-stone-50 border-b border-gray-200">
               <tr>
-                <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground w-[240px]">Member</th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground w-[130px]">Role</th>
-                <th className="px-4 py-2 text-center text-xs font-medium text-muted-foreground w-[100px]">Status</th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground">Pay Rate</th>
-                {teamsDeletePermission && <th className="px-4 py-2 text-right text-xs font-medium text-muted-foreground w-[90px]">Actions</th>}
+                <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground w-[240px]">{t('table.member')}</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground w-[130px]">{t('table.role')}</th>
+                <th className="px-4 py-2 text-center text-xs font-medium text-muted-foreground w-[100px]">{t('table.status')}</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-muted-foreground">{t('table.payRate')}</th>
+                {teamsDeletePermission && <th className="px-4 py-2 text-right text-xs font-medium text-muted-foreground w-[90px]">{t('table.actions')}</th>}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -325,9 +333,9 @@ function TeamPageContent() {
                         <Select value={m.role} onValueChange={(newRole) => changeRole({ url: 'user/studio/members/', data: { user_id: m.id, role: newRole } })}>
                           <SelectTrigger className="h-8 w-28 text-sm"><SelectValue /></SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="admin">Admin</SelectItem>
-                            <SelectItem value="manager">Manager</SelectItem>
-                            <SelectItem value="member">Member</SelectItem>
+                            <SelectItem value="admin">{t('roles.admin')}</SelectItem>
+                            <SelectItem value="manager">{t('roles.manager')}</SelectItem>
+                            <SelectItem value="member">{t('roles.member')}</SelectItem>
                           </SelectContent>
                         </Select>
                       ) : (
@@ -348,7 +356,7 @@ function TeamPageContent() {
                                 onClick={() => handleWageTypeChange(m.id, type)}
                                 className={`px-2 py-1 text-xs font-medium transition-colors ${wageType === type ? 'bg-clay-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'} ${type !== 'Hourly' ? 'border-l border-gray-200' : ''}`}
                               >
-                                {type}
+                                {wageTypeLabel(type)}
                               </button>
                             ))}
                           </div>
@@ -371,7 +379,7 @@ function TeamPageContent() {
                     {teamsDeletePermission && (
                       <td className="px-4 py-3 text-right">
                         <Button disabled={!teamsDeletePermission} variant="ghost" size="sm" onClick={() => openDeleteModal(m)} className="text-red-500 hover:text-red-700 hover:bg-red-50">
-                          Remove
+                          {t('remove')}
                         </Button>
                       </td>
                     )}
@@ -406,9 +414,9 @@ function TeamPageContent() {
                         <Select value={m.role} onValueChange={(newRole) => changeRole({ url: 'user/studio/members/', data: { user_id: m.id, role: newRole } })}>
                           <SelectTrigger className="h-7 w-24 text-xs"><SelectValue /></SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="admin">Admin</SelectItem>
-                            <SelectItem value="manager">Manager</SelectItem>
-                            <SelectItem value="member">Member</SelectItem>
+                            <SelectItem value="admin">{t('roles.admin')}</SelectItem>
+                            <SelectItem value="manager">{t('roles.manager')}</SelectItem>
+                            <SelectItem value="member">{t('roles.member')}</SelectItem>
                           </SelectContent>
                         </Select>
                       ) : (
@@ -427,7 +435,7 @@ function TeamPageContent() {
                               onClick={() => handleWageTypeChange(m.id, type)}
                               className={`px-2 py-1 text-xs font-medium transition-colors ${wageType === type ? 'bg-clay-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'} ${type !== 'Hourly' ? 'border-l border-gray-200' : ''}`}
                             >
-                              {type}
+                              {wageTypeLabel(type)}
                             </button>
                           ))}
                         </div>
@@ -448,7 +456,7 @@ function TeamPageContent() {
                     </div>
                     {teamsDeletePermission && (
                       <Button disabled={!teamsDeletePermission} variant="ghost" size="sm" onClick={() => openDeleteModal(m)} className="text-red-500 hover:text-red-700 hover:bg-red-50 shrink-0">
-                        Remove
+                        {t('remove')}
                       </Button>
                     )}
                   </div>
@@ -460,9 +468,9 @@ function TeamPageContent() {
             isOpen={isDeleteOpen}
             onClose={() => setIsDeleteOpen(false)}
             onConfirm={() => handleDelete(selectedTeamMember?.id)}
-            title="Remove Member"
-            confirmText="Remove"
-            description={`Are you sure you want to remove ${selectedTeamMember?.name} from this studio? Removing this member will revoke their access to all projects and tasks associated with this studio.`}
+            title={t('removeMemberTitle')}
+            confirmText={t('remove')}
+            description={t('removeMemberDescription', { name: selectedTeamMember?.name ?? '' })}
             itemName={selectedTeamMember?.name}
             requireConfirmation={true} // 👈 disables the typing step
           />

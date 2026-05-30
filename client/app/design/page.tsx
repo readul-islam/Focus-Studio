@@ -11,10 +11,12 @@ import { useMediaQuery } from '@/hooks/use-media-query';
 import { Palette, Box, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { gooeyToast as toast } from 'goey-toast';
+import { useTranslations } from 'next-intl';
 
 type DesignMode = '2d' | '3d';
 
 function DesignPageContent() {
+  const t = useTranslations('designPage');
   const [mode, setMode] = useState<DesignMode>('2d');
   const [activeSessionId, setActiveSessionId] = useState<number | null>(null);
   const [designType, setDesignType] = useState<'interior' | 'exterior'>('interior');
@@ -35,17 +37,17 @@ function DesignPageContent() {
 
   const handleNewSession = useCallback(() => {
     createSession.mutate(
-      { title: 'New design', design_type: designType },
+      { title: t('defaultSessionTitle'), design_type: designType },
       {
         onSuccess: (data: { id: number; design_type?: 'interior' | 'exterior' }) => {
           setActiveSessionId(data.id);
           if (data.design_type) setDesignType(data.design_type);
           setMobileSessionsOpen(false);
         },
-        onError: () => toast.error('Could not create design session'),
+        onError: () => toast.error(t('toasts.createFailed')),
       }
     );
-  }, [createSession, designType]);
+  }, [createSession, designType, t]);
 
   const handleSelectSession = (id: number) => {
     setActiveSessionId(id);
@@ -61,9 +63,9 @@ function DesignPageContent() {
           const remaining = sessions.filter(s => s.id !== id);
           setActiveSessionId(remaining[0]?.id ?? null);
         }
-        toast.success('Design session deleted');
+        toast.success(t('toasts.deleted'));
       },
-      onError: () => toast.error('Failed to delete session'),
+      onError: () => toast.error(t('toasts.deleteFailed')),
     });
   };
 
@@ -71,7 +73,7 @@ function DesignPageContent() {
     renameSession.mutate(
       { id, title },
       {
-        onError: () => toast.error('Failed to rename session'),
+        onError: () => toast.error(t('toasts.renameFailed')),
       }
     );
   };
@@ -85,10 +87,8 @@ function DesignPageContent() {
               <Palette className="w-5 h-5 text-sage-700" />
             </div>
             <div>
-              <h1 className="text-lg font-semibold text-gray-900">Design</h1>
-              <p className="text-sm text-gray-500">
-                AI-assisted interior and exterior design from sketches
-              </p>
+              <h1 className="text-lg font-semibold text-gray-900">{t('title')}</h1>
+              <p className="text-sm text-gray-500">{t('subtitle')}</p>
             </div>
           </div>
           <div className="flex rounded-lg border border-stone-200 p-1 bg-stone-100 self-start">
@@ -103,7 +103,7 @@ function DesignPageContent() {
               )}
             >
               <Sparkles className="w-4 h-4" />
-              2D Design
+              {t('mode2d')}
             </button>
             <button
               type="button"
@@ -116,7 +116,7 @@ function DesignPageContent() {
               )}
             >
               <Box className="w-4 h-4" />
-              3D Design
+              {t('mode3d')}
             </button>
           </div>
         </div>
@@ -152,20 +152,20 @@ function DesignPageContent() {
             </div>
             {!activeSessionId ? (
               <div className="flex-1 flex flex-col items-center justify-center p-6 text-center bg-white border border-stone-200 rounded-xl shadow-sm">
-                <p className="text-gray-500 mb-4">Select or create a design session</p>
+                <p className="text-gray-500 mb-4">{t('selectOrCreate')}</p>
                 <button
                   type="button"
                   onClick={() => setMobileSessionsOpen(true)}
                   className="text-sm text-sage-700 font-medium underline hover:text-sage-700/80"
                 >
-                  Open sessions
+                  {t('openSessions')}
                 </button>
                 <button
                   type="button"
                   onClick={handleNewSession}
                   className="mt-4 px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800"
                 >
-                  New design
+                  {t('newDesign')}
                 </button>
               </div>
             ) : (
@@ -175,7 +175,7 @@ function DesignPageContent() {
                   onClick={() => setMobileSessionsOpen(true)}
                   className="shrink-0 mx-4 mt-3 text-xs text-sage-700 font-medium text-left hover:text-gray-900"
                 >
-                  ← Sessions
+                  {t('sessions')}
                 </button>
                 {mode === '3d' ? (
                   <Design3DChatPanel
@@ -230,16 +230,14 @@ function DesignPageContent() {
               ) : (
                 <div className="flex flex-col items-center justify-center h-full text-center px-6">
                   <DesignStarPlaceholder />
-                  <p className="text-gray-500 mt-4 mb-6">
-                    Create a new design or select a session to start
-                  </p>
+                  <p className="text-gray-500 mt-4 mb-6">{t('emptyDesktop')}</p>
                   <button
                     type="button"
                     onClick={handleNewSession}
                     disabled={createSession.isPending}
                     className="px-5 py-2.5 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 disabled:opacity-50"
                   >
-                    New design
+                    {t('newDesign')}
                   </button>
                 </div>
               )}

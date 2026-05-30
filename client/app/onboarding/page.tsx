@@ -24,26 +24,28 @@ import {
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 const TITLE_OPTIONS = [
-  { value: 'Studio Owner',       Icon: Briefcase,  desc: 'Running the business' },
-  { value: 'Principal Designer', Icon: PenLine,    desc: 'Leading design direction' },
-  { value: 'Project Manager',    Icon: LayoutList, desc: 'Managing projects & timelines' },
-  { value: 'Associate Designer', Icon: Palette,    desc: 'Designing & delivering work' },
+  { value: 'Studio Owner', Icon: Briefcase, labelKey: 'roles.studioOwner', descKey: 'roles.studioOwnerDesc' },
+  { value: 'Principal Designer', Icon: PenLine, labelKey: 'roles.principalDesigner', descKey: 'roles.principalDesignerDesc' },
+  { value: 'Project Manager', Icon: LayoutList, labelKey: 'roles.projectManager', descKey: 'roles.projectManagerDesc' },
+  { value: 'Associate Designer', Icon: Palette, labelKey: 'roles.associateDesigner', descKey: 'roles.associateDesignerDesc' },
 ] as const;
 
 type InviteEntry = { email: string; role: 'admin' | 'manager' | 'member' };
 
 // ─── Step indicator ──────────────────────────────────────────────────────────
 
-const STEPS = ['Your Role', 'Studio Setup', 'Branding', 'Invite Team'];
-
 function StepBar({ current }: { current: number }) {
+  const t = useTranslations('onboardingPage');
+  const steps = [t('steps.role'), t('steps.studio'), t('steps.branding'), t('steps.invite')];
+
   return (
     <div className="flex items-center gap-0 w-full max-w-sm mx-auto">
-      {STEPS.map((label, i) => {
+      {steps.map((label, i) => {
         const done = i < current;
         const active = i === current;
         return (
@@ -64,7 +66,7 @@ function StepBar({ current }: { current: number }) {
                 {label}
               </span>
             </div>
-            {i < STEPS.length - 1 && (
+            {i < steps.length - 1 && (
               <div className={`h-px flex-1 mx-2 mb-4 transition-colors ${done ? 'bg-gray-900' : 'bg-gray-200'}`} />
             )}
           </div>
@@ -77,6 +79,7 @@ function StepBar({ current }: { current: number }) {
 // ─── Step 1: Role ─────────────────────────────────────────────────────────────
 
 function StepRole({ onNext }: { onNext: (title: string) => void }) {
+  const t = useTranslations('onboardingPage');
   const [selected, setSelected] = useState('');
   const [saving, setSaving] = useState(false);
   const { user } = useUser();
@@ -88,7 +91,7 @@ function StepRole({ onNext }: { onNext: (title: string) => void }) {
       await postData({ url: '/user/self/update/', data: { title: selected } });
       onNext(selected);
     } catch {
-      toast.error('Failed to save. Try again.');
+      toast.error(t('toasts.saveFailed'));
     } finally {
       setSaving(false);
     }
@@ -98,9 +101,11 @@ function StepRole({ onNext }: { onNext: (title: string) => void }) {
     <div className="max-w-lg w-full mx-auto">
       <div className="mb-10">
         <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">
-          {user?.name ? `Hi ${user.name.split(' ')[0]}, what's your role?` : "What's your role?"}
+          {user?.name
+            ? t('roleTitleWithName', { name: user.name.split(' ')[0] })
+            : t('roleTitle')}
         </h1>
-        <p className="text-sm text-gray-500">We'll tailor your workspace to how you work.</p>
+        <p className="text-sm text-gray-500">{t('roleSubtitle')}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 mb-8">
@@ -126,8 +131,8 @@ function StepRole({ onNext }: { onNext: (title: string) => void }) {
                 <opt.Icon className={`w-6 h-6 ${active ? 'text-white' : 'text-gray-500'}`} />
               </div>
               <div>
-                <div className={`text-sm font-semibold ${active ? 'text-white' : 'text-gray-900'}`}>{opt.value}</div>
-                <div className={`text-xs mt-0.5 ${active ? 'text-gray-300' : 'text-gray-400'}`}>{opt.desc}</div>
+                <div className={`text-sm font-semibold ${active ? 'text-white' : 'text-gray-900'}`}>{t(opt.labelKey)}</div>
+                <div className={`text-xs mt-0.5 ${active ? 'text-gray-300' : 'text-gray-400'}`}>{t(opt.descKey)}</div>
               </div>
               <AnimatePresence>
                 {active && (
@@ -153,7 +158,7 @@ function StepRole({ onNext }: { onNext: (title: string) => void }) {
         disabled={!selected || saving}
         className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
       >
-        {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Continue <ArrowRight className="w-4 h-4" /></>}
+        {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <>{t('continue')} <ArrowRight className="w-4 h-4" /></>}
       </button>
     </div>
   );
@@ -162,17 +167,18 @@ function StepRole({ onNext }: { onNext: (title: string) => void }) {
 // ─── Step 2: Studio Setup ─────────────────────────────────────────────────────
 
 function StepStudio({ onNext, onBack }: { onNext: (studioId: number) => void; onBack: () => void }) {
+  const t = useTranslations('onboardingPage');
   const [form, setForm] = useState({ name: '', address: '', support_email: '', phone_number: '' });
   const [errors, setErrors] = useState<Partial<typeof form>>({});
   const [saving, setSaving] = useState(false);
 
   const validate = () => {
     const e: Partial<typeof form> = {};
-    if (!form.name.trim()) e.name = 'Required';
-    if (!form.address.trim()) e.address = 'Required';
-    if (!form.support_email.trim()) e.support_email = 'Required';
-    else if (!/^\S+@\S+\.\S+$/.test(form.support_email)) e.support_email = 'Invalid email';
-    if (!form.phone_number.trim()) e.phone_number = 'Required';
+    if (!form.name.trim()) e.name = t('required');
+    if (!form.address.trim()) e.address = t('required');
+    if (!form.support_email.trim()) e.support_email = t('required');
+    else if (!/^\S+@\S+\.\S+$/.test(form.support_email)) e.support_email = t('invalidEmail');
+    if (!form.phone_number.trim()) e.phone_number = t('required');
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -185,7 +191,7 @@ function StepStudio({ onNext, onBack }: { onNext: (studioId: number) => void; on
       const res: any = await postData({ url: '/user/studios/', data: form });
       onNext(res?.id);
     } catch {
-      toast.error('Failed to create studio. Try again.');
+      toast.error(t('toasts.studioCreateFailed'));
     } finally {
       setSaving(false);
     }
@@ -220,25 +226,25 @@ function StepStudio({ onNext, onBack }: { onNext: (studioId: number) => void; on
   return (
     <form onSubmit={handleSubmit} className="max-w-lg w-full mx-auto">
       <div className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">Tell us about your studio.</h1>
-        <p className="text-sm text-gray-500">This info appears on proposals, invoices, and client communications.</p>
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">{t('studioTitle')}</h1>
+        <p className="text-sm text-gray-500">{t('studioSubtitle')}</p>
       </div>
 
       <div className="space-y-4 mb-8">
-        {field('name', 'Studio Name', 'e.g. Studio Saif', <Building2 className="w-4 h-4" />)}
-        {field('address', 'Address', '7 Design Street, London', <Building2 className="w-4 h-4" />)}
-        {field('support_email', 'Contact Email', 'hello@studio.com', <Mail className="w-4 h-4" />, 'email')}
-        {field('phone_number', 'Phone Number', '+44 20 1234 5678', <Phone className="w-4 h-4" />, 'tel')}
+        {field('name', t('studioName'), t('studioNamePlaceholder'), <Building2 className="w-4 h-4" />)}
+        {field('address', t('address'), t('addressPlaceholder'), <Building2 className="w-4 h-4" />)}
+        {field('support_email', t('contactEmail'), t('contactEmailPlaceholder'), <Mail className="w-4 h-4" />, 'email')}
+        {field('phone_number', t('phoneNumber'), t('phonePlaceholder'), <Phone className="w-4 h-4" />, 'tel')}
       </div>
 
       <div className="flex gap-3">
         <button type="button" onClick={onBack}
           className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back
+          <ArrowLeft className="w-4 h-4" /> {t('back')}
         </button>
         <button type="submit" disabled={saving}
           className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors disabled:opacity-40">
-          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Continue <ArrowRight className="w-4 h-4" /></>}
+          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <>{t('continue')} <ArrowRight className="w-4 h-4" /></>}
         </button>
       </div>
     </form>
@@ -248,6 +254,8 @@ function StepStudio({ onNext, onBack }: { onNext: (studioId: number) => void; on
 // ─── Step 3: Branding ─────────────────────────────────────────────────────────
 
 function StepBranding({ onNext, onBack, onSkip }: { onNext: () => void; onBack: () => void; onSkip: () => void }) {
+  const t = useTranslations('onboardingPage');
+  const tCommon = useTranslations('common');
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -256,7 +264,7 @@ function StepBranding({ onNext, onBack, onSkip }: { onNext: () => void; onBack: 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) { toast.error('Logo must be under 2MB'); return; }
+    if (file.size > 2 * 1024 * 1024) { toast.error(t('logoTooLarge')); return; }
     setLogoFile(file);
     setLogoPreview(URL.createObjectURL(file));
   };
@@ -270,7 +278,7 @@ function StepBranding({ onNext, onBack, onSkip }: { onNext: () => void; onBack: 
       await patchFormData({ url: '/user/studio/branding/', data: fd });
       onNext();
     } catch {
-      toast.error('Upload failed. You can add branding later in Settings.');
+      toast.error(t('toasts.uploadFailed'));
       onNext();
     } finally {
       setSaving(false);
@@ -280,15 +288,15 @@ function StepBranding({ onNext, onBack, onSkip }: { onNext: () => void; onBack: 
   return (
     <div className="max-w-lg w-full mx-auto">
       <div className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">Add your logo.</h1>
-        <p className="text-sm text-gray-500">Appears on proposals and client-facing documents. You can always update this later.</p>
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">{t('brandingTitle')}</h1>
+        <p className="text-sm text-gray-500">{t('brandingSubtitle')}</p>
       </div>
 
       <div className="mb-8">
         <input ref={inputRef} type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" onChange={handleFile} className="hidden" />
         {logoPreview ? (
           <div className="relative w-full aspect-[3/1] rounded-xl border-2 border-gray-200 overflow-hidden bg-gray-50 flex items-center justify-center">
-            <img src={logoPreview} alt="Logo preview" className="max-h-24 max-w-[70%] object-contain" />
+            <img src={logoPreview} alt={t('logoPreviewAlt')} className="max-h-24 max-w-[70%] object-contain" />
             <button
               type="button"
               onClick={() => { setLogoFile(null); setLogoPreview(null); }}
@@ -306,14 +314,14 @@ function StepBranding({ onNext, onBack, onSkip }: { onNext: () => void; onBack: 
             <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-gray-200 transition-colors">
               <Upload className="w-5 h-5 text-gray-500" />
             </div>
-            <div className="text-sm font-medium text-gray-700">Click to upload logo</div>
+            <div className="text-sm font-medium text-gray-700">{t('uploadLogo')}</div>
             <div className="text-xs text-gray-400">PNG, JPG, SVG — max 2MB</div>
           </button>
         )}
         {logoPreview && (
           <button type="button" onClick={() => inputRef.current?.click()}
             className="mt-3 text-xs text-gray-500 hover:text-gray-700 underline underline-offset-2">
-            Change logo
+            {tCommon('change')}
           </button>
         )}
       </div>
@@ -321,15 +329,15 @@ function StepBranding({ onNext, onBack, onSkip }: { onNext: () => void; onBack: 
       <div className="flex gap-3">
         <button type="button" onClick={onBack}
           className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back
+          <ArrowLeft className="w-4 h-4" /> {t('back')}
         </button>
         <button type="button" onClick={handleUpload} disabled={saving}
           className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors disabled:opacity-40">
-          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <>{logoFile ? 'Upload & Continue' : 'Continue'} <ArrowRight className="w-4 h-4" /></>}
+          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <>{logoFile ? tCommon('upload') : t('continue')} <ArrowRight className="w-4 h-4" /></>}
         </button>
       </div>
       <button type="button" onClick={onSkip} className="w-full mt-3 text-xs text-gray-400 hover:text-gray-600 transition-colors">
-        Skip for now
+        {t('skip')}
       </button>
     </div>
   );
@@ -338,6 +346,7 @@ function StepBranding({ onNext, onBack, onSkip }: { onNext: () => void; onBack: 
 // ─── Step 4: Invite Team ──────────────────────────────────────────────────────
 
 function StepInvite({ onFinish, onBack, onSkip }: { onFinish: () => void; onBack: () => void; onSkip: () => void }) {
+  const t = useTranslations('onboardingPage');
   const [invites, setInvites] = useState<InviteEntry[]>([{ email: '', role: 'member' }]);
   const [saving, setSaving] = useState(false);
 
@@ -355,7 +364,7 @@ function StepInvite({ onFinish, onBack, onSkip }: { onFinish: () => void; onBack
       toast.success(`${valid.length} invite${valid.length > 1 ? 's' : ''} sent`);
       onFinish();
     } catch {
-      toast.error('Some invites failed. You can retry from Settings → Team.');
+      toast.error(t('toasts.inviteFailed'));
       onFinish();
     } finally {
       setSaving(false);
@@ -365,8 +374,8 @@ function StepInvite({ onFinish, onBack, onSkip }: { onFinish: () => void; onBack
   return (
     <div className="max-w-lg w-full mx-auto">
       <div className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">Who's on your team?</h1>
-        <p className="text-sm text-gray-500">Add colleagues now or later from Settings → Team.</p>
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">{t('inviteTitle')}</h1>
+        <p className="text-sm text-gray-500">{t('inviteSubtitle')}</p>
       </div>
 
       <div className="space-y-3 mb-4">
@@ -408,15 +417,15 @@ function StepInvite({ onFinish, onBack, onSkip }: { onFinish: () => void; onBack
       <div className="flex gap-3">
         <button type="button" onClick={onBack}
           className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back
+          <ArrowLeft className="w-4 h-4" /> {t('back')}
         </button>
         <button type="button" onClick={handleSend} disabled={saving}
           className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors disabled:opacity-40">
-          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Sparkles className="w-4 h-4" /> Send invites & finish</>}
+          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Sparkles className="w-4 h-4" /> {t('finish')}</>}
         </button>
       </div>
       <button type="button" onClick={onSkip} className="w-full mt-3 text-xs text-gray-400 hover:text-gray-600 transition-colors">
-        Skip for now
+        {t('skip')}
       </button>
     </div>
   );
@@ -508,9 +517,11 @@ function StepComplete({ onDone }: { onDone: () => void }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function OnboardingPage() {
+  const tApp = useTranslations('app');
   const router = useRouter();
   const queryClient = useQueryClient();
   const [step, setStep] = useState(0);
+  const stepCount = 4;
 
   const finish = () => setStep(4);
 
@@ -539,12 +550,12 @@ export default function OnboardingPage() {
             className="object-contain"
           />
           <span className="text-sm font-semibold text-gray-900 tracking-tight">
-            Focuspilot
+            {tApp('name')}
           </span>
         </div>
         {step < 4 && (
           <span className="text-xs text-gray-400">
-            {step + 1} of {STEPS.length}
+            {step + 1} of {stepCount}
           </span>
         )}
       </header>
@@ -552,7 +563,7 @@ export default function OnboardingPage() {
       <div className="h-0.5 bg-gray-100">
         <div
           className="h-full bg-gray-900 transition-all duration-500"
-          style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
+          style={{ width: `${((step + 1) / stepCount) * 100}%` }}
         />
       </div>
 

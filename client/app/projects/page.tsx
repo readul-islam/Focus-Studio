@@ -12,9 +12,11 @@ import ProjectCard from '@/components/project/ProjectCard';
 import ProjectCardTable from '@/components/project/ProjectCardTable';
 import { Input } from '@/components/ui/input';
 import { usePermissions } from '@/hooks/usePermissions';
+import { useTranslations } from 'next-intl';
 
 
 export default function ProjectsPage() {
+  const t = useTranslations('projectsPage');
   const [showNewProjectDialog, setShowNewProjectDialog] = useState(false);
   const [viewMode, setViewMode] = useState<'board' | 'table'>('board');
   const [project, setProject] = useState<any[]>([]);
@@ -139,7 +141,7 @@ export default function ProjectsPage() {
             onClick={() => setShowNewProjectDialog(true)}
           >
             <Plus className="w-4 h-4" />
-            Add Project
+            {t('addProject')}
           </Button>
           )}
         </div>
@@ -208,17 +210,17 @@ export default function ProjectsPage() {
             <Calendar className="w-7 h-7 text-muted-foreground" />
           </div>
           <h3 className="text-lg font-bold text-foreground mb-2">
-            No projects found
+            {t('emptyTitle')}
           </h3>
           <p className="text-muted-foreground/80 text-sm mb-6 max-w-sm mx-auto">
-            Get started by creating your first project
+            {t('emptySubtitle')}
           </p>
           <Button
             onClick={() => setShowNewProjectDialog(true)}
             className="bg-primary text-primary-foreground hover:opacity-90 h-11 px-6 rounded-xl shadow-sm font-semibold transition-all gap-2"
           >
             <Plus className="w-4 h-4" />
-            New project
+            {t('newProject')}
           </Button>
         </div>
       )}

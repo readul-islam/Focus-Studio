@@ -39,8 +39,10 @@ import {
     addYears,
     subYears
 } from 'date-fns';
+import { useTranslations } from 'next-intl';
 
 export default function CalendarStudioPage() {
+    const t = useTranslations('homeCalendarPage');
     // State
     const [currentDate, setCurrentDate] = useState(new Date());
     const [view, setView] = useState<'month' | 'week' | 'day'>('month');
@@ -181,25 +183,25 @@ export default function CalendarStudioPage() {
         switch (status) {
             case 'D': // Done
                 return {
-                    label: 'Done',
+                    label: t('status.done'),
                     className: 'bg-[#8fa58f] text-[#3a4b3a] border-[#8fa58f]',
                     barClassName: 'bg-[#8fa58f] border-[#8fa58f] !text-[#3a4b3a]'
                 };
             case 'IR': // In Review
                 return {
-                    label: 'In Review',
+                    label: t('status.inReview'),
                     className: 'bg-[#d9d5cc] text-[#5c5750] border-[#d9d5cc]',
                     barClassName: 'bg-[#d9d5cc] border-[#d9d5cc] !text-[#5c5750]'
                 };
             case 'TD': // Todo
                 return {
-                    label: 'Todo',
+                    label: t('status.todo'),
                     className: 'bg-[#e07a57] text-[#e7e7e7] border-[#e07a57]',
                     barClassName: 'bg-[#e07a57] border-[#e07a57] !text-[#e7e7e7]'
                 };
             case 'IP': // In Progress
                 return {
-                    label: 'In Progress',
+                    label: t('status.inProgress'),
                     className: 'bg-[#111827] text-white border-[#111827]',
                     barClassName: 'bg-[#111827] border-[#111827] !text-white'
                 };
@@ -214,12 +216,22 @@ export default function CalendarStudioPage() {
 
     const getPriorityLabel = (priority: string) => {
         const map: Record<string, string> = {
-            'L': 'Low',
-            'M': 'Medium',
-            'H': 'High'
+            'L': t('priority.low'),
+            'M': t('priority.medium'),
+            'H': t('priority.high')
         };
         return map[priority] || priority;
     };
+
+    const weekdayLabels = [
+        t('weekdays.sun'),
+        t('weekdays.mon'),
+        t('weekdays.tue'),
+        t('weekdays.wed'),
+        t('weekdays.thu'),
+        t('weekdays.fri'),
+        t('weekdays.sat'),
+    ];
 
 
     // -- VIEWS --
@@ -250,7 +262,7 @@ export default function CalendarStudioPage() {
             <div className="flex flex-col h-full border border-gray-200 rounded-lg overflow-y-scroll bg-white ">
                 {/* Header */}
                 <div className="grid grid-cols-7 border-b border-gray-200 bg-white">
-                    {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
+                    {weekdayLabels.map((d) => (
                         <div key={d} className="py-2 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
                             {d}
                         </div>
@@ -407,14 +419,14 @@ export default function CalendarStudioPage() {
                         <p className="text-gray-500">{format(currentDate, 'MMMM do, yyyy')}</p>
                     </div>
                     <Badge variant="outline" className="px-3 py-1 text-sm">
-                        {activeTasks.length} Active Task{activeTasks.length !== 1 ? 's' : ''}
+                        {activeTasks.length === 1 ? t('activeTasks', { count: activeTasks.length }) : t('activeTasksPlural', { count: activeTasks.length })}
                     </Badge>
                 </div>
 
                 {activeTasks.length === 0 ? (
                     <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
                         <CalendarIcon className="w-12 h-12 mb-3 opacity-20" />
-                        <p>No tasks scheduled for this day.</p>
+                        <p>{t('noTasksDay')}</p>
                     </div>
                 ) : (
                     <div className="space-y-3">
@@ -436,8 +448,8 @@ export default function CalendarStudioPage() {
                                     <div className="mt-4">
                                         <div className="flex justify-between text-xs text-gray-500 mb-1">
                                             <div className="flex gap-2">
-                                                <span>Status: <span className={`font-semibold ml-1 ${styleConfig.textClassName || ''}`}>{styleConfig.label}</span></span>
-                                                {task.priority && <span>| Priority: {getPriorityLabel(task.priority)}</span>}
+                                                <span>{t('statusLabel')} <span className={`font-semibold ml-1 ${styleConfig.textClassName || ''}`}>{styleConfig.label}</span></span>
+                                                {task.priority && <span>| {t('priorityLabel')} {getPriorityLabel(task.priority)}</span>}
                                             </div>
                                         </div>
                                         {/* <div className={`mt-2 px-2 py-1 inline-block rounded text-xs font-medium ${styleConfig.className} bg-opacity-20`}>
@@ -588,14 +600,14 @@ export default function CalendarStudioPage() {
                             <div className="p-4 border-b border-gray-100">
                                 <h2 className="font-semibold text-lg">{format(selectedDate, 'EEEE, MMM do')}</h2>
                                 <p className="text-sm text-gray-500">
-                                    {tasksForSelectedDate.length} active tasks
+                                    {t('activeTasksSidebar', { count: tasksForSelectedDate.length })}
                                 </p>
                             </div>
                             <div className="flex-1 overflow-y-auto p-4 space-y-4">
                                 {tasksForSelectedDate.length === 0 ? (
                                     <div className="text-center py-10 bg-white rounded-lg border border-dashed border-gray-200">
                                         <Clock className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-                                        <p className="text-sm text-gray-500">No active tasks for this date.</p>
+                                        <p className="text-sm text-gray-500">{t('noTasksDate')}</p>
                                     </div>
                                 ) : (
                                     tasksForSelectedDate.map((task: any) => {
@@ -606,12 +618,12 @@ export default function CalendarStudioPage() {
                                                 <h3 className={`font-medium text-sm`}>{task.project_name}</h3>
                                                 <p className="text-xs opacity-80 mt-1 lines-clamp-2">{task.title}</p>
                                                 <div className="mt-2 flex items-center justify-between text-xs font-medium opacity-70">
-                                                    <span>Status: {styleConfig.label}</span>
+                                                    <span>{t('statusLabel')} {styleConfig.label}</span>
                                                     <span>{format(task.endDate, 'MMM d')}</span>
                                                 </div>
                                                 {task.priority && (
                                                     <div className="mt-1 text-xs opacity-70">
-                                                        Priority: {getPriorityLabel(task.priority)}
+                                                        {t('priorityLabel')} {getPriorityLabel(task.priority)}
                                                     </div>
                                                 )}
                                             </div>

@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { FileText, Building, Store } from "lucide-react"
 import type { ProposalData } from "../proposal-drawer"
+import { useTranslations } from "next-intl"
 
 interface TermsStepProps {
   data: ProposalData
@@ -13,10 +14,11 @@ interface TermsStepProps {
 }
 
 export function TermsStep({ data, onUpdate }: TermsStepProps) {
+  const t = useTranslations('crmProposalTermsStep')
   const termsTemplates = [
     {
       id: "residential",
-      name: "Residential Terms",
+      name: t('templates.residential'),
       icon: Building,
       content: `TERMS & CONDITIONS
 
@@ -40,7 +42,7 @@ Designer's liability is limited to the total contract value. Designer is not res
     },
     {
       id: "commercial",
-      name: "Commercial Terms",
+      name: t('templates.commercial'),
       icon: Store,
       content: `COMMERCIAL TERMS & CONDITIONS
 
@@ -64,7 +66,7 @@ Neither party is liable for delays due to circumstances beyond reasonable contro
     },
     {
       id: "standard",
-      name: "Standard Terms",
+      name: t('templates.standard'),
       icon: FileText,
       content: `STANDARD TERMS & CONDITIONS
 

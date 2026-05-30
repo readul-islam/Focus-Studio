@@ -90,6 +90,7 @@ import {
 } from '@/components/ui/tooltip';
 import { usePermissions } from '@/hooks/usePermissions';
 import useUser from '@/hooks/useUser';
+import { useTranslations } from 'next-intl';
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 const MAX_FOLDER_NAME_LENGTH = 50;
@@ -196,6 +197,7 @@ function getFileIcon(fileName: string) {
 }
 
 function ProjectDocsPageContent({ params }: { params: { id: string } }) {
+  const t = useTranslations('projectDocsPage');
   const router = useRouter();
   const searchParams = useSearchParams();
   const shareWithContractor = searchParams.get('shareWith');
@@ -522,7 +524,7 @@ const moveMutation = useMutation({
         a.remove();
         window.URL.revokeObjectURL(objectUrl);
       })
-      .catch(() => toast.error('Download failed'));
+      .catch(() => toast.error(t('downloadFailed')));
   }
 
   const handleLightboxDownload = async () => {
@@ -543,7 +545,7 @@ const moveMutation = useMutation({
       window.URL.revokeObjectURL(url);
     } catch {
       window.open(imageUrl, '_blank');
-      toast.info('Right-click the image and select "Save Image As" to download');
+      toast.info(t('saveImageHint'));
     }
   };
 
@@ -565,7 +567,7 @@ const moveMutation = useMutation({
       window.URL.revokeObjectURL(url);
     } catch {
       window.open(pdfUrl, '_blank');
-      toast.info('Opening PDF in new tab');
+      toast.info(t('openPdfHint'));
     }
   };
 
@@ -641,16 +643,16 @@ const moveMutation = useMutation({
 
   // Rename Folder
   const handleRenameFolder = guard(() => {
-    if (!updatedFolderName.trim()) return toast.error('Folder name cannot be empty');
+    if (!updatedFolderName.trim()) return toast.error(t('folderNameEmpty'));
     if (updatedFolderName.length > MAX_FOLDER_NAME_LENGTH) {
-      return toast.error(`Folder name cannot exceed ${MAX_FOLDER_NAME_LENGTH} characters`);
+      return toast.error(t('folderNameMax', { max: MAX_FOLDER_NAME_LENGTH }));
     }
     toast.promise(
       renameFolderMutation.mutateAsync({
         id: selectedDoc.id,
         newFolderName: updatedFolderName,
       }),
-      { loading: 'Renaming...', success: 'Renamed successfully!', error: 'Failed to rename folder.' },
+      { loading: t('renaming'), success: t('renamedSuccess'), error: t('renameFolderFailed') },
     );
 
     setUpdatedFolderName('');
@@ -664,7 +666,7 @@ const moveMutation = useMutation({
   const HandleFolderOpen = (folder: any) => {
     const tempName = folder?.name?.toLowerCase();
     if (tempName === 'admin only' && !adminEmail.includes(user?.email)) {
-      toast.error('You do not have permission to access this folder');
+      toast.error(t('noFolderPermission'));
       return;
     }
     
@@ -679,7 +681,7 @@ const moveMutation = useMutation({
   const handleDeleteTask = guard((id: string | number) => {
     toast.promise(
       deleteMutation.mutateAsync({ id }),
-      { loading: 'Deleting...', success: 'Deleted successfully!', error: 'Failed to delete file.' },
+      { loading: t('deleting'), success: t('deletedSuccess'), error: t('deleteFileFailed') },
     );
   });
 
@@ -701,17 +703,17 @@ const moveMutation = useMutation({
       setLinkModalOpen(false);
       setLink('');
       setLinkName('');
-      toast.success('Link added!');
+      toast.success(t('linkAdded'));
     },
     onError: () => {
-      toast.error('Failed to add link');
+      toast.error(t('linkAddFailed'));
     },
   });
 
   // modify handleClick to accept optional message
   const handleClick = (item: any, message?: string) => {
     // Feature not available
-    toast.info('Send to client not implemented in new API');
+    toast.info(t('sendToClientNotImplemented'));
   };
 
   const FileRenameOpenModal = (doc: any) => {
@@ -732,14 +734,14 @@ const moveMutation = useMutation({
         id: selectedDoc.id,
         newFileName: updatedFileName,
       }),
-      { loading: 'Renaming file...', success: 'File renamed successfully!', error: 'Failed to rename file.' },
+      { loading: t('renamingFile'), success: t('fileRenamedSuccess'), error: t('renameFileFailed') },
     );
     setUpdatedFileName('');
   });
 
   const handleSubmitLink = guard(() => {
     if (!link.trim()) {
-      toast.error('Link cannot be empty');
+      toast.error(t('linkEmpty'));
       return;
     }
     try {
@@ -750,7 +752,7 @@ const moveMutation = useMutation({
       const hostname = url.hostname.toLowerCase();
       const suspiciousDomains = ['example.com', 'test.com', 'localhost'];
       if (suspiciousDomains.some(domain => hostname.includes(domain))) {
-        toast.error('This URL appears to be a test or example URL');
+        toast.error(t('linkTestUrl'));
         return;
       }
       linkMutation.mutate({
@@ -758,7 +760,7 @@ const moveMutation = useMutation({
         name: linkName,
       });
     } catch (error) {
-      toast.error('Please enter a valid URL (starting with http:// or https://)');
+      toast.error(t('linkInvalidUrl'));
     }
   });
 
@@ -862,11 +864,11 @@ const moveMutation = useMutation({
       { url: `/documents/documents/${id}/update_client_access/`, data: { id: id } },
       {
         onSuccess: () => {
-          toast.success('Document sent to client!');
+          toast.success(t('documentSent'));
           refetch()
         },
         onError: () => {
-          toast.error('Failed to send document to client!');
+          toast.error(t('documentSendFailed'));
         },
       },
     );
@@ -901,7 +903,7 @@ const moveMutation = useMutation({
         document_id: selectedDocForUpdate.id,
         file: updateFile,
       }),
-      { loading: 'Updating document...', success: 'Document updated successfully!', error: (e: any) => e?.message || 'Failed to update document' },
+      { loading: t('updatingDocument'), success: t('documentUpdatedSuccess'), error: (e: any) => e?.message || t('updateDocumentFailed') },
     );
   };
 
@@ -1020,12 +1022,12 @@ const moveMutation = useMutation({
       },
       {
         onSuccess: () => {
-          toast.success(`${checkedItems.length} document${checkedItems.length > 1 ? 's' : ''} sent to client!`);
+          toast.success(t('documentsSentBulk', { count: checkedItems.length }));
           setCheckedItems([]);
           refetch();
         },
         onError: () => {
-          toast.error('Failed to send documents to client!');
+          toast.error(t('documentsSendFailed'));
         },
       },
     );
@@ -1034,7 +1036,12 @@ const moveMutation = useMutation({
   // Bulk share with contractor
   const { mutate: bulkShareDocuments } = usePost({
     onSuccess: () => {
-      toast.success(`${checkedItems.length} document${checkedItems.length > 1 ? 's' : ''} shared with ${contractorName ? decodeURIComponent(contractorName) : 'contractor'}`);
+      toast.success(
+        t('documentsShared', {
+          count: checkedItems.length,
+          name: contractorName ? decodeURIComponent(contractorName) : t('documentsSharedContractor'),
+        })
+      );
       setCheckedItems([]);
       setIsSharingDocuments(false);
       queryClient.refetchQueries({
@@ -1043,7 +1050,7 @@ const moveMutation = useMutation({
       router.push(`/projects/${params.id}/contractors`);
     },
     onError: (error: any) => {
-      toast.error(error?.message || 'Failed to share documents');
+      toast.error(error?.message || t('documentsShareFailed'));
       setIsSharingDocuments(false);
     },
   });
@@ -1081,7 +1088,7 @@ const moveMutation = useMutation({
              {/* Breadcrumbs and Back */}
                 <div className="flex items-center justify-between py-0.5 ml-2">
                   <div className="flex items-center gap-3 text-sm">
-                   <span>Files</span>
+                   <span>{t('files')}</span>
                    <ChevronRight className="w-4 h-4 text-gray-400" />
                   </div>
                 </div>
@@ -1093,8 +1100,8 @@ const moveMutation = useMutation({
               <div className="flex items-center gap-3">
                 <Share2 className="w-5 h-5 text-slatex-600" />
                 <div>
-                  <p className="text-sm font-medium text-neutral-900">Sharing documents with {decodeURIComponent(contractorName)}</p>
-                  <p className="text-xs text-neutral-500">Select documents below and click "Share Selected" to share with this contractor</p>
+                  <p className="text-sm font-medium text-neutral-900">{t('sharingWith', { name: decodeURIComponent(contractorName) })}</p>
+                  <p className="text-xs text-neutral-500">{t('sharingHint')}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -1108,12 +1115,12 @@ const moveMutation = useMutation({
                     {isSharingDocuments ? (
                       <>
                         <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
-                        Sharing...
+                        {t('sharing')}
                       </>
                     ) : (
                       <>
                         <Share2 className="w-3.5 h-3.5 mr-1.5" />
-                        Share Selected ({checkedItems.length})
+                        {t('shareSelected', { count: checkedItems.length })}
                       </>
                     )}
                   </Button>
@@ -1121,7 +1128,7 @@ const moveMutation = useMutation({
                 <Link href={`/projects/${params.id}/contractors`}>
                   <Button variant="outline" size="sm" className="h-8 bg-white">
                     <ArrowLeft className="w-3.5 h-3.5 mr-1.5" />
-                    Back to Contractors
+                    {t('backToContractors')}
                   </Button>
                 </Link>
               </div>
@@ -1142,7 +1149,7 @@ const moveMutation = useMutation({
               <Input
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search files & notes…"
+                placeholder={t('searchPlaceholder')}
                 className="w-72 pl-9"
               />
             </div>
@@ -1150,27 +1157,27 @@ const moveMutation = useMutation({
               <SelectTrigger className="w-[180px]">
                 <div className="flex items-center gap-2">
                   <SortAsc className="w-4 h-4 text-gray-400" />
-                  <SelectValue placeholder="Sort by" />
+                  <SelectValue placeholder={t('sortBy')} />
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="name-asc">Alphabet (A-Z)</SelectItem>
-                <SelectItem value="name-desc">Alphabet (Z-A)</SelectItem>
-                <SelectItem value="date-desc">Date (Newest)</SelectItem>
-                <SelectItem value="date-asc">Date (Oldest)</SelectItem>
+                <SelectItem value="name-asc">{t('sortNameAsc')}</SelectItem>
+                <SelectItem value="name-desc">{t('sortNameDesc')}</SelectItem>
+                <SelectItem value="date-desc">{t('sortDateDesc')}</SelectItem>
+                <SelectItem value="date-asc">{t('sortDateAsc')}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={clientAccessFilter} onValueChange={(v: 'all' | 'shared' | 'not-shared') => setClientAccessFilter(v)}>
               <SelectTrigger className="w-[150px]">
                 <div className="flex items-center gap-2">
                   <Send className="w-4 h-4 text-gray-400" />
-                  <SelectValue placeholder="Client" />
+                  <SelectValue placeholder={t('clientFilter')} />
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Items</SelectItem>
-                <SelectItem value="shared">Shared</SelectItem>
-                <SelectItem value="not-shared">Not Shared</SelectItem>
+                <SelectItem value="all">{t('allItems')}</SelectItem>
+                <SelectItem value="shared">{t('shared')}</SelectItem>
+                <SelectItem value="not-shared">{t('notShared')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -1184,7 +1191,7 @@ const moveMutation = useMutation({
   <button
     onClick={() => setViewMode('grid')}
     className="relative p-2 rounded-[8px] transition-colors"
-    aria-label="Grid view"
+    aria-label={t('gridView')}
   >
     {viewMode === 'grid' && (
       <motion.div
@@ -1206,7 +1213,7 @@ const moveMutation = useMutation({
   <button
     onClick={() => setViewMode('list')}
     className="relative p-2 rounded-[8px] transition-colors"
-    aria-label="List view"
+    aria-label={t('listView')}
   >
     {viewMode === 'list' && (
       <motion.div
@@ -1254,7 +1261,7 @@ const moveMutation = useMutation({
                     <DropdownMenuContent align="start">
                       <DropdownMenuItem onClick={handleBulkSendToClient}>
                         <Send className="w-4 h-4 mr-2" />
-                        Send to Client
+                        {t('sendToClient')}
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => {
                         setSelectedDocForContractor({ id: 'bulk', name: `${checkedItems.length} documents` });
@@ -1295,19 +1302,19 @@ const moveMutation = useMutation({
                         >
                           <Button className="py-5" variant="outline" size="sm" onClick={()=> setModalOpen(true)}>
                             <FolderOpen className="w-4 h-4 mr-2" />
-                            New Folder
+                            {t('newFolder')}
                           </Button>
                         </motion.div>}
         { docsPermission &&    <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="bg-neutral-900 text-white hover:bg-neutral-800">
-                  {'More'}
+                  {t('more')}
                   <ChevronDown className="ml-1 h-4 w-4 opacity-80" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onSelect={LinkOpenModal}>{'Add Link'}</DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setUploadModal(true)}>{'Upload Files'}</DropdownMenuItem>
+                <DropdownMenuItem onSelect={LinkOpenModal}>{t('addLink')}</DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setUploadModal(true)}>{t('uploadFiles')}</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu> }
           </div>
@@ -1338,7 +1345,7 @@ const moveMutation = useMutation({
             <CardContent className="p-4 pt-3">
               <div className="flex gap-3 overflow-x-auto pb-1 [scrollbar-width:thin]">
                 {teamChatFiles.map((att: TeamChatLibraryAttachment) => {
-                  const by = att.shared_by?.name || 'Team member';
+                  const by = att.shared_by?.name || t('teamMember');
                   const isImg = att.file_type === 'image' && att.file_url;
                   return (
                     <a
@@ -1399,7 +1406,7 @@ const moveMutation = useMutation({
               setIsDraggingOver(false);
 
               if (!docsPermission) {
-                toast.error("You don't have permission to perform this action.");
+                toast.error(t('noPermission'));
                 return;
               }
 
@@ -1407,7 +1414,7 @@ const moveMutation = useMutation({
               const tooLarge = files.some(file => file.size > MAX_FILE_SIZE);
 
               if (tooLarge) {
-                toast.error('Some files are larger than 50MB');
+                toast.error(t('filesTooLarge'));
                 return;
               }
 
@@ -1428,8 +1435,8 @@ const moveMutation = useMutation({
               <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center bg-white/50 backdrop-blur-[4px]">
                 <div className="text-center">
                   <Upload className="w-14 h-14  mx-auto mb-2 animate-bounce" />
-                  <p className="text-lg font-semibold">Drop files here to upload</p>
-                  <p className="text-xs text-gray-600 mt-1">Any file larger than 50MB will be rejected</p>
+                  <p className="text-lg font-semibold">{t("dropFilesHere")}</p>
+                  <p className="text-xs text-gray-600 mt-1">{t("dropFilesReject")}</p>
                 </div>
               </div>
             )}
@@ -1438,7 +1445,7 @@ const moveMutation = useMutation({
           {!isLoading && filteredFolders.length === 0 && filteredFiles.length === 0 && filterLinks.length === 0 && (
             <div className="flex flex-col items-center justify-center py-12 bg-white rounded-xl border border-dashed border-neutral-300">
               <FolderOpen className="w-12 h-12 text-neutral-300 mb-3" />
-              <p className="text-sm text-neutral-500">{searchQuery ? `No results for "${searchQuery}", drop a file to upload` : 'No files attached, drop a file to upload'}</p>
+              <p className="text-sm text-neutral-500">{searchQuery ? t('noResultsDrop', { query: searchQuery }) : t('noFilesDrop')}</p>
             </div>
           )}
 
@@ -1450,12 +1457,12 @@ const moveMutation = useMutation({
                   <thead className="bg-white border-b border-gray-200">
                     <tr>
                       <th scope="col" className="w-10 px-4 py-3"><Skeleton className="w-4 h-4" /></th>
-                      <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">File</th>
-                      <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">Type</th>
-                      <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">Created</th>
-                      <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">Modified</th>
-                      <th scope="col" className="px-4 py-3 text-center text-sm font-medium text-gray-600">Shared</th>
-                      <th scope="col" className="px-4 py-3 text-right text-sm font-medium text-gray-600 w-24">Actions</th>
+                      <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t("tableFile")}</th>
+                      <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t("tableType")}</th>
+                      <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t("tableCreated")}</th>
+                      <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t("tableModified")}</th>
+                      <th scope="col" className="px-4 py-3 text-center text-sm font-medium text-gray-600">{t("tableShared")}</th>
+                      <th scope="col" className="px-4 py-3 text-right text-sm font-medium text-gray-600 w-24">{t("tableActions")}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
@@ -1505,12 +1512,12 @@ const moveMutation = useMutation({
                             disabled={allFilteredItems.length === 0}
                           />
                         </th>
-                        <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">File</th>
-                        <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">Type</th>
-                        <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">Created</th>
-                        <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">Modified</th>
-                        <th scope="col" className="px-4 py-3 text-center text-sm font-medium text-gray-600">Shared</th>
-                        <th scope="col" className="px-4 py-3 text-right text-sm font-medium text-gray-600 w-24">Actions</th>
+                        <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t("tableFile")}</th>
+                        <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t("tableType")}</th>
+                        <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t("tableCreated")}</th>
+                        <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t("tableModified")}</th>
+                        <th scope="col" className="px-4 py-3 text-center text-sm font-medium text-gray-600">{t("tableShared")}</th>
+                        <th scope="col" className="px-4 py-3 text-right text-sm font-medium text-gray-600 w-24">{t("tableActions")}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200">
@@ -1525,7 +1532,7 @@ const moveMutation = useMutation({
                           onDragStart={e => {
                             if (!docsPermission) {
                               e.preventDefault();
-                              toast.error("You don't have permission to perform this action.");
+                              toast.error(t('noPermission'));
                               return;
                             }
                             e.dataTransfer.setData('documentid', String(folder.id));
@@ -1552,7 +1559,7 @@ const moveMutation = useMutation({
                              e.preventDefault();
                              e.stopPropagation();
                              if (!docsPermission) {
-                               toast.error("You don't have permission to perform this action.");
+                               toast.error(t('noPermission'));
                                return;
                              }
                              const draggedId = e.dataTransfer.getData('documentid');
@@ -1566,7 +1573,7 @@ const moveMutation = useMutation({
                                    document_ids: idsToMove,
                                    parent_id: Number(folder.id),
                                  }),
-                                 { loading: 'Moving...', success: 'Moved successfully!', error: 'Failed to move. Please try again.' },
+                                 { loading: t('moving'), success: t('movedSuccess'), error: t('moveFailed') },
                                );
                              }
                           }}
@@ -1591,7 +1598,7 @@ const moveMutation = useMutation({
                                   </div>
                                 </div>
                               </TooltipTrigger>
-                              <TooltipContent side="top"><p>View Only</p></TooltipContent>
+                              <TooltipContent side="top"><p>{t("viewOnly")}</p></TooltipContent>
                             </Tooltip>
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-600">Folder</td>
@@ -1629,7 +1636,7 @@ const moveMutation = useMutation({
                                   <Edit2 className="w-4 h-4 mr-2" />Rename
                                 </DropdownMenuItem>}
                                {docsPermission && <DropdownMenuItem onClick={e => { e.stopPropagation(); handleDocSendToClient(folder.id); }}>
-                                  <Send className="w-4 h-4 mr-2" />Send to Client
+                                  <Send className="w-4 h-4 mr-2" />{t('sendToClient')}
                                 </DropdownMenuItem>}
                               {docsPermission &&  <DropdownMenuItem onClick={e => { e.stopPropagation(); handleShareToContractor(folder.id, folder.name); }}>
                                   <Users className="w-4 h-4 mr-2" />Share to Contractor
@@ -1658,7 +1665,7 @@ const moveMutation = useMutation({
                           onDragStart={e => {
                             if (!docsPermission) {
                               e.preventDefault();
-                              toast.error("You don't have permission to perform this action.");
+                              toast.error(t('noPermission'));
                               return;
                             }
                             e.dataTransfer.setData('documentid', String(file.id));
@@ -1680,7 +1687,7 @@ const moveMutation = useMutation({
                                   <span className="text-sm font-medium text-gray-900 truncate max-w-[200px]">{file.name}</span>
                                 </div>
                               </TooltipTrigger>
-                              <TooltipContent side="top"><p>View Only</p></TooltipContent>
+                              <TooltipContent side="top"><p>{t("viewOnly")}</p></TooltipContent>
                             </Tooltip>
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-600 capitalize">{getFileType(file.name)}</td>
@@ -1731,7 +1738,7 @@ const moveMutation = useMutation({
                                     <RefreshCw className="w-4 h-4 mr-2" />Update
                                   </DropdownMenuItem>}
                                  {docsPermission && <DropdownMenuItem onClick={e => { e.stopPropagation(); handleDocSendToClient(file.id); }}>
-                                    <Send className="w-4 h-4 mr-2" />Send to Client
+                                    <Send className="w-4 h-4 mr-2" />{t('sendToClient')}
                                   </DropdownMenuItem>}
                                  {docsPermission && <DropdownMenuItem onClick={e => { e.stopPropagation(); handleShareToContractor(file.id, file.name); }}>
                                     <Users className="w-4 h-4 mr-2" />Share to Contractor
@@ -1761,7 +1768,7 @@ const moveMutation = useMutation({
                           onDragStart={e => {
                             if (!docsPermission) {
                               e.preventDefault();
-                              toast.error("You don't have permission to perform this action.");
+                              toast.error(t('noPermission'));
                               return;
                             }
                             e.dataTransfer.setData('documentid', String(link.id));
@@ -1784,10 +1791,10 @@ const moveMutation = useMutation({
                                   </a>
                                 </div>
                               </TooltipTrigger>
-                              <TooltipContent side="top"><p>View Only</p></TooltipContent>
+                              <TooltipContent side="top"><p>{t("viewOnly")}</p></TooltipContent>
                             </Tooltip>
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-600">Link</td>
+                          <td className="px-4 py-3 text-sm text-gray-600">{t("linkType")}</td>
                           <td className="px-4 py-3 text-sm text-gray-600">{formatDate(link.created_at)}</td>
                           <td className="px-4 py-3 text-sm text-gray-600">{formatDate(link.updated_at)}</td>
                           <td className="px-4 py-3 text-center text-sm text-gray-600">
@@ -1822,14 +1829,14 @@ const moveMutation = useMutation({
                                   <DropdownMenuItem onClick={() => window.open(link.link_url, '_blank')}>
                                     <SquareArrowOutUpRight className="w-4 h-4 mr-2" />Open Link
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={() => { navigator.clipboard.writeText(link.link_url || ''); toast.success('Copied!'); }}>
+                                  <DropdownMenuItem onClick={() => { navigator.clipboard.writeText(link.link_url || ''); toast.success(t('copied')); }}>
                                     <Copy className="w-4 h-4 mr-2" />Copy Link
                                   </DropdownMenuItem>
                                  {docsPermission && <DropdownMenuItem onClick={() => FileRenameOpenModal(link)}>
                                     <Edit2 className="w-4 h-4 mr-2" />Rename
                                   </DropdownMenuItem>}
                                  {docsPermission && <DropdownMenuItem onClick={() => handleDocSendToClient(link.id)}>
-                                    <Send className="w-4 h-4 mr-2" />Send to Client
+                                    <Send className="w-4 h-4 mr-2" />{t('sendToClient')}
                                   </DropdownMenuItem>}
                                  {docsPermission && <DropdownMenuItem onClick={() => handleShareToContractor(link.id, link.name)}>
                                     <Users className="w-4 h-4 mr-2" />Share to Contractor
@@ -1858,7 +1865,7 @@ const moveMutation = useMutation({
           {/* Grid View Loading Skeleton */}
           {viewMode === 'grid' && isLoading && (
             <div>
-              <h3 className="mb-4 text-sm font-medium text-neutral-900">{'Files & Folders'}</h3>
+              <h3 className="mb-4 text-sm font-medium text-neutral-900">{t('filesAndFolders')}</h3>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {[...Array(6)].map((_, i) => (
                   <Card key={i} className="rounded-xl border border-neutral-200 bg-white shadow-sm">
@@ -1888,7 +1895,7 @@ const moveMutation = useMutation({
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              <h3 className="mb-4 text-sm font-medium text-neutral-900">{'Files & Folders'}</h3>
+              <h3 className="mb-4 text-sm font-medium text-neutral-900">{t('filesAndFolders')}</h3>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {filteredFolders.map((folder, index) => {
               const isSelected = checkedItems.some(item => item.id === folder.id);
@@ -1906,7 +1913,7 @@ const moveMutation = useMutation({
                   onDragStart={e => {
                     if (!docsPermission) {
                       e.preventDefault();
-                      toast.error("You don't have permission to perform this action.");
+                      toast.error(t('noPermission'));
                       return;
                     }
                     e.dataTransfer.setData('documentid', String(folder.id));
@@ -1933,7 +1940,7 @@ const moveMutation = useMutation({
                     e.preventDefault();
                     e.stopPropagation();
                     if (!docsPermission) {
-                      toast.error("You don't have permission to perform this action.");
+                      toast.error(t('noPermission'));
                       return;
                     }
                     const draggedId = e.dataTransfer.getData('documentid');
@@ -1947,7 +1954,7 @@ const moveMutation = useMutation({
                           document_ids: idsToMove,
                           parent_id: Number(folder.id),
                         }),
-                        { loading: 'Moving...', success: 'Moved successfully!', error: 'Failed to move. Please try again.' },
+                        { loading: t('moving'), success: t('movedSuccess'), error: t('moveFailed') },
                       );
                     }
                   }}
@@ -1986,7 +1993,7 @@ const moveMutation = useMutation({
                               variant="ghost"
                               size="sm"
                               className="h-8 w-8 p-0 text-neutral-400  flex-shrink-0 hover:text-neutral-600"
-                              aria-label="Folder actions"
+                              aria-label={t('folderActions')}
                             >
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
@@ -2017,7 +2024,7 @@ const moveMutation = useMutation({
                               }}
                             >
                               <Send className="w-4 h-4 mr-2" />
-                              Send to Client
+                              {t('sendToClient')}
                             </DropdownMenuItem> }
                            {docsPermission && <DropdownMenuItem
                               onClick={e => {
@@ -2066,7 +2073,7 @@ const moveMutation = useMutation({
                   </Card>
                 </div>
                 </TooltipTrigger>
-                <TooltipContent side="top"><p>View Only</p></TooltipContent>
+                <TooltipContent side="top"><p>{t("viewOnly")}</p></TooltipContent>
                 </Tooltip>
               );
             })}
@@ -2091,7 +2098,7 @@ const moveMutation = useMutation({
                   onDragStart={e => {
                     if (!docsPermission) {
                       e.preventDefault();
-                      toast.error("You don't have permission to perform this action.");
+                      toast.error(t('noPermission'));
                       return;
                     }
                     e.dataTransfer.setData('documentid', String(file.id));
@@ -2133,7 +2140,7 @@ const moveMutation = useMutation({
                               variant="ghost"
                               size="sm"
                               className="h-8 w-8 p-0 text-neutral-400 hover:text-neutral-600"
-                              aria-label="File actions"
+                              aria-label={t('fileActions')}
                             >
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
@@ -2184,7 +2191,7 @@ const moveMutation = useMutation({
                               }}
                             >
                               <Send className="w-4 h-4 mr-2" />
-                              Send to Client
+                              {t('sendToClient')}
                             </DropdownMenuItem>}
                            {docsPermission && <DropdownMenuItem
                               onClick={e => {
@@ -2232,7 +2239,7 @@ const moveMutation = useMutation({
                   </Card>
                 </div>
                 </TooltipTrigger>
-                <TooltipContent side="top"><p>View Only</p></TooltipContent>
+                <TooltipContent side="top"><p>{t("viewOnly")}</p></TooltipContent>
                 </Tooltip>
               );
             })}
@@ -2257,7 +2264,7 @@ const moveMutation = useMutation({
                   onDragStart={e => {
                     if (!docsPermission) {
                       e.preventDefault();
-                      toast.error("You don't have permission to perform this action.");
+                      toast.error(t('noPermission'));
                       return;
                     }
                     e.dataTransfer.setData('documentid', String(link.id));
@@ -2299,7 +2306,7 @@ const moveMutation = useMutation({
                               variant="ghost"
                               size="sm"
                               className="h-8 w-8 p-0 text-neutral-400 hover:text-neutral-600"
-                              aria-label="Link actions"
+                              aria-label={t('linkActions')}
                             >
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
@@ -2319,7 +2326,7 @@ const moveMutation = useMutation({
                               onClick={e => {
                                 e.stopPropagation();
                                 navigator.clipboard.writeText(link.link_url || '');
-                                toast.success('Copied !');
+                                toast.success(t('copied'));
                               }}
                             >
                               <Copy className="w-4 h-4 mr-2" />
@@ -2341,7 +2348,7 @@ const moveMutation = useMutation({
                               }}
                             >
                               <Send className="w-4 h-4 mr-2" />
-                              Send to Client
+                              {t('sendToClient')}
                             </DropdownMenuItem>}
                            { docsPermission && <DropdownMenuItem
                               onClick={e => {
@@ -2391,7 +2398,7 @@ const moveMutation = useMutation({
                   </Card>
                 </div>
                 </TooltipTrigger>
-                <TooltipContent side="top"><p>View Only</p></TooltipContent>
+                <TooltipContent side="top"><p>{t("viewOnly")}</p></TooltipContent>
                 </Tooltip>
               );
             })}
@@ -2406,8 +2413,8 @@ const moveMutation = useMutation({
               className={`rounded-xl mt-10  border-1 border-dashed flex flex-col items-center justify-center p-8 transition-all duration-200`}
             >
               <UploadIcon className="w-10 h-10 text-neutral-400 mb-2" />
-              <p className="text-sm font-medium text-neutral-600">Drop files here to upload</p>
-              <p className="text-xs text-neutral-500 mt-1">or click "Upload Files" button</p>
+              <p className="text-sm font-medium text-neutral-600">{t("dropFilesHere")}</p>
+              <p className="text-xs text-neutral-500 mt-1">{t('dropHint')}</p>
             </div>
           )}
         </div>
@@ -2544,7 +2551,7 @@ const moveMutation = useMutation({
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <Input
-              placeholder="Folder Name"
+              placeholder={t('folderName')}
               value={updatedFolderName}
               onChange={e => {
                 setUpdatedFolderName(e.target.value);
@@ -2590,12 +2597,12 @@ const moveMutation = useMutation({
       >
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Create New Folder</DialogTitle>
+            <DialogTitle>{t('createNewFolder')}</DialogTitle>
             <DialogDescription>Enter a name for your new folder. Click create when you're done.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <Input
-              placeholder="Folder Name"
+              placeholder={t('folderName')}
               value={newFolderName}
               onChange={e => {
                 setNewFolderName(e.target.value);
@@ -2663,9 +2670,9 @@ const moveMutation = useMutation({
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <UploadIcon className="w-5 h-5" />
-              Upload Documents
+              {t('uploadDocumentsTitle')}
             </DialogTitle>
-            <DialogDescription>Upload files to your project. You can select multiple files at once.</DialogDescription>
+            <DialogDescription>{t('uploadDocumentsDesc')}</DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
@@ -2683,7 +2690,7 @@ const moveMutation = useMutation({
                 const tooLarge = files.some(file => file.size > MAX_FILE_SIZE);
 
                 if (tooLarge) {
-                  setError('Some files are larger than 50MB');
+                  setError(t('filesTooLarge'));
                   return;
                 }
 
@@ -2708,7 +2715,7 @@ const moveMutation = useMutation({
                   const tooLarge = selectedFiles.some(file => file.size > MAX_FILE_SIZE);
 
                   if (tooLarge) {
-                    setError('Some files are larger than 50MB');
+                    setError(t('filesTooLarge'));
                     e.target.value = '';
                     return;
                   }
@@ -2729,8 +2736,8 @@ const moveMutation = useMutation({
                   <FileUp className="w-8 h-8 text-gray-600" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900">Click to upload or drag and drop</p>
-                  <p className="text-xs text-gray-500 mt-1">Maximum file size: 50MB</p>
+                  <p className="text-sm font-medium text-gray-900">{t('clickToUploadDragDrop')}</p>
+                  <p className="text-xs text-gray-500 mt-1">{t('maxFileSize')}</p>
                 </div>
                 {error && <p className="text-red-500 text-sm font-semibold">{error}</p>}
               </div>
@@ -2740,9 +2747,9 @@ const moveMutation = useMutation({
             {fileQueue.length > 0 && (
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium text-gray-900">Selected Files ({fileQueue.length})</p>
+                  <p className="text-sm font-medium text-gray-900">{t('selectedFiles', { count: fileQueue.length })}</p>
                   <Button variant="ghost" size="sm" onClick={() => setFileQueue([])} className="h-8 text-xs">
-                    Clear All
+                    {t('clearAll')}
                   </Button>
                 </div>
 
@@ -2806,11 +2813,11 @@ const moveMutation = useMutation({
 
           <DialogFooter>
             <Button variant="outline" onClick={handleUploadModalClose}>
-              Cancel
+              {t('cancel')}
             </Button>
             <Button
               onClick={() => {
-                if (!fileQueue.length) return toast.error('Select files first');
+                if (!fileQueue.length) return toast.error(t('selectFilesFirst'));
                 if (fileQueue.length === 1) {
                   setUploading(true);
                   // Create new abort controller
@@ -2823,12 +2830,12 @@ const moveMutation = useMutation({
                       signal: abortControllerRef.current.signal,
                     }),
                     {
-                      loading: 'Uploading...',
-                      success: 'Uploaded successfully!',
+                      loading: t('uploading'),
+                      success: t('uploadedSuccess'),
                       error: (e: any) =>
                         e?.name === 'CanceledError' || e?.code === 'ERR_CANCELED' || axios.isCancel(e)
-                          ? 'Upload canceled'
-                          : 'Failed to upload document.',
+                          ? t('uploadCanceled')
+                          : t('uploadDocumentFailed'),
                     },
                   );
                 } else {
@@ -2837,7 +2844,7 @@ const moveMutation = useMutation({
                   abortControllerRef.current = new AbortController();
                   const signal = abortControllerRef.current.signal;
 
-                  const uploadToastId = toast(`Uploading ${fileQueue.length} files...`);
+                  const uploadToastId = toast(t('uploadingCount', { count: fileQueue.length }));
                   let completed = 0;
                   let failed = 0;
 
@@ -2853,7 +2860,7 @@ const moveMutation = useMutation({
                       .then(() => {
                         completed++;
                         if (completed + failed === fileQueue.length) {
-                          toast.update(uploadToastId, { title: `Uploaded ${completed}/${fileQueue.length} files`, type: 'success' });
+                          toast.update(uploadToastId, { title: t('uploadedProgress', { completed, total: fileQueue.length }), type: 'success' });
                           setUploading(false);
                           setFileQueue([]);
                           setUploadModal(false);
@@ -2865,13 +2872,13 @@ const moveMutation = useMutation({
                         // Ignore abort errors
                         if (err.name === 'CanceledError' || err.code === 'ERR_CANCELED' || axios.isCancel(err)) {
                           setUploading(false);
-                          toast.update(uploadToastId, { title: 'Upload canceled', type: 'error' });
+                          toast.update(uploadToastId, { title: t('uploadCanceled'), type: 'error' });
                           return;
                         }
 
                         failed++;
                         if (completed + failed === fileQueue.length) {
-                          toast.update(uploadToastId, { title: 'Some uploads failed', type: 'error' });
+                          toast.update(uploadToastId, { title: t('uploadSomeFailed'), type: 'error' });
                           setUploading(false);
                           refetch();
                           abortControllerRef.current = null;
@@ -2903,7 +2910,7 @@ const moveMutation = useMutation({
                   size="sm"
                   onClick={() => downloadFile(currentDoc[0].uri, currentDoc[0].fileName)}
                   className="h-8 w-8 p-0"
-                  title="Download"
+                  title={t('download')}
                 >
                   <Download className="h-4 w-4" />
                 </Button>
@@ -2953,12 +2960,12 @@ const moveMutation = useMutation({
       >
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Rename File</DialogTitle>
+            <DialogTitle>{t('renameFileTitle')}</DialogTitle>
             <DialogDescription>Enter a new name for this file.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <Input
-              placeholder="New File Name"
+              placeholder={t('newFileName')}
               value={updatedFileName}
               onChange={e => {
                 setUpdatedFileName(e.target.value);
@@ -3008,7 +3015,7 @@ const moveMutation = useMutation({
         </DialogContent>
       </Dialog>
 
-      {/* Add Link Dialog */}
+      {/* {t("addLinkTitle")} Dialog */}
       <Dialog
         open={linkModalOpen}
         onOpenChange={open => {
@@ -3020,7 +3027,7 @@ const moveMutation = useMutation({
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Link2 className="w-5 h-5" />
-              Add Link
+              {t("addLinkTitle")}
             </DialogTitle>
             <DialogDescription>Add a link to an external resource or website.</DialogDescription>
           </DialogHeader>
@@ -3028,7 +3035,7 @@ const moveMutation = useMutation({
             <div className="space-y-2">
               <Input
                 type="text"
-                placeholder="Link Name (optional)"
+                placeholder={t('linkNameOptional')}
                 value={linkName}
                 onChange={e => {
                   setLinkName(e.target.value);
@@ -3044,7 +3051,7 @@ const moveMutation = useMutation({
             <div className="space-y-2">
               <Input
                 type="url"
-                placeholder="Enter URL (https://...)"
+                placeholder={t('enterUrl')}
                 value={link}
                 onChange={e => setLink(e.target.value)}
                 onKeyDown={e => {
@@ -3076,7 +3083,7 @@ const moveMutation = useMutation({
               }}
             >
               <Link2 className="w-4 h-4 mr-2" />
-              Add Link
+              {t("addLinkTitle")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -3096,7 +3103,7 @@ const moveMutation = useMutation({
           }
         }}
         title={deleteTarget?.isFolder ? 'Delete Folder' : 'Delete File'}
-        description="Are you sure you want to delete this item? This action cannot be undone."
+        description={t('deleteConfirmDesc')}
         itemName={deleteTarget?.name}
         requireConfirmation={false}
       />
@@ -3179,7 +3186,7 @@ const moveMutation = useMutation({
               document_ids: selectedForMove.ids.map(Number),
               parent_id: parentId,
             }),
-            { loading: 'Moving...', success: 'Moved successfully!', error: 'Failed to move. Please try again.' },
+            { loading: t('moving'), success: t('movedSuccess'), error: t('moveFailed') },
           );
         }}
         documentIds={selectedForMove?.ids || []}

@@ -16,6 +16,7 @@ import { ProcurementComment } from "./ProcuremntComment";
 import ProcurementRow from "./ProcurementRow";
 import { SelectContractorDialog } from '@/components/contractor';
 import { useEditGuard } from '@/hooks/useEditGuard';
+import { useTranslations } from 'next-intl';
 
 interface ProcurementTableProps {
   setCheckedItems: React.Dispatch<React.SetStateAction<any[]>>;
@@ -33,6 +34,7 @@ const ProcurementTable = React.memo<ProcurementTableProps>(({
   loading,
   procurementPermission
 }: any) => {
+  const t = useTranslations('projectProcurementTable');
   const queryClient = useQueryClient();
   const { guard } = useEditGuard('procurement.edit');
   const [open, setOpen] = useState(false);
@@ -67,13 +69,13 @@ const ProcurementTable = React.memo<ProcurementTableProps>(({
   const mutation = useMutation({
     mutationFn: patchData,
     onSuccess: () => {
-      toast.success("Status Updated");
+      toast.success(t('statusUpdated'));
       queryClient.refetchQueries({
         queryKey: [`projects/project-procurements/?project_id=${project?.id}`],
       });
     },
     onError: () => {
-      toast.error("Error! Try again");
+      toast.error(t('errorTryAgain'));
     },
   });
 
@@ -82,10 +84,10 @@ const ProcurementTable = React.memo<ProcurementTableProps>(({
       queryClient.invalidateQueries({
         queryKey: [`projects/project-procurements/?project_id=${project?.id}`],
       });
-      toast("Product Removed");
+      toast(t('productRemoved'));
     },
     onError: () => {
-      toast("Error! Try again");
+      toast(t('errorTryAgain'));
     },
   });
 
@@ -145,7 +147,7 @@ const ProcurementTable = React.memo<ProcurementTableProps>(({
 
   const handleQtyChange = useCallback(guard((item: any, qty: any) => {
     if (qty < 1 || Number.isNaN(Number(qty))) {
-      toast("Enter valid Qty");
+      toast(t('enterValidQty'));
       return;
     }
     mutation.mutate({ url: `projects/procurements/${item.id}/`, data: { quantity: qty } });
@@ -157,7 +159,7 @@ const ProcurementTable = React.memo<ProcurementTableProps>(({
 
   const handleTrackingNumberChange = useCallback(guard((item: any, trackingNumber: string) => {
     if (trackingNumber.length > 40) {
-      toast("Tracking number must be at most 40 characters");
+      toast(t('trackingMaxLength'));
       return;
     }
     mutation.mutate({ url: `projects/procurements/${item.id}/`, data: { tracking_number: trackingNumber } });
@@ -185,7 +187,7 @@ const ProcurementTable = React.memo<ProcurementTableProps>(({
           queryClient.refetchQueries({ queryKey: [`projects/project-procurements/?project_id=${project?.id}`] });
           queryClient.refetchQueries({ queryKey: [`finance/studio-finance/`] });
           setLoadingProductId(null);
-          toast.success("PO created successfully");
+          toast.success(t('poCreated'));
         },
         onError: () => setLoadingProductId(null),
       }
@@ -201,7 +203,7 @@ const ProcurementTable = React.memo<ProcurementTableProps>(({
           queryClient.refetchQueries({ queryKey: [`projects/project-procurements/?project_id=${project?.id}`] });
           queryClient.refetchQueries({ queryKey: [`finance/studio-finance/`] });
           setLoadingProductIdForInv(null);
-          toast.success("Invoice created successfully");
+          toast.success(t('invoiceCreated'));
         },
         onError: () => setLoadingProductIdForInv(null),
       }
@@ -266,20 +268,20 @@ const ProcurementTable = React.memo<ProcurementTableProps>(({
                     onCheckedChange={(checked) => handleCheckAll({ target: { checked } })}
                   />
                 </th>
-                <th className="sticky left-10 z-40 bg-stone-50 px-4 py-3 flex items-center font-normal text-left">Product</th>
+                <th className="sticky left-10 z-40 bg-stone-50 px-4 py-3 flex items-center font-normal text-left">{t('colProduct')}</th>
                 <th className="px-1 py-3 flex items-center justify-center font-normal"></th>
-                <th className="px-4 py-3 flex items-center font-normal text-left">Supplier</th>
-                <th className="px-4 py-3 flex items-center font-normal text-left">Qty / Unit</th>
-                <th className="px-4 py-3 flex items-center gap-1 justify-end font-normal">Unit <ViewCurrencySymbol code={project?.currency} /></th>
-                <th className="px-4 py-3 flex items-center gap-1 justify-end font-normal">Total <ViewCurrencySymbol code={project?.currency} /></th>
-                <th className="px-4 py-3 flex items-center font-normal text-left">Status</th>
-                <th className="px-4 py-3 flex items-center font-normal text-left">Approval</th>
-                <th className="px-4 py-3 flex items-center font-normal text-left">PO</th>
-                <th className="px-4 py-3 flex items-center font-normal text-left">Billing</th>
-                <th className="px-4 py-3 flex items-center font-normal text-left">Logistics</th>
-                <th className="px-4 py-3 flex items-center font-normal text-left">Lead Time</th>
-                <th className="px-4 py-3 flex items-center font-normal text-left">Tracking Number</th>
-                <th className="px-4 py-3 flex items-center font-normal text-left">Contractor Access</th>
+                <th className="px-4 py-3 flex items-center font-normal text-left">{t('colSupplier')}</th>
+                <th className="px-4 py-3 flex items-center font-normal text-left">{t('colQtyUnit')}</th>
+                <th className="px-4 py-3 flex items-center gap-1 justify-end font-normal">{t('colUnit')} <ViewCurrencySymbol code={project?.currency} /></th>
+                <th className="px-4 py-3 flex items-center gap-1 justify-end font-normal">{t('colTotal')} <ViewCurrencySymbol code={project?.currency} /></th>
+                <th className="px-4 py-3 flex items-center font-normal text-left">{t('colStatus')}</th>
+                <th className="px-4 py-3 flex items-center font-normal text-left">{t('colApproval')}</th>
+                <th className="px-4 py-3 flex items-center font-normal text-left">{t('colPo')}</th>
+                <th className="px-4 py-3 flex items-center font-normal text-left">{t('colBilling')}</th>
+                <th className="px-4 py-3 flex items-center font-normal text-left">{t('colLogistics')}</th>
+                <th className="px-4 py-3 flex items-center font-normal text-left">{t('colLeadTime')}</th>
+                <th className="px-4 py-3 flex items-center font-normal text-left">{t('colTracking')}</th>
+                <th className="px-4 py-3 flex items-center font-normal text-left">{t('colContractorAccess')}</th>
                 <th className="px-4 py-3 flex items-center justify-center font-normal"></th>
               </tr>
             </thead>

@@ -1,19 +1,12 @@
+'use client';
+
 import { Bar, BarChart, XAxis, YAxis } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { useState } from 'react';
 import { ChartCard } from './chart-card';
+import { useTranslations } from 'next-intl';
 
-const chartConfig = {
-  Fulfilled: {
-    label: 'Fulfilled',
-    color: 'hsl(var(--chart-1))',
-  },
-  Goal: {
-    label: 'Goal',
-    color: 'hsl(var(--chart-2))',
-  },
-} satisfies ChartConfig;
 
 function getWeeklyWorkTimeTotals(tasks) {
   const dailyTotals = new Map();
@@ -51,7 +44,18 @@ function getWeeklyWorkTimeTotals(tasks) {
   return result;
 }
 
-export function ReportBar({ tracking, onBarClick, title = 'Daily Hours Overview' }) {
+export function ReportBar({ tracking, onBarClick, title }: { tracking: any; onBarClick?: any; title?: string }) {
+  const t = useTranslations('reportsBar');
+  const chartConfig = {
+    Fulfilled: {
+      label: t('fulfilled'),
+      color: 'hsl(var(--chart-1))',
+    },
+    Goal: {
+      label: t('goal'),
+      color: 'hsl(var(--chart-2))',
+    },
+  } satisfies ChartConfig;
   const dailyData = getWeeklyWorkTimeTotals(tracking);
 
   // Custom click handler for the bar chart
@@ -62,7 +66,7 @@ export function ReportBar({ tracking, onBarClick, title = 'Daily Hours Overview'
   };
 
   return (
-    <ChartCard title="Daily Hours Logged" description="Billable share of time by week">
+    <ChartCard title={title ?? t('title')} description={t('description')}>
       <ChartContainer className="h-[260px] w-full" config={chartConfig}>
         <BarChart accessibilityLayer data={dailyData} onClick={handleBarClick}>
           <XAxis

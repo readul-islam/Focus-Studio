@@ -29,6 +29,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { gooeyToast as toast } from 'goey-toast';
 import { Copy, Loader2 } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 
 type ApiKeyRow = {
   id: number;
@@ -48,14 +49,8 @@ type WebhookRow = {
   created_at: string;
 };
 
-const DEFAULT_EVENT_LABELS: Record<string, string> = {
-  'project.created': 'New project',
-  'client.created': 'New client',
-  'invoice.created': 'New invoice',
-};
-
-function eventLabel(event: string, labels: Record<string, string>) {
-  if (event === '*') return 'All events';
+function eventLabel(event: string, labels: Record<string, string>, allEventsLabel: string) {
+  if (event === '*') return allEventsLabel;
   return labels[event] || event;
 }
 
@@ -64,11 +59,13 @@ function WebhookEventPicker({
   labels,
   selected,
   onChange,
+  allEventsLabel,
 }: {
   eventTypes: string[];
   labels: Record<string, string>;
   selected: string[];
   onChange: (events: string[]) => void;
+  allEventsLabel: string;
 }) {
   const allEvents = selected.includes('*');
 
@@ -79,7 +76,7 @@ function WebhookEventPicker({
           checked={allEvents}
           onCheckedChange={(checked) => onChange(checked ? ['*'] : [])}
         />
-        <span className="font-medium text-gray-900">All events</span>
+        <span className="font-medium text-gray-900">{allEventsLabel}</span>
       </label>
       <div className="border-t border-stone-200 pt-2 space-y-2">
         {eventTypes.map((event) => {
@@ -102,7 +99,7 @@ function WebhookEventPicker({
                   }
                 }}
               />
-              <span>{eventLabel(event, labels)}</span>
+              <span>{eventLabel(event, labels, allEventsLabel)}</span>
               <span className="text-xs text-stone-400 font-mono">{event}</span>
             </label>
           );
@@ -146,7 +143,7 @@ function ApiPageContent() {
         queryClient.refetchQueries({ queryKey: ['user/integration-status/'] });
       }
     } catch {
-      toast.error('Could not create API key.');
+      toast.error(t('toasts.createKeyFailed'));
     }
   }
 
@@ -155,16 +152,16 @@ function ApiPageContent() {
       await deleteData({ url: `integrations/api-keys/${id}/` });
       refetchKeys();
       queryClient.refetchQueries({ queryKey: ['user/integration-status/'] });
-      toast.success('API key revoked.');
+      toast.success(t('toasts.keyRevoked'));
     } catch {
-      toast.error('Could not revoke API key.');
+      toast.error(t('toasts.revokeKeyFailed'));
     }
   }
 
   async function handleCreateWebhook() {
     const url = webhookUrl.trim();
     if (!url) {
-      toast.error('Enter a webhook URL.');
+      toast.error(t('toasts.webhookUrlRequired'));
       return;
     }
     const events =
@@ -181,9 +178,9 @@ function ApiPageContent() {
       setNewWebhookEvents(['*']);
       refetchHooks();
       queryClient.refetchQueries({ queryKey: ['user/integration-status/'] });
-      toast.success('Webhook created. Copy the signing secret from the list.');
+      toast.success(t('toasts.webhookCreated'));
     } catch {
-      toast.error('Could not create webhook.');
+      toast.error(t('toasts.webhookCreateFailed'));
     } finally {
       setCreatingHook(false);
     }
@@ -197,12 +194,12 @@ function ApiPageContent() {
         data: {},
       });
       if (res?.ok) {
-        toast.success('Test event delivered.');
+        toast.success(t('toasts.testDelivered'));
       } else {
-        toast.error(res?.error || 'Webhook test failed.');
+        toast.error(res?.error || t('toasts.webhookTestFailed'));
       }
     } catch {
-      toast.error('Webhook test failed.');
+      toast.error(t('toasts.webhookTestFailed'));
     } finally {
       setTestingId(null);
     }
@@ -213,9 +210,9 @@ function ApiPageContent() {
       await deleteData({ url: `integrations/webhooks/${id}/` });
       refetchHooks();
       queryClient.refetchQueries({ queryKey: ['user/integration-status/'] });
-      toast.success('Webhook removed.');
+      toast.success(t('toasts.webhookRemoved'));
     } catch {
-      toast.error('Could not remove webhook.');
+      toast.error(t('toasts.webhookRemoveFailed'));
     }
   }
 
@@ -236,9 +233,9 @@ function ApiPageContent() {
       });
       refetchHooks();
       setEditingHook(null);
-      toast.success('Webhook events updated.');
+      toast.success(t('toasts.eventsUpdated'));
     } catch {
-      toast.error('Could not update events.');
+      toast.error(t('toasts.eventsUpdateFailed'));
     } finally {
       setSavingEvents(false);
     }
@@ -246,29 +243,29 @@ function ApiPageContent() {
 
   function copyText(text: string, label: string) {
     navigator.clipboard.writeText(text).then(
-      () => toast.success(`${label} copied.`),
-      () => toast.error('Copy failed.')
+      () => toast.success(t('toasts.copied', { label })),
+      () => toast.error(t('toasts.copyFailed'))
     );
   }
 
-  const eventTypes: string[] = eventTypesData?.events ?? Object.keys(DEFAULT_EVENT_LABELS);
+  const eventTypes: string[] = eventTypesData?.events ?? Object.keys(defaultEventLabels);
   const eventLabels: Record<string, string> = {
-    ...DEFAULT_EVENT_LABELS,
+    ...defaultEventLabels,
     ...(eventTypesData?.labels ?? {}),
   };
 
   return (
     <div className="space-y-6 md:space-y-8">
       <div>
-        <h1 className="text-base font-semibold text-gray-900">API & webhooks</h1>
+        <h1 className="text-base font-semibold text-gray-900">{t('title')}</h1>
         <p className="text-sm text-gray-600 mt-0.5">
-          Connect Zapier or custom automations with studio API keys and signed webhooks.
+          {t('description')}
         </p>
       </div>
 
       <Section
-        title="Zapier / REST API"
-        description="Use Bearer auth with your API key. Base URL for automation triggers:"
+        title={t('restApiTitle')}
+        description={t('restApiDescription')}
       >
         <code className="block text-xs bg-stone-100 border border-stone-200 rounded-lg px-3 py-2 mb-2 break-all">
           {apiBase}/integrations/v1/
@@ -286,18 +283,18 @@ function ApiPageContent() {
         <div className="flex justify-end">
           <Button onClick={handleCreateKey} disabled={creatingKey}>
             {creatingKey && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {creatingKey ? 'Creating...' : 'Create API key'}
+            {creatingKey ? t('creating') : t('createApiKey')}
           </Button>
         </div>
         <div className="mt-4 rounded-xl border border-gray-200 overflow-hidden bg-white">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Token</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead>Last used</TableHead>
-                <TableHead className="text-right">Action</TableHead>
+                <TableHead>{t('table.name')}</TableHead>
+                <TableHead>{t('table.token')}</TableHead>
+                <TableHead>{t('table.created')}</TableHead>
+                <TableHead>{t('table.lastUsed')}</TableHead>
+                <TableHead className="text-right">{t('table.action')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -310,12 +307,12 @@ function ApiPageContent() {
                     {k.last_used_at ? (
                       k.last_used_at.slice(0, 10)
                     ) : (
-                      <Badge className="bg-stone-100 text-gray-900">Never</Badge>
+                      <Badge className="bg-stone-100 text-gray-900">{t('never')}</Badge>
                     )}
                   </TableCell>
                   <TableCell className="text-right">
                     <Button variant="outline" size="sm" onClick={() => handleRevokeKey(k.id)}>
-                      Revoke
+                      {t('revoke')}
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -323,7 +320,7 @@ function ApiPageContent() {
               {!keysLoading && (keys as ApiKeyRow[]).length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} className="text-center text-sm text-gray-500">
-                    No API keys yet.
+                    {t('noApiKeys')}
                   </TableCell>
                 </TableRow>
               ) : null}
@@ -333,12 +330,12 @@ function ApiPageContent() {
       </Section>
 
       <Section
-        title="Outbound webhooks"
-        description="Focuspilot signs payloads with HMAC-SHA256 in X-Focuspilot-Signature."
+        title={t('outboundWebhooksTitle')}
+        description={t('outboundWebhooksDescription')}
       >
         <div className="grid gap-4">
           <div className="space-y-2">
-            <Label htmlFor="webhookUrl">Endpoint URL</Label>
+            <Label htmlFor="webhookUrl">{t('endpointUrl')}</Label>
             <Input
               id="webhookUrl"
               value={webhookUrl}
@@ -347,19 +344,20 @@ function ApiPageContent() {
             />
           </div>
           <div className="space-y-2">
-            <Label>Events to send</Label>
+            <Label>{t('eventsToSend')}</Label>
             <WebhookEventPicker
               eventTypes={eventTypes}
               labels={eventLabels}
               selected={newWebhookEvents}
               onChange={setNewWebhookEvents}
+              allEventsLabel={allEventsLabel}
             />
           </div>
         </div>
         <div className="mt-4 flex gap-2">
           <Button variant="outline" onClick={handleCreateWebhook} disabled={creatingHook}>
             {creatingHook && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Add webhook
+            {t('addWebhook')}
           </Button>
         </div>
 
@@ -367,10 +365,10 @@ function ApiPageContent() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>URL</TableHead>
-                <TableHead>Secret</TableHead>
-                <TableHead>Events</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead>{t('table.url')}</TableHead>
+                <TableHead>{t('table.secret')}</TableHead>
+                <TableHead>{t('table.events')}</TableHead>
+                <TableHead className="text-right">{t('table.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -382,20 +380,20 @@ function ApiPageContent() {
                       variant="ghost"
                       size="sm"
                       className="h-7 px-2 font-mono text-xs"
-                      onClick={() => copyText(h.secret, 'Secret')}
+                      onClick={() => copyText(h.secret, t('table.secret'))}
                     >
                       <Copy className="h-3 w-3 mr-1" />
-                      Copy
+                      {t('copy')}
                     </Button>
                   </TableCell>
                   <TableCell className="text-xs max-w-[140px]">
                     {(h.events?.includes('*') ? ['*'] : h.events || ['*'])
-                      .map((e) => eventLabel(e, eventLabels))
+                      .map((e) => eventLabel(e, eventLabels, allEventsLabel))
                       .join(', ')}
                   </TableCell>
                   <TableCell className="text-right space-x-1">
                     <Button variant="outline" size="sm" onClick={() => openEditEvents(h)}>
-                      Events
+                      {t('eventsButton')}
                     </Button>
                     <Button
                       variant="outline"
@@ -403,10 +401,10 @@ function ApiPageContent() {
                       disabled={testingId === h.id}
                       onClick={() => handleTestWebhook(h.id)}
                     >
-                      {testingId === h.id ? 'Sending...' : 'Test'}
+                      {testingId === h.id ? t('sending') : t('test')}
                     </Button>
                     <Button variant="outline" size="sm" onClick={() => handleDeleteWebhook(h.id)}>
-                      Remove
+                      {t('remove')}
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -414,7 +412,7 @@ function ApiPageContent() {
               {!hooksLoading && (webhooks as WebhookRow[]).length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={4} className="text-center text-sm text-gray-500">
-                    No webhooks yet.
+                    {t('noWebhooks')}
                   </TableCell>
                 </TableRow>
               ) : null}
@@ -431,7 +429,7 @@ function ApiPageContent() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Webhook events</DialogTitle>
+            <DialogTitle>{t('webhookEventsTitle')}</DialogTitle>
           </DialogHeader>
           <p className="text-sm text-gray-600 truncate">{editingHook?.url}</p>
           <WebhookEventPicker
@@ -439,14 +437,15 @@ function ApiPageContent() {
             labels={eventLabels}
             selected={editEvents}
             onChange={setEditEvents}
+            allEventsLabel={allEventsLabel}
           />
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditingHook(null)}>
-              Cancel
+              {tc('cancel')}
             </Button>
             <Button onClick={handleSaveEvents} disabled={savingEvents}>
               {savingEvents && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Save
+              {tc('save')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -455,22 +454,20 @@ function ApiPageContent() {
       <Dialog open={!!newKeyToken} onOpenChange={(open) => !open && setNewKeyToken(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Save your API key</DialogTitle>
+            <DialogTitle>{t('saveApiKeyTitle')}</DialogTitle>
           </DialogHeader>
           <p className="text-sm text-gray-600 mb-2">
-            Copy this key now. It will not be shown again. Use it as{' '}
-            <code className="text-xs bg-stone-100 px-1">Authorization: Bearer &lt;key&gt;</code> in
-            Zapier or scripts.
+            {t('saveApiKeyDescription')}
           </p>
           <code className="block text-xs break-all bg-stone-100 border rounded-lg p-3 font-mono">
             {newKeyToken}
           </code>
           <DialogFooter>
-            <Button variant="outline" onClick={() => newKeyToken && copyText(newKeyToken, 'Key')}>
+            <Button variant="outline" onClick={() => newKeyToken && copyText(newKeyToken, t('table.token'))}>
               <Copy className="h-4 w-4 mr-2" />
-              Copy key
+              {t('copyKey')}
             </Button>
-            <Button onClick={() => setNewKeyToken(null)}>Done</Button>
+            <Button onClick={() => setNewKeyToken(null)}>{t('done')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

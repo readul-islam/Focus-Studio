@@ -7,6 +7,7 @@ import { ArrowLeft, CheckCircle2, Loader2, Mail, RefreshCw } from 'lucide-react'
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 const RESEND_COOLDOWN = 60;
 
@@ -18,6 +19,7 @@ function maskEmail(email: string): string {
 }
 
 export default function VerifyOtpPage() {
+  const t = useTranslations('verifyOtpPage');
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
@@ -58,10 +60,10 @@ export default function VerifyOtpPage() {
     } catch (err: any) {
       const msg =
         err?.message?.includes('expired')
-          ? 'OTP expired. Request a new one.'
+          ? t('otpExpired')
           : err?.message?.includes('invalid') || err?.message?.includes('400')
-          ? 'Incorrect code. Please try again.'
-          : 'Verification failed. Try again.';
+          ? t('incorrectCode')
+          : t('verificationFailed');
       setError(msg);
       setOtp('');
       setStage('entry');
@@ -83,9 +85,9 @@ export default function VerifyOtpPage() {
       await postData({ url: '/user/resend-otp/', data: {} });
       setResendCooldown(RESEND_COOLDOWN);
       setOtp('');
-      toast.success('New code sent to your email');
+      toast.success(t('newCodeSent'));
     } catch {
-      toast.error('Failed to resend. Try again.');
+      toast.error(t('resendFailedShort'));
     } finally {
       setIsResending(false);
     }
@@ -115,16 +117,14 @@ export default function VerifyOtpPage() {
           <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-5">
             <Mail className="w-7 h-7 text-gray-400" />
           </div>
-          <h1 className="text-xl font-bold text-gray-900 mb-2">Session expired</h1>
-          <p className="text-sm text-gray-500 mb-6">
-            Your verification session has expired or is invalid. Please register again.
-          </p>
+          <h1 className="text-xl font-bold text-gray-900 mb-2">{t('sessionExpiredTitle')}</h1>
+          <p className="text-sm text-gray-500 mb-6">{t('sessionExpiredBody')}</p>
           <button
             onClick={() => router.push('/register')}
             className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:underline"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to registration
+            {t('backToRegistration')}
           </button>
         </div>
       </div>
@@ -139,8 +139,8 @@ export default function VerifyOtpPage() {
           <div className="w-14 h-14 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-5">
             <CheckCircle2 className="w-7 h-7 text-emerald-600" />
           </div>
-          <h1 className="text-xl font-bold text-gray-900 mb-1">Email verified</h1>
-          <p className="text-sm text-gray-500">Taking you to your dashboard…</p>
+          <h1 className="text-xl font-bold text-gray-900 mb-1">{t('emailVerifiedTitle')}</h1>
+          <p className="text-sm text-gray-500">{t('redirectingDashboard')}</p>
           <Loader2 className="w-5 h-5 animate-spin text-gray-400 mx-auto mt-4" />
         </div>
       </div>
@@ -172,11 +172,9 @@ export default function VerifyOtpPage() {
             <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-5">
               <Mail className="w-6 h-6 text-gray-600" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1.5">
-              Check your email
-            </h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-1.5">{t('checkEmail')}</h1>
             <p className="text-sm text-gray-500">
-              We sent a 6-digit code to{" "}
+              {t('codeSentTo')}{' '}
               <span className="font-medium text-gray-800">
                 {maskEmail(email)}
               </span>
@@ -220,22 +218,19 @@ export default function VerifyOtpPage() {
             {stage === "submitting" ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Verifying…
+                {t('verifying')}
               </>
             ) : (
-              "Verify email"
+              t('verifyEmailButton')
             )}
           </button>
 
           {/* Resend */}
           <div className="text-center mb-6">
-            <p className="text-sm text-gray-500 mb-1">Didn't receive a code?</p>
+            <p className="text-sm text-gray-500 mb-1">{t('noCode')}</p>
             {resendCooldown > 0 ? (
               <p className="text-sm text-gray-400">
-                Resend in{" "}
-                <span className="font-medium text-gray-600 tabular-nums">
-                  0:{String(resendCooldown).padStart(2, "0")}
-                </span>
+                {t('resendIn', { seconds: `0:${String(resendCooldown).padStart(2, '0')}` })}
               </p>
             ) : (
               <button
@@ -248,7 +243,7 @@ export default function VerifyOtpPage() {
                 ) : (
                   <RefreshCw className="w-3.5 h-3.5" />
                 )}
-                Resend code
+                {t('resendCode')}
               </button>
             )}
           </div>
@@ -259,7 +254,7 @@ export default function VerifyOtpPage() {
               onClick={handleLogout}
               className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
             >
-              Use a different account
+              {t('useDifferentAccount')}
             </button>
           </div>
         </div>
@@ -276,15 +271,10 @@ export default function VerifyOtpPage() {
           }}
         />
         <div className="relative z-10">
-          <h2 className="text-4xl font-bold text-white leading-tight mb-5">
-            One step away
-            <br />
-            from your studio
+          <h2 className="text-4xl font-bold text-white leading-tight mb-5 whitespace-pre-line">
+            {t('brandTitle')}
           </h2>
-          <p className="text-white/60 text-base leading-relaxed max-w-sm">
-            Confirm your email to unlock all features and get started managing
-            your design projects.
-          </p>
+          <p className="text-white/60 text-base leading-relaxed max-w-sm">{t('brandSubtitle')}</p>
         </div>
       </div>
     </div>

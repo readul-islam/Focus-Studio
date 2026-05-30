@@ -11,95 +11,97 @@ import {
   TrendingUp,
   LayoutDashboard,
 } from "lucide-react"
-
-const reportCategories = [
-  {
-    id: "overview",
-    title: "Overview",
-    description: "Studio-wide KPIs: hours, costs, active projects and outstanding invoices at a glance",
-    icon: LayoutDashboard,
-    href: "/reports/overview",
-    color: "bg-emerald-50 text-emerald-700",
-    subReports: [
-      { name: "Hours This Month", description: "Total logged hours" },
-      { name: "Studio Cost", description: "Staff cost this period" },
-      { name: "Outstanding Invoices", description: "Unpaid invoice total" },
-    ],
-  },
-  {
-    id: "projects",
-    title: "Projects",
-    description: "Track hours, budget burn and fee spend per project and phase",
-    icon: FolderOpen,
-    href: "/reports/projects",
-    color: "bg-amber-100 text-amber-700",
-    subReports: [
-      { name: "By Project", description: "Hours and cost per project" },
-      { name: "Budget Burn", description: "Hours vs. budgeted hours" },
-      { name: "Phase Breakdown", description: "Drill into phases and timelogs" },
-    ],
-  },
-  {
-    id: "team",
-    title: "Team",
-    description: "Hours logged per team member by period — payroll-ready with one-click export",
-    icon: Users,
-    href: "/reports/team",
-    color: "bg-emerald-50 text-olive-600",
-    subReports: [
-      { name: "By Staff Member", description: "Hours and cost per person" },
-      { name: "Period Quick-Select", description: "This week, last month, custom" },
-      { name: "Export to CSV", description: "Payroll-ready export" },
-    ],
-  },
-  {
-    id: "finance",
-    title: "Finance",
-    description: "All invoices and purchase orders — status, amounts, Xero sync and outstanding balances",
-    icon: CreditCard,
-    href: "/reports/finance",
-    color: "bg-orange-50 text-terracotta-600",
-    subReports: [
-      { name: "Invoices", description: "Raised, paid and outstanding" },
-      { name: "Purchase Orders", description: "Supplier spend and status" },
-      { name: "Studio Net Position", description: "Revenue vs. costs" },
-    ],
-  },
-  {
-    id: "procurement",
-    title: "Procurement",
-    description: "Purchase orders, supplier spend and payment tracking across all projects",
-    icon: Package,
-    href: "/reports/procurement",
-    color: "bg-amber-100 text-amber-700",
-    subReports: [
-      { name: "Purchase Orders", description: "All POs with status and amounts" },
-      { name: "Monthly Spend", description: "PO spend trend by month" },
-      { name: "Supplier Breakdown", description: "Spend by supplier" },
-    ],
-  },
-  {
-    id: "revenue",
-    title: "Revenue & P&L",
-    description: "Income, costs and net position by period — calculated from invoices, POs and staff costs",
-    icon: TrendingUp,
-    href: "/reports/revenue",
-    color: "bg-greige-100 text-greige-500",
-    subReports: [
-      { name: "Revenue", description: "Invoiced income by period" },
-      { name: "Costs", description: "PO spend and staff costs" },
-      { name: "Net Position", description: "Profit margin overview" },
-    ],
-  },
-]
+import { useTranslations } from 'next-intl'
 
 function ReportsPageContent() {
+  const t = useTranslations('reportsPage');
+  const reportCategories = [
+    {
+      id: "overview",
+      title: t('overview.title'),
+      description: t('overview.description'),
+      icon: LayoutDashboard,
+      href: "/reports/overview",
+      color: "bg-emerald-50 text-emerald-700",
+      subReports: [
+        { name: t('overview.sub1Name'), description: t('overview.sub1Description') },
+        { name: t('overview.sub2Name'), description: t('overview.sub2Description') },
+        { name: t('overview.sub3Name'), description: t('overview.sub3Description') },
+      ],
+    },
+    {
+      id: "projects",
+      title: t('projects.title'),
+      description: t('projects.description'),
+      icon: FolderOpen,
+      href: "/reports/projects",
+      color: "bg-amber-100 text-amber-700",
+      subReports: [
+        { name: t('projects.sub1Name'), description: t('projects.sub1Description') },
+        { name: t('projects.sub2Name'), description: t('projects.sub2Description') },
+        { name: t('projects.sub3Name'), description: t('projects.sub3Description') },
+      ],
+    },
+    {
+      id: "team",
+      title: t('team.title'),
+      description: t('team.description'),
+      icon: Users,
+      href: "/reports/team",
+      color: "bg-emerald-50 text-olive-600",
+      subReports: [
+        { name: t('team.sub1Name'), description: t('team.sub1Description') },
+        { name: t('team.sub2Name'), description: t('team.sub2Description') },
+        { name: t('team.sub3Name'), description: t('team.sub3Description') },
+      ],
+    },
+    {
+      id: "finance",
+      title: t('finance.title'),
+      description: t('finance.description'),
+      icon: CreditCard,
+      href: "/reports/finance",
+      color: "bg-orange-50 text-terracotta-600",
+      subReports: [
+        { name: t('finance.sub1Name'), description: t('finance.sub1Description') },
+        { name: t('finance.sub2Name'), description: t('finance.sub2Description') },
+        { name: t('finance.sub3Name'), description: t('finance.sub3Description') },
+      ],
+    },
+    {
+      id: "procurement",
+      title: t('procurement.title'),
+      description: t('procurement.description'),
+      icon: Package,
+      href: "/reports/procurement",
+      color: "bg-amber-100 text-amber-700",
+      subReports: [
+        { name: t('procurement.sub1Name'), description: t('procurement.sub1Description') },
+        { name: t('procurement.sub2Name'), description: t('procurement.sub2Description') },
+        { name: t('procurement.sub3Name'), description: t('procurement.sub3Description') },
+      ],
+    },
+    {
+      id: "revenue",
+      title: t('revenue.title'),
+      description: t('revenue.description'),
+      icon: TrendingUp,
+      href: "/reports/revenue",
+      color: "bg-greige-100 text-greige-500",
+      subReports: [
+        { name: t('revenue.sub1Name'), description: t('revenue.sub1Description') },
+        { name: t('revenue.sub2Name'), description: t('revenue.sub2Description') },
+        { name: t('revenue.sub3Name'), description: t('revenue.sub3Description') },
+      ],
+    },
+  ];
+
   return (
     <main  className="flex flex-col h-[calc(100svh-3.5rem)] min-h-0 bg-stone-50 p-4 sm:p-6">
       <div className="max-w-7xl mx-auto w-full flex flex-col animate-in fade-in slide-in-from-bottom-4 duration-500 flex-1 min-h-0 space-y-6">
         <div>
-          <h1 className="text-xl font-semibold text-gray-900">Reports</h1>
-          <p className="text-sm text-gray-500 mt-1">All reports are live data from your studio</p>
+          <h1 className="text-xl font-semibold text-gray-900">{t('title')}</h1>
+          <p className="text-sm text-gray-500 mt-1">{t('subtitle')}</p>
         </div>
 
         <section className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">

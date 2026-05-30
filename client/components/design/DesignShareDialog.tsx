@@ -26,6 +26,7 @@ import { urlToFile } from '@/hooks/useDesignSessions';
 import { SelectContractorDialog } from '@/components/contractor/SelectContractorDialog';
 import { gooeyToast as toast } from 'goey-toast';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 type ProjectOption = {
   id: number;
@@ -48,6 +49,7 @@ export function DesignShareDialog({
   assetId,
   downloadFilename = 'design-asset.png',
 }: Props) {
+  const t = useTranslations('designShareDialog');
   const [tab, setTab] = useState('project');
   const [projectId, setProjectId] = useState<string>('');
   const [teamMessage, setTeamMessage] = useState('');
@@ -81,7 +83,7 @@ export function DesignShareDialog({
 
   const handleAttachToProject = async () => {
     if (!projectId) {
-      toast.error('Select a project');
+      toast.error(t('toasts.selectProject'));
       return;
     }
     setIsSubmitting(true);
@@ -95,9 +97,9 @@ export function DesignShareDialog({
       });
       const docId = doc?.id ?? doc?.data?.id;
       if (docId) setAttachedDocumentId(Number(docId));
-      toast.success('Design attached to project Files');
+      toast.success(t('toasts.attached'));
     } catch {
-      toast.error('Failed to attach design to project');
+      toast.error(t('toasts.attachFailed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -105,7 +107,7 @@ export function DesignShareDialog({
 
   const handleShareTeam = async () => {
     if (!projectId) {
-      toast.error('Select a project');
+      toast.error(t('toasts.selectProject'));
       return;
     }
     setIsSubmitting(true);
@@ -113,13 +115,13 @@ export function DesignShareDialog({
       const file = await getFile();
       const formData = new FormData();
       formData.append('project_id', projectId);
-      formData.append('content', teamMessage.trim() || 'Shared a design render from Design Studio');
+      formData.append('content', teamMessage.trim() || t('defaultTeamMessage'));
       formData.append('files', file);
       await postFormData({ url: '/collaboration/messages/', data: formData });
-      toast.success('Shared with project team');
+      toast.success(t('toasts.sharedTeam'));
       handleClose();
     } catch {
-      toast.error('Failed to share with team');
+      toast.error(t('toasts.shareTeamFailed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -127,7 +129,7 @@ export function DesignShareDialog({
 
   const handleOpenContractorShare = async () => {
     if (!projectId) {
-      toast.error('Select a project first');
+      toast.error(t('toasts.selectProjectFirst'));
       return;
     }
     if (!attachedDocumentId) {
@@ -145,7 +147,7 @@ export function DesignShareDialog({
         setAttachedDocumentId(Number(docId));
         setContractorDialogOpen(true);
       } catch {
-        toast.error('Attach to project before sharing with contractor');
+        toast.error(t('toasts.attachBeforeContractor'));
       } finally {
         setIsSubmitting(false);
       }
@@ -156,10 +158,10 @@ export function DesignShareDialog({
 
   const projectSelect = (
     <div className="space-y-2">
-      <Label>Project</Label>
+      <Label>{t('project')}</Label>
       <Select value={projectId} onValueChange={setProjectId} disabled={projectsLoading}>
         <SelectTrigger>
-          <SelectValue placeholder={projectsLoading ? 'Loading…' : 'Select project'} />
+          <SelectValue placeholder={projectsLoading ? t('loading') : t('selectProject')} />
         </SelectTrigger>
         <SelectContent>
           {projects.map(p => (
@@ -177,21 +179,21 @@ export function DesignShareDialog({
       <Dialog open={open} onOpenChange={v => !v && handleClose()}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Share design</DialogTitle>
+            <DialogTitle>{t('title')}</DialogTitle>
           </DialogHeader>
           <Tabs value={tab} onValueChange={setTab}>
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="project" className="text-xs gap-1">
                 <FolderOpen className="w-3.5 h-3.5" />
-                Project
+                {t('tabs.project')}
               </TabsTrigger>
               <TabsTrigger value="team" className="text-xs gap-1">
                 <Users className="w-3.5 h-3.5" />
-                Team
+                {t('tabs.team')}
               </TabsTrigger>
               <TabsTrigger value="contractor" className="text-xs gap-1">
                 <HardHat className="w-3.5 h-3.5" />
-                Contractor
+                {t('tabs.contractor')}
               </TabsTrigger>
             </TabsList>
             <TabsContent value="project" className="space-y-4 mt-4">
@@ -202,17 +204,17 @@ export function DesignShareDialog({
                 disabled={isSubmitting || !projectId}
               >
                 {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-                Attach to project Files
+                {t('attachToProject')}
               </Button>
               {attachedDocumentId && projectId && (
                 <p className="text-xs text-gray-500 text-center">
-                  Attached.{' '}
+                  {t('attached')}{' '}
                   <Link
                     href={`/projects/${projectId}/docs`}
                     className="text-sage-700 underline"
                     onClick={handleClose}
                   >
-                    View in Files
+                    {t('viewInFiles')}
                   </Link>
                 </p>
               )}
@@ -220,11 +222,11 @@ export function DesignShareDialog({
             <TabsContent value="team" className="space-y-4 mt-4">
               {projectSelect}
               <div className="space-y-2">
-                <Label>Message (optional)</Label>
+                <Label>{t('messageOptional')}</Label>
                 <Input
                   value={teamMessage}
                   onChange={e => setTeamMessage(e.target.value)}
-                  placeholder="Check out this design concept…"
+                  placeholder={t('messagePlaceholder')}
                 />
               </div>
               <Button
@@ -233,13 +235,13 @@ export function DesignShareDialog({
                 disabled={isSubmitting || !projectId}
               >
                 {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-                Post to team chat
+                {t('postToTeam')}
               </Button>
             </TabsContent>
             <TabsContent value="contractor" className="space-y-4 mt-4">
               {projectSelect}
               <p className="text-xs text-gray-500">
-                The design will be saved to project Files, then shared with a contractor on that project.
+                {t('contractorDesc')}
               </p>
               <Button
                 className="w-full bg-gray-900 hover:bg-gray-800"
@@ -247,7 +249,7 @@ export function DesignShareDialog({
                 disabled={isSubmitting || !projectId}
               >
                 {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-                Share with contractor
+                {t('shareWithContractor')}
               </Button>
             </TabsContent>
           </Tabs>
@@ -264,7 +266,7 @@ export function DesignShareDialog({
             handleClose();
           }}
           documentId={attachedDocumentId}
-          title="Share design with contractor"
+          title={t('contractorDialogTitle')}
         />
       )}
     </>

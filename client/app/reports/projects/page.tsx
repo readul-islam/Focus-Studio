@@ -20,8 +20,11 @@ import { ViewCurrencySymbol } from '@/components/ViewCurrencySymbol';
 import ProjectPhases from '@/components/reports/ProjectPhases';
 import { ReportFilterBar } from '@/components/reports/ReportFilterBar';
 import { useReportFilters } from '@/hooks/useReportFilters';
+import { useTranslations } from 'next-intl';
+import { PermissionGuard } from '@/components/PermissionGuard';
 
-const ProjectReport = () => {
+function ProjectReportContent() {
+  const t = useTranslations('reportsProjectsPage');
   const { data, isLoading, error } = useFetch('/reports/total-project-time/');
   const reportData = data as TotalProjectTimeResponse;
   const [searchQuery, setSearchQuery] = useState('');
@@ -139,9 +142,9 @@ const ProjectReport = () => {
       <div className="report-print-area max-w-7xl mx-auto space-y-6">
 
         <ReportPageHeader
-          title="Projects"
-          subtitle="Track hours, budget burn and fee spend per project and phase"
-          printTitle="Projects Report"
+          title={t('title')}
+          subtitle={t('subtitle')}
+          printTitle={t('printTitle')}
         />
 
         <ReportFilterBar
@@ -162,9 +165,9 @@ const ProjectReport = () => {
         ) : <>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          <KpiCard label="Active Projects" value={reportData.projects.length} sub="In progress" icon={FolderOpen} />
-          <KpiCard label="Studio Total Time" value={totalTimeFormatted} sub={reportData.studio_name} icon={Timer} />
-          <KpiCard label="Studio Total Cost" value={totalCostFormatted} sub="Estimated cost" icon={DollarSign} />
+          <KpiCard label={t('activeProjects')} value={reportData.projects.length} sub={t('inProgress')} icon={FolderOpen} />
+          <KpiCard label={t('studioTotalTime')} value={totalTimeFormatted} sub={reportData.studio_name} icon={Timer} />
+          <KpiCard label={t('studioTotalCost')} value={totalCostFormatted} sub={t('estimatedCost')} icon={DollarSign} />
         </div>
 
 
@@ -174,11 +177,11 @@ const ProjectReport = () => {
           <div className="flex flex-wrap gap-4 justify-end items-center">
             <Select value={chartMetric} onValueChange={(v: 'hours' | 'cost') => setChartMetric(v)}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Metric" />
+                <SelectValue placeholder={t('metric')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="hours">Hours</SelectItem>
-                <SelectItem value="cost">Cost</SelectItem>
+                <SelectItem value="hours">{t('hours')}</SelectItem>
+                <SelectItem value="cost">{t('cost')}</SelectItem>
               </SelectContent>
             </Select>
 
@@ -196,8 +199,8 @@ const ProjectReport = () => {
         <Card className="shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <div className="space-y-1">
-              <CardTitle>Phase Performance</CardTitle>
-              <CardDescription>Actual Time vs Budgeted per Phase</CardDescription>
+              <CardTitle>{t('phasePerformance')}</CardTitle>
+              <CardDescription>{t('phasePerformanceSub')}</CardDescription>
             </div>
             <div className="w-[250px]">
               <Select value={selectedProjectId || ''} onValueChange={setSelectedProjectId}>
@@ -206,7 +209,7 @@ const ProjectReport = () => {
                         </SelectTrigger> */}
                 <SelectTrigger className="w-[250px] bg-white border-gray-200">
                   <FolderOpen className="w-4 h-4 mr-2 text-gray-500" />
-                  <SelectValue placeholder="Select project" />
+                  <SelectValue placeholder={t('selectProject')} />
                 </SelectTrigger>
                 <SelectContent>
                   {reportData.projects.map(p => (
@@ -252,20 +255,20 @@ const ProjectReport = () => {
                       fill="var(--color-actual)"
                       radius={[4, 4, 0, 0]}
                       maxBarSize={50}
-                      name={chartMetric === 'hours' ? "Actual Hours" : "Actual Cost"}
+                      name={chartMetric === 'hours' ? t('actualHours') : t('actualCost')}
                     />
                     <Bar
                       dataKey="budget"
                       fill="var(--color-budget)"
                       radius={[4, 4, 0, 0]}
                       maxBarSize={50}
-                      name={chartMetric === 'hours' ? "Budgeted Hours" : "Budgeted Cost"}
+                      name={chartMetric === 'hours' ? t('budgetedHours') : t('budgetedCost')}
                     />
                   </BarChart>
                 </ChartContainer>
               ) : (
                 <div className="h-full flex items-center justify-center text-muted-foreground">
-                  No phase data available.
+                  {t('noPhaseData')}
                 </div>
               )}
             </div>
@@ -278,22 +281,22 @@ const ProjectReport = () => {
         <div className='flex justify-end'>
           <Select value={sortBy} onValueChange={setSortBy}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Sort By" />
+              <SelectValue placeholder={t('sortBy')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="time-desc">Most Time Logged</SelectItem>
-              <SelectItem value="time-asc">Least Time Logged</SelectItem>
-              <SelectItem value="cost-desc">Highest Cost</SelectItem>
-              <SelectItem value="cost-asc">Lowest Cost</SelectItem>
-              <SelectItem value="name-asc">Name (A-Z)</SelectItem>
-              <SelectItem value="name-desc">Name (Z-A)</SelectItem>
+              <SelectItem value="time-desc">{t('sortTimeDesc')}</SelectItem>
+              <SelectItem value="time-asc">{t('sortTimeAsc')}</SelectItem>
+              <SelectItem value="cost-desc">{t('sortCostDesc')}</SelectItem>
+              <SelectItem value="cost-asc">{t('sortCostAsc')}</SelectItem>
+              <SelectItem value="name-asc">{t('sortNameAsc')}</SelectItem>
+              <SelectItem value="name-desc">{t('sortNameDesc')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <Card className="shadow-sm p-0">
           <CardHeader>
-            <CardTitle className="text-base font-semibold">Project Details</CardTitle>
+            <CardTitle className="text-base font-semibold">{t('projectDetails')}</CardTitle>
           </CardHeader>
           <CardContent className='p-0'>
             <div className="overflow-x-auto">
@@ -302,25 +305,25 @@ const ProjectReport = () => {
               <tr>
                 <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide w-8"></th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                  Projects
+                  {t('projectsCol')}
                 </th>
                 <th className="text-right px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                  Fee
+                  {t('fee')}
                 </th>
                 <th className="text-right px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                  Budgeted Hours
+                  {t('budgetedHoursCol')}
                 </th>
                 <th className="text-right px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                  Actual Hours
+                  {t('actualHoursCol')}
                 </th>
                 <th className="text-right px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                  Variance
+                  {t('variance')}
                 </th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide min-w-[140px]">
-                  Hours Burn
+                  {t('hoursBurn')}
                 </th>
                 <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide min-w-[140px]">
-                  Fee Burn
+                  {t('feeBurn')}
                 </th>
               </tr>
             </thead>
@@ -328,7 +331,7 @@ const ProjectReport = () => {
               {!isLoading && (!filteredProjects || filteredProjects.length === 0) && (
                 <tr>
                   <td colSpan={9} className="px-4 py-12 text-center text-sm text-gray-500">
-                    No project data available for this period.
+                    {t('noProjectDataPeriod')}
                   </td>
                 </tr>
               )}
@@ -423,7 +426,7 @@ const ProjectReport = () => {
                         <tr className="bg-muted/5 border-b-0">
                           <td colSpan={9} className="px-4 py-2">
                             <p className="text-xs font-bold opacity-70 uppercase tracking-wide pl-12">
-                              Phases
+                              {t('phases')}
                             </p>
                           </td>
                         </tr>
@@ -463,4 +466,10 @@ const ProjectReport = () => {
   );
 };
 
-export default ProjectReport;
+export default function ProjectReport() {
+  return (
+    <PermissionGuard permission="reports.view" redirectTo="/">
+      <ProjectReportContent />
+    </PermissionGuard>
+  );
+}

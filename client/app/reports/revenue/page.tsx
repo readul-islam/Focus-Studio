@@ -2,6 +2,7 @@
 import { PermissionGuard } from '@/components/PermissionGuard';
 
 import React, { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import useFetch from '@/hooks/useFetch';
 import { useReportFilters, formatCurrency, getLastNMonths, getMonthKey } from '@/hooks/useReportFilters';
 import { ReportFilterBar } from '@/components/reports/ReportFilterBar';
@@ -16,6 +17,8 @@ import { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveCon
 const C = '£';
 
 function RevenuePLPageContent() {
+  const t = useTranslations('reportsRevenuePage');
+  const tr = useTranslations('reportsCommon');
   const { period, setPeriod, setCustomRange, customRange, startDate, endDate } = useReportFilters('year');
   const { data: financeRaw, isLoading: l1 } = useFetch('/finance/studio-finance/');
   const { data: teamRaw, isLoading: l2 } = useFetch(`/reports/users-time-report/?start_date=${startDate}&end_date=${endDate}`);
@@ -61,9 +64,9 @@ function RevenuePLPageContent() {
       <div className="report-print-area max-w-7xl mx-auto space-y-6">
 
         <ReportPageHeader
-          title="Revenue & P&L"
-          subtitle="Studio profitability from invoices, purchase orders and staff costs"
-          printTitle="Revenue and P&L Report"
+          title={t('title')}
+          subtitle={t('subtitle')}
+          printTitle={t('title')}
         />
 
         <ReportFilterBar period={period} onPeriodChange={setPeriod} onCustomRange={setCustomRange} customFrom={customRange?.from} customTo={customRange?.to} />
@@ -79,10 +82,10 @@ function RevenuePLPageContent() {
         ) : <>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-          <KpiCard label="Revenue" value={formatCurrency(revenue, C)} sub={`${periodInvoices.length} invoices`} icon={TrendingUp} />
-          <KpiCard label="Total Costs" value={formatCurrency(totalCosts, C)} sub="PO spend + staff cost" icon={TrendingDown} />
-          <KpiCard label="Net Profit" value={formatCurrency(net, C)} sub={net >= 0 ? 'Profitable' : 'Loss-making'} icon={DollarSign} alert={net < 0} />
-          <KpiCard label="Margin" value={`${margin.toFixed(1)}%`} sub="Net profit ÷ revenue" icon={Percent} alert={margin < 0} />
+          <KpiCard label={t('revenue')} value={formatCurrency(revenue, C)} sub={tr('invoicesCount', { count: periodInvoices.length })} icon={TrendingUp} />
+          <KpiCard label={t('totalCosts')} value={formatCurrency(totalCosts, C)} sub={t('costsSub')} icon={TrendingDown} />
+          <KpiCard label={t('netProfit')} value={formatCurrency(net, C)} sub={net >= 0 ? t('profitable') : t('lossMaking')} icon={DollarSign} alert={net < 0} />
+          <KpiCard label={t('margin')} value={`${margin.toFixed(1)}%`} sub={t('marginSub')} icon={Percent} alert={margin < 0} />
         </div>
 
         {/* Trend chart */}
@@ -116,7 +119,7 @@ function RevenuePLPageContent() {
           <h3 className="font-semibold text-neutral-900 mb-1">Per-Project P&L</h3>
           <p className="text-xs text-neutral-500 mb-4">Revenue vs. PO costs per project in selected period</p>
           {projectPL.length === 0 ? (
-            <p className="text-sm text-neutral-400 text-center py-8">No data for this period</p>
+            <p className="text-sm text-neutral-400 text-center py-8">{t('noDataPeriod')}</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">

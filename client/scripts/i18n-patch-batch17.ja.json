@@ -1,0 +1,85 @@
+{
+  "designShareDialog": {
+    "title": "デザインを共有",
+    "tabs": {
+      "project": "プロジェクト",
+      "team": "チーム",
+      "contractor": "業者"
+    },
+    "project": "プロジェクト",
+    "selectProject": "プロジェクトを選択",
+    "loading": "読み込み中…",
+    "attachToProject": "プロジェクトファイルに添付",
+    "attached": "添付しました。",
+    "viewInFiles": "ファイルで表示",
+    "messageOptional": "メッセージ（任意）",
+    "messagePlaceholder": "このデザイン案を確認してください…",
+    "postToTeam": "チームチャットに投稿",
+    "contractorDesc": "デザインはプロジェクトファイルに保存され、その後プロジェクトの業者と共有されます。",
+    "shareWithContractor": "業者と共有",
+    "contractorDialogTitle": "業者とデザインを共有",
+    "defaultTeamMessage": "デザインスタジオからレンダリングを共有しました",
+    "toasts": {
+      "selectProject": "プロジェクトを選択してください",
+      "attached": "プロジェクトファイルにデザインを添付しました",
+      "attachFailed": "プロジェクトへの添付に失敗しました",
+      "sharedTeam": "プロジェクトチームと共有しました",
+      "shareTeamFailed": "チームへの共有に失敗しました",
+      "selectProjectFirst": "先にプロジェクトを選択してください",
+      "attachBeforeContractor": "業者と共有する前にプロジェクトに添付してください"
+    }
+  },
+  "productDetailSheet": {
+    "supplierLabel": "サプライヤー: {name}",
+    "productImages": "製品画像",
+    "productImageAlt": "製品画像",
+    "placeholderAlt": "プレースホルダー",
+    "showImage": "画像 {index} を表示",
+    "thumbnailAlt": "サムネイル",
+    "copyLink": "リンクをコピー",
+    "website": "ウェブサイト",
+    "measurementsSection": "寸法",
+    "descriptionSection": "説明",
+    "packagingSection": "梱包詳細",
+    "instructionsSection": "説明書",
+    "productDetailsSection": "製品詳細",
+    "statusBadge": "ステータス: {status}",
+    "initialStatusBadge": "初期ステータス: {status}",
+    "sendToClientBadge": "クライアントに送信: {value}",
+    "footerHint": "この製品をプロジェクトに追加します。",
+    "viewProduct": "製品を表示",
+    "addToProject": "プロジェクトに追加",
+    "toasts": {
+      "addedToProject": "製品をプロジェクトに追加しました",
+      "addFailed": "製品の追加に失敗しました",
+      "noUrl": "URLがありません",
+      "copied": "コピーしました！"
+    }
+  },
+  "contractorCard": {
+    "expiresInDays": "あと{days}日で期限切れ",
+    "validUntil": "{date}まで有効",
+    "lastAccessOnDate": "最終アクセス: {date}",
+    "builder": "ビルダー",
+    "itemsCount": "{count}件のアイテム",
+    "drawingsCount": "{count}件の図面",
+    "shareItems": "アイテムを共有",
+    "shareDrawings": "図面を共有",
+    "profile": "プロフィール",
+    "sharedItemsTitle": "共有アイテム ({count})",
+    "sharedDrawingsTitle": "共有図面 ({count})",
+    "confirmedCount": "{count}件確認済み",
+    "addFromProcurement": "調達から追加",
+    "addFromFiles": "ファイルから追加",
+    "noItemsShared": "共有アイテムはまだありません",
+    "noDrawingsShared": "共有図面はまだありません",
+    "recentActivity": "最近のアクティビティ"
+  },
+  "libraryProductModal": {
+    "descriptionAddHint": "以下の詳細を入力してください。名前と通貨は必須です。",
+    "namePlaceholder": "例: Oslo Lounge Chair",
+    "productUrlPlaceholder": "https://supplier.com/product",
+    "noSuppliersFound": "サプライヤーが見つかりません。",
+    "addNewSupplier": "+ 新しいサプライヤーを追加"
+  }
+}

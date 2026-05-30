@@ -1,0 +1,46 @@
+{
+  "projectProcurementCells": {
+    "creating": "Creating...",
+    "poCreatedTitle": "PO created",
+    "poSentTitle": "PO sent to supplier",
+    "supplierPaidTitle": "Supplier paid",
+    "invoiceCreatedTitle": "Invoice created",
+    "invoiceSentTitle": "Invoice sent to client",
+    "clientPaidTitle": "Client paid"
+  },
+  "contractorProfileDrawer": {
+    "newAccessCode": "New access code: {code}",
+    "insuranceCertSection": "Insurance & Certification",
+    "insuranceExpiryDate": "Insurance Expiry Date",
+    "valid": "Valid",
+    "expiringSoon": "Expiring soon",
+    "expired": "Expired",
+    "replaceDocument": "Replace Document",
+    "uploadDocumentBtn": "Upload Document",
+    "replaceCertificate": "Replace Certificate",
+    "uploadCertificate": "Upload Certificate",
+    "pdfOnlyHint": "PDF or image files only",
+    "emergencyContact": "Emergency Contact",
+    "name": "Name",
+    "notes": "Notes",
+    "notesPlaceholder": "Any additional notes about this contractor...",
+    "accessCodeSection": "Access Code",
+    "notAvailable": "N/A",
+    "regenerate": "Regenerate",
+    "accessCodeHint": "This code allows the contractor to access the portal",
+    "dangerZone": "Danger Zone",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "saveChanges": "Save Changes"
+  },
+  "reportsProjectPage": {
+    "filterProjects": "Filter Projects",
+    "chartTimeDistribution": "Project Time Distribution",
+    "chartCostDistribution": "Project Cost Distribution",
+    "topProjectsByHours": "Top projects by hours logged",
+    "topProjectsByCost": "Top projects by cost",
+    "projectDetails": "Project Details",
+    "clickProjectDetails": "Click on a project to view details",
+    "noProjectsFoundFilters": "No projects found matching filters."
+  }
+}

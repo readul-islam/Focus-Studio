@@ -22,28 +22,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useNotifications, Notification } from '@/hooks/useNotifications';
 import { cn } from '@/lib/utils';
 import { gooeyToast as toast } from 'goey-toast';
+import { useTranslations } from 'next-intl';
 
-// ── Notification type config (extensible for future types) ─────────────────
-const NOTIFICATION_TYPE_CONFIG: Record<
-  string,
-  { icon: typeof Bell; label: string }
-> = {
-  task_assigned: {
-    icon: ClipboardCheck,
-    label: 'Task Assigned',
-  },
-  project_assigned: {
-    icon: FolderKanban,
-    label: 'Project Assigned',
-  },
-  default: {
-    icon: Bell,
-    label: 'Notification',
-  },
-};
+function useNotificationTypeConfig() {
+  const t = useTranslations('notificationsPage.types');
+  return {
+    task_assigned: { icon: ClipboardCheck, label: t('taskAssigned') },
+    project_assigned: { icon: FolderKanban, label: t('projectAssigned') },
+    default: { icon: Bell, label: t('default') },
+  } as const;
+}
 
-function getNotificationConfig(type: string) {
-  return NOTIFICATION_TYPE_CONFIG[type] || NOTIFICATION_TYPE_CONFIG.default;
+function getNotificationConfig(
+  type: string,
+  configs: ReturnType<typeof useNotificationTypeConfig>
+) {
+  return configs[type as keyof typeof configs] || configs.default;
 }
 
 function getNotificationLink(notification: Notification): string {
@@ -59,14 +53,17 @@ function getNotificationLink(notification: Notification): string {
   return '#';
 }
 
-function formatNotificationDate(dateString: string): string {
+function formatNotificationDate(
+  dateString: string,
+  t: ReturnType<typeof useTranslations<'notificationsPage'>>
+): string {
   try {
     const date = parseISO(dateString);
     if (isToday(date)) {
-      return `Today at ${format(date, 'h:mm a')}`;
+      return t('dateAt', { time: format(date, 'h:mm a') });
     }
     if (isYesterday(date)) {
-      return `Yesterday at ${format(date, 'h:mm a')}`;
+      return t('yesterdayAt', { time: format(date, 'h:mm a') });
     }
     return format(date, 'MMM d, yyyy • h:mm a');
   } catch {
@@ -74,20 +71,26 @@ function formatNotificationDate(dateString: string): string {
   }
 }
 
-function getDateGroup(dateString: string): string {
+function getDateGroup(
+  dateString: string,
+  t: ReturnType<typeof useTranslations<'notificationsPage'>>
+): string {
   try {
     const date = parseISO(dateString);
-    if (isToday(date)) return 'Today';
-    if (isYesterday(date)) return 'Yesterday';
+    if (isToday(date)) return t('dateGroups.today');
+    if (isYesterday(date)) return t('dateGroups.yesterday');
     return format(date, 'MMMM yyyy');
   } catch {
-    return 'Other';
+    return t('dateGroups.other');
   }
 }
 
-function groupNotifications(notifications: Notification[]): Record<string, Notification[]> {
+function groupNotifications(
+  notifications: Notification[],
+  t: ReturnType<typeof useTranslations<'notificationsPage'>>
+): Record<string, Notification[]> {
   return notifications.reduce((acc, notification) => {
-    const group = getDateGroup(notification.created_at);
+    const group = getDateGroup(notification.created_at, t);
     if (!acc[group]) {
       acc[group] = [];
     }
@@ -107,7 +110,9 @@ function NotificationCard({
   onDelete: (id: number) => void;
 }) {
   const router = useRouter();
-  const config = getNotificationConfig(notification.notification_type);
+  const t = useTranslations('notificationsPage');
+  const typeConfigs = useNotificationTypeConfig();
+  const config = getNotificationConfig(notification.notification_type, typeConfigs);
   const Icon = config.icon;
   const link = getNotificationLink(notification);
 
@@ -161,7 +166,7 @@ function NotificationCard({
               {notification.message}
             </p>
             <p className="text-xs text-gray-400 mt-1.5">
-              {formatNotificationDate(notification.created_at)}
+              {formatNotificationDate(notification.created_at, t)}
             </p>
           </div>
 
@@ -171,7 +176,7 @@ function NotificationCard({
             <button
               onClick={handleDelete}
               className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-all"
-              title="Dismiss notification"
+              title={t('dismiss')}
             >
               <X className="w-4 h-4" />
             </button>
@@ -189,6 +194,9 @@ function NotificationCard({
 
 // ── Main Page ──────────────────────────────────────────────────────────────
 export default function NotificationsPage() {
+  const t = useTranslations('notificationsPage');
+  const tc = useTranslations('common');
+  const typeConfigs = useNotificationTypeConfig();
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [readFilter, setReadFilter] = useState<string>('all');
@@ -210,15 +218,15 @@ export default function NotificationsPage() {
   const handleEnableBrowserNotifications = async () => {
     const granted = await enableBrowserNotifications();
     if (granted) {
-      toast.success('Browser notifications enabled');
+      toast.success(t('toasts.pushEnabled'));
     } else {
-      toast.error('Browser notifications denied. Please enable them in your browser settings.');
+      toast.error(t('toasts.pushDenied'));
     }
   };
 
   const handleDelete = (id: number) => {
     deleteNotification(id);
-    toast.success('Notification dismissed');
+    toast.success(t('toasts.dismissed'));
   };
 
   // Filter notifications
@@ -242,8 +250,8 @@ export default function NotificationsPage() {
   }, [notifications, typeFilter, readFilter, searchQuery]);
 
   const groupedNotifications = useMemo(
-    () => groupNotifications(filteredNotifications),
-    [filteredNotifications]
+    () => groupNotifications(filteredNotifications, t),
+    [filteredNotifications, t]
   );
   const groups = Object.keys(groupedNotifications);
 
@@ -257,11 +265,11 @@ export default function NotificationsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Notifications</h1>
+          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">{t('title')}</h1>
           <p className="text-base text-gray-500">
             {unreadCount > 0
-              ? `You have ${unreadCount} unread notification${unreadCount !== 1 ? 's' : ''}`
-              : "You're all caught up!"}
+              ? t('unreadCount', { count: unreadCount })
+              : t('allCaughtUp')}
           </p>
         </div>
 
@@ -274,14 +282,14 @@ export default function NotificationsPage() {
               className="flex items-center gap-2"
             >
               <BellRing className="w-4 h-4" />
-              Enable push
+              {t('enablePush')}
             </Button>
           )}
 
           {browserNotificationStatus === 'granted' && (
             <div className="flex items-center gap-1.5 text-xs text-green-600 bg-green-50 px-2.5 py-1.5 rounded-full">
               <BellRing className="w-3.5 h-3.5" />
-              Push enabled
+              {t('pushEnabled')}
             </div>
           )}
 
@@ -297,7 +305,7 @@ export default function NotificationsPage() {
               ) : (
                 <Check className="w-4 h-4" />
               )}
-              Mark all as read
+              {t('markAllRead')}
             </Button>
           )}
         </div>
@@ -308,7 +316,7 @@ export default function NotificationsPage() {
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
-            placeholder="Search notifications..."
+            placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9 bg-white border-gray-200"
@@ -319,13 +327,13 @@ export default function NotificationsPage() {
           <Filter className="w-4 h-4 text-gray-400" />
           <Select value={typeFilter} onValueChange={setTypeFilter}>
             <SelectTrigger className="w-[160px]">
-              <SelectValue placeholder="All types" />
+              <SelectValue placeholder={t('allTypes')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All types</SelectItem>
+              <SelectItem value="all">{t('allTypes')}</SelectItem>
               {notificationTypes.map((type) => (
                 <SelectItem key={type} value={type}>
-                  {getNotificationConfig(type).label}
+                  {getNotificationConfig(type, typeConfigs).label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -333,12 +341,12 @@ export default function NotificationsPage() {
 
           <Select value={readFilter} onValueChange={setReadFilter}>
             <SelectTrigger className="w-[120px]">
-              <SelectValue placeholder="All" />
+              <SelectValue placeholder={tc('all')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="unread">Unread</SelectItem>
-              <SelectItem value="read">Read</SelectItem>
+              <SelectItem value="all">{tc('all')}</SelectItem>
+              <SelectItem value="unread">{t('unread')}</SelectItem>
+              <SelectItem value="read">{t('read')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -348,7 +356,7 @@ export default function NotificationsPage() {
       {isLoading && (
         <div className="py-20 text-center">
           <Loader2 className="w-6 h-6 animate-spin mx-auto text-gray-400" />
-          <p className="mt-3 text-sm text-gray-500">Loading notifications...</p>
+          <p className="mt-3 text-sm text-gray-500">{t('loading')}</p>
         </div>
       )}
 
@@ -358,11 +366,11 @@ export default function NotificationsPage() {
           <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-white flex items-center justify-center">
             <CheckCircle2 className="w-7 h-7 text-gray-400" />
           </div>
-          <h3 className="text-base font-medium text-gray-900 mb-1">No notifications</h3>
+          <h3 className="text-base font-medium text-gray-900 mb-1">{t('emptyTitle')}</h3>
           <p className="text-sm text-gray-500">
             {searchQuery || typeFilter !== 'all' || readFilter !== 'all'
-              ? 'Try adjusting your filters.'
-              : 'When you receive notifications, they will appear here.'}
+              ? t('emptyFiltered')
+              : t('emptyDefault')}
           </p>
         </div>
       )}

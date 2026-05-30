@@ -1,0 +1,46 @@
+{
+  "projectProcurementCells": {
+    "creating": "作成中...",
+    "poCreatedTitle": "発注書作成済み",
+    "poSentTitle": "サプライヤーに送信済み",
+    "supplierPaidTitle": "サプライヤー支払済み",
+    "invoiceCreatedTitle": "請求書作成済み",
+    "invoiceSentTitle": "クライアントに送信済み",
+    "clientPaidTitle": "クライアント支払済み"
+  },
+  "contractorProfileDrawer": {
+    "newAccessCode": "新しいアクセスコード: {code}",
+    "insuranceCertSection": "保険と資格",
+    "insuranceExpiryDate": "保険の有効期限",
+    "valid": "有効",
+    "expiringSoon": "まもなく期限切れ",
+    "expired": "期限切れ",
+    "replaceDocument": "書類を差し替え",
+    "uploadDocumentBtn": "書類をアップロード",
+    "replaceCertificate": "証明書を差し替え",
+    "uploadCertificate": "証明書をアップロード",
+    "pdfOnlyHint": "PDFまたは画像ファイルのみ",
+    "emergencyContact": "緊急連絡先",
+    "name": "名前",
+    "notes": "メモ",
+    "notesPlaceholder": "この請負業者に関する追加メモ...",
+    "accessCodeSection": "アクセスコード",
+    "notAvailable": "なし",
+    "regenerate": "再生成",
+    "accessCodeHint": "このコードで請負業者がポータルにアクセスできます",
+    "dangerZone": "危険な操作",
+    "cancel": "キャンセル",
+    "saving": "保存中...",
+    "saveChanges": "変更を保存"
+  },
+  "reportsProjectPage": {
+    "filterProjects": "プロジェクトを絞り込み",
+    "chartTimeDistribution": "プロジェクト別時間の分布",
+    "chartCostDistribution": "プロジェクト別コストの分布",
+    "topProjectsByHours": "記録時間が多いプロジェクト",
+    "topProjectsByCost": "コストが高いプロジェクト",
+    "projectDetails": "プロジェクト詳細",
+    "clickProjectDetails": "プロジェクトをクリックして詳細を表示",
+    "noProjectsFoundFilters": "フィルターに一致するプロジェクトはありません。"
+  }
+}

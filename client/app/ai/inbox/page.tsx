@@ -66,6 +66,7 @@ import { useGmailSearchStore } from '@/store/useGmailSearchStore';
 import { useRouter } from 'next/navigation';
 import { openGmailOAuthPopup } from '@/lib/gmail-connect';
 import { markGmailThreadRead, markGmailThreadUnread } from '@/lib/gmail-inbox';
+import { useTranslations } from 'next-intl';
 
 dayjs.extend(relativeTime);
 
@@ -160,28 +161,31 @@ function splitGmailEmail(html: string) {
 
 type CategoryFilter = 'all' | 'unread' | 'action_required' | 'procurement' | 'fyi';
 
-const categoryConfig = {
-  action_required: {
-    label: 'Action Required',
-    icon: AlertCircle,
-    color: 'bg-terracotta-500/10 text-terracotta-500 border-terracotta-500/20 dark:bg-terracotta-500/15 dark:text-terracotta-400 dark:border-terracotta-500/25',
-    dotColor: 'bg-terracotta-500',
-  },
-  procurement: {
-    label: 'Procurement',
-    icon: Package,
-    color: 'bg-sage-500/10 text-sage-500 border-sage-500/20 dark:bg-sage-500/15 dark:text-sage-400 dark:border-sage-500/25',
-    dotColor: 'bg-sage-500',
-  },
-  fyi: {
-    label: 'FYI',
-    icon: Info,
-    color: 'bg-muted text-muted-foreground border-border/50',
-    dotColor: 'bg-muted-foreground/60',
-  },
-};
+function useCategoryConfig() {
+  const t = useTranslations('aiInboxPage.categories');
+  return {
+    action_required: {
+      label: t('actionRequired'),
+      icon: AlertCircle,
+      color: 'bg-terracotta-500/10 text-terracotta-500 border-terracotta-500/20 dark:bg-terracotta-500/15 dark:text-terracotta-400 dark:border-terracotta-500/25',
+      dotColor: 'bg-terracotta-500',
+    },
+    procurement: {
+      label: t('procurement'),
+      icon: Package,
+      color: 'bg-sage-500/10 text-sage-500 border-sage-500/20 dark:bg-sage-500/15 dark:text-sage-400 dark:border-sage-500/25',
+      dotColor: 'bg-sage-500',
+    },
+    fyi: {
+      label: t('fyi'),
+      icon: Info,
+      color: 'bg-muted text-muted-foreground border-border/50',
+      dotColor: 'bg-muted-foreground/60',
+    },
+  };
+}
 
-function formatRelativeTime(dateString: string): string {
+function formatRelativeTime(dateString: string, yesterdayLabel: string): string {
   const date = new Date(dateString);
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
@@ -194,7 +198,7 @@ function formatRelativeTime(dateString: string): string {
   } else if (diffHours < 24) {
     return `${diffHours}h ago`;
   } else if (diffDays === 1) {
-    return 'Yesterday';
+    return yesterdayLabel;
   } else if (diffDays < 7) {
     return `${diffDays}d ago`;
   } else {
@@ -223,8 +227,10 @@ function EmailRow({
   onClick: () => void;
   isSelected: boolean;
 }) {
+  const t = useTranslations('aiInboxPage');
+  const categoryConfig = useCategoryConfig();
   const category = email.analysis?.category || 'fyi';
-  const config = categoryConfig[category];
+  const config = categoryConfig[category as keyof typeof categoryConfig] ?? categoryConfig.fyi;
 
   return (
     <div
@@ -253,7 +259,7 @@ function EmailRow({
           <span className={`text-sm truncate ${!email.isRead ? 'font-semibold text-foreground' : 'font-medium text-foreground/80'}`}>
             {email.fromName}
           </span>
-          <span className="text-xs text-muted-foreground/80 flex-shrink-0 font-medium">{formatRelativeTime(email.date)}</span>
+          <span className="text-xs text-muted-foreground/80 flex-shrink-0 font-medium">{formatRelativeTime(email.date, t('yesterday'))}</span>
         </div>
 
         <p className={`text-sm truncate mb-1 ${!email.isRead ? 'text-foreground font-semibold' : 'text-foreground/90'}`}>
@@ -308,8 +314,10 @@ function CategoryTab({
 }
 
 function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
+  const t = useTranslations('aiInboxPage');
+  const categoryConfig = useCategoryConfig();
   const category = email.analysis?.category || 'fyi';
-  const config = categoryConfig[category];
+  const config = categoryConfig[category as keyof typeof categoryConfig] ?? categoryConfig.fyi;
   const CategoryIcon = config.icon;
 
   return (
@@ -320,7 +328,7 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Sparkle className="w-4 h-4 text-primary" />
-              <span className="text-sm font-semibold text-foreground">AI Summary</span>
+              <span className="text-sm font-semibold text-foreground">{t('aiSummary')}</span>
             </div>
             <Badge variant="outline" className={`${config.color}`}>
               <CategoryIcon className="w-3 h-3 mr-1" />
@@ -332,7 +340,7 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
 
           {email.analysis.suggestedAction && (
             <div className="bg-background/50 rounded-xl p-3 border border-border/40 mb-3">
-              <p className="text-xs font-semibold text-muted-foreground mb-1">Suggested Action</p>
+              <p className="text-xs font-semibold text-muted-foreground mb-1">{t('suggestedAction')}</p>
               <p className="text-sm text-foreground">{email.analysis.suggestedAction}</p>
             </div>
           )}
@@ -342,13 +350,13 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
             <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs mb-3">
               {email.analysis.entities.suppliers && email.analysis.entities.suppliers.length > 0 && (
                 <div className="flex items-center gap-1">
-                  <span className="text-muted-foreground">Suppliers:</span>
+                  <span className="text-muted-foreground">{t('suppliers')}</span>
                   <span className="text-foreground/90">{email.analysis.entities.suppliers.join(', ')}</span>
                 </div>
               )}
               {email.analysis.entities.amounts && email.analysis.entities.amounts.length > 0 && (
                 <div className="flex items-center gap-1">
-                  <span className="text-muted-foreground">Amounts:</span>
+                  <span className="text-muted-foreground">{t('amounts')}</span>
                   <span className="text-foreground font-semibold">
                     {email.analysis.entities.amounts.map(a => `£${a.value.toLocaleString()}`).join(', ')}
                   </span>
@@ -356,7 +364,7 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
               )}
               {email.analysis.entities.items && email.analysis.entities.items.length > 0 && (
                 <div className="flex items-center gap-1">
-                  <span className="text-muted-foreground">Items:</span>
+                  <span className="text-muted-foreground">{t('items')}</span>
                   <span className="text-foreground/90">{email.analysis.entities.items.join(', ')}</span>
                 </div>
               )}
@@ -388,7 +396,7 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
         {email.hasAttachment && (
           <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
             <Paperclip className="w-3 h-3" />
-            <span>Attachment</span>
+            <span>{t('attachment')}</span>
           </div>
         )}
       </div>
@@ -399,7 +407,7 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
           <p className="text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap">{email.snippet}</p>
           <div className="p-4 bg-muted/30 rounded-xl border border-border/20 mt-4">
             <p className="text-xs text-muted-foreground italic m-0">
-              Full email thread will be displayed here when connected to Gmail.
+              {t('fullThreadPlaceholder')}
             </p>
           </div>
         </div>
@@ -412,7 +420,7 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
           <div className="flex items-center gap-2">
             <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/95 shadow-sm rounded-xl">
               <CornerUpLeft className="w-4 h-4 mr-2" />
-              Reply
+              {t('reply')}
             </Button>
           </div>
 
@@ -420,7 +428,7 @@ function EmailDetailPanel({ email }: { email: EmailWithAnalysis }) {
           <div className="flex items-center gap-2">
             <Button size="sm" variant="outline" className="rounded-xl border-border/60 hover:bg-accent">
               <FolderPlus className="w-4 h-4 mr-2" />
-              Add to Project
+              {t('addToProject')}
             </Button>
             <Button size="sm" variant="ghost" className="rounded-xl text-muted-foreground hover:text-foreground">
               <Archive className="w-4 h-4" />
@@ -445,6 +453,7 @@ function SuggestedTaskCard({ task, onAdd, onView, isCreating, createdTaskId, ema
   emailId: number;
   suggestionIndex: number;
 }) {
+  const t = useTranslations('aiInboxPage');
   const isAlreadyCreated = !!createdTaskId;
 
   return (
@@ -453,7 +462,7 @@ function SuggestedTaskCard({ task, onAdd, onView, isCreating, createdTaskId, ema
         <Sparkle className="w-3.5 h-3.5 text-primary" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-[10px] font-semibold text-primary mb-0.5 tracking-wider uppercase">AI suggested task</p>
+        <p className="text-[10px] font-semibold text-primary mb-0.5 tracking-wider uppercase">{t('aiSuggestedTask')}</p>
         <p className="text-sm font-semibold text-foreground leading-snug">{task.title}</p>
         {task.description && (
           <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{task.description}</p>
@@ -465,7 +474,7 @@ function SuggestedTaskCard({ task, onAdd, onView, isCreating, createdTaskId, ema
           className="flex-shrink-0 self-center inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold border border-border bg-card text-foreground hover:bg-accent transition-all shadow-sm"
         >
           <ExternalLink className="w-3.5 h-3.5" />
-          View
+          {t('view')}
         </button>
       ) : (
         <button
@@ -478,7 +487,7 @@ function SuggestedTaskCard({ task, onAdd, onView, isCreating, createdTaskId, ema
           }`}
         >
           {isCreating && <Loader2 className="w-3 h-3 animate-spin" />}
-          {isCreating ? 'Creating...' : 'Create task'}
+          {isCreating ? t('creating') : t('createTask')}
         </button>
       )}
     </div>
@@ -486,12 +495,13 @@ function SuggestedTaskCard({ task, onAdd, onView, isCreating, createdTaskId, ema
 }
 
 function MessageBlock({ msg, userEmail, suggestedTasks, onAddTask, onViewTask, isCreatingTask, addedTaskIds }: { msg: MessageItem; userEmail?: string | null; suggestedTasks?: SuggestedTask[]; onAddTask?: (task: SuggestedTask, emailId: number, suggestionIndex: number) => void; onViewTask?: (taskId: number) => void; isCreatingTask?: boolean; addedTaskIds?: Map<string, number> }) {
+  const t = useTranslations('aiInboxPage');
   const [expanded, setExpanded] = useState(false);
   const { main, quoted } = useMemo(() => splitGmailEmail(msg.body), [msg.body]);
   const sentByMe = messageIsSentByUser(msg.sender, userEmail);
   const senderLabel =
     msg.sender_label ||
-    (sentByMe ? 'You' : msg.sender?.split('<')[0]?.trim().replace(/^["']|["']$/g, '') || 'Unknown');
+    (sentByMe ? t('you') : msg.sender?.split('<')[0]?.trim().replace(/^["']|["']$/g, '') || t('unknown'));
 
   return (
     <div className="flex gap-4">
@@ -526,7 +536,7 @@ function MessageBlock({ msg, userEmail, suggestedTasks, onAddTask, onViewTask, i
                 <button
                   onClick={() => setExpanded(true)}
                   className="flex items-center justify-center px-2 py-0.5 bg-muted hover:bg-muted/80 rounded-lg text-muted-foreground transition-colors"
-                  title="Show trimmed content"
+                  title={t('showTrimmed')}
                 >
                   <MoreHorizontal className="w-4 h-4" />
                 </button>
@@ -535,7 +545,7 @@ function MessageBlock({ msg, userEmail, suggestedTasks, onAddTask, onViewTask, i
                   <button
                     onClick={() => setExpanded(false)}
                     className="flex items-center justify-center px-2 py-0.5 bg-muted hover:bg-muted/80 rounded-lg text-muted-foreground transition-colors"
-                    title="Hide trimmed content"
+                    title={t('hideTrimmed')}
                   >
                     <MoreHorizontal className="w-4 h-4" />
                   </button>
@@ -611,9 +621,11 @@ function EmailDetailPanelWithMessages({
   onBack?: () => void;
   onMarkUnread?: () => void;
 }) {
+  const t = useTranslations('aiInboxPage');
+  const categoryConfig = useCategoryConfig();
   // Use AI summary category if available, otherwise fall back to email analysis
   const category = aiSummary?.category || email.analysis?.category || 'fyi';
-  const config = categoryConfig[category];
+  const config = categoryConfig[category as keyof typeof categoryConfig] ?? categoryConfig.fyi;
   const CategoryIcon = config.icon;
   const [messagesExpanded, setMessagesExpanded] = useState(false);
   const [headerCollapsed, setHeaderCollapsed] = useState(true);
@@ -638,7 +650,7 @@ function EmailDetailPanelWithMessages({
               className="lg:hidden flex items-center gap-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
-              Back
+              {t('back')}
             </button>
           ) : (
             <span className="lg:hidden" />
@@ -649,7 +661,7 @@ function EmailDetailPanelWithMessages({
               onClick={onMarkUnread}
               className="ml-auto text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
             >
-              Mark unread
+              {t('markUnread')}
             </button>
           )}
         </div>
@@ -663,7 +675,7 @@ function EmailDetailPanelWithMessages({
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
             <Sparkle className="w-4 h-4 text-primary" />
-            <span className="text-sm font-semibold text-foreground">AI Summary</span>
+            <span className="text-sm font-semibold text-foreground">{t('aiSummary')}</span>
           </div>
           {!aiSummaryLoading && aiSummary?.category && (
             <Badge variant="outline" className={`${config.color}`}>
@@ -685,7 +697,7 @@ function EmailDetailPanelWithMessages({
 
             {aiSummary.suggested_action && (
               <div className="bg-background/55 rounded-xl p-3 border border-border/30 mb-3.5">
-                <p className="text-xs font-semibold text-muted-foreground mb-1">Suggested Action</p>
+                <p className="text-xs font-semibold text-muted-foreground mb-1">{t('suggestedAction')}</p>
                 <p className="text-sm text-foreground">{aiSummary.suggested_action}</p>
               </div>
             )}
@@ -695,13 +707,13 @@ function EmailDetailPanelWithMessages({
               <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs mb-3">
                 {aiSummary.entities.suppliers && aiSummary.entities.suppliers.length > 0 && (
                   <div className="flex items-center gap-1">
-                    <span className="text-muted-foreground">Suppliers:</span>
+                    <span className="text-muted-foreground">{t('suppliers')}</span>
                     <span className="text-foreground/95">{aiSummary.entities.suppliers.join(', ')}</span>
                   </div>
                 )}
                 {aiSummary.entities.amounts && aiSummary.entities.amounts.length > 0 && (
                   <div className="flex items-center gap-1">
-                    <span className="text-muted-foreground">Amounts:</span>
+                    <span className="text-muted-foreground">{t('amounts')}</span>
                     <span className="text-foreground font-semibold">
                       {aiSummary.entities.amounts.map(a => `£${a.value.toLocaleString()}`).join(', ')}
                     </span>
@@ -709,19 +721,19 @@ function EmailDetailPanelWithMessages({
                 )}
                 {aiSummary.entities.items && aiSummary.entities.items.length > 0 && (
                   <div className="flex items-center gap-1">
-                    <span className="text-muted-foreground">Items:</span>
+                    <span className="text-muted-foreground">{t('items')}</span>
                     <span className="text-foreground/95">{aiSummary.entities.items.join(', ')}</span>
                   </div>
                 )}
                 {aiSummary.entities.people && aiSummary.entities.people.length > 0 && (
                   <div className="flex items-center gap-1">
-                    <span className="text-muted-foreground">People:</span>
+                    <span className="text-muted-foreground">{t('people')}</span>
                     <span className="text-foreground/95">{aiSummary.entities.people.join(', ')}</span>
                   </div>
                 )}
                 {aiSummary.entities.dates && aiSummary.entities.dates.length > 0 && (
                   <div className="flex items-center gap-1">
-                    <span className="text-muted-foreground">Dates:</span>
+                    <span className="text-muted-foreground">{t('dates')}</span>
                     <span className="text-foreground/95">{aiSummary.entities.dates.join(', ')}</span>
                   </div>
                 )}
@@ -729,7 +741,7 @@ function EmailDetailPanelWithMessages({
             )}
           </>
         ) : (
-          <p className="text-sm text-muted-foreground italic">No AI summary available for this thread.</p>
+          <p className="text-sm text-muted-foreground italic">{t('noAiSummary')}</p>
         )}
 
         {/* Project Link */}
@@ -756,7 +768,7 @@ function EmailDetailPanelWithMessages({
             {headerCollapsed && (
               <p className="text-xs text-muted-foreground truncate mt-1">
                 {email.fromName} · {formatFullDate(email.date)}
-                {messageList.length > 0 && ` · ${messageList.length} message${messageList.length !== 1 ? 's' : ''}`}
+                {messageList.length > 0 && ` · ${t('messagesInThread', { count: messageList.length })}`}
               </p>
             )}
           </div>
@@ -773,12 +785,12 @@ function EmailDetailPanelWithMessages({
             {email.hasAttachment && (
               <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
                 <Paperclip className="w-3 h-3" />
-                <span>Attachment</span>
+                <span>{t('attachment')}</span>
               </div>
             )}
             {messageList.length > 0 && (
               <div className="text-xs text-muted-foreground mt-1.5">
-                {messageList.length} message{messageList.length !== 1 ? 's' : ''} in thread
+                {t('messagesInThread', { count: messageList.length })}
               </div>
             )}
           </div>
@@ -881,7 +893,7 @@ function EmailDetailPanelWithMessages({
               onClick={() => setShowReplyInput(!showReplyInput)}
             >
               <CornerUpLeft className="w-4 h-4 mr-2" />
-              Reply
+              {t('reply')}
             </Button>
           </div>
 
@@ -889,7 +901,7 @@ function EmailDetailPanelWithMessages({
           <div className="flex items-center gap-2">
             <Button size="sm" variant="outline" className="rounded-xl border-border/60 hover:bg-accent font-semibold text-foreground" onClick={onAddToProject}>
               <FolderPlus className="w-4 h-4 mr-2" />
-              Add to Project
+              {t('addToProject')}
             </Button>
           </div>
         </div>
@@ -941,6 +953,8 @@ function EmptyDetailPanel({ hasEmails, isDisconnected }: { hasEmails: boolean, i
 }
 
 export default function MagicalInboxPage() {
+  const t = useTranslations('aiInboxPage');
+  const tc = useTranslations('common');
   const { user } = useUser();
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>('all');
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
@@ -1064,7 +1078,7 @@ export default function MagicalInboxPage() {
       id: thread.thread_id,
       from: thread.sender,
       fromName: thread.sender?.split('<')[0]?.trim() || thread.sender,
-      subject: thread.subject || '(No Subject)',
+      subject: thread.subject || t('noSubject'),
       snippet: thread.snippet || '',
       date: thread.received_at,
       isRead: thread.is_read !== false,
@@ -1089,15 +1103,13 @@ export default function MagicalInboxPage() {
       queryClient.refetchQueries({ queryKey: ['user/integration-status/'] });
       queryClient.refetchQueries({ queryKey: ['gmail/threads/'] });
       refetchThreads();
-      toast.success('Gmail connected.');
+      toast.success(t('toasts.gmailConnected'));
       window.location.reload();
       return;
     }
 
     if (result === 'access_denied') {
-      toast.error(
-        'Google blocked access. Add your email under OAuth consent screen → Test users in Google Cloud Console.'
-      );
+      toast.error(t('toasts.accessDenied'));
     }
   };
 
@@ -1110,8 +1122,8 @@ export default function MagicalInboxPage() {
     
 
   useEffect(() => {
-    document.title = 'AI Inbox | Focuspilot';
-  }, []);
+    document.title = t('documentTitle');
+  }, [t]);
 
   // Fetch Gmail on mount
   useEffect(() => {
@@ -1218,12 +1230,12 @@ export default function MagicalInboxPage() {
       data: {}
     }, {
       onSuccess: (e) => {
-        toast.success(`Synced ${e.fetched || 0} new emails`);
+        toast.success(t('toasts.synced', { count: e.fetched || 0 }));
         refetchThreads();
         setSyncing(false);
       },
       onError: (err) => {
-        toast.error('Please reconnect gmail');
+        toast.error(t('toasts.reconnectGmail'));
         setSyncing(false);
       }
     });
@@ -1266,9 +1278,9 @@ export default function MagicalInboxPage() {
     markGmailThreadUnread(selectedThreadId)
       .then(() => {
         queryClient.invalidateQueries({ queryKey: [threadsEndpoint] });
-        toast.success('Marked as unread');
+        toast.success(t('toasts.markedUnread'));
       })
-      .catch(() => toast.error('Could not mark thread as unread'));
+      .catch(() => toast.error(t('toasts.markUnreadFailed')));
   }
 
   async function handleSendReply(attachmentFiles: File[] = []) {
@@ -1281,10 +1293,10 @@ export default function MagicalInboxPage() {
     const subject =
       messages.find((m) => m.subject)?.subject ||
       messages[messages.length - 1]?.subject ||
-      '(No Subject)';
+      t('noSubject');
 
     if (!toEmail) {
-      toast.error('Could not determine who to reply to.');
+      toast.error(t('toasts.replyToFailed'));
       return;
     }
 
@@ -1298,13 +1310,13 @@ export default function MagicalInboxPage() {
     setIsSending(true);
     try {
       await postFormData({ url: 'gmail/send/', data: formData });
-      toast.success('Reply sent successfully');
+      toast.success(t('toasts.replySent'));
       setReplyBody('');
       setShowReplyInput(true);
       refetchMessages();
       refetchThreads();
     } catch (err: unknown) {
-      toast.error(`Failed to send reply: ${getApiErrorMessage(err, 'Unknown error')}`);
+      toast.error(t('toasts.replyFailed', { error: getApiErrorMessage(err, tc('errorTryAgain')) }));
     } finally {
       setIsSending(false);
     }
@@ -1321,7 +1333,7 @@ export default function MagicalInboxPage() {
       },
     }, {
       onSuccess: () => {
-        toast.success('Email added to project');
+        toast.success(t('toasts.addedToProject'));
         queryClient.refetchQueries({ queryKey: [`/gmail/threads/project/${selectedProjectId}/`] });
         refetchThreads();
         setProjectOpen(false);
@@ -1334,7 +1346,7 @@ export default function MagicalInboxPage() {
   // Open task modal to view a created task
   async function handleViewTask(taskId: number) {
     if(!taskId) {
-      toast.error('Task deleted or not found');
+      toast.error(t('toasts.taskDeleted'));
       return;
     };
     try {
@@ -1342,7 +1354,7 @@ export default function MagicalInboxPage() {
         credentials: 'include',
       });
       if (!res.ok) {
-        toast.error(res.status === 404 ? 'Task no longer exists' : 'Failed to load task');
+        toast.error(res.status === 404 ? t('toasts.taskNotFound') : t('toasts.taskLoadFailed'));
         return;
       }
       const data = await res.json();
@@ -1350,7 +1362,7 @@ export default function MagicalInboxPage() {
       openModal({ taskToEdit: {...data, name: data?.title} });
       refetchSummary()
     } catch {
-      toast.error('Failed to load task');
+      toast.error(t('toasts.taskLoadFailed'));
     }
   }
 
@@ -1373,7 +1385,7 @@ export default function MagicalInboxPage() {
       onSuccess: (response: any) => {
         const taskId = response?.id;
         setAddedTaskIds(prev => new Map(prev).set(task.title, taskId));
-        toast.success(`Task "${task.title}" created`);
+        toast.success(t('toasts.taskCreated', { title: task.title }));
         if (taskId) {
           markCreated({
             url: 'gmail/suggestions/mark-created/',
@@ -1386,7 +1398,7 @@ export default function MagicalInboxPage() {
         }
       },
       onError: () => {
-        toast.error('Failed to create task');
+        toast.error(t('toasts.taskCreateFailed'));
       },
     });
   }
@@ -1439,7 +1451,7 @@ export default function MagicalInboxPage() {
                 <div className="flex items-center gap-2 px-3.5 py-2 bg-muted border border-border/30 rounded-xl">
                   <Search className="w-4 h-4 text-muted-foreground" />
                   <span className="text-sm text-foreground">
-                    Results for "<span className="font-semibold">{searchQuery}</span>"
+                    {t('searchResults', { query: searchQuery })}
                   </span>
                   <button
                     onClick={clearSearch}
@@ -1453,7 +1465,7 @@ export default function MagicalInboxPage() {
               <>
                 <CategoryTab
                   category="all"
-                  label="All"
+                  label={t('tabs.all')}
                   count={filteredStats.total}
                   isActive={activeCategory === 'all'}
                   onClick={() => handleCategoryChange('all')}
@@ -1461,7 +1473,7 @@ export default function MagicalInboxPage() {
                 />
                 <CategoryTab
                   category="unread"
-                  label="Unread"
+                  label={t('tabs.unread')}
                   count={filteredStats.unread}
                   isActive={activeCategory === 'unread'}
                   onClick={() => handleCategoryChange('unread')}
@@ -1469,7 +1481,7 @@ export default function MagicalInboxPage() {
                 />
                 <CategoryTab
                   category="action_required"
-                  label="Action"
+                  label={t('tabs.action')}
                   count={filteredStats.actionRequired}
                   isActive={activeCategory === 'action_required'}
                   onClick={() => handleCategoryChange('action_required')}
@@ -1477,7 +1489,7 @@ export default function MagicalInboxPage() {
                 />
                 <CategoryTab
                   category="procurement"
-                  label="Procurement"
+                  label={t('tabs.procurement')}
                   count={filteredStats.procurement}
                   isActive={activeCategory === 'procurement'}
                   onClick={() => handleCategoryChange('procurement')}
@@ -1485,7 +1497,7 @@ export default function MagicalInboxPage() {
                 />
                 <CategoryTab
                   category="fyi"
-                  label="FYI"
+                  label={t('tabs.fyi')}
                   count={filteredStats.fyi}
                   isActive={activeCategory === 'fyi'}
                   onClick={() => handleCategoryChange('fyi')}
@@ -1527,7 +1539,7 @@ export default function MagicalInboxPage() {
             {isGmailConnected && (
               <Button onClick={() => setComposeOpen(true)} size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-xl shadow-sm">
                 <PenSquare className="mr-2 h-4 w-4" />
-                Compose
+                {t('compose')}
               </Button>
             )}
 
@@ -1536,12 +1548,12 @@ export default function MagicalInboxPage() {
               {syncing || isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin text-primary" />
-                  Syncing...
+                  {t('syncing')}
                 </>
               ) : (
                 <>
                   <RefreshCw className="mr-2 h-4 w-4" />
-                  Sync
+                  {t('sync')}
                 </>
               )}
             </Button>
@@ -1554,7 +1566,7 @@ export default function MagicalInboxPage() {
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 hover:bg-emerald-500/15 transition-colors shrink-0"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                  Gmail
+                  {t('gmailConnected')}
                 </button>
               ) : (
                 <button
@@ -1563,7 +1575,7 @@ export default function MagicalInboxPage() {
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-primary/10 text-primary border border-primary/20 hover:bg-primary/15 transition-colors disabled:opacity-60 shrink-0"
                 >
                   {isConnecting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Mail className="w-3 h-3" />}
-                  {isConnecting ? 'Connecting...' : 'Connect Gmail'}
+                  {isConnecting ? t('connecting') : t('connectGmail')}
                 </button>
               )
             )}
@@ -1617,16 +1629,14 @@ export default function MagicalInboxPage() {
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                 <Mail className="w-8 h-8 text-primary" />
               </div>
-              <p className="text-foreground font-bold mb-2">Connect your Gmail</p>
-              <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-                Connect your Gmail account to see your emails automatically categorised with AI summaries.
-              </p>
+              <p className="text-foreground font-bold mb-2">{t('connectTitle')}</p>
+              <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">{t('connectBody')}</p>
               <Button
                 className="mt-5 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-xl shadow-sm"
                 onClick={handleGmailConnect}
                 disabled={isConnecting}
               >
-                {isConnecting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Connecting...</> : 'Connect Gmail'}
+                {isConnecting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t('connecting')}</> : t('connectGmail')}
               </Button>
             </div>
           ) : (
@@ -1634,11 +1644,13 @@ export default function MagicalInboxPage() {
               <div className="w-16 h-16 bg-muted/50 rounded-full flex items-center justify-center mb-4">
                 <Mail className="w-8 h-8 text-muted-foreground/60" />
               </div>
-              <p className="text-foreground font-bold mb-2">No emails found</p>
+              <p className="text-foreground font-bold mb-2">{t('noEmails')}</p>
               <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
                 {activeCategory !== 'all'
-                  ? `No ${activeCategory === 'unread' ? 'unread' : activeCategory.replace('_', ' ')} emails found. Try selecting a different category.`
-                  : 'Your inbox is empty.'}
+                  ? t('noCategoryEmails', {
+                      category: activeCategory === 'unread' ? t('tabs.unread').toLowerCase() : activeCategory.replace('_', ' '),
+                    })
+                  : t('inboxEmpty')}
               </p>
             </div>
           )}
@@ -1698,14 +1710,14 @@ export default function MagicalInboxPage() {
       }}>
         <DialogContent className="sm:max-w-md bg-card border border-border/40 text-foreground rounded-2xl shadow-xl">
           <DialogHeader>
-            <DialogTitle className="text-foreground font-bold">Add to Project</DialogTitle>
+            <DialogTitle className="text-foreground font-bold">{t('addToProjectTitle')}</DialogTitle>
           </DialogHeader>
 
           <div className="py-4">
             <div className="relative mb-4">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
-                placeholder="Search projects..."
+                placeholder={t('searchProjects')}
                 value={projectSearch}
                 onChange={(e) => setProjectSearch(e.target.value)}
                 className="pl-9 bg-background border-border/60 text-foreground rounded-xl focus-visible:ring-primary"
@@ -1733,15 +1745,15 @@ export default function MagicalInboxPage() {
                 ))
               ) : (
                 <div className="text-center text-muted-foreground py-8 text-sm">
-                  No projects found
+                  {t('noProjects')}
                 </div>
               )}
             </div>
           </div>
 
           <DialogFooter className="gap-2 sm:gap-0">
-            <Button variant="outline" className="rounded-xl border-border/60 text-foreground hover:bg-accent" onClick={() => setProjectOpen(false)}>Cancel</Button>
-            <Button onClick={handleAddToProject} disabled={!selectedProjectId} className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl font-semibold shadow-sm">Submit</Button>
+            <Button variant="outline" className="rounded-xl border-border/60 text-foreground hover:bg-accent" onClick={() => setProjectOpen(false)}>{tc('cancel')}</Button>
+            <Button onClick={handleAddToProject} disabled={!selectedProjectId} className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-xl font-semibold shadow-sm">{t('submit')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -1750,13 +1762,13 @@ export default function MagicalInboxPage() {
       <Dialog open={isDisconnectDialogOpen} onOpenChange={setIsDisconnectDialogOpen}>
         <DialogContent className="sm:max-w-sm bg-card border border-border/40 text-foreground rounded-2xl shadow-xl">
           <DialogHeader>
-            <DialogTitle className="text-foreground font-bold">Disconnect Gmail?</DialogTitle>
+            <DialogTitle className="text-foreground font-bold">{t('disconnectTitle')}</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-muted-foreground leading-relaxed">Your inbox will no longer sync and AI categorisation will stop. You can reconnect at any time.</p>
+          <p className="text-sm text-muted-foreground leading-relaxed">{t('disconnectBody')}</p>
           <DialogFooter className="mt-4 gap-2 sm:gap-0">
-            <Button variant="outline" className="rounded-xl border-border/60 text-foreground hover:bg-accent" onClick={() => setIsDisconnectDialogOpen(false)}>Cancel</Button>
+            <Button variant="outline" className="rounded-xl border-border/60 text-foreground hover:bg-accent" onClick={() => setIsDisconnectDialogOpen(false)}>{tc('cancel')}</Button>
             <Button variant="destructive" className="rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90 font-semibold shadow-sm" onClick={handleGmailDisconnect} disabled={isDisconnecting}>
-              {isDisconnecting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Disconnecting...</> : 'Disconnect'}
+              {isDisconnecting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t('disconnecting')}</> : t('disconnect')}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -15,8 +15,10 @@ import { Search, Timer } from 'lucide-react';
 import { ViewCurrencySymbol } from '../ViewCurrencySymbol';
 import { useCurrency } from '@/lib/getCurrencySymbol';
 import ExportButton from '@/components/ui/ExportButton';
+import { useTranslations } from 'next-intl';
 
 const ProjectReport = () => {
+  const t = useTranslations('reportsProjectPage');
   const { data, isLoading, error } = useFetch('/reports/total-project-time/');
   const reportData = data as TotalProjectTimeResponse;
   const [searchQuery, setSearchQuery] = useState('');
@@ -91,8 +93,8 @@ const ProjectReport = () => {
     );
   }
 
-  if (error) return <div className="text-red-500 p-4">Failed to load project report. Please try again later.</div>;
-  if (!reportData) return <div className="p-4">No data available.</div>;
+  if (error) return <div className="text-red-500 p-4">{t('loadFailed')}</div>;
+  if (!reportData) return <div className="p-4">{t('noData')}</div>;
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -105,7 +107,7 @@ const ProjectReport = () => {
             <div className="flex  items-center gap-3">
               <Timer className="w-4 h-4 text-gray-500" aria-hidden="true" />
               <div className="flex-1  min-w-0">
-                <p className="text-sm font-medium text-gray-600">Studio Total Time</p>
+                <p className="text-sm font-medium text-gray-600">{t('studioTotalTime')}</p>
                 <p className="text-lg font-semibold text-gray-900 tabular-nums leading-tight">{reportData.studio_total_time.hours}h {reportData.studio_total_time.minutes}m {reportData.studio_total_time.seconds}s</p>
                 <p className="text-xs text-gray-500">{reportData.studio_name}</p>
               </div>
@@ -118,12 +120,12 @@ const ProjectReport = () => {
                         <ViewCurrencySymbol code={reportData.currency || ''}/>
                     </div>
                     <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-600">Studio Total Cost</p>
+                        <p className="text-sm font-medium text-gray-600">{t('studioTotalCost')}</p>
                         <p className="text-lg font-semibold text-gray-900 tabular-nums leading-tight">
                            <ViewCurrencySymbol code={reportData.currency || ''}/>
                             {reportData.studio_total_cost.toLocaleString()}
                         </p>
-                        <p className="text-xs text-gray-500">Estimated Cost</p>
+                        <p className="text-xs text-gray-500">{t('estimatedCost')}</p>
                     </div>
                 </div>
             </div>
@@ -138,7 +140,7 @@ const ProjectReport = () => {
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                     type="search"
-                    placeholder="Search projects..."
+                    placeholder={t('searchProjects')}
                     className="pl-8"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -148,35 +150,35 @@ const ProjectReport = () => {
            <div className="flex flex-wrap gap-4 items-center">
                 <Select value={chartMetric} onValueChange={(v: 'hours' | 'cost') => setChartMetric(v)}>
                      <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="Metric" />
+                          <SelectValue placeholder={t('metric')} />
                      </SelectTrigger>
                      <SelectContent>
-                          <SelectItem value="hours">Hours</SelectItem>
-                          <SelectItem value="cost">Cost</SelectItem>
+                          <SelectItem value="hours">{t('hours')}</SelectItem>
+                          <SelectItem value="cost">{t('cost')}</SelectItem>
                      </SelectContent>
                 </Select>
 
                 <Select value={sortBy} onValueChange={setSortBy}>
                      <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="Sort By" />
+                          <SelectValue placeholder={t('sortBy')} />
                      </SelectTrigger>
                      <SelectContent>
-                          <SelectItem value="time-desc">Most Time Logged</SelectItem>
-                          <SelectItem value="time-asc">Least Time Logged</SelectItem>
-                          <SelectItem value="cost-desc">Highest Cost</SelectItem>
-                          <SelectItem value="cost-asc">Lowest Cost</SelectItem>
-                          <SelectItem value="name-asc">Name (A-Z)</SelectItem>
-                          <SelectItem value="name-desc">Name (Z-A)</SelectItem>
+                          <SelectItem value="time-desc">{t('mostTimeLogged')}</SelectItem>
+                          <SelectItem value="time-asc">{t('leastTimeLogged')}</SelectItem>
+                          <SelectItem value="cost-desc">{t('highestCost')}</SelectItem>
+                          <SelectItem value="cost-asc">{t('lowestCost')}</SelectItem>
+                          <SelectItem value="name-asc">{t('nameAsc')}</SelectItem>
+                          <SelectItem value="name-desc">{t('nameDesc')}</SelectItem>
                      </SelectContent>
                 </Select>
              
                 <Select value={showActiveOnly} onValueChange={setShowActiveOnly}>
                      <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="Filter Projects" />
+                          <SelectValue placeholder={t('filterProjects')} />
                      </SelectTrigger>
                      <SelectContent>
-                          <SelectItem value="true">Active Projects Only</SelectItem>
-                          <SelectItem value="false">All Projects</SelectItem>
+                          <SelectItem value="true">{t('activeProjectsOnly')}</SelectItem>
+                          <SelectItem value="false">{t('allProjects')}</SelectItem>
                      </SelectContent>
                 </Select>
 
@@ -192,8 +194,8 @@ const ProjectReport = () => {
         {chartData.length > 0 && (
             <Card className="shadow-sm">
                 <CardHeader>
-                    <CardTitle>Project {chartMetric === 'hours' ? 'Time' : 'Cost'} Distribution</CardTitle>
-                    <CardDescription>Top projects by {chartMetric === 'hours' ? 'hours logged' : 'cost'}</CardDescription>
+                    <CardTitle>{chartMetric === 'hours' ? t('chartTimeDistribution') : t('chartCostDistribution')}</CardTitle>
+                    <CardDescription>{chartMetric === 'hours' ? t('topProjectsByHours') : t('topProjectsByCost')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="h-[350px] w-full">
@@ -240,10 +242,9 @@ const ProjectReport = () => {
         {/* Project List */}
         <Card className="shadow-sm">
             <CardHeader>
-                <CardTitle>Project Details</CardTitle>
+                <CardTitle>{t('projectDetails')}</CardTitle>
                 <CardDescription>
-                    {/* {filteredProjects.length} projects found */}
-                    Click on a project to view details
+                    {t('clickProjectDetails')}
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -273,7 +274,7 @@ const ProjectReport = () => {
                         ))
                     ) : (
                         <div className="text-center py-8 text-muted-foreground">
-                             No projects found matching filters.
+                             {t('noProjectsFoundFilters')}
                         </div>
                     )}
                 </Accordion>

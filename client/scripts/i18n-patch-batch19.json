@@ -1,0 +1,133 @@
+{
+  "newProjectDialog": {
+    "steps": {
+      "details": "Details",
+      "address": "Address",
+      "timeline": "Timeline",
+      "budgetTeam": "Budget & Team"
+    },
+    "back": "Back",
+    "continue": "Continue",
+    "skip": "Skip",
+    "cancel": "Cancel",
+    "projectNamePlaceholder": "e.g., Chelsea Penthouse Renovation",
+    "projectCodeHint": "Auto-generated, but you can customize it",
+    "projectCodePlaceholder": "e.g., TP-001",
+    "projectType": "Project Type",
+    "client": "Client",
+    "projectDescription": "Project Description",
+    "descriptionPlaceholder": "Brief description of the project scope and objectives...",
+    "unnamedClient": "Unnamed Client",
+    "searchClients": "Search clients…",
+    "addressIntro": "Add delivery, billing, and logistics addresses for this project. You can skip this and fill it in later from project settings.",
+    "addressTabs": {
+      "delivery": "Delivery",
+      "billing": "Billing",
+      "logistics": "Logistics"
+    },
+    "addressLine1": "Address Line 1",
+    "addressLine2": "Address Line 2",
+    "streetPlaceholder": "Street address",
+    "suitePlaceholder": "Apartment, suite, etc.",
+    "projectDuration": "Project Duration",
+    "selectTemplate": "Select a template",
+    "optionalSuffix": "— optional",
+    "clear": "Clear",
+    "searchTemplates": "Search templates…",
+    "noTemplates": "No templates found",
+    "phaseCount": "{count, plural, one {# phase} other {# phases}}",
+    "projectPhases": "Project Phases",
+    "addPhase": "Add Phase",
+    "noPhasesHint": "No phases yet. Select a template or add phases manually.",
+    "phaseLabel": "Phase {number}",
+    "phaseNamePlaceholder": "Phase name",
+    "phaseDescriptionPlaceholder": "Phase description (optional)",
+    "pickPhaseColor": "Pick phase color",
+    "phaseColor": "Phase color",
+    "customColor": "Custom color",
+    "phasesTip": "Tip: You can customize phases later from project settings",
+    "defaultPhaseName": "Phase {number}",
+    "budgetPayment": "Budget & Payment",
+    "clickToConfigure": "Click to configure",
+    "totalBudget": "Total Budget",
+    "ffneLabel": "FF&E (%)",
+    "ffneHint": "Furniture, Fixtures & Equipment allocation",
+    "vatRateLabel": "VAT Rate (%)",
+    "vatHint": "Value Added Tax rate",
+    "paymentSchedule": "Payment Schedule",
+    "teamAssignment": "Team Assignment",
+    "teamAssignmentHint": "Assign team members to this project",
+    "projectTypes": {
+      "RS": {
+        "name": "Residential",
+        "description": "Homes, apartments, and living spaces"
+      },
+      "CM": {
+        "name": "Commercial",
+        "description": "Offices, retail, and business spaces"
+      },
+      "HS": {
+        "name": "Hospitality",
+        "description": "Hotels, restaurants, and entertainment"
+      }
+    },
+    "paymentSchedules": {
+      "FF": {
+        "name": "50/50 Split",
+        "description": "50% upfront, 50% on completion"
+      },
+      "TP": {
+        "name": "Three Payments",
+        "description": "33% upfront, 33% midway, 34% completion"
+      },
+      "PF": {
+        "name": "Per Phase",
+        "description": "Payment aligned with project phases"
+      },
+      "M": {
+        "name": "Monthly",
+        "description": "Equal monthly payments over project duration"
+      }
+    },
+    "validation": {
+      "nameMin": "Project name must be at least 2 characters",
+      "projectTypeRequired": "Please select a project type",
+      "clientRequired": "Please select a client",
+      "startDateRequired": "Start date is required",
+      "endDateRequired": "End date is required",
+      "endDateAfterStart": "End date must be after start date",
+      "ffneRange": "FF&E must be between 0 and 100",
+      "vatRange": "VAT rate must be between 0 and 100"
+    },
+    "toasts": {
+      "created": "Project created successfully",
+      "failed": "Failed to create project",
+      "phasesFailed": "Failed to create project phases"
+    }
+  },
+  "subscriptionGate": {
+    "betaBadge": "Beta access is free — paid plans include a {days}-day trial",
+    "title": "Choose your studio plan",
+    "descriptionAdmin": "Select a plan to unlock Focuspilot. Beta access requires no card; paid plans are not charged until your trial ends.",
+    "descriptionMember": "Your studio needs an active subscription. Please ask a studio admin to choose a plan.",
+    "stripeNotConfigured": "Stripe billing is not configured for this environment. Set STRIPE_* variables on the server.",
+    "contactAdmin": "Contact your studio administrator to subscribe.",
+    "backToDashboard": "Back to dashboard",
+    "stripeFooterBefore": "Secure checkout powered by Stripe. Cancel anytime from",
+    "stripeFooterAfter": ".",
+    "upgradePlanLink": "Upgrade plan",
+    "trialLabel": "Start {days}-day trial",
+    "toasts": {
+      "adminOnly": "Only studio admins can choose a subscription plan.",
+      "billingNotConfigured": "Billing is not configured. Contact support.",
+      "betaActivated": "Beta access activated.",
+      "activateFailed": "Could not activate plan.",
+      "checkoutFailed": "Could not start checkout."
+    }
+  },
+  "crmContactDetailPage": {
+    "sendEmail": "Send Email",
+    "callNow": "Call Now",
+    "deleteNoteDescription": "Are you sure you want to delete this note? This action cannot be undone."
+  }
+}

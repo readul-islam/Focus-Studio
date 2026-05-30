@@ -37,10 +37,12 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenuGroup, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { useRouter, usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useGmailSearchStore } from '@/store/useGmailSearchStore';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { usePermissions } from '@/hooks/usePermissions';
 import { CommandPalette } from '@/components/command-palette';
+import { LanguageSwitcher } from '@/components/language-switcher';
 
 // ── Project Select with Command search ──────────────────────────────────────
 function ProjectSelectSearch({
@@ -52,6 +54,7 @@ function ProjectSelectSearch({
   selectedProjectId: string | number | null | undefined;
   onSelect: (projectId: string) => void;
 }) {
+  const t = useTranslations('topBar');
   const [open, setOpen] = useState(false);
 
   const selectedProject = projects?.find((p: any) => String(p.id) === String(selectedProjectId));
@@ -72,7 +75,7 @@ function ProjectSelectSearch({
             ) : (
               <span className="flex justify-between w-full items-center gap-2 text-gray-800 text-sm font-normal">
 
-                <span>Select Project</span>
+                <span>{t('selectProject')}</span>
 
                  <ChevronDown color='#979aa1' className="h-3.5 w-3.5" />
               </span>
@@ -87,10 +90,10 @@ function ProjectSelectSearch({
       >
         <CommandPrimitive className="max-h-[300px]">
           <CommandInput
-            placeholder="Search projects…"
+            placeholder={t('searchProjects')}
             className="focus-visible:ring-gray-300 focus-visible:ring-offset-0 focus:outline-none text-sm"
           />
-          <CommandEmpty>No projects found</CommandEmpty>
+          <CommandEmpty>{t('noProjectsFound')}</CommandEmpty>
           <CommandList
             className="max-h-[200px] overflow-y-auto"
             style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
@@ -133,6 +136,7 @@ function TaskSelectSearch({
   selectedTask: any;
   onSelect: (task: any) => void;
 }) {
+  const t = useTranslations('topBar');
   const [open, setOpen] = useState(false);
 
   const selectedTaskObj = tasks?.find((t: any) => String(t.id) === String(selectedTask?.id));
@@ -152,7 +156,7 @@ function TaskSelectSearch({
               <span className="truncate">{selectedTaskObj.title}</span>
             ) : (
               <span className="flex justify-between w-full items-center gap-2 text-gray-800 text-sm font-normal">
-                <span>Select Task</span>
+                <span>{t('selectTask')}</span>
                 <ChevronDown color='#979aa1' className="h-3.5 w-3.5" />
               </span>
             )}
@@ -166,10 +170,10 @@ function TaskSelectSearch({
       >
         <CommandPrimitive className="max-h-[300px]">
           <CommandInput
-            placeholder="Search tasks…"
+            placeholder={t('searchTasks')}
             className="focus-visible:ring-gray-300 focus-visible:ring-offset-0 focus:outline-none text-sm"
           />
-          <CommandEmpty>No tasks available</CommandEmpty>
+          <CommandEmpty>{t('noTasksAvailable')}</CommandEmpty>
           <CommandList
             className="max-h-[200px] overflow-y-auto"
             style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
@@ -229,6 +233,7 @@ function useElapsedTimer(startedAt: string | null | undefined) {
 }
 
 export function TopBar() {
+  const t = useTranslations('topBar');
   // ── Command palette state ──────────────────────────────────────────────
   const [commandOpen, setCommandOpen] = useState(false);
 
@@ -352,11 +357,11 @@ export function TopBar() {
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['time_tracker/user-time-logs/'] });
       queryClient.refetchQueries({ queryKey: ['time_tracker/timelogs/active/'] });
-      toast('Timer Started');
+      toast(t('toasts.timerStarted'));
       resetForm();
     },
     onError: () => {
-      toast('Error! Try again');
+      toast(t('toasts.errorTryAgain'));
     },
   });
 
@@ -364,10 +369,10 @@ export function TopBar() {
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: ['time_tracker/timelogs/active/'] });
       queryClient.refetchQueries({ queryKey: ['time_tracker/user-time-logs/'] });
-      toast('Timer Stopped');
+      toast(t('toasts.timerStopped'));
     },
     onError: () => {
-      toast('Error stopping timer');
+      toast(t('toasts.errorStoppingTimer'));
     },
   });
 
@@ -400,7 +405,7 @@ export function TopBar() {
   // ── Handlers ────────────────────────────────────────────────────────────
   const handleStartTracking = useCallback(() => {
     if (!selectedTask && !studioTask) {
-      toast.error('Select Project and Task');
+      toast.error(t('toasts.selectProjectTask'));
       return;
     }
     const payload = {
@@ -428,7 +433,7 @@ export function TopBar() {
   // ── Meeting mutation ───────────────────────────────────────────────────
   const meetingMutation = usePost({
     onSuccess: () => {
-      toast.success('Event created successfully!');
+      toast.success(t('toasts.eventCreated'));
       setMeetingModalOpen(false);
       setMeetingSummary('');
       setMeetingLocation('');
@@ -438,7 +443,7 @@ export function TopBar() {
       setMeetingAttendees('');
     },
     onError: (error: any) => {
-      const errMsg = error?.response?.data?.message || error?.message || 'Failed to create event.';
+      const errMsg = error?.response?.data?.message || error?.message || t('toasts.failedCreateEvent');
       toast.error(errMsg);
     },
   });
@@ -446,7 +451,7 @@ export function TopBar() {
   const handleMeetingSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     if (!meetingSummary || !meetingStartTime || !meetingEndTime) {
-      toast.warning('Summary, Start Time, and End Time are required.');
+      toast.warning(t('toasts.requiredSummaryStartEnd'));
       return;
     }
     const attendeesList = meetingAttendees.split(',').map(a => a.trim()).filter(a => a);
@@ -478,14 +483,14 @@ export function TopBar() {
                   className="relative w-full flex items-center h-9 px-3 gap-2 rounded-md border border-input bg-background text-sm text-muted-foreground hover:bg-accent transition-colors cursor-pointer"
                 >
                   <Search className="w-4 h-4 flex-shrink-0 text-gray-400" />
-                  <span className="flex-1 text-left text-gray-400 text-sm">Search or ask AI...</span>
+                  <span className="flex-1 text-left text-gray-400 text-sm">{t('search.placeholder')}</span>
                   <kbd className="hidden sm:flex items-center gap-0.5 text-[11px] font-mono text-gray-400 bg-gray-100 border border-gray-200 px-1.5 py-0.5 rounded">
                     <Command className="w-2.5 h-2.5" />K
                   </kbd>
                 </button>
               </TooltipTrigger>
               <TooltipContent side="bottom" className="flex py-2 items-center gap-1">
-                Open Search
+                {t('search.open')}
                 <kbd className="flex items-center gap-0.5 font-mono text-[11px] bg-white/20 border border-white/30 px-[3px] py-1 rounded">
                   <Command className="w-2.5 h-2.5" />
                 </kbd>
@@ -506,7 +511,7 @@ export function TopBar() {
               <NotificationButton />
             </TooltipTrigger>
             <TooltipContent>
-              <p>Notifications</p>
+              <p>{t('notifications')}</p>
             </TooltipContent>
           </Tooltip>
 
@@ -517,7 +522,7 @@ export function TopBar() {
                 <PopoverTrigger asChild>
                   <Button
                     className="bg-stone-50 hover:bg-stone-100 text-ink focus-visible:ring-neutral-300 w-8 h-8 flex items-center justify-center rounded-lg transition-all duration-200 relative focus-visible:outline-none focus-visible:ring-2"
-                    aria-label="Time Tracker"
+                    aria-label={t('timeTracker')}
                   >
                     <Clock className="w-4 h-4 stroke-[1.75]" />
                     {!activeTaskLoading && normalizedTask && (
@@ -527,7 +532,7 @@ export function TopBar() {
                 </PopoverTrigger>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Time Tracker</p>
+                <p>{t('timeTracker')}</p>
               </TooltipContent>
             </Tooltip>
 
@@ -538,7 +543,7 @@ export function TopBar() {
             >
               {/* Popup header */}
               <div className="flex items-center justify-between px-4 py-3 border-b">
-                <span className="text-sm font-semibold text-gray-900">Time Tracker</span>
+                <span className="text-sm font-semibold text-gray-900">{t('timeTracker')}</span>
                 <button
                   onClick={() => setTimerPopupOpen(false)}
                   className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -561,8 +566,8 @@ export function TopBar() {
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
                     {normalizedTask
-                      ? normalizedTask.project_name || normalizedTask.description || 'Tracking…'
-                      : 'No project selected'}
+                      ? normalizedTask.project_name || normalizedTask.description || t('tracking')
+                      : t('noProjectSelected')}
                   </p>
                 </div>
               </div>
@@ -576,17 +581,17 @@ export function TopBar() {
                       variant="outline"
                       className="flex-1 gap-2 text-sm"
                       onClick={() => {
-                        toast('Pause coming soon');
+                        toast(t('toasts.pauseComingSoon'));
                       }}
                     >
-                      <Pause className="w-4 h-4" /> Pause
+                      <Pause className="w-4 h-4" /> {t('actions.pause')}
                     </Button>
                     <Button
                       variant="outline"
                       className="flex-1 gap-2 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
                       onClick={handleStopTimer}
                     >
-                      <Square className="w-4 h-4" /> Stop
+                      <Square className="w-4 h-4" /> {t('actions.stop')}
                     </Button>
                   </div>
                 ) : (
@@ -595,14 +600,14 @@ export function TopBar() {
                     <div className="flex items-center justify-end">
                       <div className="flex items-center space-x-2">
                         <AlertCircle className={`w-4 h-4 ${studioTask ? 'text-black' : 'text-gray-400'}`} />
-                        <span className={`text-xs font-medium ${studioTask ? 'text-black' : 'text-gray-600'}`}>Studio task</span>
+                        <span className={`text-xs font-medium ${studioTask ? 'text-black' : 'text-gray-600'}`}>{t('studioTask')}</span>
                         <Switch className="scale-90" checked={studioTask} onCheckedChange={setStudioTask} />
                       </div>
                     </div>
 
                     {!studioTask && (
                       <div>
-                        <Label className="text-xs text-gray-500 mb-1 block">Project</Label>
+                        <Label className="text-xs text-gray-500 mb-1 block">{t('project')}</Label>
                         <ProjectSelectSearch
                           projects={projects || []}
                           selectedProjectId={selectedProject}
@@ -613,7 +618,7 @@ export function TopBar() {
 
                     {!studioTask && (
                       <div>
-                        <Label className="text-xs text-gray-500 mb-1 block">Task</Label>
+                        <Label className="text-xs text-gray-500 mb-1 block">{t('task')}</Label>
                         <TaskSelectSearch
                           tasks={filteredTask}
                           selectedTask={selectedTask}
@@ -623,17 +628,17 @@ export function TopBar() {
                     )}
 
                     <div>
-                      <Label className="text-xs text-gray-500 mb-1 block">Note</Label>
+                      <Label className="text-xs text-gray-500 mb-1 block">{t('note')}</Label>
                       <Input
                         value={note}
                         onChange={e => setNote(e.target.value)}
                         className="h-8 text-sm bg-white"
-                        placeholder="What are you working on?"
+                        placeholder={t('notePlaceholder')}
                       />
                     </div>
 
                     <Button type="button" onClick={handleStartTracking} className="w-full gap-2 text-sm">
-                      <Play className="w-4 h-4" /> Start Tracking
+                      <Play className="w-4 h-4" /> {t('actions.startTracking')}
                     </Button>
                   </div>
                 )}
@@ -646,7 +651,7 @@ export function TopBar() {
                   className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-800 transition-colors"
                   onClick={() => setTimerPopupOpen(false)}
                 >
-                  View all time entries
+                  {t('viewAllTimeEntries')}
                   <ExternalLink className="w-3 h-3" />
                 </Link>
               </div>
@@ -667,29 +672,30 @@ export function TopBar() {
                 </DropdownMenuTrigger>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Quick Add</p>
+                <p>{t('quickAdd')}</p>
               </TooltipContent>
             </Tooltip>
 
             <DropdownMenuContent className="w-48 bg-white border border-gray-200 shadow-lg rounded-xl" align="end">
             {can("tasks.edit") &&    
               <DropdownMenuItem onClick={dropdownOpenTaskModal} className="flex items-center gap-2 hover:bg-stone-50 focus:bg-stone-50">
-                <ClipboardCheck className="w-4 h-4" /> Task
+                <ClipboardCheck className="w-4 h-4" /> {t('task')}
               </DropdownMenuItem>}
               <DropdownMenuItem onClick={() => setMeetingModalOpen(true)} className="flex items-center gap-2 hover:bg-stone-50 focus:bg-stone-50">
-                <Calendar className="w-4 h-4" /> Meeting
+                <Calendar className="w-4 h-4" /> {t('meeting')}
               </DropdownMenuItem>
               {/* <DropdownMenuItem className="flex items-center gap-2 hover:bg-stone-50 focus:bg-stone-50">
                 <Sparkles className="w-4 h-4" /> AI Note
               </DropdownMenuItem> */}
           {can("finance.edit") &&    <DropdownMenuItem className="flex items-center gap-2 hover:bg-stone-50 focus:bg-stone-50">
                 <Link className='flex items-center gap-1.5' href={'/finance/invoices/new'}>
-                <Package className="w-4 h-4" /> Create Invoice
+                <Package className="w-4 h-4" /> {t('actions.createInvoice')}
                 </Link>
               </DropdownMenuItem>}
             </DropdownMenuContent>
           </DropdownMenu>
 
+          <LanguageSwitcher />
           <ThemeToggle />
 
           {/* User avatar */}
@@ -707,7 +713,7 @@ export function TopBar() {
                   </button>
                 </DropdownMenuTrigger>
               </TooltipTrigger>
-              <TooltipContent><p>Account</p></TooltipContent>
+              <TooltipContent><p>{t('account')}</p></TooltipContent>
             </Tooltip>
             <DropdownMenuContent className="min-w-56 bg-popover rounded-lg shadow-xl" align="end" sideOffset={8}>
               <DropdownMenuLabel className="p-0 font-normal">
@@ -720,25 +726,25 @@ export function TopBar() {
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">{user?.name}</span>
-                    <span className="truncate text-xs text-gray-500">{user?.email || 'Loading..'}</span>
+                    <span className="truncate text-xs text-gray-500">{user?.email || t('loading')}</span>
                   </div>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuItem onClick={() => window.location.href = '/settings/user/profile'} className="cursor-pointer">
-                  <User className="w-4 h-4 mr-2" /> Profile
+                  <User className="w-4 h-4 mr-2" /> {t('profile')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => window.location.href = '/settings/user/time-tracking'} className="cursor-pointer">
-                  <Clock className="w-4 h-4 mr-2" /> Time Tracking
+                  <Clock className="w-4 h-4 mr-2" /> {t('timeTracking')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => window.location.href = '/settings/user/appearance'} className="cursor-pointer">
-                  <Sun className="w-4 h-4 mr-2" /> Appearance
+                  <Sun className="w-4 h-4 mr-2" /> {t('appearance')}
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={async () => { try { await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/logout/`, { method: 'POST', credentials: 'include' }); } catch {} window.location.href = '/login'; }} className="text-red-600 cursor-pointer">
-                <LogOut className="w-4 h-4 mr-2" /> Logout
+                <LogOut className="w-4 h-4 mr-2" /> {t('logout')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -764,66 +770,66 @@ export function TopBar() {
       <Dialog open={meetingModalOpen} onOpenChange={setMeetingModalOpen}>
         <DialogContent className="sm:max-w-[550px] !overflow-y-scroll">
           <DialogHeader>
-            <DialogTitle>Add Event</DialogTitle>
+            <DialogTitle>{t('dialog.addEvent')}</DialogTitle>
             <DialogDescription>
-              Create a new event on your Google Calendar.
+              {t('dialog.addEventDescription')}
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleMeetingSubmit} className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="meeting-summary">Summary <span className="text-red-500">*</span></Label>
+              <Label htmlFor="meeting-summary">{t('dialog.summary')} <span className="text-red-500">*</span></Label>
               <Input
                 id="meeting-summary"
                 value={meetingSummary}
                 onChange={(e) => setMeetingSummary(e.target.value)}
-                placeholder="Meeting with Client"
+                placeholder={t('dialog.summaryPlaceholder')}
                 required
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="meeting-location">Location</Label>
+              <Label htmlFor="meeting-location">{t('dialog.location')}</Label>
               <Input
                 id="meeting-location"
                 value={meetingLocation}
                 onChange={(e) => setMeetingLocation(e.target.value)}
-                placeholder="Zoom / Conference Room"
+                placeholder={t('dialog.locationPlaceholder')}
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label>Start Time <span className="text-red-500">*</span></Label>
+                <Label>{t('dialog.startTime')} <span className="text-red-500">*</span></Label>
                 <DateTimePicker value={meetingStartTime} onChange={setMeetingStartTime} />
               </div>
               <div className="grid gap-2">
-                <Label>End Time <span className="text-red-500">*</span></Label>
+                <Label>{t('dialog.endTime')} <span className="text-red-500">*</span></Label>
                 <DateTimePicker value={meetingEndTime} onChange={setMeetingEndTime} />
               </div>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="meeting-attendees">Attendees (comma separated emails)</Label>
+              <Label htmlFor="meeting-attendees">{t('dialog.attendees')}</Label>
               <Input
                 id="meeting-attendees"
                 value={meetingAttendees}
                 onChange={(e) => setMeetingAttendees(e.target.value)}
-                placeholder="guest1@example.com, guest2@example.com"
+                placeholder={t('dialog.attendeesPlaceholder')}
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="meeting-description">Description</Label>
+              <Label htmlFor="meeting-description">{t('dialog.description')}</Label>
               <Textarea
                 id="meeting-description"
                 value={meetingDescription}
                 onChange={(e) => setMeetingDescription(e.target.value)}
-                placeholder="Discuss project updates..."
+                placeholder={t('dialog.descriptionPlaceholder')}
               />
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setMeetingModalOpen(false)}>
-                Cancel
+                {t('actions.cancel')}
               </Button>
               <Button type="submit" disabled={meetingMutation.isPending}>
                 {meetingMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Create Event
+                {t('actions.createEvent')}
               </Button>
             </DialogFooter>
           </form>

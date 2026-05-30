@@ -1,0 +1,42 @@
+{
+  "projectSettingsPage": {
+    "copyLink": "Copy Link",
+    "automationKickoffDesc": "Auto‑generate tasks when onboarding completes.",
+    "automationNotificationsDesc": "Notify team when clients join the portal.",
+    "enterNamePlaceholder": "Enter name...",
+    "removeMemberDesc": "Are you sure you want to remove {name} from this studio? Removing this member will revoke their access to all projects and tasks associated with this studio.",
+    "scanQrOnSite": "Scan this QR code on site to access the contractor portal",
+    "scheduleSubtitle": "Manage phases and timeline for this project.",
+    "projectPhasesNav": "Project phases",
+    "noPhasesYet": "No phases yet",
+    "noPhasesClickAdd": "— click + to add one.",
+    "timelinePanelDesc": "Set the overall project start and end dates.",
+    "phaseNameLabel": "Phase name",
+    "descriptionLabel": "Description",
+    "phaseLabel": "Phase",
+    "phaseOfTotal": "Phase {current} of {total}",
+    "budgetLabel": "Budget",
+    "budgetedHours": "Budgeted hours",
+    "phaseDuration": "Phase duration",
+    "ffnePercent": "FF&E (%)",
+    "archiveProject": "Archive Project",
+    "unarchiveProject": "Unarchive Project",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "confirm": "Confirm",
+    "archiveMoveDesc": "Move {name} to {destination}.",
+    "destinationActive": "Active",
+    "destinationArchive": "Archive"
+  },
+  "inboxReplyComposer": {
+    "replyPlaceholder": "Write a reply...",
+    "sendReply": "Send reply",
+    "writeReplyFirst": "Write a reply first, then use the AI assistant.",
+    "replyPolished": "Reply polished by AI",
+    "aiAssistantFailed": "AI assistant failed",
+    "aiAssistantTitle": "AI assistant — fix grammar and organise your reply",
+    "attachFileTitle": "Attach image or file",
+    "removeFile": "Remove {name}",
+    "hintText": "Sparkles: AI polish · Paperclip: attach files (max 25 MB each)"
+  }
+}

@@ -19,13 +19,7 @@ import type { ProposalData, ProposalStep } from "@/components/crm/proposal-drawe
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
 import { usePermissions } from '@/hooks/usePermissions';
-
-const steps: Array<{ key: ProposalStep; label: string }> = [
-  { key: "client", label: "Client & Details" },
-  { key: "scope", label: "Scope of Work" },
-  { key: "pricing", label: "Pricing" },
-  { key: "review", label: "Review & Send" },
-]
+import { useTranslations } from 'next-intl';
 
 function buildApiPayload(data: Partial<ProposalData>, status: string = "DFT") {
   const lineItems = (data.lineItems || []).map((item) => ({
@@ -78,6 +72,14 @@ function getCurrencySymbol(currency: any): string {
 }
 
 function NewProposalPageContent() {
+  const t = useTranslations('crmProposalEditorPage')
+  const tc = useTranslations('common')
+  const steps: Array<{ key: ProposalStep; label: string }> = [
+    { key: "client", label: t('stepClient') },
+    { key: "scope", label: t('stepScope') },
+    { key: "pricing", label: t('stepPricing') },
+    { key: "review", label: t('stepReview') },
+  ]
   const searchParams = useSearchParams()
   const [currentStep, setCurrentStep] = useState<ProposalStep>("client")
   const [data, setData] = useState<Partial<ProposalData>>({ currency: "GBP" })
@@ -138,11 +140,11 @@ function NewProposalPageContent() {
           access_token: saved.access_token,
         }))
       }
-      toast.success('Proposal saved as draft')
+      toast.success(t('toasts.savedDraft'))
       queryClient.refetchQueries({ queryKey: ["/crm/proposals/"] })
       
     } catch (error: any) {
-      const msg = error?.response?.data ? JSON.stringify(error.response.data) : "Failed to save"
+      const msg = error?.response?.data ? JSON.stringify(error.response.data) : t('toasts.saveFailed')
       toast.error(msg)
     } finally {
       setIsSaving(false)
@@ -155,7 +157,7 @@ function NewProposalPageContent() {
 
   const handleSend = async () => {
     // API not ready yet - show coming soon message
-    toast.success("Send proposal feature coming soon!")
+    toast.success(t('toasts.sendComingSoon'))
   }
 
   const canSend = () => !!(data.title && data.lineItems?.length)
@@ -209,11 +211,11 @@ function NewProposalPageContent() {
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" onClick={handleSave} disabled={isSaving || !data.title} className="gap-2 h-9">
               <Save className="w-4 h-4" />
-              {isSaving ? "Saving..." : "Save Draft"}
+              {isSaving ? tc('saving') : t('saveDraft')}
             </Button>
             <Button variant="outline" size="sm" onClick={handlePreview} className="gap-2 h-9">
               <Eye className="w-4 h-4" />
-              Preview
+              {t('preview')}
             </Button>
             <Button
               size="sm"
@@ -222,7 +224,7 @@ function NewProposalPageContent() {
               className="gap-2 bg-gray-900 hover:bg-gray-800 h-9"
             >
               <Send className="w-4 h-4" />
-              Send Proposal
+              {t('sendProposal')}
             </Button>
           </div>
         </div>
@@ -248,14 +250,14 @@ function NewProposalPageContent() {
               {currentStepIndex > 0 && (
                 <Button variant="outline" size="sm" onClick={prevStep} className="gap-2 h-9">
                   <ChevronLeft className="w-4 h-4" />
-                  Back
+                  {t('back')}
                 </Button>
               )}
             </div>
             <div>
               {currentStepIndex < steps.length - 1 ? (
                 <Button onClick={nextStep} size="sm" className="gap-2 bg-gray-900 hover:bg-gray-800 h-9">
-                  Continue
+                  {t('continue')}
                   <ChevronRight className="w-4 h-4" />
                 </Button>
               ) : (
@@ -266,7 +268,7 @@ function NewProposalPageContent() {
                   className="gap-2 bg-gray-900 hover:bg-gray-800 h-9"
                 >
                   <Send className="w-4 h-4" />
-                  Send Proposal
+                  {t('sendProposal')}
                 </Button>
               )}
             </div>

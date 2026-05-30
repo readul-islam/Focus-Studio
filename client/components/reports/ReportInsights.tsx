@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { usePost } from '@/hooks/usePost';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useTranslations } from 'next-intl';
 
 // ─── Types ────────────────────────────────────────────────────────
 interface ChatMessage {
@@ -15,12 +16,15 @@ interface ChatMessage {
   content: string;
 }
 
-const SUGGESTED_QUESTIONS = [
-  'Summarize these metrics',
-  'Why are costs high?',
-  "Predict next month's margin",
-  'Which projects are over budget?',
-];
+function useSuggestedQuestions() {
+  const t = useTranslations('reportsCommon');
+  return [
+    t('suggestSummarize'),
+    t('suggestCosts'),
+    t('suggestMargin'),
+    t('suggestBudget'),
+  ];
+}
 
 // ─── Gemini 4-point star ──────────────────────────────────────────
 function GeminiStar({ size = 20, className = '' }: { size?: number; className?: string }) {
@@ -34,11 +38,12 @@ function GeminiStar({ size = 20, className = '' }: { size?: number; className?: 
 
 // ─── Thinking skeleton ────────────────────────────────────────────
 function ThinkingSkeleton() {
+  const t = useTranslations('reportsCommon');
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
         <GeminiStar size={16} className="text-[#748971] shrink-0 animate-spin" />
-        <span className="text-xs text-gray-400">Thinking...</span>
+        <span className="text-xs text-gray-400">{t('thinking')}</span>
       </div>
       <div className="space-y-1.5 pl-0.5">
         <Skeleton className="h-2.5 w-full rounded-full bg-[#748971]/15" />
@@ -85,6 +90,7 @@ function MarkdownContent({ content }: { content: string }) {
 
 // ─── AI reply with typewriter + copy ─────────────────────────────
 function AIReply({ content }: { content: string }) {
+  const t = useTranslations('reportsCommon');
   const [displayed, setDisplayed] = useState('');
   const [done, setDone] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -116,7 +122,7 @@ function AIReply({ content }: { content: string }) {
           onClick={() => { navigator.clipboard.writeText(content); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
           className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-600 transition-colors pt-1 pb-2"
         >
-          {copied ? <><Check className="w-3.5 h-3.5" /><span>Copied</span></> : <><Copy className="w-3.5 h-3.5" /><span>Copy</span></>}
+          {copied ? <><Check className="w-3.5 h-3.5" /><span>{t('copied')}</span></> : <><Copy className="w-3.5 h-3.5" /><span>{t('copy')}</span></>}
         </button>
       )}
     </div>
@@ -125,6 +131,8 @@ function AIReply({ content }: { content: string }) {
 
 // ─── Chat panel (internal) ────────────────────────────────────────
 function AIChatPanel({ onClose }: { onClose: () => void }) {
+  const t = useTranslations('reportsCommon');
+  const suggestedQuestions = useSuggestedQuestions();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -139,7 +147,7 @@ function AIChatPanel({ onClose }: { onClose: () => void }) {
       setMessages(prev => [...prev, { id: Date.now().toString(), role: 'assistant', content: reply }]);
     },
     onError: () => {
-      setMessages(prev => [...prev, { id: Date.now().toString(), role: 'assistant', content: "Sorry, I couldn't reach the server. Please try again." }]);
+      setMessages(prev => [...prev, { id: Date.now().toString(), role: 'assistant', content: t('serverError') }]);
     },
   });
 
@@ -166,10 +174,10 @@ function AIChatPanel({ onClose }: { onClose: () => void }) {
       <div className="flex items-center justify-between px-4 pt-4 pb-3 shrink-0">
         <div className="flex items-center gap-2">
           <GeminiStar size={20} className="text-[#748971]" />
-          <span className="text-[15px] font-medium text-gray-900">Report Insights</span>
+          <span className="text-[15px] font-medium text-gray-900">{t('insightsTitle')}</span>
         </div>
         <div className="flex items-center gap-0.5">
-          <button onClick={() => setMessages([])} className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors" title="New chat">
+          <button onClick={() => setMessages([])} className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors" title={t('newChat')}>
             <RotateCcw className="w-4 h-4" />
           </button>
           <button onClick={onClose} className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors">
@@ -182,9 +190,9 @@ function AIChatPanel({ onClose }: { onClose: () => void }) {
       {isEmpty && (
         <div className="flex flex-col items-center justify-center flex-1 px-6 pb-4 text-center">
           <GeminiStar size={38} className="text-[#748971] mb-4 opacity-80" />
-          <p className="text-xl font-medium text-[#748971] mb-8 leading-tight">Ask about your<br />studio metrics</p>
+          <p className="text-xl font-medium text-[#748971] mb-8 leading-tight whitespace-pre-line">{t('askHeadline')}</p>
           <div className="w-full space-y-1">
-            {SUGGESTED_QUESTIONS.map(q => (
+            {suggestedQuestions.map(q => (
               <button key={q} onClick={() => sendMessage(q)} className="w-full text-left text-[13px] text-gray-700 font-medium hover:bg-gray-100 px-3 py-2 rounded-md transition-colors flex items-center gap-2.5 group">
                 <ArrowRight className="w-3.5 h-3.5 text-gray-400 shrink-0 group-hover:text-[#748971] transition-colors" />
                 {q}
@@ -227,18 +235,18 @@ function AIChatPanel({ onClose }: { onClose: () => void }) {
               requestAnimationFrame(() => { el.style.height = `${el.scrollHeight}px`; });
             }}
             onKeyDown={handleKeyDown}
-            placeholder="Ask Report Insights..."
+            placeholder={t('askPlaceholder')}
             className="w-full bg-transparent text-sm text-gray-800 placeholder-gray-400 outline-none resize-none px-4 pt-3 pb-1 leading-relaxed max-h-40 overflow-y-auto transition-[height] duration-150 ease-out"
             style={{ height: '40px' }}
           />
           <div className="flex items-center justify-between px-3 pb-2.5 pt-1">
-            <span className="text-[10px] text-gray-400">Enter to send · Shift+Enter for newline</span>
+            <span className="text-[10px] text-gray-400">{t('sendHint')}</span>
             <button onClick={() => sendMessage(input)} disabled={!input.trim() || isPending} className="w-8 h-8 rounded-full bg-[#748971] flex items-center justify-center disabled:opacity-30 hover:bg-[#5f7560] transition-colors shrink-0">
               <Send className="w-3.5 h-3.5 text-white" />
             </button>
           </div>
         </div>
-        <p className="text-[10px] text-gray-400 text-center mt-2">Report Insights can make mistakes.</p>
+        <p className="text-[10px] text-gray-400 text-center mt-2">{t('disclaimer')}</p>
       </div>
     </div>
   );
@@ -246,6 +254,7 @@ function AIChatPanel({ onClose }: { onClose: () => void }) {
 
 // ─── Trigger button ───────────────────────────────────────────────
 export function ReportInsightsButton({ onClick }: { onClick: () => void }) {
+  const t = useTranslations('reportsCommon');
   return (
     <button
       onClick={onClick}
@@ -254,7 +263,7 @@ export function ReportInsightsButton({ onClick }: { onClick: () => void }) {
       <span className="text-clay-500 animate-pulse">
         <GeminiStar size={15} />
       </span>
-      Report Insights
+      {t('insightsButton')}
     </button>
   );
 }

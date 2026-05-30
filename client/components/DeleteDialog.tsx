@@ -12,21 +12,45 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useTranslations } from "next-intl";
+
+type DeleteDialogProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: (id?: string | number | null) => Promise<unknown>;
+  id?: string | number | null;
+  title?: string;
+  description?: string;
+  itemName?: string;
+  confirmText?: string;
+  cancelText?: string;
+  requireConfirmation?: boolean;
+  confirmationText?: string;
+  isArchive?: boolean;
+};
 
 export const DeleteDialog = ({
   isOpen,
   onClose,
   onConfirm,
   id = null,
-  title = "Delete Project",
-  description = "Are you sure you want to delete this project? This action cannot be undone.",
+  title,
+  description,
   itemName = "",
-  confirmText = "Delete",
-  cancelText = "Cancel",
+  confirmText,
+  cancelText,
   requireConfirmation = false,
   confirmationText = "confirm",
   isArchive = false,
-}) => {
+}: DeleteDialogProps) => {
+  const tc = useTranslations("common");
+  const td = useTranslations("common.deleteDialog");
+
+  const resolvedTitle = title ?? td("defaultTitle");
+  const resolvedDescription = description ?? td("defaultDescription");
+  const resolvedConfirm = confirmText ?? (isArchive ? td("archive") : tc("delete"));
+  const resolvedCancel = cancelText ?? tc("cancel");
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [confirmationInput, setConfirmationInput] = useState("");
 
@@ -60,39 +84,45 @@ export const DeleteDialog = ({
       <DialogContent className="sm:max-w-lg z-[999]" overlayClassName="z-[999]">
         <DialogHeader className="flex flex-row items-center gap-3">
           <div
-            className={`flex-shrink-0 w-10 h-10 ${isArchive ? "bg-stone-100" : "bg-red-100"
-              }  rounded-full flex items-center justify-center`}>
+            className={`flex-shrink-0 w-10 h-10 ${
+              isArchive ? "bg-stone-100" : "bg-red-100"
+            }  rounded-full flex items-center justify-center`}
+          >
             <AlertTriangle
-              className={`w-5 h-5 ${isArchive ? "text-black" : "text-red-600"
-                } `}
+              className={`w-5 h-5 ${isArchive ? "text-black" : "text-red-600"} `}
             />
           </div>
           <div>
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle>{resolvedTitle}</DialogTitle>
             {itemName && (
-              <p title={itemName} className="text-sm truncate max-w-[320px] text-muted-foreground mt-1">"{itemName}"</p>
+              <p
+                title={itemName}
+                className="text-sm truncate max-w-[320px] text-muted-foreground mt-1"
+              >
+                &ldquo;{itemName}&rdquo;
+              </p>
             )}
           </div>
         </DialogHeader>
 
         <DialogDescription className="text-sm text-muted-foreground">
-          {description}
+          {resolvedDescription}
         </DialogDescription>
 
         {requireConfirmation && (
           <div className="mt-4 space-y-2">
             <p className="text-sm text-gray-700">
-              To confirm deletion, please type{" "}
+              {td("confirmPrompt")}{" "}
               <code className="bg-stone-100 px-1.5 py-0.5 rounded text-red-600 text-xs">
                 {confirmationText}
               </code>{" "}
-              below:
+              :
             </p>
             <Input
               type="text"
               value={confirmationInput}
               onChange={(e) => setConfirmationInput(e.target.value)}
-              placeholder={`Type "${confirmationText}" to confirm`}
+              placeholder={td("confirmPlaceholder", { text: confirmationText })}
               disabled={isDeleting}
             />
           </div>
@@ -103,18 +133,20 @@ export const DeleteDialog = ({
             type="button"
             variant="outline"
             onClick={handleClose}
-            disabled={isDeleting}>
-            {cancelText}
+            disabled={isDeleting}
+          >
+            {resolvedCancel}
           </Button>
           <Button
             type="button"
             variant={isArchive ? "default" : "destructive"}
             onClick={handleConfirm}
-            disabled={isDeleting || !isConfirmationValid}>
+            disabled={isDeleting || !isConfirmationValid}
+          >
             {isDeleting ? (
               <>
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                Deleting...
+                {tc("deleting")}
               </>
             ) : (
               <>
@@ -123,7 +155,7 @@ export const DeleteDialog = ({
                 ) : (
                   <Trash2 className="w-4 h-4 mr-1" />
                 )}
-                {confirmText}
+                {resolvedConfirm}
               </>
             )}
           </Button>

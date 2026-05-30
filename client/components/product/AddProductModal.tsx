@@ -1,7 +1,7 @@
 'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { gooeyToast as toast } from 'goey-toast';
 import { useForm, Controller } from 'react-hook-form';
@@ -40,49 +40,54 @@ import useUser from '@/hooks/useUser';
 import { usePost } from '@/hooks/usePost';
 import { postData } from '@/lib/Api';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 // ─── Zod Schema ──────────────────────────────────────────────────────────────
 
-const productSchema = z.object({
-  name: z.string().min(1, 'Product name is required').max(200, 'Max 200 characters'),
-  supplier: z.string().optional(),
-  product_url: z.string().url('Enter a valid URL').or(z.literal('')).optional(),
-  description: z.string().optional(),
-  currency: z.string().min(1, 'Currency is required'),
-  priceMember: z.coerce.number().min(0, 'Must be ≥ 0').optional(),
-  priceRegular: z.coerce.number().min(0, 'Must be ≥ 0').optional(),
-  measurements: z.string().optional(),
-  materials: z.string().optional(),
-  dimensions: z.string().optional(),
-  weight: z.string().optional(),
-  boxedDimensions: z.string().optional(),
-  boxedWeight: z.string().optional(),
-  assemblyRequired: z.enum(['true', 'false', '']).optional(),
-  seatWidth: z.string().optional(),
-  seatDepth: z.string().optional(),
-  seatHeight: z.string().optional(),
-  composition: z.string().optional(),
-  construction: z.string().optional(),
-  feet: z.coerce.number().min(0).optional(),
-  filling: z.string().optional(),
-  frame: z.string().optional(),
-  removableCushions: z.enum(['true', 'false', '']).optional(),
-  removableLegs: z.enum(['true', 'false', '']).optional(),
-  type: z.string().optional(),
-  instructions: z.string().optional(),
-});
+function createProductSchema(t: ReturnType<typeof useTranslations<'libraryProductModal'>>) {
+  return z.object({
+    name: z.string().min(1, t('validation.nameRequired')).max(200, t('validation.nameMax')),
+    supplier: z.string().optional(),
+    product_url: z.string().url(t('validation.urlInvalid')).or(z.literal('')).optional(),
+    description: z.string().optional(),
+    currency: z.string().min(1, t('validation.currencyRequired')),
+    priceMember: z.coerce.number().min(0, t('validation.minZero')).optional(),
+    priceRegular: z.coerce.number().min(0, t('validation.minZero')).optional(),
+    measurements: z.string().optional(),
+    materials: z.string().optional(),
+    dimensions: z.string().optional(),
+    weight: z.string().optional(),
+    boxedDimensions: z.string().optional(),
+    boxedWeight: z.string().optional(),
+    assemblyRequired: z.enum(['true', 'false', '']).optional(),
+    seatWidth: z.string().optional(),
+    seatDepth: z.string().optional(),
+    seatHeight: z.string().optional(),
+    composition: z.string().optional(),
+    construction: z.string().optional(),
+    feet: z.coerce.number().min(0).optional(),
+    filling: z.string().optional(),
+    frame: z.string().optional(),
+    removableCushions: z.enum(['true', 'false', '']).optional(),
+    removableLegs: z.enum(['true', 'false', '']).optional(),
+    type: z.string().optional(),
+    instructions: z.string().optional(),
+  });
+}
 
-type ProductForm = z.infer<typeof productSchema>;
+type ProductForm = z.infer<ReturnType<typeof createProductSchema>>;
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const PRODUCT_TYPES = ['Furniture', 'Lighting', 'Textiles', 'Dining', 'Bathroom', 'Accessories', 'Home Fragrance', 'Outdoor', 'Art'];
 
-const SECTIONS = [
-  { id: 'basic', label: 'Basic Info', icon: Package },
-  { id: 'pricing', label: 'Pricing', icon: DollarSign },
-  { id: 'specs', label: 'Specifications', icon: Ruler },
-  { id: 'furniture', label: 'Furniture Details', icon: Sofa },
+const SPEC_FIELD_IDS = [
+  'measurements',
+  'materials',
+  'dimensions',
+  'weight',
+  'boxedDimensions',
+  'boxedWeight',
 ] as const;
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
@@ -125,6 +130,7 @@ function BooleanSelect({ value, onChange, label, id, error }: {
   id: string;
   error?: string;
 }) {
+  const t = useTranslations('libraryProductModal');
   return (
     <div className="space-y-1.5">
       <Label htmlFor={id} className="text-sm font-medium text-foreground/90">
@@ -139,19 +145,19 @@ function BooleanSelect({ value, onChange, label, id, error }: {
             error ? 'border-red-300 focus:border-red-400' : 'border-border/60'
           )}
         >
-          <SelectValue placeholder="Select…" />
+          <SelectValue placeholder={t('selectPlaceholder')} />
         </SelectTrigger>
         <SelectContent className="bg-card z-[9999] rounded-xl border-border/80 shadow-2xl">
           <SelectItem value="true" className="text-[13px] cursor-pointer hover:bg-muted/40 focus:bg-muted/40">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-emerald-500" />
-              Yes
+              {t('yes')}
             </div>
           </SelectItem>
           <SelectItem value="false" className="text-[13px] cursor-pointer hover:bg-muted/40 focus:bg-muted/40">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-muted-foreground/60" />
-              No
+              {t('no')}
             </div>
           </SelectItem>
         </SelectContent>
@@ -208,6 +214,7 @@ function ImageUploadZone({
   onSetPrimary: (index: number) => void;
   error: string;
 }) {
+  const t = useTranslations('libraryProductModal');
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { 'image/png': [], 'image/jpeg': [], 'image/jpg': [], 'image/gif': [], 'image/webp': [] },
     maxSize: 20 * 1024 * 1024,
@@ -222,8 +229,8 @@ function ImageUploadZone({
           <ImageIcon className="h-4 w-4 text-foreground/80" />
         </div>
         <div>
-          <p className="text-[13px] font-semibold text-foreground tracking-tight">Product Images</p>
-          <p className="text-[11px] text-muted-foreground">Up to 5 images · Max 20MB each</p>
+          <p className="text-[13px] font-semibold text-foreground tracking-tight">{t('productImages')}</p>
+          <p className="text-[11px] text-muted-foreground">{t('imagesHint')}</p>
         </div>
       </div>
 
@@ -237,7 +244,7 @@ function ImageUploadZone({
             : 'border-border/60 hover:border-primary/40 hover:bg-muted/20 bg-background'
         )}
       >
-        <input {...getInputProps()} aria-label="Upload product images" />
+        <input {...getInputProps()} aria-label={t('uploadImagesAria')} />
         <div className={cn(
           'w-10 h-10 rounded-xl flex items-center justify-center transition-colors',
           isDragActive ? 'bg-primary' : 'bg-muted'
@@ -246,9 +253,9 @@ function ImageUploadZone({
         </div>
         <div>
           <p className="text-[13px] font-medium text-foreground/85">
-            {isDragActive ? 'Drop images here' : 'Drag & drop or click to upload'}
+            {isDragActive ? t('dropImages') : t('dragOrClick')}
           </p>
-          <p className="text-[11px] text-muted-foreground mt-0.5">PNG, JPG, GIF, WEBP supported</p>
+          <p className="text-[11px] text-muted-foreground mt-0.5">{t('imagesFormats')}</p>
         </div>
         {error && (
           <p className="flex items-center gap-1 text-[11px] font-medium text-red-500">
@@ -274,13 +281,13 @@ function ImageUploadZone({
                   'w-20 h-20 rounded-xl overflow-hidden border-2 transition-all',
                   index === primaryIndex ? 'border-amber-400 shadow-[0_0_0_3px_rgba(251,191,36,0.2)]' : 'border-border/60 bg-muted/20'
                 )}>
-                  <img src={file.preview} alt="Preview" className="w-full h-full object-cover" />
+                  <img src={file.preview} alt={t('previewAlt')} className="w-full h-full object-cover" />
                 </div>
                 <button
                   type="button"
                   onClick={e => { e.stopPropagation(); onRemove(file.name); }}
                   className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm z-10"
-                  aria-label={`Remove ${file.name}`}
+                  aria-label={t('deleteImage')}
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -293,8 +300,8 @@ function ImageUploadZone({
                       ? 'bg-amber-400 text-white'
                       : 'bg-muted text-muted-foreground opacity-0 group-hover:opacity-100 hover:bg-primary/20 hover:text-primary'
                   )}
-                  title="Set as primary image"
-                  aria-label={index === primaryIndex ? 'Primary image' : 'Set as primary'}
+                  title={t('setPrimary')}
+                  aria-label={index === primaryIndex ? t('primaryImage') : t('setPrimary')}
                 >
                   <Star className="h-3 w-3" fill={index === primaryIndex ? 'currentColor' : 'none'} />
                 </button>
@@ -315,6 +322,17 @@ interface AddProductModalProps {
 }
 
 const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
+  const t = useTranslations('libraryProductModal');
+  const productSchema = useMemo(() => createProductSchema(t), [t]);
+  const specFields = useMemo(
+    () =>
+      SPEC_FIELD_IDS.map((id) => ({
+        id,
+        label: t(`fields.${id === 'boxedDimensions' ? 'boxDimensions' : id === 'boxedWeight' ? 'boxWeight' : id}` as 'fields.measurements'),
+        placeholder: t(`fieldPlaceholders.${id === 'boxedDimensions' ? 'boxDimensions' : id === 'boxedWeight' ? 'boxWeight' : id}` as 'fieldPlaceholders.measurements'),
+      })),
+    [t]
+  );
   const { user } = useUser();
   const queryClient = useQueryClient();
   const [files, setFiles] = useState<UploadedFile[]>([]);
@@ -354,7 +372,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
     onSuccess: async (data: any) => {
       if (files.length > 0) {
         if (!data?.id) {
-          toast.error('Product created but ID missing. Cannot upload images.');
+          toast.error(t('toasts.createdIdMissing'));
           return;
         }
         setIsUploading(true);
@@ -370,19 +388,19 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
               return postData({ url: 'library/product-images/', data: formData });
             })
           );
-          toast.success('Product and images saved');
+          toast.success(t('toasts.productAndImagesSaved'));
         } catch (err: any) {
-          toast.error(`Image upload failed: ${err.message || 'Unknown error'}`);
+          toast.error(t('toasts.imageUploadFailed', { error: err.message || t('toasts.unknownError') }));
         } finally {
           setIsUploading(false);
         }
       } else {
-        toast.success('Product saved');
+        toast.success(t('toasts.productSaved'));
       }
       queryClient.refetchQueries({ queryKey: ['library/studio-products/'] });
       handleClose();
     },
-    onError: () => toast.error('Failed to create product. Please try again.'),
+    onError: () => toast.error(t('createFailed')),
   });
 
   const handleClose = useCallback(() => {
@@ -397,9 +415,9 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
   const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: any[]) => {
     if (rejectedFiles.length > 0) {
       const err = rejectedFiles[0].errors[0];
-      if (err.code === 'too-many-files') setImageError('Maximum 5 images allowed.');
-      else if (err.code === 'file-too-large') setImageError('File exceeds 20MB limit.');
-      else setImageError('Only PNG, JPG, GIF, WEBP files are allowed.');
+      if (err.code === 'too-many-files') setImageError(t('imageErrors.maxImages'));
+      else if (err.code === 'file-too-large') setImageError(t('imageErrors.fileTooLarge'));
+      else setImageError(t('imageErrors.invalidFormat'));
       return;
     }
     setImageError('');
@@ -407,7 +425,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
       ...prev,
       ...acceptedFiles.map(f => Object.assign(f, { preview: URL.createObjectURL(f) })) as UploadedFile[],
     ]);
-  }, []);
+  }, [t]);
 
   const removeImage = useCallback((name: string) => {
     setFiles(prev => {
@@ -471,10 +489,10 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
               </div>
               <div>
                 <DialogTitle className="text-[16px] font-bold text-foreground tracking-tight">
-                  Add Product
+                  {t('titleAdd')}
                 </DialogTitle>
                 <DialogDescription className="text-[12px] text-muted-foreground mt-0.5">
-                  Fill in the details below. Name and currency are required.
+                  {t('descriptionAddHint')}
                 </DialogDescription>
               </div>
             </div>
@@ -502,14 +520,14 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
 
               {/* Basic Info */}
               <div className="px-6 py-5 bg-card border-b border-border/40">
-                <SectionHeader icon={Package} title="Basic Information" description="Core product details" />
+                <SectionHeader icon={Package} title={t('sectionTitles.basic')} description={t('sectionDescriptions.basic')} />
                 <div className="grid grid-cols-2 gap-4">
                   {/* Product Name */}
-                  <FormField label="Product Name" id="name" error={errors.name?.message} required>
+                  <FormField label={t('fields.productName')} id="name" error={errors.name?.message} required>
                     <Input
                       {...register('name')}
                       id="name"
-                      placeholder="e.g. Oslo Lounge Chair"
+                      placeholder={t('namePlaceholder')}
                       autoComplete="off"
                       aria-describedby={errors.name ? 'name-error' : undefined}
                       aria-invalid={!!errors.name}
@@ -524,7 +542,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                   {/* Supplier */}
                   <div className="space-y-1.5">
                     <Label className="text-sm font-medium text-foreground/90">
-                      Supplier
+                      {t('fields.supplier')}
                     </Label>
                     <Popover open={supplierOpen} onOpenChange={setSupplierOpen}>
                       <PopoverTrigger asChild>
@@ -533,7 +551,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                           variant="outline"
                           role="combobox"
                           aria-expanded={supplierOpen}
-                          aria-label="Select supplier"
+                          aria-label={t('selectSupplierAria')}
                           className={cn(
                             'w-full h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] font-normal',
                             'justify-between hover:bg-muted/40 hover:border-primary/30',
@@ -541,15 +559,15 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                             !selectedSupplier && 'text-muted-foreground/60'
                           )}
                         >
-                          {selectedSupplier?.company_name || 'Select supplier…'}
+                          {selectedSupplier?.company_name || t('selectSupplier')}
                           <ChevronDown className="ml-2 h-3.5 w-3.5 opacity-50 flex-shrink-0" />
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent side="bottom" align="start" className="w-72 p-0 z-[9999] bg-card border-border/80 shadow-2xl rounded-xl">
                         <Command className="bg-transparent">
-                          <CommandInput placeholder="Search suppliers…" className="text-[13px] text-foreground bg-transparent" />
+                          <CommandInput placeholder={t('searchSuppliers')} className="text-[13px] text-foreground bg-transparent" />
                           <CommandList className="max-h-52">
-                            <CommandEmpty className="text-[12px] text-muted-foreground py-3 px-4">No suppliers found.</CommandEmpty>
+                            <CommandEmpty className="text-[12px] text-muted-foreground py-3 px-4">{t('noSuppliersFound')}</CommandEmpty>
                             {!loadingSuppliers && suppliers?.map((item: any) => (
                               <CommandItem
                                 key={item.id}
@@ -572,7 +590,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                               onClick={() => { setSupplierOpen(false); setIsAddSupplierOpen(true); }}
                               className="w-full text-[12px] font-medium text-primary py-2.5 px-4 text-left hover:bg-muted/40 transition-colors"
                             >
-                              + Add new supplier
+                              {t('addNewSupplier')}
                             </button>
                           </div>
                         </Command>
@@ -583,7 +601,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                   {/* Type */}
                   <div className="space-y-1.5">
                     <Label className="text-sm font-medium text-foreground/90">
-                      Product Type
+                      {t('fields.productType')}
                     </Label>
                     <Popover open={typeOpen} onOpenChange={setTypeOpen}>
                       <PopoverTrigger asChild>
@@ -598,7 +616,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                             !typeValue && 'text-muted-foreground/60'
                           )}
                         >
-                          {typeValue || 'Select type…'}
+                          {typeValue || t('selectType')}
                           <ChevronDown className="ml-2 h-3.5 w-3.5 opacity-50 flex-shrink-0" />
                         </Button>
                       </PopoverTrigger>
@@ -622,14 +640,14 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                   </div>
 
                   {/* Product URL */}
-                  <FormField label="Product URL" id="product_url" error={errors.product_url?.message}>
+                  <FormField label={t('fields.productUrl')} id="product_url" error={errors.product_url?.message}>
                     <div className="relative">
                       <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/60" />
                       <Input
                         {...register('product_url')}
                         id="product_url"
                         type="url"
-                        placeholder="https://supplier.com/product"
+                        placeholder={t('productUrlPlaceholder')}
                         aria-invalid={!!errors.product_url}
                         className={cn(
                           'h-10 pl-9 rounded-xl border bg-background text-foreground text-[13px] transition-colors',
@@ -643,12 +661,12 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
 
                 {/* Description */}
                 <div className="mt-4">
-                  <FormField label="Description" id="description" error={errors.description?.message}>
+                  <FormField label={t('fields.description')} id="description" error={errors.description?.message}>
                     <Textarea
                       {...register('description')}
                       id="description"
                       rows={3}
-                      placeholder="Brief product description…"
+                      placeholder={t('fields.descriptionPlaceholder')}
                       className={cn(
                         'rounded-xl border border-border/60 bg-background text-foreground text-[13px] resize-none',
                         'placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0'
@@ -660,10 +678,10 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
 
               {/* Pricing */}
               <div className="px-6 py-5 bg-card border-b border-border/40">
-                <SectionHeader icon={DollarSign} title="Pricing" description="Trade and retail pricing" />
+                <SectionHeader icon={DollarSign} title={t('sectionTitles.pricing')} description={t('sectionDescriptions.pricing')} />
                 <div className="grid grid-cols-3 gap-4">
                   <div className="col-span-1">
-                    <FormField label="Currency" id="currency" error={errors.currency?.message} required>
+                    <FormField label={t('fields.currency')} id="currency" error={errors.currency?.message} required>
                       <Controller
                         name="currency"
                         control={control}
@@ -679,7 +697,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       />
                     </FormField>
                   </div>
-                  <FormField label="Trade Price" id="priceMember" error={errors.priceMember?.message}>
+                  <FormField label={t('fields.tradePrice')} id="priceMember" error={errors.priceMember?.message}>
                     <Input
                       {...register('priceMember')}
                       id="priceMember"
@@ -694,7 +712,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       )}
                     />
                   </FormField>
-                  <FormField label="Regular Price" id="priceRegular" error={errors.priceRegular?.message}>
+                  <FormField label={t('fields.regularPrice')} id="priceRegular" error={errors.priceRegular?.message}>
                     <Input
                       {...register('priceRegular')}
                       id="priceRegular"
@@ -714,16 +732,9 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
 
               {/* Specifications */}
               <div className="px-6 py-5 bg-card border-b border-border/40">
-                <SectionHeader icon={Ruler} title="Specifications" description="Physical product details" />
+                <SectionHeader icon={Ruler} title={t('sectionTitles.specs')} description={t('sectionDescriptions.specs')} />
                 <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { label: 'Measurements', id: 'measurements', placeholder: 'e.g. W80 × D75 × H85cm' },
-                    { label: 'Materials', id: 'materials', placeholder: 'e.g. Oak, Leather' },
-                    { label: 'Dimensions', id: 'dimensions', placeholder: 'e.g. 80 × 75 × 85 cm' },
-                    { label: 'Weight', id: 'weight', placeholder: 'e.g. 12 kg' },
-                    { label: 'Box Dimensions', id: 'boxedDimensions', placeholder: 'e.g. 90 × 80 × 95 cm' },
-                    { label: 'Box Weight', id: 'boxedWeight', placeholder: 'e.g. 14 kg' },
-                  ].map(({ label, id, placeholder }) => (
+                  {specFields.map(({ label, id, placeholder }) => (
                     <FormField key={id} label={label} id={id} error={(errors as any)[id]?.message}>
                       <Input
                         {...register(id as keyof ProductForm)}
@@ -738,7 +749,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
 
               {/* Furniture Details */}
               <div className="px-6 py-5 bg-card">
-                <SectionHeader icon={Sofa} title="Furniture Details" description="Optional furniture-specific attributes" />
+                <SectionHeader icon={Sofa} title={t('sectionTitles.furniture')} description={t('sectionDescriptions.furniture')} />
                 <div className="grid grid-cols-2 gap-4">
                   {/* Assembly Required */}
                   <Controller
@@ -748,7 +759,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       <BooleanSelect
                         value={field.value || ''}
                         onChange={field.onChange}
-                        label="Assembly Required"
+                        label={t('fields.assemblyRequired')}
                         id="assemblyRequired"
                         error={errors.assemblyRequired?.message}
                       />
@@ -756,83 +767,83 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                   />
 
                   {/* Seat Width */}
-                  <FormField label="Seat Width" id="seatWidth" error={errors.seatWidth?.message}>
+                  <FormField label={t('fields.seatWidth')} id="seatWidth" error={errors.seatWidth?.message}>
                     <Input
                       {...register('seatWidth')}
                       id="seatWidth"
-                      placeholder="e.g. 55 cm"
+                      placeholder={t('furniturePlaceholders.seatWidth')}
                       className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
 
                   {/* Seat Depth */}
-                  <FormField label="Seat Depth" id="seatDepth" error={errors.seatDepth?.message}>
+                  <FormField label={t('fields.seatDepth')} id="seatDepth" error={errors.seatDepth?.message}>
                     <Input
                       {...register('seatDepth')}
                       id="seatDepth"
-                      placeholder="e.g. 50 cm"
+                      placeholder={t('furniturePlaceholders.seatDepth')}
                       className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
 
                   {/* Seat Height */}
-                  <FormField label="Seat Height" id="seatHeight" error={errors.seatHeight?.message}>
+                  <FormField label={t('fields.seatHeight')} id="seatHeight" error={errors.seatHeight?.message}>
                     <Input
                       {...register('seatHeight')}
                       id="seatHeight"
-                      placeholder="e.g. 44 cm"
+                      placeholder={t('furniturePlaceholders.seatHeight')}
                       className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
 
                   {/* Composition */}
-                  <FormField label="Composition" id="composition" error={errors.composition?.message}>
+                  <FormField label={t('fields.composition')} id="composition" error={errors.composition?.message}>
                     <Input
                       {...register('composition')}
                       id="composition"
-                      placeholder="e.g. 80% polyester"
+                      placeholder={t('furniturePlaceholders.composition')}
                       className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
 
                   {/* Construction */}
-                  <FormField label="Construction" id="construction" error={errors.construction?.message}>
+                  <FormField label={t('fields.construction')} id="construction" error={errors.construction?.message}>
                     <Input
                       {...register('construction')}
                       id="construction"
-                      placeholder="e.g. Kiln-dried oak frame"
+                      placeholder={t('furniturePlaceholders.construction')}
                       className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
 
                   {/* Feet */}
-                  <FormField label="Feet (cm)" id="feet" error={errors.feet?.message}>
+                  <FormField label={t('fields.feet')} id="feet" error={errors.feet?.message}>
                     <Input
                       {...register('feet')}
                       id="feet"
                       type="number"
                       min="0"
-                      placeholder="e.g. 15"
+                      placeholder={t('furniturePlaceholders.feet')}
                       className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
 
                   {/* Filling */}
-                  <FormField label="Filling" id="filling" error={errors.filling?.message}>
+                  <FormField label={t('fields.filling')} id="filling" error={errors.filling?.message}>
                     <Input
                       {...register('filling')}
                       id="filling"
-                      placeholder="e.g. High-density foam"
+                      placeholder={t('furniturePlaceholders.filling')}
                       className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
 
                   {/* Frame */}
-                  <FormField label="Frame" id="frame" error={errors.frame?.message}>
+                  <FormField label={t('fields.frame')} id="frame" error={errors.frame?.message}>
                     <Input
                       {...register('frame')}
                       id="frame"
-                      placeholder="e.g. Solid oak"
+                      placeholder={t('furniturePlaceholders.frame')}
                       className="h-10 rounded-xl border border-border/60 bg-background text-foreground text-[13px] placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
@@ -845,7 +856,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       <BooleanSelect
                         value={field.value || ''}
                         onChange={field.onChange}
-                        label="Removable Cushions"
+                        label={t('fields.removableCushions')}
                         id="removableCushions"
                         error={errors.removableCushions?.message}
                       />
@@ -860,7 +871,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
                       <BooleanSelect
                         value={field.value || ''}
                         onChange={field.onChange}
-                        label="Removable Legs"
+                        label={t('fields.removableLegs')}
                         id="removableLegs"
                         error={errors.removableLegs?.message}
                       />
@@ -870,12 +881,12 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
 
                 {/* Instructions */}
                 <div className="mt-4">
-                  <FormField label="Instructions" id="instructions" error={errors.instructions?.message}>
+                  <FormField label={t('fields.instructions')} id="instructions" error={errors.instructions?.message}>
                     <Textarea
                       {...register('instructions')}
                       id="instructions"
                       rows={3}
-                      placeholder="Assembly or care instructions…"
+                      placeholder={t('fields.instructionsPlaceholder')}
                       className="rounded-xl border border-border/60 bg-background text-foreground text-[13px] resize-none placeholder:text-muted-foreground/60 focus:ring-0 focus:outline-none focus:border-primary/40 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
@@ -893,7 +904,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
               disabled={isBusy}
               className="h-10 px-5 rounded-xl text-[13px] font-medium text-muted-foreground hover:bg-muted/40 hover:text-foreground transition-colors"
             >
-              Cancel
+              {t('cancel')}
             </Button>
             <Button
               type="submit"
@@ -907,7 +918,7 @@ const AddProductModal = ({ closeModal, modalOpen }: AddProductModalProps) => {
               )}
             >
               {isBusy && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              {isUploading ? 'Uploading images…' : isProductPending ? 'Saving…' : 'Save Product'}
+              {isUploading ? t('saving') : isProductPending ? t('saving') : t('save')}
             </Button>
           </div>
         </DialogContent>

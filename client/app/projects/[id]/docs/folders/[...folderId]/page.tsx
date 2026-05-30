@@ -97,6 +97,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { usePermissions } from '@/hooks/usePermissions';
+import { useTranslations } from 'next-intl';
 
 type FileType = 'image' | 'pdf' | 'spreadsheet' | 'document' | 'cad' | 'design' | 'other';
 
@@ -188,6 +189,8 @@ const MAX_FILE_SIZE = 50 * 1024 * 1024;
 const MAX_FOLDER_NAME_LENGTH = 50;
 
 function ProjectFolderPageContent({ params }: { params: { id: string; folderId: string | string[] } }) {
+  const t = useTranslations('projectDocsPage');
+  const tc = useTranslations('common');
   // Parse folderId as array (catch-all route)
   const folderIdArray = Array.isArray(params.folderId) ? params.folderId : [params.folderId];
   const currentFolderId = folderIdArray[folderIdArray.length - 1]; // Last item is current folder
@@ -392,7 +395,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Download failed:', error);
-      toast.error('Download failed');
+      toast.error(t('downloadFailed'));
     }
   };
 
@@ -414,7 +417,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
       window.URL.revokeObjectURL(url);
     } catch {
       window.open(pdfUrl, '_blank');
-      toast.info('Opening PDF in new tab');
+      toast.info(t('openPdfHint'));
     }
   };
 
@@ -645,10 +648,10 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
       setLinkModalOpen(false);
       setLink('');
       setLinkName('');
-      toast.success('Link added!');
+      toast.success(t('linkAdded'));
     },
     onError: () => {
-      toast.error('Failed to add link');
+      toast.error(t('linkAddFailed'));
     },
   });
 
@@ -687,7 +690,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
       const oversizedFiles = selectedFiles.filter(file => file.size > MAX_FILE_SIZE);
       if (oversizedFiles.length > 0) {
         setFile([]);
-        toast.error(`${oversizedFiles.length} file(s) exceed the 50MB size limit!`);
+        toast.error(t('oversizedFiles', { count: oversizedFiles.length }));
       } else {
         setFile(selectedFiles);
         setUploading(true);
@@ -700,10 +703,10 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
               project: params.id,
               parent: Number(currentFolderId),
             }),
-            { loading: 'Uploading...', success: 'Uploaded successfully!', error: 'Failed to upload document.' },
+            { loading: t('uploading'), success: t('uploadedSuccess'), error: t('uploadDocumentFailed') },
           );
         } else {
-          const uploadToastId = toast(`Uploading ${selectedFiles.length} files...`);
+          const uploadToastId = toast(t('uploadingCount', { count: selectedFiles.length }));
           let completed = 0;
           let failed = 0;
           selectedFiles.forEach(file => {
@@ -718,9 +721,9 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                 completed++;
                 if (completed + failed === selectedFiles.length) {
                   if (failed === 0) {
-                    toast.update(uploadToastId, { title: `All ${selectedFiles.length} files uploaded successfully!`, type: 'success' });
+                    toast.update(uploadToastId, { title: t('uploadAllSuccess', { count: selectedFiles.length }), type: 'success' });
                   } else {
-                    toast.update(uploadToastId, { title: `Uploaded ${completed}/${selectedFiles.length} files successfully.`, type: 'warning' });
+                    toast.update(uploadToastId, { title: t('uploadPartialSuccess', { completed, total: selectedFiles.length }), type: 'warning' });
                   }
                   refetch();
                   setFile([]);
@@ -733,9 +736,9 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                 failed++;
                 if (completed + failed === selectedFiles.length) {
                   if (failed === selectedFiles.length) {
-                    toast.update(uploadToastId, { title: 'Failed to upload all files.', type: 'error' });
+                    toast.update(uploadToastId, { title: t('uploadAllFailed'), type: 'error' });
                   } else {
-                    toast.update(uploadToastId, { title: `Uploaded ${completed}/${selectedFiles.length} files successfully.`, type: 'warning' });
+                    toast.update(uploadToastId, { title: t('uploadPartialSuccess', { completed, total: selectedFiles.length }), type: 'warning' });
                   }
                   refetch();
                 }
@@ -748,11 +751,11 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
 
   const handleCreateFolder = () => {
     if (!newFolderName.trim()) {
-      toast.error('Folder name cannot be empty');
+      toast.error(t('folderNameEmpty'));
       return;
     }
     if (newFolderName.length > MAX_FOLDER_NAME_LENGTH) {
-      toast.error(`Folder name cannot exceed ${MAX_FOLDER_NAME_LENGTH} characters`);
+      toast.error(t('folderNameMax', { max: MAX_FOLDER_NAME_LENGTH }));
       return;
     }
     toast.promise(
@@ -761,20 +764,20 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
         folderName: newFolderName,
         // path: currentPath, // Not needed
       }),
-      { loading: 'Creating folder...', success: 'Folder created successfully!', error: 'Failed to create folder.' },
+      { loading: t('creatingFolder'), success: t('folderCreatedSuccess'), error: t('folderCreateFailed') },
     );
   };
 
   const handleDeleteTask = (id: string | number) => {
     toast.promise(
       deleteMutation.mutateAsync({ id }),
-      { loading: 'Deleting...', success: 'Deleted successfully!', error: 'Failed to delete file.' },
+      { loading: t('deleting'), success: t('deletedSuccess'), error: t('deleteFileFailed') },
     );
   };
 
   const handleSubmitLink = () => {
     if (!link.trim()) {
-      toast.error('Link cannot be empty');
+      toast.error(t('linkEmpty'));
       return;
     }
     try {
@@ -785,7 +788,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
       const hostname = url.hostname.toLowerCase();
       const suspiciousDomains = ['example.com', 'test.com', 'localhost'];
       if (suspiciousDomains.some(domain => hostname.includes(domain))) {
-        toast.error('This URL appears to be a test or example URL');
+        toast.error(t('linkTestUrl'));
         return;
       }
       linkMutation.mutate({
@@ -793,18 +796,18 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
         name: linkName,
       });
     } catch (error) {
-      toast.error('Please enter a valid URL (starting with http:// or https://)');
+      toast.error(t('linkInvalidUrl'));
     }
   };
 
   const handleRenameFolder = () => {
     if (!selectedDoc) return;
     if (!updatedFolderName.trim()) {
-      toast.error('Folder name cannot be empty');
+      toast.error(t('folderNameEmpty'));
       return;
     }
     if (updatedFolderName.length > MAX_FOLDER_NAME_LENGTH) {
-      toast.error(`Folder name cannot exceed ${MAX_FOLDER_NAME_LENGTH} characters`);
+      toast.error(t('folderNameMax', { max: MAX_FOLDER_NAME_LENGTH }));
       return;
     }
     toast.promise(
@@ -812,7 +815,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
         id: selectedDoc.id,
         newFolderName: updatedFolderName,
       }),
-      { loading: 'Renaming...', success: 'Renamed successfully!', error: 'Failed to rename folder.' },
+      { loading: t('renaming'), success: t('renamedSuccess'), error: t('renameFolderFailed') },
     );
     setUpdatedFolderName('');
   };
@@ -824,7 +827,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
         id: selectedDoc.id,
         newFileName: updatedFileName,
       }),
-      { loading: 'Renaming file...', success: 'File renamed successfully!', error: 'Failed to rename file.' },
+      { loading: t('renamingFile'), success: t('fileRenamedSuccess'), error: t('renameFileFailed') },
     );
     setUpdatedFileName('');
   };
@@ -944,12 +947,12 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
   const sendDoctoClient = useMutation({
     mutationFn: (vars: any) => Promise.resolve(), // Feature disabled
     onSuccess: () => {
-      toast.info('Feature not available');
+      toast.info(t('featureNotAvailable'));
       setButtonLoading(false);
       setCheckedItems([]);
     },
     onError: () => {
-      toast('Error! Try again');
+      toast(t('genericError'));
     },
   });
 
@@ -960,7 +963,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
       // choose items: single selectedForSend (when opened per-file) or checkedItems (bulk)
       const itemsToSend = selectedForSend ? [selectedForSend] : checkedItems;
       if (!itemsToSend || itemsToSend.length === 0) {
-        toast.error('No documents selected to send');
+        toast.error(t('noDocumentsSelected'));
         return;
       }
 
@@ -1080,12 +1083,12 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
       },
       {
         onSuccess: () => {
-          toast.success(`${checkedItems.length} document${checkedItems.length > 1 ? 's' : ''} sent to client!`);
+          toast.success(t('documentsSentBulk', { count: checkedItems.length }));
           setCheckedItems([]);
           refetch();
         },
         onError: () => {
-          toast.error('Failed to send documents to client!');
+          toast.error(t('documentsSendFailed'));
         },
       },
     );
@@ -1097,11 +1100,11 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
       { url: `/documents/documents/${id}/update_client_access/`, data: { id: id } },
       {
         onSuccess: () => {
-          toast.success('Document sent to client!');
+          toast.success(t('documentSent'));
           refetch();
         },
         onError: () => {
-          toast.error('Failed to send document to client!');
+          toast.error(t('documentSendFailed'));
         },
       },
     );
@@ -1110,7 +1113,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
   // Bulk share with contractor
   const { mutate: bulkShareDocuments } = usePost({
     onSuccess: () => {
-      toast.success(`${checkedItems.length} document${checkedItems.length > 1 ? 's' : ''} shared with ${contractorName ? decodeURIComponent(contractorName) : 'contractor'}`);
+      toast.success(t('documentsShared', { count: checkedItems.length, name: contractorName ? decodeURIComponent(contractorName) : t('documentsSharedContractor') }));
       setCheckedItems([]);
       setIsSharingDocuments(false);
       queryClient.refetchQueries({
@@ -1119,7 +1122,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
       router.push(`/projects/${params.id}/contractors`);
     },
     onError: (error: any) => {
-      toast.error(error?.message || 'Failed to share documents');
+      toast.error(error?.message || t('documentsShareFailed'));
       setIsSharingDocuments(false);
     },
   });
@@ -1156,7 +1159,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
         window.URL.revokeObjectURL(url);
       } catch {
         window.open(imageUrl, '_blank');
-        toast.info('Right-click the image and select "Save Image As" to download');
+        toast.info(t('saveImageHint'));
       }
     };
 
@@ -1219,8 +1222,8 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
               <div className="flex items-center gap-3">
                 <Share2 className="w-5 h-5 text-slatex-600" />
                 <div>
-                  <p className="text-sm font-medium text-neutral-900">Sharing documents with {decodeURIComponent(contractorName)}</p>
-                  <p className="text-xs text-neutral-500">Select documents below and click "Share Selected" to share with this contractor</p>
+                  <p className="text-sm font-medium text-neutral-900">{t("sharingWith", { name: decodeURIComponent(contractorName) })}</p>
+                  <p className="text-xs text-neutral-500">{t("sharingHint")}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -1234,12 +1237,12 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                     {isSharingDocuments ? (
                       <>
                         <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
-                        Sharing...
+                        {t("sharing")}
                       </>
                     ) : (
                       <>
                         <Share2 className="w-3.5 h-3.5 mr-1.5" />
-                        Share Selected ({checkedItems.length})
+                        {t("shareSelected", { count: checkedItems.length })}
                       </>
                     )}
                   </Button>
@@ -1247,7 +1250,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                 <Link href={`/projects/${params.id}/contractors`}>
                   <Button variant="outline" size="sm" className="h-8 bg-white">
                     <ArrowLeft className="w-3.5 h-3.5 mr-1.5" />
-                    Back to Contractors
+                    {t("backToContractors")}
                   </Button>
                 </Link>
               </div>
@@ -1263,7 +1266,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
               <Input
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search files..."
+                placeholder={t("searchFilesOnly")}
                 className="pl-10 w-72"
               />
             </div>
@@ -1271,27 +1274,27 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
               <SelectTrigger className="w-[180px]">
                 <div className="flex items-center gap-2">
                   <SortAsc className="w-4 h-4 text-gray-400" />
-                  <SelectValue placeholder="Sort by" />
+                  <SelectValue placeholder={t("sortBy")} />
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="name-asc">Alphabet (A-Z)</SelectItem>
-                <SelectItem value="name-desc">Alphabet (Z-A)</SelectItem>
-                <SelectItem value="date-desc">Date (Newest)</SelectItem>
-                <SelectItem value="date-asc">Date (Oldest)</SelectItem>
+                <SelectItem value="name-asc">{t("sortNameAsc")}</SelectItem>
+                <SelectItem value="name-desc">{t("sortNameDesc")}</SelectItem>
+                <SelectItem value="date-desc">{t("sortDateDesc")}</SelectItem>
+                <SelectItem value="date-asc">{t("sortDateAsc")}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={clientAccessFilter} onValueChange={(v: 'all' | 'shared' | 'not-shared') => setClientAccessFilter(v)}>
               <SelectTrigger className="w-[150px]">
                 <div className="flex items-center gap-2">
                   <Send className="w-4 h-4 text-gray-400" />
-                  <SelectValue placeholder="Client" />
+                  <SelectValue placeholder={t("clientFilter")} />
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Items</SelectItem>
-                <SelectItem value="shared">Shared</SelectItem>
-                <SelectItem value="not-shared">Not Shared</SelectItem>
+                <SelectItem value="all">{t("allItems")}</SelectItem>
+                <SelectItem value="shared">{t("shared")}</SelectItem>
+                <SelectItem value="not-shared">{t("notShared")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -1302,7 +1305,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
   <button
     onClick={() => setViewMode('grid')}
     className="relative p-2 rounded-[8px] transition-colors"
-    aria-label="Grid view"
+    aria-label={t("gridView")}
   >
     {viewMode === 'grid' && (
       <motion.div
@@ -1324,7 +1327,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
   <button
     onClick={() => setViewMode('list')}
     className="relative p-2 rounded-[8px] transition-colors"
-    aria-label="List view"
+    aria-label={t("listView")}
   >
     {viewMode === 'list' && (
       <motion.div
@@ -1353,7 +1356,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
             >
               <Button className="py-5" variant="outline" size="sm" onClick={openModal}>
                 <FolderOpen className="w-4 h-4 mr-2" />
-                New Folder
+                {t("newFolder")}
               </Button>
             </motion.div>}
          {docsPermission &&   <AnimatePresence mode="popLayout">
@@ -1389,7 +1392,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                     <DropdownMenuContent align="start">
                       <DropdownMenuItem onClick={handleBulkSendToClient}>
                         <Send className="w-4 h-4 mr-2" />
-                        Send to Client
+                        {t("sendToClient")}
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => {
                         setSelectedDocForContractor({ id: 'bulk', name: `${checkedItems.length} documents` });
@@ -1428,8 +1431,8 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onSelect={LinkOpenModal}>{'Add Link'}</DropdownMenuItem>
-                <DropdownMenuItem onSelect={openUploadModal}>{'Upload Files'}</DropdownMenuItem>
+                <DropdownMenuItem onSelect={LinkOpenModal}>{t("addLink")}</DropdownMenuItem>
+                <DropdownMenuItem onSelect={openUploadModal}>{t("uploadFiles")}</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>}
           </div>
@@ -1438,7 +1441,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
         {/* Grid View Loading Skeleton */}
         {viewMode === 'grid' && isLoading && (
           <div className="main-upload-section bg-white relative overflow-hidden min-h-[300px] rounded-xl border p-6 border-neutral-200 border-dashed">
-            <h3 className="mb-4 text-sm font-medium text-neutral-900">Files & Folders</h3>
+            <h3 className="mb-4 text-sm font-medium text-neutral-900">{t("filesAndFolders")}</h3>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {[...Array(6)].map((_, i) => (
                 <Card key={i} className="rounded-xl border border-neutral-200 bg-white shadow-sm">
@@ -1484,7 +1487,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                 e.stopPropagation();
                 setIsDraggingOver(false);
                 if (!docsPermission) {
-                  toast.error("You don't have permission to perform this action.");
+                  toast.error(t('noPermission'));
                   return;
                 }
                 const droppedFiles = Array.from(e.dataTransfer.files);
@@ -1509,8 +1512,8 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                 <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center bg-white/50 backdrop-blur-[4px]">
                   <div className="text-center">
                     <Upload className="w-14 h-14 mx-auto mb-2 animate-bounce" />
-                    <p className="text-lg font-semibold">Drop files here to upload</p>
-                    <p className="text-xs text-gray-600 mt-1">Any file larger than 50MB will be rejected</p>
+                    <p className="text-lg font-semibold">{t("dropFilesHere")}</p>
+                    <p className="text-xs text-gray-600 mt-1">{t("dropFilesReject")}</p>
                   </div>
                 </div>
               )}
@@ -1533,7 +1536,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.15 }}
                 >
-                  <h3 className="mb-4 text-sm font-medium text-neutral-900">Files & Folders</h3>
+                  <h3 className="mb-4 text-sm font-medium text-neutral-900">{t("filesAndFolders")}</h3>
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {/* Folders */}
                     {filteredTotalDocs.filter(doc => doc.isFolder).map((folder, folderIndex) => {
@@ -1552,7 +1555,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                         onDragStart={e => {
                           if (!docsPermission) {
                             e.preventDefault();
-                            toast.error("You don't have permission to perform this action.");
+                            toast.error(t('noPermission'));
                             return;
                           }
                           e.dataTransfer.setData('documentid', String(folder.id));
@@ -1579,7 +1582,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                           e.preventDefault();
                           e.stopPropagation();
                           if (!docsPermission) {
-                            toast.error("You don't have permission to perform this action.");
+                            toast.error(t('noPermission'));
                             return;
                           }
                           const draggedId = e.dataTransfer.getData('documentid');
@@ -1634,7 +1637,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                                     <Edit2 className="w-4 h-4 mr-2" />Rename
                                   </DropdownMenuItem>}
                                 {docsPermission && <DropdownMenuItem onClick={e => { e.stopPropagation(); handleDocSendToClient(folder.id); }}>
-                                    <Send className="w-4 h-4 mr-2" />Send to Client
+                                    <Send className="w-4 h-4 mr-2" />{t("sendToClient")}
                                   </DropdownMenuItem>}
                                   {docsPermission && <DropdownMenuItem onClick={e => { e.stopPropagation(); handleShareToContractor(folder.id, folder.name); }}>
                                     <Users className="w-4 h-4 mr-2" />Share to Contractor
@@ -1653,7 +1656,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                         </Card>
                       </div>
                       </TooltipTrigger>
-                      <TooltipContent side="top"><p>View Only</p></TooltipContent>
+                      <TooltipContent side="top"><p>{t("viewOnly")}</p></TooltipContent>
                       </Tooltip>
                     );
                     })}
@@ -1677,7 +1680,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                         onDragStart={e => {
                           if (!docsPermission) {
                             e.preventDefault();
-                            toast.error("You don't have permission to perform this action.");
+                            toast.error(t('noPermission'));
                             return;
                           }
                           e.dataTransfer.setData('documentid', String(file.id));
@@ -1723,7 +1726,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                                     <RefreshCw className="w-4 h-4 mr-2" />Update
                                   </DropdownMenuItem>}
                                 {docsPermission && <DropdownMenuItem onClick={e => { e.stopPropagation(); handleDocSendToClient(file.id); }}>
-                                    <Send className="w-4 h-4 mr-2" />Send to Client
+                                    <Send className="w-4 h-4 mr-2" />{t("sendToClient")}
                                   </DropdownMenuItem>}
                                 {docsPermission && <DropdownMenuItem onClick={e => { e.stopPropagation(); handleShareToContractor(file.id, file.name); }}>
                                     <Users className="w-4 h-4 mr-2" />Share to Contractor
@@ -1742,7 +1745,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                         </Card>
                       </div>
                       </TooltipTrigger>
-                      <TooltipContent side="top"><p>View Only</p></TooltipContent>
+                      <TooltipContent side="top"><p>{t("viewOnly")}</p></TooltipContent>
                       </Tooltip>
                     );
                     })}
@@ -1768,7 +1771,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                           onDragStart={e => {
                             if (!docsPermission) {
                               e.preventDefault();
-                              toast.error("You don't have permission to perform this action.");
+                              toast.error(t('noPermission'));
                               return;
                             }
                             e.dataTransfer.setData('documentid', String(link.id));
@@ -1804,14 +1807,14 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                                   <DropdownMenuItem onClick={e => { e.stopPropagation(); window.open(link.url, '_blank'); }}>
                                     <SquareArrowOutUpRight className="w-4 h-4 mr-2" />Open Link
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={e => { e.stopPropagation(); navigator.clipboard.writeText(link.url || ''); toast.success('Copied!'); }}>
+                                  <DropdownMenuItem onClick={e => { e.stopPropagation(); navigator.clipboard.writeText(link.url || ''); toast.success(t('copied')); }}>
                                     <Copy className="w-4 h-4 mr-2" />Copy Link
                                   </DropdownMenuItem>
                                {docsPermission &&   <DropdownMenuItem onClick={e => { e.stopPropagation(); FileRenameOpenModal(link); }}>
                                     <Edit2 className="w-4 h-4 mr-2" />Rename
                                   </DropdownMenuItem>}
                                 {docsPermission &&  <DropdownMenuItem onClick={e => { e.stopPropagation(); handleDocSendToClient(link.id); }}>
-                                    <Send className="w-4 h-4 mr-2" />Send to Client
+                                    <Send className="w-4 h-4 mr-2" />{t("sendToClient")}
                                   </DropdownMenuItem>}
                                 {docsPermission &&  <DropdownMenuItem onClick={e => { e.stopPropagation(); handleShareToContractor(link.id, link.name); }}>
                                     <Users className="w-4 h-4 mr-2" />Share to Contractor
@@ -1830,7 +1833,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                         </Card>
                       </div>
                       </TooltipTrigger>
-                      <TooltipContent side="top"><p>View Only</p></TooltipContent>
+                      <TooltipContent side="top"><p>{t("viewOnly")}</p></TooltipContent>
                       </Tooltip>
                       );
                     })}
@@ -1842,8 +1845,8 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
             {docsPermission && filteredTotalDocs.length > 0 && (
               <div className="rounded-xl mt-10 border-1 border-dashed flex flex-col items-center justify-center p-8 transition-all duration-200">
                 <UploadIcon className="w-10 h-10 text-neutral-400 mb-2" />
-                <p className="text-sm font-medium text-neutral-600">Drop files here to upload</p>
-                <p className="text-xs text-neutral-500 mt-1">or click "Upload Files" button</p>
+                <p className="text-sm font-medium text-neutral-600">{t("dropFilesHere")}</p>
+                <p className="text-xs text-neutral-500 mt-1">{t("dropHint")}</p>
               </div>
             )}
           </motion.div>
@@ -1857,12 +1860,12 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                 <thead className="bg-white border-b border-gray-200">
                   <tr>
                     <th scope="col" className="w-10 px-4 py-3"><Skeleton className="w-4 h-4" /></th>
-                    <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">File</th>
-                    <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">Type</th>
-                    <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">Created</th>
-                    <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">Modified</th>
-                    <th scope="col" className="px-4 py-3 text-center text-sm font-medium text-gray-600">Shared</th>
-                    <th scope="col" className="px-4 py-3 text-right text-sm font-medium text-gray-600 w-24">Actions</th>
+                    <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t("tableFile")}</th>
+                    <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t("tableType")}</th>
+                    <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t("tableCreated")}</th>
+                    <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t("tableModified")}</th>
+                    <th scope="col" className="px-4 py-3 text-center text-sm font-medium text-gray-600">{t("tableShared")}</th>
+                    <th scope="col" className="px-4 py-3 text-right text-sm font-medium text-gray-600 w-24">{t("tableActions")}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -1922,7 +1925,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                 e.stopPropagation();
                 setIsDraggingOver(false);
                 if (!docsPermission) {
-                  toast.error("You don't have permission to perform this action.");
+                  toast.error(t('noPermission'));
                   return;
                 }
                 const droppedFiles = Array.from(e.dataTransfer.files);
@@ -1949,8 +1952,8 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
               <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center bg-white/50 backdrop-blur-[4px]">
                 <div className="text-center">
                   <Upload className="w-14 h-14  mx-auto mb-2 animate-bounce" />
-                  <p className="text-lg font-semibold">Drop files here to upload</p>
-                  <p className="text-xs text-gray-600 mt-1">Any file larger than 50MB will be rejected</p>
+                  <p className="text-lg font-semibold">{t("dropFilesHere")}</p>
+                  <p className="text-xs text-gray-600 mt-1">{t("dropFilesReject")}</p>
                 </div>
               </div>
             )}
@@ -2011,7 +2014,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                             onDragStart={e => {
                                 if (!docsPermission) {
                                   e.preventDefault();
-                                  toast.error("You don't have permission to perform this action.");
+                                  toast.error(t('noPermission'));
                                   return;
                                 }
                                 e.dataTransfer.setData('documentid', String(doc.id));
@@ -2039,7 +2042,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                                     e.preventDefault();
                                     e.stopPropagation();
                                     if (!docsPermission) {
-                                      toast.error("You don't have permission to perform this action.");
+                                      toast.error(t('noPermission'));
                                       return;
                                     }
                                     const draggedId = e.dataTransfer.getData('documentid');
@@ -2115,7 +2118,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                                     </div>
                                   </div>
                                 </TooltipTrigger>
-                                <TooltipContent side="top"><p>View Only</p></TooltipContent>
+                                <TooltipContent side="top"><p>{t("viewOnly")}</p></TooltipContent>
                               </Tooltip>
                             </td>
                             <td className="px-4 py-3 text-sm text-gray-600">{doc.isFolder ? 'Folder' : getFileType(doc?.name)}</td>
@@ -2151,7 +2154,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                               <AvatarImage src={`/placeholder.svg?height=20&width=20&query=owner-avatar`} />
                               <AvatarFallback className="bg-gray-900 text-white text-[10px] font-semibold">TS</AvatarFallback>
                             </Avatar>
-                            <span className="truncate">Team</span>
+                            <span className="truncate">{t("team")}</span>
                           </div>
                         </td> */}
                             <td className="px-4 py-3 pr-6 text-right">
@@ -2162,7 +2165,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                                       variant="ghost"
                                       size="sm"
                                       className="w-8 h-8 p-0 text-gray-400 hover:text-gray-600"
-                                      aria-label="Preview"
+                                      aria-label={t("preview")}
                                       onClick={() => handleClickDocs(doc.url || '', doc.name)}
                                     >
                                       <Eye className="w-4 h-4" />
@@ -2171,7 +2174,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                                       variant="ghost"
                                       size="sm"
                                       className="w-8 h-8 p-0 text-gray-400 hover:text-gray-600"
-                                      aria-label="Download"
+                                      aria-label={t("download")}
                                       onClick={() => downloadFile(doc.url || '', doc.name)}
                                     >
                                       <ImageDownload className="w-4 h-4" />
@@ -2184,7 +2187,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                                       variant="ghost"
                                       size="sm"
                                       className="w-8 h-8 p-0 text-gray-400 hover:text-gray-600"
-                                      aria-label="More"
+                                      aria-label={t("more")}
                                     >
                                       <MoreHorizontal className="w-4 h-4" />
                                     </Button>
@@ -2256,7 +2259,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                                       }}
                                     >
                                       <Send className="w-4 h-4 mr-2" />
-                                      Send to Client
+                                      {t("sendToClient")}
                                     </DropdownMenuItem> }
                                     {docsPermission && <DropdownMenuItem onClick={e => { e.stopPropagation(); handleShareToContractor(doc.id, doc.name); }}>
                                       <Users className="w-4 h-4 mr-2" />Share to Contractor
@@ -2314,7 +2317,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                             onDragStart={e => {
                               if (!docsPermission) {
                                 e.preventDefault();
-                                toast.error("You don't have permission to perform this action.");
+                                toast.error(t('noPermission'));
                                 return;
                               }
                               e.dataTransfer.setData('documentid', String(doc.id));
@@ -2359,10 +2362,10 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                                     </div>
                                   </div>
                                 </TooltipTrigger>
-                                <TooltipContent side="top"><p>View Only</p></TooltipContent>
+                                <TooltipContent side="top"><p>{t("viewOnly")}</p></TooltipContent>
                               </Tooltip>
                             </td>
-                            <td className="px-4 py-3 text-sm text-gray-600">Link</td>
+                            <td className="px-4 py-3 text-sm text-gray-600">{t("linkType")}</td>
                             <td className="px-4 py-3 text-sm text-gray-600">{formatDate(doc?.created_at)}</td>
                             <td className="px-4 py-3 text-sm text-gray-600">{formatDate(doc?.updated_at)}</td>
                          
@@ -2395,12 +2398,12 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                                   variant="ghost"
                                   size="sm"
                                   className="w-8  h-8 p-0 text-gray-400 hover:text-gray-600"
-                                  aria-label="Preview"
+                                  aria-label={t("preview")}
                                   // onClick={() => handleClickDocs(doc.url || '', doc.name)}
                                 >
                                   <Link
                                     className="w-8 flex items-center justify-center h-8 p-0 text-gray-400 hover:text-gray-600 rounded-md hover:bg-stone-100"
-                                    aria-label="Preview"
+                                    aria-label={t("preview")}
                                     href={doc?.url || '#'}
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -2415,7 +2418,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                                       variant="ghost"
                                       size="sm"
                                       className="w-8 h-8 p-0 text-gray-400 hover:text-gray-600"
-                                      aria-label="More"
+                                      aria-label={t("more")}
                                     >
                                       <MoreHorizontal className="w-4 h-4" />
                                     </Button>
@@ -2435,7 +2438,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                                       onClick={e => {
                                         e.stopPropagation();
                                         navigator.clipboard.writeText(doc.url || '');
-                                        toast.success('Copied !');
+                                        toast.success(t('copied'));
                                       }}
                                     >
                                       <Copy className="w-4 h-4 mr-2" />
@@ -2483,7 +2486,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                                       }}
                                     >
                                       <Send className="w-4 h-4 mr-2" />
-                                      Send to Client
+                                      {t("sendToClient")}
                                     </DropdownMenuItem> }
                                    {docsPermission && <DropdownMenuItem onClick={e => { e.stopPropagation(); handleShareToContractor(doc.id, doc.name); }}>
                                       <Users className="w-4 h-4 mr-2" />Share to Contractor
@@ -2547,8 +2550,8 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                 className={`rounded-xl mt-10  border-1 border-dashed flex flex-col items-center justify-center p-8 transition-all duration-200 `}
               >
                 <UploadIcon className="w-10 h-10 text-neutral-400 mb-2" />
-                <p className="text-sm font-medium text-neutral-600">Drop files here to upload</p>
-                <p className="text-xs text-neutral-500 mt-1">or click "Upload Files" button</p>
+                <p className="text-sm font-medium text-neutral-600">{t("dropFilesHere")}</p>
+                <p className="text-xs text-neutral-500 mt-1">{t("dropHint")}</p>
               </div>
             )} */}
           </CardContent>
@@ -2566,12 +2569,12 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
       >
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Create New Folder</DialogTitle>
+            <DialogTitle>{t('createNewFolder')}</DialogTitle>
             <DialogDescription>Enter a name for your new folder. Click create when you're done.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <Input
-              placeholder="Folder Name"
+              placeholder={t("folderName")}
               value={newFolderName}
               onChange={e => {
                 setNewFolderName(e.target.value);
@@ -2633,9 +2636,9 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <UploadIcon className="w-5 h-5" />
-              Upload Documents
+              {t('uploadDocumentsTitle')}
             </DialogTitle>
-            <DialogDescription>Upload files to this folder. You can select multiple files at once.</DialogDescription>
+            <DialogDescription>{t('uploadDocumentsDescFolder')}</DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
@@ -2652,8 +2655,8 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                   <FileUp className="w-8 h-8 text-gray-600" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900">Click to upload or drag and drop</p>
-                  <p className="text-xs text-gray-500 mt-1">Maximum file size: 50MB</p>
+                  <p className="text-sm font-medium text-gray-900">{t('clickToUploadDragDrop')}</p>
+                  <p className="text-xs text-gray-500 mt-1">{t('maxFileSize')}</p>
                 </div>
                 {error && <p className="text-red-500 text-sm font-semibold">{error}</p>}
               </div>
@@ -2663,7 +2666,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
             {file.length > 0 && (
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium text-gray-900">Selected Files ({file.length})</p>
+                  <p className="text-sm font-medium text-gray-900">{t('selectedFiles', { count: file.length })}</p>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -2676,7 +2679,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                     }}
                     className="h-8 text-xs"
                   >
-                    Clear All
+                    {t('clearAll')}
                   </Button>
                 </div>
 
@@ -2739,18 +2742,18 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
 
           <DialogFooter>
             <Button variant="outline" onClick={UploadCloseModal}>
-              Cancel
+              {tc('cancel')}
             </Button>
             <Button onClick={handleFileChange} disabled={file.length === 0 || uploading || renamingIndex !== -1}>
               {uploading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Uploading...
+                  {t('uploading')}
                 </>
               ) : (
                 <>
                   <UploadIcon className="w-4 h-4 mr-2" />
-                  Upload {file.length > 0 && `(${file.length})`}
+                  {tc('upload')} {file.length > 0 && `(${file.length})`}
                 </>
               )}
             </Button>
@@ -2758,7 +2761,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
         </DialogContent>
       </Dialog>
 
-      {/* Add Link Dialog */}
+      {/* {t("addLinkTitle")} Dialog */}
       <Dialog
         open={linkModalOpen}
         onOpenChange={open => {
@@ -2770,7 +2773,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Link2 className="w-5 h-5" />
-              Add Link
+              {t("addLinkTitle")}
             </DialogTitle>
             <DialogDescription>Add a link to an external resource or website.</DialogDescription>
           </DialogHeader>
@@ -2778,7 +2781,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
             <div className="space-y-2">
               <Input
                 type="text"
-                placeholder="Link Name (optional)"
+                placeholder={t("linkNameOptional")}
                 value={linkName}
                 onChange={e => {
                   setLinkName(e.target.value);
@@ -2794,7 +2797,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
             <div className="space-y-2">
               <Input
                 type="url"
-                placeholder="Enter URL (https://...)"
+                placeholder={t("enterUrl")}
                 value={link}
                 onChange={e => setLink(e.target.value)}
                 onKeyDown={e => {
@@ -2826,7 +2829,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
               }}
             >
               <Link2 className="w-4 h-4 mr-2" />
-              Add Link
+              {t("addLinkTitle")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -2842,12 +2845,12 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
       >
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Rename Folder</DialogTitle>
+            <DialogTitle>{t('renameFolder')}</DialogTitle>
             <DialogDescription>Enter a new name for this folder.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <Input
-              placeholder="Folder Name"
+              placeholder={t("folderName")}
               value={updatedFolderName}
               onChange={e => {
                 setUpdatedFolderName(e.target.value);
@@ -2907,12 +2910,12 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
       >
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Rename File</DialogTitle>
+            <DialogTitle>{t('renameFileTitle')}</DialogTitle>
             <DialogDescription>Enter a new name for this file.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <Input
-              placeholder="New File Name"
+              placeholder={t("newFileName")}
               value={updatedFileName}
               onChange={e => {
                 setUpdatedFileName(e.target.value);
@@ -2976,7 +2979,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
                   size="sm"
                   onClick={() => downloadFile((currentDoc as any)[0].uri, (currentDoc as any)[0].fileName)}
                   className="h-8 w-8 p-0"
-                  title="Download"
+                  title={t("download")}
                 >
                   <Download className="h-4 w-4" />
                 </Button>
@@ -3038,7 +3041,7 @@ function ProjectFolderPageContent({ params }: { params: { id: string; folderId: 
           }
         }}
         title={deleteTarget?.isFolder ? 'Delete Folder' : 'Delete File'}
-        description="Are you sure you want to delete this item? This action cannot be undone."
+        description={t("deleteConfirmDesc")}
         itemName={deleteTarget?.name}
         requireConfirmation={false}
       />

@@ -11,8 +11,10 @@ import { gooeyToast as toast } from 'goey-toast';
 import { CreditCard, ExternalLink, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 function BillingSettingsContent() {
+  const t = useTranslations('settingsBillingPage');
   const router = useRouter();
   const {
     subscription,
@@ -44,7 +46,7 @@ function BillingSettingsContent() {
       const noPayment = plan?.no_payment_required === true;
 
       if (!noPayment && !stripeConfigured) {
-        toast.error('Billing is not configured.');
+        toast.error(t('toasts.billingNotConfigured'));
         return;
       }
 
@@ -57,7 +59,7 @@ function BillingSettingsContent() {
             markProductTourPendingAfterPlan();
             router.replace('/home/dashboard');
           } else {
-            toast.success('Beta access activated.');
+            toast.success(t('toasts.betaActivated'));
           }
         } else {
           await checkout.mutateAsync(tier);
@@ -65,7 +67,7 @@ function BillingSettingsContent() {
       } catch (err: unknown) {
         const msg =
           (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-          (noPayment ? 'Activation failed.' : 'Checkout failed.');
+          (noPayment ? t('toasts.activationFailed') : t('toasts.checkoutFailed'));
         toast.error(msg);
         setLoadingTier(null);
       }
@@ -79,6 +81,7 @@ function BillingSettingsContent() {
       stripeConfigured,
       subscription?.is_active,
       subscription?.plan_tier,
+      t,
     ]
   );
 
@@ -88,7 +91,7 @@ function BillingSettingsContent() {
     } catch (err: unknown) {
       const msg =
         (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
-        'Could not open billing portal.';
+        t('toasts.portalFailed');
       toast.error(msg);
     }
   };
@@ -104,23 +107,22 @@ function BillingSettingsContent() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-base font-semibold text-gray-900">Upgrade plan</h1>
+        <h1 className="text-base font-semibold text-gray-900">{t('title')}</h1>
         <p className="mt-0.5 text-sm text-gray-600">
-          Manage your studio subscription, billing, and plan upgrades.
+          {t('description')}
         </p>
       </div>
 
       {!stripeConfigured ? (
         <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          Stripe is not configured. Add API keys and price IDs to the server environment to enable
-          checkout.
+          {t('stripeNotConfigured')}
         </div>
       ) : null}
 
       {subscription ? (
         <Section
-          title="Your subscription"
-          description="Current plan and billing status for this studio."
+          title={t('subscriptionTitle')}
+          description={t('subscriptionDescription')}
           action={
             hasActive && subscription.has_subscription ? (
               <Button
@@ -135,7 +137,7 @@ function BillingSettingsContent() {
                 ) : (
                   <ExternalLink className="size-3.5" />
                 )}
-                Manage billing
+                {t('manageBilling')}
               </Button>
             ) : null
           }
@@ -148,11 +150,11 @@ function BillingSettingsContent() {
       ) : null}
 
       <Section
-        title={hasActive ? 'Change plan' : 'Choose a plan'}
+        title={hasActive ? t('changePlanTitle') : t('choosePlanTitle')}
         description={
           hasActive
-            ? 'Upgrade or switch tiers. Changes are handled securely via Stripe.'
-            : `All plans include a ${trialDays}-day free trial. Pick the tier that fits your studio.`
+            ? t('changePlanDescription')
+            : t('choosePlanDescription', { trialDays })
         }
       >
         <PlanCards
@@ -165,20 +167,20 @@ function BillingSettingsContent() {
             activatePlan.isPending ||
             (!stripeConfigured && !plans.some((p) => p.no_payment_required))
           }
-          trialLabel={`Start ${trialDays}-day trial`}
+          trialLabel={t('trialLabel', { trialDays })}
         />
       </Section>
 
-      <Section title="How billing works" description="Subscription lifecycle at a glance.">
+      <Section title={t('howBillingWorksTitle')} description={t('howBillingWorksDescription')}>
         <ol className="list-decimal space-y-2 pl-5 text-sm text-gray-600">
-          <li>Select a plan — you enter Stripe Checkout with a {trialDays}-day trial.</li>
-          <li>After trial, your card is charged monthly for the selected tier.</li>
-          <li>Upgrade anytime from this page; use Manage billing for invoices and cancellation.</li>
-          <li>Enterprise teams can contact sales for custom pricing and SSO.</li>
+          <li>{t('billingSteps.selectPlan', { trialDays })}</li>
+          <li>{t('billingSteps.afterTrial')}</li>
+          <li>{t('billingSteps.upgrade')}</li>
+          <li>{t('billingSteps.enterprise')}</li>
         </ol>
         <div className="mt-4 flex items-center gap-2 text-xs text-gray-500">
           <CreditCard className="size-4" />
-          Payments processed securely by Stripe.
+          {t('stripeFooter')}
         </div>
       </Section>
     </div>

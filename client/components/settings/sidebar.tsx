@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { usePermissions } from '@/hooks/usePermissions';
+import { useTranslations } from 'next-intl';
 import { User, Clock, Settings, DollarSign, Puzzle, Users, LucideIcon, Shield, Bell, FileText, ShieldCheck, CreditCard, Webhook, Palette, Globe } from 'lucide-react';
 
 type Item = {
@@ -11,26 +12,6 @@ type Item = {
   href: string;
   icon: LucideIcon;
 };
-
-const userItems: Item[] = [
-  { label: 'Profile', href: '/settings/user/profile', icon: User },
-  { label: 'Security', href: '/settings/user/security', icon: Shield },
-  { label: 'Notifications', href: '/settings/user/notifications', icon: Bell },
-  { label: 'Appearance', href: '/settings/user/appearance', icon: Palette },
-  { label: 'Time Tracking', href: '/settings/user/time-tracking', icon: Clock },
-];
-
-const studioItems: Item[] = [
-  { label: 'General', href: '/settings/studio/general', icon: Settings },
-  { label: 'Public profile', href: '/settings/studio/public-profile', icon: Globe },
-  { label: 'Upgrade plan', href: '/settings/studio/billing', icon: CreditCard },
-  { label: 'Finance', href: '/settings/studio/finance', icon: DollarSign },
-  { label: 'Team', href: '/settings/studio/team', icon: Users },
-  { label: 'Roles & Permissions', href: '/settings/studio/roles', icon: ShieldCheck },
-  { label: 'Templates', href: '/settings/studio/templates', icon: FileText },
-  { label: 'Integrations', href: '/settings/studio/integrations', icon: Puzzle },
-  { label: 'API & webhooks', href: '/settings/studio/api', icon: Webhook },
-];
 
 function Section({ title, items }: { title: string; items: Item[] }) {
   const pathname = usePathname();
@@ -79,8 +60,28 @@ function TabItem({ item }: { item: Item }) {
 }
 
 export default function SettingsSidebar() {
+  const t = useTranslations('settingsNav');
   const { can } = usePermissions();
   const canEditSettings = can('settings.edit');
+  const userItems: Item[] = [
+    { label: t('profile'), href: '/settings/user/profile', icon: User },
+    { label: t('security'), href: '/settings/user/security', icon: Shield },
+    { label: t('notifications'), href: '/settings/user/notifications', icon: Bell },
+    { label: t('appearance'), href: '/settings/user/appearance', icon: Palette },
+    { label: t('timeTracking'), href: '/settings/user/time-tracking', icon: Clock },
+  ];
+
+  const studioItems: Item[] = [
+    { label: t('general'), href: '/settings/studio/general', icon: Settings },
+    { label: t('publicProfile'), href: '/settings/studio/public-profile', icon: Globe },
+    { label: t('upgradePlan'), href: '/settings/studio/billing', icon: CreditCard },
+    { label: t('finance'), href: '/settings/studio/finance', icon: DollarSign },
+    { label: t('team'), href: '/settings/studio/team', icon: Users },
+    { label: t('rolesPermissions'), href: '/settings/studio/roles', icon: ShieldCheck },
+    { label: t('templates'), href: '/settings/studio/templates', icon: FileText },
+    { label: t('integrations'), href: '/settings/studio/integrations', icon: Puzzle },
+    { label: t('apiWebhooks'), href: '/settings/studio/api', icon: Webhook },
+  ];
 
   const visibleStudioItems = canEditSettings
     ? studioItems.filter(item => item.href !== '/settings/studio/roles' || canEditSettings)
@@ -104,11 +105,11 @@ export default function SettingsSidebar() {
 
       {/* Desktop: vertical sidebar */}
       <div className="hidden lg:block h-full w-full overflow-y-auto p-2">
-        <Section title="User" items={userItems} />
+        <Section title={t('userSection')} items={userItems} />
         {visibleStudioItems.length > 0 && (
           <>
             <div className="my-2 border-t" />
-            <Section title="Studio" items={visibleStudioItems} />
+            <Section title={t('studioSection')} items={visibleStudioItems} />
           </>
         )}
       </div>

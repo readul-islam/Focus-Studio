@@ -16,6 +16,7 @@ import { CheckCircle, FileText } from 'lucide-react';
 import { confirmDrawingSurvey } from '@/lib/contractor/mock-data';
 import type { ContractorDrawing } from '@/lib/contractor/types';
 import { gooeyToast as toast } from 'goey-toast';
+import { useTranslations } from 'next-intl';
 
 interface DrawingConfirmationDialogProps {
   drawing: ContractorDrawing | null;
@@ -30,6 +31,8 @@ export function DrawingConfirmationDialog({
   onClose,
   onConfirm,
 }: DrawingConfirmationDialogProps) {
+  const t = useTranslations('drawingConfirmationDialog');
+  const tc = useTranslations('common');
   const [confirmed, setConfirmed] = useState(false);
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -41,11 +44,11 @@ export function DrawingConfirmationDialog({
     try {
       await confirmDrawingSurvey(drawing.id, notes || undefined);
       onConfirm(drawing.id, notes || undefined);
-      toast.success('Drawing survey confirmed');
+      toast.success(t('toasts.confirmed'));
       handleClose();
     } catch (error) {
       console.error('Failed to confirm survey:', error);
-      toast.error('Failed to confirm survey. Please try again.');
+      toast.error(t('toasts.confirmFailed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -67,9 +70,9 @@ export function DrawingConfirmationDialog({
             <CheckCircle className="w-5 h-5 text-sage-600" />
           </div>
           <div>
-            <DialogTitle>Confirm Drawing Survey</DialogTitle>
+            <DialogTitle>{t('title')}</DialogTitle>
             <DialogDescription className="text-sm text-neutral-500 mt-1">
-              Please confirm you have reviewed and surveyed this drawing.
+              {t('description')}
             </DialogDescription>
           </div>
         </DialogHeader>
@@ -93,7 +96,7 @@ export function DrawingConfirmationDialog({
                 {drawing.name}
               </h4>
               <p className="text-sm text-neutral-500">
-                {drawing.version} · {drawing.room || 'General'}
+                {drawing.version} · {drawing.room || t('generalRoom')}
               </p>
             </div>
           </div>
@@ -111,8 +114,7 @@ export function DrawingConfirmationDialog({
             htmlFor="confirm-survey"
             className="text-sm text-neutral-700 leading-tight cursor-pointer"
           >
-            I confirm that I have surveyed this drawing and understand the
-            specifications and requirements detailed within.
+            {t('confirmLabel')}
           </label>
         </div>
 
@@ -122,11 +124,11 @@ export function DrawingConfirmationDialog({
             htmlFor="survey-notes"
             className="text-sm font-medium text-neutral-700"
           >
-            Notes (optional)
+            {t('notesLabel')}
           </label>
           <Textarea
             id="survey-notes"
-            placeholder="Add any notes or observations from your survey..."
+            placeholder={t('notesPlaceholder')}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             className="resize-none h-20"
@@ -140,7 +142,7 @@ export function DrawingConfirmationDialog({
             onClick={handleClose}
             disabled={isSubmitting}
           >
-            Cancel
+            {tc('cancel')}
           </Button>
           <Button
             type="button"
@@ -151,12 +153,12 @@ export function DrawingConfirmationDialog({
             {isSubmitting ? (
               <>
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                Confirming...
+                {t('confirming')}
               </>
             ) : (
               <>
                 <CheckCircle className="w-4 h-4 mr-2" />
-                Confirm Survey
+                {t('confirmSurvey')}
               </>
             )}
           </Button>

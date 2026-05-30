@@ -14,6 +14,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Search, FileText, Check, Loader2 } from 'lucide-react';
 import type { ContractorDrawing, ContractorShare } from '@/lib/contractor/types';
+import { useTranslations } from 'next-intl';
 
 interface ShareDrawingsDialogProps {
   isOpen: boolean;
@@ -32,6 +33,7 @@ export function ShareDrawingsDialog({
   alreadyShared,
   contractorName,
 }: ShareDrawingsDialogProps) {
+  const t = useTranslations('shareDrawingsDialog');
   const [searchText, setSearchText] = useState('');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(false);
@@ -100,7 +102,7 @@ export function ShareDrawingsDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <FileText className="w-5 h-5 text-sage-600" />
-            Share Drawings with {contractorName}
+            {t('title', { name: contractorName })}
           </DialogTitle>
         </DialogHeader>
 
@@ -111,7 +113,7 @@ export function ShareDrawingsDialog({
             <Input
               value={searchText}
               onChange={e => setSearchText(e.target.value)}
-              placeholder="Search drawings..."
+              placeholder={t('searchPlaceholder')}
               className="pl-10"
             />
           </div>
@@ -127,11 +129,11 @@ export function ShareDrawingsDialog({
                   checked={selectedIds.size === availableDrawings.length && availableDrawings.length > 0}
                   className="data-[state=checked]:bg-umber-900 data-[state=checked]:border-umber-900"
                 />
-                Select all ({availableDrawings.length})
+                {t('selectAll', { count: availableDrawings.length })}
               </button>
               {selectedIds.size > 0 && (
                 <Badge className="bg-umber-100 text-umber-800">
-                  {selectedIds.size} selected
+                  {t('selectedCount', { count: selectedIds.size })}
                 </Badge>
               )}
             </div>
@@ -141,7 +143,7 @@ export function ShareDrawingsDialog({
           <div className="flex-1 overflow-y-auto space-y-2 pr-2">
             {filteredDrawings.length === 0 ? (
               <div className="text-center py-8 text-neutral-500">
-                No drawings found
+                {t('noDrawingsFound')}
               </div>
             ) : (
               filteredDrawings.map(drawing => {
@@ -173,13 +175,13 @@ export function ShareDrawingsDialog({
                         {drawing.name}
                       </p>
                       <p className="text-xs text-neutral-500">
-                        {drawing.room || 'General'} · {drawing.version}
+                        {drawing.room || t('generalRoom')} · {drawing.version}
                       </p>
                     </div>
                     {isShared && (
                       <Badge className="bg-sage-100 text-sage-700 text-xs">
                         <Check className="w-3 h-3 mr-1" />
-                        Shared
+                        {t('sharedBadge')}
                       </Badge>
                     )}
                   </div>
@@ -191,7 +193,7 @@ export function ShareDrawingsDialog({
 
         <DialogFooter className="mt-4">
           <Button variant="outline" onClick={handleClose}>
-            Cancel
+            {t('cancel')}
           </Button>
           <Button
             onClick={handleShare}
@@ -201,10 +203,12 @@ export function ShareDrawingsDialog({
             {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Sharing...
+                {t('sharing')}
               </>
+            ) : selectedIds.size > 0 ? (
+              t('shareCount', { count: selectedIds.size })
             ) : (
-              <>Share {selectedIds.size > 0 ? `(${selectedIds.size})` : ''}</>
+              t('share')
             )}
           </Button>
         </DialogFooter>

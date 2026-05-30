@@ -17,6 +17,7 @@ import { confirmIntegrationConnection } from '@/lib/integrations/confirm-connect
 import { useIntegrationStatusContext } from '@/components/settings/integration-status-context';
 import { gooeyToast as toast } from 'goey-toast';
 import { IntegrationCard } from './IntegrationCard';
+import { useTranslations } from 'next-intl';
 
 type GoogleCalendarIntegrationProps = {
   isConnected: boolean;
@@ -31,6 +32,10 @@ const GoogleCalendarIntegration = ({
   gmailConnected = false,
   isSyncing,
 }: GoogleCalendarIntegrationProps) => {
+  const t = useTranslations('settingsIntegrationsPage.googleCalendar');
+  const tt = useTranslations('settingsIntegrationsPage.googleCalendar.toasts');
+  const ts = useTranslations('settingsIntegrationsPage.shared');
+  const tc = useTranslations('common');
   const [isConnecting, setIsConnecting] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDisconnectDialogOpen, setIsDisconnectDialogOpen] = useState(false);
@@ -49,11 +54,11 @@ const GoogleCalendarIntegration = ({
       const result = await openGmailOAuthPopup(getGmailAuthUrl);
 
       if (result === 'access_denied') {
-        toast.error('Google blocked access. Add your email under OAuth → Test users.');
+        toast.error(tt('blockedAccess'));
         return;
       }
       if (result === 'error') {
-        toast.error('Could not connect. Check server GMAIL_* env vars.');
+        toast.error(tt('connectFailed'));
         return;
       }
 
@@ -67,13 +72,13 @@ const GoogleCalendarIntegration = ({
       if (connected) {
         await queryClient.invalidateQueries({ queryKey: ['gmail/calendar/events/'] });
         await queryClient.invalidateQueries({ queryKey: ['user/dashboard/'] });
-        toast.success('Google Calendar connected.');
+        toast.success(tt('connected'));
       } else if (result === 'cancelled') {
         applyPatch({ calendar_connected: false });
-        toast.error('Calendar connection was cancelled.');
+        toast.error(tt('cancelled'));
       } else {
         applyPatch({ calendar_connected: false });
-        toast.error('Calendar connected to Google but status did not update. Please try again.');
+        toast.error(tt('statusNotUpdated'));
       }
     } finally {
       setIsConnecting(false);
@@ -91,9 +96,9 @@ const GoogleCalendarIntegration = ({
             applyPatch({ gmail_connected: false, calendar_connected: false });
             await waitForStatus((s) => !s.calendar_connected);
             await queryClient.invalidateQueries({ queryKey: ['gmail/calendar/events/'] });
-            toast.success('Google Calendar disconnected.');
+            toast.success(tt('disconnected'));
           },
-          onError: () => toast.error('Failed to disconnect.'),
+          onError: () => toast.error(tt('disconnectFailed')),
         }
       );
     } finally {
@@ -104,12 +109,8 @@ const GoogleCalendarIntegration = ({
   return (
     <IntegrationCard
       icon={<Calendar className="h-4 w-4 text-stone-500" />}
-      title="Google Calendar"
-      description={
-        isConnected
-          ? 'Calendar sync for studio schedule and Daily Brief.'
-          : 'Sync meetings and deadlines with Google Calendar.'
-      }
+      title={t('title')}
+      description={isConnected ? t('descriptionConnected') : t('descriptionDisconnected')}
       isLoading={stateLoading && !isConnected}
       status={isConnected ? 'connected' : null}
       footer={
@@ -122,23 +123,21 @@ const GoogleCalendarIntegration = ({
                 className="text-red-600 border-gray-200 hover:bg-red-50 hover:border-red-200"
                 disabled={busy}
               >
-                Disconnect
+                {t('disconnect')}
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Disconnect Google Calendar?</DialogTitle>
+                <DialogTitle>{t('disconnectTitle')}</DialogTitle>
               </DialogHeader>
-              <p className="text-sm text-gray-600">
-                This disconnects Google (Gmail Inbox uses the same OAuth connection).
-              </p>
+              <p className="text-sm text-gray-600">{t('disconnectDesc')}</p>
               <DialogFooter>
                 <Button variant="outline" onClick={() => setIsDisconnectDialogOpen(false)}>
-                  Cancel
+                  {tc('cancel')}
                 </Button>
                 <Button variant="destructive" onClick={handleDisconnect} disabled={busy}>
                   {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {busy ? 'Disconnecting...' : 'Disconnect'}
+                  {busy ? ts('disconnecting') : t('disconnect')}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -147,34 +146,31 @@ const GoogleCalendarIntegration = ({
           <>
             {gmailConnected && !isConnected ? (
               <p className="text-xs text-amber-800 rounded-lg border border-amber-100 bg-amber-50 px-3 py-2 mb-4">
-                Gmail is connected but Calendar access is missing. Reconnect and allow Calendar
-                permissions.
+                {t('gmailMissingCalendarWarning')}
               </p>
             ) : null}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button size="sm" disabled={busy || stateLoading}>
                   {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {busy ? 'Connecting...' : 'Connect with Google Calendar'}
+                  {busy ? ts('connecting') : t('connectWithGoogleCalendar')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2">
                     <Calendar className="h-5 w-5 text-gray-600" />
-                    Connect Google Calendar
+                    {t('connectTitle')}
                   </DialogTitle>
                 </DialogHeader>
-                <p className="text-sm text-gray-600">
-                  Uses Google OAuth (same as Gmail). Enable Calendar API in Google Cloud Console.
-                </p>
+                <p className="text-sm text-gray-600">{t('connectDesc')}</p>
                 <DialogFooter>
                   <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                    Cancel
+                    {tc('cancel')}
                   </Button>
                   <Button onClick={handleConnect} disabled={busy}>
                     {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {busy ? 'Connecting...' : 'Continue with Google'}
+                    {busy ? ts('connecting') : t('continueWithGoogle')}
                   </Button>
                 </DialogFooter>
               </DialogContent>

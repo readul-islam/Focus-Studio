@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from 'react';
 import { gooeyToast as toast } from 'goey-toast';
 import { UploadCloud, X } from 'lucide-react';
 import useFetch from '@/hooks/useFetch';
+import { useTranslations } from 'next-intl';
 
 interface StudioData {
   name: string;
@@ -42,12 +43,14 @@ const EMPTY: StudioData = {
 };
 
 const BRANDING_URL = '/user/studio/branding/';
-const logoSlots = [
-  { key: 'primary', label: 'Primary logo', description: 'Used on proposals, invoices, and the client portal.' },
-  { key: 'monochrome', label: 'Monochrome logo', description: 'Used on dark backgrounds and purchase orders.' },
-];
 
 function StudioGeneralPageContent() {
+  const t = useTranslations('settingsStudioGeneralPage');
+  const tc = useTranslations('common');
+  const logoSlots = [
+    { key: 'primary', label: t('primaryLogo'), description: t('primaryLogoDescription') },
+    { key: 'monochrome', label: t('monochromeLogo'), description: t('monochromeLogoDescription') },
+  ];
   const [studioData, setStudioData] = useState<StudioData>(EMPTY);
   const queryClient = useQueryClient();
   const { user, isLoading } = useUser();
@@ -70,11 +73,11 @@ function StudioGeneralPageContent() {
 
   function handleFile(key: string, file: File) {
     if (!['image/png', 'image/jpeg', 'image/svg+xml', 'image/webp'].includes(file.type)) {
-      toast.error('Unsupported file type. Use PNG, JPG, SVG or WEBP.');
+      toast.error(t('toasts.unsupportedFile'));
       return;
     }
     if (file.size > 5 * 1024 * 1024) {
-      toast.error('File too large. Max 5MB.');
+      toast.error(t('toasts.fileTooLarge'));
       return;
     }
     fileRefs.current[key] = file;
@@ -88,9 +91,9 @@ function StudioGeneralPageContent() {
     if (fileRefs.current.primary) fd.append('primary_logo', fileRefs.current.primary);
     if (fileRefs.current.monochrome) fd.append('monochrome_logo', fileRefs.current.monochrome);
     toast.promise(saveBranding(fd), {
-      loading: 'Uploading...',
-      success: 'Uploaded.',
-      error: 'Failed to save logo.',
+      loading: t('toasts.uploading'),
+      success: t('toasts.uploaded'),
+      error: t('toasts.uploadFailed'),
     });
   }
 
@@ -117,9 +120,9 @@ function StudioGeneralPageContent() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users', user?.email] });
       queryClient.invalidateQueries({ queryKey: ['/public_profiles/me/'] });
-      toast.success('Studio settings updated.');
+      toast.success(t('toasts.settingsUpdated'));
     },
-    onError: () => toast.error('Failed to save. Please try again.'),
+    onError: () => toast.error(t('toasts.saveFailed')),
   });
 
   const set = (field: keyof StudioData) => (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -134,120 +137,120 @@ function StudioGeneralPageContent() {
     <div className="space-y-6 md:space-y-8">
       <div>
         <h1 className="text-base font-semibold text-gray-900">
-          Studio settings
+          {t('title')}
         </h1>
         <p className="text-sm text-gray-600">
-          Organisation-wide configuration for Focuspilot Studio.
+          {t('description')}
         </p>
       </div>
 
       <Section
-        title="General"
-        description="Studio name, contact details, and address."
+        title={t('generalTitle')}
+        description={t('generalDescription')}
       >
         <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2">
-            <Label htmlFor="name">Studio name</Label>
+            <Label htmlFor="name">{t('studioName')}</Label>
             <Input
               id="name"
               value={studioData.name}
               onChange={set("name")}
-              placeholder="Focuspilot"
+              placeholder={t('placeholders.studioName')}
             />
           </div>
 
           <div>
-            <Label htmlFor="support_email">Support email</Label>
+            <Label htmlFor="support_email">{t('supportEmail')}</Label>
             <Input
               id="support_email"
               type="email"
               value={studioData.support_email}
               onChange={set("support_email")}
-              placeholder="support@focuspilot.io"
+              placeholder={t('placeholders.supportEmail')}
             />
           </div>
 
           <div>
-            <Label htmlFor="phone_number">Phone</Label>
+            <Label htmlFor="phone_number">{t('phone')}</Label>
             <Input
               id="phone_number"
               value={studioData.phone_number}
               onChange={set("phone_number")}
-              placeholder="+44 20 7123 4567"
+              placeholder={t('placeholders.phone')}
             />
           </div>
 
           <div className="sm:col-span-2">
-            <Label htmlFor="address_line_1">Address line 1</Label>
+            <Label htmlFor="address_line_1">{t('addressLine1')}</Label>
             <Input
               id="address_line_1"
               value={studioData.address_line_1}
               onChange={set("address_line_1")}
-              placeholder="123 High Street"
+              placeholder={t('placeholders.addressLine1')}
             />
           </div>
 
           <div className="sm:col-span-2">
-            <Label htmlFor="address_line_2">Address line 2</Label>
+            <Label htmlFor="address_line_2">{t('addressLine2')}</Label>
             <Input
               id="address_line_2"
               value={studioData.address_line_2}
               onChange={set("address_line_2")}
-              placeholder="Suite / Floor (optional)"
+              placeholder={t('placeholders.addressLine2')}
             />
           </div>
 
           <div>
-            <Label htmlFor="city">Town / City</Label>
+            <Label htmlFor="city">{t('city')}</Label>
             <Input
               id="city"
               value={studioData.city}
               onChange={set("city")}
-              placeholder="London"
+              placeholder={t('placeholders.city')}
             />
           </div>
 
           <div>
-            <Label htmlFor="county">County</Label>
+            <Label htmlFor="county">{t('county')}</Label>
             <Input
               id="county"
               value={studioData.county}
               onChange={set("county")}
-              placeholder="Greater London"
+              placeholder={t('placeholders.county')}
             />
           </div>
 
           <div>
-            <Label htmlFor="postcode">Postcode</Label>
+            <Label htmlFor="postcode">{t('postcode')}</Label>
             <Input
               id="postcode"
               value={studioData.postcode}
               onChange={set("postcode")}
-              placeholder="SW1A 1AA"
+              placeholder={t('placeholders.postcode')}
             />
           </div>
 
           <div>
-            <Label htmlFor="country">Country</Label>
+            <Label htmlFor="country">{t('country')}</Label>
             <Input
               id="country"
               value={studioData.country}
               onChange={set("country")}
-              placeholder="United Kingdom"
+              placeholder={t('placeholders.country')}
             />
           </div>
 
           <div className="sm:col-span-2 flex justify-end">
             <Button disabled={mutation.isPending}>
-              {mutation.isPending ? "Saving..." : "Save"}
+              {mutation.isPending ? tc('saving') : tc('save')}
             </Button>
           </div>
         </form>
       </Section>
 
       <Section
-        title="Studio Logo"
-        description="Upload your studio logos. Used on proposals, invoices, and the client portal."
+        title={t('logoSectionTitle')}
+        description={t('logoSectionDescription')}
       >
         <div className="grid gap-6 sm:grid-cols-2">
           {logoSlots.map((slot) => (
@@ -288,9 +291,9 @@ function StudioGeneralPageContent() {
                 ) : (
                   <div className="flex flex-col items-center gap-1.5 text-gray-400 pointer-events-none">
                     <UploadCloud className="w-6 h-6" />
-                    <span className="text-xs">Click or drag to upload</span>
+                    <span className="text-xs">{t('uploadHint')}</span>
                     <span className="text-[10px] text-gray-300">
-                      PNG, JPG, SVG — max 5MB
+                      {t('uploadFormats')}
                     </span>
                   </div>
                 )}
@@ -311,7 +314,7 @@ function StudioGeneralPageContent() {
           ))}
           <div className="sm:col-span-2 flex justify-end pt-2">
             <Button onClick={handleSaveLogo} disabled={isSavingLogo}>
-              {isSavingLogo ? "Saving..." : "Save logo"}
+              {isSavingLogo ? tc('saving') : t('saveLogo')}
             </Button>
           </div>
         </div>

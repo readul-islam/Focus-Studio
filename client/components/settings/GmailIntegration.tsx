@@ -17,6 +17,7 @@ import { confirmIntegrationConnection } from '@/lib/integrations/confirm-connect
 import { refreshIntegrationStatus, patchIntegrationStatus } from '@/lib/integrations/refresh-status';
 import { useIntegrationStatusContextOptional } from '@/components/settings/integration-status-context';
 import { gooeyToast as toast } from 'goey-toast';
+import { useTranslations } from 'next-intl';
 import { IntegrationCard } from './IntegrationCard';
 import { GmailIcon } from '@/components/icons/GmailIcon';
 
@@ -33,6 +34,10 @@ const GmailIntegration = ({
   isSyncing,
   compact,
 }: GmailIntegrationProps) => {
+  const t = useTranslations('settingsIntegrationsPage.gmail');
+  const tt = useTranslations('settingsIntegrationsPage.gmail.toasts');
+  const ts = useTranslations('settingsIntegrationsPage.shared');
+  const tc = useTranslations('common');
   const [isConnecting, setIsConnecting] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDisconnectDialogOpen, setIsDisconnectDialogOpen] = useState(false);
@@ -61,14 +66,12 @@ const GmailIntegration = ({
       const result = await openGmailOAuthPopup(getGmailAuthUrl);
 
       if (result === 'access_denied') {
-        toast.error(
-          'Google blocked access. Add your email under OAuth consent screen → Test users in Google Cloud Console.'
-        );
+        toast.error(tt('blockedAccess'));
         return;
       }
 
       if (result === 'error') {
-        toast.error('Could not connect Gmail. Check server GMAIL_* env vars.');
+        toast.error(tt('connectFailed'));
         return;
       }
 
@@ -82,13 +85,13 @@ const GmailIntegration = ({
 
       if (connected) {
         await queryClient.invalidateQueries({ queryKey: ['gmail/threads/'] });
-        toast.success('Gmail connected.');
+        toast.success(tt('connected'));
       } else if (result === 'cancelled') {
         applyPatch({ gmail_connected: false });
-        toast.error('Gmail connection was cancelled.');
+        toast.error(tt('cancelled'));
       } else {
         applyPatch({ gmail_connected: false });
-        toast.error('Gmail connected to Google but status did not update. Please try again.');
+        toast.error(tt('statusNotUpdated'));
       }
     } finally {
       setIsConnecting(false);
@@ -106,9 +109,9 @@ const GmailIntegration = ({
             applyPatch({ gmail_connected: false, calendar_connected: false });
             await waitForStatus((s) => !s.gmail_connected);
             await queryClient.invalidateQueries({ queryKey: ['gmail/threads/'] });
-            toast.success('Gmail disconnected.');
+            toast.success(tt('disconnected'));
           },
-          onError: () => toast.error('Failed to disconnect Gmail.'),
+          onError: () => toast.error(tt('disconnectFailed')),
         }
       );
     } finally {
@@ -124,7 +127,7 @@ const GmailIntegration = ({
     return (
       <Button size="sm" className="h-7 text-xs flex-shrink-0" onClick={handleConnect} disabled={busy}>
         {busy && <Loader2 className="mr-1 h-3 w-3 animate-spin" />}
-        {busy ? 'Connecting...' : 'Connect'}
+        {busy ? ts('connecting') : t('connect')}
       </Button>
     );
   }
@@ -132,12 +135,8 @@ const GmailIntegration = ({
   return (
     <IntegrationCard
       icon={<GmailIcon className="h-4 w-4" />}
-      title="Gmail"
-      description={
-        isConnected
-          ? 'Your inbox is syncing for AI summaries and categorisation.'
-          : 'Connect Gmail to power the AI Inbox — categorised emails, summaries, and suggested actions.'
-      }
+      title={t('title')}
+      description={isConnected ? t('descriptionConnected') : t('descriptionDisconnected')}
       isLoading={stateLoading && !isConnected}
       status={isConnected ? 'connected' : null}
       footer={
@@ -150,23 +149,21 @@ const GmailIntegration = ({
                 className="text-red-600 border-gray-200 hover:bg-red-50 hover:border-red-200"
                 disabled={busy}
               >
-                Disconnect
+                {t('disconnect')}
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Disconnect Gmail?</DialogTitle>
+                <DialogTitle>{t('disconnectTitle')}</DialogTitle>
               </DialogHeader>
-              <p className="text-sm text-gray-600">
-                This will stop syncing your emails. You can reconnect from Settings or Inbox.
-              </p>
+              <p className="text-sm text-gray-600">{t('disconnectDesc')}</p>
               <DialogFooter>
                 <Button variant="outline" onClick={() => setIsDisconnectDialogOpen(false)}>
-                  Cancel
+                  {tc('cancel')}
                 </Button>
                 <Button variant="destructive" onClick={handleDisconnect} disabled={busy}>
                   {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {busy ? 'Disconnecting...' : 'Disconnect'}
+                  {busy ? ts('disconnecting') : t('disconnect')}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -176,33 +173,29 @@ const GmailIntegration = ({
             <DialogTrigger asChild>
               <Button size="sm" disabled={busy || stateLoading}>
                 {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {busy ? 'Connecting...' : 'Connect with Gmail'}
+                {busy ? ts('connecting') : t('connectWithGmail')}
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
                   <GmailIcon className="h-5 w-5" />
-                  Connect Gmail
+                  {t('connectTitle')}
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-3 text-sm text-gray-600">
-                <p>
-                  Sign in with Google and allow access to Gmail. Connect Google Calendar separately
-                  under Integrations if needed.
-                </p>
+                <p>{t('connectDesc')}</p>
                 <p className="rounded-lg border border-amber-100 bg-amber-50 px-3 py-2 text-xs text-amber-900">
-                  If Google shows &quot;Access blocked&quot; (403), add your account under OAuth
-                  consent screen → Test users in Google Cloud Console.
+                  {t('accessBlockedHint')}
                 </p>
               </div>
               <DialogFooter>
                 <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Cancel
+                  {tc('cancel')}
                 </Button>
                 <Button onClick={handleConnect} disabled={busy}>
                   {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {busy ? 'Connecting...' : 'Continue with Google'}
+                  {busy ? ts('connecting') : t('continueWithGoogle')}
                 </Button>
               </DialogFooter>
             </DialogContent>

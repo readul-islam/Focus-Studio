@@ -2,6 +2,7 @@
 import { PermissionGuard } from '@/components/PermissionGuard';
 
 import React, { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import useFetch from '@/hooks/useFetch';
 import { useReportFilters, formatCurrency, getLastNMonths, getMonthKey } from '@/hooks/useReportFilters';
 import { ReportFilterBar } from '@/components/reports/ReportFilterBar';
@@ -21,6 +22,8 @@ function isOverdue(due?: string, status?: string) {
 }
 
 function FinancePageContent() {
+  const t = useTranslations('reportsFinancePage');
+  const tr = useTranslations('reportsCommon');
   const { period, setPeriod, setCustomRange, customRange, startDate, endDate } = useReportFilters('year');
   const { data: financeRaw, isLoading } = useFetch('/finance/studio-finance/');
   const finance = financeRaw as any;
@@ -83,9 +86,9 @@ function FinancePageContent() {
       <div className="report-print-area max-w-7xl mx-auto space-y-6">
 
         <ReportPageHeader
-          title="Finance"
-          subtitle="Revenue, cash flow and outstanding fees"
-          printTitle="Finance Report"
+          title={t('title')}
+          subtitle={t('subtitle')}
+          printTitle={t('printTitle')}
         />
 
         <ReportFilterBar period={period} onPeriodChange={setPeriod} onCustomRange={setCustomRange} customFrom={customRange?.from} customTo={customRange?.to} />
@@ -102,16 +105,16 @@ function FinancePageContent() {
 
         {/* KPIs */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-          <KpiCard label="Revenue Invoiced" value={formatCurrency(revenue, C)} sub={`${periodInvoices.length} invoices`} icon={TrendingUp} />
-          <KpiCard label="Collected" value={formatCurrency(collected, C)} sub={revenue > 0 ? `${Math.round((collected / revenue) * 100)}% collection rate` : '—'} icon={CheckCircle} />
-          <KpiCard label="Outstanding" value={formatCurrency(outstanding, C)} sub={overdueCount > 0 ? `${overdueCount} overdue` : 'All current'} icon={AlertCircle} alert={overdueCount > 0} />
-          <KpiCard label="PO Spend" value={formatCurrency(poSpend, C)} sub={`${periodPOs.length} purchase orders`} icon={ShoppingCart} />
+          <KpiCard label={t('revenueInvoiced')} value={formatCurrency(revenue, C)} sub={tr('invoicesCount', { count: periodInvoices.length })} icon={TrendingUp} />
+          <KpiCard label={t('collected')} value={formatCurrency(collected, C)} sub={revenue > 0 ? t('collectionRate', { percent: Math.round((collected / revenue) * 100) }) : '—'} icon={CheckCircle} />
+          <KpiCard label={t('outstanding')} value={formatCurrency(outstanding, C)} sub={overdueCount > 0 ? t('overdueCount', { count: overdueCount }) : t('allCurrent')} icon={AlertCircle} alert={overdueCount > 0} />
+          <KpiCard label={t('poSpend')} value={formatCurrency(poSpend, C)} sub={t('purchaseOrdersCount', { count: periodPOs.length })} icon={ShoppingCart} />
         </div>
 
         {/* Revenue vs Costs chart */}
         <Card className="p-6 rounded-xl shadow-sm">
-          <h3 className="font-semibold text-neutral-900 mb-1">Revenue vs. Costs — Last 12 Months</h3>
-          <p className="text-xs text-neutral-500 mb-4">Monthly invoiced revenue vs. purchase order spend</p>
+          <h3 className="font-semibold text-neutral-900 mb-1">{t('revenueVsCosts')}</h3>
+          <p className="text-xs text-neutral-500 mb-4">{t('revenueVsCostsSub')}</p>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={monthlyChart} margin={{ top: 4, right: 8, left: 8, bottom: 4 }}>
@@ -132,8 +135,8 @@ function FinancePageContent() {
 
           {/* Invoice aging */}
           <Card className="p-6 rounded-xl shadow-sm">
-            <h3 className="font-semibold text-neutral-900 mb-1">Outstanding Invoice Aging</h3>
-            <p className="text-xs text-neutral-500 mb-5">How long unpaid invoices have been outstanding</p>
+            <h3 className="font-semibold text-neutral-900 mb-1">{t('agingTitle')}</h3>
+            <p className="text-xs text-neutral-500 mb-5">{t('agingSubtitle')}</p>
             <div className="space-y-4">
               {[
                 { label: 'Not yet due', amount: aging.current, color: '#748971', bg: '#f0f4f0' },
@@ -151,17 +154,17 @@ function FinancePageContent() {
                   </div>
                 </div>
               ))}
-              {total === 1 && <p className="text-sm text-neutral-400 text-center py-4">No outstanding invoices</p>}
+              {total === 1 && <p className="text-sm text-neutral-400 text-center py-4">{t('noOutstanding')}</p>}
             </div>
           </Card>
 
           {/* Revenue by project */}
           <Card className="p-6 rounded-xl shadow-sm">
-            <h3 className="font-semibold text-neutral-900 mb-1">Revenue by Project</h3>
-            <p className="text-xs text-neutral-500 mb-5">Invoiced revenue per project in selected period</p>
+            <h3 className="font-semibold text-neutral-900 mb-1">{t('revenueByProject')}</h3>
+            <p className="text-xs text-neutral-500 mb-5">{t('revenueByProjectSub')}</p>
             <div className="space-y-4">
               {projectRevenue.length === 0 ? (
-                <p className="text-sm text-neutral-400 text-center py-4">No invoices in this period</p>
+                <p className="text-sm text-neutral-400 text-center py-4">{t('noInvoicesPeriod')}</p>
               ) : projectRevenue.map((row, i) => {
                 const pct = (row.revenue / (projectRevenue[0]?.revenue || 1)) * 100;
                 return (

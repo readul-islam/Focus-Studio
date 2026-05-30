@@ -9,6 +9,7 @@ import { Sparkles, FileText, Loader2 } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
 import { postData } from "@/lib/Api"
 import type { ProposalData } from "../proposal-drawer"
+import { useTranslations } from "next-intl"
 
 interface ScopeStepProps {
   data: ProposalData
@@ -101,6 +102,7 @@ function buildAiPayload(data: ProposalData) {
 }
 
 export function ScopeStep({ data, onUpdate }: ScopeStepProps) {
+  const t = useTranslations('crmProposalSteps')
   const [isGenerating, setIsGenerating] = useState(false)
   const [activeTab, setActiveTab] = useState("write")
 
@@ -138,13 +140,13 @@ export function ScopeStep({ data, onUpdate }: ScopeStepProps) {
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3 bg-stone-100">
           <TabsTrigger value="write" className="data-[state=active]:bg-white">
-            Write Custom
+            {t('writeCustom')}
           </TabsTrigger>
           <TabsTrigger value="templates" className="data-[state=active]:bg-white">
-            Use Template
+            {t('useTemplate')}
           </TabsTrigger>
           <TabsTrigger value="ai" className="data-[state=active]:bg-white">
-            AI Generate
+            {t('aiGenerate')}
           </TabsTrigger>
         </TabsList>
 
@@ -170,7 +172,7 @@ export function ScopeStep({ data, onUpdate }: ScopeStepProps) {
               </Button>
             </div>
             <Textarea
-              placeholder="Describe the project scope, deliverables, and what's included..."
+              placeholder={t('scopePlaceholder')}
               value={data.scope || ""}
               onChange={(e) => onUpdate({ scope: e.target.value })}
               rows={12}
@@ -241,7 +243,7 @@ export function ScopeStep({ data, onUpdate }: ScopeStepProps) {
       {/* Terms & Conditions */}
       <div className="space-y-3 pt-4 border-t border-gray-200">
         <div className="flex items-center justify-between">
-          <Label className="text-sm font-semibold text-gray-900">Terms & Conditions</Label>
+          <Label className="text-sm font-semibold text-gray-900">{t('termsConditions')}</Label>
           <div className="flex gap-2">
             <button
               type="button"

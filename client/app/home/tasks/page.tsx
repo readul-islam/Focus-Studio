@@ -54,45 +54,46 @@ import useUser from '@/hooks/useUser';
 import { useNotionTaskSync } from '@/hooks/useNotionTaskSync';
 import { usePermissions } from '@/hooks/usePermissions';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { useTranslations } from 'next-intl';
 
 type UITask = any; // keep your own type here if you have one
 
 // Map priority codes to full names
-const getPriorityLabel = (priority: string) => {
+const getPriorityLabel = (priority: string, t: ReturnType<typeof useTranslations<'homeTasksPage'>>) => {
   const priorityMap: Record<string, string> = {
-    L: 'Low',
-    M: 'Medium',
-    H: 'High',
+    L: t('priority.low'),
+    M: t('priority.medium'),
+    H: t('priority.high'),
   };
   return priorityMap[priority] || priority;
 };
 
-const updatetaskList = (data: any[]) => {
+const updatetaskList = (data: any[], t: ReturnType<typeof useTranslations<'homeTasksPage'>>) => {
   return [
     {
       id: 'todo',
-      name: 'To Do',
+      name: t('columns.todo'),
       items: data?.filter(item => item.status == 'todo') ?? [],
       icon: Circle,
       color: 'text-gray-600',
     },
     {
       id: 'in-progress',
-      name: 'In Progress',
+      name: t('columns.inProgress'),
       items: data?.filter(item => item.status == 'in-progress') ?? [],
       icon: CircleDot,
       color: 'text-blue-600',
     },
     {
       id: 'in-review',
-      name: 'In Review',
+      name: t('columns.inReview'),
       items: data?.filter(item => item.status == 'in-review') ?? [],
       icon: Eye,
       color: 'text-orange-600',
     },
     {
       id: 'done',
-      name: 'Done',
+      name: t('columns.done'),
       items: data?.filter(item => item.status == 'done') ?? [],
       icon: CheckCircle2,
       color: 'text-green-600',
@@ -149,13 +150,6 @@ const AnimatedClock = ({ running = false, className = '' }: { running?: boolean;
   );
 };
 
-const updatedColName = {
-  done: 'Done',
-  'in-review': 'In Review',
-  todo: 'To Do',
-  'in-progress': 'In Progress',
-};
-
 function getInitials(name: string) {
   return name
     .split(' ')
@@ -173,7 +167,9 @@ const SortableTaskCard = React.memo(function SortableTaskCardInner({
   openEditTask,
   openDeleteModal,
   canEdit,
-  canDelete
+  canDelete,
+  t,
+  tc,
 }: any) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: task.id });
 
@@ -191,7 +187,7 @@ const SortableTaskCard = React.memo(function SortableTaskCardInner({
       ref={setNodeRef}
       style={style}
       {...attributes}
-      {...(canEdit ? listeners : { onPointerDown: () => toast.warning("You do not have permission to perform this action.") })}
+      {...(canEdit ? listeners : { onPointerDown: () => toast.warning(tc('noPermissionAction')) })}
       className={`p-3 h-[105px] flex flex-col justify-between rounded-lg border bg-white hover:bg-stone-50 transition-all ${
         isDragging ? 'shadow-xl bg-white opacity-50 cursor-grabbing' : canEdit ? 'border-gray-200' : 'border-gray-200 cursor-default'
       }`}
@@ -230,7 +226,7 @@ const SortableTaskCard = React.memo(function SortableTaskCardInner({
         <div className="flex items-center gap-1">
           <div className="flex items-center gap-1">
             {task?.priority && (
-              <StatusBadge status={getPriorityLabel(task?.priority).toLowerCase()} label={getPriorityLabel(task?.priority)} />
+              <StatusBadge status={getPriorityLabel(task?.priority, t).toLowerCase()} label={getPriorityLabel(task?.priority, t)} />
             )}
           </div>
     {canDelete && <div className="flex items-center gap-1">
@@ -254,7 +250,7 @@ const SortableTaskCard = React.memo(function SortableTaskCardInner({
       <Tooltip delayDuration={2000}>
         <TooltipTrigger asChild>{cardEl}</TooltipTrigger>
         <TooltipContent side="top">
-          <p>View Only</p>
+          <p>{t('viewOnly')}</p>
         </TooltipContent>
       </Tooltip>
     );
@@ -275,7 +271,9 @@ const DroppableColumn = React.memo(function DroppableColumnInner({
   getTrackingButtonClass,
   visibleCount,
   onLoadMore,
-  can
+  can,
+  t,
+  tc,
 }: any) {
   const { setNodeRef } = useDroppable({ id: column.id });
 
@@ -325,6 +323,8 @@ const DroppableColumn = React.memo(function DroppableColumnInner({
               canEdit={can('tasks.edit')}
               canDelete={can("tasks.delete")}
               getTrackingButtonClass={getTrackingButtonClass}
+              t={t}
+              tc={tc}
             />
           ))}
         </SortableContext>
@@ -339,7 +339,7 @@ const DroppableColumn = React.memo(function DroppableColumnInner({
                 onLoadMore(column.id);
               }}
             >
-              <span>Load More</span>
+              <span>{t('loadMore')}</span>
               <ChevronDown className="w-4 h-4 " />
             </button>
           </div>
@@ -391,8 +391,8 @@ const mapTaskData = (data: any[]) => {
 };
 
 export default function MyTasksPage() {
-  // Sortable Task Card Component
-  // (moved to module scope for memoization)
+  const t = useTranslations('homeTasksPage');
+  const tc = useTranslations('common');
 
   const [myTask, setMyTask] = useState<any[]>([]);
   const [tasks, setTasks] = useState<any[]>([]);
@@ -484,7 +484,7 @@ export default function MyTasksPage() {
       queryClient.invalidateQueries({ queryKey: ['task/task-datacards/'], refetchType: 'active' });
     },
     onError: () => {
-      toast.error('Failed to update task status');
+      toast.error(t('toasts.statusUpdateFailed'));
       queryClient.invalidateQueries({ queryKey: ['task/user-tasks/'], refetchType: 'active' });
     },
   });
@@ -522,8 +522,8 @@ export default function MyTasksPage() {
     const removedArhive = list.filter(item => !item.isArchived);
 
     // setTasks(mappedData && mappedData.length > 0 ? updatetaskList(filter === 'archive' ? list : removedArhive) : []);
-    setTasks(updatetaskList(filter === 'archive' ? list : removedArhive));
-  }, [taskData, taskLoading, user?.email, searchText, filter]);
+    setTasks(updatetaskList(filter === 'archive' ? list : removedArhive, t));
+  }, [taskData, taskLoading, user?.email, searchText, filter, t]);
 
 
 
@@ -539,27 +539,27 @@ export default function MyTasksPage() {
 
   const dataCards: DataCardItem[] = [
     {
-      title: 'Total Tasks',
+      title: t('cards.totalTasks'),
       value: taskDataCards?.total_task_count,
-      subtitle: 'Across all assigned projects',
+      subtitle: t('cards.totalTasksSubtitle'),
       icon: Hash,
     },
     {
-      title: 'Overdue Tasks',
+      title: t('cards.overdueTasks'),
       value: taskDataCards?.overdue_task_count,
-      subtitle: 'Past due dates',
+      subtitle: t('cards.overdueSubtitle'),
       icon: AlertTriangle,
     },
     {
-      title: 'Task Added Today',
+      title: t('cards.addedToday'),
       value: taskDataCards?.task_added_today_count,
-      subtitle: 'Created today',
+      subtitle: t('cards.addedTodaySubtitle'),
       icon: CalendarIcon,
     },
     {
-      title: 'Active Projects',
+      title: t('cards.activeProjects'),
       value: taskDataCards?.active_projects_count,
-      subtitle: 'Assigned to you',
+      subtitle: t('cards.activeProjectsSubtitle'),
       icon: FolderOpen,
     },
   ];
@@ -664,28 +664,34 @@ export default function MyTasksPage() {
 
     try {
       await updateTaskStatus({ id: activeId, status: apiStatus });
-      toast.success(`Task moved to ${updatedColName[endColumn as keyof typeof updatedColName]}`);
+      const columnLabels: Record<string, string> = {
+        done: t('columns.done'),
+        'in-review': t('columns.inReview'),
+        todo: t('columns.todo'),
+        'in-progress': t('columns.inProgress'),
+      };
+      toast.success(t('toasts.taskMoved', { column: columnLabels[endColumn] ?? endColumn }));
     } catch {
-      toast.error('Failed to update task status');
+      toast.error(t('toasts.statusUpdateFailed'));
       queryClient.invalidateQueries({ queryKey: ['task/user-tasks/'], refetchType: 'active' });
     }
   };
 
   useEffect(() => {
-    document.title = 'My Task | Focuspilot';
-  }, []);
+    document.title = t('documentTitle');
+  }, [t]);
 
   const { mutate: removeTask, isPending: isDeleting } = useDeleteData({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['task/user-tasks/'] });
-      toast.success('Task Deleted', {
+      toast.success(t('toasts.taskDeleted'), {
         duration: 1000,
         dismissible: true,
       });
       setIsDeleteOpen(false);
     },
     onError: (error: any) => {
-      toast.error('Error deleting task');
+      toast.error(t('toasts.deleteFailed'));
     },
   });
 
@@ -720,14 +726,14 @@ export default function MyTasksPage() {
               <DropdownMenuTrigger className='hidden' asChild>
                 <Button variant="outline" size="sm" className="gap-2 bg-white h-9">
                   <Filter className="w-4 h-4" />
-                  Filter
+                  {t('filter')}
                 </Button>
               </DropdownMenuTrigger>
 
               <DropdownMenuContent align="center" className="w-40">
-                <DropdownMenuItem onClick={() => setFilter('archive')}>Archive</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setFilter('overdue')}>Overdue</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setFilter('today')}>Added Today</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilter('archive')}>{t('archive')}</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilter('overdue')}>{t('overdue')}</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilter('today')}>{t('addedToday')}</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -742,14 +748,14 @@ export default function MyTasksPage() {
 
             <div className="relative w-full max-w-md">
               <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input value={searchText} onChange={e => setSearchText(e.target.value)} className="pl-10 h-9" placeholder="Search tasks..." />
+              <Input value={searchText} onChange={e => setSearchText(e.target.value)} className="pl-10 h-9" placeholder={t('searchPlaceholder')} />
             </div>
           </div>
 
         {can("tasks.edit") &&  <div className="flex items-center gap-2">
             <Button onClick={() => openNewTask()} size="sm" className="gap-2 bg-gray-900 hover:bg-gray-800">
               <Plus className="w-4 h-4" />
-              Add Task
+              {t('addTask')}
             </Button>
           </div>}
         </div>
@@ -768,16 +774,16 @@ export default function MyTasksPage() {
                 <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4">
                   <CheckCircle2 className="w-8 h-8 text-gray-400" />
                 </div>
-                <h3 className="text-xl font-medium text-gray-900 mb-2">You're all caught up!</h3>
+                <h3 className="text-xl font-medium text-gray-900 mb-2">{t('emptyTitle')}</h3>
                 <p className="text-gray-500 max-w-sm mb-8">
-                  No tasks found. Why not start something new? Create a task to keep your project moving forward.
+                  {t('emptyDescription')}
                 </p>
              {can("tasks.edit") &&   <Button
                   onClick={() => openNewTask()}
                   className="bg-gray-900 hover:bg-gray-800 text-white px-8 h-12 rounded-lg text-base font-medium transition-all hover:scale-105 active:scale-95"
                 >
                   <Plus className="w-5 h-5 mr-2" />
-                  Create Your First Task
+                  {t('createFirstTask')}
                 </Button>}
               </div>
             ) : (
@@ -793,6 +799,8 @@ export default function MyTasksPage() {
                   visibleCount={visibleCounts[column.id] || 10}
                   onLoadMore={handleLoadMore}
                   can={can}
+                  t={t}
+                  tc={tc}
                 />
               ))
             )}
@@ -822,8 +830,8 @@ export default function MyTasksPage() {
                     <div className="flex items-center gap-1">
                       {activeTask?.priority && (
                         <StatusBadge
-                          status={getPriorityLabel(activeTask?.priority).toLowerCase()}
-                          label={getPriorityLabel(activeTask?.priority)}
+                          status={getPriorityLabel(activeTask?.priority, t).toLowerCase()}
+                          label={getPriorityLabel(activeTask?.priority, t)}
                         />
                       )}
                     </div>
@@ -858,8 +866,8 @@ export default function MyTasksPage() {
         isOpen={isDeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
         onConfirm={() => handleDelete(selectedTask?.id)}
-        title="Delete Task"
-        description="Are you sure you want to delete this task? This action cannot be undone."
+        title={t('deleteTaskTitle')}
+        description={t('deleteTaskDescription')}
         itemName={selectedTask?.name}
         requireConfirmation={false}
       />

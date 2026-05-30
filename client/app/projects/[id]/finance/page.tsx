@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { gooeyToast as toast } from 'goey-toast';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -29,26 +30,33 @@ import { useCurrency } from '@/lib/getCurrencySymbol';
 import { usePermissions } from '@/hooks/usePermissions';
 import { usePdfDownload } from '@/hooks/usePdfDownload';
 
-const STATUS_OPTIONS = [
-  { label: 'All', value: 'All' },
-  { label: 'Draft', value: 'DFT' },
-  { label: 'Sent', value: 'SNT' },
-  { label: 'Approved', value: 'APR' },
-  { label: 'Paid', value: 'PD' },
-  { label: 'Overdue', value: 'OVD' },
-];
-
-const SORT_OPTIONS = [
-  { label: 'Date (Newest)', value: 'date_desc' },
-  { label: 'Date (Oldest)', value: 'date_asc' },
-  { label: 'Amount (High)', value: 'amount_desc' },
-  { label: 'Amount (Low)', value: 'amount_asc' },
-  { label: 'Due Date (Nearest)', value: 'due_date_asc' },
-  { label: 'Due Date (Farthest)', value: 'due_date_desc' },
-];
-
 function FinancePageContent(params) {
+  const t = useTranslations('projectFinancePage');
   const { id } = params.params;
+
+  const STATUS_OPTIONS = useMemo(
+    () => [
+      { label: t('statusAll'), value: 'All' },
+      { label: t('statusDraft'), value: 'DFT' },
+      { label: t('statusSent'), value: 'SNT' },
+      { label: t('statusApproved'), value: 'APR' },
+      { label: t('statusPaid'), value: 'PD' },
+      { label: t('statusOverdue'), value: 'OVD' },
+    ],
+    [t]
+  );
+
+  const SORT_OPTIONS = useMemo(
+    () => [
+      { label: t('sortDateNewest'), value: 'date_desc' },
+      { label: t('sortDateOldest'), value: 'date_asc' },
+      { label: t('sortAmountHigh'), value: 'amount_desc' },
+      { label: t('sortAmountLow'), value: 'amount_asc' },
+      { label: t('sortDueNearest'), value: 'due_date_asc' },
+      { label: t('sortDueFarthest'), value: 'due_date_desc' },
+    ],
+    [t]
+  );
   const {
     data: financeData,
     isLoading: financeLoading,
@@ -67,7 +75,7 @@ function FinancePageContent(params) {
 
   const { mutate: deleteInvoice } = useDeleteData({
     onSuccess: () => {
-      toast.success('Invoice Deleted');
+      toast.success(t('invoiceDeleted'));
       financeRefetch();
       queryClient.refetchQueries({
         queryKey: ['finance/studio-finance/'],
@@ -88,7 +96,7 @@ function FinancePageContent(params) {
 
   const handleDelete = (id: any) => {
     if(!financeDeletePermission) {
-      toast.error('You do not have permission to delete this');
+      toast.error(t('noPermissionDelete'));
       return;
     }
     if (isPo) {
@@ -99,20 +107,20 @@ function FinancePageContent(params) {
   };
   const { mutate: sendEmail, isPending: isSendingEmail } = usePost({
     onSuccess: () => {
-      toast.success('Email sent successfully');
+      toast.success(t('emailSent'));
       setIsEmailDialogOpen(false);
     },
     onError: () => {
-      toast.error('Failed to send email');
+      toast.error(t('emailFailed'));
     },
   });
 
   const { mutate: sendEmailToClient, isPending: isSendingEmailToClient } = usePost({
     onSuccess: () => {
-      toast.success('Email sent successfully');
+      toast.success(t('emailSent'));
     },
     onError: () => {
-      toast.error('Failed to send email');
+      toast.error(t('emailFailed'));
     },
   });
 
@@ -335,7 +343,7 @@ function FinancePageContent(params) {
 
   const { mutate: createInvoiceFromPO, isPending: isCreatingInvoice } = usePost({
     onSuccess: () => {
-      toast.success('Invoice created successfully');
+      toast.success(t('invoiceCreated'));
       setCheckedItems([]);
       financeRefetch();
       setButtonLoadingPO(false);
@@ -344,14 +352,14 @@ function FinancePageContent(params) {
       });
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to create invoice');
+      toast.error(error.message || t('invoiceCreateFailed'));
       setButtonLoadingPO(false);
     },
   });
 
   const { mutate: bulkDeletePO, isPending: isDeletingPO } = usePost({
     onSuccess: () => {
-      toast.success('Purchase orders deleted successfully');
+      toast.success(t('posDeleted'));
       setCheckedItems([]);
       financeRefetch();
       queryClient.refetchQueries({
@@ -359,13 +367,13 @@ function FinancePageContent(params) {
       });
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to delete purchase orders');
+      toast.error(error.message || t('posDeleteFailed'));
     },
   });
 
   const { mutate: bulkDeleteInvoice, isPending: isDeletingInvoice } = usePost({
     onSuccess: () => {
-      toast.success('Invoices deleted successfully');
+      toast.success(t('invoicesDeleted'));
       setCheckedItems([]);
       financeRefetch();
       queryClient.refetchQueries({
@@ -373,7 +381,7 @@ function FinancePageContent(params) {
       });
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to delete invoices');
+      toast.error(error.message || t('invoicesDeleteFailed'));
     },
   });
 
@@ -385,7 +393,7 @@ function FinancePageContent(params) {
     }
 
     if (hasInvoicesSelected) {
-      toast.error('Cannot create invoice from selected invoices');
+      toast.error(t('cannotCreateFromInvoices'));
       return;
     }
 
@@ -401,7 +409,7 @@ function FinancePageContent(params) {
   // Handle Bulk Delete - Open confirmation dialog
   const handleBulkDelete = () => {
     if (checkedItems.length === 0) {
-      toast.error('No items selected');
+      toast.error(t('noItemsSelected'));
       return;
     }
     setIsBulkDeleteOpen(true);
@@ -444,7 +452,7 @@ function FinancePageContent(params) {
 
   const financeStats = [
     {
-      title: 'Total Invoices',
+      title: t('totalInvoices'),
       value: `${currency?.symbol}${(totalInvoiceOrder || 0).toLocaleString('en-GB', {
         maximumFractionDigits: 2,
       })}`,
@@ -454,7 +462,7 @@ function FinancePageContent(params) {
     },
 
     {
-      title: 'Total Purchase Orders',
+      title: t('totalPurchaseOrders'),
       value: `${currency?.symbol}${(totalPurchaseOrder || 0).toLocaleString('en-GB', {
         maximumFractionDigits: 2,
       })}`,
@@ -464,7 +472,7 @@ function FinancePageContent(params) {
   ];
 
   useEffect(() => {
-    document.title = 'Finance | Focuspilot';
+    document.title = t('documentTitle');
   }, []);
 
   const getStatusStyle = (status: string) => {
@@ -493,7 +501,7 @@ function FinancePageContent(params) {
 
   const { mutate: deletePO } = useDeleteData({
     onSuccess: () => {
-      toast.success('PO Deleted');
+      toast.success(t('poDeleted'));
       queryClient.refetchQueries({
         queryKey: [`projects/project-procurements/?project_id=${id}`],
       });
@@ -520,11 +528,11 @@ function FinancePageContent(params) {
   };
 
   const handleOpenPO = (id: string | number) => {
-    downloadPdf(id, 'po').catch(() => toast.error('Failed to generate PDF'));
+    downloadPdf(id, 'po').catch(() => toast.error(t('pdfFailed')));
   };
 
   const handleOpenInvoice = (id: string | number) => {
-    downloadPdf(id, 'invoice').catch(() => toast.error('Failed to generate PDF'));
+    downloadPdf(id, 'invoice').catch(() => toast.error(t('pdfFailed')));
   };
 
   return (
@@ -568,7 +576,7 @@ function FinancePageContent(params) {
                   />
                 )}
                 <span className="relative z-10">
-                  {type === 'All' ? 'All' : type === 'PO' ? 'Purchase Orders' : 'Invoices'}
+                  {type === 'All' ? t('typeAll') : type === 'PO' ? t('typePO') : t('typeInvoice')}
                 </span>
               </button>
             ))}
@@ -578,18 +586,18 @@ function FinancePageContent(params) {
             <motion.div layout className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
-                placeholder="Search invoices and POs..."
+                placeholder={t('searchPlaceholder')}
                 className="pl-10 w-56"
                 value={searchText}
                 onChange={e => setSearchText(e.target.value)}
-                aria-label="Search invoices and purchase orders"
+                aria-label={t('searchAria')}
               />
             </motion.div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="h-[38px]" variant="outline" size="sm">
                   <Filter className="w-4 h-4 mr-2" />
-                  {STATUS_OPTIONS.find(opt => opt.value === statusFilter)?.label || 'Filter'}
+                  {STATUS_OPTIONS.find(opt => opt.value === statusFilter)?.label || t('filter')}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-40">
@@ -608,7 +616,7 @@ function FinancePageContent(params) {
               <DropdownMenuTrigger asChild>
                 <Button className="h-[38px]" variant="outline" size="sm">
                   <ArrowUpDown className="w-4 h-4 mr-2" />
-                  {SORT_OPTIONS.find(opt => opt.value === sortBy)?.label || 'Sort'}
+                  {SORT_OPTIONS.find(opt => opt.value === sortBy)?.label || t('sort')}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-44">
@@ -630,7 +638,7 @@ function FinancePageContent(params) {
                 disabled={buttonLoadingPO || hasInvoicesSelected}
               >
                 <Plus className="w-4 h-4 mr-2" />
-                {buttonLoadingPO ? 'Creating...' : 'Create Invoice'}
+                {buttonLoadingPO ? t('creating') : t('createInvoice')}
               </Button>
             </motion.div>}
             <AnimatePresence mode="popLayout">
@@ -644,7 +652,7 @@ function FinancePageContent(params) {
                 >
                   <Button variant="destructive" onClick={handleBulkDelete} disabled={isDeletingPO || isDeletingInvoice}>
                     <Trash2 className="w-4 h-4 mr-2" />
-                    {isDeletingPO || isDeletingInvoice ? 'Deleting...' : 'Delete'}
+                    {isDeletingPO || isDeletingInvoice ? t('deleting') : t('delete')}
                   </Button>
                 </motion.div>
               )}
@@ -658,7 +666,7 @@ function FinancePageContent(params) {
             <div className="w-16 h-16 bg-stone-50 rounded-full flex items-center justify-center mb-4">
               <FileText className="w-8 h-8 text-gray-400" />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-1">{searchText ? `No results for "${searchText}"` : "Nothing here yet"}</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-1">{searchText ? t('noResults', { query: searchText }) : t('empty')}</h3>
             <p className="text-gray-500 max-w-sm mb-6">
               Create your first purchase order or invoice to start managing your project costs and billing with ease.
             </p>
@@ -671,7 +679,7 @@ function FinancePageContent(params) {
                 <thead className="bg-white border-b border-gray-200 sticky top-0 z-10">
                   <tr>
                     <th className="px-3 py-3 text-left w-12">
-                      <span className="sr-only">{'Select row'}</span>
+                      <span className="sr-only">{t('selectRow')}</span>
                       <Checkbox
                       disabled={!financePermission}
                         checked={checkedItems.length > 0 && checkedItems.length === filteredPurchaseOrders.length + filteredInvoices.length}

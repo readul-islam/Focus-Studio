@@ -26,6 +26,7 @@ import { usePost } from '@/hooks/usePost';
 import usePatch from '@/hooks/usePatch';
 import useDeleteData from '@/hooks/useDelete';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 
 const BASE = '/user/studio/templates/';
 
@@ -34,6 +35,8 @@ type ApiPhase = { id: number; name: string; color: string; order: number; defaul
 type ApiTemplate = { id: number; name: string; phases: ApiPhase[] };
 
 function StudioTemplatesPageContent() {
+  const t = useTranslations('settingsTemplatesPage');
+  const tc = useTranslations('common');
   const queryClient = useQueryClient();
 
   const { data: templatesData, isLoading } = useFetch(BASE);
@@ -72,86 +75,86 @@ function StudioTemplatesPageContent() {
       setSelectedPhaseId(null);
       queryClient.invalidateQueries({ queryKey: [BASE] });
     },
-    onError: () => toast.error('Failed to create template.'),
+    onError: () => toast.error(t('toasts.createTemplateFailed')),
   });
 
   const { mutate: renameTemplate } = usePatch({
     onSuccess: (data: any) => {
-      setTemplates(prev => prev.map(t => t.id === data.id ? { ...t, name: data.name } : t));
+      setTemplates(prev => prev.map(tpl => tpl.id === data.id ? { ...tpl, name: data.name } : tpl));
     },
-    onError: () => toast.error('Failed to rename template.'),
+    onError: () => toast.error(t('toasts.renameTemplateFailed')),
   });
 
   const { mutate: deleteTemplate } = useDeleteData({
     onSuccess: () => {
-      const remaining = templates.filter(t => t.id !== activeTemplateId);
+      const remaining = templates.filter(tpl => tpl.id !== activeTemplateId);
       setTemplates(remaining);
       setActiveTemplateId(remaining[0]?.id ?? null);
       setSelectedPhaseId(null);
-      toast.success('Template deleted.');
+      toast.success(t('toasts.templateDeleted'));
     },
-    onError: () => toast.error('Failed to delete template.'),
+    onError: () => toast.error(t('toasts.deleteTemplateFailed')),
   });
 
   const { mutate: createPhase } = usePost({
     onSuccess: (data: any) => {
-      setTemplates(prev => prev.map(t =>
-        t.id === activeTemplateId ? { ...t, phases: [...t.phases, data] } : t
+      setTemplates(prev => prev.map(tpl =>
+        tpl.id === activeTemplateId ? { ...tpl, phases: [...tpl.phases, data] } : tpl
       ));
       setSelectedPhaseId(data.id);
     },
-    onError: () => toast.error('Failed to create phase.'),
+    onError: () => toast.error(t('toasts.createPhaseFailed')),
   });
 
   const { mutate: updatePhase } = usePatch({
     onSuccess: (data: any) => {
-      setTemplates(prev => prev.map(t =>
-        t.id === activeTemplateId
-          ? { ...t, phases: t.phases.map(p => p.id === data.id ? { ...p, ...data } : p) }
-          : t
+      setTemplates(prev => prev.map(tpl =>
+        tpl.id === activeTemplateId
+          ? { ...tpl, phases: tpl.phases.map(p => p.id === data.id ? { ...p, ...data } : p) }
+          : tpl
       ));
     },
-    onError: () => toast.error('Failed to update phase.'),
+    onError: () => toast.error(t('toasts.updatePhaseFailed')),
   });
 
   const { mutate: removePhase } = useDeleteData({
     onSuccess: (_: any, vars: any) => {
       const phaseId = vars._phaseId;
-      setTemplates(prev => prev.map(t =>
-        t.id === activeTemplateId
-          ? { ...t, phases: t.phases.filter(p => p.id !== phaseId) }
-          : t
+      setTemplates(prev => prev.map(tpl =>
+        tpl.id === activeTemplateId
+          ? { ...tpl, phases: tpl.phases.filter(p => p.id !== phaseId) }
+          : tpl
       ));
       if (selectedPhaseId === phaseId) {
         const remaining = activeTemplate?.phases.filter(p => p.id !== phaseId) ?? [];
         setSelectedPhaseId(remaining[0]?.id ?? null);
       }
-      toast.success('Phase deleted.');
+      toast.success(t('toasts.phaseDeleted'));
     },
-    onError: () => toast.error('Failed to delete phase.'),
+    onError: () => toast.error(t('toasts.deletePhaseFailed')),
   });
 
   const { mutate: createTask } = usePost({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [tasksUrl] });
     },
-    onError: () => toast.error('Failed to add task.'),
+    onError: () => toast.error(t('toasts.addTaskFailed')),
   });
 
   const { mutate: removeTask } = useDeleteData({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [tasksUrl] });
     },
-    onError: () => toast.error('Failed to delete task.'),
+    onError: () => toast.error(t('toasts.deleteTaskFailed')),
   });
 
   // ── Handlers ─────────────────────────────────────────────────────────────
   function handleAddTemplate() {
-    createTemplate({ url: BASE, data: { name: 'New template' } });
+    createTemplate({ url: BASE, data: { name: t('newTemplateName') } });
   }
 
   function handleDeleteTemplate() {
-    if (templates.length <= 1) { toast.error("Can't delete the last template."); return; }
+    if (templates.length <= 1) { toast.error(t('toasts.cantDeleteLast')); return; }
     deleteTemplate({ url: `${BASE}${activeTemplateId}/`, data: undefined });
   }
 
@@ -162,7 +165,7 @@ function StudioTemplatesPageContent() {
 
   function handleAddPhase() {
     if (!activeTemplateId) return;
-    createPhase({ url: `${BASE}${activeTemplateId}/phases/`, data: { name: 'New phase', color: '#9CA3AF' } });
+    createPhase({ url: `${BASE}${activeTemplateId}/phases/`, data: { name: t('newPhaseName'), color: '#9CA3AF' } });
   }
 
   function handleDeletePhase(phaseId: number) {
@@ -229,8 +232,8 @@ function StudioTemplatesPageContent() {
       {/* Page header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-base font-semibold text-gray-900">Templates</h1>
-          <p className="text-sm text-stone-500">Studio-wide project phase templates used when creating new projects.</p>
+          <h1 className="text-base font-semibold text-gray-900">{t('title')}</h1>
+          <p className="text-sm text-stone-500">{t('description')}</p>
         </div>
       </div>
 
@@ -239,12 +242,12 @@ function StudioTemplatesPageContent() {
         {/* LEFT: Template list */}
         <div className="border-r border-stone-200 flex flex-col">
           <div className="px-3 py-2.5 border-b border-stone-200 bg-stone-50 flex items-center justify-between">
-            <span className="text-xs font-medium text-stone-500">Templates</span>
+            <span className="text-xs font-medium text-stone-500">{t('templatesLabel')}</span>
             <button
               onClick={handleAddTemplate}
               disabled={isCreatingTemplate}
               className="text-stone-400 hover:text-gray-700 transition-colors disabled:opacity-40"
-              title="New template"
+              title={t('newTemplate')}
             >
               <Plus className="h-3.5 w-3.5" />
             </button>
@@ -262,28 +265,28 @@ function StudioTemplatesPageContent() {
           </div>
           <div className="border-t border-stone-200 px-3 py-2 flex gap-1">
             <button
-              title="Duplicate"
+              title={t('duplicate')}
               className="text-xs text-stone-400 hover:text-gray-600 flex items-center gap-1"
-              onClick={() => toast('Duplicate — coming soon.')}
+              onClick={() => toast(t('duplicateComingSoon'))}
             >
-              <Copy className="h-3 w-3" /> Duplicate
+              <Copy className="h-3 w-3" /> {t('duplicate')}
             </button>
             <span className="text-stone-200 mx-1">|</span>
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <button className="text-xs text-red-400 hover:text-red-600">Delete</button>
+                <button className="text-xs text-red-400 hover:text-red-600">{t('delete')}</button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Delete template?</AlertDialogTitle>
+                  <AlertDialogTitle>{t('deleteTemplateTitle')}</AlertDialogTitle>
                   <AlertDialogDescription>
-                    <strong>{activeTemplate?.name}</strong> and all its phases will be permanently deleted. This cannot be undone.
+                    {t('deleteTemplateDescription', { name: activeTemplate?.name ?? '' })}
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogCancel>{tc('cancel')}</AlertDialogCancel>
                   <AlertDialogAction className="bg-red-600 hover:bg-red-700" onClick={handleDeleteTemplate}>
-                    Delete
+                    {tc('delete')}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
@@ -297,7 +300,7 @@ function StudioTemplatesPageContent() {
 
             {/* Template name */}
             <div className="px-5 py-3 flex items-center gap-3 bg-white">
-              <span className="text-xs text-stone-400 shrink-0">Name</span>
+              <span className="text-xs text-stone-400 shrink-0">{t('name')}</span>
               <Input
                 key={activeTemplate.id}
                 defaultValue={activeTemplate.name}
@@ -309,14 +312,14 @@ function StudioTemplatesPageContent() {
             {/* Phase list */}
             <div className="px-5 py-3">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-medium text-stone-500">Phases</span>
+                <span className="text-xs font-medium text-stone-500">{t('phases')}</span>
                 <Button
                   variant="ghost"
                   size="sm"
                   className="h-6 text-xs text-stone-500 hover:text-gray-700 px-2"
                   onClick={handleAddPhase}
                 >
-                  <Plus className="h-3 w-3 mr-1" /> Add phase
+                  <Plus className="h-3 w-3 mr-1" /> {t('addPhase')}
                 </Button>
               </div>
 
@@ -337,8 +340,8 @@ function StudioTemplatesPageContent() {
                         </div>
                       </SortableKnob>
                       <div className="h-3 w-3 rounded-sm shrink-0" style={{ backgroundColor: p.color }} />
-                      <span className="text-sm text-gray-700 flex-1 truncate">{p.name || 'Untitled phase'}</span>
-                      <span className="text-xs text-stone-400">{p.default_tasks?.length ?? 0} tasks</span>
+                      <span className="text-sm text-gray-700 flex-1 truncate">{p.name || t('untitledPhase')}</span>
+                      <span className="text-xs text-stone-400">{t('tasksCount', { count: p.default_tasks?.length ?? 0 })}</span>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <button
@@ -350,15 +353,15 @@ function StudioTemplatesPageContent() {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Delete phase?</AlertDialogTitle>
+                            <AlertDialogTitle>{t('deletePhaseTitle')}</AlertDialogTitle>
                             <AlertDialogDescription>
-                              <strong>{p.name || 'Untitled phase'}</strong> and all its default tasks will be permanently deleted. This cannot be undone.
+                              {t('deletePhaseDescription', { name: p.name || t('untitledPhase') })}
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogCancel>{tc('cancel')}</AlertDialogCancel>
                             <AlertDialogAction className="bg-red-600 hover:bg-red-700" onClick={() => handleDeletePhase(p.id)}>
-                              Delete
+                              {tc('delete')}
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
@@ -372,13 +375,13 @@ function StudioTemplatesPageContent() {
             {/* Selected phase editor */}
             {selectedPhase && (
               <div className="px-5 py-4 flex-1 bg-stone-50/50">
-                <p className="text-xs font-medium text-stone-500 mb-3">Edit phase</p>
+                <p className="text-xs font-medium text-stone-500 mb-3">{t('editPhase')}</p>
                 <div className="grid grid-cols-[1fr_auto] gap-3 mb-4">
                   <Input
                     key={selectedPhase.id + '-name'}
                     defaultValue={selectedPhase.name}
                     onBlur={e => handlePhaseNameBlur(selectedPhase.id, e.target.value)}
-                    placeholder="Phase name"
+                    placeholder={t('phaseNamePlaceholder')}
                     className="h-8 text-sm"
                   />
                   <PhaseColorPicker
@@ -412,6 +415,7 @@ const SWATCHES = [
 ];
 
 function PhaseColorPicker({ color, onChange }: { color: string; onChange: (color: string) => void }) {
+  const t = useTranslations('settingsTemplatesPage');
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState(color);
 
@@ -428,11 +432,11 @@ function PhaseColorPicker({ color, onChange }: { color: string; onChange: (color
           type="button"
           className="h-8 w-8 rounded-md border border-gray-200 flex-shrink-0 transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-300"
           style={{ backgroundColor: current }}
-          title="Pick phase color"
+          title={t('pickPhaseColor')}
         />
       </PopoverTrigger>
       <PopoverContent className="w-auto p-3 rounded-xl shadow-lg" align="end" sideOffset={6}>
-        <p className="text-xs font-medium text-stone-400 mb-2">Phase color</p>
+        <p className="text-xs font-medium text-stone-400 mb-2">{t('phaseColor')}</p>
         <div className="grid grid-cols-6 gap-1.5 mb-2">
           {SWATCHES.map(c => (
             <button
@@ -455,7 +459,7 @@ function PhaseColorPicker({ color, onChange }: { color: string; onChange: (color
             onBlur={e => pick(e.target.value)}
             className="w-8 h-8 rounded cursor-pointer border-0 p-0"
           />
-          <span className="text-xs text-stone-400">Custom color</span>
+          <span className="text-xs text-stone-400">{t('customColor')}</span>
         </div>
       </PopoverContent>
     </Popover>
@@ -474,6 +478,7 @@ function TaskListEditor({
   onAdd: (title: string) => void;
   onDelete: (id: number) => void;
 }) {
+  const t = useTranslations('settingsTemplatesPage');
   const [draft, setDraft] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -493,15 +498,15 @@ function TaskListEditor({
     <div className="space-y-2">
       <div className="flex items-center gap-1.5 mb-1">
         <CheckSquare className="h-3.5 w-3.5 text-stone-400" />
-        <p className="text-xs font-medium text-stone-500">Default tasks</p>
-        <span className="ml-auto text-[10px] text-stone-400">{tasks.length} tasks</span>
+        <p className="text-xs font-medium text-stone-500">{t('defaultTasks')}</p>
+        <span className="ml-auto text-[10px] text-stone-400">{t('tasksCount', { count: tasks.length })}</span>
       </div>
 
       <div className="space-y-1 max-h-48 overflow-y-auto pr-0.5">
         {loading ? (
-          <p className="text-xs text-stone-400 py-2 text-center">Loading tasks…</p>
+          <p className="text-xs text-stone-400 py-2 text-center">{t('loadingTasks')}</p>
         ) : tasks.length === 0 ? (
-          <p className="text-xs text-stone-400 py-2 text-center">No tasks yet — add one below</p>
+          <p className="text-xs text-stone-400 py-2 text-center">{t('noTasksYet')}</p>
         ) : (
           tasks.map(task => (
             <div key={task.id} className="flex items-center gap-2 group rounded-lg border border-gray-100 bg-white px-3 py-2 hover:border-gray-200 transition-colors">
@@ -523,7 +528,7 @@ function TaskListEditor({
           ref={inputRef}
           type="text"
           className="flex-1 h-8 px-3 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:border-gray-400 placeholder:text-stone-300"
-          placeholder="Add a task..."
+          placeholder={t('addTaskPlaceholder')}
           value={draft}
           onChange={e => setDraft(e.target.value)}
           onKeyDown={handleKey}

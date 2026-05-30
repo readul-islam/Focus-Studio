@@ -32,6 +32,7 @@ import {
 import { cn } from '@/lib/utils';
 import useFetch from '@/hooks/useFetch';
 import { ViewCurrencySymbol } from '@/components/ViewCurrencySymbol';
+import { useTranslations } from 'next-intl';
 
 interface Project {
   id: number;
@@ -131,6 +132,7 @@ export function AddToProjectDialog({
   product,
   onSubmit,
 }: AddToProjectDialogProps) {
+  const t = useTranslations('addToProjectDialog');
   const [step, setStep] = useState<Step>('project');
   const [direction, setDirection] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
@@ -249,12 +251,12 @@ export function AddToProjectDialog({
                   transition={{ duration: 0.15 }}
                 >
                   <DialogTitle className="text-base font-semibold text-neutral-900">
-                    {step === 'project' ? 'Add to Project' : 'Select Room'}
+                    {step === 'project' ? t('titleProject') : t('titleRoom')}
                   </DialogTitle>
                   <DialogDescription className="text-sm text-neutral-500 mt-0.5">
                     {step === 'project'
-                      ? 'Choose a project to add this product to'
-                      : `Adding to ${selectedProject?.project_name}`}
+                      ? t('descProject')
+                      : t('descRoom', { projectName: selectedProject?.project_name ?? '' })}
                   </DialogDescription>
                 </motion.div>
               </AnimatePresence>
@@ -281,7 +283,7 @@ export function AddToProjectDialog({
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
                     <Input
-                      placeholder="Search projects by name, location, or client..."
+                      placeholder={t('searchPlaceholder')}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="pl-10 h-10 bg-stone-50 border-neutral-200 focus:bg-white transition-colors"
@@ -307,12 +309,12 @@ export function AddToProjectDialog({
                       >
                         <FolderOpen className="w-10 h-10 text-neutral-300 mb-3" />
                         <p className="text-sm font-medium text-neutral-600">
-                          {searchQuery ? 'No projects found' : 'No active projects'}
+                          {searchQuery ? t('noProjectsFound') : t('noActiveProjects')}
                         </p>
                         <p className="text-xs text-neutral-400 mt-1">
                           {searchQuery
-                            ? 'Try a different search term'
-                            : 'Create a project to get started'}
+                            ? t('tryDifferentSearch')
+                            : t('createProjectHint')}
                         </p>
                       </motion.div>
                     ) : (
@@ -439,7 +441,7 @@ export function AddToProjectDialog({
                           {selectedProject.project_name}
                         </p>
                         <p className="text-xs text-neutral-500">
-                          {getClientName(selectedProject) || selectedProject.location || 'No details'}
+                          {getClientName(selectedProject) || selectedProject.location || t('noDetails')}
                         </p>
                       </div>
                     </div>
@@ -450,7 +452,7 @@ export function AddToProjectDialog({
                 <ScrollArea className="h-[280px]">
                   <div className="px-6 py-4">
                     <p className="text-xs font-medium text-neutral-500 uppercase tracking-wider mb-3">
-                      Select a room
+                      {t('selectRoom')}
                     </p>
 
                     {roomsLoading ? (
@@ -531,9 +533,9 @@ export function AddToProjectDialog({
                         className="flex flex-col items-center justify-center py-12 text-center"
                       >
                         <Home className="w-10 h-10 text-neutral-300 mb-3" />
-                        <p className="text-sm font-medium text-neutral-600">No rooms found</p>
+                        <p className="text-sm font-medium text-neutral-600">{t('noRoomsFound')}</p>
                         <p className="text-xs text-neutral-400 mt-1">
-                          Add rooms in project settings first
+                          {t('addRoomsHint')}
                         </p>
                       </motion.div>
                     )}
@@ -545,9 +547,9 @@ export function AddToProjectDialog({
                   <div className="px-6 py-3 border-t border-neutral-100 bg-stone-50 animate-in fade-in slide-in-from-bottom-2 duration-300">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-medium text-neutral-900">Quantity</p>
+                        <p className="text-sm font-medium text-neutral-900">{t('quantity')}</p>
                         <p className="text-xs text-neutral-500 mt-0.5">
-                          How many units to add?
+                          {t('quantityHint')}
                         </p>
                       </div>
                       <div className="flex items-center gap-1 bg-white rounded-lg border border-neutral-200 p-1">
@@ -624,7 +626,7 @@ export function AddToProjectDialog({
                         animate={{ opacity: 1, y: 0 }}
                         className="text-xs text-neutral-500"
                       >
-                        {quantity > 1 ? `${quantity} units` : '1 unit'}
+                        {quantity > 1 ? t('units', { count: quantity }) : t('unit')}
                       </motion.p>
                     </div>
                   </motion.div>
@@ -640,7 +642,7 @@ export function AddToProjectDialog({
                     disabled={!selectedRoomId}
                     className="shrink-0"
                   >
-                    Add to Project
+                    {t('submit')}
                   </Button>
                 </motion.div>
               </div>

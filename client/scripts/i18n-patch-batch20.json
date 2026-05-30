@@ -1,0 +1,50 @@
+{
+  "teammateSearch": {
+    "searchPlaceholder": "Search teammates…",
+    "selectedCount": "{count} selected",
+    "selectedOverflow": "+{extra}",
+    "noPeopleFound": "No people found.",
+    "clear": "Clear"
+  },
+  "planCards": {
+    "currentPlan": "Current plan",
+    "includes": "Includes",
+    "contactSales": "Contact sales",
+    "activating": "Activating…",
+    "redirecting": "Redirecting…",
+    "upgrade": "Upgrade",
+    "activateBeta": "Activate beta access",
+    "defaultTrialLabel": "Start 14-day trial",
+    "currentPlanSummary": {
+      "label": "Current plan",
+      "statusLabel": "Status:",
+      "statusTrialing": "Free trial",
+      "statusActive": "Active",
+      "statusPastDue": "Past due",
+      "statusNone": "No plan",
+      "trialEnds": "Trial ends {date}",
+      "renews": "Renews {date}",
+      "cancelsAtPeriodEnd": " (cancels at period end)"
+    }
+  },
+  "addToProjectDialog": {
+    "titleProject": "Add to Project",
+    "titleRoom": "Select Room",
+    "descProject": "Choose a project to add this product to",
+    "descRoom": "Adding to {projectName}",
+    "searchPlaceholder": "Search projects by name, location, or client...",
+    "noProjectsFound": "No projects found",
+    "noActiveProjects": "No active projects",
+    "tryDifferentSearch": "Try a different search term",
+    "createProjectHint": "Create a project to get started",
+    "noDetails": "No details",
+    "selectRoom": "Select a room",
+    "noRoomsFound": "No rooms found",
+    "addRoomsHint": "Add rooms in project settings first",
+    "quantity": "Quantity",
+    "quantityHint": "How many units to add?",
+    "unit": "1 unit",
+    "units": "{count} units",
+    "submit": "Add to Project"
+  }
+}

@@ -8,8 +8,10 @@ import GmailIntegration from '@/components/settings/GmailIntegration';
 import GoogleCalendarIntegration from '@/components/settings/GoogleCalendarIntegration';
 import NotionIntegration from '@/components/settings/NotionIntegration';
 import ZapierIntegration from '@/components/settings/ZapierIntegration';
+import { useTranslations } from 'next-intl';
 
 function IntegrationsPageContent() {
+  const t = useTranslations('settingsIntegrationsPage');
   const { status, isLoading, isFetching } = useIntegrationStatusContext();
 
   const pageLoading = isLoading && !status.gmail_connected && !status.notion_connected;
@@ -17,11 +19,11 @@ function IntegrationsPageContent() {
   return (
     <div className="space-y-6 md:space-y-8">
       <div>
-        <h1 className="text-base font-semibold text-gray-900">Integrations</h1>
-        <p className="text-sm text-gray-600 mt-0.5">Connect Focuspilot Studio to your tools.</p>
+        <h1 className="text-base font-semibold text-gray-900">{t('title')}</h1>
+        <p className="text-sm text-gray-600 mt-0.5">{t('description')}</p>
       </div>
 
-      <Section title="Apps">
+      <Section title={t('appsTitle')}>
         <div className="grid gap-4 sm:grid-cols-2">
           <XeroIntegration
             isLoading={pageLoading}

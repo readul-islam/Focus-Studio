@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { sanitizeComposeHtml } from '@/lib/sanitize-html';
+import { useTranslations } from 'next-intl';
 
 type RichTextEditorProps = {
   value: string;
@@ -74,10 +75,11 @@ export function ComposeToolbar({
   disabled?: boolean;
   className?: string;
 }) {
+  const t = useTranslations('richTextEditor');
   const setLink = () => {
     if (!editor) return;
     const prev = editor.getAttributes('link').href as string | undefined;
-    const url = window.prompt('Link URL', prev || 'https://');
+    const url = window.prompt(t('linkUrlPrompt'), prev || 'https://');
     if (url === null) return;
     if (!url.trim()) {
       editor.chain().focus().extendMarkRange('link').unsetLink().run();
@@ -99,7 +101,7 @@ export function ComposeToolbar({
         onClick={() => editor.chain().focus().toggleBold().run()}
         active={editor.isActive('bold')}
         disabled={disabled}
-        title="Bold"
+        title={t('bold')}
       >
         <Bold className="w-4 h-4" />
       </ToolbarButton>
@@ -107,7 +109,7 @@ export function ComposeToolbar({
         onClick={() => editor.chain().focus().toggleItalic().run()}
         active={editor.isActive('italic')}
         disabled={disabled}
-        title="Italic"
+        title={t('italic')}
       >
         <Italic className="w-4 h-4" />
       </ToolbarButton>
@@ -115,7 +117,7 @@ export function ComposeToolbar({
         onClick={() => editor.chain().focus().toggleUnderline().run()}
         active={editor.isActive('underline')}
         disabled={disabled}
-        title="Underline"
+        title={t('underline')}
       >
         <UnderlineIcon className="w-4 h-4" />
       </ToolbarButton>
@@ -123,7 +125,7 @@ export function ComposeToolbar({
         onClick={() => editor.chain().focus().toggleStrike().run()}
         active={editor.isActive('strike')}
         disabled={disabled}
-        title="Strikethrough"
+        title={t('strikethrough')}
       >
         <Strikethrough className="w-4 h-4" />
       </ToolbarButton>
@@ -132,7 +134,7 @@ export function ComposeToolbar({
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         active={editor.isActive('bulletList')}
         disabled={disabled}
-        title="Bullet list"
+        title={t('bulletList')}
       >
         <List className="w-4 h-4" />
       </ToolbarButton>
@@ -140,7 +142,7 @@ export function ComposeToolbar({
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         active={editor.isActive('orderedList')}
         disabled={disabled}
-        title="Numbered list"
+        title={t('numberedList')}
       >
         <ListOrdered className="w-4 h-4" />
       </ToolbarButton>
@@ -149,14 +151,14 @@ export function ComposeToolbar({
         onClick={setLink}
         active={editor.isActive('link')}
         disabled={disabled}
-        title="Insert link"
+        title={t('insertLink')}
       >
         <Link2 className="w-4 h-4" />
       </ToolbarButton>
       <ToolbarButton
         onClick={() => editor.chain().focus().unsetAllMarks().clearNodes().run()}
         disabled={disabled}
-        title="Clear formatting"
+        title={t('clearFormatting')}
       >
         <RemoveFormatting className="w-4 h-4" />
       </ToolbarButton>
@@ -167,13 +169,15 @@ export function ComposeToolbar({
 export function RichTextEditor({
   value,
   onChange,
-  placeholder = 'Write a reply...',
+  placeholder = '',
   disabled = false,
   className,
   fullWidthToolbar = false,
   leadingActions,
   trailingActions,
 }: RichTextEditorProps) {
+  const t = useTranslations('richTextEditor');
+  const resolvedPlaceholder = placeholder || t('defaultPlaceholder');
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
@@ -192,7 +196,7 @@ export function RichTextEditor({
           rel: 'noopener noreferrer',
         },
       }),
-      Placeholder.configure({ placeholder }),
+      Placeholder.configure({ placeholder: resolvedPlaceholder }),
     ],
     content: value || '',
     editable: !disabled,

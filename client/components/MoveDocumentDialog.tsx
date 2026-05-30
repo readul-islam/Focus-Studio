@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { FolderIcon, ChevronRight, ChevronDown, Loader2, Home, FolderOutput } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import useFetch from '@/hooks/useFetch';
 import { cn } from '@/lib/utils';
 
@@ -36,36 +37,30 @@ export function MoveDocumentDialog({
   projectId,
   excludeFolderIds = [],
 }: MoveDocumentDialogProps) {
+  const t = useTranslations('moveDocumentDialog');
   const [selectedParentId, setSelectedParentId] = useState<number | null | undefined>(undefined);
   const [expandedFolders, setExpandedFolders] = useState<Set<number>>(new Set());
   const [isMoving, setIsMoving] = useState(false);
 
-  // Fetch root documents to get all root-level folders
   const { data: rootDocs, isLoading } = useFetch(
     isOpen ? `/documents/documents/root_documents/?project_id=${projectId}` : null,
     { enabled: isOpen }
   );
 
-  // Filter to only folders
   const folders = useMemo(() => {
     if (!rootDocs) return [];
     return (rootDocs as any[]).filter(doc => doc.type === 'FOLDER');
   }, [rootDocs]);
 
-  // Build disabled folder IDs set
   const disabledIds = useMemo(() => {
     const set = new Set<number>();
     excludeFolderIds.forEach(id => set.add(Number(id)));
     return set;
   }, [excludeFolderIds]);
 
-  // Check if the move button should be disabled
   const isMoveDisabled = useMemo(() => {
-    // Disabled if nothing selected
     if (selectedParentId === undefined) return true;
-    // Disabled if selecting current location
     if (selectedParentId === currentParentId) return true;
-    // Disabled if selecting a disabled folder
     if (selectedParentId !== null && disabledIds.has(selectedParentId)) return true;
     return false;
   }, [selectedParentId, currentParentId, disabledIds]);
@@ -111,7 +106,7 @@ export function MoveDocumentDialog({
             <FolderOutput className="w-5 h-5 " />
           </div>
           <div>
-            <DialogTitle>Move Item</DialogTitle>
+            <DialogTitle>{t('title')}</DialogTitle>
             {documentNames.length > 0 && (
               <p className="text-sm text-muted-foreground mt-1 truncate max-w-[280px]">
                 &quot;{itemLabel}&quot;
@@ -121,7 +116,7 @@ export function MoveDocumentDialog({
         </DialogHeader>
 
         <DialogDescription>
-          Select a destination folder for your {documentNames.length === 1 ? 'item' : 'items'}.
+          {t('description', { count: documentNames.length })}
         </DialogDescription>
 
         <ScrollArea className="h-[300px] border rounded-md p-2">
@@ -131,7 +126,6 @@ export function MoveDocumentDialog({
             </div>
           ) : (
             <div className="space-y-1">
-              {/* Root option */}
               <button
                 onClick={() => setSelectedParentId(null)}
                 disabled={isCurrent(null)}
@@ -142,11 +136,10 @@ export function MoveDocumentDialog({
                 )}
               >
                 <Home className="w-4 h-4" />
-                <span>Root (Project Files)</span>
-                {isCurrent(null) && <span className="text-xs text-gray-500 ml-auto">(current)</span>}
+                <span>{t('root')}</span>
+                {isCurrent(null) && <span className="text-xs text-gray-500 ml-auto">{t('current')}</span>}
               </button>
 
-              {/* Folder list */}
               {folders.map((folder: any) => (
                 <FolderTreeItem
                   key={folder.id}
@@ -162,7 +155,7 @@ export function MoveDocumentDialog({
               ))}
 
               {folders.length === 0 && !isLoading && (
-                <p className="text-sm text-gray-500 text-center py-4">No folders available</p>
+                <p className="text-sm text-gray-500 text-center py-4">{t('noFolders')}</p>
               )}
             </div>
           )}
@@ -170,18 +163,18 @@ export function MoveDocumentDialog({
 
         <DialogFooter className="mt-4 flex gap-3 sm:justify-end">
           <Button variant="outline" onClick={handleClose} disabled={isMoving}>
-            Cancel
+            {t('cancel')}
           </Button>
           <Button onClick={handleMove} disabled={isMoving || isMoveDisabled}>
             {isMoving ? (
               <>
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                Moving...
+                {t('moving')}
               </>
             ) : (
               <>
                 <FolderOutput className="w-4 h-4 mr-1" />
-                Move
+                {t('move')}
               </>
             )}
           </Button>
@@ -191,7 +184,6 @@ export function MoveDocumentDialog({
   );
 }
 
-// Recursive folder tree item component
 function FolderTreeItem({
   folder,
   level,
@@ -211,13 +203,13 @@ function FolderTreeItem({
   expandedIds: Set<number>;
   onToggleExpand: (id: number) => void;
 }) {
+  const t = useTranslations('moveDocumentDialog');
   const isExpanded = expandedIds.has(folder.id);
   const isDisabled = disabledIds.has(folder.id);
   const isCurrent = currentParentId === folder.id;
   const isSelected = selectedId === folder.id;
   const hasChildren = folder.item_count > 0;
 
-  // Fetch children when expanded
   const { data: childrenData, isLoading: childrenLoading } = useFetch(
     isExpanded ? `documents/documents/${folder.id}/folder_content/` : null,
     { enabled: isExpanded }
@@ -238,7 +230,6 @@ function FolderTreeItem({
         )}
         style={{ paddingLeft: `${level * 16 + 8}px` }}
       >
-        {/* Expand/collapse button */}
         <button
           onClick={e => {
             e.stopPropagation();
@@ -258,7 +249,6 @@ function FolderTreeItem({
           )}
         </button>
 
-        {/* Folder button */}
         <button
           onClick={() => !isDisabled && !isCurrent && onSelect(folder.id)}
           disabled={isDisabled || isCurrent}
@@ -269,19 +259,17 @@ function FolderTreeItem({
         >
           <FolderIcon className="w-4 h-4 text-gray-500 flex-shrink-0" />
           <span className="truncate">{folder.name}</span>
-          {isCurrent && <span className="text-xs text-gray-500 ml-auto flex-shrink-0">(current)</span>}
+          {isCurrent && <span className="text-xs text-gray-500 ml-auto flex-shrink-0">{t('current')}</span>}
         </button>
       </div>
 
-      {/* Children loading indicator */}
       {isExpanded && childrenLoading && (
         <div className="flex items-center gap-2 py-2" style={{ paddingLeft: `${(level + 1) * 16 + 32}px` }}>
           <Loader2 className="w-3 h-3 animate-spin text-gray-400" />
-          <span className="text-xs text-gray-400">Loading...</span>
+          <span className="text-xs text-gray-400">{t('loading')}</span>
         </div>
       )}
 
-      {/* Children */}
       {isExpanded &&
         !childrenLoading &&
         childFolders.map((child: any) => (

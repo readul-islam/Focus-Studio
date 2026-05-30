@@ -2,6 +2,7 @@
 import { PermissionGuard } from '@/components/PermissionGuard';
 
 import React, { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import useFetch from '@/hooks/useFetch';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -17,6 +18,8 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/
 const C = '£';
 
 function ProcurementPageContent() {
+  const t = useTranslations('reportsProcurementPage');
+  const tr = useTranslations('reportsFinancePage');
   const { period, setPeriod, setCustomRange, customRange, startDate, endDate } = useReportFilters('year');
   const { data: financeRaw, isLoading } = useFetch('/finance/studio-finance/');
   const finance = financeRaw as any;
@@ -103,9 +106,9 @@ function ProcurementPageContent() {
       <div className="report-print-area max-w-7xl mx-auto space-y-6">
 
         <ReportPageHeader
-          title="Procurement"
-          subtitle="Purchase order spend, supplier and project margin analysis"
-          printTitle="Procurement Report"
+          title={t('title')}
+          subtitle={t('subtitle')}
+          printTitle={t('title')}
         />
 
         <ReportFilterBar period={period} onPeriodChange={setPeriod} onCustomRange={setCustomRange} customFrom={customRange?.from} customTo={customRange?.to} />
@@ -124,10 +127,10 @@ function ProcurementPageContent() {
         ) : <>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-          <KpiCard label="Total PO Spend" value={formatCurrency(totalSpend, C)} sub={`${periodPOs.length} purchase orders`} icon={ShoppingCart} />
-          <KpiCard label="Paid" value={formatCurrency(paidAmount, C)} sub={`${paidPOs.length} paid`} icon={CheckCircle2} />
-          <KpiCard label="Outstanding" value={formatCurrency(unpaidAmount, C)} sub={`${unpaidPOs.length} unpaid`} icon={Clock} alert={unpaidPOs.length > 0} />
-          <KpiCard label="Avg PO Value" value={formatCurrency(periodPOs.length > 0 ? totalSpend / periodPOs.length : 0, C)} sub="Per purchase order" icon={TrendingDown} />
+          <KpiCard label={t('totalPoSpend')} value={formatCurrency(totalSpend, C)} sub={tr('purchaseOrdersCount', { count: periodPOs.length })} icon={ShoppingCart} />
+          <KpiCard label={t('paid')} value={formatCurrency(paidAmount, C)} sub={t('paidCount', { count: paidPOs.length })} icon={CheckCircle2} />
+          <KpiCard label={t('outstanding')} value={formatCurrency(unpaidAmount, C)} sub={t('unpaidCount', { count: unpaidPOs.length })} icon={Clock} alert={unpaidPOs.length > 0} />
+          <KpiCard label={t('avgPoValue')} value={formatCurrency(periodPOs.length > 0 ? totalSpend / periodPOs.length : 0, C)} sub={t('perPo')} icon={TrendingDown} />
         </div>
 
         {/* Monthly Spend vs Revenue */}
@@ -158,16 +161,16 @@ function ProcurementPageContent() {
           {/* By Supplier */}
           <Card className="bg-white border-gray-200 rounded-xl shadow-sm">
             <CardHeader>
-              <CardTitle className="text-base font-semibold text-gray-900">By Supplier</CardTitle>
-              <p className="text-sm text-gray-500">PO spend breakdown by supplier</p>
+              <CardTitle className="text-base font-semibold text-gray-900">{t('bySupplier')}</CardTitle>
+              <p className="text-sm text-gray-500">{t('bySupplierSub')}</p>
             </CardHeader>
             <CardContent className="p-0">
               <table className="w-full text-sm">
                 <thead className="bg-white border-b border-gray-200">
                   <tr>
-                    <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2.5">Supplier</th>
-                    <th className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2.5">POs</th>
-                    <th className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2.5">Spend</th>
+                    <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2.5">{t('supplier')}</th>
+                    <th className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2.5">{t('pos')}</th>
+                    <th className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2.5">{t('spend')}</th>
                     <th className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2.5">% of Total</th>
                   </tr>
                 </thead>
@@ -192,17 +195,17 @@ function ProcurementPageContent() {
           {/* By Project — with margin */}
           <Card className="bg-white border-gray-200 rounded-xl shadow-sm">
             <CardHeader>
-              <CardTitle className="text-base font-semibold text-gray-900">By Project</CardTitle>
-              <p className="text-sm text-gray-500">PO spend vs revenue and margin per project</p>
+              <CardTitle className="text-base font-semibold text-gray-900">{t('byProject')}</CardTitle>
+              <p className="text-sm text-gray-500">{t('byProjectSub')}</p>
             </CardHeader>
             <CardContent className="p-0">
               <table className="w-full text-sm">
                 <thead className="bg-white border-b border-gray-200">
                   <tr>
-                    <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2.5">Project</th>
-                    <th className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2.5">Spend</th>
-                    <th className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2.5">Revenue</th>
-                    <th className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2.5">Margin</th>
+                    <th className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2.5">{t('project')}</th>
+                    <th className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2.5">{t('spend')}</th>
+                    <th className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2.5">{t('revenue')}</th>
+                    <th className="text-right text-xs font-medium text-gray-500 uppercase tracking-wider px-4 py-2.5">{t('margin')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">

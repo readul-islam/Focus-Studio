@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
 import { dataUrlToFile, getCroppedImageDataUrl, validateRasterImageFile } from '@/lib/image-crop';
+import { useTranslations } from 'next-intl';
 
 type ImageCropUploadProps = {
   label: string;
@@ -36,6 +37,8 @@ export function ImageCropUpload({
   onRemove,
   disabled,
 }: ImageCropUploadProps) {
+  const t = useTranslations('imageCropUpload');
+  const tc = useTranslations('common');
   const [preview, setPreview] = useState<string | null>(null);
   const [showCrop, setShowCrop] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -50,7 +53,7 @@ export function ImageCropUpload({
   function pickFile(file: File) {
     const v = validateRasterImageFile(file);
     if (!v.ok) {
-      toast.error(v.message);
+      toast.error(v.code === 'unsupportedType' ? t('unsupportedFileType') : t('fileTooLarge'));
       return;
     }
     const reader = new FileReader();
@@ -102,7 +105,7 @@ export function ImageCropUpload({
             <div className="absolute inset-0 flex items-end justify-center opacity-0 group-hover:opacity-100 transition-opacity">
               <label className="inline-flex items-center gap-1 bg-black/75 text-white text-[10px] px-4 py-1.5 cursor-pointer rounded-b-xl w-full justify-center">
                 <Camera className="size-3" />
-                Change
+                {t('change')}
                 <input
                   type="file"
                   accept="image/png,image/jpeg,image/webp"
@@ -125,13 +128,13 @@ export function ImageCropUpload({
               try {
                 await onRemove();
                 setPreview(null);
-                toast.success('Image removed');
+                toast.success(t('imageRemoved'));
               } catch {
-                toast.error('Could not remove image');
+                toast.error(t('removeFailed'));
               }
             }}
             className="absolute -top-1 -right-1 bg-background rounded-full p-1 shadow border"
-            aria-label={`Remove ${label}`}
+            aria-label={t('removeAriaLabel', { label })}
           >
             <X className="size-3 text-muted-foreground" />
           </button>
@@ -141,7 +144,7 @@ export function ImageCropUpload({
       <Dialog open={showCrop && !!preview} onOpenChange={(open) => !open && setShowCrop(false)}>
         <DialogContent className="sm:max-w-[720px]">
           <DialogHeader>
-            <DialogTitle>Crop {label.toLowerCase()}</DialogTitle>
+            <DialogTitle>{t('cropTitle', { label: label.toLowerCase() })}</DialogTitle>
           </DialogHeader>
           <div className="w-full h-80 bg-muted rounded-lg overflow-hidden relative">
             <Cropper
@@ -164,7 +167,7 @@ export function ImageCropUpload({
               className="flex-1"
             />
             <Button variant="ghost" size="sm" onClick={() => setShowCrop(false)} disabled={isUploading}>
-              Cancel
+              {tc('cancel')}
             </Button>
             <Button
               size="sm"
@@ -178,16 +181,16 @@ export function ImageCropUpload({
                   const newUrl = await onUpload(file);
                   if (typeof newUrl === 'string') setPreview(newUrl);
                   setShowCrop(false);
-                  toast.success(`${label} updated`);
+                  toast.success(t('updated', { label }));
                 } catch {
-                  toast.error('Could not upload image');
+                  toast.error(t('uploadFailed'));
                 } finally {
                   setIsUploading(false);
                 }
               }}
             >
               {isUploading ? <Loader2 className="size-4 animate-spin mr-1" /> : null}
-              {isUploading ? 'Uploading…' : 'Save'}
+              {isUploading ? tc('uploading') : tc('save')}
             </Button>
           </div>
         </DialogContent>

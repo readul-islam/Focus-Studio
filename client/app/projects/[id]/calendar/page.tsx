@@ -31,8 +31,10 @@ import {
   subYears,
 } from 'date-fns';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useTranslations } from 'next-intl';
 
 export default function CalendarStudioPage() {
+  const t = useTranslations('projectCalendarPage');
   const params = useParams();
   const projectId = params?.id;
 
@@ -578,7 +580,7 @@ export default function CalendarStudioPage() {
                             onClick={() => { setMode('calendar'); setView('month'); }}
                             className={`h-8 px-3 rounded-md text-sm font-medium transition-all ${mode === 'calendar' ? 'bg-stone-100 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-stone-50'}`}
                         >
-                            Calendar
+                            {t('calendar')}
                         </Button>
                         <Button 
                             variant="ghost" 
@@ -586,7 +588,7 @@ export default function CalendarStudioPage() {
                             onClick={() => setMode('timeline')}
                             className={`h-8 px-3 rounded-md text-sm font-medium transition-all ${mode === 'timeline' ? 'bg-stone-100 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-stone-50'}`}
                         >
-                            Timeline
+                            {t('timeline')}
                         </Button>
                     </div> */}
 
@@ -635,7 +637,7 @@ export default function CalendarStudioPage() {
               </Button>
             </div>
             <Button variant="outline" size="sm" onClick={handleToday}>
-              Today
+              {t('today')}
             </Button>
           </div>
 
@@ -644,7 +646,7 @@ export default function CalendarStudioPage() {
               <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input
                 className="h-9 lg:w-64 pl-9 bg-white border-gray-200"
-                placeholder="Search phases..."
+                placeholder={t('searchPlaceholder')}
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
               />

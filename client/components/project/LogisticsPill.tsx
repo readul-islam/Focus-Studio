@@ -1,4 +1,7 @@
+'use client';
+
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 import { Loader2, CalendarIcon } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
@@ -11,11 +14,12 @@ import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 
 const LogisticsPill = React.memo(({ item, room, handleChangeLogistics, project, procurementPermission }: { item: any, room: any, handleChangeLogistics: any, project: any, procurementPermission: boolean }) => {
+  const tLogistics = useTranslations('projectProcurementPage.logisticStatus');
+  const tCells = useTranslations('projectProcurementCells');
   const labels: Record<string, string> = {
-    // 'IT': 'In Transit',
-    'IT': 'In Transit',
-    'DD': 'Delivered',
-    "NO" : 'Not Ordered'
+    IT: tLogistics('inTransit'),
+    DD: tLogistics('delivered'),
+    NO: tLogistics('notOrdered'),
   };
   
   const defaultColor = 'bg-greige-100 text-taupe-700 border-greige-500';
@@ -67,7 +71,7 @@ const LogisticsPill = React.memo(({ item, room, handleChangeLogistics, project, 
     return (
       <span className={cn('inline-flex items-center rounded-md border h-6 px-2 text-xs font-medium whitespace-nowrap', colors[status] || defaultColor)}>
         {/* {labels[status] || 'Not ordered'} */}
-        {'Not ordered'}
+        {tCells('notOrdered')}
       </span>
     );
   }
@@ -78,7 +82,7 @@ const LogisticsPill = React.memo(({ item, room, handleChangeLogistics, project, 
 
       <Select disabled={!procurementPermission} value={form.logistic_status} onValueChange={handleStatusChange}>
         <SelectTrigger className={cn('h-6 w-[90px] disabled:cursor-not-allowed disabled:opacity-100 px-2 text-xs rounded-md border', pillColor)}>
-          <SelectValue placeholder="Status" />
+          <SelectValue placeholder={tCells('status')} />
         </SelectTrigger>
         <SelectContent>
           {Object.entries(labels).map(([key, name]) => (
@@ -91,7 +95,7 @@ const LogisticsPill = React.memo(({ item, room, handleChangeLogistics, project, 
         <PopoverTrigger asChild>
           <Button disabled={!procurementPermission} variant="ghost" size="sm" className={cn("h-6 px-2 disabled:cursor-not-allowed disabled:opacity-100 text-xs font-normal text-neutral-700 hover:bg-stone-100", !form.ETA && "text-neutral-400")}>
             <CalendarIcon className="w-3 h-3 mr-1" />
-            {form.ETA ? format(new Date(form.ETA), "dd MMM") : "ETA"}
+            {form.ETA ? format(new Date(form.ETA), "dd MMM") : tCells('eta')}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">

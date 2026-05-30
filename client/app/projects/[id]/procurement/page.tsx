@@ -53,30 +53,32 @@ import { useDebounce } from '@/hooks/useDebounce';
 import { SelectContractorDialog } from '@/components/contractor';
 import { Users } from 'lucide-react';
 import { usePermissions } from '@/hooks/usePermissions';
-
-const logisticsLabels = {
-  all: 'All',
-  Draft: 'Draft',
-  Quoting: 'Quoting',
-  'Internal Review': 'Internal Review',
-  'Out of Stock': 'Out of Stock',
-  'Client Review': 'Client Review',
-  'Payment Due': 'Payment Due',
-  Ordered: 'Ordered',
-  'In Transit': 'In Transit',
-  Delivered: 'Delivered',
-  Installed: 'Installed',
-  'Internally Approved': 'Internally Approved',
-};
-
-const logisticStatusLabels: Record<string, string> = {
-  all: 'All',
-  IT: 'In Transit',
-  DD: 'Delivered',
-  NO: 'Not Ordered'
-};
+import { useTranslations } from 'next-intl';
 
 function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
+  const t = useTranslations('projectProcurementPage');
+
+  const logisticsLabels = {
+    all: t('logistics.all'),
+    Draft: t('logistics.draft'),
+    Quoting: t('logistics.quoting'),
+    'Internal Review': t('logistics.internalReview'),
+    'Out of Stock': t('logistics.outOfStock'),
+    'Client Review': t('logistics.clientReview'),
+    'Payment Due': t('logistics.paymentDue'),
+    Ordered: t('logistics.ordered'),
+    'In Transit': t('logistics.inTransit'),
+    Delivered: t('logistics.delivered'),
+    Installed: t('logistics.installed'),
+    'Internally Approved': t('logistics.internallyApproved'),
+  };
+
+  const logisticStatusLabels: Record<string, string> = {
+    all: t('logisticStatus.all'),
+    IT: t('logisticStatus.inTransit'),
+    DD: t('logisticStatus.delivered'),
+    NO: t('logisticStatus.notOrdered'),
+  };
   const searchParams = useSearchParams();
   const router = useRouter();
   const shareWithContractor = searchParams.get('shareWith');
@@ -159,7 +161,12 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
   // Bulk share mutation
   const { mutate: bulkShareMutate } = usePost({
     onSuccess: () => {
-      toast.success(`${checkedItems.length} item(s) shared with ${contractorName ? decodeURIComponent(contractorName) : 'contractor'}`);
+      toast.success(
+        t('itemsShared', {
+          count: checkedItems.length,
+          name: contractorName ? decodeURIComponent(contractorName) : t('itemsSharedContractor'),
+        })
+      );
       setCheckedItems([]);
       setIsSharingItems(false);
       queryClient.refetchQueries({
@@ -168,7 +175,7 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
       router.push(`/projects/${params.id}/contractors`);
     },
     onError: (error: any) => {
-      toast.error(error?.message || 'Failed to share items');
+      toast.error(error?.message || t('shareFailed'));
       setIsSharingItems(false);
     },
   });
@@ -215,7 +222,7 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
       date: dateFilter,
     };
     localStorage.setItem(`procurement-filters-${params.id}`, JSON.stringify(filters));
-    toast.success('Filters saved successfully');
+    toast.success(t('filtersSaved'));
   };
 
   // Filter procurement items based on all active filters
@@ -361,7 +368,7 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
 
     const grouped: Record<string, any> = {};
     filteredItems.forEach(item => {
-      const roomName = item.room?.name || 'Unassigned';
+      const roomName = item.room?.name || t('unassigned');
       if (!grouped[roomName]) {
         grouped[roomName] = {
           id: item.room?.id,
@@ -453,21 +460,21 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
 
   // Top summary
   const procurementStats = [
-    { title: 'Total Items', value: totalItemsCount, subtitle: 'Products specified', icon: Package },
-    { title: 'Total Quantity', value: totalQuantity, subtitle: 'Units ordered', icon: Layers },
-    { title: 'Pending Approval', value: totalPendingCount, subtitle: 'Waiting for sign-off', icon: ClipboardCheck },
+    { title: t('stats.totalItems'), value: totalItemsCount, subtitle: t('stats.totalItemsSub'), icon: Package },
+    { title: t('stats.totalQuantity'), value: totalQuantity, subtitle: t('stats.totalQuantitySub'), icon: Layers },
+    { title: t('stats.pendingApproval'), value: totalPendingCount, subtitle: t('stats.pendingApprovalSub'), icon: ClipboardCheck },
     {
-      title: 'Total Cost',
+      title: t('stats.totalCost'),
       value: `${currency?.symbol}${totalCostCount.toLocaleString('en-GB', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`,
-      subtitle: 'Estimated cost',
+      subtitle: t('stats.totalCostSub'),
       icon: DollarSign,
     },
 
     {
-      title: 'Delivery Progress',
+      title: t('stats.deliveryProgress'),
       value: `${totalItemsCount && totalDeliveryCount ? Math.min(100, Math.ceil((totalDeliveryCount / totalItemsCount) * 100)) : 0}%`,
       subtitle: `${totalDeliveryCount || 0} of ${totalItemsCount || 0} delivered`,
       icon: Truck,
@@ -591,7 +598,7 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
             queryKey: [`finance/studio-finance/`],
           });
           setCheckedItems([]);
-          toast('PO created successfully');
+          toast(t('poCreated'));
           setButtonLoadingPO(false);
         },
       },
@@ -615,7 +622,7 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
             queryKey: [`finance/studio-finance/`],
           });
           setCheckedItems([]);
-          toast('Invoice created successfully');
+          toast(t('invoiceCreated'));
           setButtonLoadingInvoice(false);
         },
       },
@@ -644,7 +651,7 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
             queryKey: [`finance/studio-finance/`],
           });
           setCheckedItems([]);
-          toast('Deleted successfully');
+          toast(t('deleted'));
           setButtonLoadingDelete(false);
         },
       },
@@ -757,8 +764,8 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
               <div className="flex items-center gap-3">
                 <Share2 className="w-5 h-5 text-slatex-600" />
                 <div>
-                  <p className="text-sm font-medium text-neutral-900">Sharing items with {decodeURIComponent(contractorName)}</p>
-                  <p className="text-xs text-neutral-500">Select items below and click "Share Selected" to share with this contractor</p>
+                  <p className="text-sm font-medium text-neutral-900">{t('sharingWith', { name: decodeURIComponent(contractorName) })}</p>
+                  <p className="text-xs text-neutral-500">{t('sharingHint')}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -772,12 +779,12 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
                     {isSharingItems ? (
                       <>
                         <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
-                        Sharing...
+                        {t('sharing')}
                       </>
                     ) : (
                       <>
                         <Share2 className="w-3.5 h-3.5 mr-1.5" />
-                        Share Selected ({checkedItems.length})
+                        {t('shareSelected', { count: checkedItems.length })}
                       </>
                     )}
                   </Button>
@@ -785,7 +792,7 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
                 <Link href={`/projects/${params.id}/contractors`}>
                   <Button variant="outline" size="sm" className="h-8 bg-white">
                     <ArrowLeft className="w-3.5 h-3.5 mr-1.5" />
-                    Back to Contractors
+                    {t('backToContractors')}
                   </Button>
                 </Link>
               </div>
@@ -833,7 +840,7 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
                 ref={searchInputRef}
                 value={searchInput}
                 onChange={e => setSearchInput(e.target.value)}
-                placeholder="Search items..."
+                placeholder={t('searchPlaceholder')}
                 className="pl-10 pr-9 w-64 h-9"
               />
 
@@ -965,7 +972,7 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
                           <Command>
                             <CommandInput placeholder="Search rooms..." className="h-9" />
                             <CommandList>
-                              <CommandEmpty>No room found.</CommandEmpty>
+                              <CommandEmpty>{t('noRoomFound')}</CommandEmpty>
                               <CommandGroup>
                                 <CommandItem
                                   value="all"

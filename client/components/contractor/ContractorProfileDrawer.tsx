@@ -11,6 +11,7 @@ import useFetch from '@/hooks/useFetch';
 import { usePost } from '@/hooks/usePost';
 import { patchData, patchFormData } from '@/lib/Api';
 import { TRADE_OPTIONS } from '@/lib/contractor/types';
+import { useTranslations } from 'next-intl';
 
 interface ContractorProfileDrawerProps {
   contractorId: string | null;
@@ -69,6 +70,7 @@ export function ContractorProfileDrawer({
   onSaved,
   projectId,
 }: ContractorProfileDrawerProps) {
+  const t = useTranslations('contractorProfileDrawer');
   const [formData, setFormData] = useState({
     name: '',
     surname: '',
@@ -120,22 +122,22 @@ export function ContractorProfileDrawer({
   const { mutate: regenerateCode, isPending: isRegenerating } = usePost({
     onSuccess: (data: { access_code?: string }) => {
       setAccessCode(data?.access_code || '');
-      toast.success(`New access code: ${data?.access_code || ''}`);
+      toast.success(t('newAccessCode', { code: data?.access_code || '' }));
       onSaved?.();
     },
     onError: (error: { message?: string }) => {
-      toast.error(error?.message || 'Failed to regenerate code');
+      toast.error(error?.message || t('regenerateFailed'));
     },
   });
 
   const { mutate: removeFromProject, isPending: isRemoving } = usePost({
     onSuccess: () => {
-      toast.success('Contractor removed from project');
+      toast.success(t('removedSuccess'));
       onSaved?.();
       onClose();
     },
     onError: (error: { message?: string }) => {
-      toast.error(error?.message || 'Failed to remove contractor');
+      toast.error(error?.message || t('removeFailed'));
     },
   });
 
@@ -153,12 +155,12 @@ export function ContractorProfileDrawer({
       } else {
         await patchData({ url, data: formData });
       }
-      toast.success('Profile saved');
+      toast.success(t('profileSaved'));
       refetch();
       onSaved?.();
       onClose();
     } catch (error: unknown) {
-      toast.error(error instanceof Error ? error.message : 'Failed to save profile');
+      toast.error(error instanceof Error ? error.message : t('saveFailed'));
     } finally {
       setIsSaving(false);
     }
@@ -174,7 +176,7 @@ export function ContractorProfileDrawer({
 
   const handleRemoveFromProject = () => {
     if (!contractorId) return;
-    if (!confirm('Remove this contractor from the project? They will lose portal access to this project.')) {
+    if (!confirm(t('removeConfirm'))) {
       return;
     }
     removeFromProject({
@@ -188,7 +190,7 @@ export function ContractorProfileDrawer({
     if (code) {
       navigator.clipboard.writeText(code);
       setAccessCodeCopied(true);
-      toast.success('Access code copied to clipboard');
+      toast.success(t('codeCopied'));
       setTimeout(() => setAccessCodeCopied(false), 2000);
     }
   };
@@ -214,7 +216,7 @@ export function ContractorProfileDrawer({
       >
         {/* Header */}
         <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900">Contractor Profile</h2>
+          <h2 className="text-lg font-semibold text-gray-900">{t('title')}</h2>
           <button
             onClick={onClose}
             className="p-1 hover:bg-stone-100 rounded transition-colors"
@@ -236,7 +238,7 @@ export function ContractorProfileDrawer({
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <Label htmlFor="name" className="text-sm text-gray-700">
-                First Name <span className="text-red-500">*</span>
+                {t('firstName')} <span className="text-red-500">{t('required')}</span>
               </Label>
               <Input
                 id="name"
@@ -247,7 +249,7 @@ export function ContractorProfileDrawer({
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="surname" className="text-sm text-gray-700">
-                Surname
+                {t('surname')}
               </Label>
               <Input
                 id="surname"
@@ -261,7 +263,7 @@ export function ContractorProfileDrawer({
           {/* Company Name */}
           <div className="space-y-1.5">
             <Label htmlFor="company_name" className="text-sm text-gray-700">
-              Company Name
+              {t('companyName')}
             </Label>
             <Input
               id="company_name"
@@ -274,7 +276,7 @@ export function ContractorProfileDrawer({
           {/* Email */}
           <div className="space-y-1.5">
             <Label htmlFor="email" className="text-sm text-gray-700">
-              Email <span className="text-red-500">*</span>
+              {t('email')} <span className="text-red-500">{t('required')}</span>
             </Label>
             <Input
               id="email"
@@ -288,7 +290,7 @@ export function ContractorProfileDrawer({
           {/* Phone */}
           <div className="space-y-1.5">
             <Label htmlFor="phone" className="text-sm text-gray-700">
-              Phone
+              {t('phone')}
             </Label>
             <Input
               id="phone"
@@ -302,14 +304,14 @@ export function ContractorProfileDrawer({
           {/* Trade */}
           <div className="space-y-1.5">
             <Label htmlFor="trade" className="text-sm text-gray-700">
-              Trade <span className="text-red-500">*</span>
+              {t('trade')} <span className="text-red-500">{t('required')}</span>
             </Label>
             <Select
               value={formData.trade}
               onValueChange={(value) => setFormData({ ...formData, trade: value })}
             >
               <SelectTrigger className="border-gray-200">
-                <SelectValue placeholder="Select trade" />
+                <SelectValue placeholder={t('selectTrade')} />
               </SelectTrigger>
               <SelectContent>
                 {TRADE_OPTIONS.map((trade) => (
@@ -323,12 +325,12 @@ export function ContractorProfileDrawer({
 
           {/* Insurance Section */}
           <div className="pt-4 border-t border-gray-200">
-            <h3 className="text-sm font-medium text-gray-900 mb-4">Insurance & Certification</h3>
+            <h3 className="text-sm font-medium text-gray-900 mb-4">{t('insuranceCertSection')}</h3>
 
             {/* Insurance Expiry */}
             <div className="space-y-1.5 mb-4">
               <Label htmlFor="insurance_expiry" className="text-sm text-gray-700">
-                Insurance Expiry Date
+                {t('insuranceExpiryDate')}
               </Label>
               <Input
                 id="insurance_expiry"
@@ -341,9 +343,9 @@ export function ContractorProfileDrawer({
                 <div className="flex items-center gap-1.5 mt-1">
                   <div className={`w-2 h-2 rounded-full ${insuranceStatus.dotColor}`} />
                   <span className={`text-xs ${insuranceStatus.color}`}>
-                    {insuranceStatus.status === 'valid' && 'Valid'}
-                    {insuranceStatus.status === 'expiring' && 'Expiring soon'}
-                    {insuranceStatus.status === 'expired' && 'Expired'}
+                    {insuranceStatus.status === 'valid' && t('valid')}
+                    {insuranceStatus.status === 'expiring' && t('expiringSoon')}
+                    {insuranceStatus.status === 'expired' && t('expired')}
                   </span>
                 </div>
               )}
@@ -351,7 +353,7 @@ export function ContractorProfileDrawer({
 
             {/* Insurance Document Upload */}
             <div className="space-y-1.5 mb-4">
-              <Label className="text-sm text-gray-700">Insurance Document</Label>
+              <Label className="text-sm text-gray-700">{t('insuranceDocument')}</Label>
               {formData.insurance_document && (
                 <div className="flex items-center gap-2 p-2 bg-stone-50 rounded border border-gray-200 mb-2">
                   <FileText className="w-4 h-4 text-gray-500" />
@@ -367,7 +369,7 @@ export function ContractorProfileDrawer({
                 onClick={() => document.getElementById('insurance-upload')?.click()}
               >
                 <Upload className="w-4 h-4 mr-2" />
-                {formData.insurance_document ? 'Replace Document' : 'Upload Document'}
+                {formData.insurance_document ? t('replaceDocument') : t('uploadDocumentBtn')}
               </Button>
               <input
                 id="insurance-upload"
@@ -379,12 +381,12 @@ export function ContractorProfileDrawer({
                   if (file) setInsuranceFile(file);
                 }}
               />
-              <p className="text-xs text-gray-500">PDF or image files only</p>
+              <p className="text-xs text-gray-500">{t('pdfOnlyHint')}</p>
             </div>
 
             {/* Trade Certificate Upload */}
             <div className="space-y-1.5">
-              <Label className="text-sm text-gray-700">Trade Certificate</Label>
+              <Label className="text-sm text-gray-700">{t('tradeCertificate')}</Label>
               {formData.trade_cert && (
                 <div className="flex items-center gap-2 p-2 bg-stone-50 rounded border border-gray-200 mb-2">
                   <FileText className="w-4 h-4 text-gray-500" />
@@ -400,7 +402,7 @@ export function ContractorProfileDrawer({
                 onClick={() => document.getElementById('cert-upload')?.click()}
               >
                 <Upload className="w-4 h-4 mr-2" />
-                {formData.trade_cert ? 'Replace Certificate' : 'Upload Certificate'}
+                {formData.trade_cert ? t('replaceCertificate') : t('uploadCertificate')}
               </Button>
               <input
                 id="cert-upload"
@@ -412,18 +414,18 @@ export function ContractorProfileDrawer({
                   if (file) setTradeCertFile(file);
                 }}
               />
-              <p className="text-xs text-gray-500">PDF or image files only</p>
+              <p className="text-xs text-gray-500">{t('pdfOnlyHint')}</p>
             </div>
           </div>
 
           {/* Emergency Contact Section */}
           <div className="pt-4 border-t border-gray-200">
-            <h3 className="text-sm font-medium text-gray-900 mb-4">Emergency Contact</h3>
+            <h3 className="text-sm font-medium text-gray-900 mb-4">{t('emergencyContact')}</h3>
 
             <div className="space-y-4">
               <div className="space-y-1.5">
                 <Label htmlFor="emergency_contact_name" className="text-sm text-gray-700">
-                  Name
+                  {t('name')}
                 </Label>
                 <Input
                   id="emergency_contact_name"
@@ -437,7 +439,7 @@ export function ContractorProfileDrawer({
 
               <div className="space-y-1.5">
                 <Label htmlFor="emergency_contact_phone" className="text-sm text-gray-700">
-                  Phone
+                  {t('phone')}
                 </Label>
                 <Input
                   id="emergency_contact_phone"
@@ -456,7 +458,7 @@ export function ContractorProfileDrawer({
           <div className="pt-4 border-t border-gray-200">
             <div className="space-y-1.5">
               <Label htmlFor="notes" className="text-sm text-gray-700">
-                Notes
+                {t('notes')}
               </Label>
               <textarea
                 id="notes"
@@ -464,17 +466,17 @@ export function ContractorProfileDrawer({
                 value={formData.notes}
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                 className="flex min-h-[80px] w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                placeholder="Any additional notes about this contractor..."
+                placeholder={t('notesPlaceholder')}
               />
             </div>
           </div>
 
           {/* Access Code Section */}
           <div className="pt-4 border-t border-gray-200">
-            <h3 className="text-sm font-medium text-gray-900 mb-4">Access Code</h3>
+            <h3 className="text-sm font-medium text-gray-900 mb-4">{t('accessCodeSection')}</h3>
             <div className="flex items-center gap-3">
               <div className="flex-1 p-3 bg-stone-50 rounded border border-gray-200 font-mono text-lg text-gray-900">
-                {accessCode || 'N/A'}
+                {accessCode || t('notAvailable')}
               </div>
               <Button
                 variant="outline"
@@ -497,17 +499,17 @@ export function ContractorProfileDrawer({
                 className="border-gray-200"
               >
                 <RefreshCw className={`w-4 h-4 mr-2 ${isRegenerating ? 'animate-spin' : ''}`} />
-                Regenerate
+                {t('regenerate')}
               </Button>
             </div>
             <p className="text-xs text-gray-500 mt-2">
-              This code allows the contractor to access the portal
+              {t('accessCodeHint')}
             </p>
           </div>
 
           {/* Danger Zone */}
           <div className="pt-4 border-t border-red-200">
-            <h3 className="text-sm font-medium text-red-900 mb-2">Danger Zone</h3>
+            <h3 className="text-sm font-medium text-red-900 mb-2">{t('dangerZone')}</h3>
             <Button
               variant="outline"
               onClick={handleRemoveFromProject}
@@ -515,7 +517,7 @@ export function ContractorProfileDrawer({
               className="w-full border-red-300 text-red-700 hover:bg-red-50"
             >
               <Trash2 className="w-4 h-4 mr-2" />
-              Remove from Project
+              {t('removeFromProject')}
             </Button>
           </div>
           </>
@@ -525,7 +527,7 @@ export function ContractorProfileDrawer({
         {/* Footer */}
         <div className="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4 flex gap-3">
           <Button variant="outline" onClick={onClose} className="flex-1 border-gray-200">
-            Cancel
+            {t('cancel')}
           </Button>
           <Button
             onClick={handleSave}
@@ -535,10 +537,10 @@ export function ContractorProfileDrawer({
             {isSaving ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Saving...
+                {t('saving')}
               </>
             ) : (
-              'Save Changes'
+              t('saveChanges')
             )}
           </Button>
         </div>

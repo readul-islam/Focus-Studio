@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
@@ -48,29 +49,27 @@ type Item = {
   tourId?: string;
 };
 
-// Personal section item
-const personalSidebarItems: Item[] = [
-  { label: 'Home',     icon: Home,        href: '/home/dashboard', basePath: '/home/dashboard', tourId: 'nav-home' },
-  { label: 'Inbox',    icon: Mail,        href: '/ai/inbox',       basePath: '/ai/inbox',       tourId: 'nav-inbox' },
-  { label: 'My Tasks', icon: CheckSquare, href: '/home/tasks',     basePath: '/home/tasks',  permission: 'tasks.view' },
-  { label: 'Calendar', icon: Calendar,    href: '/calendar',       basePath: '/calendar' },
-  { label: 'Projects', icon: FolderOpen,  href: '/projects',       basePath: '/projects',    permission: 'projects.view', tourId: 'nav-projects' },
+const buildPersonalSidebarItems = (t: ReturnType<typeof useTranslations>): Item[] => [
+  { label: t('sidebar.home'), icon: Home, href: '/home/dashboard', basePath: '/home/dashboard', tourId: 'nav-home' },
+  { label: t('sidebar.inbox'), icon: Mail, href: '/ai/inbox', basePath: '/ai/inbox', tourId: 'nav-inbox' },
+  { label: t('sidebar.myTasks'), icon: CheckSquare, href: '/home/tasks', basePath: '/home/tasks', permission: 'tasks.view' },
+  { label: t('sidebar.calendar'), icon: Calendar, href: '/calendar', basePath: '/calendar' },
+  { label: t('sidebar.projects'), icon: FolderOpen, href: '/projects', basePath: '/projects', permission: 'projects.view', tourId: 'nav-projects' }
 ];
 
-// Studio section items
-const studioSidebarItems: Item[] = [
-  { label: 'CRM',         icon: Users,     href: '/crm/contacts', basePath: '/crm',        permission: 'clients.view', tourId: 'nav-crm' },
-  { label: 'Library',     icon: BookOpen,  href: '/library/products',      basePath: '/library/products',    permission: 'library.view' },
-  { label: 'Team',        icon: Users2,    href: '/teams',        basePath: '/teams',      permission: 'team.view' },
-  { label: 'Finance',     icon: DollarSign,href: '/finance',      basePath: '/finance',    permission: 'finance.view' },
-  { label: 'Reports',     icon: BarChart3, href: '/reports',      basePath: '/reports',    permission: 'reports.view' },
-  { label: 'Design',      icon: Palette,   href: '/design',       basePath: '/design',     permission: 'design.view', tourId: 'nav-design' },
-  { label: 'AI Activity', icon: Activity,  href: '/ai/activity',  basePath: '/ai/activity' },
+const buildStudioSidebarItems = (t: ReturnType<typeof useTranslations>): Item[] => [
+  { label: t('sidebar.crm'), icon: Users, href: '/crm/contacts', basePath: '/crm', permission: 'clients.view', tourId: 'nav-crm' },
+  { label: t('sidebar.library'), icon: BookOpen, href: '/library/products', basePath: '/library/products', permission: 'library.view' },
+  { label: t('sidebar.team'), icon: Users2, href: '/teams', basePath: '/teams', permission: 'team.view' },
+  { label: t('sidebar.finance'), icon: DollarSign, href: '/finance', basePath: '/finance', permission: 'finance.view' },
+  { label: t('sidebar.reports'), icon: BarChart3, href: '/reports', basePath: '/reports', permission: 'reports.view' },
+  { label: t('sidebar.design'), icon: Palette, href: '/design', basePath: '/design', permission: 'design.view', tourId: 'nav-design' },
+  { label: t('sidebar.aiActivity'), icon: Activity, href: '/ai/activity', basePath: '/ai/activity' }
 ];
 
-const extraSidebarItems = [
+const buildExtraSidebarItems = (t: ReturnType<typeof useTranslations>) => [
   {
-    label: 'Help Center',
+    label: t('sidebar.helpCenter'),
     href: '/help',
     icon: (props: any) => (
       <svg {...props} className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -84,7 +83,7 @@ const extraSidebarItems = [
     ),
   },
   {
-    label: 'Settings',
+    label: t('sidebar.settings'),
     href: '/settings/user/profile',
     icon: Settings,
     tourId: 'nav-settings',
@@ -205,7 +204,12 @@ function NavItem({ item, isActive, isCollapsed }: { item: Item; isActive: boolea
 }
 
 export function AppSidebar() {
+  const t = useTranslations('navigation');
   const pathname = usePathname();
+  const personalSidebarItems = useMemo(() => buildPersonalSidebarItems(t), [t]);
+  const studioSidebarItems = useMemo(() => buildStudioSidebarItems(t), [t]);
+  const extraSidebarItems = useMemo(() => buildExtraSidebarItems(t), [t]);
+
   const { theme, resolvedTheme } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -353,7 +357,7 @@ export function AppSidebar() {
             <button
               onClick={() => setIsCollapsed((prev) => !prev)}
               className="py-1.5 text-gray-400 hover:text-gray-600 hover:bg-stone-50 rounded-lg transition-colors flex-shrink-0 ml-7"
-              title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              title={isCollapsed ? t('sidebar.expand') : t('sidebar.collapse')}
             >
               <motion.div
                 animate={{ rotate: isCollapsed ? 0 : 180 }}
@@ -400,7 +404,7 @@ export function AppSidebar() {
                   exit={{ opacity: 0, x: -10 }}
                   className="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
                 >
-                  Studio
+                  {t('sidebar.studio')}
                 </motion.span>
               )}
             </AnimatePresence>
@@ -450,14 +454,14 @@ export function AppSidebar() {
                           animate={isCollapsed ? "collapsed" : "expanded"}
                           className="relative z-10 whitespace-nowrap overflow-hidden ml-3"
                         >
-                          More
+                          {t('sidebar.more')}
                         </motion.span>
                       </button>
                     </DropdownMenuTrigger>
                   </TooltipTrigger>
                   {isCollapsed && (
                     <TooltipContent side="right" sideOffset={12}>
-                      <p>More</p>
+                      <p>{t('sidebar.more')}</p>
                     </TooltipContent>
                   )}
                 </Tooltip>

@@ -6,16 +6,22 @@ import { ArrowRight, CheckCircle2, Eye, EyeOff, Loader2, Lock, XCircle } from 'l
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
-const STRENGTH_CHECKS = [
-  { key: 'length',    label: 'At least 8 characters',    test: (p: string) => p.length >= 8 },
-  { key: 'uppercase', label: 'One uppercase letter',      test: (p: string) => /[A-Z]/.test(p) },
-  { key: 'lowercase', label: 'One lowercase letter',      test: (p: string) => /[a-z]/.test(p) },
-  { key: 'number',    label: 'One number',                test: (p: string) => /\d/.test(p) },
-  { key: 'special',   label: 'One special character',     test: (p: string) => /[!@#$%^&*(),.?":{}|<>]/.test(p) },
-];
+const STRENGTH_CHECK_KEYS = ['length', 'uppercase', 'lowercase', 'number', 'special'] as const;
+const STRENGTH_TESTS: Record<(typeof STRENGTH_CHECK_KEYS)[number], (p: string) => boolean> = {
+  length: (p) => p.length >= 8,
+  uppercase: (p) => /[A-Z]/.test(p),
+  lowercase: (p) => /[a-z]/.test(p),
+  number: (p) => /\d/.test(p),
+  special: (p) => /[!@#$%^&*(),.?":{}|<>]/.test(p),
+};
 
 function ResetPasswordContent() {
+  const t = useTranslations('auth.resetPassword');
+  const tv = useTranslations('auth.resetPassword.validation');
+  const ts = useTranslations('auth.resetPassword.strengthChecks');
+  const tf = useTranslations('auth.resetPassword.features');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -41,15 +47,19 @@ function ResetPasswordContent() {
       .finally(() => setIsCheckingSession(false));
   }, [token]);
 
-  const strength = STRENGTH_CHECKS.map(c => ({ ...c, passed: c.test(newPassword) }));
+  const strength = STRENGTH_CHECK_KEYS.map(key => ({
+    key,
+    label: ts(key),
+    passed: STRENGTH_TESTS[key](newPassword),
+  }));
   const isPasswordStrong = strength.every(c => c.passed);
 
   const validate = () => {
     const e: typeof errors = {};
-    if (!newPassword) e.newPassword = 'Password is required';
-    else if (!isPasswordStrong) e.newPassword = 'Password does not meet requirements';
-    if (!confirmPassword) e.confirmPassword = 'Please confirm your password';
-    else if (newPassword !== confirmPassword) e.confirmPassword = 'Passwords do not match';
+    if (!newPassword) e.newPassword = tv('passwordRequired');
+    else if (!isPasswordStrong) e.newPassword = tv('passwordRequirements');
+    if (!confirmPassword) e.confirmPassword = tv('confirmRequired');
+    else if (newPassword !== confirmPassword) e.confirmPassword = tv('confirmMismatch');
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -60,20 +70,20 @@ function ResetPasswordContent() {
     setIsLoading(true);
     try {
       await postData({ url: '/user/reset-password/', data: { token, new_password: newPassword } });
-      toast.success('Password reset successful!');
+      toast.success(t('toasts.success'));
       router.push('/login');
     } catch (error: any) {
-      toast.error(error?.response?.data?.error || 'Failed to reset password. The link may have expired.');
+      toast.error(error?.response?.data?.error || t('toasts.failed'));
     } finally {
       setIsLoading(false);
     }
   };
 
   const features = [
-    'Project & task management',
-    'Client communication hub',
-    'Finance & invoicing',
-    'AI-powered inbox',
+    tf('projectManagement'),
+    tf('clientHub'),
+    tf('finance'),
+    tf('aiInbox'),
   ];
 
   const panelContent = (
@@ -89,16 +99,15 @@ function ResetPasswordContent() {
       <div className="relative z-10">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-white/70 text-xs font-medium mb-16">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          Now in early access
+          {t('brand.earlyAccess')}
         </div>
         <h2 className="text-4xl font-bold text-white leading-tight mb-5">
-          The operating system
+          {t('brand.titleLine1')}
           <br />
-          for interior designers
+          {t('brand.titleLine2')}
         </h2>
         <p className="text-white/60 text-base leading-relaxed max-w-sm">
-          Manage projects, clients, finances, and team communication — all in
-          one place.
+          {t('brand.subtitle')}
         </p>
         <ul className="mt-10 space-y-3">
           {features.map((f) => (
@@ -138,7 +147,7 @@ function ResetPasswordContent() {
         <div className="flex-1 flex items-center justify-center bg-white">
           <div className="flex flex-col items-center gap-3">
             <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
-            <p className="text-sm text-gray-500">Verifying reset link…</p>
+            <p className="text-sm text-gray-500">{t('verifying')}</p>
           </div>
         </div>
         {panelContent}
@@ -169,20 +178,20 @@ function ResetPasswordContent() {
               </div>
               <div className="text-center">
                 <h1 className="text-2xl font-bold text-gray-900 mb-1.5">
-                  Invalid reset link
+                  {t('invalidTitle')}
                 </h1>
                 <p className="text-sm text-gray-500">
-                  This password reset link is invalid or has expired.
+                  {t('invalidSubtitle')}
                 </p>
               </div>
               <p className="text-sm text-gray-500 text-center mt-2">
-                Please request a new reset link from the login page.
+                {t('invalidHelp')}
               </p>
               <button
                 onClick={() => router.push("/login")}
                 className="mt-2 w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors"
               >
-                Back to sign in
+                {t('backToSignIn')}
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -214,10 +223,10 @@ function ResetPasswordContent() {
 
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-gray-900 mb-1.5">
-              Set new password
+              {t('title')}
             </h1>
             <p className="text-sm text-gray-500">
-              Choose a strong password for your account.
+              {t('subtitle')}
             </p>
           </div>
 
@@ -228,7 +237,7 @@ function ResetPasswordContent() {
                 htmlFor="new-password"
                 className="block text-sm font-medium text-gray-700 mb-1.5"
               >
-                New password
+                {t('newPassword')}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -241,7 +250,7 @@ function ResetPasswordContent() {
                     setNewPassword(e.target.value);
                     setErrors((v) => ({ ...v, newPassword: undefined }));
                   }}
-                  placeholder="Enter new password"
+                  placeholder={t('newPasswordPlaceholder')}
                   className={`w-full pl-9 pr-10 py-2.5 text-sm rounded-lg border bg-white outline-none transition-colors
                     ${
                       errors.newPassword
@@ -295,7 +304,7 @@ function ResetPasswordContent() {
                 htmlFor="confirm-password"
                 className="block text-sm font-medium text-gray-700 mb-1.5"
               >
-                Confirm password
+                {t('confirmPassword')}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -308,7 +317,7 @@ function ResetPasswordContent() {
                     setConfirmPassword(e.target.value);
                     setErrors((v) => ({ ...v, confirmPassword: undefined }));
                   }}
-                  placeholder="Confirm new password"
+                  placeholder={t('confirmPasswordPlaceholder')}
                   className={`w-full pl-9 pr-10 py-2.5 text-sm rounded-lg border bg-white outline-none transition-colors
                     ${
                       errors.confirmPassword
@@ -344,11 +353,11 @@ function ResetPasswordContent() {
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Updating password…
+                  {t('updating')}
                 </>
               ) : (
                 <>
-                  Update password
+                  {t('updatePassword')}
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
@@ -356,13 +365,13 @@ function ResetPasswordContent() {
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-500">
-            Remember your password?{" "}
+            {t('rememberPassword')}{" "}
             <button
               type="button"
               onClick={() => router.push("/login")}
               className="font-medium text-gray-900 hover:underline"
             >
-              Sign in
+              {t('signIn')}
             </button>
           </p>
         </div>

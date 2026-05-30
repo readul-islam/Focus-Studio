@@ -31,6 +31,7 @@ import {
   MessageSquare,
 } from 'lucide-react';
 import type { ProjectContractor, TradeType, ContractorShare } from '@/lib/contractor/types';
+import { useTranslations } from 'next-intl';
 
 interface ContractorCardProps {
   contractor: ProjectContractor;
@@ -57,22 +58,27 @@ const TRADE_COLORS: Record<TradeType, string> = {
   General: 'bg-greige-100 text-greige-700',
 };
 
-function formatRelativeTime(dateString?: string): string {
-  if (!dateString) return 'Never accessed';
+function formatRelativeTime(dateString: string | undefined, t: (key: string, values?: Record<string, unknown>) => string): string {
+  if (!dateString) return t('neverAccessed');
 
   const date = new Date(dateString);
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-  if (diffDays === 0) return 'Last access: Today';
-  if (diffDays === 1) return 'Last access: Yesterday';
-  if (diffDays < 7) return `Last access: ${diffDays} days ago`;
-  if (diffDays < 30) return `Last access: ${Math.floor(diffDays / 7)} weeks ago`;
-  return `Last access: ${date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`;
+  if (diffDays === 0) return t('lastAccessToday');
+  if (diffDays === 1) return t('lastAccessYesterday');
+  if (diffDays < 7) return t('lastAccessDaysAgo', { days: diffDays });
+  if (diffDays < 30) return t('lastAccessWeeksAgo', { weeks: Math.floor(diffDays / 7) });
+  return t('lastAccessOnDate', {
+    date: date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
+  });
 }
 
-function getInsuranceStatusFromContractor(contractor: ProjectContractor): {
+function getInsuranceStatusFromContractor(
+  contractor: ProjectContractor,
+  t: (key: string, values?: Record<string, unknown>) => string
+): {
   status: 'valid' | 'expiring' | 'expired' | 'not_uploaded';
   label: string;
   color: string;
@@ -82,7 +88,7 @@ function getInsuranceStatusFromContractor(contractor: ProjectContractor): {
   if (warning === 'expired') {
     return {
       status: 'expired',
-      label: 'Expired',
+      label: t('expired'),
       color: 'text-red-700',
       dotColor: 'bg-red-500',
     };
@@ -90,19 +96,21 @@ function getInsuranceStatusFromContractor(contractor: ProjectContractor): {
   if (warning === 'expiring_soon') {
     return {
       status: 'expiring',
-      label: 'Expiring soon',
+      label: t('expiringSoon'),
       color: 'text-amber-700',
       dotColor: 'bg-amber-500',
     };
   }
   if (warning === 'valid') {
-    return getInsuranceStatus(contractor.insurance_expiry);
+    return getInsuranceStatus(contractor.insurance_expiry, t);
   }
-  return getInsuranceStatus(contractor.insurance_expiry);
+  return getInsuranceStatus(contractor.insurance_expiry, t);
 }
 
-// Calculate insurance status based on expiry date
-function getInsuranceStatus(insurance_expiry?: string): {
+function getInsuranceStatus(
+  insurance_expiry: string | undefined,
+  t: (key: string, values?: Record<string, unknown>) => string
+): {
   status: 'valid' | 'expiring' | 'expired' | 'not_uploaded';
   label: string;
   color: string;
@@ -111,7 +119,7 @@ function getInsuranceStatus(insurance_expiry?: string): {
   if (!insurance_expiry) {
     return {
       status: 'not_uploaded',
-      label: 'Not uploaded',
+      label: t('notUploaded'),
       color: 'text-neutral-600',
       dotColor: 'bg-stone-400',
     };
@@ -125,7 +133,7 @@ function getInsuranceStatus(insurance_expiry?: string): {
   if (diffDays < 0) {
     return {
       status: 'expired',
-      label: 'Expired',
+      label: t('expired'),
       color: 'text-red-700',
       dotColor: 'bg-red-500',
     };
@@ -134,7 +142,7 @@ function getInsuranceStatus(insurance_expiry?: string): {
   if (diffDays < 30) {
     return {
       status: 'expiring',
-      label: `Expires in ${diffDays} days`,
+      label: t('expiresInDays', { days: diffDays }),
       color: 'text-amber-700',
       dotColor: 'bg-amber-500',
     };
@@ -142,13 +150,16 @@ function getInsuranceStatus(insurance_expiry?: string): {
 
   return {
     status: 'valid',
-    label: `Valid until ${expiryDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`,
+    label: t('validUntil', {
+      date: expiryDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+    }),
     color: 'text-green-700',
     dotColor: 'bg-green-500',
   };
 }
 
 function ShareRow({ share, type, onRemove }: { share: ContractorShare; type: 'item' | 'drawing'; onRemove?: () => void }) {
+  const t = useTranslations('contractorCard');
   return (
     <div className="flex items-center gap-3 py-2 px-3 bg-stone-50 rounded-md group">
       <div className="w-6 h-6 rounded bg-white flex items-center justify-center flex-shrink-0">
@@ -161,18 +172,18 @@ function ShareRow({ share, type, onRemove }: { share: ContractorShare; type: 'it
       <div className="flex-1 min-w-0">
         <p className="text-sm text-neutral-800 truncate">{share.item_name}</p>
         <p className="text-xs text-neutral-500">
-          Shared {formatRelativeTime(share.shared_at)}
+          {t('shared')} {formatRelativeTime(share.shared_at, t)}
         </p>
       </div>
       {share.viewed_at ? (
         <span className="inline-flex items-center rounded-md px-2.5 py-1 text-xs font-medium bg-sage-300/40 text-olive-700 border border-olive-700/20 gap-1">
           <Eye className="w-3 h-3" />
-          Viewed
+          {t('viewed')}
         </span>
       ) : (
         <span className="inline-flex items-center rounded-md px-2.5 py-1 text-xs font-medium bg-stone-100 text-neutral-600 border border-neutral-200 gap-1">
           <Clock className="w-3 h-3" />
-          Not viewed
+          {t('notViewed')}
         </span>
       )}
       {onRemove && (
@@ -202,6 +213,7 @@ export function ContractorCard({
   projectEditPermission
   
 }: ContractorCardProps) {
+  const t = useTranslations('contractorCard');
   const [isExpanded, setIsExpanded] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
 
@@ -249,7 +261,7 @@ export function ContractorCard({
               <h3 className="font-medium text-neutral-900">{contractor.name}</h3>
               {(contractor.trade_label || contractor.trade) && (
                 <Badge variant="outline" className="text-xs">
-                  {contractor.trade_label || (contractor.trade === 'General' ? 'Builder' : contractor.trade)}
+                  {contractor.trade_label || (contractor.trade === 'General' ? t('builder') : contractor.trade)}
                 </Badge>
               )}
               {contractor.access_code && (
@@ -261,30 +273,30 @@ export function ContractorCard({
             <div className="flex items-center gap-3 mt-1 text-sm text-neutral-500 flex-wrap">
               {/* Insurance Status Badge */}
               {(() => {
-                const insurance = getInsuranceStatusFromContractor(contractor);
+                const insurance = getInsuranceStatusFromContractor(contractor, t);
                 return (
                   <div className="flex items-center gap-1.5">
                     <div className={`w-2 h-2 rounded-full ${insurance.dotColor}`} />
                     <span className={insurance.color}>
-                      Insurance: {insurance.label}
+                      {t('insuranceLabel', { status: insurance.label })}
                     </span>
                   </div>
                 );
               })()}
               <span>·</span>
-              <span>{contractor.shared_items.length} items</span>
+              <span>{t('itemsCount', { count: contractor.shared_items.length })}</span>
               <span>·</span>
-              <span>{contractor.shared_drawings.length} drawings</span>
+              <span>{t('drawingsCount', { count: contractor.shared_drawings.length })}</span>
               {contractor.last_accessed && (
                 <>
                   <span>·</span>
-                  <span>{formatRelativeTime(contractor.last_accessed)}</span>
+                  <span>{formatRelativeTime(contractor.last_accessed, t)}</span>
                 </>
               )}
               {!contractor.last_accessed && (
                 <>
                   <span>·</span>
-                  <span className="text-neutral-400">Never accessed</span>
+                  <span className="text-neutral-400">{t('neverAccessed')}</span>
                 </>
               )}
             </div>
@@ -298,14 +310,14 @@ export function ContractorCard({
               className="h-8" variant={'outline'}>
                    <Link className='flex items-center' href={`/projects/${projectId}/procurement?shareWith=${contractor.id}&contractorName=${encodeURIComponent(contractor.name)}`}>
                     <Package className="w-4 h-4 mr-2" />
-                    Share Items
+                    {t('shareItems')}
                   </Link>
             </Button>
             <Button size="sm"
               className="h-8" variant={'outline'}>
                       <Link className='flex items-center' href={`/projects/${projectId}/docs?shareWith=${contractor.id}&contractorName=${encodeURIComponent(contractor.name)}&view=list`}>
                     <FileText className="w-4 h-4 mr-2" />
-                    Share Drawings
+                    {t('shareDrawings')}
                   </Link>
             </Button>
             {onProfile && (
@@ -315,7 +327,7 @@ export function ContractorCard({
                 className="h-8"
                 onClick={onProfile}
               >
-                Profile
+                {t('profile')}
               </Button>
             )}
             {/* <Button
@@ -390,7 +402,7 @@ export function ContractorCard({
               <div className="flex items-center justify-between mb-3">
                 <h4 className="text-sm font-medium text-neutral-800 flex items-center gap-2">
                   <Package className="w-4 h-4 text-slatex-600" />
-                  Shared Items ({contractor.shared_items.length})
+                  {t('sharedItemsTitle', { count: contractor.shared_items.length })}
                 </h4>
               {projectEditPermission &&  <Link
                   href={`/projects/${projectId}/procurement?shareWith=${contractor.id}&contractorName=${encodeURIComponent(contractor.name)}`}
@@ -401,13 +413,13 @@ export function ContractorCard({
                     className="h-8 text-xs bg-white border-greige-500/30"
                   >
                     <Plus className="w-3.5 h-3.5 mr-1" />
-                    Add from Procurement
+                    {t('addFromProcurement')}
                   </Button>
                 </Link>}
               </div>
               <div className="space-y-2 max-h-[300px] overflow-y-auto">
                 {contractor.shared_items.length === 0 ? (
-                  <p className="text-sm text-center text-neutral-500 py-2">No items shared yet</p>
+                  <p className="text-sm text-center text-neutral-500 py-2">{t('noItemsShared')}</p>
                 ) : (
                   contractor.shared_items.map(share => (
                     <ShareRow
@@ -426,10 +438,10 @@ export function ContractorCard({
               <div className="flex items-center justify-between mb-3">
                 <h4 className="text-sm font-medium text-neutral-800 flex items-center gap-2">
                   <FileText className="w-4 h-4 text-sage-600" />
-                  Shared Drawings ({contractor.shared_drawings.length})
+                  {t('sharedDrawingsTitle', { count: contractor.shared_drawings.length })}
                   {confirmedDrawings > 0 && (
                     <span className="inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium bg-sage-300/40 text-olive-700 border border-olive-700/20">
-                      {confirmedDrawings} confirmed
+                      {t('confirmedCount', { count: confirmedDrawings })}
                     </span>
                   )}
                 </h4>
@@ -442,13 +454,13 @@ export function ContractorCard({
                     className="h-8 text-xs bg-white border-greige-500/30"
                   >
                     <Plus className="w-3.5 h-3.5 mr-1" />
-                    Add from Files
+                    {t('addFromFiles')}
                   </Button>
                 </Link>}
               </div>
               <div className="space-y-2 max-h-[300px] overflow-y-auto">
                 {contractor.shared_drawings.length === 0 ? (
-                  <p className="text-sm text-neutral-500 text-center py-2">No drawings shared yet</p>
+                  <p className="text-sm text-neutral-500 text-center py-2">{t('noDrawingsShared')}</p>
                 ) : (
                   contractor.shared_drawings.map(share => (
                     <ShareRow
@@ -466,14 +478,14 @@ export function ContractorCard({
           {/* Activity */}
           {contractor.activities.length > 0 && (
             <div className="mt-6 pt-4 border-t border-neutral-100">
-              <h4 className="text-sm font-medium text-neutral-800 mb-3">Recent Activity</h4>
+              <h4 className="text-sm font-medium text-neutral-800 mb-3">{t('recentActivity')}</h4>
               <div className="space-y-2">
                 {contractor.activities.slice(0, 3).map(activity => (
                   <div key={activity.id} className="flex items-center gap-2 text-sm">
                     <div className="w-1.5 h-1.5 rounded-full bg-stone-400" />
                     <span className="text-neutral-700">{activity.description || activity.title}</span>
                     <span className="text-neutral-500">·</span>
-                    <span className="text-neutral-500">{formatRelativeTime(activity.timestamp)}</span>
+                    <span className="text-neutral-500">{formatRelativeTime(activity.timestamp, t)}</span>
                   </div>
                 ))}
               </div>

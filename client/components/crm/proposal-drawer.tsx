@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useTranslations } from "next-intl"
 import { CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -53,13 +54,6 @@ interface ProposalDrawerProps {
   onSaved?: () => void
 }
 
-const steps: Array<{ key: ProposalStep; label: string; shortLabel: string; required: boolean }> = [
-  { key: "client", label: "Client & Details", shortLabel: "Client", required: true },
-  { key: "scope", label: "Scope of Work", shortLabel: "Scope", required: true },
-  { key: "pricing", label: "Pricing", shortLabel: "Pricing", required: true },
-  { key: "review", label: "Review & Send", shortLabel: "Review", required: false },
-]
-
 /** Map wizard ProposalData → backend API payload */
 function buildApiPayload(data: Partial<ProposalData>) {
   const lineItems = (data.lineItems || []).map((item) => ({
@@ -104,6 +98,16 @@ function stepHasData(step: ProposalStep, data: Partial<ProposalData>): boolean {
 }
 
 export function ProposalDrawer({ open, onClose, initialData, leads = [], onSaved }: ProposalDrawerProps) {
+  const t = useTranslations("proposalDrawer")
+  const tCommon = useTranslations("common")
+
+  const steps: Array<{ key: ProposalStep; label: string; shortLabel: string; required: boolean }> = [
+    { key: "client", label: t("stepClient"), shortLabel: t("stepClientShort"), required: true },
+    { key: "scope", label: t("stepScope"), shortLabel: t("stepScopeShort"), required: true },
+    { key: "pricing", label: t("stepPricing"), shortLabel: t("stepPricingShort"), required: true },
+    { key: "review", label: t("stepReview"), shortLabel: t("stepReviewShort"), required: false },
+  ]
+
   const {
     currentProposal,
     setCurrentProposal,
@@ -159,7 +163,7 @@ export function ProposalDrawer({ open, onClose, initialData, leads = [], onSaved
 
   const handleClose = () => {
     if (hasUnsavedChanges) {
-      if (confirm("You have unsaved changes. Are you sure you want to close?")) {
+      if (confirm(t("unsavedCloseConfirm"))) {
         clearCurrentProposal();
         setCurrentStep("client");
         setHasUnsavedChanges(false);
@@ -193,14 +197,14 @@ export function ProposalDrawer({ open, onClose, initialData, leads = [], onSaved
 
       setHasUnsavedChanges(false);
       toast({
-        description: data.id ? "Proposal updated" : "Proposal saved as draft",
+        description: data.id ? t("proposalUpdated") : t("proposalSavedDraft"),
         duration: 2000,
       });
       onSaved?.()
     } catch (error: any) {
       const msg = error?.response?.data
         ? JSON.stringify(error.response.data)
-        : error?.message || "Failed to save proposal"
+        : error?.message || t("saveFailed")
       toast({
         description: msg,
         duration: 3000,
@@ -214,7 +218,7 @@ export function ProposalDrawer({ open, onClose, initialData, leads = [], onSaved
   const handlePreview = () => {
     if (!data.id) {
       toast({
-        description: "Save the proposal first to preview the PDF",
+        description: t("saveFirstPreview"),
         duration: 2000,
       })
       return
@@ -228,7 +232,7 @@ export function ProposalDrawer({ open, onClose, initialData, leads = [], onSaved
     // Ensure the proposal is saved first
     if (!data.id) {
       toast({
-        description: "Saving proposal before sending…",
+        description: t("savingBeforeSend"),
         duration: 1500,
       })
       await handleSave()
@@ -239,7 +243,7 @@ export function ProposalDrawer({ open, onClose, initialData, leads = [], onSaved
     try {
       await postData({ url: `/crm/proposals/${data.id}/send/` })
       toast({
-        description: "Proposal sent successfully!",
+        description: t("sentSuccess"),
         duration: 3000,
       })
       onSaved?.()
@@ -247,7 +251,7 @@ export function ProposalDrawer({ open, onClose, initialData, leads = [], onSaved
     } catch (error: any) {
       const msg = error?.response?.data
         ? JSON.stringify(error.response.data)
-        : error?.message || "Failed to send proposal"
+        : error?.message || t("sendFailed")
       toast({
         description: msg,
         duration: 3000,
@@ -332,8 +336,8 @@ export function ProposalDrawer({ open, onClose, initialData, leads = [], onSaved
 
   // Drawer title: "New Proposal" or "Edit: [title]"
   const drawerTitle = data.id
-    ? `Edit: ${data.title || "Proposal"}`
-    : "New Proposal"
+    ? `${tCommon("edit")}: ${data.title || t("newProposal")}`
+    : t("newProposal")
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -351,7 +355,7 @@ export function ProposalDrawer({ open, onClose, initialData, leads = [], onSaved
               )}
               {isSaving && (
                 <Badge variant="secondary" className="text-xs">
-                  Saving…
+                  {tCommon("saving")}
                 </Badge>
               )}
               {hasUnsavedChanges && !isSaving && (
@@ -440,11 +444,11 @@ export function ProposalDrawer({ open, onClose, initialData, leads = [], onSaved
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button variant="outline" onClick={handleClose} className="border-borderSoft bg-white hover:bg-greige-50">
-              Cancel
+              {tCommon("cancel")}
             </Button>
             {canGoPrev && (
               <Button variant="outline" onClick={prevStep} className="border-borderSoft bg-white hover:bg-greige-50">
-                Back
+                {t("back")}
               </Button>
             )}
           </div>
@@ -463,11 +467,11 @@ export function ProposalDrawer({ open, onClose, initialData, leads = [], onSaved
               disabled={isSaving}
               className="border-borderSoft bg-white hover:bg-greige-50"
             >
-              Save Draft
+              {t("saveDraft")}
             </Button>
 
             <Button variant="outline" onClick={handlePreview} className="border-borderSoft bg-white hover:bg-greige-50">
-              Preview
+              {t("preview")}
             </Button>
 
             {canGoNext ? (
@@ -476,11 +480,11 @@ export function ProposalDrawer({ open, onClose, initialData, leads = [], onSaved
                 disabled={!isStepValid(currentStep)}
                 className="bg-clay-600 hover:bg-clay-700 text-white"
               >
-                Continue
+                {t("continue")}
               </Button>
             ) : (
               <Button onClick={handleSend} disabled={!canSend() || isSaving} className="bg-clay-600 hover:bg-clay-700 text-white">
-                Send Proposal
+                {t("sendProposal")}
               </Button>
             )}
           </div>

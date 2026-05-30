@@ -6,6 +6,7 @@ import { Eye, Paperclip, Trash2, X } from 'lucide-react';
 import { Input } from '../ui/input';
 import { DeleteDialog } from '../DeleteDialog';
 import { deleteData, fetchData, postFormData } from '@/lib/Api';
+import { useTranslations } from 'next-intl';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -37,6 +38,7 @@ const Attachments = ({
   onPendingFilesChange,
   onUploadComplete,
 }: AttachmentsProps) => {
+  const t = useTranslations('taskAttachments');
   const queryClient = useQueryClient();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [deletedFile, setDeletedFile] = useState<TaskAttachmentItem | null>(null);
@@ -63,11 +65,11 @@ const Attachments = ({
     if (!deletedFile?.id) return;
     try {
       await deleteData({ url: `task/attachments/${deletedFile.id}/` });
-      toast.success('Attachment removed');
+      toast.success(t('toasts.removed'));
       refetchAttachments();
       onUploadComplete?.();
     } catch {
-      toast.error('Failed to delete attachment');
+      toast.error(t('toasts.deleteFailed'));
     } finally {
       setIsDeleteOpen(false);
       setDeletedFile(null);
@@ -80,17 +82,17 @@ const Attachments = ({
       setUploading(true);
       try {
         await uploadTaskFiles(id, files);
-        toast.success(files.length > 1 ? 'Attachments uploaded' : 'Attachment uploaded');
+        toast.success(files.length > 1 ? t('toasts.uploadedPlural') : t('toasts.uploaded'));
         refetchAttachments();
         onUploadComplete?.();
       } catch {
-        toast.error('Failed to upload attachment');
+        toast.error(t('toasts.uploadFailed'));
         throw new Error('upload failed');
       } finally {
         setUploading(false);
       }
     },
-    [refetchAttachments, onUploadComplete]
+    [refetchAttachments, onUploadComplete, t]
   );
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,7 +103,7 @@ const Attachments = ({
     const valid: File[] = [];
     for (const f of selected) {
       if (f.size > MAX_FILE_SIZE) {
-        toast.error(`${f.name} must be less than 5MB`);
+        toast.error(t('toasts.fileTooLarge', { name: f.name }));
         continue;
       }
       valid.push(f);
@@ -127,11 +129,11 @@ const Attachments = ({
     <div className="">
       <div className="list my-10 flex flex-col gap-4">
         {isLoading && taskId ? (
-          <p className="text-xs text-[#8A9099]">Loading attachments…</p>
+          <p className="text-xs text-[#8A9099]">{t('loading')}</p>
         ) : null}
 
         {displayFiles?.map((item, i) => {
-          const name = item.name || item.file_name || 'file';
+          const name = item.name || item.file_name || t('defaultFileName');
           const url = item.file_url || '';
           const mimetype = item.metadata?.mimetype || '';
           const isImage = mimetype.includes('image');
@@ -162,7 +164,7 @@ const Attachments = ({
                 <div>
                   <div className="title text-sm font-medium text-[#17181B]">{name}</div>
                   <div className="title text-xs font-normal text-[#8A9099] mt-1">
-                    Uploaded on {new Date(item.created_at).toLocaleString()}
+                    {t('uploadedOn', { date: new Date(item.created_at).toLocaleString() })}
                   </div>
                   {item.metadata?.size ? (
                     <div className="title text-xs font-normal text-[#8A9099] mt-1">
@@ -203,7 +205,7 @@ const Attachments = ({
                 <div>
                   <div className="text-sm font-medium text-[#17181B]">{file.name}</div>
                   <div className="text-xs text-[#8A9099]">
-                    Will upload when you save the task · {(file.size / (1024 * 1024)).toFixed(2)} MB
+                    {t('pendingHint', { size: (file.size / (1024 * 1024)).toFixed(2) })}
                   </div>
                 </div>
               </div>
@@ -219,7 +221,7 @@ const Attachments = ({
           <span className="text-gray-500">
             <Paperclip className="h-4 w-4" />
           </span>
-          <span className="truncate">Attachment</span>
+          <span className="truncate">{t('label')}</span>
         </div>
 
         <div className="item flex items-center justify-between gap-2 flex-wrap cursor-pointer">
@@ -235,7 +237,7 @@ const Attachments = ({
           </div>
           {!taskId ? (
             <p className="text-xs text-[#8A9099] w-full mt-1">
-              Add files now — they upload automatically when you save the task.
+              {t('saveHint')}
             </p>
           ) : null}
         </div>
@@ -245,8 +247,8 @@ const Attachments = ({
         isOpen={isDeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
         onConfirm={handleDeleteFile}
-        title="Delete attachment"
-        description="Are you sure you want to delete this file? This action cannot be undone."
+        title={t('deleteTitle')}
+        description={t('deleteDescription')}
         itemName={deletedFile?.name || deletedFile?.file_name}
         requireConfirmation={false}
       />

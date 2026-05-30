@@ -26,6 +26,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import ProductImage from "./ProductImage";
 import { ViewCurrencySymbol } from "../ViewCurrencySymbol";
@@ -91,6 +92,7 @@ const ProcurementRow = React.memo<ProcurementRowProps>(({
   procurementPermission,
   style
 }) => {
+  const t = useTranslations('projectProcurementTable');
   const [qtyConfirmOpen, setQtyConfirmOpen] = useState(false);
   const pendingQtyRef = useRef<string | null>(null);
   const qtyInputRef = useRef<HTMLInputElement | null>(null);
@@ -150,7 +152,7 @@ const ProcurementRow = React.memo<ProcurementRowProps>(({
           <button type="button" onClick={() => openProduct(item)} className="shrink-0 focus:outline-none focus:ring-2 focus:ring-primary rounded-lg bg-white transition-transform hover:scale-105">
             <ProductImage
               className="w-11 h-11 rounded-lg shadow-sm object-cover border border-greige-500/30 bg-white"
-              alt={item?.product?.name || "Product image"}
+              alt={item?.product?.name || t('productImageAlt')}
               src={item?.product?.images?.find((i: any) => i.is_primary)?.image || item?.product?.images?.[0]?.image || errorImage.src}
             />
           </button>
@@ -260,7 +262,7 @@ const ProcurementRow = React.memo<ProcurementRowProps>(({
           onBlur={(e) => handleLeadTimeChange(item, e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
           defaultValue={item.lead_time || ""}
-          placeholder="e.g. 2-3 weeks"
+          placeholder={t('leadTimePlaceholder')}
           className="h-7 disabled:cursor-not-allowed disabled:opacity-100 w-full placeholder:opacity-70 rounded-[12px] text-xs px-2 border-greige-500/30 focus-visible:ring-primary bg-stone-50/50"
         />
       </td>

@@ -1,0 +1,30 @@
+{
+  "settingsIntegrationsPage": {
+    "gmail": {
+      "disconnect": "切断",
+      "disconnectTitle": "Gmailの接続を解除しますか？",
+      "disconnectDesc": "メールの同期が停止します。設定または受信箱から再接続できます。",
+      "connectWithGmail": "Gmailに接続",
+      "connectTitle": "Gmailに接続",
+      "connectDesc": "Googleでサインインし、Gmailへのアクセスを許可してください。カレンダーは必要に応じて連携設定から別途接続してください。",
+      "accessBlockedHint": "Googleが「Access blocked」(403)を表示する場合、Google Cloud ConsoleのOAuth同意画面 → テストユーザーにアカウントを追加してください。",
+      "continueWithGoogle": "Googleで続行",
+      "connect": "接続",
+      "toasts": {
+        "blockedAccess": "Googleがアクセスをブロックしました。OAuth同意画面 → テストユーザーにメールを追加してください。",
+        "connectFailed": "Gmailに接続できませんでした。サーバーのGMAIL_*環境変数を確認してください。",
+        "connected": "Gmailに接続しました。",
+        "cancelled": "Gmail接続がキャンセルされました。",
+        "statusNotUpdated": "GmailはGoogleに接続されましたが、ステータスが更新されませんでした。もう一度お試しください。",
+        "disconnected": "Gmailの接続を解除しました。",
+        "disconnectFailed": "Gmailの接続解除に失敗しました。"
+      }
+    },
+    "zapier": {
+      "title": "Zapier & API",
+      "description": "APIキーとWebhookを作成して、FocuspilotをZapier、Make、または独自スクリプトと連携します。",
+      "manageApiWebhooks": "APIとWebhookを管理",
+      "setupApiWebhooks": "APIとWebhookを設定"
+    }
+  }
+}

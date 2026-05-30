@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle2, AlertCircle, Building2, PenLine } from "lucide-react"
 import type { ProposalData } from "../proposal-drawer"
+import { useTranslations } from "next-intl"
 
 interface ReviewStepProps {
   data: ProposalData
@@ -32,6 +33,7 @@ function renderMarkdown(text: string): string {
 }
 
 export function ReviewStep({ data, onUpdate }: ReviewStepProps) {
+  const t = useTranslations('crmProposalReviewStep')
   const currencySymbol = data.currency === "USD" ? "$" : data.currency === "EUR" ? "€" : "£"
   const subtotal = data.subtotal || 0
   const taxRate = data.tax || 0 // This is the tax RATE (percentage)
@@ -39,12 +41,12 @@ export function ReviewStep({ data, onUpdate }: ReviewStepProps) {
   const total = data.total || 0
 
   const validationChecks = [
-    { key: "client", label: "Client selected", valid: !!data.client },
-    { key: "contact", label: "Contact / email assigned", valid: !!data.contact },
-    { key: "title", label: "Proposal title provided", valid: !!data.title },
-    { key: "scope", label: "Scope of work defined", valid: !!data.scope },
-    { key: "pricing", label: "Line items added", valid: !!(data.lineItems?.length) },
-    { key: "terms", label: "Terms & conditions included", valid: !!data.terms },
+    { key: "client", label: t('checks.client'), valid: !!data.client },
+    { key: "contact", label: t('checks.contact'), valid: !!data.contact },
+    { key: "title", label: t('checks.title'), valid: !!data.title },
+    { key: "scope", label: t('checks.scope'), valid: !!data.scope },
+    { key: "pricing", label: t('checks.pricing'), valid: !!(data.lineItems?.length) },
+    { key: "terms", label: t('checks.terms'), valid: !!data.terms },
   ]
 
   const allValid = validationChecks.every((check) => check.valid)
@@ -55,12 +57,12 @@ export function ReviewStep({ data, onUpdate }: ReviewStepProps) {
       {/* Checklist */}
       <div className="flex items-center justify-between">
         <span className="text-sm text-gray-500">
-          {completedCount}/{validationChecks.length} sections complete
+          {t('sectionsComplete', { completed: completedCount, total: validationChecks.length })}
         </span>
         {allValid ? (
-          <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-xs">Ready to send</Badge>
+          <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-xs">{t('readyToSend')}</Badge>
         ) : (
-          <Badge variant="outline" className="border-gray-300 text-gray-500 text-xs">Incomplete</Badge>
+          <Badge variant="outline" className="border-gray-300 text-gray-500 text-xs">{t('incomplete')}</Badge>
         )}
       </div>
 
@@ -89,12 +91,12 @@ export function ReviewStep({ data, onUpdate }: ReviewStepProps) {
                 <Building2 className="w-4 h-4 text-white" />
               </div>
               <div>
-                <div className="text-white font-semibold text-sm">Your Studio</div>
-                <div className="text-gray-400 text-xs">Interior Design</div>
+                <div className="text-white font-semibold text-sm">{t('yourStudio')}</div>
+                <div className="text-gray-400 text-xs">{t('interiorDesign')}</div>
               </div>
             </div>
             <div className="text-right">
-              <div className="text-gray-400 text-xs font-medium uppercase tracking-wider">Proposal</div>
+              <div className="text-gray-400 text-xs font-medium uppercase tracking-wider">{t('proposal')}</div>
               {data.reference_number && (
                 <div className="text-gray-500 text-xs font-mono mt-0.5">{data.reference_number}</div>
               )}

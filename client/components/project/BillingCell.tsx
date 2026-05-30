@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,31 +16,32 @@ const BillingStatusDots = React.memo(({
   invoiceSentAt: string | null;
   clientPaidAt: string | null;
 }) => {
+  const t = useTranslations('projectProcurementCells');
   return (
     <div className="flex items-center gap-1.5 text-xs text-neutral-600">
-      <div className="flex items-center gap-1" title="Invoice created">
+      <div className="flex items-center gap-1" title={t('invoiceCreatedTitle')}>
         <div
           className={cn('w-3 h-3 rounded-full shrink-0 border-2', invoiceId ? 'bg-[#8FA989] border-[#8FA989]' : 'bg-white border-gray-300')}
         />
-        <span className="hidden xl:inline">Created</span>
+        <span className="hidden xl:inline">{t('poCreated')}</span>
       </div>
-      <div className="flex items-center gap-1" title="Invoice sent to client">
+      <div className="flex items-center gap-1" title={t('invoiceSentTitle')}>
         <div
           className={cn(
             'w-3 h-3 rounded-full shrink-0 border-2',
             invoiceSentAt ? 'bg-[#8FA989] border-[#8FA989]' : 'bg-white border-gray-300'
           )}
         />
-        <span className="hidden xl:inline">Sent</span>
+        <span className="hidden xl:inline">{t('poSent')}</span>
       </div>
-      <div className="flex items-center gap-1" title="Client paid">
+      <div className="flex items-center gap-1" title={t('clientPaidTitle')}>
         <div
           className={cn(
             'w-3 h-3 rounded-full shrink-0 border-2',
             clientPaidAt ? 'bg-[#8FA989] border-[#8FA989]' : 'bg-white border-gray-300'
           )}
         />
-        <span className="hidden xl:inline">Paid</span>
+        <span className="hidden xl:inline">{t('poPaid')}</span>
       </div>
     </div>
   );
@@ -53,6 +57,7 @@ interface BillingCellProps {
 }
 
 const BillingCell = React.memo<BillingCellProps>(({ item, loadingProductIdForInv, clickHandleInvoice, procurementPermission }) => {
+  const t = useTranslations('projectProcurementCells');
 
   // ------------------------
   // CASE: No invoice exists → show “Create invoice”
@@ -63,7 +68,7 @@ const BillingCell = React.memo<BillingCellProps>(({ item, loadingProductIdForInv
         <Button
           disabled={loadingProductIdForInv === item.po || !item?.po_created || !procurementPermission}
           variant="ghost"
-          title='Create invoice'
+          title={t('createInvoice')}
           size="sm"
           onClick={clickHandleInvoice}
           className="h-8 text-sm  px-0 hover:bg-transparent whitespace-nowrap w-fit text-neutral-800"
@@ -71,10 +76,10 @@ const BillingCell = React.memo<BillingCellProps>(({ item, loadingProductIdForInv
           {loadingProductIdForInv === item.po && item.po ? (
             <div className="flex items-center gap-2">
               <Loader2 className="h-4 w-4 animate-spin" />
-              Creating...
+              {t('creating')}
             </div>
           ) : (
-            'Create invoice'
+            t('createInvoice')
           )}
         </Button>
       </div>

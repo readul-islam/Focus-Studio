@@ -41,6 +41,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { usePermissions } from '@/hooks/usePermissions';
+import { useTranslations } from 'next-intl';
 
 type StageId = 'new' | 'qualified' | 'proposal' | 'negotiation' | 'won' | 'lost';
 
@@ -54,24 +55,36 @@ type Deal = {
   closeDate?: string;
 };
 
-const stages: { id: StageId; label: string; icon: React.ComponentType<{ className?: string }>; chipClass: string }[] = [
-  { id: 'new', label: 'New', icon: Building2, chipClass: 'bg-stone-100 text-gray-700 border-gray-200' },
-  { id: 'qualified', label: 'Qualified', icon: Users, chipClass: 'bg-sage-300/40 text-olive-700 border-olive-700/20' },
-  {
-    id: 'proposal',
-    label: 'Proposal',
-    icon: FileText,
-    chipClass: 'bg-ochre-300/20 text-ochre-700 border-ochre-700/20',
-  },
-  { id: 'negotiation', label: 'Negotiation', icon: Handshake, chipClass: 'bg-clay-50 text-clay-700 border-clay-200' },
-  { id: 'won', label: 'Won', icon: Trophy, chipClass: 'bg-sage-300 text-olive-700' },
-  {
-    id: 'lost',
-    label: 'Lost',
-    icon: X,
-    chipClass: 'bg-terracotta-600/10 text-terracotta-700 border-terracotta-700/20',
-  },
+const STAGE_META: { id: StageId; icon: React.ComponentType<{ className?: string }>; chipClass: string }[] = [
+  { id: 'new', icon: Building2, chipClass: 'bg-stone-100 text-gray-700 border-gray-200' },
+  { id: 'qualified', icon: Users, chipClass: 'bg-sage-300/40 text-olive-700 border-olive-700/20' },
+  { id: 'proposal', icon: FileText, chipClass: 'bg-ochre-300/20 text-ochre-700 border-ochre-700/20' },
+  { id: 'negotiation', icon: Handshake, chipClass: 'bg-clay-50 text-clay-700 border-clay-200' },
+  { id: 'won', icon: Trophy, chipClass: 'bg-sage-300 text-olive-700' },
+  { id: 'lost', icon: X, chipClass: 'bg-terracotta-600/10 text-terracotta-700 border-terracotta-700/20' },
 ];
+
+const LEAD_SOURCE_VALUES = [
+  'Website',
+  'Referral',
+  'Instagram',
+  'LinkedIn',
+  'Trade Show',
+  'Facebook',
+  'Twitter',
+  'Other',
+] as const;
+
+const LEAD_SOURCE_LABEL_KEY: Record<(typeof LEAD_SOURCE_VALUES)[number], string> = {
+  Website: 'sourceWebsite',
+  Referral: 'sourceReferral',
+  Instagram: 'sourceInstagram',
+  LinkedIn: 'sourceLinkedIn',
+  'Trade Show': 'sourceTradeShow',
+  Facebook: 'sourceFacebook',
+  Twitter: 'sourceTwitter',
+  Other: 'sourceOther',
+};
 
 type Lead = {
   id: string | number;
@@ -139,6 +152,7 @@ const DealCard = ({ deal, lead, onDragStart, onConvertToProject, onCardClick, us
   userLookup: Record<string, string>;
   clientsPermission: boolean;
 }) => {
+  const t = useTranslations('crmPipelinePage');
   const days = lead.stage_updated_at ?
     Math.ceil(Math.abs(new Date().getTime() - new Date(lead.stage_updated_at).getTime()) / (1000 * 60 * 60 * 24)) : 0;
 
@@ -175,7 +189,7 @@ const DealCard = ({ deal, lead, onDragStart, onConvertToProject, onCardClick, us
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className={cn('w-2 h-2 rounded-full', colorIndicator)} />
-              <span className="text-xs text-gray-600">{days} days</span>
+              <span className="text-xs text-gray-600">{t('daysCount', { count: days })}</span>
             </div>
             {lead.priority && (
               <Badge
@@ -183,15 +197,17 @@ const DealCard = ({ deal, lead, onDragStart, onConvertToProject, onCardClick, us
                         lead.priority === 'Medium' ? 'default' : 'secondary'}
                 className="text-xs h-5"
               >
-                {lead.priority}
+                {lead.priority === 'High' ? t('priorityHigh') :
+                 lead.priority === 'Medium' ? t('priorityMedium') :
+                 lead.priority === 'Low' ? t('priorityLow') : lead.priority}
               </Badge>
             )}
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-xs text-gray-500">Owner:</span>
+            <span className="text-xs text-gray-500">{t('owner')}</span>
             <span className="text-xs text-gray-700 font-medium">
-              {lead.owner ? (userLookup[String(lead.owner)] || 'Unassigned') : 'Unassigned'}
+              {lead.owner ? (userLookup[String(lead.owner)] || t('unassigned')) : t('unassigned')}
             </span>
           </div>
         </div>
@@ -209,7 +225,7 @@ const DealCard = ({ deal, lead, onDragStart, onConvertToProject, onCardClick, us
               window.location.href = `/crm/proposals/new?lead=${lead.id}`;
             }}
           >
-            Create Proposal
+            {t('createProposal')}
           </Button>
         </div>
       )}
@@ -229,7 +245,7 @@ const DealCard = ({ deal, lead, onDragStart, onConvertToProject, onCardClick, us
           window.location.href = `/projects/${lead.project}`;
         }}
       >
-        View Project
+        {t('viewProject')}
       </Button> 
          </div>
        : 
@@ -242,7 +258,7 @@ const DealCard = ({ deal, lead, onDragStart, onConvertToProject, onCardClick, us
               onConvertToProject(lead);
             }}
           >
-            Convert to Project
+            {t('convertToProject')}
           </Button>
         </div>
       )}
@@ -303,24 +319,26 @@ const SCHEMA_MAP = {
 
 // --- Form Components ---
 
-const QualifiedFormFields = ({ form }: { form: any }) => (
+function QualifiedFormFields({ form }: { form: any }) {
+  const t = useTranslations('crmPipelinePage');
+  return (
   <div className="space-y-3">
     <FormField
       control={form.control}
       name="project_type"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Project Type</FormLabel>
+          <FormLabel>{t('forms.projectType')}</FormLabel>
           <Select onValueChange={field.onChange} value={field.value}>
             <FormControl>
               <SelectTrigger>
-                <SelectValue placeholder="Select Project Type" />
+                <SelectValue placeholder={t('forms.selectProjectType')} />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              <SelectItem value="Residential">Residential</SelectItem>
-              <SelectItem value="Commercial">Commercial</SelectItem>
-              <SelectItem value="Hospitality">Hospitality</SelectItem>
+              <SelectItem value="Residential">{t('forms.residential')}</SelectItem>
+              <SelectItem value="Commercial">{t('forms.commercial')}</SelectItem>
+              <SelectItem value="Hospitality">{t('forms.hospitality')}</SelectItem>
             </SelectContent>
           </Select>
           <FormMessage />
@@ -332,9 +350,9 @@ const QualifiedFormFields = ({ form }: { form: any }) => (
       name="property_type"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Property Type</FormLabel>
+          <FormLabel>{t('forms.propertyType')}</FormLabel>
           <FormControl>
-            <Input placeholder="e.g. Apartment, House" {...field} />
+            <Input placeholder={t('forms.propertyTypePlaceholder')} {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -345,9 +363,9 @@ const QualifiedFormFields = ({ form }: { form: any }) => (
       name="property_size"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Property Size (sq ft)</FormLabel>
+          <FormLabel>{t('forms.propertySize')}</FormLabel>
           <FormControl>
-            <Input type="number" placeholder="Property Size" {...field} />
+            <Input type="number" placeholder={t('forms.propertySizePlaceholder')} {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -358,27 +376,30 @@ const QualifiedFormFields = ({ form }: { form: any }) => (
       name="budget_range"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Budget Range</FormLabel>
+          <FormLabel>{t('forms.budgetRange')}</FormLabel>
           <FormControl>
-            <Input placeholder="Budget Range" {...field} />
+            <Input placeholder={t('forms.budgetRange')} {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>
       )}
     />
   </div>
-);
+  );
+}
 
-const ProposalFormFields = ({ form }: { form: any }) => (
+function ProposalFormFields({ form }: { form: any }) {
+  const t = useTranslations('crmPipelinePage');
+  return (
   <div className="space-y-3">
     <FormField
       control={form.control}
       name="estimated_value"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Estimated Value</FormLabel>
+          <FormLabel>{t('forms.estimatedValue')}</FormLabel>
           <FormControl>
-            <Input placeholder="Estimated Value" {...field} />
+            <Input placeholder={t('forms.estimatedValue')} {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -389,9 +410,9 @@ const ProposalFormFields = ({ form }: { form: any }) => (
       name="proposal_type"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Proposal Type</FormLabel>
+          <FormLabel>{t('forms.proposalType')}</FormLabel>
           <FormControl>
-            <Input placeholder="Proposal Type" {...field} />
+            <Input placeholder={t('forms.proposalType')} {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -402,7 +423,7 @@ const ProposalFormFields = ({ form }: { form: any }) => (
       name="proposal_sent_date"
       render={({ field }) => (
         <FormItem className="flex flex-col">
-          <FormLabel>Proposal Sent Date</FormLabel>
+          <FormLabel>{t('forms.proposalSentDate')}</FormLabel>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
@@ -411,7 +432,7 @@ const ProposalFormFields = ({ form }: { form: any }) => (
                   className={cn('w-full justify-start text-left font-normal', !field.value && 'text-muted-foreground')}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {field.value ? format(new Date(field.value), 'PPP') : <span>Pick a date</span>}
+                  {field.value ? format(new Date(field.value), 'PPP') : <span>{t('forms.pickDate')}</span>}
                 </Button>
               </FormControl>
             </PopoverTrigger>
@@ -429,18 +450,21 @@ const ProposalFormFields = ({ form }: { form: any }) => (
       )}
     />
   </div>
-);
+  );
+}
 
-const NegotiationFormFields = ({ form }: { form: any }) => (
+function NegotiationFormFields({ form }: { form: any }) {
+  const t = useTranslations('crmPipelinePage');
+  return (
   <div className="space-y-3">
     <FormField
       control={form.control}
       name="negotiation_reason"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Negotiation Reason</FormLabel>
+          <FormLabel>{t('forms.negotiationReason')}</FormLabel>
           <FormControl>
-            <Input placeholder="Negotiation Reason" {...field} />
+            <Input placeholder={t('forms.negotiationReason')} {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -451,27 +475,30 @@ const NegotiationFormFields = ({ form }: { form: any }) => (
       name="revised_value"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Revised Value</FormLabel>
+          <FormLabel>{t('forms.revisedValue')}</FormLabel>
           <FormControl>
-            <Input type='number' placeholder="Revised Value" {...field} />
+            <Input type='number' placeholder={t('forms.revisedValue')} {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>
       )}
     />
   </div>
-);
+  );
+}
 
-const WonFormFields = ({ form }: { form: any }) => (
+function WonFormFields({ form }: { form: any }) {
+  const t = useTranslations('crmPipelinePage');
+  return (
   <div className="space-y-3">
     <FormField
       control={form.control}
       name="final_value"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Final Value</FormLabel>
+          <FormLabel>{t('forms.finalValue')}</FormLabel>
           <FormControl>
-            <Input type='number' placeholder="Final Value" {...field} />
+            <Input type='number' placeholder={t('forms.finalValue')} {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -486,7 +513,7 @@ const WonFormFields = ({ form }: { form: any }) => (
             <Checkbox checked={field.value} onCheckedChange={field.onChange} />
           </FormControl>
           <div className="space-y-1 leading-none">
-            <FormLabel>Deposit Received</FormLabel>
+            <FormLabel>{t('forms.depositReceived')}</FormLabel>
           </div>
         </FormItem>
       )}
@@ -496,7 +523,7 @@ const WonFormFields = ({ form }: { form: any }) => (
       name="project_start_date"
       render={({ field }) => (
         <FormItem className="flex flex-col">
-          <FormLabel>Project Start Date</FormLabel>
+          <FormLabel>{t('forms.projectStartDate')}</FormLabel>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
@@ -505,7 +532,7 @@ const WonFormFields = ({ form }: { form: any }) => (
                   className={cn('w-full justify-start text-left font-normal', !field.value && 'text-muted-foreground')}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {field.value ? format(new Date(field.value), 'PPP') : <span>Pick a date</span>}
+                  {field.value ? format(new Date(field.value), 'PPP') : <span>{t('forms.pickDate')}</span>}
                 </Button>
               </FormControl>
             </PopoverTrigger>
@@ -523,25 +550,39 @@ const WonFormFields = ({ form }: { form: any }) => (
       )}
     />
   </div>
-);
+  );
+}
 
-const LostFormFields = ({ form }: { form: any }) => (
+function LostFormFields({ form }: { form: any }) {
+  const t = useTranslations('crmPipelinePage');
+  return (
   <FormField
     control={form.control}
     name="loss_reason"
     render={({ field }) => (
       <FormItem>
-        <FormLabel>Loss Reason</FormLabel>
+        <FormLabel>{t('forms.lossReason')}</FormLabel>
         <FormControl>
-          <Input placeholder="Loss Reason" {...field} />
+          <Input placeholder={t('forms.lossReason')} {...field} />
         </FormControl>
         <FormMessage />
       </FormItem>
     )}
   />
-);
+  );
+}
 
 function PipelinePageContent() {
+  const t = useTranslations('crmPipelinePage');
+  const tc = useTranslations('common');
+  const stages = useMemo(
+    () =>
+      STAGE_META.map((s) => ({
+        ...s,
+        label: t(`stages.${s.id}` as 'stages.new'),
+      })),
+    [t],
+  );
   const { data: leadsData, isLoading, refetch } = useFetch('/crm/leads/');
   const leads = (leadsData as Lead[]) || [];
   const { user } = useUser();
@@ -619,26 +660,26 @@ function PipelinePageContent() {
   // Lead creation mutation
   const { mutate: createLead, isPending: isCreatingLead } = usePost({
     onSuccess: () => {
-      toast.success('Lead created successfully');
+      toast.success(t('toasts.leadCreated'));
       setLeadDialogOpen(false);
       leadForm.reset();
       refetch();
     },
     onError: (err: any) => {
-      toast.error(err?.message || 'Failed to create lead');
+      toast.error(err?.message || t('toasts.leadCreateFailed'));
     },
   });
 
   // Project conversion mutation — calls /crm/leads/{id}/convert_to_project/
   const { mutate: createProject, isPending: isCreatingProject } = usePost({
     onSuccess: () => {
-      toast.success('Lead converted to project successfully');
+      toast.success(t('toasts.leadConverted'));
       setConversionDialogOpen(false);
       setSelectedLeadForConversion(null);
       refetch();
     },
     onError: (err: any) => {
-      toast.error(err?.response?.data?.detail || err?.message || 'Failed to convert lead to project');
+      toast.error(err?.response?.data?.detail || err?.message || t('toasts.leadConvertFailed'));
     },
   });
 
@@ -668,7 +709,7 @@ function PipelinePageContent() {
 
   const { mutateAsync: patchAsync, isLoading: isPatching } = usePatch({
     onSuccess: () => {
-      toast.success('Lead updated successfully');
+      toast.success(t('toasts.leadUpdated'));
       setModalOpen(false);
       setPendingLeadId(null);
       setPendingTargetStage(null);
@@ -676,39 +717,39 @@ function PipelinePageContent() {
       refetch();
     },
     onError: (err: any) => {
-      toast.error(err?.message || 'Failed to update lead');
+      toast.error(err?.message || t('toasts.leadUpdateFailed'));
     },
   });
 
   const { mutateAsync: patchLeadAsync, isLoading: isPatchingLead } = usePatch({
     onSuccess: () => {
-      toast.success('Lead updated successfully');
+      toast.success(t('toasts.leadUpdated'));
       setIsEditMode(false);
       setViewLeadDialogOpen(false);
       refetch();
     },
     onError: (err: any) => {
-      toast.error(err?.message || 'Failed to update lead');
+      toast.error(err?.message || t('toasts.leadUpdateFailed'));
     },
   });
 
   const { mutate: deleteLead, isLoading: isDeletingLead } = useDelete({
     onSuccess: () => {
-      toast.success('Lead deleted successfully');
+      toast.success(t('toasts.leadDeleted'));
       setViewLeadDialogOpen(false);
       setModalOpen(false);
       setSelectedLead(null);
       refetch();
     },
     onError: (err: any) => {
-      toast.error(err?.message || 'Failed to delete lead');
+      toast.error(err?.message || t('toasts.leadDeleteFailed'));
     },
   });
 
   function onDragStart(e: React.DragEvent<HTMLDivElement>, id: string) {
     if (!clientsPermission) {
       e.preventDefault();
-      toast.error("You don't have permission to perform this action");
+      toast.error(tc('noPermissionAction'));
       return;
     }
     e.dataTransfer.setData('text/plain', id);
@@ -947,7 +988,7 @@ function PipelinePageContent() {
               className="gap-2"
             >
               <Plus className="w-4 h-4" />
-              Add Lead
+              {t('addLead')}
             </Button>
           </div>}
         </div>
@@ -965,7 +1006,7 @@ function PipelinePageContent() {
                     <div className="text-2xl font-semibold text-gray-900">
                       {formatCurrency(kpiMetrics.totalPipelineValue)}
                     </div>
-                    <div className="text-sm text-gray-600">Total Pipeline Value</div>
+                    <div className="text-sm text-gray-600">{t('totalPipelineValue')}</div>
                   </div>
                 </div>
               </div>
@@ -979,7 +1020,7 @@ function PipelinePageContent() {
                     <div className="text-2xl font-semibold text-gray-900">
                       {kpiMetrics.openDealsCount}
                     </div>
-                    <div className="text-sm text-gray-600">Open Deals</div>
+                    <div className="text-sm text-gray-600">{t('openDeals')}</div>
                   </div>
                 </div>
               </div>
@@ -993,7 +1034,7 @@ function PipelinePageContent() {
                     <div className="text-2xl font-semibold text-gray-900">
                       {kpiMetrics.wonThisMonth}
                     </div>
-                    <div className="text-sm text-gray-600">Won This Month</div>
+                    <div className="text-sm text-gray-600">{t('wonThisMonth')}</div>
                   </div>
                 </div>
               </div>
@@ -1034,7 +1075,7 @@ function PipelinePageContent() {
 
                   {byStage[s.id].length === 0 && (
                     <div className="text-xs px-3 py-6 text-center border border-dashed rounded-lg dropzone-placeholder">
-                      Drag a deal here
+                      {t('dragDealHere')}
                     </div>
                   )}
                 </div>
@@ -1055,10 +1096,8 @@ function PipelinePageContent() {
       }}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Add New Lead</DialogTitle>
-            <DialogDescription>
-              Fill in the details below to add a new lead to your pipeline.
-            </DialogDescription>
+            <DialogTitle>{t('addNewLead')}</DialogTitle>
+            <DialogDescription>{t('addNewLeadDescription')}</DialogDescription>
           </DialogHeader>
 
           <Form {...leadForm}>
@@ -1070,7 +1109,7 @@ function PipelinePageContent() {
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel>
-                      Link to Client <span className="text-red-500">*</span>
+                      {t('linkToClient')} <span className="text-red-500">*</span>
                     </FormLabel>
                     <Popover open={clientPopoverOpen} onOpenChange={setClientPopoverOpen}>
                       <PopoverTrigger asChild>
@@ -1086,7 +1125,7 @@ function PipelinePageContent() {
                           >
                             {selectedClient
                               ? `${selectedClient.name || ''} ${selectedClient.surname || ''}`.trim() + (selectedClient.email ? ` (${selectedClient.email})` : '')
-                              : "Search and select a client..."}
+                              : t('searchSelectClient')}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
                         </FormControl>
@@ -1094,7 +1133,7 @@ function PipelinePageContent() {
                       <PopoverContent className="w-[400px] p-0" align="start">
                         <Command shouldFilter={false}>
                           <CommandInput
-                            placeholder="Search clients..."
+                            placeholder={t('searchClients')}
                             value={clientSearch}
                             onValueChange={setClientSearch}
                           />
@@ -1105,7 +1144,7 @@ function PipelinePageContent() {
                               </div>
                             ) : (
                               <>
-                                <CommandEmpty>No clients found.</CommandEmpty>
+                                <CommandEmpty>{t('noClientsFound')}</CommandEmpty>
                                 <CommandGroup>
                                   {(clientsData as any)?.results?.map((client: any) => (
                                     <CommandItem
@@ -1147,10 +1186,10 @@ function PipelinePageContent() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Title (Project Name) <span className="text-red-500">*</span>
+                        {t('titleProjectName')} <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g. Modern Living Room Redesign" {...field} />
+                        <Input placeholder={t('titlePlaceholder')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1164,10 +1203,10 @@ function PipelinePageContent() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Full Name <span className="text-red-500">*</span>
+                        {t('fullName')} <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="John Doe" {...field} />
+                        <Input placeholder={t('fullNamePlaceholder')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1180,9 +1219,9 @@ function PipelinePageContent() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email <span className="text-gray-500 text-xs">(View Only)</span></FormLabel>
+                      <FormLabel>{t('emailViewOnly')}</FormLabel>
                       <FormControl>
-                        <Input type="email" placeholder="john@example.com" readOnly className="bg-mute" {...field} />
+                        <Input type="email" placeholder={t('emailPlaceholder')} readOnly className="bg-mute" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1196,10 +1235,10 @@ function PipelinePageContent() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Phone <span className="text-red-500">*</span>
+                        {tc('phone')} <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
-                        <Input placeholder="+1 (555) 123-4567" {...field} />
+                        <Input placeholder={t('phonePlaceholder')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1213,23 +1252,20 @@ function PipelinePageContent() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>
-                        Source <span className="text-red-500">*</span>
+                        {t('source')} <span className="text-red-500">*</span>
                       </FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select source" />
+                            <SelectValue placeholder={t('selectSource')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Website">Website</SelectItem>
-                          <SelectItem value="Referral">Referral</SelectItem>
-                          <SelectItem value="Instagram">Instagram</SelectItem>
-                          <SelectItem value="LinkedIn">LinkedIn</SelectItem>
-                          <SelectItem value="Trade Show">Trade Show</SelectItem>
-                          <SelectItem value="Facebook">Facebook</SelectItem>
-                          <SelectItem value="Twitter">Twitter</SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
+                          {LEAD_SOURCE_VALUES.map(value => (
+                            <SelectItem key={value} value={value}>
+                              {t(LEAD_SOURCE_LABEL_KEY[value] as 'sourceWebsite')}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -1243,9 +1279,9 @@ function PipelinePageContent() {
                   name="estimated_value"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Estimated Value</FormLabel>
+                      <FormLabel>{t('forms.estimatedValue')}</FormLabel>
                       <FormControl>
-                        <Input type="number" placeholder="50000" {...field} />
+                        <Input type="number" placeholder={t('estimatedValuePlaceholder')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1258,17 +1294,17 @@ function PipelinePageContent() {
                   name="priority"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Priority</FormLabel>
+                      <FormLabel>{t('priority')}</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select priority" />
+                            <SelectValue placeholder={t('selectPriority')} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="High">High</SelectItem>
-                          <SelectItem value="Medium">Medium</SelectItem>
-                          <SelectItem value="Low">Low</SelectItem>
+                          <SelectItem value="High">{t('priorityHigh')}</SelectItem>
+                          <SelectItem value="Medium">{t('priorityMedium')}</SelectItem>
+                          <SelectItem value="Low">{t('priorityLow')}</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -1283,10 +1319,10 @@ function PipelinePageContent() {
                 name="notes"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Notes</FormLabel>
+                    <FormLabel>{tc('notes')}</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Add any additional notes about this lead..."
+                        placeholder={t('notesPlaceholder')}
                         className="resize-none"
                         rows={4}
                         {...field}
@@ -1305,10 +1341,10 @@ function PipelinePageContent() {
                   onClick={() => setLeadDialogOpen(false)}
                   disabled={isCreatingLead}
                 >
-                  Cancel
+                  {tc('cancel')}
                 </Button>
                 {clientsPermission && <Button type="submit" disabled={isCreatingLead}>
-                  {isCreatingLead ? 'Adding...' : 'Add Lead'}
+                  {isCreatingLead ? t('adding') : t('addLead')}
                 </Button>}
               </DialogFooter>
             </form>
@@ -1320,20 +1356,18 @@ function PipelinePageContent() {
       <Dialog open={conversionDialogOpen} onOpenChange={setConversionDialogOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Convert Lead to Project</DialogTitle>
-            <DialogDescription>
-              This lead is ready to be converted into a project. Review the details below.
-            </DialogDescription>
+            <DialogTitle>{t('convertTitle')}</DialogTitle>
+            <DialogDescription>{t('convertDescription')}</DialogDescription>
           </DialogHeader>
 
           {selectedLeadForConversion && (
             <div className="space-y-6">
               <div className="bg-sage-50 rounded-lg p-4">
-                <h3 className="font-semibold text-gray-900 mb-3">Lead Information</h3>
+                <h3 className="font-semibold text-gray-900 mb-3">{t('leadInformation')}</h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-gray-600">Client Name:</span>
-                    <div className="font-medium">{selectedLeadForConversion.full_name || 'N/A'}</div>
+                    <span className="text-gray-600">{t('clientName')}:</span>
+                    <div className="font-medium">{selectedLeadForConversion.full_name || t('notAvailable')}</div>
                   </div>
                   <div>
                     <span className="text-gray-600">Email:</span>
@@ -1396,9 +1430,9 @@ function PipelinePageContent() {
                     <Building2 className="w-4 h-4 text-white" />
                   </div>
                   <div>
-                    <div className="font-medium text-green-800">Ready for Conversion</div>
+                    <div className="font-medium text-green-800">{t('readyForConversion')}</div>
                     <div className="text-sm text-green-700 mt-1">
-                      This lead will be converted to a project with the details above. The lead will remain in "Won" status for record keeping.
+                      {t('convertNote')}
                     </div>
                   </div>
                 </div>
@@ -1412,14 +1446,14 @@ function PipelinePageContent() {
               onClick={() => setConversionDialogOpen(false)}
               disabled={isCreatingProject}
             >
-              Cancel
+              {tc('cancel')}
             </Button>
            {clientsPermission && <Button
               onClick={convertToProject}
               disabled={isCreatingProject}
               className="bg-green-600 hover:bg-green-700 text-white"
             >
-              {isCreatingProject ? 'Converting...' : 'Convert to Project'}
+              {isCreatingProject ? t('converting') : t('convertToProject')}
             </Button> }
           </DialogFooter>
         </DialogContent>
@@ -1428,13 +1462,13 @@ function PipelinePageContent() {
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Update lead stage</DialogTitle>
+            <DialogTitle>{t('updateStageTitle')}</DialogTitle>
           </DialogHeader>
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pt-2">
               <div className="text-sm text-gray-700">
-                Moving lead to:{' '}
+                {t('movingLeadTo')}{' '}
                 <span className="font-semibold capitalize text-primary font-bold">{pendingTargetStage}</span>
               </div>
 
@@ -1447,11 +1481,11 @@ function PipelinePageContent() {
               <DialogFooter className="mt-6">
                 <div className="flex gap-2 justify-end w-full">
                   <Button type="button" variant="outline" onClick={closeDialog}>
-                    Cancel
+                    {tc('cancel')}
                   </Button>
                   {clientsPermission && (
                     <Button type="submit" disabled={isPatching}>
-                      {isPatching ? 'Saving...' : 'Save Changes'}
+                      {isPatching ? tc('saving') : t('saveChanges')}
                     </Button>
                   )}
                 </div>
@@ -1468,7 +1502,7 @@ function PipelinePageContent() {
       }}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
-            <DialogTitle>{selectedLead?.full_name || 'Lead Details'}</DialogTitle>
+            <DialogTitle>{selectedLead?.full_name || t('leadDetails')}</DialogTitle>
             <DialogDescription>
               {selectedLead?.title || selectedLead?.project_type || ''}
             </DialogDescription>
@@ -1479,21 +1513,21 @@ function PipelinePageContent() {
               {isEditMode ? (
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div className="space-y-1">
-                    <Label>Title</Label>
+                    <Label>{t('titleProjectName')}</Label>
                     <Input
                       value={editFields.title || ''}
                       onChange={e => setEditFields(p => ({ ...p, title: e.target.value }))}
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label>Full Name</Label>
+                    <Label>{t('fullName')}</Label>
                     <Input
                       value={editFields.full_name || ''}
                       onChange={e => setEditFields(p => ({ ...p, full_name: e.target.value }))}
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label>Email</Label>
+                    <Label>{t('email')}</Label>
                     <Input
                       type="email"
                       value={editFields.email || ''}
@@ -1501,7 +1535,7 @@ function PipelinePageContent() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label>Estimated Value</Label>
+                    <Label>{t('forms.estimatedValue')}</Label>
                     <Input
                       type="text"
                       value={editFields.estimated_value
@@ -1516,53 +1550,55 @@ function PipelinePageContent() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <Label>Source</Label>
+                    <Label>{t('source')}</Label>
                     <Select
                       value={editFields.source || ''}
                       onValueChange={v => setEditFields(p => ({ ...p, source: v }))}
                     >
-                      <SelectTrigger><SelectValue placeholder="Select source" /></SelectTrigger>
+                      <SelectTrigger><SelectValue placeholder={t('selectSource')} /></SelectTrigger>
                       <SelectContent>
-                        {['Website','Referral','Instagram','LinkedIn','Trade Show','Facebook','Twitter','Other'].map(s => (
-                          <SelectItem key={s} value={s}>{s}</SelectItem>
+                        {LEAD_SOURCE_VALUES.map(value => (
+                          <SelectItem key={value} value={value}>
+                            {t(LEAD_SOURCE_LABEL_KEY[value] as 'sourceWebsite')}
+                          </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="space-y-1">
-                    <Label>Priority</Label>
+                    <Label>{t('priority')}</Label>
                     <Select
                       value={editFields.priority || ''}
                       onValueChange={v => setEditFields(p => ({ ...p, priority: v }))}
                     >
-                      <SelectTrigger><SelectValue placeholder="Select priority" /></SelectTrigger>
+                      <SelectTrigger><SelectValue placeholder={t('selectPriority')} /></SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="High">High</SelectItem>
-                        <SelectItem value="Medium">Medium</SelectItem>
-                        <SelectItem value="Low">Low</SelectItem>
+                        <SelectItem value="High">{t('priorityHigh')}</SelectItem>
+                        <SelectItem value="Medium">{t('priorityMedium')}</SelectItem>
+                        <SelectItem value="Low">{t('priorityLow')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="space-y-1">
-                    <Label>Project Type</Label>
+                    <Label>{t('forms.projectType')}</Label>
                     <Select
                       value={editFields.project_type || ''}
                       onValueChange={v => setEditFields(p => ({ ...p, project_type: v }))}
                     >
-                      <SelectTrigger><SelectValue placeholder="Select project type" /></SelectTrigger>
+                      <SelectTrigger><SelectValue placeholder={t('forms.selectProjectType')} /></SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Residential">Residential</SelectItem>
-                        <SelectItem value="Commercial">Commercial</SelectItem>
-                        <SelectItem value="Hospitality">Hospitality</SelectItem>
+                        <SelectItem value="Residential">{t('forms.residential')}</SelectItem>
+                        <SelectItem value="Commercial">{t('forms.commercial')}</SelectItem>
+                        <SelectItem value="Hospitality">{t('forms.hospitality')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="col-span-2 space-y-1">
-                    <Label>Notes</Label>
+                    <Label>{tc('notes')}</Label>
                     <Textarea
                       value={editFields.notes || ''}
                       onChange={e => setEditFields(p => ({ ...p, notes: e.target.value }))}
-                      placeholder="Add notes..."
+                      placeholder={t('notesShortPlaceholder')}
                       className="resize-none"
                       rows={3}
                     />
@@ -1572,33 +1608,42 @@ function PipelinePageContent() {
                 <>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <span className="text-gray-500">Email</span>
+                      <span className="text-gray-500">{t('email')}</span>
                       <div className="font-medium text-gray-900">{selectedLead.email || '—'}</div>
                     </div>
                     <div>
-                      <span className="text-gray-500">Phone</span>
+                      <span className="text-gray-500">{tc('phone')}</span>
                       <div className="font-medium text-gray-900">{selectedLead.phone || '—'}</div>
                     </div>
                     <div>
-                      <span className="text-gray-500">Stage</span>
+                      <span className="text-gray-500">{t('stage')}</span>
                       <div className="font-medium text-gray-900 capitalize">{selectedLead.stage}</div>
                     </div>
                     <div>
-                      <span className="text-gray-500">Estimated Value</span>
+                      <span className="text-gray-500">{t('forms.estimatedValue')}</span>
                       <div className="font-medium text-gray-900">{formatCurrency(selectedLead.estimated_value)}</div>
                     </div>
                     <div>
-                      <span className="text-gray-500">Project Type</span>
+                      <span className="text-gray-500">{t('forms.projectType')}</span>
                       <div className="font-medium text-gray-900">{selectedLead.project_type || '—'}</div>
                     </div>
                     <div>
-                      <span className="text-gray-500">Source</span>
-                      <div className="font-medium text-gray-900">{selectedLead.source || '—'}</div>
+                      <span className="text-gray-500">{t('source')}</span>
+                      <div className="font-medium text-gray-900">
+                        {selectedLead.source &&
+                        LEAD_SOURCE_LABEL_KEY[selectedLead.source as (typeof LEAD_SOURCE_VALUES)[number]]
+                          ? t(
+                              LEAD_SOURCE_LABEL_KEY[
+                                selectedLead.source as (typeof LEAD_SOURCE_VALUES)[number]
+                              ] as 'sourceWebsite',
+                            )
+                          : selectedLead.source || '—'}
+                      </div>
                     </div>
                   </div>
                   {selectedLead.notes && (
                     <div className="text-sm">
-                      <span className="text-gray-500">Notes</span>
+                      <span className="text-gray-500">{tc('notes')}</span>
                       <div className="text-gray-700 mt-1 whitespace-pre-wrap">{selectedLead.notes}</div>
                     </div>
                   )}
@@ -1616,7 +1661,7 @@ function PipelinePageContent() {
                         window.location.href = `/crm/proposals/new?lead=${selectedLead.id}`;
                       }}
                     >
-                      Create Proposal
+                      {t('createProposal')}
                     </Button>
                   )}
                   {selectedLead.stage === 'won' && !selectedLead.project_created && clientsPermission && !isEditMode && (
@@ -1628,7 +1673,7 @@ function PipelinePageContent() {
                         handleConvertToProject(selectedLead);
                       }}
                     >
-                      Convert to Project
+                      {t('convertToProject')}
                     </Button>
                   )}
                 </div>
@@ -1638,17 +1683,17 @@ function PipelinePageContent() {
                     {isEditMode ? (
                       <>
                         <Button size="sm" variant="outline" onClick={() => setIsEditMode(false)}>
-                          Cancel
+                          {tc('cancel')}
                         </Button>
                         <Button size="sm" onClick={handleEditSave} disabled={isPatchingLead}>
-                          {isPatchingLead ? 'Saving...' : 'Save'}
+                          {isPatchingLead ? tc('saving') : tc('save')}
                         </Button>
                       </>
                     ) : (
                       <>
                         {clientsPermission && <Button size="sm" variant="outline" onClick={handleEditToggle}>
                           <Pencil className="w-3.5 h-3.5 mr-1" />
-                          Edit
+                          {tc('edit')}
                         </Button>}
                         {clientsDeletePermission && <Button
                           size="sm"
@@ -1657,7 +1702,7 @@ function PipelinePageContent() {
                           disabled={isDeletingLead}
                         >
                           <Trash2 className="w-3.5 h-3.5 mr-1" />
-                          {isDeletingLead ? 'Deleting...' : 'Delete'}
+                          {isDeletingLead ? tc('deleting') : tc('delete')}
                         </Button>}
                       </>
                     )}
@@ -1673,8 +1718,8 @@ function PipelinePageContent() {
         isOpen={isDeleteOpen}
         onClose={closeDeleteDialog}
         onConfirm={confirmDelete}
-        title="Delete Lead"
-        description="Are you sure you want to delete this lead? This action cannot be undone."
+        title={t('deleteLeadTitle')}
+        description={t('deleteLeadDescription')}
         itemName={deleteItem?.full_name || deleteItem?.title}
         requireConfirmation={false}
       />

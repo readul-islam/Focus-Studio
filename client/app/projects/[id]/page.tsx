@@ -35,6 +35,7 @@ import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import { usePermissions } from '@/hooks/usePermissions';
 import { PermissionGuard } from '@/components/PermissionGuard';
+import { useTranslations } from 'next-intl';
 dayjs.extend(advancedFormat);
 
 const getPaymentScheduleName = (id: string) => {
@@ -68,6 +69,7 @@ const formatTodayDate = () => {
 };
 
 function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
+  const t = useTranslations('projectOverviewPage');
   const [uploadModal, setUploadModal] = useState(false);
   const [file, setFile] = useState<File[]>([]);
   const [error, setError] = useState('');
@@ -248,7 +250,7 @@ function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
                   <div className="flex items-center gap-3 mb-2">
                     <h1 className="text-2xl font-bold">{projectData?.project_name}</h1>
                     <span className="inline-flex items-center rounded px-2 py-0.5 text-xs font-medium bg-sage-300/30 text-white/90 backdrop-blur-sm border border-white/20">
-                      On Track
+                      {t('onTrack')}
                     </span>
                   </div>
                   <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4 text-sm">
@@ -273,7 +275,7 @@ function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
                   onClick={openUploadModal}
                 >
                   <Edit className="w-4 h-4 mr-2" />
-                  Edit
+                  {t('edit')}
                 </Button>}
               </div>
             </div>
@@ -315,7 +317,7 @@ function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
                   <ViewCurrencySymbol code={projectData?.currency} />
                 </span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-neutral-700">Budget Utilization</p>
+                  <p className="text-sm font-medium text-neutral-700">{t('budgetUtilization')}</p>
                   <p className="text-lg font-semibold text-neutral-900">
                     <ViewCurrencySymbol code={projectData?.currency} />
                     {Number(projectOverviewData?.budget_utilization?.total_budget ?? 0).toLocaleString('en-GB', {
@@ -329,7 +331,7 @@ function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}{' '}
-                    utilized
+                    {t('utilized')}
                   </p>
                   <p className="text-xs mt-1 text-olive-700">
                     <ViewCurrencySymbol code={projectData?.currency} />
@@ -337,7 +339,7 @@ function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}{' '}
-                    spent
+                    {t('spent')}
                   </p>
                 </div>
               </div>
@@ -367,15 +369,15 @@ function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-4 h-4 text-slate-600" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-neutral-700">Tasks Complete</p>
+                  <p className="text-sm font-medium text-neutral-700">{t('tasksComplete')}</p>
                   <p className="text-lg font-semibold text-neutral-900">
                     {projectOverviewData?.tasks?.completed ?? 0}/{projectOverviewData?.tasks?.total ?? 0}
                   </p>
-                  <p className="text-xs text-neutral-600">{projectOverviewData?.tasks?.completion_percentage ?? 0}% completion</p>
+                  <p className="text-xs text-neutral-600">{t('completion', { percent: projectOverviewData?.tasks?.completion_percentage ?? 0 })}</p>
                   {projectOverviewData?.tasks?.remaining > 0 ? (
-                    <p className="text-xs mt-1 text-ochre-700">{projectOverviewData?.tasks?.remaining} remaining</p>
+                    <p className="text-xs mt-1 text-ochre-700">{t('remaining', { count: projectOverviewData?.tasks?.remaining })}</p>
                   ) : (
-                    <p className="text-xs mt-1 text-olive-700">All tasks completed</p>
+                    <p className="text-xs mt-1 text-olive-700">{t('allTasksCompleted')}</p>
                   )}
                 </div>
               </div>
@@ -388,17 +390,17 @@ function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
               <div className="flex h-full  items-center gap-3">
                 <AlertTriangle className="w-4  h-4 text-slate-600" />
                 <div className="flex-1  min-w-0">
-                  <p className="text-sm font-medium text-neutral-700">POs Delayed</p>
+                  <p className="text-sm font-medium text-neutral-700">{t('posDelayed')}</p>
                   <p className="text-lg font-semibold text-neutral-900">{projectOverviewData?.pos_delayed?.count ?? 0}</p>
                   {projectOverviewData?.procurement_status?.pos_needing_approval > 0 && (
                     <p className="text-xs text-neutral-600">
-                      {projectOverviewData?.procurement_status?.pos_needing_approval} need approval
+                      {t('needApproval', { count: projectOverviewData?.procurement_status?.pos_needing_approval })}
                     </p>
                   )}
                   {projectOverviewData?.procurement_status?.action_required ? (
-                    <p className="text-xs mt-1 text-terracotta-600">Action required</p>
+                    <p className="text-xs mt-1 text-terracotta-600">{t('actionRequired')}</p>
                   ) : (
-                    <p className="text-xs mt-1 text-olive-700">No action required</p>
+                    <p className="text-xs mt-1 text-olive-700">{t('noActionRequired')}</p>
                   )}
                 </div>
               </div>
@@ -410,10 +412,10 @@ function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
         <Card className="border animate-in fade-in slide-in-from-bottom-3 duration-500 border-greige-500/30 shadow-sm">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-medium text-neutral-900">Project Timeline</h3>
+              <h3 className="text-sm font-medium text-neutral-900">{t('projectTimeline')}</h3>
               <div className="flex items-center gap-2 text-sm text-neutral-700">
                 <Calendar className="w-4 h-4" />
-                <span>Today: {formatTodayDate()}</span>
+                <span>{t('today', { date: formatTodayDate() })}</span>
               </div>
             </div>
             <div className="relative">
@@ -477,7 +479,7 @@ function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <Package className="w-4 h-4 text-slatex-600" />
-                <h3 className="text-sm font-medium text-neutral-900">Procurement Status</h3>
+                <h3 className="text-sm font-medium text-neutral-900">{t('procurementStatus')}</h3>
               </div>
               <Button
                 onClick={() => router.push(`/projects/${params?.id}/procurement`)}
@@ -486,7 +488,7 @@ function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
                 className="border-greige-500/30 bg-transparent"
               >
                 <ArrowRight className="w-4 h-4 mr-2" />
-                Open Procurement
+                {t('openProcurement')}
               </Button>
             </div>
             <div
@@ -678,7 +680,7 @@ function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
       <Dialog open={uploadModal} onOpenChange={setUploadModal}>
         <DialogContent className="sm:max-w-[600px] rounded-lg">
           <DialogHeader>
-            <DialogTitle>Upload Cover Photo</DialogTitle>
+            <DialogTitle>{t('uploadCoverTitle')}</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">

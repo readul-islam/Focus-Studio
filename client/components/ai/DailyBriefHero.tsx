@@ -5,6 +5,7 @@ import { RefreshCw, Sun, Cloud, CloudRain, CloudSnow, Wind, Sparkles } from 'luc
 import { Button } from '@/components/ui/button';
 import type { DailyBrief } from '@/lib/ai/types';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 interface DailyBriefHeroProps {
   brief: DailyBrief | null;
@@ -163,6 +164,7 @@ export function DailyBriefHero({
   isLoading = false,
   weather = { condition: 'sunny' },
 }: DailyBriefHeroProps) {
+  const t = useTranslations('dailyBriefHero');
   // Loading skeleton
   if (isLoading) {
     return (
@@ -212,7 +214,7 @@ export function DailyBriefHero({
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-foreground/80 tracking-wider uppercase flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-primary shrink-0 animate-pulse" /> Daily Brief
+              <Sparkles className="w-3.5 h-3.5 text-primary shrink-0 animate-pulse" /> {t('label')}
             </span>
 
             {onRegenerate && (
@@ -226,12 +228,12 @@ export function DailyBriefHero({
                 {isRegenerating ? (
                   <>
                     <RefreshCw className="w-3 h-3 mr-1.5 animate-spin text-primary" />
-                    Updating...
+                    {t('updating')}
                   </>
                 ) : (
                   <>
                     <RefreshCw className="w-3 h-3 mr-1.5" />
-                    Refresh
+                    {t('refresh')}
                   </>
                 )}
               </Button>
@@ -254,7 +256,7 @@ export function DailyBriefHero({
           ) : (
             <div className="relative rounded-xl overflow-hidden border border-border/30 bg-card/65 backdrop-blur-md p-6 text-center shadow-sm">
               <p className="text-muted-foreground text-sm mb-4 leading-relaxed font-semibold">
-                Your personalised brief will appear here
+                {t('emptyText')}
               </p>
               {onRegenerate && (
                 <Button
@@ -266,10 +268,10 @@ export function DailyBriefHero({
                   {isRegenerating ? (
                     <>
                       <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                      Generating...
+                      {t('generating')}
                     </>
                   ) : (
-                    'Generate Brief'
+                    t('generateBrief')
                   )}
                 </Button>
               )}

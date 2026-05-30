@@ -1,0 +1,26 @@
+{
+  "contractorCard": {
+    "insuranceLabel": "Insurance: {status}"
+  },
+  "libraryProductModal": {
+    "fields": {
+      "status": "Status",
+      "sample": "Sample",
+      "quantity": "Quantity",
+      "boxedDimensions": "Boxed Dimensions",
+      "boxedWeight": "Boxed Weight"
+    },
+    "furniturePlaceholders": {
+      "seatWidth": "e.g. 55 cm",
+      "seatDepth": "e.g. 50 cm",
+      "seatHeight": "e.g. 44 cm",
+      "composition": "e.g. 80% polyester",
+      "construction": "e.g. Kiln-dried oak frame",
+      "feet": "e.g. 15",
+      "filling": "e.g. High-density foam",
+      "frame": "e.g. Solid oak"
+    },
+    "editImagesSavedHint": "{count} saved · star to set primary · upload more below",
+    "newImageBadge": "New"
+  }
+}

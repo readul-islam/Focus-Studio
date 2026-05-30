@@ -10,8 +10,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 function LoginContent() {
+  const t = useTranslations('auth.login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -54,7 +56,7 @@ function LoginContent() {
           router.push(resolvePostLoginPath(!!data?.requires_2fa));
         },
         onError: () => {
-          setFormError('Invalid email or password. Please try again.');
+          setFormError(t('errors.invalidCredentials'));
         },
       }
     );
@@ -68,7 +70,7 @@ function LoginContent() {
       await postData({ url: '/user/forgot-password/', data: { email } });
       setResetSent(true);
     } catch {
-      setResetError('Failed to send reset email. Please try again.');
+      setResetError(t('errors.resetEmailFailed'));
     } finally {
       setIsResetting(false);
     }
@@ -120,10 +122,10 @@ function LoginContent() {
             <>
               <div className="mb-8">
                 <h1 className="text-2xl font-bold text-gray-900 mb-1.5">
-                  Welcome back
+                  {t('title')}
                 </h1>
                 <p className="text-sm text-gray-500">
-                  Sign in to your account to continue
+                  {t('subtitle')}
                 </p>
               </div>
 
@@ -144,7 +146,7 @@ function LoginContent() {
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                 </svg>
-                Sign in with Google
+                {t('googleSignIn')}
               </button>
 
               <div className="relative mb-4">
@@ -152,7 +154,7 @@ function LoginContent() {
                   <span className="w-full border-t border-gray-200" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-white px-2 text-gray-400">or</span>
+                  <span className="bg-white px-2 text-gray-400">{t('or')}</span>
                 </div>
               </div>
 
@@ -163,7 +165,7 @@ function LoginContent() {
                     htmlFor="email"
                     className="block text-sm font-medium text-gray-700 mb-1.5"
                   >
-                    Email
+                    {t('email')}
                   </label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -177,7 +179,7 @@ function LoginContent() {
                         setEmail(e.target.value);
                         setFormError("");
                       }}
-                      placeholder="you@company.com"
+                      placeholder={t('emailPlaceholder')}
                       className={`w-full pl-9 pr-4 py-2.5 text-sm rounded-lg border bg-white outline-none transition-colors
                         ${
                           formError
@@ -194,7 +196,7 @@ function LoginContent() {
                     htmlFor="password"
                     className="block text-sm font-medium text-gray-700 mb-1.5"
                   >
-                    Password
+                    {t('password')}
                   </label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -208,7 +210,7 @@ function LoginContent() {
                         setPassword(e.target.value);
                         setFormError("");
                       }}
-                      placeholder="Enter your password"
+                      placeholder={t('passwordPlaceholder')}
                       className={`w-full pl-9 pr-10 py-2.5 text-sm rounded-lg border bg-white outline-none transition-colors
                         ${
                           formError
@@ -248,7 +250,7 @@ function LoginContent() {
                     }}
                     className="text-xs text-gray-500 hover:text-gray-900 transition-colors"
                   >
-                    Forgot password?
+                    {t('forgotPassword')}
                   </button>
                 </div>
 
@@ -260,11 +262,11 @@ function LoginContent() {
                   {isPending ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Signing in…
+                      {t('signingIn')}
                     </>
                   ) : (
                     <>
-                      Sign In
+                      {t('signIn')}
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
@@ -272,12 +274,12 @@ function LoginContent() {
               </form>
 
               <p className="mt-6 text-center text-sm text-gray-500">
-                Don&apos;t have an account?{" "}
+                {t('noAccount')}{" "}
                 <Link
                   href="/register"
                   className="font-medium text-gray-900 hover:underline"
                 >
-                  Sign up
+                  {t('signUp')}
                 </Link>
               </p>
             </>
@@ -285,12 +287,12 @@ function LoginContent() {
             <>
               <div className="mb-8">
                 <h1 className="text-2xl font-bold text-gray-900 mb-1.5">
-                  {resetSent ? "Check your inbox" : "Reset password"}
+                  {resetSent ? t('reset.checkInbox') : t('reset.title')}
                 </h1>
                 <p className="text-sm text-gray-500">
                   {resetSent
-                    ? "Follow the link in your email to set a new password."
-                    : "Enter your email and we'll send you a reset link."}
+                    ? t('reset.checkInboxSubtitle')
+                    : t('reset.subtitle')}
                 </p>
               </div>
 
@@ -302,10 +304,10 @@ function LoginContent() {
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-900 mb-0.5">
-                        Reset link sent
+                        {t('reset.linkSent')}
                       </p>
                       <p className="text-sm text-gray-600">
-                        We emailed a reset link to{" "}
+                        {t('reset.linkSentTo')}{" "}
                         <span className="font-medium text-gray-900">
                           {email}
                         </span>
@@ -328,9 +330,7 @@ function LoginContent() {
                       />
                     </svg>
                     <p className="text-xs text-amber-700 leading-relaxed">
-                      This link expires in{" "}
-                      <span className="font-semibold">15 minutes</span>. Check
-                      your spam folder if you don&apos;t see it.
+                      {t('reset.linkExpiry', { minutes: 15 })}
                     </p>
                   </div>
 
@@ -342,7 +342,7 @@ function LoginContent() {
                     }}
                     className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors"
                   >
-                    Back to sign in
+                    {t('backToSignIn')}
                   </button>
                 </div>
               ) : (
@@ -352,7 +352,7 @@ function LoginContent() {
                       htmlFor="reset-email"
                       className="block text-sm font-medium text-gray-700 mb-1.5"
                     >
-                      Email
+                      {t('email')}
                     </label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -366,7 +366,7 @@ function LoginContent() {
                           setEmail(e.target.value);
                           setResetError("");
                         }}
-                        placeholder="you@company.com"
+                        placeholder={t('emailPlaceholder')}
                         className={`w-full pl-9 pr-4 py-2.5 text-sm rounded-lg border bg-white outline-none transition-colors
                           ${
                             resetError
@@ -390,10 +390,10 @@ function LoginContent() {
                     {isResetting ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        Sending…
+                        {t('reset.sending')}
                       </>
                     ) : (
-                      "Send reset link"
+                      t('reset.sendLink')
                     )}
                   </button>
 
@@ -406,7 +406,7 @@ function LoginContent() {
                       }}
                       className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
                     >
-                      Back to sign in
+                      {t('backToSignIn')}
                     </button>
                   </div>
                 </form>

@@ -1,0 +1,158 @@
+{
+  "drawingConfirmationDialog": {
+    "title": "Confirm Drawing Survey",
+    "description": "Please confirm you have reviewed and surveyed this drawing.",
+    "generalRoom": "General",
+    "confirmLabel": "I confirm that I have surveyed this drawing and understand the specifications and requirements detailed within.",
+    "notesLabel": "Notes (optional)",
+    "notesPlaceholder": "Add any notes or observations from your survey...",
+    "confirming": "Confirming...",
+    "confirmSurvey": "Confirm Survey",
+    "toasts": {
+      "confirmed": "Drawing survey confirmed",
+      "confirmFailed": "Failed to confirm survey. Please try again."
+    }
+  },
+  "design3DChatPanel": {
+    "title": "3D Design Studio",
+    "meshyTest": "Meshy test",
+    "designTypeAria": "Design type",
+    "interior": "Interior",
+    "exterior": "Exterior",
+    "emptyTitle": "Sketch to 3D model",
+    "emptyDescription": "Upload a sketch or product photo. Meshy turns it into a rotatable GLB model you can attach to projects and share with your team.",
+    "suggestedPrompts": [
+      "Modern dining chair, Scandinavian wood",
+      "Minimalist floor lamp for living room",
+      "Exterior facade element, contemporary glass",
+      "Kitchen island with marble top"
+    ],
+    "sketchAlt": "Sketch",
+    "generating3d": "Generating 3D…",
+    "phases": {
+      "sending": "Sending to Meshy…",
+      "building": "Building 3D mesh…",
+      "texturing": "Texturing model…"
+    },
+    "defaultPrompt": "Generate a 3D model from this sketch.",
+    "removeSketch": "Remove sketch",
+    "inputPlaceholder": "Describe materials and style (optional)…",
+    "uploadSketch": "Upload sketch",
+    "keyboardHint": "Enter to generate · Shift+Enter newline",
+    "generate3d": "Generate 3D",
+    "downloadGlb": "Download GLB",
+    "poweredBy": "Powered by Meshy · Generation may take 1–3 minutes",
+    "openFullscreen": "Open fullscreen",
+    "fullscreenLabel": "Fullscreen",
+    "modelFullscreenHint": "Click model for fullscreen · press Esc or Close to exit",
+    "shareOrAttach": "Share or attach",
+    "toasts": {
+      "unsupportedImage": "{name} is not a supported image",
+      "fileTooLarge": "{name} exceeds {size}",
+      "sketchesOnly": "Only image sketches are supported",
+      "noPermission": "You don't have permission to generate 3D designs",
+      "uploadSketchRequired": "Upload a sketch to generate 3D",
+      "modelReadyTest": "3D model ready (Meshy test mode — sample GLB)",
+      "modelGenerated": "3D model generated",
+      "generationFailed": "3D generation failed",
+      "downloadFailed": "Download failed"
+    }
+  },
+  "crmContactDetailPage": {
+    "copyUrl": "Copy URL",
+    "copyUsername": "Copy username",
+    "urlCopied": "URL copied",
+    "usernameCopied": "Username copied",
+    "passwordCopied": "Password copied",
+    "credentialsCopied": "Trade portal credentials copied",
+    "copyAllCredentials": "Copy all credentials",
+    "loginUrlLabel": "Login URL",
+    "usernameUserIdLabel": "Username / User ID",
+    "documentsSection": "Documents",
+    "documentsAttached": "{count} document(s) attached",
+    "viewDocuments": "View Documents",
+    "notesSection": "Notes",
+    "notePlaceholderLong": "Add a note about this contact...",
+    "editNote": "Edit note",
+    "deleteNote": "Delete note",
+    "edited": "(edited)",
+    "noNotesHint": "No notes yet. Add a note to keep track of important information.",
+    "actionsFor": "Actions for {name}"
+  },
+  "contactFormModal": {
+    "tradePortal": "Trade Portal"
+  },
+  "libraryProductModal": {
+    "toasts": {
+      "createdIdMissing": "Product created but ID missing. Cannot upload images.",
+      "productAndImagesSaved": "Product and images saved",
+      "imageUploadFailed": "Image upload failed: {error}",
+      "productSaved": "Product saved",
+      "unknownError": "Unknown error"
+    },
+    "imageErrors": {
+      "maxImages": "Maximum 5 images allowed.",
+      "fileTooLarge": "File exceeds 20MB limit.",
+      "invalidFormat": "Only PNG, JPG, GIF, WEBP files are allowed."
+    },
+    "dragOrClickAddMore": "Drag & drop or click to add more",
+    "deleteImage": "Delete image",
+    "previewAlt": "Preview",
+    "productAlt": "Product",
+    "selectSupplier": "Select supplier…",
+    "searchSuppliers": "Search suppliers…",
+    "selectSupplierAria": "Select supplier",
+    "selectType": "Select type…",
+    "uploadImagesAria": "Upload product images",
+    "sectionDescriptions": {
+      "basic": "Core product details",
+      "pricing": "Trade and retail pricing",
+      "specs": "Physical product details",
+      "furniture": "Optional furniture-specific attributes"
+    },
+    "fields": {
+      "productName": "Product Name",
+      "supplier": "Supplier",
+      "productType": "Product Type",
+      "productUrl": "Product URL",
+      "description": "Description",
+      "descriptionPlaceholder": "Brief product description…",
+      "currency": "Currency",
+      "tradePrice": "Trade Price",
+      "regularPrice": "Regular Price",
+      "measurements": "Measurements",
+      "materials": "Materials",
+      "dimensions": "Dimensions",
+      "weight": "Weight",
+      "boxDimensions": "Box Dimensions",
+      "boxWeight": "Box Weight",
+      "assemblyRequired": "Assembly Required",
+      "seatWidth": "Seat Width",
+      "seatDepth": "Seat Depth",
+      "seatHeight": "Seat Height",
+      "composition": "Composition",
+      "construction": "Construction",
+      "feet": "Feet (cm)",
+      "filling": "Filling",
+      "frame": "Frame",
+      "removableCushions": "Removable Cushions",
+      "removableLegs": "Removable Legs",
+      "instructions": "Instructions",
+      "instructionsPlaceholder": "Assembly or care instructions…"
+    },
+    "fieldPlaceholders": {
+      "measurements": "e.g. W80 × D75 × H85cm",
+      "materials": "e.g. Oak, Leather",
+      "dimensions": "e.g. 80 × 75 × 85 cm",
+      "weight": "e.g. 12 kg",
+      "boxDimensions": "e.g. 90 × 80 × 95 cm",
+      "boxWeight": "e.g. 14 kg"
+    },
+    "sectionTitles": {
+      "basic": "Basic Information",
+      "pricing": "Pricing",
+      "specs": "Specifications",
+      "furniture": "Furniture Details"
+    }
+  }
+}

@@ -15,6 +15,7 @@ import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 import useFetch from "@/hooks/useFetch"
 import type { ProposalData } from "../proposal-drawer"
+import { useTranslations } from "next-intl"
 
 interface ClientBrandingStepProps {
   data: ProposalData
@@ -24,6 +25,7 @@ interface ClientBrandingStepProps {
 }
 
 export function ClientBrandingStep({ data, onUpdate, leads = [] , clientsPermission }: ClientBrandingStepProps) {
+  const t = useTranslations('crmProposalSteps')
   const [clientOpen, setClientOpen] = useState(false)
   const [dateOpen, setDateOpen] = useState(false)
 
@@ -100,12 +102,12 @@ export function ClientBrandingStep({ data, onUpdate, leads = [] , clientsPermiss
       {/* Proposal Title — First thing you see */}
       <div className="space-y-2">
         <Label htmlFor="title" className="text-sm font-semibold text-gray-900">
-          Proposal Title <span className="text-red-500">*</span>
+          {t('proposalTitle')} <span className="text-red-500">*</span>
         </Label>
         <Input
           disabled={!clientsPermission}
           id="title"
-          placeholder="e.g., Chelsea Penthouse — Full Interior Design"
+          placeholder={t('proposalTitlePlaceholder')}
           value={data.title || ""}
           onChange={(e) => onUpdate({ title: e.target.value })}
           className="h-10 disabled:opacity-100 text-sm bg-white border-gray-200 focus:ring-2 focus:ring-gray-900 focus:border-gray-900 placeholder:text-gray-400"
@@ -115,7 +117,7 @@ export function ClientBrandingStep({ data, onUpdate, leads = [] , clientsPermiss
       {/* Client Selection */}
       <div className="space-y-2">
         <Label className="text-sm font-semibold text-gray-900">
-          Client <span className="text-red-500">*</span>
+          {t('selectClient')} <span className="text-red-500">*</span>
         </Label>
         <Popover  open={clientOpen} onOpenChange={setClientOpen}>
           <PopoverTrigger className="disabled:opacity-100" disabled={!clientsPermission} asChild>
@@ -142,9 +144,9 @@ export function ClientBrandingStep({ data, onUpdate, leads = [] , clientsPermiss
           </PopoverTrigger>
           <PopoverContent className="w-[400px] p-0" align="start">
             <Command>
-              <CommandInput placeholder="Search by name or email..." />
+              <CommandInput placeholder={t('searchClient')} />
               <CommandList>
-                <CommandEmpty>No client found.</CommandEmpty>
+                <CommandEmpty>{t('noClientFound')}</CommandEmpty>
                 <CommandGroup>
                   {contacts.filter((c) => c.id).map((contact) => (
                     <CommandItem

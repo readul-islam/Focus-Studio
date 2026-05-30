@@ -2,6 +2,7 @@
 import { PermissionGuard } from '@/components/PermissionGuard';
 
 import React, { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import useFetch from '@/hooks/useFetch';
 import { useReportFilters, formatCurrency, formatHours, getLastNMonths, getMonthKey } from '@/hooks/useReportFilters';
 import { ReportFilterBar } from '@/components/reports/ReportFilterBar';
@@ -18,6 +19,8 @@ import { ReportPageHeader } from '@/components/reports/ReportPageHeader';
 const C = '£';
 
 function OverviewPageContent() {
+  const t = useTranslations('reportsOverviewPage');
+  const tr = useTranslations('reportsCommon');
   const { period, setPeriod, setCustomRange, customRange, startDate, endDate } = useReportFilters('month');
 
   // Previous period for comparison
@@ -151,9 +154,9 @@ function OverviewPageContent() {
       <div className="report-print-area mx-auto max-w-7xl space-y-6">
 
         <ReportPageHeader
-          title="Studio Overview"
-          subtitle="High-level snapshot of your studio's performance"
-          printTitle="Studio Overview Report"
+          title={t('title')}
+          subtitle={t('subtitle')}
+          printTitle={t('printTitle')}
         />
 
         <ReportFilterBar period={period} onPeriodChange={setPeriod} onCustomRange={setCustomRange} customFrom={customRange?.from} customTo={customRange?.to} />
@@ -173,30 +176,30 @@ function OverviewPageContent() {
         {/* KPI Cards with period comparison */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           <KpiCard 
-            label="Hours Logged" 
+            label={t('hoursLogged')} 
             value={formatHours(hoursLogged)} 
             prevValue={formatHours(prevHoursLogged)}
-            sub={`${team?.users?.length || 0} team members`} 
+            sub={tr('teamMembers', { count: team?.users?.length || 0 })} 
             icon={Clock} 
           />
           <KpiCard 
-            label="Studio Cost" 
+            label={t('studioCost')} 
             value={formatCurrency(studioCost, C)} 
             prevValue={formatCurrency(prevStudioCost, C)}
-            sub="Staff costs this period" 
+            sub={t('staffCostsSub')} 
             icon={DollarSign} 
           />
           <KpiCard 
-            label="Revenue" 
+            label={t('revenue')} 
             value={formatCurrency(revenue, C)} 
             prevValue={formatCurrency(prevRevenue, C)}
-            sub={`${invoices.filter((i: any) => i.date && i.date >= startDate && i.date <= endDate).length} invoices`} 
+            sub={tr('invoicesCount', { count: invoices.filter((i: any) => i.date && i.date >= startDate && i.date <= endDate).length })} 
             icon={TrendingUp} 
           />
           <KpiCard 
-            label="Outstanding" 
+            label={t('outstanding')} 
             value={formatCurrency(outstanding, C)} 
-            sub={`${overdueInvoices.length} overdue`} 
+            sub={tr('overdueCount', { count: overdueInvoices.length })} 
             icon={AlertCircle} 
             alert={overdueInvoices.length > 0}
           />
@@ -205,18 +208,18 @@ function OverviewPageContent() {
         {/* Studio P&L Summary */}
         <Card className="bg-white border-gray-200 rounded-xl shadow-sm">
           <div className="p-6">
-            <h3 className="text-base font-semibold text-gray-900 mb-4">Studio P&L Summary</h3>
+            <h3 className="text-base font-semibold text-gray-900 mb-4">{t('plSummary')}</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               <div>
-                <p className="text-sm text-gray-500">Revenue</p>
+                <p className="text-sm text-gray-500">{t('revenue')}</p>
                 <p className="text-xl font-semibold text-emerald-600">{formatCurrency(studioSummary.revenue, C)}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Costs</p>
+                <p className="text-sm text-gray-500">{t('costs')}</p>
                 <p className="text-xl font-semibold text-red-600">{formatCurrency(studioSummary.costs, C)}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Net Position</p>
+                <p className="text-sm text-gray-500">{t('netPosition')}</p>
                 <p className={`text-xl font-semibold ${studioSummary.net >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
                   {formatCurrency(studioSummary.net, C)}
                 </p>
@@ -333,7 +336,7 @@ function OverviewPageContent() {
                   <div key={index} className="flex items-center gap-3">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900">{member.name}</p>
-                      <p className="text-xs text-gray-500">{member.hours.toFixed(1)}h logged</p>
+                      <p className="text-xs text-gray-500">{tr('hoursLoggedSub', { hours: member.hours.toFixed(1) })}</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-16 h-2 bg-white rounded-full overflow-hidden">
@@ -362,10 +365,10 @@ function OverviewPageContent() {
         {/* Quick links */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 no-print">
           {[
-            { href: '/reports/projects', label: 'Projects' },
-            { href: '/reports/team', label: 'Team' },
-            { href: '/reports/finance', label: 'Finance' },
-            { href: '/reports/revenue', label: 'Revenue & P&L' },
+            { href: '/reports/projects', label: t('linkProjects') },
+            { href: '/reports/team', label: t('linkTeam') },
+            { href: '/reports/finance', label: t('linkFinance') },
+            { href: '/reports/revenue', label: t('linkRevenue') },
           ].map(link => (
             <Link key={link.href} href={link.href}>
               <div className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium text-gray-900 hover:border-gray-300 hover:shadow-sm transition-all flex items-center justify-between group">

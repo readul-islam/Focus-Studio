@@ -27,6 +27,7 @@ import { confirmIntegrationConnection } from '@/lib/integrations/confirm-connect
 import { useIntegrationStatusContext } from '@/components/settings/integration-status-context';
 import { putData, postData } from '@/lib/Api';
 import { gooeyToast as toast } from 'goey-toast';
+import { useTranslations } from 'next-intl';
 
 type Props = {
   isConnected: boolean;
@@ -61,6 +62,10 @@ type SyncResult = {
 };
 
 const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: Props) => {
+  const t = useTranslations('settingsIntegrationsPage.notion');
+  const tt = useTranslations('settingsIntegrationsPage.notion.toasts');
+  const ts = useTranslations('settingsIntegrationsPage.shared');
+  const tc = useTranslations('common');
   const [isConnecting, setIsConnecting] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [isDisconnectDialogOpen, setIsDisconnectDialogOpen] = useState(false);
@@ -140,7 +145,7 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
       const result = await openNotionOAuthPopup(getNotionAuthUrl);
 
       if (result === 'error') {
-        toast.error('Could not connect Notion. Check server NOTION_* env vars.');
+        toast.error(tt('connectFailed'));
         return;
       }
 
@@ -153,13 +158,13 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
 
       if (connected) {
         await refreshNotionQueries();
-        toast.success('Notion connected.');
+        toast.success(tt('connected'));
       } else if (result === 'cancelled') {
         applyPatch({ notion_connected: false });
-        toast.error('Notion connection was cancelled.');
+        toast.error(tt('cancelled'));
       } else {
         applyPatch({ notion_connected: false });
-        toast.error('Notion authorized but status did not update. Please try again.');
+        toast.error(tt('statusNotUpdated'));
       }
     } finally {
       setIsConnecting(false);
@@ -178,9 +183,9 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
             applyPatch({ notion_connected: false });
             await waitForStatus((s) => !s.notion_connected);
             await refreshNotionQueries();
-            toast.success('Notion disconnected.');
+            toast.success(tt('disconnected'));
           },
-          onError: () => toast.error('Failed to disconnect Notion.'),
+          onError: () => toast.error(tt('disconnectFailed')),
         }
       );
     } finally {
@@ -190,8 +195,8 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
 
   function copyId(id: string) {
     navigator.clipboard.writeText(id).then(
-      () => toast.success('Database ID copied.'),
-      () => toast.error('Copy failed.')
+      () => toast.success(tt('databaseIdCopied')),
+      () => toast.error(tt('copyFailed'))
     );
   }
 
@@ -235,7 +240,7 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
 
   async function handleSaveMapping() {
     if (!selectedDbId) {
-      toast.error('Select a database first.');
+      toast.error(tt('selectDatabaseFirst'));
       return;
     }
     setSavingMapping(true);
@@ -252,9 +257,9 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
       });
       setMappingOpen(false);
       await refreshNotionQueries();
-      toast.success('Project sync configured.');
+      toast.success(tt('syncConfigured'));
     } catch {
-      toast.error('Could not save mapping.');
+      toast.error(tt('saveMappingFailed'));
     } finally {
       setSavingMapping(false);
     }
@@ -268,9 +273,9 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
         data: { parent_page_id: parentPageId.trim() },
       });
       await refreshNotionQueries();
-      toast.success('Notion parent page saved.');
+      toast.success(tt('parentPageSaved'));
     } catch {
-      toast.error('Could not save parent page.');
+      toast.error(tt('saveParentPageFailed'));
     } finally {
       setSavingParentPage(false);
     }
@@ -290,16 +295,21 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
       } else {
         const taskPart =
           result.tasks_updated != null
-            ? ` · ${result.tasks_updated} task(s) updated from Notion`
+            ? tt('tasksUpdatedFromNotion', { count: result.tasks_updated })
             : '';
         toast.success(
-          `Sync done: ${result.created} created, ${result.updated} updated, ${result.skipped} unchanged${taskPart}.`
+          tt('syncDone', {
+            created: result.created,
+            updated: result.updated,
+            skipped: result.skipped,
+            taskPart,
+          })
         );
         queryClient.invalidateQueries({ queryKey: ['projects'] });
         queryClient.invalidateQueries({ queryKey: ['task/user-tasks/'] });
       }
     } catch {
-      toast.error('Sync failed.');
+      toast.error(tt('syncFailed'));
     } finally {
       setSyncing(false);
     }
@@ -310,43 +320,46 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
 
   const cardDescription = isConnected
     ? mapping?.database_title
-      ? `Project sync: ${mapping.database_title}${workspace ? ` · ${workspace}` : ''}`
+      ? t('cardDescProjectSync', {
+          database: mapping.database_title,
+          workspacePart: workspace ? t('workspacePart', { workspace }) : '',
+        })
       : workspace
-        ? `Workspace: ${workspace}. Use settings to browse databases and sync projects.`
-        : 'Use settings to browse databases and sync projects.'
-    : 'Connect your Notion workspace to browse databases and sync projects.';
+        ? t('cardDescWorkspace', { workspace })
+        : t('cardDescBrowse')
+    : t('cardDescDisconnected');
 
   return (
     <>
       <IntegrationCard
         icon={<BookOpen className="h-4 w-4 text-stone-500" />}
-        title="Notion"
+        title={t('title')}
         description={cardDescription}
         isLoading={stateLoading && !isConnected}
         status={isConnected ? 'connected' : null}
         showSettings={isConnected}
         settingsOpen={settingsOpen}
         onSettingsOpenChange={setSettingsOpen}
-        settingsTitle="Notion settings"
+        settingsTitle={t('settingsTitle')}
         settingsChildren={
           isConnected ? (
           <>
             <p className="text-sm text-gray-600">
-              <span className="font-medium">Outbound:</span> New Focuspilot projects create a Notion
-              page; tasks on that project add rows to a task table on the page.
-              {workspace ? ` Workspace: ${workspace}.` : ''}
+              <span className="font-medium">{t('outbound')}</span>{' '}
+              {t('outboundDescLong', {
+                workspacePart: workspace ? t('workspacePart', { workspace }) : '',
+              })}
             </p>
             <p className="text-xs text-stone-500">
-              <span className="font-medium">Inbound:</span> Map a shared database below to import
-              Notion rows as Focuspilot projects (manual sync).
+              <span className="font-medium">{t('inbound')}</span> {t('inboundDescLong')}
             </p>
             <div className="space-y-2 rounded-lg border border-stone-200 bg-stone-50/80 p-3">
               <Label htmlFor="notion-parent-page" className="text-xs">
-                Parent page for new projects (optional)
+                {t('parentPageLabelOptional')}
               </Label>
               <Input
                 id="notion-parent-page"
-                placeholder="Notion page URL or ID (leave empty for auto “Focuspilot Projects”)"
+                placeholder={t('parentPagePlaceholder')}
                 value={parentPageId}
                 onChange={(e) => setParentPageId(e.target.value)}
                 className="bg-white text-sm"
@@ -361,39 +374,41 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
                 {savingParentPage ? (
                   <Loader2 className="mr-2 h-3 w-3 animate-spin" />
                 ) : null}
-                Save parent page
+                {t('saveParentPage')}
               </Button>
             </div>
             {mapping ? (
               <p className="text-xs text-stone-500">
-                Mapped database: <span className="font-medium">{mapping.database_title}</span>
+                {t('mappedDatabase')} <span className="font-medium">{mapping.database_title}</span>
                 {mapping.last_synced_at
-                  ? ` · Last sync ${new Date(mapping.last_synced_at).toLocaleString()}`
+                  ? t('lastSyncAt', { date: new Date(mapping.last_synced_at).toLocaleString() })
                   : ''}
               </p>
             ) : (
-              <p className="text-xs text-stone-500">
-                Map a Notion database (e.g. Tasks Tracker) to create and update Focuspilot projects.
-              </p>
+              <p className="text-xs text-stone-500">{t('mapDatabaseHint')}</p>
             )}
             {lastSyncResult && !lastSyncResult.error ? (
               <p className="text-xs text-stone-500">
-                Last run: {lastSyncResult.created} created, {lastSyncResult.updated} updated
-                {lastSyncResult.tasks_updated != null && lastSyncResult.tasks_updated > 0
-                  ? `, ${lastSyncResult.tasks_updated} tasks from Notion`
-                  : ''}
-                {lastSyncResult.total_pages != null
-                  ? ` (${lastSyncResult.total_pages} rows in Notion)`
-                  : ''}
-                .
+                {t('lastRunSummary', {
+                  created: lastSyncResult.created,
+                  updated: lastSyncResult.updated,
+                  tasksPart:
+                    lastSyncResult.tasks_updated != null && lastSyncResult.tasks_updated > 0
+                      ? t('tasksFromNotionPart', { count: lastSyncResult.tasks_updated })
+                      : '',
+                  pagesPart:
+                    lastSyncResult.total_pages != null
+                      ? t('rowsInNotionPart', { count: lastSyncResult.total_pages })
+                      : '',
+                })}
               </p>
             ) : null}
             <div className="flex flex-col gap-2">
               <Button variant="outline" className="justify-start" onClick={openBrowse}>
-                Browse databases
+                {t('browseDatabases')}
               </Button>
               <Button variant="outline" className="justify-start" onClick={() => openMapping(mapping)}>
-                {mapping ? 'Edit project sync mapping' : 'Set up project sync'}
+                {mapping ? t('editProjectSyncMapping') : t('setupProjectSync')}
               </Button>
               <Button
                 className="justify-start"
@@ -403,12 +418,12 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
                 {syncing ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Syncing...
+                    {ts('syncing')}
                   </>
                 ) : (
                   <>
                     <RefreshCw className="mr-2 h-4 w-4" />
-                    Sync projects now
+                    {t('syncProjectsNow')}
                   </>
                 )}
               </Button>
@@ -425,23 +440,21 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
                   size="sm"
                   className="text-red-600 border-gray-200 hover:bg-red-50 hover:border-red-200"
                 >
-                  Disconnect
+                  {t('disconnect')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Disconnect Notion?</DialogTitle>
+                  <DialogTitle>{t('disconnectTitle')}</DialogTitle>
                 </DialogHeader>
-                <p className="text-sm text-gray-600">
-                  Focuspilot will lose access to your Notion workspace. You can reconnect anytime.
-                </p>
+                <p className="text-sm text-gray-600">{t('disconnectDescLong')}</p>
                 <DialogFooter>
                   <Button variant="outline" onClick={() => setIsDisconnectDialogOpen(false)}>
-                    Cancel
+                    {t('cancel')}
                   </Button>
                   <Button variant="destructive" onClick={handleDisconnect} disabled={busy}>
                     {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {busy ? 'Disconnecting...' : 'Disconnect'}
+                    {busy ? ts('disconnecting') : t('disconnect')}
                   </Button>
                 </DialogFooter>
               </DialogContent>
@@ -451,23 +464,21 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
               <DialogTrigger asChild>
                 <Button size="sm" disabled={busy || stateLoading}>
                   {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {busy ? 'Connecting...' : 'Connect Notion'}
+                  {busy ? ts('connecting') : t('connect')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Connect Notion</DialogTitle>
+                  <DialogTitle>{t('connectTitle')}</DialogTitle>
                 </DialogHeader>
-                <p className="text-sm text-gray-600">
-                  Authorize Focuspilot in Notion and share the databases you want to use.
-                </p>
+                <p className="text-sm text-gray-600">{t('connectDescLong')}</p>
                 <DialogFooter>
                   <Button variant="outline" onClick={() => setIsConnectDialogOpen(false)}>
-                    Cancel
+                    {t('cancel')}
                   </Button>
                   <Button onClick={handleConnect} disabled={busy}>
                     {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {busy ? 'Connecting...' : 'Continue'}
+                    {busy ? ts('connecting') : ts('continue')}
                   </Button>
                 </DialogFooter>
               </DialogContent>
@@ -479,15 +490,12 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
       <Dialog open={mappingOpen} onOpenChange={setMappingOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Map Notion database → projects</DialogTitle>
+            <DialogTitle>{t('mappingDialogTitle')}</DialogTitle>
           </DialogHeader>
-          <p className="text-xs text-stone-500">
-            Each row in the database becomes a Focuspilot project. Re-sync updates names and
-            status.
-          </p>
+          <p className="text-xs text-stone-500">{t('mappingDialogDesc')}</p>
           <div className="space-y-3">
             <div className="space-y-2">
-              <Label>Database</Label>
+              <Label>{t('databaseLabel')}</Label>
               <Select
                 value={selectedDbId}
                 onValueChange={(id) => {
@@ -497,7 +505,7 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
                 }}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Choose database" />
+                  <SelectValue placeholder={t('chooseDatabase')} />
                 </SelectTrigger>
                 <SelectContent>
                   {pickerDbList.map((db) => (
@@ -511,7 +519,7 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
             {selectedDbId ? (
               <>
                 <div className="space-y-2">
-                  <Label>Name field (title column)</Label>
+                  <Label>{t('nameFieldLabel')}</Label>
                   <Select value={titleProperty} onValueChange={setTitleProperty}>
                     <SelectTrigger>
                       <SelectValue />
@@ -526,16 +534,16 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Status field (optional)</Label>
+                  <Label>{t('statusFieldLabel')}</Label>
                   <Select
                     value={statusProperty || '__none__'}
                     onValueChange={(v) => setStatusProperty(v === '__none__' ? '' : v)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="None" />
+                      <SelectValue placeholder={ts('none')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="__none__">None</SelectItem>
+                      <SelectItem value="__none__">{ts('none')}</SelectItem>
                       {statusProperties.map((p) => (
                         <SelectItem key={p} value={p}>
                           {p}
@@ -543,20 +551,18 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
                       ))}
                     </SelectContent>
                   </Select>
-                  <p className="text-xs text-stone-500">
-                    Done/Complete → Completed · In progress → Active
-                  </p>
+                  <p className="text-xs text-stone-500">{t('statusMappingHint')}</p>
                 </div>
               </>
             ) : null}
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setMappingOpen(false)}>
-              Cancel
+              {t('cancel')}
             </Button>
             <Button onClick={handleSaveMapping} disabled={savingMapping || !selectedDbId}>
               {savingMapping && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Save
+              {tc('save')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -565,17 +571,14 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
       <Dialog open={browseOpen} onOpenChange={setBrowseOpen}>
         <DialogContent className="max-w-lg max-h-[85vh] flex flex-col">
           <DialogHeader>
-            <DialogTitle>Notion databases</DialogTitle>
+            <DialogTitle>{t('browseDialogTitle')}</DialogTitle>
           </DialogHeader>
-          <p className="text-xs text-stone-500 -mt-2">
-            Only databases you shared when connecting Notion appear here. Copy an ID for Zapier or
-            open in Notion.
-          </p>
+          <p className="text-xs text-stone-500 -mt-2">{t('browseDialogDesc')}</p>
           <div className="relative">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-stone-400" />
             <Input
               className="pl-9"
-              placeholder="Search databases..."
+              placeholder={t('searchDatabases')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -584,23 +587,18 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
             {databasesLoading ? (
               <div className="flex items-center justify-center py-12 text-sm text-stone-500">
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                Loading...
+                {tc('loading')}
               </div>
             ) : databasesError ? (
               <div className="p-4 text-sm text-red-600 text-center space-y-2">
-                <p>Could not load databases from Notion.</p>
+                <p>{t('databasesLoadFailed')}</p>
                 {databasesApiError ? (
                   <p className="text-xs font-mono text-red-500 break-all">{databasesApiError}</p>
                 ) : null}
-                <p className="text-xs text-stone-600">
-                  Reconnect Notion on this environment (localhost uses its own token).
-                </p>
+                <p className="text-xs text-stone-600">{t('reconnectHint')}</p>
               </div>
             ) : dbList.length === 0 ? (
-              <p className="p-4 text-sm text-stone-500 text-center">
-                No databases found. In Notion, open a database → ••• → Connect to → your Focuspilot
-                integration.
-              </p>
+              <p className="p-4 text-sm text-stone-500 text-center">{t('noDatabasesFound')}</p>
             ) : (
               dbList.map((db) => (
                 <div
@@ -617,22 +615,22 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
                       size="sm"
                       className="h-8 px-2 text-xs"
                       onClick={() => pickDatabaseForSync(db)}
-                      title="Use for project sync"
+                      title={t('useForProjectSync')}
                     >
-                      Sync
+                      {t('syncBtn')}
                     </Button>
                     <Button
                       variant="ghost"
                       size="sm"
                       className="h-8 px-2"
                       onClick={() => copyId(db.id)}
-                      title="Copy database ID"
+                      title={t('copyDatabaseId')}
                     >
                       <Copy className="h-3.5 w-3.5" />
                     </Button>
                     {db.url ? (
                       <Button variant="ghost" size="sm" className="h-8 px-2" asChild>
-                        <a href={db.url} target="_blank" rel="noopener noreferrer" title="Open in Notion">
+                        <a href={db.url} target="_blank" rel="noopener noreferrer" title={t('openInNotion')}>
                           <ExternalLink className="h-3.5 w-3.5" />
                         </a>
                       </Button>
@@ -644,9 +642,9 @@ const NotionIntegration = ({ isConnected, isLoading: stateLoading, isSyncing }: 
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => refetchDatabases()}>
-              Refresh
+              {ts('refresh')}
             </Button>
-            <Button onClick={() => setBrowseOpen(false)}>Done</Button>
+            <Button onClick={() => setBrowseOpen(false)}>{ts('done')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

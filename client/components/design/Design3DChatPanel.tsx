@@ -33,17 +33,11 @@ import { DesignModelViewer } from '@/components/design/DesignModelViewer';
 import { DesignModelLightbox } from '@/components/design/DesignModelLightbox';
 import { fetchDesignModelBlob } from '@/lib/design-model-api';
 import { gooeyToast as toast } from 'goey-toast';
+import { useTranslations } from 'next-intl';
 
 function makeOptimisticId() {
   return -Math.floor(Math.random() * 1_000_000_000);
 }
-
-const SUGGESTED_PROMPTS = [
-  'Modern dining chair, Scandinavian wood',
-  'Minimalist floor lamp for living room',
-  'Exterior facade element, contemporary glass',
-  'Kitchen island with marble top',
-];
 
 function DesignStar({ size = 20, className = '' }: { size?: number; className?: string }) {
   return (
@@ -85,6 +79,8 @@ export function Design3DChatPanel({
   onDesignTypeChange,
   canEdit,
 }: Props) {
+  const t = useTranslations('design3DChatPanel');
+  const suggestedPrompts = t.raw('suggestedPrompts') as string[];
   const [input, setInput] = useState('');
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [pendingPreviews, setPendingPreviews] = useState<string[]>([]);
@@ -111,10 +107,10 @@ export function Design3DChatPanel({
   const sketchGallery = useMemo((): DesignLightboxSlide[] => {
     const slides: DesignLightboxSlide[] = [];
     for (const msg of displayMessages) {
-      if (msg.sketch_url) slides.push({ src: msg.sketch_url, alt: 'Sketch' });
+      if (msg.sketch_url) slides.push({ src: msg.sketch_url, alt: t('sketchAlt') });
     }
     return slides;
-  }, [displayMessages]);
+  }, [displayMessages, t]);
 
   const scrollBottom = useCallback(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -134,15 +130,15 @@ export function Design3DChatPanel({
     const next: File[] = [];
     for (const f of Array.from(files)) {
       if (!isAllowedChatFile(f) || f.type.startsWith('video/')) {
-        toast.error(`${f.name} is not a supported image`);
+        toast.error(t('toasts.unsupportedImage', { name: f.name }));
         continue;
       }
       if (f.size > MAX_CHAT_FILE_BYTES) {
-        toast.error(`${f.name} exceeds ${formatFileSize(MAX_CHAT_FILE_BYTES)}`);
+        toast.error(t('toasts.fileTooLarge', { name: f.name, size: formatFileSize(MAX_CHAT_FILE_BYTES) }));
         continue;
       }
       if (!f.type.startsWith('image/')) {
-        toast.error('Only image sketches are supported');
+        toast.error(t('toasts.sketchesOnly'));
         continue;
       }
       next.push(f);
@@ -152,11 +148,11 @@ export function Design3DChatPanel({
 
   const handleGenerate3d = () => {
     if (!canEdit) {
-      toast.error("You don't have permission to generate 3D designs");
+      toast.error(t('toasts.noPermission'));
       return;
     }
     if (pendingFiles.length === 0) {
-      toast.error('Upload a sketch to generate 3D');
+      toast.error(t('toasts.uploadSketchRequired'));
       return;
     }
     const trimmed = input.trim();
@@ -164,7 +160,7 @@ export function Design3DChatPanel({
       {
         id: makeOptimisticId(),
         role: 'user',
-        content: trimmed || 'Generate a 3D model from this sketch.',
+        content: trimmed || t('defaultPrompt'),
         sketch_url: pendingPreviews[0] ?? null,
         image_url: null,
         model_url: null,
@@ -172,9 +168,9 @@ export function Design3DChatPanel({
         created_at: new Date().toISOString(),
       },
     ]);
-    setGeneratePhase('Sending to Meshy…');
-    const t1 = setTimeout(() => setGeneratePhase('Building 3D mesh…'), 4000);
-    const t2 = setTimeout(() => setGeneratePhase('Texturing model…'), 12000);
+    setGeneratePhase(t('phases.sending'));
+    const t1 = setTimeout(() => setGeneratePhase(t('phases.building')), 4000);
+    const t2 = setTimeout(() => setGeneratePhase(t('phases.texturing')), 12000);
 
     generate3d.mutate(
       { prompt: trimmed, design_type: designType, files: [...pendingFiles] },
@@ -187,9 +183,9 @@ export function Design3DChatPanel({
           setOptimisticMessages([]);
           setGeneratePhase(null);
           if (data.test_mode) {
-            toast.success('3D model ready (Meshy test mode — sample GLB)');
+            toast.success(t('toasts.modelReadyTest'));
           } else {
-            toast.success('3D model generated');
+            toast.success(t('toasts.modelGenerated'));
           }
         },
         onError: (err: { response?: { data?: { error?: string } }; message?: string }) => {
@@ -197,7 +193,7 @@ export function Design3DChatPanel({
           clearTimeout(t2);
           setOptimisticMessages([]);
           setGeneratePhase(null);
-          toast.error(err?.response?.data?.error || err?.message || '3D generation failed');
+          toast.error(err?.response?.data?.error || err?.message || t('toasts.generationFailed'));
         },
       }
     );
@@ -210,10 +206,10 @@ export function Design3DChatPanel({
       <div className="flex items-center justify-between px-4 pt-4 pb-3 shrink-0 border-b border-stone-200">
         <div className="flex items-center gap-2">
           <Box className="w-5 h-5 text-sage-700" />
-          <span className="text-[15px] font-medium text-gray-900">3D Design Studio</span>
+          <span className="text-[15px] font-medium text-gray-900">{t('title')}</span>
           {meshyStatus?.test_mode && (
             <span className="text-[10px] font-medium uppercase tracking-wide text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded">
-              Meshy test
+              {t('meshyTest')}
             </span>
           )}
         </div>
@@ -222,10 +218,10 @@ export function Design3DChatPanel({
             value={designType}
             onChange={e => onDesignTypeChange(e.target.value as 'interior' | 'exterior')}
             className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white text-gray-700"
-            aria-label="Design type"
+            aria-label={t('designTypeAria')}
           >
-            <option value="interior">Interior</option>
-            <option value="exterior">Exterior</option>
+            <option value="interior">{t('interior')}</option>
+            <option value="exterior">{t('exterior')}</option>
           </select>
         </div>
       </div>
@@ -233,13 +229,12 @@ export function Design3DChatPanel({
       {isEmpty && (
         <div className="flex flex-col items-center justify-center flex-1 px-6 pb-4 text-center">
           <Box className="w-10 h-10 text-sage-700 mb-4" />
-          <p className="text-xl font-medium text-gray-900 mb-2">Sketch to 3D model</p>
+          <p className="text-xl font-medium text-gray-900 mb-2">{t('emptyTitle')}</p>
           <p className="text-sm text-gray-500 mb-8 max-w-sm">
-            Upload a sketch or product photo. Meshy turns it into a rotatable GLB model you can
-            attach to projects and share with your team.
+            {t('emptyDescription')}
           </p>
           <div className="w-full max-w-md space-y-1">
-            {SUGGESTED_PROMPTS.map(q => (
+            {suggestedPrompts.map(q => (
               <button
                 key={q}
                 type="button"
@@ -256,12 +251,13 @@ export function Design3DChatPanel({
 
       {!isEmpty && (
         <div className="flex-1 overflow-y-auto px-4 py-3 space-y-5 min-h-0">
-          {messagesLoading && <ThinkingSkeleton />}
+          {messagesLoading && <ThinkingSkeleton label={t('generating3d')} />}
           {displayMessages.map(msg => (
             <Message3DBubble
               key={msg.id}
               msg={msg}
-              onOpenSketch={url => openImage(url, { alt: 'Sketch', gallery: sketchGallery })}
+              sketchAlt={t('sketchAlt')}
+              onOpenSketch={url => openImage(url, { alt: t('sketchAlt'), gallery: sketchGallery })}
               onOpenModelFullscreen={id => setModelLightboxAssetId(id)}
               onShare={(url, id) =>
                 setShareTarget({
@@ -272,7 +268,7 @@ export function Design3DChatPanel({
               }
             />
           ))}
-          {isPending && <ThinkingSkeleton label={generatePhase || 'Generating 3D…'} />}
+          {isPending && <ThinkingSkeleton label={generatePhase || t('generating3d')} />}
           <div ref={bottomRef} />
         </div>
       )}
@@ -283,17 +279,17 @@ export function Design3DChatPanel({
             <div className="relative group rounded-lg overflow-hidden border border-gray-200 bg-gray-50 w-20 h-20 shrink-0">
               <DesignClickableImage
                 src={pendingPreviews[0]}
-                alt="Sketch"
+                alt={t('sketchAlt')}
                 className="w-full h-full"
                 onOpen={() =>
-                  openImage(pendingPreviews[0], { alt: 'Sketch', gallery: sketchGallery })
+                  openImage(pendingPreviews[0], { alt: t('sketchAlt'), gallery: sketchGallery })
                 }
               />
               <button
                 type="button"
                 onClick={() => setPendingFiles([])}
                 className="absolute top-0.5 right-0.5 p-0.5 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                aria-label="Remove sketch"
+                aria-label={t('removeSketch')}
               >
                 <X className="w-3 h-3" />
               </button>
@@ -319,7 +315,7 @@ export function Design3DChatPanel({
                 handleGenerate3d();
               }
             }}
-            placeholder="Describe materials and style (optional)…"
+            placeholder={t('inputPlaceholder')}
             disabled={!canEdit}
             className="w-full bg-transparent text-sm text-gray-800 placeholder-gray-400 outline-none resize-none px-4 pt-3 pb-1 leading-relaxed max-h-40 overflow-y-auto"
             style={{ minHeight: '40px' }}
@@ -341,12 +337,12 @@ export function Design3DChatPanel({
                 onClick={() => fileInputRef.current?.click()}
                 disabled={!canEdit}
                 className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-stone-100 disabled:opacity-40"
-                title="Upload sketch"
+                title={t('uploadSketch')}
               >
                 <Paperclip className="w-4 h-4" />
               </button>
               <span className="text-[10px] text-gray-400 hidden sm:inline">
-                Enter to generate · Shift+Enter newline
+                {t('keyboardHint')}
               </span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -361,13 +357,13 @@ export function Design3DChatPanel({
                 ) : (
                   <Box className="w-3.5 h-3.5" />
                 )}
-                Generate 3D
+                {t('generate3d')}
               </button>
             </div>
           </div>
         </div>
         <p className="text-[10px] text-gray-400 text-center mt-2">
-          Powered by Meshy · Generation may take 1–3 minutes
+          {t('poweredBy')}
         </p>
       </div>
 
@@ -393,6 +389,7 @@ export function Design3DChatPanel({
 }
 
 function ModelDownloadButton({ assetId, filename }: { assetId: number; filename: string }) {
+  const t = useTranslations('design3DChatPanel');
   const [loading, setLoading] = useState(false);
 
   const handleDownload = async () => {
@@ -406,7 +403,7 @@ function ModelDownloadButton({ assetId, filename }: { assetId: number; filename:
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      toast.error('Download failed');
+      toast.error(t('toasts.downloadFailed'));
     } finally {
       setLoading(false);
     }
@@ -420,22 +417,25 @@ function ModelDownloadButton({ assetId, filename }: { assetId: number; filename:
       className="inline-flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-900 px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50"
     >
       {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
-      Download GLB
+      {t('downloadGlb')}
     </button>
   );
 }
 
 function Message3DBubble({
   msg,
+  sketchAlt,
   onOpenSketch,
   onOpenModelFullscreen,
   onShare,
 }: {
   msg: DesignMessage;
+  sketchAlt: string;
   onOpenSketch: (url: string) => void;
   onOpenModelFullscreen: (assetId: number) => void;
   onShare: (url: string, id: number) => void;
 }) {
+  const t = useTranslations('design3DChatPanel');
   if (msg.role === 'user') {
     return (
       <div className="flex flex-col items-end gap-2 max-w-[85%] ml-auto">
@@ -443,7 +443,7 @@ function Message3DBubble({
           <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
             <DesignClickableImage
               src={msg.sketch_url}
-              alt="Sketch"
+              alt={sketchAlt}
               className="w-full h-full"
               onOpen={() => onOpenSketch(msg.sketch_url!)}
             />
@@ -467,15 +467,15 @@ function Message3DBubble({
             type="button"
             onClick={() => onOpenModelFullscreen(msg.asset_id!)}
             className="relative group w-full text-left rounded-xl overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-sage-500"
-            title="Open fullscreen"
+            title={t('openFullscreen')}
           >
             <DesignModelViewer assetId={msg.asset_id} minHeight={300} />
             <span className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1 rounded-lg bg-black/55 text-white text-[10px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
               <Maximize2 className="w-3.5 h-3.5" />
-              Fullscreen
+              {t('fullscreenLabel')}
             </span>
           </button>
-          <p className="text-[11px] text-gray-400">Click model for fullscreen · press Esc or Close to exit</p>
+          <p className="text-[11px] text-gray-400">{t('modelFullscreenHint')}</p>
           <div className="flex flex-wrap gap-2">
             <ModelDownloadButton assetId={msg.asset_id} filename={`design-model-${msg.asset_id}.glb`} />
             <button
@@ -484,7 +484,7 @@ function Message3DBubble({
               className="inline-flex items-center gap-1.5 text-xs text-white px-2.5 py-1.5 rounded-lg bg-gray-900 hover:bg-gray-800"
             >
               <Share2 className="w-3.5 h-3.5" />
-              Share or attach
+              {t('shareOrAttach')}
             </button>
           </div>
         </>

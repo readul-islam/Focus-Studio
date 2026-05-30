@@ -28,26 +28,27 @@ import { useCurrency } from '@/lib/getCurrencySymbol';
 import { PermissionGuard } from '@/components/PermissionGuard';
 import { usePermissions } from '@/hooks/usePermissions';
 import { usePdfDownload } from '@/hooks/usePdfDownload';
-
-const STATUS_OPTIONS = [
-  { label: 'All', value: 'All' },
-  { label: 'Draft', value: 'DFT' },
-  { label: 'Sent', value: 'SNT' },
-  { label: 'Approved', value: 'APR' },
-  { label: 'Paid', value: 'PD' },
-  { label: 'Overdue', value: 'OVD' },
-];
-
-const SORT_OPTIONS = [
-  { label: 'Date (Newest)', value: 'date_desc' },
-  { label: 'Date (Oldest)', value: 'date_asc' },
-  { label: 'Amount (High)', value: 'amount_desc' },
-  { label: 'Amount (Low)', value: 'amount_asc' },
-  { label: 'Due Date (Nearest)', value: 'due_date_asc' },
-  { label: 'Due Date (Farthest)', value: 'due_date_desc' },
-];
+import { useTranslations } from 'next-intl';
 
 function FinancePageContent() {
+  const t = useTranslations('financePage');
+  const STATUS_OPTIONS = [
+    { label: t('status.all'), value: 'All' },
+    { label: t('status.draft'), value: 'DFT' },
+    { label: t('status.sent'), value: 'SNT' },
+    { label: t('status.approved'), value: 'APR' },
+    { label: t('status.paid'), value: 'PD' },
+    { label: t('status.overdue'), value: 'OVD' },
+  ];
+
+  const SORT_OPTIONS = [
+    { label: t('sort.dateNewest'), value: 'date_desc' },
+    { label: t('sort.dateOldest'), value: 'date_asc' },
+    { label: t('sort.amountHigh'), value: 'amount_desc' },
+    { label: t('sort.amountLow'), value: 'amount_asc' },
+    { label: t('sort.dueNearest'), value: 'due_date_asc' },
+    { label: t('sort.dueFarthest'), value: 'due_date_desc' },
+  ];
 
   const { user } = useUser();
   const { currency, isLoading: currencyLoading } = useCurrency(user?.studio?.default_currency);
@@ -95,7 +96,7 @@ function FinancePageContent() {
 
   const { mutate: deleteInvoice } = useDeleteData({
     onSuccess: () => {
-      toast.success('Invoice Deleted');
+      toast.success(t('toasts.invoiceDeleted'));
       financeRefetch();
     },
     onError: (error: Error) => {
@@ -108,7 +109,7 @@ function FinancePageContent() {
 
   const handleDelete = (id: any) => {
     if (!financeDeletePermission) {
-      toast.error('You do not have permission to delete this item');
+      toast.error(t('toasts.noDeletePermission'));
       return;
     }
     if (isPo) {
@@ -122,20 +123,20 @@ function FinancePageContent() {
 
   const { mutate: sendEmail, isPending: isSendingEmail } = usePost({
     onSuccess: () => {
-      toast.success('Email sent successfully');
+      toast.success(t('toasts.emailSent'));
       setIsEmailDialogOpen(false);
     },
     onError: () => {
-      toast.error('Failed to send email');
+      toast.error(t('toasts.emailFailed'));
     },
   });
 
   const { mutate: sendEmailToClient, isPending: isSendingEmailToClient } = usePost({
     onSuccess: () => {
-      toast.success('Email sent successfully');
+      toast.success(t('toasts.emailSent'));
     },
     onError: () => {
-      toast.error('Failed to send email');
+      toast.error(t('toasts.emailFailed'));
     },
   });
 
@@ -335,36 +336,36 @@ function FinancePageContent() {
 
   const { mutate: createInvoiceFromPO, isPending: isCreatingInvoice } = usePost({
     onSuccess: () => {
-      toast.success('Invoice created successfully');
+      toast.success(t('toasts.invoiceCreated'));
       setCheckedItems([]);
       financeRefetch();
       setButtonLoadingPO(false);
     },
     onError: (error: Error) => {
-      toast.error(error.response.data.error || 'Failed to create invoice');
+      toast.error(error.response.data.error || t('toasts.invoiceCreateFailed'));
       setButtonLoadingPO(false);
     },
   });
 
   const { mutate: bulkDeletePO, isPending: isDeletingPO } = usePost({
     onSuccess: () => {
-      toast.success('Purchase orders deleted successfully');
+      toast.success(t('toasts.purchaseOrdersDeleted'));
       setCheckedItems([]);
       financeRefetch();
     },
     onError: (error: Error) => {
-      toast.error(error.response.data.error || 'Failed to delete purchase orders');
+      toast.error(error.response.data.error || t('toasts.purchaseOrdersDeleteFailed'));
     },
   });
 
   const { mutate: bulkDeleteInvoice, isPending: isDeletingInvoice } = usePost({
     onSuccess: () => {
-      toast.success('Invoices deleted successfully');
+      toast.success(t('toasts.invoicesDeleted'));
       setCheckedItems([]);
       financeRefetch();
     },
     onError: (error: Error) => {
-      toast.error(error.response.data.error || 'Failed to delete invoices');
+      toast.error(error.response.data.error || t('toasts.invoicesDeleteFailed'));
     },
   });
 
@@ -376,7 +377,7 @@ function FinancePageContent() {
     }
 
     if (hasInvoicesSelected) {
-      toast.error('Cannot create invoice from selected invoices');
+      toast.error(t('toasts.cannotCreateFromInvoices'));
       return;
     }
 
@@ -392,7 +393,7 @@ function FinancePageContent() {
   // Handle Bulk Delete - Open confirmation dialog
   const handleBulkDelete = () => {
     if (checkedItems.length === 0) {
-      toast.error('No items selected');
+      toast.error(t('toasts.noItemsSelected'));
       return;
     }
     setIsBulkDeleteOpen(true);
@@ -437,21 +438,21 @@ function FinancePageContent() {
 
   const financeStats = [
     {
-      title: 'Total Invoices',
+      title: t('stats.totalInvoices'),
       value: `${currency?.symbol}${((totalInvoiceOrder || 0)).toLocaleString('en-GB', {
         maximumFractionDigits: 2,
       })}`,
 
-      subtitle: `${(financeData?.invoices?.length || 0)} Invoices`,
+      subtitle: `${(financeData?.invoices?.length || 0)} ${t('stats.invoices')}`,
       icon: FileText,
     },
 
     {
-      title: 'Total Purchase Orders',
+      title: t('stats.totalPurchaseOrders'),
       value: `${currency?.symbol}${(totalPurchaseOrder || 0).toLocaleString('en-GB', {
         maximumFractionDigits: 2,
       })}`,
-      subtitle: `${financeData?.purchase_orders?.length || 0} Purchase Orders`,
+      subtitle: `${financeData?.purchase_orders?.length || 0} ${t('stats.purchaseOrders')}`,
       icon: ShoppingCart,
     },
   ];
@@ -487,7 +488,7 @@ function FinancePageContent() {
 
   const { mutate: deletePO } = useDeleteData({
     onSuccess: () => {
-      toast.success('PO Deleted');
+      toast.success(t('toasts.poDeleted'));
     },
     onError: (error: Error) => {
       toast.error(error.message);
@@ -506,11 +507,11 @@ function FinancePageContent() {
 
 
   const handleOpenPO = (id: string | number) => {
-    downloadPdf(id, 'po').catch(() => toast.error('Failed to generate PDF'));
+    downloadPdf(id, 'po').catch(() => toast.error(t('toasts.pdfFailed')));
   };
 
   const handleOpenInvoice = (id: string | number) => {
-    downloadPdf(id, 'invoice').catch(() => toast.error('Failed to generate PDF'));
+    downloadPdf(id, 'invoice').catch(() => toast.error(t('toasts.pdfFailed')));
   };
 
 
@@ -565,7 +566,7 @@ function FinancePageContent() {
                   />
                 )}
                 <span className="relative z-10">
-                  {type === 'All' ? 'All' : type === 'PO' ? 'Purchase Orders' : 'Invoices'}
+                  {type === 'All' ? t('tabs.all') : type === 'PO' ? t('tabs.purchaseOrders') : t('tabs.invoices')}
                 </span>
               </button>
             ))}
@@ -575,18 +576,18 @@ function FinancePageContent() {
             <motion.div layout className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 " />
               <Input
-                placeholder="Search invoices and POs..."
+                placeholder={t('searchPlaceholder')}
                 className="pl-10 w-56"
                 value={searchText}
                 onChange={e => setSearchText(e.target.value)}
-                aria-label="Search invoices and purchase orders"
+                aria-label={t('searchAria')}
               />
             </motion.div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className='h-10' variant="outline" size='sm'>
                   <Filter className="w-4 h-4 mr-2" />
-                  {STATUS_OPTIONS.find(opt => opt.value === statusFilter)?.label || 'Filter'}
+                  {STATUS_OPTIONS.find(opt => opt.value === statusFilter)?.label || t('filter')}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-40">
@@ -605,7 +606,7 @@ function FinancePageContent() {
               <DropdownMenuTrigger asChild>
                 <Button className='h-10' variant="outline" size='sm'>
                   <ArrowUpDown className="w-4 h-4 mr-2" />
-                  {SORT_OPTIONS.find(opt => opt.value === sortBy)?.label || 'Sort'}
+                  {SORT_OPTIONS.find(opt => opt.value === sortBy)?.label || t('sortLabel')}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-44">
@@ -627,7 +628,7 @@ function FinancePageContent() {
                 disabled={buttonLoadingPO || hasInvoicesSelected}
               >
                 <Plus className="w-4 h-4 mr-2" />
-                {buttonLoadingPO ? "Creating..." : "Create Invoice"}
+                {buttonLoadingPO ? t('creating') : t('createInvoice')}
               </Button>
             </motion.div>}
             <AnimatePresence mode="popLayout">
@@ -645,7 +646,7 @@ function FinancePageContent() {
                     disabled={isDeletingPO || isDeletingInvoice}
                   >
                     <Trash2 className="w-4 h-4 mr-2" />
-                    {(isDeletingPO || isDeletingInvoice) ? "Deleting..." : "Delete"}
+                    {(isDeletingPO || isDeletingInvoice) ? t('deleting') : t('delete')}
                   </Button>
                 </motion.div>
               )}
@@ -659,9 +660,9 @@ function FinancePageContent() {
             <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4">
               <FileText className="w-8 h-8 " />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-1">{searchText ? `No results for "${searchText}"` : "Nothing here yet"}</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-1">{searchText ? `${t('noResultsFor')} "${searchText}"` : t('nothingYet')}</h3>
             <p className="text-gray-500 max-w-sm mb-6">
-              Create your first purchase order or invoice to start managing your project costs and billing with ease.
+              {t('emptyDescription')}
             </p>
             <div className="flex gap-3">
               {/* <Button onClick={() => router.push('/finance/purchase-order/new')} className="bg-clay-500 hover:bg-clay-600 text-white">
@@ -670,7 +671,7 @@ function FinancePageContent() {
               </Button> */}
            {financePermission &&   <Button className="bg-clay-500 hover:bg-clay-600 text-white" onClick={() => router.push('/finance/invoices/new')} >
                 <Plus className="w-4 h-4 mr-2" />
-                New Invoice
+                {t('newInvoice')}
               </Button>}
             </div>
           </div>
@@ -689,17 +690,17 @@ function FinancePageContent() {
                         onCheckedChange={handleCheckAll}
                       />
                     </th>
-                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-28">Number</th>
-                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-48">Supplier / Client</th>
-                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-16">Type</th>
-                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-40">Project</th>
-                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-32">Date Issued</th>
-                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-32">Due Date</th>
-                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-32">Amount</th>
-                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-24">Status</th>
-                    <th className="px-3 py-3 text-center text-sm font-medium text-gray-600 whitespace-nowrap w-28">Invoice Reference</th>
-                    <th className="px-3 py-3 text-center text-sm font-medium text-gray-600 whitespace-nowrap w-28">Sync</th>
-                    <th className="pl-3 pr-6 py-3 text-right text-sm font-medium text-gray-600 whitespace-nowrap w-24">Actions</th>
+                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-28">{t('table.number')}</th>
+                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-48">{t('table.supplierClient')}</th>
+                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-16">{t('table.type')}</th>
+                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-40">{t('table.project')}</th>
+                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-32">{t('table.dateIssued')}</th>
+                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-32">{t('table.dueDate')}</th>
+                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-32">{t('table.amount')}</th>
+                    <th className="px-3 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-24">{t('table.status')}</th>
+                    <th className="px-3 py-3 text-center text-sm font-medium text-gray-600 whitespace-nowrap w-28">{t('table.invoiceReference')}</th>
+                    <th className="px-3 py-3 text-center text-sm font-medium text-gray-600 whitespace-nowrap w-28">{t('table.sync')}</th>
+                    <th className="pl-3 pr-6 py-3 text-right text-sm font-medium text-gray-600 whitespace-nowrap w-24">{t('table.actions')}</th>
                   </tr>
                 </thead>
 

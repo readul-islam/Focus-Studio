@@ -20,6 +20,7 @@ import { usePost } from '@/hooks/usePost';
 import { DeleteDialog } from '@/components/DeleteDialog';
 import { usePermissions } from '@/hooks/usePermissions';
 import { getProjectPortalUrl } from '@/lib/contractor-portal-url';
+import { useTranslations } from 'next-intl';
 
 interface StudioContractor {
   id: number;
@@ -128,6 +129,8 @@ function mapApiContractorToProjectContractor(apiContractor: ApiContractor): Proj
 }
 
 export default function ProjectContractorsPage({ params }: { params: { id: string } }) {
+  const t = useTranslations('projectContractorsPage');
+  const tc = useTranslations('common');
   const [contractors, setContractors] = useState<ProjectContractor[]>([]);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [addTab, setAddTab] = useState<'new' | 'existing'>('new');
@@ -396,7 +399,7 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
               <Input
                 value={searchText}
                 onChange={e => setSearchText(e.target.value)}
-                placeholder="Search contractors..."
+                placeholder={t('searchPlaceholder')}
                 className="pl-10 w-64 h-9"
               />
             </div>
@@ -405,12 +408,12 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
             <DialogTrigger asChild>
               <Button className="h-9 bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-xl shadow-sm">
                 <Plus className="w-4 h-4 mr-2" />
-                Add Contractor
+                {t('addContractor')}
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[520px] bg-card border border-border/40 text-foreground max-h-[90vh] flex flex-col rounded-2xl shadow-xl">
               <DialogHeader>
-                <DialogTitle className="text-lg text-foreground font-bold">Add Contractor</DialogTitle>
+                <DialogTitle className="text-lg text-foreground font-bold">{t('addContractor')}</DialogTitle>
               </DialogHeader>
 
               <Tabs value={addTab} onValueChange={v => setAddTab(v as 'new' | 'existing')} className="flex-1 flex flex-col min-h-0">
@@ -433,7 +436,7 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                         </Label>
                         <Input
                           id="name"
-                          placeholder="e.g. James"
+                          placeholder={t('firstNamePlaceholder')}
                           value={newContractor.name}
                           onChange={e => setNewContractor(prev => ({ ...prev, name: e.target.value }))}
                           className="bg-background border-border/60 text-foreground rounded-xl focus-visible:ring-primary"
@@ -445,7 +448,7 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                         </Label>
                         <Input
                           id="surname"
-                          placeholder="e.g. Fletcher"
+                          placeholder={t('lastNamePlaceholder')}
                           value={newContractor.surname}
                           onChange={e => setNewContractor(prev => ({ ...prev, surname: e.target.value }))}
                           className="bg-background border-border/60 text-foreground rounded-xl focus-visible:ring-primary"
@@ -453,10 +456,10 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="company_name" className="text-sm font-semibold text-foreground/80">Company Name</Label>
+                      <Label htmlFor="company_name" className="text-sm font-semibold text-foreground/80">{t('companyName')}</Label>
                       <Input
                         id="company_name"
-                        placeholder="e.g. Fletcher & Sons Builders"
+                        placeholder={t('companyPlaceholder')}
                         value={newContractor.company_name}
                         onChange={e => setNewContractor(prev => ({ ...prev, company_name: e.target.value }))}
                         className="bg-background border-border/60 text-foreground rounded-xl focus-visible:ring-primary"
@@ -469,18 +472,18 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                       <Input
                         id="email"
                         type="email"
-                        placeholder="e.g. james@fletcherbuilders.co.uk"
+                        placeholder={t('emailPlaceholder')}
                         value={newContractor.email}
                         onChange={e => setNewContractor(prev => ({ ...prev, email: e.target.value }))}
                         className="bg-background border-border/60 text-foreground rounded-xl focus-visible:ring-primary"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="phone" className="text-sm font-semibold text-foreground/80">Phone</Label>
+                      <Label htmlFor="phone" className="text-sm font-semibold text-foreground/80">{t('phone')}</Label>
                       <Input
                         id="phone"
                         type="tel"
-                        placeholder="e.g. +44 7700 900123"
+                        placeholder={t('phonePlaceholder')}
                         value={newContractor.phone}
                         onChange={e => setNewContractor(prev => ({ ...prev, phone: e.target.value }))}
                         className="bg-background border-border/60 text-foreground rounded-xl focus-visible:ring-primary"
@@ -492,7 +495,7 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                       </Label>
                       <Select value={newContractor.trade} onValueChange={value => setNewContractor(prev => ({ ...prev, trade: value }))}>
                         <SelectTrigger className="bg-background border-border/60 text-foreground rounded-xl focus:ring-primary">
-                          <SelectValue placeholder="Select trade" />
+                          <SelectValue placeholder={t('selectTrade')} />
                         </SelectTrigger>
                         <SelectContent className="bg-card border-border text-foreground rounded-xl">
                           {TRADE_OPTIONS.map((trade) => (
@@ -503,13 +506,13 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                     </div>
                   </div>
                   <DialogFooter className="gap-2 sm:gap-0 border-t border-border/20 pt-4 mt-2">
-                    <Button variant="outline" className="rounded-xl border-border/60 text-foreground hover:bg-accent" onClick={closeAddDialog}>Cancel</Button>
+                    <Button variant="outline" className="rounded-xl border-border/60 text-foreground hover:bg-accent" onClick={closeAddDialog}>{tc('cancel')}</Button>
                     <Button
                       className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-xl shadow-sm"
                       disabled={!newContractor.name || !newContractor.email || !newContractor.trade || isAdding}
                       onClick={handleAddContractor}
                     >
-                      {isAdding ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Adding...</> : 'Add Contractor'}
+                      {isAdding ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('adding')}</> : t('addContractorBtn')}
                     </Button>
                   </DialogFooter>
                 </TabsContent>
@@ -520,7 +523,7 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
-                        placeholder="Search by name, company or trade..."
+                        placeholder={t('searchLinkPlaceholder')}
                         className="pl-9 bg-background border-border/60 text-foreground rounded-xl focus-visible:ring-primary"
                         value={existingSearch}
                         onChange={e => setExistingSearch(e.target.value)}
@@ -533,7 +536,7 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                           <Loader2 className="w-5 h-5 animate-spin text-primary" />
                         </div>
                       ) : filteredStudioContractors.length === 0 ? (
-                        <p className="text-sm text-muted-foreground text-center py-8">No contractors found</p>
+                        <p className="text-sm text-muted-foreground text-center py-8">{t('noContractorsFound')}</p>
                       ) : (
                         filteredStudioContractors.map(c => {
                           const fullName = `${c.name} ${c.surname}`.trim();
@@ -571,13 +574,13 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
                     </div>
                   </div>
                   <DialogFooter className="gap-2 sm:gap-0 border-t border-border/20 pt-4 mt-2">
-                    <Button variant="outline" className="rounded-xl border-border/60 text-foreground hover:bg-accent" onClick={closeAddDialog}>Cancel</Button>
+                    <Button variant="outline" className="rounded-xl border-border/60 text-foreground hover:bg-accent" onClick={closeAddDialog}>{tc('cancel')}</Button>
                     <Button
                       className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold rounded-xl shadow-sm"
                       disabled={!selectedContractorId || isLinking}
                       onClick={handleLinkContractor}
                     >
-                      {isLinking ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Linking...</> : 'Link to Project'}
+                      {isLinking ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t('linking')}</> : t('linkToProject')}
                     </Button>
                   </DialogFooter>
                 </TabsContent>
@@ -590,15 +593,15 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
         {contractors.length === 0 ? (
           <Card className="p-8 text-center border border-dashed border-neutral-300">
             <HardHat className="w-10 h-10 text-neutral-300 mx-auto mb-3" />
-            <p className="text-sm text-neutral-500 mb-4">No contractors added yet</p>
+            <p className="text-sm text-neutral-500 mb-4">{t('noContractorsYet')}</p>
           {projectEditPermission &&  <Button onClick={() => setIsAddOpen(true)} className="h-9 bg-gray-900 text-white hover:bg-gray-800">
               <Plus className="w-4 h-4 mr-2" />
-              Add Contractor
+              {t('addContractor')}
             </Button>}
           </Card>
         ) : filteredContractors.length === 0 ? (
           <Card className="p-8 text-center">
-            <p className="text-sm text-neutral-500">No contractors match your search</p>
+            <p className="text-sm text-neutral-500">{t('noSearchMatch')}</p>
           </Card>
         ) : (
           <div className="space-y-3">

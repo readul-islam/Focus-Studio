@@ -7,8 +7,10 @@ import { CheckCircle2, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 function BillingSuccessContent() {
+  const t = useTranslations('billingSuccessPage');
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
   const router = useRouter();
@@ -28,7 +30,7 @@ function BillingSuccessContent() {
         setTimeout(() => router.replace('/home/dashboard'), 2000);
       })
       .catch(() => {
-        setError('We could not confirm your subscription yet. It may still be processing.');
+        setError(t('verifyError'));
       });
   }, [sessionId, verifySession, invalidate, router]);
 
@@ -43,25 +45,25 @@ function BillingSuccessContent() {
           <>
             <p className="text-sm text-red-600">{error}</p>
             <Button asChild className="mt-6 w-full rounded-lg">
-              <Link href="/settings/studio/billing">Go to billing settings</Link>
+              <Link href="/settings/studio/billing">{t('goToBilling')}</Link>
             </Button>
           </>
         ) : verifySession.isPending || (!error && sessionId) ? (
           <>
             <CheckCircle2 className="mx-auto size-12 text-emerald-600" />
-            <h1 className="mt-4 text-xl font-bold text-gray-900">Subscription confirmed</h1>
+            <h1 className="mt-4 text-xl font-bold text-gray-900">{t('confirmed')}</h1>
             <p className="mt-2 text-sm text-gray-600">
               {verifySession.isPending
-                ? 'Activating your plan…'
-                : 'Redirecting to your dashboard…'}
+                ? t('activating')
+                : t('redirecting')}
             </p>
             <Loader2 className="mx-auto mt-4 size-6 animate-spin text-gray-400" />
           </>
         ) : (
           <>
-            <p className="text-sm text-gray-600">Missing checkout session.</p>
+            <p className="text-sm text-gray-600">{t('missingSession')}</p>
             <Button asChild className="mt-6 w-full rounded-lg">
-              <Link href="/settings/studio/billing">Choose a plan</Link>
+              <Link href="/settings/studio/billing">{t('choosePlan')}</Link>
             </Button>
           </>
         )}

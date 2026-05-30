@@ -32,14 +32,12 @@ import {
   MAX_CHAT_FILE_BYTES,
 } from '@/lib/team-chat-file-utils';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 dayjs.extend(relativeTime);
 
-const TEAM_MENTION = {
-  id: 'team',
-  name: 'team',
-  label: 'Everyone on the team',
-};
+const TEAM_MENTION_ID = 'team';
+const TEAM_MENTION_NAME = 'team';
 
 const QUICK_EMOJIS = [
   '👍',
@@ -117,6 +115,7 @@ function renderMessageContent(content: string, isOwn: boolean) {
 }
 
 export function ProjectTeamChat({ projectId }: { projectId: string }) {
+  const t = useTranslations('projectTeamPage');
   const { user } = useUser();
   const [draft, setDraft] = useState('');
   const [showMentionMenu, setShowMentionMenu] = useState(false);
@@ -163,9 +162,9 @@ export function ProjectTeamChat({ projectId }: { projectId: string }) {
     if (teamMatches) {
       options.push({
         type: 'team',
-        id: TEAM_MENTION.id,
-        name: TEAM_MENTION.name,
-        label: TEAM_MENTION.label,
+        id: TEAM_MENTION_ID,
+        name: TEAM_MENTION_NAME,
+        label: t('mentionEveryone'),
       });
     }
 
@@ -181,7 +180,7 @@ export function ProjectTeamChat({ projectId }: { projectId: string }) {
     });
 
     return options;
-  }, [mentionQuery, studioMembers]);
+  }, [mentionQuery, studioMembers, t]);
 
   const [pinnedMsgs, restMsgs] = useMemo(() => {
     const pinned = messages.filter(m => m.is_pinned);
@@ -334,7 +333,7 @@ export function ProjectTeamChat({ projectId }: { projectId: string }) {
       setShowMentionMenu(false);
       setMentionQuery('');
     } catch {
-      toast.error('Failed to send message');
+      toast.error(t('messageFailed'));
     }
   };
 
@@ -512,7 +511,7 @@ export function ProjectTeamChat({ projectId }: { projectId: string }) {
         {!messagesLoading && messages.length === 0 && (
           <div className="text-center py-12">
             <MessageSquare className="w-10 h-10 text-neutral-300 mx-auto mb-3" />
-            <p className="text-sm text-neutral-500">No messages yet</p>
+            <p className="text-sm text-neutral-500">{t('noMessages')}</p>
             <p className="text-xs text-neutral-400 mt-1">
               Use the toolbar below — <span className="font-medium">@</span> mentions, emoji, and files.
             </p>
@@ -635,7 +634,7 @@ export function ProjectTeamChat({ projectId }: { projectId: string }) {
             )}
             <Textarea
               ref={textareaRef}
-              placeholder="Jot something down"
+              placeholder={t('placeholder')}
               value={draft}
               onChange={handleDraftChange}
               onKeyDown={handleKeyDown}

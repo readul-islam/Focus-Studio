@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
 import { Search, Sparkles, Bug, Zap, AlertTriangle, MoreHorizontal, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -32,45 +33,49 @@ interface ChangelogResponse {
   results: ChangelogEntry[];
 }
 
-const CHANGE_TYPE_CONFIG: Record<ChangeType, { icon: typeof Sparkles; label: string; color: string; bgColor: string; borderColor: string }> = {
-  feature: {
-    icon: Sparkles,
-    label: 'New Feature',
-    color: 'text-emerald-700',
-    bgColor: 'bg-emerald-50',
-    borderColor: 'border-emerald-200',
-  },
-  fix: {
-    icon: Bug,
-    label: 'Bug Fix',
-    color: 'text-rose-700',
-    bgColor: 'bg-rose-50',
-    borderColor: 'border-rose-200',
-  },
-  improvement: {
-    icon: Zap,
-    label: 'Improvement',
-    color: 'text-sky-700',
-    bgColor: 'bg-sky-50',
-    borderColor: 'border-sky-200',
-  },
-  breaking: {
-    icon: AlertTriangle,
-    label: 'Breaking Change',
-    color: 'text-amber-700',
-    bgColor: 'bg-amber-50',
-    borderColor: 'border-amber-200',
-  },
-  other: {
-    icon: MoreHorizontal,
-    label: 'Other',
-    color: 'text-gray-700',
-    bgColor: 'bg-stone-50',
-    borderColor: 'border-gray-200',
-  },
-};
+function useChangeTypeConfig(): Record<ChangeType, { icon: typeof Sparkles; label: string; color: string; bgColor: string; borderColor: string }> {
+  const t = useTranslations('changelogPage.types');
+  return {
+    feature: {
+      icon: Sparkles,
+      label: t('feature'),
+      color: 'text-emerald-700',
+      bgColor: 'bg-emerald-50',
+      borderColor: 'border-emerald-200',
+    },
+    fix: {
+      icon: Bug,
+      label: t('fix'),
+      color: 'text-rose-700',
+      bgColor: 'bg-rose-50',
+      borderColor: 'border-rose-200',
+    },
+    improvement: {
+      icon: Zap,
+      label: t('improvement'),
+      color: 'text-sky-700',
+      bgColor: 'bg-sky-50',
+      borderColor: 'border-sky-200',
+    },
+    breaking: {
+      icon: AlertTriangle,
+      label: t('breaking'),
+      color: 'text-amber-700',
+      bgColor: 'bg-amber-50',
+      borderColor: 'border-amber-200',
+    },
+    other: {
+      icon: MoreHorizontal,
+      label: t('other'),
+      color: 'text-gray-700',
+      bgColor: 'bg-stone-50',
+      borderColor: 'border-gray-200',
+    },
+  };
+}
 
 function ChangeTypeBadge({ type }: { type: ChangeType }) {
+  const CHANGE_TYPE_CONFIG = useChangeTypeConfig();
   const config = CHANGE_TYPE_CONFIG[type] || CHANGE_TYPE_CONFIG.other;
   const Icon = config.icon;
 
@@ -101,6 +106,7 @@ function groupByMonth(entries: ChangelogEntry[]): Record<string, ChangelogEntry[
 }
 
 export default function ChangelogPage() {
+  const t = useTranslations('changelogPage');
   const [searchQuery, setSearchQuery] = useState('');
   const [changeTypeFilter, setChangeTypeFilter] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState(1);
@@ -138,9 +144,9 @@ export default function ChangelogPage() {
     <div className="space-y-8">
       {/* Header */}
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Changelog</h1>
+        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">{t('title')}</h1>
         <p className="text-base text-gray-500">
-          New features, improvements, and fixes to Focuspilot.
+          {t('subtitle')}
         </p>
       </div>
 
@@ -149,7 +155,7 @@ export default function ChangelogPage() {
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
-            placeholder="Search updates..."
+            placeholder={t('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9 bg-white border-gray-200"
@@ -157,7 +163,7 @@ export default function ChangelogPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-500">Filter:</span>
+          <span className="text-sm text-gray-500">{t('filterLabel')}</span>
           <Select
             value={changeTypeFilter}
             onValueChange={(value) => {
@@ -166,15 +172,15 @@ export default function ChangelogPage() {
             }}
           >
             <SelectTrigger className="w-[160px]">
-              <SelectValue placeholder="All changes" />
+              <SelectValue placeholder={t('filterAll')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All changes</SelectItem>
-              <SelectItem value="feature">New Features</SelectItem>
-              <SelectItem value="improvement">Improvements</SelectItem>
-              <SelectItem value="fix">Bug Fixes</SelectItem>
-              <SelectItem value="breaking">Breaking Changes</SelectItem>
-              <SelectItem value="other">Other</SelectItem>
+              <SelectItem value="all">{t('filterAll')}</SelectItem>
+              <SelectItem value="feature">{t('filterFeatures')}</SelectItem>
+              <SelectItem value="improvement">{t('filterImprovements')}</SelectItem>
+              <SelectItem value="fix">{t('filterFixes')}</SelectItem>
+              <SelectItem value="breaking">{t('filterBreaking')}</SelectItem>
+              <SelectItem value="other">{t('filterOther')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -184,7 +190,7 @@ export default function ChangelogPage() {
       {isLoading && (
         <div className="py-20 text-center">
           <div className="inline-block w-6 h-6 border-2 border-gray-300 border-t-gray-900 rounded-full animate-spin" />
-          <p className="mt-3 text-sm text-gray-500">Loading changelog...</p>
+          <p className="mt-3 text-sm text-gray-500">{t('loading')}</p>
         </div>
       )}
 
@@ -194,7 +200,7 @@ export default function ChangelogPage() {
           <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-white flex items-center justify-center">
             <Sparkles className="w-6 h-6 text-gray-400" />
           </div>
-          <h3 className="text-base font-medium text-gray-900 mb-1">No updates found</h3>
+          <h3 className="text-base font-medium text-gray-900 mb-1">{t('noUpdatesTitle')}</h3>
           <p className="text-sm text-gray-500">
             {searchQuery ? 'Try adjusting your search or filters.' : 'Check back soon for updates.'}
           </p>

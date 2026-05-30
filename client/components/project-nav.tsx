@@ -1,20 +1,21 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { NavPills } from '@/components/shared/nav-pills';
 import { usePermissions } from '@/hooks/usePermissions';
 
-const navItems = [
-  { label: 'Overview',     href: '',             permission: null },
-  { label: 'Tasks',        href: '/tasks',       permission: 'tasks.view' },
-  { label: 'Email',        href: '/messages',    permission: null },
-  { label: 'Team',         href: '/team',        permission: null },
-  { label: 'Procurement',  href: '/procurement', permission: 'procurement.view' },
-  { label: 'Finance',      href: '/finance',     permission: 'finance.view' },
-  { label: 'Files',        href: '/docs',        permission: 'documents.view' },
-  { label: 'Contractors',  href: '/contractors', permission: null },
-  { label: 'Settings',     href: '/settings',    permission: null },
-];
+const navItemKeys = [
+  { labelKey: 'overview', href: '', permission: null },
+  { labelKey: 'tasks', href: '/tasks', permission: 'tasks.view' },
+  { labelKey: 'email', href: '/messages', permission: null },
+  { labelKey: 'team', href: '/team', permission: null },
+  { labelKey: 'procurement', href: '/procurement', permission: 'procurement.view' },
+  { labelKey: 'finance', href: '/finance', permission: 'finance.view' },
+  { labelKey: 'files', href: '/docs', permission: 'documents.view' },
+  { labelKey: 'contractors', href: '/contractors', permission: null },
+  { labelKey: 'settings', href: '/settings', permission: null },
+] as const;
 
 interface ProjectNavProps {
   projectId: string;
@@ -23,11 +24,12 @@ interface ProjectNavProps {
 export function ProjectNav({ projectId }: ProjectNavProps) {
   const pathname = usePathname();
   const { can } = usePermissions();
+  const t = useTranslations('projectNav');
 
-  const items = navItems
-    .filter(i => !i.permission || can(i.permission))
-    .map(i => ({
-      label: i.label,
+  const items = navItemKeys
+    .filter((i) => !i.permission || can(i.permission))
+    .map((i) => ({
+      label: t(i.labelKey),
       href: `/projects/${projectId}${i.href}`,
     }));
 

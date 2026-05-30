@@ -1,0 +1,54 @@
+{
+  "topBar": {
+    "selectProject": "プロジェクトを選択",
+    "searchProjects": "プロジェクトを検索…",
+    "noProjectsFound": "プロジェクトが見つかりません",
+    "selectTask": "タスクを選択",
+    "searchTasks": "タスクを検索…",
+    "noTasksAvailable": "利用可能なタスクがありません"
+  },
+  "taskComments": {
+    "title": "コメント",
+    "placeholder": "コメントを追加（@でメンション）",
+    "submit": "コメント",
+    "loading": "コメントを読み込み中…",
+    "empty": "コメントはまだありません。",
+    "you": "あなた",
+    "toasts": {
+      "addFailed": "コメントの追加に失敗しました"
+    }
+  },
+  "taskAttachments": {
+    "label": "添付ファイル",
+    "loading": "添付ファイルを読み込み中…",
+    "uploadedOn": "{date}にアップロード",
+    "pendingHint": "タスク保存時にアップロードされます · {size} MB",
+    "saveHint": "今ファイルを追加 — タスク保存時に自動アップロードされます。",
+    "deleteTitle": "添付ファイルを削除",
+    "deleteDescription": "このファイルを削除してもよろしいですか？この操作は元に戻せません。",
+    "defaultFileName": "ファイル",
+    "toasts": {
+      "removed": "添付ファイルを削除しました",
+      "deleteFailed": "添付ファイルの削除に失敗しました",
+      "uploaded": "添付ファイルをアップロードしました",
+      "uploadedPlural": "添付ファイルをアップロードしました",
+      "uploadFailed": "添付ファイルのアップロードに失敗しました",
+      "fileTooLarge": "{name}は5MB未満である必要があります"
+    }
+  },
+  "helpArticleFeedback": {
+    "question": "この記事は役に立ちましたか？",
+    "yes": "はい",
+    "no": "いいえ",
+    "placeholderHelpful": "改善できる点はありますか？（任意）",
+    "placeholderNotHelpful": "不足していた点や不明な点は？（任意）",
+    "submit": "フィードバックを送信",
+    "sending": "送信中…",
+    "thanksTitle": "フィードバックありがとうございます",
+    "thanksDescription": "記事の改善に役立てます。",
+    "toasts": {
+      "thanks": "フィードバックありがとうございます！",
+      "saveFailed": "フィードバックを保存できませんでした。もう一度お試しください。"
+    }
+  }
+}

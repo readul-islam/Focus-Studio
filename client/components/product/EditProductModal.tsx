@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { gooeyToast as toast } from 'goey-toast';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -32,6 +32,7 @@ import useFetch from '@/hooks/useFetch';
 import useUser from '@/hooks/useUser';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 // ─── Sub-components (shared design language) ──────────────────────────────────
 
@@ -65,6 +66,7 @@ function FormField({ label, id, required, children }: {
 function BooleanSelect({ value, onChange, label, id }: {
   value: boolean; onChange: (v: boolean) => void; label: string; id: string;
 }) {
+  const t = useTranslations('libraryProductModal');
   return (
     <div className="space-y-1.5">
       <Label htmlFor={id} className="text-sm font-medium text-ink">
@@ -78,17 +80,17 @@ function BooleanSelect({ value, onChange, label, id }: {
           id={id}
           className="h-10 rounded-xl border border-borderSoft bg-white text-[13px] font-medium transition-colors hover:border-clay-300 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
         >
-          <SelectValue placeholder="Select…" />
+          <SelectValue placeholder={t('selectPlaceholder')} />
         </SelectTrigger>
         <SelectContent className="bg-white z-[9999] rounded-xl border-borderSoft shadow-xl">
           <SelectItem value="true" className="text-[13px] cursor-pointer focus:bg-stone-50">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-emerald-500" />Yes
+              <div className="w-2 h-2 rounded-full bg-emerald-500" />{t('yes')}
             </div>
           </SelectItem>
           <SelectItem value="false" className="text-[13px] cursor-pointer focus:bg-stone-50">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-stone-400" />No
+              <div className="w-2 h-2 rounded-full bg-stone-400" />{t('no')}
             </div>
           </SelectItem>
         </SelectContent>
@@ -110,6 +112,7 @@ function ExistingImages({
   onDelete: (id: string) => void;
   onSetPrimary: (id: string) => void;
 }) {
+  const t = useTranslations('libraryProductModal');
   if (images.length === 0) return null;
   return (
     <div className="flex gap-3 flex-wrap">
@@ -129,13 +132,13 @@ function ExistingImages({
                 ? 'border-amber-400 shadow-[0_0_0_3px_rgba(251,191,36,0.2)]'
                 : 'border-borderSoft'
             )}>
-              <img src={img.image} alt="Product" className="w-full h-full object-cover" />
+              <img src={img.image} alt={t('productAlt')} className="w-full h-full object-cover" />
             </div>
             <button
               type="button"
               onClick={e => { e.stopPropagation(); onDelete(img.id); }}
               className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm z-10"
-              aria-label="Delete image"
+              aria-label={t('deleteImage')}
             >
               <X className="h-3 w-3" />
             </button>
@@ -148,8 +151,8 @@ function ExistingImages({
                   ? 'bg-amber-400 text-white'
                   : 'bg-stone-200 text-stone-400 opacity-0 group-hover:opacity-100 hover:bg-amber-200'
               )}
-              title={img.is_primary ? 'Primary image' : 'Set as primary'}
-              aria-label={img.is_primary ? 'Primary image' : 'Set as primary'}
+              title={img.is_primary ? t('primaryImage') : t('setPrimary')}
+              aria-label={img.is_primary ? t('primaryImage') : t('setPrimary')}
             >
               <Star className="h-3 w-3" fill={img.is_primary ? 'currentColor' : 'none'} />
             </button>
@@ -161,6 +164,7 @@ function ExistingImages({
 }
 
 function NewFilePreviews({ files, onRemove }: { files: UploadedFile[]; onRemove: (name: string) => void; }) {
+  const t = useTranslations('libraryProductModal');
   if (files.length === 0) return null;
   return (
     <div className="flex gap-3 flex-wrap">
@@ -175,18 +179,18 @@ function NewFilePreviews({ files, onRemove }: { files: UploadedFile[]; onRemove:
             className="relative group"
           >
             <div className="w-20 h-20 rounded-xl overflow-hidden border-2 border-emerald-300 shadow-[0_0_0_3px_rgba(52,211,153,0.15)]">
-              <img src={file.preview} alt="New" className="w-full h-full object-cover" />
+              <img src={file.preview} alt={t('previewAlt')} className="w-full h-full object-cover" />
             </div>
             <button
               type="button"
               onClick={e => { e.stopPropagation(); onRemove(file.name); }}
               className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm z-10"
-              aria-label={`Remove ${file.name}`}
+              aria-label={t('deleteImage')}
             >
               <X className="h-3 w-3" />
             </button>
             <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-[9px] font-semibold px-1.5 py-0.5 rounded-full z-10 whitespace-nowrap">
-              New
+              {t('newImageBadge')}
             </div>
           </motion.div>
         ))}
@@ -198,6 +202,14 @@ function NewFilePreviews({ files, onRemove }: { files: UploadedFile[]; onRemove:
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 const PRODUCT_TYPES = ['Furniture', 'Lighting', 'Textiles', 'Dining', 'Bathroom', 'Accessories', 'Home Fragrance', 'Outdoor', 'Art'];
+
+const EDIT_SPEC_FIELDS = [
+  { id: 'measurement', labelKey: 'measurements', placeholderKey: 'measurements' },
+  { id: 'materials', labelKey: 'materials', placeholderKey: 'materials' },
+  { id: 'dimension', labelKey: 'dimensions', placeholderKey: 'dimensions' },
+  { id: 'weight', labelKey: 'weight', placeholderKey: 'weight' },
+  { id: 'box_dimension', labelKey: 'boxDimensions', placeholderKey: 'boxDimensions' },
+] as const;
 
 const initial = {
   id: '',
@@ -236,6 +248,16 @@ interface EditProductModalProps {
 }
 
 const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: EditProductModalProps) => {
+  const t = useTranslations('libraryProductModal');
+  const specFields = useMemo(
+    () =>
+      EDIT_SPEC_FIELDS.map(({ id, labelKey, placeholderKey }) => ({
+        id,
+        label: t(`fields.${labelKey}` as 'fields.measurements'),
+        placeholder: t(`fieldPlaceholders.${placeholderKey}` as 'fieldPlaceholders.measurements'),
+      })),
+    [t]
+  );
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [imageError, setImageError] = useState('');
   const [product, setProduct] = useState(initial);
@@ -265,19 +287,19 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
               return postData({ url: 'library/product-images/', data: formData });
             })
           );
-          toast.success('Product updated and images uploaded');
+          toast.success(t('productUpdatedWithImages'));
         } catch {
-          toast.error('Product updated but some images failed to upload');
+          toast.error(t('productUpdatedImagesFailed'));
         } finally {
           setIsUploading(false);
         }
       } else {
-        toast.success('Product updated');
+        toast.success(t('updated'));
       }
       refetch();
       afterCloseModal();
     },
-    onError: () => toast.error('Error updating product. Try again.'),
+    onError: () => toast.error(t('updateError')),
   });
 
   useEffect(() => {
@@ -298,10 +320,10 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
     try {
       await deleteData({ url: `library/product-images/${imageId}/` });
       setExistingImages(prev => prev.filter(img => img.id !== imageId));
-      toast.success('Image deleted');
+      toast.success(t('imageDeleted'));
       refetch();
     } catch {
-      toast.error('Failed to delete image');
+      toast.error(t('imageDeleteFailed'));
     }
   };
 
@@ -322,19 +344,19 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
           })),
         },
       });
-      toast.success(newPrimary ? 'Primary image set' : 'Primary image unset');
+      toast.success(newPrimary ? t('primarySet') : t('primaryUnset'));
       refetch();
     } catch {
-      toast.error('Failed to update primary image');
+      toast.error(t('primaryUpdateFailed'));
     }
   };
 
   const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: any[]) => {
     if (rejectedFiles.length > 0) {
       const code = rejectedFiles[0].errors[0].code;
-      if (code === 'too-many-files') setImageError('Maximum 5 images allowed.');
-      else if (code === 'file-too-large') setImageError('File exceeds 20MB limit.');
-      else setImageError('Only PNG, JPG, GIF, WEBP files are allowed.');
+      if (code === 'too-many-files') setImageError(t('imageErrors.maxImages'));
+      else if (code === 'file-too-large') setImageError(t('imageErrors.fileTooLarge'));
+      else setImageError(t('imageErrors.invalidFormat'));
       return;
     }
     setImageError('');
@@ -342,7 +364,7 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
       ...prev,
       ...acceptedFiles.map(f => Object.assign(f, { preview: URL.createObjectURL(f) })) as UploadedFile[],
     ]);
-  }, []);
+  }, [t]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { 'image/png': [], 'image/jpeg': [], 'image/jpg': [], 'image/gif': [], 'image/webp': [] },
@@ -393,10 +415,10 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
               </div>
               <div>
                 <DialogTitle className="text-[16px] font-semibold text-stone-900 tracking-tight">
-                  Edit Product
+                  {t('titleEdit')}
                 </DialogTitle>
                 <DialogDescription className="text-[12px] text-stone-400 mt-0.5">
-                  {product.name || 'Update product details below'}
+                  {product.name || t('descriptionEdit')}
                 </DialogDescription>
               </div>
             </div>
@@ -413,11 +435,11 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
                     <ImageIcon className="h-4 w-4 text-stone-600" />
                   </div>
                   <div>
-                    <p className="text-[13px] font-semibold text-stone-900 tracking-tight">Product Images</p>
+                    <p className="text-[13px] font-semibold text-stone-900 tracking-tight">{t('productImages')}</p>
                     <p className="text-[11px] text-stone-400">
                       {existingImages.length > 0
-                        ? `${existingImages.length} saved · star to set primary · upload more below`
-                        : 'Upload up to 5 images · Max 20MB each'}
+                        ? t('editImagesSavedHint', { count: existingImages.length })
+                        : t('imagesHint')}
                     </p>
                   </div>
                 </div>
@@ -443,7 +465,7 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
                       : 'border-borderSoft hover:border-clay-300 hover:bg-greige-50/50 bg-white'
                   )}
                 >
-                  <input {...getInputProps()} aria-label="Upload product images" />
+                  <input {...getInputProps()} aria-label={t('uploadImagesAria')} />
                   <div className={cn(
                     'w-9 h-9 rounded-xl flex items-center justify-center transition-colors',
                     isDragActive ? 'bg-stone-900' : 'bg-stone-100'
@@ -452,9 +474,9 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
                   </div>
                   <div>
                     <p className="text-[13px] font-medium text-stone-700">
-                      {isDragActive ? 'Drop images here' : 'Drag & drop or click to add more'}
+                      {isDragActive ? t('dropImages') : t('dragOrClickAddMore')}
                     </p>
-                    <p className="text-[11px] text-stone-400 mt-0.5">PNG, JPG, GIF, WEBP · max 20MB</p>
+                    <p className="text-[11px] text-stone-400 mt-0.5">{t('imagesFormats')}</p>
                   </div>
                   {imageError && (
                     <p className="flex items-center gap-1 text-[11px] font-medium text-red-500">
@@ -466,24 +488,25 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
 
               {/* Basic Info */}
               <div className="px-6 py-5 bg-white border-b border-stone-100">
-                <SectionHeader icon={Package} title="Basic Information" description="Core product details" />
+                <SectionHeader icon={Package} title={t('sectionTitles.basic')} description={t('sectionDescriptions.basic')} />
                 <div className="grid grid-cols-2 gap-4">
                   {/* Name */}
-                  <FormField label="Product Name" id="name" required>
+                  <FormField label={t('fields.productName')} id="name" required>
                     <Input
                       id="name" name="name" value={product.name} onChange={handleChange}
-                      placeholder="e.g. Oslo Lounge Chair"
+                      placeholder={t('namePlaceholder')}
                       className={inputCls}
                     />
                   </FormField>
 
                   {/* Supplier */}
-                  <FormField label="Supplier" id="supplier">
+                  <FormField label={t('fields.supplier')} id="supplier">
                     <Popover open={supplierOpen} onOpenChange={setSupplierOpen}>
                       <PopoverTrigger asChild>
                         <Button
                           type="button" variant="outline" role="combobox"
                           aria-expanded={supplierOpen}
+                          aria-label={t('selectSupplierAria')}
                           className={cn(
                             'w-full h-10 rounded-xl border border-borderSoft bg-white text-[13px] font-normal',
                             'justify-between hover:bg-greige-50 hover:border-clay-300',
@@ -491,15 +514,15 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
                             !product.supplier && 'text-stone-400'
                           )}
                         >
-                          {product.supplier?.company_name || 'Select supplier…'}
+                          {product.supplier?.company_name || t('selectSupplier')}
                           <ChevronDown className="ml-2 h-3.5 w-3.5 opacity-50 flex-shrink-0" />
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent side="bottom" align="start" className="w-72 p-0 z-[9999] bg-white border-borderSoft shadow-xl rounded-xl">
                         <Command>
-                          <CommandInput placeholder="Search suppliers…" className="text-[13px]" />
+                          <CommandInput placeholder={t('searchSuppliers')} className="text-[13px]" />
                           <CommandList className="max-h-52">
-                            <CommandEmpty className="text-[12px] text-stone-400 py-3 px-4">No suppliers found.</CommandEmpty>
+                            <CommandEmpty className="text-[12px] text-stone-400 py-3 px-4">{t('noSuppliersFound')}</CommandEmpty>
                             {!loadingSuppliers && suppliers?.map((item: any) => (
                               <CommandItem
                                 key={item.id}
@@ -518,7 +541,7 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
                               onClick={() => { setSupplierOpen(false); setIsAddSupplierOpen(true); }}
                               className="w-full text-[12px] font-medium text-stone-600 py-2.5 px-4 text-left hover:bg-stone-50 transition-colors"
                             >
-                              + Add new supplier
+                              {t('addNewSupplier')}
                             </button>
                           </div>
                         </Command>
@@ -527,7 +550,7 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
                   </FormField>
 
                   {/* Type */}
-                  <FormField label="Product Type" id="type">
+                  <FormField label={t('fields.productType')} id="type">
                     <Popover open={typeOpen} onOpenChange={setTypeOpen}>
                       <PopoverTrigger asChild>
                         <Button
@@ -539,7 +562,7 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
                             !product.type && 'text-stone-400'
                           )}
                         >
-                          {product.type || 'Select type…'}
+                          {product.type || t('selectType')}
                           <ChevronDown className="ml-2 h-3.5 w-3.5 opacity-50 flex-shrink-0" />
                         </Button>
                       </PopoverTrigger>
@@ -562,12 +585,12 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
                   </FormField>
 
                   {/* URL */}
-                  <FormField label="Product URL" id="url">
+                  <FormField label={t('fields.productUrl')} id="url">
                     <div className="relative">
                       <Link2 className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-stone-400" />
                       <Input
                         id="url" name="url" type="url" value={product.url} onChange={handleChange}
-                        placeholder="https://supplier.com/product"
+                        placeholder={t('productUrlPlaceholder')}
                         className={cn(inputCls, 'pl-9')}
                       />
                     </div>
@@ -576,10 +599,10 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
 
                 {/* Description */}
                 <div className="mt-4">
-                  <FormField label="Description" id="description">
+                  <FormField label={t('fields.description')} id="description">
                     <Textarea
                       id="description" name="description" rows={3} value={product.description} onChange={handleChange}
-                      placeholder="Brief product description…"
+                      placeholder={t('fields.descriptionPlaceholder')}
                       className="rounded-xl border border-borderSoft bg-white text-[13px] resize-none placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
@@ -588,10 +611,10 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
 
               {/* Pricing */}
               <div className="px-6 py-5 bg-white border-b border-stone-100">
-                <SectionHeader icon={DollarSign} title="Pricing" description="Trade and retail pricing" />
+                <SectionHeader icon={DollarSign} title={t('sectionTitles.pricing')} description={t('sectionDescriptions.pricing')} />
                 <div className="grid grid-cols-3 gap-4">
                   <div className="col-span-1">
-                    <FormField label="Currency" id="currency" required>
+                    <FormField label={t('fields.currency')} id="currency" required>
                       <CurrencySelector
                         value={product.currency}
                         onChange={(currencyData: any) => {
@@ -601,14 +624,14 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
                       />
                     </FormField>
                   </div>
-                  <FormField label="Trade Price" id="tader_price">
+                  <FormField label={t('fields.tradePrice')} id="tader_price">
                     <Input
                       id="tader_price" name="tader_price" type="number" min="0" step="0.01"
                       value={product.tader_price} onChange={handleChange}
                       placeholder="0.00" className={inputCls}
                     />
                   </FormField>
-                  <FormField label="Regular Price" id="regular_price">
+                  <FormField label={t('fields.regularPrice')} id="regular_price">
                     <Input
                       id="regular_price" name="regular_price" type="number" min="0" step="0.01"
                       value={product.regular_price} onChange={handleChange}
@@ -620,15 +643,9 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
 
               {/* Specifications */}
               <div className="px-6 py-5 bg-white border-b border-stone-100">
-                <SectionHeader icon={Ruler} title="Specifications" description="Physical product details" />
+                <SectionHeader icon={Ruler} title={t('sectionTitles.specs')} description={t('sectionDescriptions.specs')} />
                 <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { label: 'Measurements', id: 'measurement', placeholder: 'e.g. W80 × D75 × H85cm' },
-                    { label: 'Materials', id: 'materials', placeholder: 'e.g. Oak, Leather' },
-                    { label: 'Dimensions', id: 'dimension', placeholder: 'e.g. 80 × 75 × 85 cm' },
-                    { label: 'Weight', id: 'weight', placeholder: 'e.g. 12 kg' },
-                    { label: 'Box Dimensions', id: 'box_dimension', placeholder: 'e.g. 90 × 80 × 95 cm' },
-                  ].map(({ label, id, placeholder }) => (
+                  {specFields.map(({ label, id, placeholder }) => (
                     <FormField key={id} label={label} id={id}>
                       <Input
                         id={id} name={id} value={(product as any)[id]} onChange={handleChange}
@@ -641,57 +658,57 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
 
               {/* Furniture Details */}
               <div className="px-6 py-5 bg-white">
-                <SectionHeader icon={Sofa} title="Furniture Details" description="Optional furniture-specific attributes" />
+                <SectionHeader icon={Sofa} title={t('sectionTitles.furniture')} description={t('sectionDescriptions.furniture')} />
                 <div className="grid grid-cols-2 gap-4">
                   <BooleanSelect
                     value={product.assembly_required}
                     onChange={v => updateField('assembly_required', v)}
-                    label="Assembly Required"
+                    label={t('fields.assemblyRequired')}
                     id="assembly_required"
                   />
-                  <FormField label="Seat Width" id="seat_width">
-                    <Input id="seat_width" name="seat_width" value={product.seat_width} onChange={handleChange} placeholder="e.g. 55 cm" className={inputCls} />
+                  <FormField label={t('fields.seatWidth')} id="seat_width">
+                    <Input id="seat_width" name="seat_width" value={product.seat_width} onChange={handleChange} placeholder={t('furniturePlaceholders.seatWidth')} className={inputCls} />
                   </FormField>
-                  <FormField label="Seat Depth" id="seat_depth">
-                    <Input id="seat_depth" name="seat_depth" value={product.seat_depth} onChange={handleChange} placeholder="e.g. 50 cm" className={inputCls} />
+                  <FormField label={t('fields.seatDepth')} id="seat_depth">
+                    <Input id="seat_depth" name="seat_depth" value={product.seat_depth} onChange={handleChange} placeholder={t('furniturePlaceholders.seatDepth')} className={inputCls} />
                   </FormField>
-                  <FormField label="Seat Height" id="seat_height">
-                    <Input id="seat_height" name="seat_height" value={product.seat_height} onChange={handleChange} placeholder="e.g. 44 cm" className={inputCls} />
+                  <FormField label={t('fields.seatHeight')} id="seat_height">
+                    <Input id="seat_height" name="seat_height" value={product.seat_height} onChange={handleChange} placeholder={t('furniturePlaceholders.seatHeight')} className={inputCls} />
                   </FormField>
-                  <FormField label="Composition" id="composition">
-                    <Input id="composition" name="composition" value={product.composition} onChange={handleChange} placeholder="e.g. 80% polyester" className={inputCls} />
+                  <FormField label={t('fields.composition')} id="composition">
+                    <Input id="composition" name="composition" value={product.composition} onChange={handleChange} placeholder={t('furniturePlaceholders.composition')} className={inputCls} />
                   </FormField>
-                  <FormField label="Construction" id="construction">
-                    <Input id="construction" name="construction" value={product.construction} onChange={handleChange} placeholder="e.g. Kiln-dried oak frame" className={inputCls} />
+                  <FormField label={t('fields.construction')} id="construction">
+                    <Input id="construction" name="construction" value={product.construction} onChange={handleChange} placeholder={t('furniturePlaceholders.construction')} className={inputCls} />
                   </FormField>
-                  <FormField label="Feet (cm)" id="feet">
-                    <Input id="feet" name="feet" type="number" min="0" value={product.feet} onChange={handleChange} placeholder="e.g. 15" className={inputCls} />
+                  <FormField label={t('fields.feet')} id="feet">
+                    <Input id="feet" name="feet" type="number" min="0" value={product.feet} onChange={handleChange} placeholder={t('furniturePlaceholders.feet')} className={inputCls} />
                   </FormField>
-                  <FormField label="Filling" id="filling">
-                    <Input id="filling" name="filling" value={product.filling} onChange={handleChange} placeholder="e.g. High-density foam" className={inputCls} />
+                  <FormField label={t('fields.filling')} id="filling">
+                    <Input id="filling" name="filling" value={product.filling} onChange={handleChange} placeholder={t('furniturePlaceholders.filling')} className={inputCls} />
                   </FormField>
-                  <FormField label="Frame" id="frame">
-                    <Input id="frame" name="frame" value={product.frame} onChange={handleChange} placeholder="e.g. Solid oak" className={inputCls} />
+                  <FormField label={t('fields.frame')} id="frame">
+                    <Input id="frame" name="frame" value={product.frame} onChange={handleChange} placeholder={t('furniturePlaceholders.frame')} className={inputCls} />
                   </FormField>
                   <BooleanSelect
                     value={product.removeable_cushion}
                     onChange={v => updateField('removeable_cushion', v)}
-                    label="Removable Cushions"
+                    label={t('fields.removableCushions')}
                     id="removeable_cushion"
                   />
                   <BooleanSelect
                     value={product.removeable_legs}
                     onChange={v => updateField('removeable_legs', v)}
-                    label="Removable Legs"
+                    label={t('fields.removableLegs')}
                     id="removeable_legs"
                   />
                 </div>
 
                 <div className="mt-4">
-                  <FormField label="Instructions" id="instruction">
+                  <FormField label={t('fields.instructions')} id="instruction">
                     <Textarea
                       id="instruction" name="instruction" rows={3} value={product.instruction} onChange={handleChange}
-                      placeholder="Assembly or care instructions…"
+                      placeholder={t('fields.instructionsPlaceholder')}
                       className="rounded-xl border border-borderSoft bg-white text-[13px] resize-none placeholder:text-stone-400 focus:ring-0 focus:outline-none focus:border-clay-300 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                   </FormField>
@@ -706,7 +723,7 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
               type="button" variant="ghost" onClick={afterCloseModal} disabled={isBusy}
               className="h-10 px-5 rounded-xl text-[13px] font-medium text-stone-600 hover:bg-stone-100 hover:text-stone-900 transition-colors"
             >
-              Cancel
+              {t('cancel')}
             </Button>
             <Button
               type="submit" form="edit-product-form" disabled={isBusy}
@@ -717,7 +734,7 @@ const EditProductModal = ({ productInfo, editModal, closeEditModal, refetch }: E
               )}
             >
               {isBusy && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              {isUploading ? 'Uploading images…' : isPatching ? 'Saving…' : 'Save Changes'}
+              {isUploading ? t('uploadingImages') : isPatching ? t('saving') : t('saveChanges')}
             </Button>
           </div>
         </DialogContent>

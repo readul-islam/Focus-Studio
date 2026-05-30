@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { FolderX, ArrowLeft, Home } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 
 interface ProjectNotFoundProps {
@@ -9,11 +10,9 @@ interface ProjectNotFoundProps {
   showBackButton?: boolean;
 }
 
-export function ProjectNotFound({
-  message = "The project you're looking for doesn't exist or has been deleted.",
-  showBackButton = true
-}: ProjectNotFoundProps) {
+export function ProjectNotFound({ message, showBackButton = true }: ProjectNotFoundProps) {
   const router = useRouter();
+  const t = useTranslations('projectNotFound');
 
   return (
     <div className="flex-1 bg-stone flex items-center justify-center min-h-[60vh]">
@@ -22,31 +21,20 @@ export function ProjectNotFound({
           <FolderX className="w-10 h-10 text-gray-400" />
         </div>
 
-        <h1 className="text-2xl font-semibold text-gray-900 mb-2">
-          Project Not Found
-        </h1>
+        <h1 className="text-2xl font-semibold text-gray-900 mb-2">{t('title')}</h1>
 
-        <p className="text-gray-500 mb-8">
-          {message}
-        </p>
+        <p className="text-gray-500 mb-8">{message ?? t('defaultMessage')}</p>
 
         <div className="flex items-center justify-center gap-3">
           {showBackButton && (
-            <Button
-              variant="outline"
-              onClick={() => router.back()}
-              className="gap-2"
-            >
+            <Button variant="outline" onClick={() => router.back()} className="gap-2">
               <ArrowLeft className="w-4 h-4" />
-              Go Back
+              {t('goBack')}
             </Button>
           )}
-          <Button
-            onClick={() => router.push('/projects')}
-            className="gap-2 bg-gray-900 hover:bg-gray-800"
-          >
+          <Button onClick={() => router.push('/projects')} className="gap-2 bg-gray-900 hover:bg-gray-800">
             <Home className="w-4 h-4" />
-            All Projects
+            {t('allProjects')}
           </Button>
         </div>
       </div>

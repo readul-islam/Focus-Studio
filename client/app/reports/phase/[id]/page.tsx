@@ -17,8 +17,11 @@ import ExportButton from '@/components/ui/ExportButton';
 import { Pie, PieChart, Cell, Legend, Tooltip, Bar, BarChart, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { useCurrency } from '@/lib/getCurrencySymbol';
+import { useTranslations } from 'next-intl';
 
 const PhaseDetailsPageContent = () => {
+    const t = useTranslations('reportsPhasePage');
+    const tc = useTranslations('common');
     const params = useParams();
     const router = useRouter();
     const id = params.id;
@@ -184,7 +187,7 @@ const PhaseDetailsPageContent = () => {
                 <div className="relative w-full md:w-80">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
-                        placeholder="Search by task name..."
+                        placeholder={t('searchTasks')}
                         className="pl-8"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
@@ -195,11 +198,11 @@ const PhaseDetailsPageContent = () => {
                         <SelectTrigger>
                             <div className="flex items-center gap-2">
                                 <Filter className="h-4 w-4 text-muted-foreground" />
-                                <SelectValue placeholder="Filter by User" />
+                                <SelectValue placeholder={t('filterUser')} />
                             </div>
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">All Users</SelectItem>
+                            <SelectItem value="all">{t('allUsers')}</SelectItem>
                             {uniqueUsers.map(user => (
                                 <SelectItem key={user} value={user}>{user}</SelectItem>
                             ))}
@@ -219,8 +222,8 @@ const PhaseDetailsPageContent = () => {
                 {pieChartData.length > 0 && (
                     <Card className="shadow-sm">
                         <CardHeader>
-                            <CardTitle>Time Distribution by User</CardTitle>
-                            <CardDescription>Hours logged per user in this phase</CardDescription>
+                            <CardTitle>{t('timeByUser')}</CardTitle>
+                            <CardDescription>{t('timeByUserSub')}</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="h-[400px] w-full">
@@ -303,8 +306,8 @@ const PhaseDetailsPageContent = () => {
                 {barChartData.length > 0 && (
                     <Card className="shadow-sm">
                         <CardHeader>
-                            <CardTitle>Time by Task</CardTitle>
-                            <CardDescription>Top tasks by hours logged</CardDescription>
+                            <CardTitle>{t('timeByTask')}</CardTitle>
+                            <CardDescription>{t('timeByTaskSub')}</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="h-[400px] w-full">
@@ -360,7 +363,7 @@ const PhaseDetailsPageContent = () => {
 
             <Card className="shadow-sm">
                 <CardHeader>
-                    <CardTitle>Time Logs</CardTitle>
+                    <CardTitle>{t('timeLogs')}</CardTitle>
                     <CardDescription>
                         {filteredLogs.length} entries found
                     </CardDescription>
@@ -369,11 +372,11 @@ const PhaseDetailsPageContent = () => {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Date</TableHead>
-                                <TableHead>User</TableHead>
-                                <TableHead>Task</TableHead>
-                                <TableHead>Description</TableHead>
-                                <TableHead>Cost</TableHead>
+                                <TableHead>{t('date')}</TableHead>
+                                <TableHead>{t('user')}</TableHead>
+                                <TableHead>{t('task')}</TableHead>
+                                <TableHead>{t('description')}</TableHead>
+                                <TableHead>{t('cost')}</TableHead>
                                 <TableHead className="text-right">Duration</TableHead>
                             </TableRow>
                         </TableHeader>

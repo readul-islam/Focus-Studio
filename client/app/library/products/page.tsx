@@ -45,6 +45,20 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Command, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { useEditGuard } from '@/hooks/useEditGuard';
 import { usePermissions } from '@/hooks/usePermissions';
+import { useTranslations } from 'next-intl';
+
+const PRODUCT_CATEGORIES = [
+  { value: 'All', key: 'all' },
+  { value: 'Furniture', key: 'furniture' },
+  { value: 'Lighting', key: 'lighting' },
+  { value: 'Textiles', key: 'textiles' },
+  { value: 'Dining', key: 'dining' },
+  { value: 'Bathroom', key: 'bathroom' },
+  { value: 'Accessories', key: 'accessories' },
+  { value: 'Home Fragrance', key: 'homeFragrance' },
+  { value: 'Outdoor', key: 'outdoor' },
+  { value: 'Art', key: 'art' },
+] as const;
 
 const parsePrice = (value: any) => {
   if (!value) return 0;
@@ -56,8 +70,8 @@ const parsePrice = (value: any) => {
 };
 
 // Format prices with currency symbol
-const formatPrice = (price: string | number) => {
-  if (price === null || price === undefined || price === '') return 'Not Available';
+const formatPrice = (price: string | number, notAvailableLabel: string) => {
+  if (price === null || price === undefined || price === '') return notAvailableLabel;
   return `${Number(price).toLocaleString('en-GB', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -98,6 +112,8 @@ interface Product {
 }
 
 function ProductsPageContent() {
+  const t = useTranslations('libraryProductsPage');
+  const tc = useTranslations('common');
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -205,11 +221,11 @@ function ProductsPageContent() {
   });
   const { mutate } = useDeleteData({
     onSuccess: () => {
-      toast('Product Deleted!');
+      toast(t('toasts.deleted'));
       refetch();
     },
     onError: () => {
-      toast('Error! Could not delete product.');
+      toast(t('toasts.deleteFailed'));
     },
   });
 
@@ -219,7 +235,7 @@ function ProductsPageContent() {
       // queryClient.refetchQueries({ queryKey: ['library/studio-products/'] });
     },
     onError: () => {
-      toast.error('Error! Try again');
+      toast.error(t('toasts.errorTryAgain'));
     },
   });
 
@@ -233,8 +249,8 @@ function ProductsPageContent() {
   });
 
   useEffect(() => {
-    document.title = 'Products | Focuspilot';
-  }, []);
+    document.title = t('documentTitle');
+  }, [t]);
 
   function closeEditModal() {
     setEditModal(false);
@@ -248,12 +264,12 @@ function ProductsPageContent() {
         { url: payload.url, data: payload.data },
         {
           onSuccess: () => {
-            toast.success('Product added to project');
+            toast.success(t('toasts.addedToProject'));
             queryClient.refetchQueries({ queryKey: [`projects/project-procurements/?project_id=${payload.data.project}`] });
           },
           onError: (error: any) => {
             console.error(error);
-            toast.error('Failed to add product');
+            toast.error(t('toasts.addToProjectFailed'));
           },
         },
       );
@@ -272,7 +288,7 @@ function ProductsPageContent() {
     productId: number;
   }) => {
     if (!user?.studio?.id || !user?.id) {
-      toast.error('Missing required information');
+      toast.error(t('toasts.missingInfo'));
       return;
     }
     const payload = {
@@ -308,7 +324,7 @@ function ProductsPageContent() {
 
   const handleDelete = guard((id: any) => {
     if(!libraryDeletePermission){
-      toast.error("You don't have permission to delete this item")
+      toast.error(tc('noPermissionDelete'))
       return;
     }
     mutate({ url: `/library/products/${id}/` });
@@ -362,23 +378,23 @@ function ProductsPageContent() {
               className="flex items-center gap-1 bg-stone-100 rounded-lg p-1 overflow-x-auto"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {['All', 'Furniture', 'Lighting', 'Textiles', 'Dining', 'Bathroom', 'Accessories', 'Home Fragrance', 'Outdoor', 'Art'].map(category => (
+              {PRODUCT_CATEGORIES.map(({ value, key }) => (
                 <button
-                  key={category}
-                  data-category={category}
-                  onClick={() => setSelectedCategory(category)}
+                  key={value}
+                  data-category={value}
+                  onClick={() => setSelectedCategory(value)}
                   className={`relative flex-shrink-0 px-3 py-1.5 text-sm rounded-md transition-colors ${
-                    selectedCategory === category ? 'text-neutral-900 font-medium' : 'text-neutral-600 hover:text-neutral-900'
+                    selectedCategory === value ? 'text-neutral-900 font-medium' : 'text-neutral-600 hover:text-neutral-900'
                   }`}
                 >
-                  {selectedCategory === category && (
+                  {selectedCategory === value && (
                     <motion.div
                       layoutId="products-category-pill"
                       className="absolute inset-0 bg-white rounded-md shadow-sm"
                       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     />
                   )}
-                  <span className="relative z-10 whitespace-nowrap">{category}</span>
+                  <span className="relative z-10 whitespace-nowrap">{t(`categories.${key}`)}</span>
                 </button>
               ))}
             </div>
@@ -414,7 +430,7 @@ function ProductsPageContent() {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
               <Input
-                placeholder="Search Product..."
+                placeholder={t('searchPlaceholder')}
                 value={searchInput}
                 onChange={e => setSearchInput(e.target.value)}
                 className="h-9 w-full  max-w-[350px] pl-10 pr-10"
@@ -427,7 +443,7 @@ function ProductsPageContent() {
 
         {libraryPermission &&    <Button className="h-9 gap-2" onClick={guard(() => setAddProductModalOpen(true))}>
               <Plus className="h-4 w-4" />
-              Add Product
+              {t('addProduct')}
             </Button>}
           </div>
         </div>
@@ -443,11 +459,11 @@ function ProductsPageContent() {
                 ))}
             </div>
           ) : productsError ? (
-            <div className="text-center text-red-500">Error loading products. Please try again later.</div>
+            <div className="text-center text-red-500">{t('loadError')}</div>
           ) : productsData?.results?.length === 0 ? (
             <div className="py-12 text-center">
               <Package className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-              <p className="text-gray-600">No products found matching your criteria.</p>
+              <p className="text-gray-600">{t('empty')}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -459,7 +475,7 @@ function ProductsPageContent() {
                       type="button"
                       onClick={() => openDetails(product)}
                       className="block w-full cursor-pointer"
-                      aria-label={`View ${product.name}`}
+                      aria-label={t('viewProduct', { name: product.name })}
                     >
                       <div className="aspect-square overflow-hidden bg-white">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -486,17 +502,17 @@ function ProductsPageContent() {
                             variant="ghost"
                             size="sm"
                             className="h-8 w-8 bg-white/90 p-0 hover:bg-white"
-                            aria-label={`Open actions for`}
+                            aria-label={t('openActions')}
                           >
                             <MoreHorizontal className="w-4 h-4" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => openDetails(product)}>View Details</DropdownMenuItem>
-                        {libraryPermission &&   <DropdownMenuItem onClick={() => handleSelectProduct(product)}>Edit Product</DropdownMenuItem>}
+                          <DropdownMenuItem onClick={() => openDetails(product)}>{t('viewDetails')}</DropdownMenuItem>
+                        {libraryPermission &&   <DropdownMenuItem onClick={() => handleSelectProduct(product)}>{t('editProduct')}</DropdownMenuItem>}
                          {libraryDeletePermission &&   <DropdownMenuSeparator />}
                          {libraryDeletePermission &&   <DropdownMenuItem className="text-red-600" onClick={() => handleDeleOpenModal(product)}>
-                            Delete Product
+                            {t('deleteProduct')}
                           </DropdownMenuItem>}
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -512,16 +528,16 @@ function ProductsPageContent() {
                             type="button"
                             onClick={() => openDetails(product)}
                             className="text-left max-w-full truncate"
-                            aria-label={`Open ${product.name} details`}
+                            aria-label={t('openProductDetails', { name: product.name })}
                           >
                             <h3 className="truncate text-sm !capitalize font-semibold tracking-tight text-gray-900">
-                              {product?.name || 'Unknown'}
+                              {product?.name || t('unknown')}
                             </h3>
                             <h3 className="truncate text-xs my-1 !capitalize font-normal tracking-tight text-gray-500">
-                              {product?.dimension || 'Unknown'}
+                              {product?.dimension || t('unknown')}
                             </h3>
                             <p className="text-xs capitalize tracking-wide text-gray-500">
-                              {product?.supplier?.company_name || 'No supplier provided'}
+                              {product?.supplier?.company_name || t('noSupplier')}
                             </p>
                           </button>
                         </div>
@@ -531,7 +547,7 @@ function ProductsPageContent() {
                         <div className="flex  items-center justify-between">
                           <span className="tabular-nums text-sm font-semibold text-gray-900">
                             <ViewCurrencySymbol code={product?.currency || user?.studio?.default_currency} />
-                            {formatPrice(parsePrice(product?.tader_price) || parsePrice(product?.regular_price) || 0)}
+                            {formatPrice(parsePrice(product?.tader_price) || parsePrice(product?.regular_price) || 0, tc('notAvailable'))}
                           </span>
                           {product?.type && (
                             <TooltipProvider delayDuration={0}>
@@ -553,13 +569,13 @@ function ProductsPageContent() {
                             if(libraryPermission){
                               openAddToProjectDialog(product)
                             }else{
-                              toast.error("You don't have permission to perform this action")
+                              toast.error(tc('noPermissionAction'))
                             }
                             }}
                           className="mt-3 w-full bg-transparent opacity-0 transition-opacity group-hover:opacity-100 cursor-pointer"
                         >
                           <Plus className="mr-2 h-4 w-4" />
-                          Add to Project
+                          {t('addToProject')}
                         </Button>
                       </div>
                     </div>
@@ -616,8 +632,8 @@ function ProductsPageContent() {
         isOpen={isDeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
         onConfirm={() => handleDelete(selectedProduct?.id)}
-        title="Delete Product"
-        description="Are you sure you want to delete this product? This action cannot be undone."
+        title={t('deleteTitle')}
+        description={t('deleteDescription')}
         itemName={selectedProduct?.name}
         requireConfirmation={false} // 👈 disables the typing step
       />

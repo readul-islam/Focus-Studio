@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 interface FormData {
   name: string;
   email: string;
@@ -23,37 +24,6 @@ interface FormErrors {
   form?: string;
 }
 
-const validateName = (v: string) => {
-  if (!v) return 'Name is required';
-  if (!/^[A-Za-z\s'-]{2,}$/.test(v)) return 'Please enter a valid name';
-};
-
-const validateEmail = (v: string) => {
-  if (!v) return 'Email is required';
-  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(v)) return 'Please enter a valid email';
-};
-
-const validatePassword = (v: string) => {
-  if (!v) return 'Password is required';
-  if (v.length < 8) return 'Must be at least 8 characters';
-  if (!/[A-Z]/.test(v)) return 'Must contain an uppercase letter';
-  if (!/[a-z]/.test(v)) return 'Must contain a lowercase letter';
-  if (!/\d/.test(v)) return 'Must contain a number';
-  if (!/[@$!%*?&]/.test(v)) return 'Must contain a special character (@$!%*?&)';
-};
-
-const validateConfirm = (v: string, pw: string) => {
-  if (!v) return 'Please confirm your password';
-  if (v !== pw) return 'Passwords do not match';
-};
-
-const validateAll = (d: FormData): FormErrors => ({
-  name: validateName(d.name),
-  email: validateEmail(d.email),
-  password: validatePassword(d.password),
-  confirmPassword: validateConfirm(d.confirmPassword, d.password),
-});
-
 const passwordStrength = (pw: string) => {
   if (!pw) return 0;
   let score = 0;
@@ -65,14 +35,48 @@ const passwordStrength = (pw: string) => {
   return score;
 };
 
-const strengthLabel = (s: number) => {
-  if (s <= 1) return { label: 'Weak', color: 'bg-red-400' };
-  if (s <= 3) return { label: 'Fair', color: 'bg-amber-400' };
-  if (s === 4) return { label: 'Good', color: 'bg-blue-400' };
-  return { label: 'Strong', color: 'bg-emerald-400' };
-};
-
 export default function Register() {
+  const t = useTranslations('auth.register');
+  const tv = useTranslations('auth.register.validation');
+  const ts = useTranslations('auth.register.strength');
+
+  const validateName = (v: string) => {
+    if (!v) return tv('nameRequired');
+    if (!/^[A-Za-z\s'-]{2,}$/.test(v)) return tv('nameInvalid');
+  };
+
+  const validateEmail = (v: string) => {
+    if (!v) return tv('emailRequired');
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(v)) return tv('emailInvalid');
+  };
+
+  const validatePassword = (v: string) => {
+    if (!v) return tv('passwordRequired');
+    if (v.length < 8) return tv('passwordMinLength');
+    if (!/[A-Z]/.test(v)) return tv('passwordUppercase');
+    if (!/[a-z]/.test(v)) return tv('passwordLowercase');
+    if (!/\d/.test(v)) return tv('passwordNumber');
+    if (!/[@$!%*?&]/.test(v)) return tv('passwordSpecial');
+  };
+
+  const validateConfirm = (v: string, pw: string) => {
+    if (!v) return tv('confirmRequired');
+    if (v !== pw) return tv('confirmMismatch');
+  };
+
+  const validateAll = (d: FormData): FormErrors => ({
+    name: validateName(d.name),
+    email: validateEmail(d.email),
+    password: validatePassword(d.password),
+    confirmPassword: validateConfirm(d.confirmPassword, d.password),
+  });
+
+  const strengthLabel = (s: number) => {
+    if (s <= 1) return { label: ts('weak'), color: 'bg-red-400' };
+    if (s <= 3) return { label: ts('fair'), color: 'bg-amber-400' };
+    if (s === 4) return { label: ts('good'), color: 'bg-blue-400' };
+    return { label: ts('strong'), color: 'bg-emerald-400' };
+  };
   const [formData, setFormData] = useState<FormData>({ name: '', email: '', password: '', confirmPassword: '' });
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -122,7 +126,7 @@ export default function Register() {
         setTouched(prev => ({ ...prev, email: true }));
       } else {
   
-        const msg = data?.message || data?.detail || 'Registration failed. Please try again.';
+        const msg = data?.message || data?.detail || t('errors.registrationFailed');
         setErrors(prev => ({ ...prev, form: msg }));
       }
     } finally {
@@ -183,11 +187,9 @@ export default function Register() {
           </div>
 
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-1.5">
-              Create your account
-            </h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-1.5">{t('title')}</h1>
             <p className="text-sm text-gray-500">
-              Start managing your design studio today
+              {t('subtitle')}
             </p>
           </div>
 
@@ -198,7 +200,7 @@ export default function Register() {
                 htmlFor="name"
                 className="block text-sm font-medium text-gray-700 mb-1.5"
               >
-                Full name
+                {t('fullName')}
               </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -209,7 +211,7 @@ export default function Register() {
                   value={formData.name}
                   onChange={(e) => handleChange("name", e.target.value)}
                   onBlur={() => handleBlur("name")}
-                  placeholder="Jane Smith"
+                  placeholder={t('fullNamePlaceholder')}
                   className={inputClass("name")}
                 />
               </div>
@@ -224,7 +226,7 @@ export default function Register() {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 mb-1.5"
               >
-                Email
+                {t('email')}
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -235,7 +237,7 @@ export default function Register() {
                   value={formData.email}
                   onChange={(e) => handleChange("email", e.target.value)}
                   onBlur={() => handleBlur("email")}
-                  placeholder="you@company.com"
+                  placeholder={t('emailPlaceholder')}
                   className={inputClass("email")}
                 />
               </div>
@@ -252,7 +254,7 @@ export default function Register() {
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-700 mb-1.5"
               >
-                Password
+                {t('password')}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -263,7 +265,7 @@ export default function Register() {
                   value={formData.password}
                   onChange={(e) => handleChange("password", e.target.value)}
                   onBlur={() => handleBlur("password")}
-                  placeholder="Min. 8 characters"
+                  placeholder={t('passwordPlaceholder')}
                   className={`${inputClass("password")} pr-10`}
                 />
                 <button
@@ -304,7 +306,7 @@ export default function Register() {
                 htmlFor="confirmPassword"
                 className="block text-sm font-medium text-gray-700 mb-1.5"
               >
-                Confirm password
+                {t('confirmPassword')}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -317,7 +319,7 @@ export default function Register() {
                     handleChange("confirmPassword", e.target.value)
                   }
                   onBlur={() => handleBlur("confirmPassword")}
-                  placeholder="Repeat your password"
+                  placeholder={t('confirmPasswordPlaceholder')}
                   className={`${inputClass("confirmPassword")} pr-10`}
                 />
                 <button
@@ -355,11 +357,11 @@ export default function Register() {
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Creating account…
+                  {t('creatingAccount')}
                 </>
               ) : (
                 <>
-                  Create account
+                  {t('createAccount')}
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
@@ -367,12 +369,12 @@ export default function Register() {
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-500">
-            Already have an account?{" "}
+            {t('alreadyHaveAccount')}{" "}
             <Link
               href="/login"
               className="font-medium text-gray-900 hover:underline"
             >
-              Sign in
+              {t('signIn')}
             </Link>
           </p>
         </div>

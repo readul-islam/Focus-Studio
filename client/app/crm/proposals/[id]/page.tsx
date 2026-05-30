@@ -19,13 +19,7 @@ import type { ProposalData, ProposalStep } from "@/components/crm/proposal-drawe
 import { toast } from "sonner"
 import { useQueryClient } from "@tanstack/react-query"
 import { usePermissions } from '@/hooks/usePermissions';
-
-const steps: Array<{ key: ProposalStep; label: string }> = [
-  { key: "client", label: "Client & Details" },
-  { key: "scope", label: "Scope of Work" },
-  { key: "pricing", label: "Pricing" },
-  { key: "review", label: "Review & Send" },
-]
+import { useTranslations } from 'next-intl';
 
 const currencySymbols: Record<string, string> = {
   GBP: "£",
@@ -77,6 +71,14 @@ function buildApiPayload(data: Partial<ProposalData>) {
 }
 
 function EditProposalPageContent() {
+  const t = useTranslations('crmProposalEditorPage')
+  const tc = useTranslations('common')
+  const steps: Array<{ key: ProposalStep; label: string }> = [
+    { key: "client", label: t('stepClient') },
+    { key: "scope", label: t('stepScope') },
+    { key: "pricing", label: t('stepPricing') },
+    { key: "review", label: t('stepReview') },
+  ]
   const router = useRouter()
   const params = useParams()
   const proposalId = params.id as string
@@ -197,7 +199,7 @@ function EditProposalPageContent() {
 
   const handleSave = async () => {
     if (!clientsPermission) {
-      toast.error("You don't have permission to perform this action");
+      toast.error(tc('noPermissionAction'));
       return;
     }
     setIsSaving(true)
@@ -225,7 +227,7 @@ function EditProposalPageContent() {
         linkedLeadId: data.linkedLeadId,
       })
       setHasUnsavedChanges(false)
-      toast.success('Proposal saved')
+      toast.success(t('toasts.savedDraft'))
         queryClient.refetchQueries({ queryKey: ["/crm/proposals/"] })
         queryClient.refetchQueries({ queryKey: [`/crm/proposals/${proposalId}/`] })
     } catch (error: any) {
@@ -242,13 +244,13 @@ function EditProposalPageContent() {
 
   const handleSend = async () => {
     if (!clientsPermission) {
-      toast.error("You don't have permission to perform this action");
+      toast.error(tc('noPermissionAction'));
       return;
     }
     try {
       await handleSave()
       await postData({ url: `/crm/proposals/${proposalId}/send/` })
-      toast.success('Proposal sent')
+      toast.success(t('toasts.sendComingSoon'))
       router.push("/crm/proposals")
     } catch (error: any) {
       const msg = error?.response?.data ? JSON.stringify(error.response.data) : "Failed to send"
@@ -314,11 +316,11 @@ function EditProposalPageContent() {
             )}
        {clientsPermission &&     <Button variant="outline" size="sm" onClick={handleSave} disabled={isSaving || !hasUnsavedChanges || !data.title} className="gap-2 h-9">
               <Save className="w-4 h-4" />
-              {isSaving ? "Saving..." : hasUnsavedChanges ? "Save" : "Saved"}
+              {isSaving ? tc('saving') : hasUnsavedChanges ? t('saveDraft') : tc('save')}
             </Button>}
             <Button variant="outline" size="sm" onClick={handlePreview} className="gap-2 h-9">
               <Eye className="w-4 h-4" />
-              Preview
+              {t('preview')}
             </Button>
         {clientsPermission &&    <Button
               size="sm"
@@ -327,7 +329,7 @@ function EditProposalPageContent() {
               className="gap-2 bg-gray-900 hover:bg-gray-800 h-9"
             >
               <Send className="w-4 h-4" />
-              Send
+              {t('sendProposal')}
             </Button>}
           </div>
         </div>
@@ -353,14 +355,14 @@ function EditProposalPageContent() {
               {currentStepIndex > 0 && (
                 <Button variant="outline" size="sm" onClick={prevStep} className="gap-2 h-9">
                   <ChevronLeft className="w-4 h-4" />
-                  Back
+                  {t('back')}
                 </Button>
               )}
             </div>
             <div>
               {currentStepIndex < steps.length - 1 ? (
                 <Button onClick={nextStep} size="sm" className="gap-2 bg-gray-900 hover:bg-gray-800 h-9">
-                  Continue
+                  {t('continue')}
                   <ChevronRight className="w-4 h-4" />
                 </Button>
               ) : (
@@ -371,7 +373,7 @@ function EditProposalPageContent() {
                   className="gap-2 bg-gray-900 hover:bg-gray-800 h-9"
                 >
                   <Send className="w-4 h-4" />
-                  Send Proposal
+                  {t('sendProposal')}
                 </Button>
               )}
             </div>

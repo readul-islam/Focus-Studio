@@ -1,0 +1,158 @@
+{
+  "drawingConfirmationDialog": {
+    "title": "図面調査を確認",
+    "description": "この図面を確認し、調査したことを確認してください。",
+    "generalRoom": "一般",
+    "confirmLabel": "この図面を調査し、記載されている仕様と要件を理解したことを確認します。",
+    "notesLabel": "メモ（任意）",
+    "notesPlaceholder": "調査から得たメモや所見を追加…",
+    "confirming": "確認中…",
+    "confirmSurvey": "調査を確認",
+    "toasts": {
+      "confirmed": "図面調査を確認しました",
+      "confirmFailed": "調査の確認に失敗しました。もう一度お試しください。"
+    }
+  },
+  "design3DChatPanel": {
+    "title": "3Dデザインスタジオ",
+    "meshyTest": "Meshyテスト",
+    "designTypeAria": "デザインタイプ",
+    "interior": "インテリア",
+    "exterior": "エクステリア",
+    "emptyTitle": "スケッチから3Dモデルへ",
+    "emptyDescription": "スケッチまたは製品写真をアップロード。Meshyが回転可能なGLBモデルに変換し、プロジェクトに添付してチームと共有できます。",
+    "suggestedPrompts": [
+      "モダンなダイニングチェア、スカンジナビアウッド",
+      "リビング用ミニマリストフロアランプ",
+      "コンテンポラリーグラスの外観ファサード要素",
+      "大理石天板のキッチンアイランド"
+    ],
+    "sketchAlt": "スケッチ",
+    "generating3d": "3D生成中…",
+    "phases": {
+      "sending": "Meshyに送信中…",
+      "building": "3Dメッシュを構築中…",
+      "texturing": "モデルにテクスチャ適用中…"
+    },
+    "defaultPrompt": "このスケッチから3Dモデルを生成してください。",
+    "removeSketch": "スケッチを削除",
+    "inputPlaceholder": "素材とスタイルを説明（任意）…",
+    "uploadSketch": "スケッチをアップロード",
+    "keyboardHint": "Enterで生成 · Shift+Enterで改行",
+    "generate3d": "3Dを生成",
+    "downloadGlb": "GLBをダウンロード",
+    "poweredBy": "Powered by Meshy · 生成に1〜3分かかる場合があります",
+    "openFullscreen": "全画面で開く",
+    "fullscreenLabel": "全画面",
+    "modelFullscreenHint": "モデルをクリックして全画面 · Escまたは閉じるで終了",
+    "shareOrAttach": "共有または添付",
+    "toasts": {
+      "unsupportedImage": "{name}はサポートされていない画像です",
+      "fileTooLarge": "{name}は{size}を超えています",
+      "sketchesOnly": "画像スケッチのみサポートされています",
+      "noPermission": "3Dデザインを生成する権限がありません",
+      "uploadSketchRequired": "3Dを生成するにはスケッチをアップロードしてください",
+      "modelReadyTest": "3Dモデル準備完了（Meshyテストモード — サンプルGLB）",
+      "modelGenerated": "3Dモデルを生成しました",
+      "generationFailed": "3D生成に失敗しました",
+      "downloadFailed": "ダウンロードに失敗しました"
+    }
+  },
+  "crmContactDetailPage": {
+    "copyUrl": "URLをコピー",
+    "copyUsername": "ユーザー名をコピー",
+    "urlCopied": "URLをコピーしました",
+    "usernameCopied": "ユーザー名をコピーしました",
+    "passwordCopied": "パスワードをコピーしました",
+    "credentialsCopied": "トレードポータル認証情報をコピーしました",
+    "copyAllCredentials": "すべての認証情報をコピー",
+    "loginUrlLabel": "ログインURL",
+    "usernameUserIdLabel": "ユーザー名 / ユーザーID",
+    "documentsSection": "ドキュメント",
+    "documentsAttached": "{count}件のドキュメントが添付されています",
+    "viewDocuments": "ドキュメントを表示",
+    "notesSection": "メモ",
+    "notePlaceholderLong": "この連絡先についてメモを追加…",
+    "editNote": "メモを編集",
+    "deleteNote": "メモを削除",
+    "edited": "（編集済み）",
+    "noNotesHint": "メモはまだありません。重要な情報を記録するためにメモを追加してください。",
+    "actionsFor": "{name}のアクション"
+  },
+  "contactFormModal": {
+    "tradePortal": "トレードポータル"
+  },
+  "libraryProductModal": {
+    "toasts": {
+      "createdIdMissing": "製品は作成されましたがIDがありません。画像をアップロードできません。",
+      "productAndImagesSaved": "製品と画像を保存しました",
+      "imageUploadFailed": "画像のアップロードに失敗しました: {error}",
+      "productSaved": "製品を保存しました",
+      "unknownError": "不明なエラー"
+    },
+    "imageErrors": {
+      "maxImages": "最大5枚の画像が許可されています。",
+      "fileTooLarge": "ファイルは20MBの制限を超えています。",
+      "invalidFormat": "PNG、JPG、GIF、WEBPファイルのみ許可されています。"
+    },
+    "dragOrClickAddMore": "ドラッグ＆ドロップまたはクリックして追加",
+    "deleteImage": "画像を削除",
+    "previewAlt": "プレビュー",
+    "productAlt": "製品",
+    "selectSupplier": "サプライヤーを選択…",
+    "searchSuppliers": "サプライヤーを検索…",
+    "selectSupplierAria": "サプライヤーを選択",
+    "selectType": "タイプを選択…",
+    "uploadImagesAria": "製品画像をアップロード",
+    "sectionDescriptions": {
+      "basic": "製品の基本情報",
+      "pricing": "トレード価格と小売価格",
+      "specs": "物理的な製品詳細",
+      "furniture": "家具固有の属性（任意）"
+    },
+    "fields": {
+      "productName": "製品名",
+      "supplier": "サプライヤー",
+      "productType": "製品タイプ",
+      "productUrl": "製品URL",
+      "description": "説明",
+      "descriptionPlaceholder": "製品の簡単な説明…",
+      "currency": "通貨",
+      "tradePrice": "トレード価格",
+      "regularPrice": "通常価格",
+      "measurements": "寸法",
+      "materials": "素材",
+      "dimensions": "サイズ",
+      "weight": "重量",
+      "boxDimensions": "箱のサイズ",
+      "boxWeight": "箱の重量",
+      "assemblyRequired": "組み立て必要",
+      "seatWidth": "座面幅",
+      "seatDepth": "座面奥行",
+      "seatHeight": "座面高",
+      "composition": "構成",
+      "construction": "構造",
+      "feet": "脚（cm）",
+      "filling": "詰め物",
+      "frame": "フレーム",
+      "removableCushions": "取り外し可能クッション",
+      "removableLegs": "取り外し可能脚",
+      "instructions": "説明書",
+      "instructionsPlaceholder": "組み立てまたはお手入れの説明…"
+    },
+    "fieldPlaceholders": {
+      "measurements": "例: W80 × D75 × H85cm",
+      "materials": "例: オーク、レザー",
+      "dimensions": "例: 80 × 75 × 85 cm",
+      "weight": "例: 12 kg",
+      "boxDimensions": "例: 90 × 80 × 95 cm",
+      "boxWeight": "例: 14 kg"
+    },
+    "sectionTitles": {
+      "basic": "基本情報",
+      "pricing": "価格",
+      "specs": "仕様",
+      "furniture": "家具詳細"
+    }
+  }
+}

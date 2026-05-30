@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { usePermissions } from '@/hooks/usePermissions';
+import { useTranslations } from 'next-intl';
 
 type CommandItem = {
   id: string;
@@ -25,55 +26,52 @@ type CommandItem = {
   permission?: string;
 };
 
-// Permission keys mirror app-sidebar.tsx exactly
-const NAV_COMMANDS: CommandItem[] = [
-  // ── Navigation (personal) ──────────────────────────────────────────────────
-  { id: 'dashboard',    label: 'Home',      description: 'Go to dashboard',   shortcut: 'hm', icon: <LayoutDashboard className="w-4 h-4" />, group: 'Navigation', href: '/home/dashboard' },
-  { id: 'inbox',        label: 'Inbox',     description: 'View AI inbox',     shortcut: 'in', icon: <Inbox className="w-4 h-4" />,           group: 'Navigation', href: '/ai/inbox' },
-  { id: 'tasks',        label: 'My Tasks',  description: 'View your tasks',   shortcut: 'mt', icon: <CheckSquare className="w-4 h-4" />,      group: 'Navigation', href: '/home/tasks',   permission: 'tasks.view' },
-  { id: 'calendar',     label: 'Calendar',  description: 'Open calendar',     shortcut: 'ca', icon: <Calendar className="w-4 h-4" />,          group: 'Navigation', href: '/calendar' },
-  { id: 'projects',     label: 'Projects',  description: 'All projects',      shortcut: 'pr', icon: <FolderOpen className="w-4 h-4" />,        group: 'Navigation', href: '/projects',     permission: 'projects.view' },
+const GROUP_ORDER_KEYS = ['navigation', 'studio', 'productivity', 'settings', 'help'] as const;
 
-  // ── Studio ─────────────────────────────────────────────────────────────────
-  { id: 'crm',              label: 'CRM',                      description: 'Contacts & pipeline',  shortcut: 'cr', icon: <Contact className="w-4 h-4" />,      group: 'Studio', href: '/crm/contacts',        permission: 'clients.view' },
-  { id: 'crm-contacts',     label: 'CRM · Contacts',           description: 'View all contacts',    shortcut: 'cc', icon: <Users className="w-4 h-4" />,         group: 'Studio', href: '/crm/contacts',        permission: 'clients.view' },
-  { id: 'crm-pipeline',     label: 'CRM · Pipeline',           description: 'Sales pipeline',       shortcut: 'cp', icon: <GitBranch className="w-4 h-4" />,     group: 'Studio', href: '/crm/pipeline',        permission: 'clients.view' },
-  { id: 'crm-proposals',    label: 'CRM · Proposals',          description: 'Manage proposals',     shortcut: 'po', icon: <FileText className="w-4 h-4" />,      group: 'Studio', href: '/crm/proposals',       permission: 'clients.view' },
-  { id: 'library',          label: 'Library',                  description: 'Products & materials', shortcut: 'li', icon: <BookOpen className="w-4 h-4" />,      group: 'Studio', href: '/library/products',    permission: 'library.view' },
-  { id: 'library-products', label: 'Library · Products',       description: 'Browse products',      shortcut: 'lp', icon: <Package className="w-4 h-4" />,       group: 'Studio', href: '/library/products',    permission: 'library.view' },
-  { id: 'library-materials',label: 'Library · Materials',      description: 'Browse materials',     shortcut: 'lm', icon: <Package className="w-4 h-4" />,       group: 'Studio', href: '/library/materials',   permission: 'library.view' },
-  { id: 'teams',            label: 'Team',                     description: 'Team management',      shortcut: 'tm', icon: <Users className="w-4 h-4" />,          group: 'Studio', href: '/teams',               permission: 'team.view' },
-  { id: 'finance',          label: 'Finance',                  description: 'Finance overview',     shortcut: 'fi', icon: <DollarSign className="w-4 h-4" />,    group: 'Studio', href: '/finance',              permission: 'finance.view' },
-  { id: 'finance-invoices', label: 'Finance · Invoices',       description: 'Manage invoices',      shortcut: 'fv', icon: <Receipt className="w-4 h-4" />,       group: 'Studio', href: '/finance/invoices',    permission: 'finance.view' },
-  { id: 'finance-po',       label: 'Finance · Purchase Orders',description: 'Purchase orders',      shortcut: 'fp', icon: <ShoppingCart className="w-4 h-4" />,  group: 'Studio', href: '/finance/purchase-order', permission: 'finance.view' },
-  { id: 'design',           label: 'Design',                   description: 'AI interior & exterior design', shortcut: 'ds', icon: <Palette className="w-4 h-4" />, group: 'Studio', href: '/design',              permission: 'design.view' },
-  { id: 'reports',          label: 'Reports',                  description: 'Analytics & reports',  shortcut: 're', icon: <BarChart2 className="w-4 h-4" />,     group: 'Studio', href: '/reports/overview',    permission: 'reports.view' },
-  { id: 'reports-projects', label: 'Reports · Projects',       description: 'Project reports',      shortcut: 'rp', icon: <FolderOpen className="w-4 h-4" />,    group: 'Studio', href: '/reports/projects',    permission: 'reports.view' },
-  { id: 'reports-team',     label: 'Reports · Team',           description: 'Team performance',     shortcut: 'rt', icon: <Users className="w-4 h-4" />,          group: 'Studio', href: '/reports/team',        permission: 'reports.view' },
-  { id: 'reports-finance',  label: 'Reports · Finance',        description: 'Financial reports',    shortcut: 'rf', icon: <DollarSign className="w-4 h-4" />,    group: 'Studio', href: '/reports/finance',     permission: 'reports.view' },
-  { id: 'ai-activity',      label: 'AI Activity',              description: 'AI usage log',         shortcut: 'aa', icon: <Zap className="w-4 h-4" />,            group: 'Studio', href: '/ai/activity' },
-  { id: 'daily-brief',      label: 'Daily Brief',              description: 'AI daily summary',     shortcut: 'db', icon: <Activity className="w-4 h-4" />,       group: 'Studio', href: '/ai/daily-brief' },
+function useNavCommands(): CommandItem[] {
+  const tNav = useTranslations('navigation.sidebar');
+  const tSet = useTranslations('settingsNav');
+  const tRep = useTranslations('reportsPage');
+  const tCmd = useTranslations('commandPalette');
+  const g = (key: (typeof GROUP_ORDER_KEYS)[number]) => tCmd(`groups.${key}`);
 
-  // ── Productivity ───────────────────────────────────────────────────────────
-  { id: 'time-tracking', label: 'Time Tracking', description: 'View time logs', shortcut: 'tt', icon: <Clock className="w-4 h-4" />, group: 'Productivity', href: '/home/time' },
-
-  // ── Settings — user (accessible to all) ───────────────────────────────────
-  { id: 'settings-profile',       label: 'Profile Settings',        description: 'Edit your profile',     shortcut: 'sp', icon: <User className="w-4 h-4" />,     group: 'Settings', href: '/settings/user/profile' },
-  { id: 'settings-security',      label: 'Security Settings',       description: 'Password & 2FA',        shortcut: 'ss', icon: <Shield className="w-4 h-4" />,   group: 'Settings', href: '/settings/user/security' },
-  { id: 'settings-notifications', label: 'Notification Settings',   description: 'Alert preferences',     shortcut: 'sn', icon: <Bell className="w-4 h-4" />,     group: 'Settings', href: '/settings/user/notifications' },
-  { id: 'settings-time',          label: 'Time Tracking Settings',  description: 'Time tracker config',   shortcut: 'st', icon: <Clock className="w-4 h-4" />,    group: 'Settings', href: '/settings/user/time-tracking' },
-  // ── Settings — studio (gated by settings.view) ────────────────────────────
-  { id: 'settings-studio',        label: 'Studio Settings',         description: 'Workspace config',      shortcut: 'sg', icon: <Settings className="w-4 h-4" />, group: 'Settings', href: '/settings/studio/general',       permission: 'settings.view' },
-  { id: 'settings-public-profile', label: 'Public profile',         description: 'Publish studio page',   shortcut: 'sp', icon: <Settings className="w-4 h-4" />, group: 'Settings', href: '/settings/studio/public-profile', permission: 'settings.edit' },
-  { id: 'settings-team',          label: 'Team Settings',           description: 'Manage team members',   shortcut: 'sw', icon: <Users className="w-4 h-4" />,    group: 'Settings', href: '/settings/studio/team',          permission: 'settings.view' },
-  { id: 'settings-roles',         label: 'Roles & Permissions',     description: 'Access control',        shortcut: 'sr', icon: <Shield className="w-4 h-4" />,   group: 'Settings', href: '/settings/studio/roles',         permission: 'settings.view' },
-  { id: 'settings-integrations',  label: 'Integrations',            description: 'Connect external apps', shortcut: 'si', icon: <Zap className="w-4 h-4" />,      group: 'Settings', href: '/settings/studio/integrations',  permission: 'settings.view' },
-
-  // ── Help ───────────────────────────────────────────────────────────────────
-  { id: 'help', label: 'Help Center', description: 'Documentation & guides', shortcut: 'he', icon: <HelpCircle className="w-4 h-4" />, group: 'Help', href: '/help' },
-];
-
-const GROUP_ORDER = ['Navigation', 'Studio', 'Productivity', 'Settings', 'Help'];
+  return [
+    { id: 'dashboard', label: tNav('home'), description: tCmd('items.dashboardDesc'), shortcut: 'hm', icon: <LayoutDashboard className="w-4 h-4" />, group: g('navigation'), href: '/home/dashboard' },
+    { id: 'inbox', label: tNav('inbox'), description: tCmd('items.inboxDesc'), shortcut: 'in', icon: <Inbox className="w-4 h-4" />, group: g('navigation'), href: '/ai/inbox' },
+    { id: 'tasks', label: tNav('myTasks'), description: tCmd('items.tasksDesc'), shortcut: 'mt', icon: <CheckSquare className="w-4 h-4" />, group: g('navigation'), href: '/home/tasks', permission: 'tasks.view' },
+    { id: 'calendar', label: tNav('calendar'), description: tCmd('items.calendarDesc'), shortcut: 'ca', icon: <Calendar className="w-4 h-4" />, group: g('navigation'), href: '/calendar' },
+    { id: 'projects', label: tNav('projects'), description: tCmd('items.projectsDesc'), shortcut: 'pr', icon: <FolderOpen className="w-4 h-4" />, group: g('navigation'), href: '/projects', permission: 'projects.view' },
+    { id: 'crm', label: tNav('crm'), description: tCmd('items.crmDesc'), shortcut: 'cr', icon: <Contact className="w-4 h-4" />, group: g('studio'), href: '/crm/contacts', permission: 'clients.view' },
+    { id: 'crm-contacts', label: tCmd('items.crmContactsLabel'), description: tCmd('items.crmContactsDesc'), shortcut: 'cc', icon: <Users className="w-4 h-4" />, group: g('studio'), href: '/crm/contacts', permission: 'clients.view' },
+    { id: 'crm-pipeline', label: tCmd('items.crmPipelineLabel'), description: tCmd('items.crmPipelineDesc'), shortcut: 'cp', icon: <GitBranch className="w-4 h-4" />, group: g('studio'), href: '/crm/pipeline', permission: 'clients.view' },
+    { id: 'crm-proposals', label: tCmd('items.crmProposalsLabel'), description: tCmd('items.crmProposalsDesc'), shortcut: 'po', icon: <FileText className="w-4 h-4" />, group: g('studio'), href: '/crm/proposals', permission: 'clients.view' },
+    { id: 'library', label: tNav('library'), description: tCmd('items.libraryDesc'), shortcut: 'li', icon: <BookOpen className="w-4 h-4" />, group: g('studio'), href: '/library/products', permission: 'library.view' },
+    { id: 'library-products', label: tCmd('items.libraryProductsLabel'), description: tCmd('items.libraryProductsDesc'), shortcut: 'lp', icon: <Package className="w-4 h-4" />, group: g('studio'), href: '/library/products', permission: 'library.view' },
+    { id: 'library-materials', label: tCmd('items.libraryMaterialsLabel'), description: tCmd('items.libraryMaterialsDesc'), shortcut: 'lm', icon: <Package className="w-4 h-4" />, group: g('studio'), href: '/library/materials', permission: 'library.view' },
+    { id: 'teams', label: tNav('team'), description: tCmd('items.teamsDesc'), shortcut: 'tm', icon: <Users className="w-4 h-4" />, group: g('studio'), href: '/teams', permission: 'team.view' },
+    { id: 'finance', label: tNav('finance'), description: tCmd('items.financeDesc'), shortcut: 'fi', icon: <DollarSign className="w-4 h-4" />, group: g('studio'), href: '/finance', permission: 'finance.view' },
+    { id: 'finance-invoices', label: tCmd('items.financeInvoicesLabel'), description: tCmd('items.financeInvoicesDesc'), shortcut: 'fv', icon: <Receipt className="w-4 h-4" />, group: g('studio'), href: '/finance/invoices', permission: 'finance.view' },
+    { id: 'finance-po', label: tCmd('items.financePoLabel'), description: tCmd('items.financePoDesc'), shortcut: 'fp', icon: <ShoppingCart className="w-4 h-4" />, group: g('studio'), href: '/finance/purchase-order', permission: 'finance.view' },
+    { id: 'design', label: tNav('design'), description: tCmd('items.designDesc'), shortcut: 'ds', icon: <Palette className="w-4 h-4" />, group: g('studio'), href: '/design', permission: 'design.view' },
+    { id: 'reports', label: tRep('title'), description: tCmd('items.reportsDesc'), shortcut: 're', icon: <BarChart2 className="w-4 h-4" />, group: g('studio'), href: '/reports/overview', permission: 'reports.view' },
+    { id: 'reports-projects', label: tCmd('items.reportsProjectsLabel'), description: tCmd('items.reportsProjectsDesc'), shortcut: 'rp', icon: <FolderOpen className="w-4 h-4" />, group: g('studio'), href: '/reports/projects', permission: 'reports.view' },
+    { id: 'reports-team', label: tCmd('items.reportsTeamLabel'), description: tCmd('items.reportsTeamDesc'), shortcut: 'rt', icon: <Users className="w-4 h-4" />, group: g('studio'), href: '/reports/team', permission: 'reports.view' },
+    { id: 'reports-finance', label: tCmd('items.reportsFinanceLabel'), description: tCmd('items.reportsFinanceDesc'), shortcut: 'rf', icon: <DollarSign className="w-4 h-4" />, group: g('studio'), href: '/reports/finance', permission: 'reports.view' },
+    { id: 'ai-activity', label: tNav('aiActivity'), description: tCmd('items.aiActivityDesc'), shortcut: 'aa', icon: <Zap className="w-4 h-4" />, group: g('studio'), href: '/ai/activity' },
+    { id: 'daily-brief', label: tCmd('items.dailyBriefLabel'), description: tCmd('items.dailyBriefDesc'), shortcut: 'db', icon: <Activity className="w-4 h-4" />, group: g('studio'), href: '/ai/daily-brief' },
+    { id: 'time-tracking', label: tSet('timeTracking'), description: tCmd('items.timeTrackingDesc'), shortcut: 'tt', icon: <Clock className="w-4 h-4" />, group: g('productivity'), href: '/home/time' },
+    { id: 'settings-profile', label: tCmd('items.settingsProfileLabel'), description: tCmd('items.settingsProfileDesc'), shortcut: 'sp', icon: <User className="w-4 h-4" />, group: g('settings'), href: '/settings/user/profile' },
+    { id: 'settings-security', label: tCmd('items.settingsSecurityLabel'), description: tCmd('items.settingsSecurityDesc'), shortcut: 'ss', icon: <Shield className="w-4 h-4" />, group: g('settings'), href: '/settings/user/security' },
+    { id: 'settings-notifications', label: tCmd('items.settingsNotificationsLabel'), description: tCmd('items.settingsNotificationsDesc'), shortcut: 'sn', icon: <Bell className="w-4 h-4" />, group: g('settings'), href: '/settings/user/notifications' },
+    { id: 'settings-time', label: tCmd('items.settingsTimeLabel'), description: tCmd('items.settingsTimeDesc'), shortcut: 'st', icon: <Clock className="w-4 h-4" />, group: g('settings'), href: '/settings/user/time-tracking' },
+    { id: 'settings-studio', label: tCmd('items.settingsStudioLabel'), description: tCmd('items.settingsStudioDesc'), shortcut: 'sg', icon: <Settings className="w-4 h-4" />, group: g('settings'), href: '/settings/studio/general', permission: 'settings.view' },
+    { id: 'settings-public-profile', label: tSet('publicProfile'), description: tCmd('items.settingsPublicProfileDesc'), shortcut: 's2', icon: <Settings className="w-4 h-4" />, group: g('settings'), href: '/settings/studio/public-profile', permission: 'settings.edit' },
+    { id: 'settings-team', label: tCmd('items.settingsTeamLabel'), description: tCmd('items.settingsTeamDesc'), shortcut: 'sw', icon: <Users className="w-4 h-4" />, group: g('settings'), href: '/settings/studio/team', permission: 'settings.view' },
+    { id: 'settings-roles', label: tCmd('items.settingsRolesLabel'), description: tCmd('items.settingsRolesDesc'), shortcut: 'sr', icon: <Shield className="w-4 h-4" />, group: g('settings'), href: '/settings/studio/roles', permission: 'settings.view' },
+    { id: 'settings-integrations', label: tSet('integrations'), description: tCmd('items.settingsIntegrationsDesc'), shortcut: 'si', icon: <Zap className="w-4 h-4" />, group: g('settings'), href: '/settings/studio/integrations', permission: 'settings.view' },
+    { id: 'help', label: tNav('helpCenter'), description: tCmd('items.helpDesc'), shortcut: 'he', icon: <HelpCircle className="w-4 h-4" />, group: g('help'), href: '/help' },
+  ];
+}
 
 function scoreMatch(item: CommandItem, query: string): number {
   const q = query.toLowerCase();
@@ -98,15 +96,21 @@ interface CommandPaletteProps {
 export function CommandPalette({ open, onClose }: CommandPaletteProps) {
   const router = useRouter();
   const { can } = usePermissions();
+  const tCmd = useTranslations('commandPalette');
+  const navCommands = useNavCommands();
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
+  const groupOrder = useMemo(
+    () => GROUP_ORDER_KEYS.map((k) => tCmd(`groups.${k}`)),
+    [tCmd],
+  );
+
   const allowed = useMemo(
-    () => NAV_COMMANDS.filter(item => !item.permission || can(item.permission)),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [can],
+    () => navCommands.filter(item => !item.permission || can(item.permission)),
+    [navCommands, can],
   );
 
   const filtered = useMemo(() => {
@@ -126,10 +130,10 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
       g.push(item);
       map.set(item.group, g);
     }
-    return GROUP_ORDER
+    return groupOrder
       .filter(g => map.has(g))
       .map(g => ({ group: g, items: map.get(g)! }));
-  }, [filtered]);
+  }, [filtered, groupOrder]);
 
   useEffect(() => { setActiveIndex(0); }, [query]);
 
@@ -187,7 +191,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           )}
         >
           {/* Hidden title for a11y */}
-          <DialogPrimitive.Title className="sr-only">Command palette</DialogPrimitive.Title>
+          <DialogPrimitive.Title className="sr-only">{tCmd('searchPlaceholder')}</DialogPrimitive.Title>
 
           {/* Search input */}
           <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100">
@@ -196,7 +200,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
               ref={inputRef}
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="Search or run a command..."
+              placeholder={tCmd('searchPlaceholder')}
               className="flex-1 bg-transparent text-sm text-gray-900 placeholder-gray-400 outline-none"
               autoComplete="off"
               spellCheck={false}
@@ -210,7 +214,7 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
           <div ref={listRef} className="max-h-[420px] overflow-y-auto overscroll-contain py-2">
             {grouped.length === 0 && (
               <div className="px-4 py-8 text-center text-sm text-gray-400">
-                No results for &ldquo;{query}&rdquo;
+                {tCmd('noResults', { query })}
               </div>
             )}
 
@@ -264,18 +268,18 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
             <span className="flex items-center gap-1.5 text-[11px] text-gray-400">
               <kbd className="font-mono bg-white border border-gray-200 px-1 py-0.5 rounded text-[10px]">↑</kbd>
               <kbd className="font-mono bg-white border border-gray-200 px-1 py-0.5 rounded text-[10px]">↓</kbd>
-              Navigate
+              {tCmd('navigate')}
             </span>
             <span className="flex items-center gap-1.5 text-[11px] text-gray-400">
               <kbd className="font-mono bg-white border border-gray-200 px-1.5 py-0.5 rounded text-[10px]">↵</kbd>
-              Open
+              {tCmd('open')}
             </span>
             <span className="flex items-center gap-1.5 text-[11px] text-gray-400">
               <kbd className="font-mono bg-white border border-gray-200 px-1.5 py-0.5 rounded text-[10px]">esc</kbd>
-              Close
+              {tCmd('close')}
             </span>
             <span className="ml-auto text-[11px] text-gray-400">
-              Type shortcut &amp; press <kbd className="font-mono bg-white border border-gray-200 px-1.5 py-0.5 rounded text-[10px]">↵</kbd> to jump
+              {tCmd('shortcutHint')}
             </span>
           </div>
         </DialogPrimitive.Content>

@@ -6,26 +6,34 @@ import { Button } from '@/components/ui/button';
 import useFetch from '@/hooks/useFetch';
 import usePatch from '@/hooks/usePatch';
 import { gooeyToast as toast } from 'goey-toast';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 
 const PREFS_URL = '/user/self/notification-preferences/';
 
-const items = [
-  { name: 'Project updates', key: 'project_updates', desc: 'Mentions, status changes, and assignments.' },
-  { name: 'Comments', key: 'comments', desc: "Replies to threads you're in." },
-  { name: 'Reminders', key: 'reminders', desc: 'Deadlines and overdue tasks.' },
-  { name: 'Marketing emails', key: 'marketing_emails', desc: 'Product news and tips.' },
-] as const;
+const PREF_KEYS = ['project_updates', 'comments', 'reminders', 'marketing_emails'] as const;
 
-type PrefsKey = (typeof items)[number]['key'];
+type PrefsKey = (typeof PREF_KEYS)[number];
 type Prefs = Record<PrefsKey, boolean>;
 
 export default function UserNotificationsPage() {
+  const t = useTranslations('settingsNotificationsPage');
+  const tc = useTranslations('common');
   const { data, isLoading } = useFetch(PREFS_URL);
   const { mutate: savePrefs, isPending } = usePatch({
-    onSuccess: () => toast.success('Notification preferences updated.'),
-    onError: () => toast.error('Failed to save preferences.'),
+    onSuccess: () => toast.success(t('toasts.updated')),
+    onError: () => toast.error(t('toasts.saveFailed')),
   });
+
+  const items = useMemo(
+    () =>
+      PREF_KEYS.map((key) => ({
+        key,
+        name: t(`items.${key}.name`),
+        desc: t(`items.${key}.description`),
+      })),
+    [t],
+  );
 
   const [prefs, setPrefs] = useState<Prefs>({
     project_updates: true,
@@ -45,11 +53,11 @@ export default function UserNotificationsPage() {
   return (
     <div className="space-y-6 md:space-y-8">
       <div>
-        <h1 className="text-base font-semibold text-gray-900">Notifications</h1>
-        <p className="text-sm text-gray-600">Choose what you want to be notified about.</p>
+        <h1 className="text-base font-semibold text-gray-900">{t('title')}</h1>
+        <p className="text-sm text-gray-600">{t('description')}</p>
       </div>
 
-      <Section title="Preferences" description="Control email and push notifications.">
+      <Section title={t('preferencesTitle')} description={t('preferencesDescription')}>
         <div className="space-y-4">
           {items.map(i => (
             <div key={i.key} className="flex items-center justify-between rounded-lg border border-gray-200 p-4">
@@ -66,7 +74,7 @@ export default function UserNotificationsPage() {
           ))}
           <div className="flex justify-end">
             <Button onClick={handleSave} disabled={isPending || isLoading}>
-              {isPending ? 'Saving...' : 'Save preferences'}
+              {isPending ? tc('saving') : t('savePreferences')}
             </Button>
           </div>
         </div>

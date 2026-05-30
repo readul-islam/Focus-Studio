@@ -1,32 +1,36 @@
+'use client';
+
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 const POStatusDots = React.memo(({ poId, poSentAt, supplierPaidAt }: { poId: string | null; poSentAt: string | null; supplierPaidAt: string | null }) => {
+  const t = useTranslations('projectProcurementCells');
   return (
     <div className="flex items-center gap-1.5 text-xs text-neutral-600">
-      <div className="flex items-center gap-1" title="PO created">
+      <div className="flex items-center gap-1" title={t('poCreatedTitle')}>
         <div
           className={cn('w-3 h-3 rounded-full shrink-0 border-2', poId ? 'bg-[#8FA989] border-[#8FA989]' : 'bg-white border-gray-300')}
         />
-        <span className="hidden xl:inline">Created</span>
+        <span className="hidden xl:inline">{t('poCreated')}</span>
       </div>
-      <div className="flex items-center gap-1" title="PO sent to supplier">
+      <div className="flex items-center gap-1" title={t('poSentTitle')}>
         <div
           className={cn('w-3 h-3 rounded-full shrink-0 border-2', poSentAt ? 'bg-[#8FA989] border-[#8FA989]' : 'bg-white border-gray-300')}
         />
-        <span className="hidden xl:inline">Sent</span>
+        <span className="hidden xl:inline">{t('poSent')}</span>
       </div>
-      <div className="flex items-center gap-1" title="Supplier paid">
+      <div className="flex items-center gap-1" title={t('supplierPaidTitle')}>
         <div
           className={cn(
             'w-3 h-3 rounded-full shrink-0 border-2',
             supplierPaidAt ? 'bg-[#8FA989] border-[#8FA989]' : 'bg-white border-gray-300'
           )}
         />
-        <span className="hidden xl:inline">Paid</span>
+        <span className="hidden xl:inline">{t('poPaid')}</span>
       </div>
     </div>
   );
@@ -41,7 +45,8 @@ interface POCellProps {
 }
 
 const POCell = React.memo<POCellProps>(({ item, loadingProductId, handleClickPO, procurementPermission }) => {
-  
+  const t = useTranslations('projectProcurementCells');
+
     // -------------------------
   // Case 1: No PO exists yet
   // -------------------------
@@ -51,7 +56,7 @@ const POCell = React.memo<POCellProps>(({ item, loadingProductId, handleClickPO,
         <Button
           variant="ghost"
           size="sm"
-          title='Create PO'
+          title={t('createPo')}
           disabled={loadingProductId === item.id || !item?.supplier || item.client_approval !== 'APR' || !procurementPermission}
           onClick={handleClickPO}
           className={cn(
@@ -65,10 +70,10 @@ const POCell = React.memo<POCellProps>(({ item, loadingProductId, handleClickPO,
           {loadingProductId === item.id ? (
             <div className="flex items-center gap-2">
               <Loader2 className="h-4 w-4 animate-spin" />
-              Creating...
+              {t('creating')}
             </div>
           ) : (
-            'Create PO'
+            t('createPo')
           )}
         </Button>
       </div>

@@ -29,6 +29,7 @@ import {
   DialogContent,
 } from "@/components/ui/dialog"
 import { DateTimePicker } from '@/components/ui/datetime-picker';
+import { useTranslations } from 'next-intl';
 
 const AnimatedClock = ({ running = false, className = '' }: { running?: boolean; className?: string }) => {
   return (
@@ -116,7 +117,14 @@ const durationToMs = (duration: string): number => {
   return (hours * 3600 + minutes * 60 + seconds) * 1000;
 };
 
-const TimeLogItem = ({ task, openTaskModal, isTimerActive, handleStartNewSession, handlePauseTracking }) => {
+const TimeLogItem = ({ task, openTaskModal, isTimerActive, handleStartNewSession, handlePauseTracking, t }: {
+  task: any;
+  openTaskModal: (task: any) => void;
+  isTimerActive: boolean;
+  handleStartNewSession: (task: any) => void;
+  handlePauseTracking: () => void;
+  t: ReturnType<typeof useTranslations<'homeTimePage'>>;
+}) => {
 
 
   return (
@@ -140,10 +148,10 @@ const TimeLogItem = ({ task, openTaskModal, isTimerActive, handleStartNewSession
 
         <div className="flex-1 min-w-0">
           <p className="text-sm md:text-base capitalize font-semibold text-neutral-900 truncate cursor-pointer" >
-            {task?.task?.title || 'Studio Management'}
+            {task?.task?.title || t('studioManagement')}
           </p>
           <p className="text-xs md:text-sm text-neutral-500 truncate">
-            {task?.project?.project_name || 'Studio Task'}
+            {task?.project?.project_name || t('studioTask')}
           </p>
         </div>
       </div>
@@ -183,6 +191,8 @@ const TimeLogItem = ({ task, openTaskModal, isTimerActive, handleStartNewSession
 };
 
 export default function HomeTimePage() {
+  const t = useTranslations('homeTimePage');
+  const tc = useTranslations('common');
   const [selectedRange, setSelectedRange] = useState('All');
   const [selectedFilter, setSelectedFilter] = useState('Default');
   const [tasks, setTasks] = useState<any[]>([]);
@@ -232,13 +242,13 @@ export default function HomeTimePage() {
       return await postData({ url: data.url, data: data.data });
     },
     onSuccess: () => {
-      toast.success('New session started');
+      toast.success(t('toasts.sessionStarted'));
       refetch();
       refetchActiveTaskSessions();
       queryClient.refetchQueries({ queryKey: ['task/user-tasks/'] });
     },
     onError: () => {
-      toast.error('Failed to start session');
+      toast.error(t('toasts.sessionStartFailed'));
     },
   });
 
@@ -277,11 +287,11 @@ export default function HomeTimePage() {
       refetch();
       refetchSelectedTaskSessions();
       refetchActiveTaskSessions();
-      toast('Timer Stopped');
+      toast(t('toasts.timerStopped'));
       setElapsedTime(0);
     },
     onError: () => {
-      toast('Error stopping timer');
+      toast(t('toasts.timerStopFailed'));
     }
   });
 
@@ -296,10 +306,10 @@ export default function HomeTimePage() {
           queryKey: [`time_tracker/user-time-sessions?time_log_id=${selectedTask.id}`]
         });
       }
-      toast('Session updated successfully');
+      toast(t('toasts.sessionUpdated'));
     },
     onError: () => {
-      toast('Error updating session');
+      toast(t('toasts.sessionUpdateFailed'));
     }
   });
 
@@ -313,18 +323,18 @@ export default function HomeTimePage() {
           queryKey: [`time_tracker/user-time-sessions?time_log_id=${selectedTask.id}`]
         });
       }
-      toast('Session deleted successfully');
+      toast(t('toasts.sessionDeleted'));
       setIsDeleteOpen(false);
     },
     onError: () => {
-      toast('Error deleting session');
+      toast(t('toasts.sessionDeleteFailed'));
     }
   });
 
 
   useEffect(() => {
-    document.title = 'Time Tracker | Focuspilot';
-  }, []);
+    document.title = t('documentTitle');
+  }, [t]);
 
   // Process task data when received
   useEffect(() => {
@@ -594,18 +604,18 @@ export default function HomeTimePage() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="flex bg-white rounded-xl items-center gap-2">
-                {selectedRange} <ChevronDown className="w-4 h-4" />
+                {selectedRange === 'All' ? t('ranges.all') : selectedRange === 'Week' ? t('ranges.week') : t('ranges.month')} <ChevronDown className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-36 bg-white">
               <DropdownMenuItem className="cursor-pointer" onClick={() => setSelectedRange('All')}>
-                All
+                {t('ranges.all')}
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer" onClick={() => setSelectedRange('Week')}>
-                This Week
+                {t('ranges.week')}
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer" onClick={() => setSelectedRange('Month')}>
-                This Month
+                {t('ranges.month')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -614,13 +624,13 @@ export default function HomeTimePage() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="flex bg-white rounded-xl items-center gap-2">
-                <Filter /> {selectedFilter}
+                <Filter /> {selectedFilter === 'Default' ? t('filters.default') : selectedFilter === 'Active' ? t('filters.active') : t('filters.paused')}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-36 bg-white">
-              <DropdownMenuItem onClick={() => setSelectedFilter('Default')}>Default</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setSelectedFilter('Active')}>Active</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setSelectedFilter('Paused')}>Paused</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSelectedFilter('Default')}>{t('filters.default')}</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSelectedFilter('Active')}>{t('filters.active')}</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSelectedFilter('Paused')}>{t('filters.paused')}</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -632,7 +642,7 @@ export default function HomeTimePage() {
               <div className="grid grid-cols-1 gap-4 md:grid-cols-[auto,1fr,auto] md:items-center">
                 {/* Compact static time display */}
                 <div
-                  aria-label="Elapsed time"
+                  aria-label={t('elapsedTime')}
                   className="tabular-nums font-bold leading-none tracking-tight text-neutral-900 text-2xl md:text-3xl"
                 >
                   {formatTime(elapsedTime)}
@@ -640,9 +650,9 @@ export default function HomeTimePage() {
 
                 {/* Context */}
                 <div className="space-y-0.5">
-                  <div className="text-lg font-semibold text-neutral-900">{activeTask?.task?.title || 'Studio Management'}</div>
+                  <div className="text-lg font-semibold text-neutral-900">{activeTask?.task?.title || t('studioManagement')}</div>
                   <div className="text-sm text-neutral-500">
-                    {activeTask?.project?.project_name || 'Studio Task'}
+                    {activeTask?.project?.project_name || t('studioTask')}
                   </div>
                 </div>
 
@@ -654,7 +664,7 @@ export default function HomeTimePage() {
                     onClick={handlePauseTracking}
                   >
                     <Pause className="mr-2 h-4 w-4" />
-                    {'Pause'}
+                    {t('pause')}
                   </Button>
                   {/* <Button variant="outline" className="h-9 rounded-xl bg-transparent px-3.5" onClick={handleStopTracking}>
                   <Square className="mr-2 h-4 w-4" />
@@ -671,25 +681,25 @@ export default function HomeTimePage() {
           {/* This Week */}
           <Card className="rounded-2xl">
             <CardContent className="p-5">
-              <h2 className="text-base md:text-lg font-semibold text-neutral-900">Time Summary</h2>
+              <h2 className="text-base md:text-lg font-semibold text-neutral-900">{t('timeSummary')}</h2>
 
               <div className="mt-5 space-y-3.5">
                 <div className="flex items-baseline justify-between">
-                  <span className="text-neutral-600">Today</span>
+                  <span className="text-neutral-600">{t('today')}</span>
                   <span className="text-2xl font-bold text-neutral-900 md:text-3xl">
                     {summaryData?.today && `${summaryData.today.hours}`}<span className="text-lg">h</span>{' '}
                     {summaryData?.today && `${summaryData.today.minutes}`}<span className="text-lg">m</span>
                   </span>
                 </div>
                 <div className="flex items-baseline justify-between">
-                  <span className="text-neutral-600">This Week</span>
+                  <span className="text-neutral-600">{t('thisWeek')}</span>
                   <span className="text-xl font-semibold md:text-2xl" style={{ color: oliveDeep }}>
                     {summaryData?.this_week && `${summaryData.this_week.hours}`}<span className="text-lg">h</span>{' '}
                     {summaryData?.this_week && `${summaryData.this_week.minutes}`}<span className="text-lg">m</span>
                   </span>
                 </div>
                 <div className="flex items-baseline justify-between">
-                  <span className="text-neutral-600">This Month</span>
+                  <span className="text-neutral-600">{t('thisMonth')}</span>
                   <span className="text-xl font-semibold text-neutral-700 md:text-2xl">
                     {summaryData?.this_month && `${summaryData.this_month.hours}`}<span className="text-lg">h</span>{' '}
                     {summaryData?.this_month && `${summaryData.this_month.minutes}`}<span className="text-lg">m</span>
@@ -699,7 +709,7 @@ export default function HomeTimePage() {
 
               {/* Daily breakdown */}
               <div className="mt-5">
-                <div className="font-medium text-neutral-800">Daily Breakdown</div>
+                <div className="font-medium text-neutral-800">{t('dailyBreakdown')}</div>
                 <ul className="mt-4 space-y-2.5">
                   {summaryData?.daily_breakdown?.map((d: any) => {
                     // Scale to 8h max, with minimum 2% width so it's always visible
@@ -749,6 +759,7 @@ export default function HomeTimePage() {
                     isTimerActive={isTimerActive}
                     handleStartNewSession={handleStartNewSession}
                     handlePauseTracking={handlePauseTracking}
+                    t={t}
                   />
                 ))}
               </ul>
@@ -811,16 +822,16 @@ export default function HomeTimePage() {
 
                     {/* --- Session History Section --- */}
                     <div className="mt-6">
-                      <h3 className="text-md font-semibold mb-3">Session History</h3>
+                      <h3 className="text-md font-semibold mb-3">{t('sessionHistory')}</h3>
                       <div className="overflow-x-auto border rounded-lg scrollbar scrollbar-thin">
                         <table className="w-full   text-left border-collapse">
                           <thead className="bg-white border-b border-gray-200 sticky top-0 z-10">
                             <tr>
-                              <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Date</th>
-                              <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Start Time</th>
-                              <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">End Time</th>
-                              <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Total Time</th>
-                              <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">Actions</th>
+                              <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t('table.date')}</th>
+                              <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t('table.startTime')}</th>
+                              <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t('table.endTime')}</th>
+                              <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t('table.totalTime')}</th>
+                              <th className="px-4 py-3 text-left text-sm font-medium text-gray-600">{t('table.actions')}</th>
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-gray-200 text-sm">
@@ -845,7 +856,7 @@ export default function HomeTimePage() {
                                       <DateTimePicker
                                         value={editStartDateTime}
                                         onChange={setEditStartDateTime}
-                                        placeholder="Select start date & time"
+                                        placeholder={t('selectStartDateTime')}
                                         className="h-8 text-xs"
                                         displayTimeOnly={true}
                                       />
@@ -858,7 +869,7 @@ export default function HomeTimePage() {
                                       <DateTimePicker
                                         value={editEndDateTime}
                                         onChange={setEditEndDateTime}
-                                        placeholder="Select end date & time"
+                                        placeholder={t('selectEndDateTime')}
                                         className="h-8 text-xs"
                                         displayTimeOnly={true}
                                       />
@@ -882,8 +893,8 @@ export default function HomeTimePage() {
                                   <td className="px-4 py-2 border-b">
                                     {editingSessionId === s.id ? (
                                       <div className="flex gap-2">
-                                        <Button size="sm" onClick={() => handleSaveSession(s)} className="h-7 px-2 text-xs">Save</Button>
-                                        <Button size="sm" variant="ghost" onClick={handleCancelEdit} className="h-7 px-2 text-xs">Cancel</Button>
+                                        <Button size="sm" onClick={() => handleSaveSession(s)} className="h-7 px-2 text-xs">{tc('save')}</Button>
+                                        <Button size="sm" variant="ghost" onClick={handleCancelEdit} className="h-7 px-2 text-xs">{tc('cancel')}</Button>
                                       </div>
                                     ) : (
                                       <DropdownMenu>
@@ -895,11 +906,11 @@ export default function HomeTimePage() {
                                         <DropdownMenuContent className="z-[999]" align="end">
 
                                           <DropdownMenuItem onClick={() => handleEditSession(s)}>
-                                            Edit
+                                            {tc('edit')}
                                           </DropdownMenuItem>
                                           <DropdownMenuSeparator />
                                           <DropdownMenuItem onClick={() => openDeleteModal(s)} className="text-red-600 cursor-pointer">
-                                            Delete
+                                            {tc('delete')}
                                           </DropdownMenuItem>
                                         </DropdownMenuContent>
                                       </DropdownMenu>
@@ -918,15 +929,15 @@ export default function HomeTimePage() {
                       isOpen={isDeleteOpen}
                       onClose={() => setIsDeleteOpen(false)}
                       onConfirm={() => deleteSession(selectedSession?.id)}
-                      title="Delete Session"
-                      description="Are you sure you want to delete this session? This action cannot be undone."
+                      title={t('deleteSessionTitle')}
+                      description={t('deleteSessionDescription')}
                       // itemName={selected?.name}
                       requireConfirmation={false}
                     />
 
                     <div className="mt-6">
                       <div className="space-y-2 col-span-2">
-                        <Label htmlFor="note">Note</Label>
+                        <Label htmlFor="note">{t('note')}</Label>
                         <Input
                           value={selectedTask.note || ''}
                           onChange={e =>
@@ -938,7 +949,7 @@ export default function HomeTimePage() {
                           className="bg-white py-7 rounded-xl"
                           id="note"
                           name="note"
-                          placeholder="What are you working on?"
+                          placeholder={t('notePlaceholder')}
                         />
                       </div>
 

@@ -39,6 +39,7 @@ import {
 
 
 import useFetch from "@/hooks/useFetch";
+import { useTranslations } from "next-intl";
 
 /* =================== Date utils (Helpers) =================== */
 // Helper to format date for display if needed
@@ -52,6 +53,7 @@ function formatShort(d: Date | string) {
 
 /* =================== Component =================== */
 export default function ProjectPlanPage() {
+    const t = useTranslations("projectPlanPage");
     const params = useParams();
     const projectId = (params?.id as string) || "p-demo";
 
@@ -197,7 +199,7 @@ export default function ProjectPlanPage() {
                         </div>
 
                         <div className="flex items-center  gap-2 ">
-                            <Button variant="outline" size="sm" onClick={() => setCurrentDate(new Date())}>Today</Button>
+                            <Button variant="outline" size="sm" onClick={() => setCurrentDate(new Date())}>{t("today")}</Button>
                             <div className="p-1 bg-white rounded-md border border-gray-200 p-0.5">
                                 <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => {
                                     if (view === 'week') setCurrentDate(d => addWeeks(d, -4));
@@ -233,7 +235,7 @@ export default function ProjectPlanPage() {
                                 {/* Sidebar Header */}
                                 <div className="sticky left-0 z-50 bg-white border-r border-gray-200 flex items-center justify-between px-4"
                                     style={{ width: `${SIDEBAR_WIDTH}px`, minWidth: `${SIDEBAR_WIDTH}px` }}>
-                                    <span className="font-semibold text-gray-700">Phases & Work Packages</span>
+                                    <span className="font-semibold text-gray-700">{t("phasesHeader")}</span>
                                     {/* <Button size="sm" variant="ghost"><Plus className="h-4 w-4"/></Button> */}
                                 </div>
 

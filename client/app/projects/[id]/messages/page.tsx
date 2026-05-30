@@ -22,6 +22,7 @@ import {
   ArrowLeft,
   Trash2,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { gooeyToast as toast } from 'goey-toast';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -95,12 +96,13 @@ export function splitGmailEmail(html: string) {
 }
 
 const MessageBlock = ({ msg, userEmail }: { msg: MessageItem; userEmail?: string | null }) => {
+  const t = useTranslations('projectMessagesPage');
   const [expanded, setExpanded] = useState(false);
   const { main, quoted } = useMemo(() => splitGmailEmail(msg.body), [msg.body]);
   const sentByMe = messageIsSentByUser(msg.sender, userEmail);
   const senderLabel =
     msg.sender_label ||
-    (sentByMe ? 'You' : msg.sender?.split('<')[0]?.trim().replace(/^["']|["']$/g, '') || 'Unknown');
+    (sentByMe ? t('you') : msg.sender?.split('<')[0]?.trim().replace(/^["']|["']$/g, '') || t('unknown'));
 
   return (
     <div className={`flex gap-4 `}>
@@ -134,7 +136,7 @@ const MessageBlock = ({ msg, userEmail }: { msg: MessageItem; userEmail?: string
                 <button
                   onClick={() => setExpanded(true)}
                   className="flex items-center justify-center px-1  bg-stone-200 hover:bg-stone-300 rounded-[5px] text-gray-500 transition-colors"
-                  title="Show trimmed content"
+                  title={t('showTrimmedContent')}
                 >
                   <MoreHorizontal className="w-4 h-4" />
                 </button>
@@ -143,7 +145,7 @@ const MessageBlock = ({ msg, userEmail }: { msg: MessageItem; userEmail?: string
                   <button
                     onClick={() => setExpanded(false)}
                     className="flex items-center justify-center px-1  bg-stone-200 hover:bg-stone-300 rounded-[5px] text-gray-500 transition-colors"
-                    title="Show trimmed content"
+                    title={t('showTrimmedContent')}
                   >
                     <MoreHorizontal className="w-4 h-4" />
                   </button>
@@ -166,6 +168,7 @@ const MessageBlock = ({ msg, userEmail }: { msg: MessageItem; userEmail?: string
 };
 
 export default function ProjectMessagesPage({ params }: { params: { id: string } }) {
+  const t = useTranslations('projectMessagesPage');
   const { user } = useUser();
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [replyBody, setReplyBody] = useState('');
@@ -246,10 +249,10 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
     const subject =
       messages.find((m) => m.subject)?.subject ||
       messages[messages.length - 1]?.subject ||
-      '(No Subject)';
+      t('noSubject');
 
     if (!toEmail) {
-      toast.error('Could not determine who to reply to.');
+      toast.error(t('replyToError'));
       return;
     }
 
@@ -263,11 +266,11 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
     setIsSending(true);
     try {
       await postFormData({ url: 'gmail/send/', data: formData });
-      toast.success('Reply sent successfully');
+      toast.success(t('replySent'));
       setReplyBody('');
       refetchMessages();
     } catch (err: unknown) {
-      toast.error(`Failed to send reply: ${getApiErrorMessage(err, 'Unknown error')}`);
+      toast.error(t('replyFailed', { error: getApiErrorMessage(err, t('unknownError')) }));
     } finally {
       setIsSending(false);
     }
@@ -283,7 +286,7 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
       },
       {
         onSuccess: () => {
-          toast.success('Thread removed from this project');
+          toast.success(t('threadRemoved'));
           setUnlinkDialog({ open: false, threadId: null });
           if (selectedThreadId === unlinkDialog.threadId) {
             setSelectedThreadId(null);
@@ -291,7 +294,7 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
           refetchThreads();
         },
         onError: () => {
-          toast.error('Failed to remove thread');
+          toast.error(t('threadRemoveFailed'));
         },
       },
     );
@@ -328,14 +331,14 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
               <Input
                 value={searchText}
                 onChange={e => setSearchText(e.target.value)}
-                placeholder="Search inbox..."
+                placeholder={t('searchPlaceholder')}
                 className="pl-10 bg-white border-gray-200 focus:border-gray-300 focus:ring-0"
               />
             </div>
 
             <div className="bg-white border  border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col flex-1 min-h-0">
               <div className="p-4 border-b border-gray-100 flex-shrink-0">
-                <h3 className="text-sm font-medium text-gray-900">Recent Messages</h3>
+                <h3 className="text-sm font-medium text-gray-900">{t('recentMessages')}</h3>
               </div>
 
               <div className="overflow-y-auto flex-1 p-0">
@@ -346,7 +349,7 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
                 )}
 
                 {!threadsLoading && filteredThreads.length === 0 && (
-                  <div className="p-8 text-center text-sm text-gray-500">Nothing here yet.</div>
+                  <div className="p-8 text-center text-sm text-gray-500">{t('nothingHereYet')}</div>
                 )}
 
                 <div className="divide-y divide-gray-100">
@@ -394,7 +397,7 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
                                 setUnlinkDialog({ open: true, threadId: thread.thread_id });
                               }}
                               className={`p-1 rounded-md hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors ${hoveredThreadId === thread.thread_id ? 'pointer-events-auto' : 'pointer-events-none'}`}
-                              title="Remove from project"
+                              title={t('removeFromProject')}
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </motion.button>
@@ -403,7 +406,7 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
 
                         {/* Row 2: Subject */}
                         <p className="text-[13px] text-gray-700 truncate mb-0.5">
-                          {thread.subject || '(No Subject)'}
+                          {thread.subject || t('noSubject')}
                         </p>
 
                         {/* Row 3: Snippet */}
@@ -432,7 +435,7 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
                 <Input
                   value={searchText}
                   onChange={e => setSearchText(e.target.value)}
-                  placeholder="Search inbox..."
+                  placeholder={t('searchPlaceholder')}
                   className="pl-10 bg-white border-gray-200 focus:border-gray-300 focus:ring-0"
                 />
               </div>
@@ -448,7 +451,7 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
                   size="icon"
                   className="text-gray-600 border-gray-300 bg-white w-9 h-9"
                   onClick={() => setIsFullScreen(!isFullScreen)}
-                  title={isFullScreen ? 'Exit Full Screen' : 'Enter Full Screen'}
+                  title={isFullScreen ? t('exitFullScreen') : t('enterFullScreen')}
                 >
                   {isFullScreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
                 </Button>
@@ -460,7 +463,7 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
               {!selectedThreadId ? (
                 <div className="h-full flex flex-col items-center justify-center text-gray-400">
                   <Mail className="w-12 h-12 mb-4 opacity-20" />
-                  <p>Select a message to see more</p>
+                  <p>{t('selectMessage')}</p>
                 </div>
               ) : (
                 <>
@@ -468,9 +471,9 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
                   <div className="p-4 border-b border-gray-100 bg-white/50 flex-shrink-0 flex justify-between items-center">
                     <div className="max-w-[90%]">
                       <h2 className="text-lg font-semibold text-gray-900 truncate w-full">
-                        {messages?.[0]?.subject || filteredThreads.find(t => t.thread_id === selectedThreadId)?.subject || 'Conversation'}
+                        {messages?.[0]?.subject || filteredThreads.find(th => th.thread_id === selectedThreadId)?.subject || t('conversation')}
                       </h2>
-                      <div className="text-xs text-gray-500 mt-1">{messages?.length || 0} messages</div>
+                      <div className="text-xs text-gray-500 mt-1">{t('messageCount', { count: messages?.length || 0 })}</div>
                     </div>
                     <div className="flex gap-2">{/* Header actions if needed */}</div>
                   </div>
@@ -523,7 +526,7 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
                     >
                       {isFullScreen && (
                         <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm font-medium text-gray-700">Reply</span>
+                          <span className="text-sm font-medium text-gray-700">{t('reply')}</span>
                           <Button
                             variant="ghost"
                             size="icon"
@@ -554,7 +557,7 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
                         onClick={() => setIsReplyVisible(true)}
                       >
                         <ReplyIcon className="w-5 h-5" />
-                        Reply
+                        {t('reply')}
                       </Button>
                     </div>
                   )}
@@ -569,18 +572,16 @@ export default function ProjectMessagesPage({ params }: { params: { id: string }
       <Dialog open={unlinkDialog.open} onOpenChange={(open) => setUnlinkDialog({ open, threadId: open ? unlinkDialog.threadId : null })}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Remove from Project</DialogTitle>
-            <DialogDescription>
-              This will remove the email thread from this project. The thread will still be available in your inbox and other linked projects.
-            </DialogDescription>
+            <DialogTitle>{t('removeFromProjectTitle')}</DialogTitle>
+            <DialogDescription>{t('removeFromProjectDesc')}</DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2 sm:gap-0">
             <Button variant="outline" onClick={() => setUnlinkDialog({ open: false, threadId: null })}>
-              Cancel
+              {t('cancel')}
             </Button>
             <Button variant="destructive" onClick={handleUnlinkThread} disabled={isUnlinking}>
               {isUnlinking ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
-              Remove
+              {t('remove')}
             </Button>
           </DialogFooter>
         </DialogContent>

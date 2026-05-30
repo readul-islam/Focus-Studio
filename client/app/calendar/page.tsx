@@ -43,6 +43,9 @@ import Link from 'next/link';
 import { openGmailOAuthPopup } from '@/lib/gmail-connect';
 import { parseCalendarDate } from '@/lib/calendar-dates';
 import { gooeyToast as toast } from 'goey-toast';
+import { useTranslations } from 'next-intl';
+
+const WEEKDAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const;
 
 const phaseOverlapsDay = (phase: { startDate: Date; endDate: Date }, day: Date) =>
     isWithinInterval(startOfDay(day), {
@@ -51,7 +54,7 @@ const phaseOverlapsDay = (phase: { startDate: Date; endDate: Date }, day: Date) 
     });
 
 export default function UnifiedCalendarPage() {
-
+    const t = useTranslations('calendarPage');
     // State
     const [currentDate, setCurrentDate] = useState(new Date());
     const [view, setView] = useState<'month' | 'week' | 'day'>('month');
@@ -73,12 +76,12 @@ export default function UnifiedCalendarPage() {
         if (result === 'success') {
             queryClient.refetchQueries({ queryKey: ['user/integration-status/'] });
             queryClient.refetchQueries({ queryKey: ['gmail/calendar/events/'] });
-            toast.success('Google Calendar connected.');
+            toast.success(t('toasts.calendarConnected'));
             window.location.reload();
             return;
         }
         if (result === 'access_denied') {
-            toast.error('Google blocked access. Add your email as a test user in Google Cloud Console.');
+            toast.error(t('toasts.accessDenied'));
         }
     };
 
@@ -139,7 +142,7 @@ export default function UnifiedCalendarPage() {
             ...phase,
             startDate: parseCalendarDate(phase.start_date),
             endDate: parseCalendarDate(phase.end_date),
-            project_name: phase.project_name || selectedProjectName || 'Project',
+            project_name: phase.project_name || selectedProjectName || t('project'),
         })).filter((p: any) => p.startDate && p.endDate);
 
         return parsed.map((p: any, i: number) => ({
@@ -283,7 +286,7 @@ export default function UnifiedCalendarPage() {
     const GOOGLE_EVENT_CHIP = 'bg-sky-100 text-sky-700 border-sky-200';
 
     const getPhaseEventLabel = (phase: { project_name?: string; name?: string }) => {
-        const title = phase.name || 'Event';
+        const title = phase.name || t('event');
         return phase.project_name ? `${phase.project_name} - ${title}` : title;
     };
 
@@ -492,7 +495,7 @@ export default function UnifiedCalendarPage() {
                                                                             {e.description && <p className="opacity-80">{e.description}</p>}
                                                                             {e.location && (
                                                                                 <p className="opacity-80">
-                                                                                    <span className="font-semibold">Location:</span> {e.location}
+                                                                                    <span className="font-semibold">{t('location')}</span> {e.location}
                                                                                 </p>
                                                                             )}
                                                                             <p className="opacity-80">
@@ -597,14 +600,14 @@ export default function UnifiedCalendarPage() {
                 {!hasContent ? (
                     <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
                         <CalendarIcon className="w-12 h-12 mb-3 opacity-20" />
-                        <p>No events scheduled for this day.</p>
+                        <p>{t('noEventsDay')}</p>
                     </div>
                 ) : (
                     <div className="space-y-6">
                         {/* Phases Section */}
                         {activePhases.length > 0 && (
                             <div className="space-y-3">
-                                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Active Phases</h3>
+                                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{t('activePhases')}</h3>
                                 {activePhases.map((phase: any, index: number) => (
                                     <div key={phase.id} className="p-4 rounded-xl border border-gray-100 bg-white hover:bg-white hover:shadow-sm transition-all">
                                         <div className="flex items-start justify-between">
@@ -619,7 +622,7 @@ export default function UnifiedCalendarPage() {
 
                                         <div className="mt-4">
                                             <div className="flex justify-between text-xs text-gray-500 mb-1">
-                                                <span>Progress</span>
+                                                <span>{t('progress')}</span>
                                                 <span>{phase.progress}%</span>
                                             </div>
                                             <div className="w-full bg-stone-200 h-2 rounded-full overflow-hidden">
@@ -634,7 +637,7 @@ export default function UnifiedCalendarPage() {
                         {/* Deliveries Section */}
                         {dayDeliveries.length > 0 && (
                             <div className="space-y-3">
-                                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Deliveries</h3>
+                                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{t('deliveries')}</h3>
                                 {dayDeliveries.map((del: any) => (
                                     <div key={del.id} className="p-4 rounded-xl border border-purple-100 bg-purple-50/50 hover:bg-white hover:shadow-sm transition-all">
                                         <div className="flex items-start gap-3">
@@ -680,14 +683,14 @@ export default function UnifiedCalendarPage() {
 
         if (!gmailConnected) {
             return emptyCard(
-                'Connect Google Calendar',
-                'Link your Google account to see your personal events, meetings and appointments here alongside your studio schedule.',
+                t('connectTitle'),
+                t('connectBody'),
                 <button
                     onClick={handleGoogleCalendarConnect}
                     disabled={isConnecting}
                     className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-md hover:bg-gray-700 transition-colors disabled:opacity-60"
                 >
-                    {isConnecting ? <><Loader2 className="w-4 h-4 animate-spin" />Connecting...</> : 'Connect Google Calendar'}
+                    {isConnecting ? <><Loader2 className="w-4 h-4 animate-spin" />{t('connecting')}</> : t('connectButton')}
                 </button>
             );
         }
@@ -725,9 +728,9 @@ export default function UnifiedCalendarPage() {
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="month">Month</SelectItem>
-                                    <SelectItem value="week">Week</SelectItem>
-                                    <SelectItem value="day">Day</SelectItem>
+                                    <SelectItem value="month">{t('views.month')}</SelectItem>
+                                    <SelectItem value="week">{t('views.week')}</SelectItem>
+                                    <SelectItem value="day">{t('views.day')}</SelectItem>
                                 </SelectContent>
                             </Select>
                         )}
@@ -771,16 +774,16 @@ export default function UnifiedCalendarPage() {
                             <SelectTrigger className="w-[160px] h-9 bg-white border-gray-200">
                                 <SelectValue>{selectedProjectId
                                     ? (Array.isArray(projectsData) ? (projectsData as any[]).find((p: any) => String(p.id) === selectedProjectId)?.project_name || 'Project' : 'Project')
-                                    : 'All Projects'}
+                                    : t('allProjects')}
                                 </SelectValue>
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="all">All Projects</SelectItem>
+                                <SelectItem value="all">{t('allProjects')}</SelectItem>
                                 {Array.isArray(projectsData) && (projectsData as any[]).map((p: any) => (
                                     <SelectItem key={p.id} value={String(p.id)}>{p.project_name || p.name || p.title || `Project ${p.id}`}</SelectItem>
                                 ))}
                                 {(!Array.isArray(projectsData) || (projectsData as any[]).length === 0) && (
-                                    <div className="px-3 py-2 text-xs text-gray-400">No projects found</div>
+                                    <div className="px-3 py-2 text-xs text-gray-400">{t('noProjectsFound')}</div>
                                 )}
                             </SelectContent>
                         </Select>}
@@ -788,12 +791,12 @@ export default function UnifiedCalendarPage() {
                         {/* Filter — hidden in My Calendar mode */}
                         {!showMyCalendar && <Select value={filterType} onValueChange={(val: any) => setFilterType(val)}>
                             <SelectTrigger className="w-[130px] h-9 bg-white border-gray-200">
-                                <SelectValue placeholder="Filter" />
+                                <SelectValue placeholder={t('filters.filter')} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="all">All</SelectItem>
-                                <SelectItem value="phases">Phases</SelectItem>
-                                <SelectItem value="delivery">Deliveries</SelectItem>
+                                <SelectItem value="all">{t('filters.all')}</SelectItem>
+                                <SelectItem value="phases">{t('filters.phases')}</SelectItem>
+                                <SelectItem value="delivery">{t('filters.delivery')}</SelectItem>
                             </SelectContent>
                         </Select>}
 
@@ -802,7 +805,7 @@ export default function UnifiedCalendarPage() {
                             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                             <Input
                                 className="h-9 w-48 pl-9 bg-white border-gray-200"
-                                placeholder="Search..."
+                                placeholder={t('searchPlaceholder')}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -815,7 +818,7 @@ export default function UnifiedCalendarPage() {
                             className={`h-9 px-3 text-xs font-medium ${showMyCalendar ? 'bg-gray-900 text-white' : 'text-gray-600'}`}
                             onClick={() => setShowMyCalendar(!showMyCalendar)}
                         >
-                            My Calendar
+                            {t('myCalendar')}
                         </Button>
                     </div>
                 </div>
@@ -835,10 +838,10 @@ export default function UnifiedCalendarPage() {
                                 <h2 className="font-semibold text-lg">{format(selectedDate, 'EEEE, MMM do')}</h2>
                                 <div className="flex gap-2 text-sm text-gray-500">
                                     {(filterType === 'all' || filterType === 'phases') && (
-                                        <span>{phasesForSelectedDate.length} Phases</span>
+                                        <span>{t('phasesCount', { count: phasesForSelectedDate.length })}</span>
                                     )}
                                     {(filterType === 'all' || filterType === 'delivery') && (
-                                        <span>• {deliveryDates.filter((d: any) => isSameDay(d.deliveryDate, selectedDate)).length} Deliveries</span>
+                                        <span>• {t('deliveriesCount', { count: deliveryDates.filter((d: any) => isSameDay(d.deliveryDate, selectedDate)).length })}</span>
                                     )}
                                 </div>
                             </div>
@@ -846,7 +849,7 @@ export default function UnifiedCalendarPage() {
                                 {/* Phases Section */}
                                 {(filterType === 'all' || filterType === 'phases') && phasesForSelectedDate.length > 0 && (
                                     <div className="space-y-3">
-                                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Schedule</h3>
+                                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('schedule')}</h3>
                                         {phasesForSelectedDate.map((phase: any) => (
                                             <div key={phase.id} className={`p-3 rounded-lg border ${getPhaseLightColor(phase.colorIndex)}`}>
                                                 <h3 className="font-medium text-sm">{phase.name}</h3>
@@ -859,9 +862,9 @@ export default function UnifiedCalendarPage() {
                                                     {!phase.isSingleDay && ` – ${format(phase.endDate, 'MMM d, yyyy')}`}
                                                 </p>
                                                 <div className="mt-3 flex items-center justify-between text-xs">
-                                                    <span className="font-medium">{phase.progress ?? 0}% Done</span>
+                                                    <span className="font-medium">{t('percentDone', { percent: phase.progress ?? 0 })}</span>
                                                     {!phase.isSingleDay && (
-                                                        <span className="opacity-70">Ends {format(phase.endDate, 'MMM d')}</span>
+                                                        <span className="opacity-70">{t('ends', { date: format(phase.endDate, 'MMM d') })}</span>
                                                     )}
                                                 </div>
                                                 <div className="w-full bg-white/60 h-1.5 rounded-full mt-2 overflow-hidden">
@@ -897,7 +900,7 @@ export default function UnifiedCalendarPage() {
                                 {/* My Calendar (Google) Events */}
                                 {showMyCalendar && googleEvents.filter((e: any) => isSameDay(e.eventDate, selectedDate)).length > 0 && (
                                     <div className="space-y-3">
-                                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">My Calendar</h3>
+                                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('myCalendar')}</h3>
                                         {googleEvents
                                             .filter((e: any) => isSameDay(e.eventDate, selectedDate))
                                             .map((e: any) => (
@@ -906,7 +909,7 @@ export default function UnifiedCalendarPage() {
                                                     {e.description && <p className="text-xs text-sky-700 mt-1">{e.description}</p>}
                                                     {e.location && (
                                                         <p className="text-xs text-sky-600 mt-1 flex items-center gap-1">
-                                                            <span className="font-medium">Location:</span> {e.location}
+                                                            <span className="font-medium">{t('location')}</span> {e.location}
                                                         </p>
                                                     )}
                                                     <div className="mt-2 flex items-center gap-2 text-xs text-sky-600">
@@ -915,7 +918,7 @@ export default function UnifiedCalendarPage() {
                                                     </div>
                                                     {e.attendees && e.attendees.length > 0 && (
                                                         <div className="mt-2 text-xs text-sky-700">
-                                                            <span className="font-medium">Attendees:</span>
+                                                            <span className="font-medium">{t('attendees')}</span>
                                                             <div className="mt-1 flex flex-wrap gap-1">
                                                                 {e.attendees.map((attendee: string, idx: number) => (
                                                                     <span key={idx} className="bg-sky-100 px-1.5 py-0.5 rounded text-[10px]">{attendee}</span>
@@ -945,7 +948,7 @@ export default function UnifiedCalendarPage() {
                                     (filterType === 'all' && phasesForSelectedDate.length === 0 && deliveryDates.filter((d: any) => isSameDay(d.deliveryDate, selectedDate)).length === 0 && (!showMyCalendar || googleEvents.filter((e: any) => isSameDay(e.eventDate, selectedDate)).length === 0))) && (
                                         <div className="text-center py-10 bg-white rounded-lg border border-dashed border-gray-200">
                                             <Clock className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-                                            <p className="text-sm text-gray-500">No events for this date.</p>
+                                            <p className="text-sm text-gray-500">{t('noEventsDate')}</p>
                                         </div>
                                     )}
                             </div>

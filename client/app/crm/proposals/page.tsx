@@ -18,17 +18,19 @@ import useFetch from "@/hooks/useFetch"
 import { postData, deleteData } from "@/lib/Api"
 import { gooeyToast as toast } from 'goey-toast'
 import { usePermissions } from '@/hooks/usePermissions';
-
-const PROPOSAL_STATUS: Record<string, { label: string; variant: "default" | "secondary" | "outline" | "destructive"; className: string }> = {
-  DFT: { label: "Draft", variant: "secondary", className: "bg-stone-100 text-gray-700 hover:bg-stone-100" },
-  SNT: { label: "Sent", variant: "default", className: "bg-blue-100 text-blue-700 hover:bg-blue-100" },
-  ACC: { label: "Accepted", variant: "default", className: "bg-emerald-100 text-emerald-700 hover:bg-emerald-100" },
-  DCL: { label: "Declined", variant: "destructive", className: "bg-red-100 text-red-700 hover:bg-red-100" },
-}
-
+import { useTranslations } from 'next-intl';
 
 function ProposalsPageContent() {
+  const t = useTranslations('crmProposalsPage');
+  const tc = useTranslations('common');
   const router = useRouter()
+
+  const PROPOSAL_STATUS: Record<string, { label: string; variant: "default" | "secondary" | "outline" | "destructive"; className: string }> = {
+    DFT: { label: t('statusDraft'), variant: "secondary", className: "bg-stone-100 text-gray-700 hover:bg-stone-100" },
+    SNT: { label: t('statusSent'), variant: "default", className: "bg-blue-100 text-blue-700 hover:bg-blue-100" },
+    ACC: { label: t('statusAccepted'), variant: "default", className: "bg-emerald-100 text-emerald-700 hover:bg-emerald-100" },
+    DCL: { label: t('statusDeclined'), variant: "destructive", className: "bg-red-100 text-red-700 hover:bg-red-100" },
+  }
   const {
     searchTerm,
     setSearchTerm,
@@ -81,10 +83,10 @@ function ProposalsPageContent() {
     setSendingId(String(proposal.id));
     try {
       await postData({ url: `/crm/proposals/${proposal.id}/send/` });
-      toast.success("Proposal sent successfully!");
+      toast.success(t('toasts.sentSuccess'));
       refetchProposals();
     } catch {
-      toast.error("Failed to send proposal");
+      toast.error(t('toasts.sendFailed'));
     } finally {
       setSendingId(null);
     }
@@ -104,10 +106,10 @@ function ProposalsPageContent() {
     setDeletingId(String(proposalToDelete.id));
     try {
       await deleteData({ url: `/crm/proposals/${proposalToDelete.id}/`, data: undefined });
-      toast.success("Proposal deleted");
+      toast.success(t('toasts.deleted'));
       refetchProposals();
     } catch (error: any) {
-      toast.error(error?.message || "Failed to delete proposal");
+      toast.error(error?.message || t('toasts.deleteFailed'));
     } finally {
       setDeletingId(null);
       setDeleteDialogOpen(false);
@@ -119,11 +121,11 @@ function ProposalsPageContent() {
     setIsDeletingBulk(true);
     try {
       await deleteData({ url: '/crm/proposals/bulk_delete/', data: { ids: Array.from(selectedIds).map(Number) } });
-      toast.success(`${selectedIds.size} proposal${selectedIds.size > 1 ? 's' : ''} deleted`);
+      toast.success(t('toasts.bulkDeleted', { count: selectedIds.size }));
       setSelectedIds(new Set());
       refetchProposals();
     } catch {
-      toast.error("Failed to delete proposals");
+      toast.error(t('toasts.bulkDeleteFailed'));
     } finally {
       setIsDeletingBulk(false);
       setBulkDeleteDialogOpen(false);
@@ -167,21 +169,21 @@ function ProposalsPageContent() {
           <div className="flex items-center gap-4 flex-1">
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-[140px] h-9 bg-white">
-                <SelectValue placeholder="All Status" />
+                <SelectValue placeholder={t('allStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="DFT">Draft</SelectItem>
-                <SelectItem value="SNT">Sent</SelectItem>
-                <SelectItem value="ACC">Accepted</SelectItem>
-                <SelectItem value="DCL">Declined</SelectItem>
+                <SelectItem value="all">{t('allStatus')}</SelectItem>
+                <SelectItem value="DFT">{t('statusDraft')}</SelectItem>
+                <SelectItem value="SNT">{t('statusSent')}</SelectItem>
+                <SelectItem value="ACC">{t('statusAccepted')}</SelectItem>
+                <SelectItem value="DCL">{t('statusDeclined')}</SelectItem>
               </SelectContent>
             </Select>
 
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
-                placeholder="Search proposals..."
+                placeholder={t('searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 h-9"
@@ -194,7 +196,7 @@ function ProposalsPageContent() {
               <motion.div layout transition={{ type: 'spring', stiffness: 400, damping: 25 }}>
                 <Button size="sm" className="gap-2 bg-gray-900 hover:bg-gray-800" onClick={handleOpenNew}>
                   <Plus className="w-4 h-4" />
-                  New Proposal
+                  {t('newProposal')}
                 </Button>
               </motion.div>
             )}
@@ -209,7 +211,7 @@ function ProposalsPageContent() {
                 >
                   <Button variant="destructive" size="sm" onClick={() => setBulkDeleteDialogOpen(true)} disabled={isDeletingBulk}>
                     <Trash2 className="w-4 h-4 mr-2" />
-                    Delete
+                    {tc('delete')}
                   </Button>
                 </motion.div>
               )}
@@ -231,25 +233,25 @@ function ProposalsPageContent() {
                     />
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-600" style={{ width: 320 }}>
-                    Proposal
+                    {t('proposalColumn')}
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-600" style={{ width: 200 }}>
-                    Client
+                    {t('clientColumn')}
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-600" style={{ width: 140 }}>
-                    Value
+                    {tc('value')}
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-600" style={{ width: 160 }}>
-                    Status
+                    {tc('status')}
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-600" style={{ width: 140 }}>
-                    Sent Date
+                    {t('sentDateColumn')}
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-600" style={{ width: 140 }}>
-                    Expires
+                    {t('expiresColumn')}
                   </th>
                 {clientsPermission &&  <th className="pl-4 pr-6 py-3 text-right text-sm font-medium text-gray-600" style={{ width: 96 }}>
-                    Actions
+                    {tc('actions')}
                   </th>}
                 </tr>
               </thead>
@@ -257,7 +259,7 @@ function ProposalsPageContent() {
                 {proposalsLoading ? (
                   <tr>
                     <td colSpan={8} className="px-4 py-12 text-center text-gray-500">
-                      Loading proposals…
+                      {t('loading')}
                     </td>
                   </tr>
                 ) : filtered.length === 0 ? (
@@ -266,9 +268,9 @@ function ProposalsPageContent() {
                       <div className="flex flex-col items-center gap-3">
                         <FileText className="w-12 h-12 text-gray-300" />
                         <div>
-                          <h3 className="text-sm font-medium text-gray-900">No proposals yet</h3>
+                          <h3 className="text-sm font-medium text-gray-900">{t('emptyTitle')}</h3>
                           <p className="text-sm text-gray-600 mt-1">
-                            {searchTerm ? 'No proposals match your search.' : 'Get started by creating your first proposal.'}
+                            {searchTerm ? t('emptySearch') : t('emptySubtitle')}
                           </p>
                         </div>
                         {!searchTerm && (
@@ -278,7 +280,7 @@ function ProposalsPageContent() {
                             className="gap-2"
                           >
                             <Plus className="w-4 h-4" />
-                            Create Proposal
+                            {t('createProposal')}
                           </Button>
                         )}
                       </div>
@@ -355,7 +357,7 @@ function ProposalsPageContent() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem onClick={() => handleEditProposal(proposal)}>
-                                Edit
+                                {tc('edit')}
                               </DropdownMenuItem>
                               {/* <DropdownMenuItem onClick={() => handleViewPdf(proposal)}>
                                 View PDF
@@ -364,7 +366,7 @@ function ProposalsPageContent() {
                                 onClick={() => handleSendProposal(proposal)}
                                 disabled={isSending}
                               >
-                                {isSending ? "Sending…" : "Send"}
+                                {isSending ? tc('sending') : tc('send')}
                               </DropdownMenuItem>
                               {clientsDeletePermission && <DropdownMenuSeparator />}
                               {clientsDeletePermission && <DropdownMenuItem
@@ -372,7 +374,7 @@ function ProposalsPageContent() {
                                 disabled={isDeleting}
                                 className="text-red-600"
                               >
-                                {isDeleting ? "Deleting…" : "Delete"}
+                                {isDeleting ? tc('deleting') : tc('delete')}
                               </DropdownMenuItem>}
                             </DropdownMenuContent>
                           </DropdownMenu>
@@ -392,8 +394,8 @@ function ProposalsPageContent() {
         onClose={() => { setDeleteDialogOpen(false); setProposalToDelete(null); }}
         onConfirm={handleDeleteProposal}
         id={proposalToDelete?.id}
-        title="Delete Proposal"
-        description="Are you sure you want to delete this proposal? This action cannot be undone."
+        title={t('deleteProposalTitle')}
+        description={t('deleteProposalDescription')}
         itemName={proposalToDelete?.title || ""}
       />
 
@@ -401,8 +403,8 @@ function ProposalsPageContent() {
         isOpen={bulkDeleteDialogOpen}
         onClose={() => setBulkDeleteDialogOpen(false)}
         onConfirm={confirmBulkDelete}
-        title="Delete Proposals"
-        description={`Are you sure you want to delete ${selectedIds.size} proposal${selectedIds.size > 1 ? 's' : ''}? This action cannot be undone.`}
+        title={t('deleteProposalsTitle')}
+        description={t('deleteProposalsDescription', { count: selectedIds.size })}
         itemName={`${selectedIds.size} proposal${selectedIds.size > 1 ? 's' : ''}`}
       />
     </div>

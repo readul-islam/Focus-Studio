@@ -18,6 +18,7 @@ import { usePost } from '@/hooks/usePost';
 import type { ContractorShare } from '@/lib/contractor/types';
 import { formatDistanceToNow } from 'date-fns';
 import { gooeyToast as toast } from 'goey-toast';
+import { useTranslations } from 'next-intl';
 
 interface ShareFilesDialogProps {
   projectId: string;
@@ -54,6 +55,7 @@ export function ShareFilesDialog({
   alreadyShared,
   onShareComplete,
 }: ShareFilesDialogProps) {
+  const t = useTranslations('shareFilesDialog');
   const [searchText, setSearchText] = useState('');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
@@ -112,17 +114,17 @@ export function ShareFilesDialog({
     onSuccess: (data: { created?: number; already_shared?: number }) => {
       const created = data?.created ?? selectedIds.size;
       const skipped = data?.already_shared ?? 0;
-      let message = `Shared ${created} file${created === 1 ? '' : 's'} with ${contractorName}`;
-      if (skipped > 0) {
-        message += ` (${skipped} already shared)`;
-      }
+      const message =
+        skipped > 0
+          ? t('sharedWithSkipped', { count: created, name: contractorName, skipped })
+          : t('sharedSuccess', { count: created, name: contractorName });
       toast.success(message);
       setSelectedIds(new Set());
       onShareComplete();
       onClose();
     },
     onError: (error: any) => {
-      toast.error(error?.message || 'Failed to share files');
+      toast.error(error?.message || t('shareFailed'));
     },
   });
 
@@ -154,7 +156,7 @@ export function ShareFilesDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <FileText className="w-5 h-5 text-sage-600" />
-            Share Files with {contractorName}
+            {t('title', { name: contractorName })}
           </DialogTitle>
         </DialogHeader>
 
@@ -165,7 +167,7 @@ export function ShareFilesDialog({
             <Input
               value={searchText}
               onChange={e => setSearchText(e.target.value)}
-              placeholder="Search files..."
+              placeholder={t('searchPlaceholder')}
               className="pl-10"
             />
           </div>
@@ -187,11 +189,11 @@ export function ShareFilesDialog({
                       checked={selectedIds.size === availableFiles.length && availableFiles.length > 0}
                       className="data-[state=checked]:bg-umber-900 data-[state=checked]:border-umber-900"
                     />
-                    Select all ({availableFiles.length})
+                    {t('selectAll', { count: availableFiles.length })}
                   </button>
                   {selectedIds.size > 0 && (
                     <Badge className="bg-umber-100 text-umber-800">
-                      {selectedIds.size} selected
+                      {t('selectedCount', { count: selectedIds.size })}
                     </Badge>
                   )}
                 </div>
@@ -201,7 +203,7 @@ export function ShareFilesDialog({
               <div className="flex-1 overflow-y-auto space-y-2 pr-2">
                 {filteredFiles.length === 0 ? (
                   <div className="text-center py-8 text-neutral-500">
-                    {allFiles.length === 0 ? 'No files in this project' : 'No files match your search'}
+                    {allFiles.length === 0 ? t('noFilesInProject') : t('noSearchMatch')}
                   </div>
                 ) : (
                   filteredFiles.map(file => {
@@ -234,14 +236,14 @@ export function ShareFilesDialog({
                           </p>
                           <p className="text-xs text-neutral-500">
                             {file.updated_at
-                              ? `Updated ${formatDistanceToNow(new Date(file.updated_at), { addSuffix: true })}`
-                              : 'No date'}
+                              ? t('updated', { time: formatDistanceToNow(new Date(file.updated_at), { addSuffix: true }) })
+                              : t('noDate')}
                           </p>
                         </div>
                         {isShared && (
                           <Badge className="bg-sage-100 text-sage-700 text-xs">
                             <Check className="w-3 h-3 mr-1" />
-                            Shared
+                            {t('sharedBadge')}
                           </Badge>
                         )}
                       </div>
@@ -255,7 +257,7 @@ export function ShareFilesDialog({
 
         <DialogFooter className="mt-4">
           <Button variant="outline" onClick={handleClose}>
-            Cancel
+            {t('cancel')}
           </Button>
           <Button
             onClick={handleShare}
@@ -265,10 +267,12 @@ export function ShareFilesDialog({
             {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Sharing...
+                {t('sharing')}
               </>
+            ) : selectedIds.size > 0 ? (
+              t('shareCount', { count: selectedIds.size })
             ) : (
-              <>Share {selectedIds.size > 0 ? `(${selectedIds.size})` : ''}</>
+              t('share')
             )}
           </Button>
         </DialogFooter>

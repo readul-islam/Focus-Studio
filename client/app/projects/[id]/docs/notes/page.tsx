@@ -11,8 +11,10 @@ import type { Note } from "@/components/notes-types"
 import { NotesSidePanel } from "@/components/notes-side-panel"
 import { NoteStatusPill, SourceIcon, formatRelative, LinkedChips } from "@/components/notes-utils"
 import { Search, Filter, ChevronDown, ChevronLeft } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 function NotesListPageContent({ params }: { params: { id: string } }) {
+  const t = useTranslations("projectDocsNotesPage")
   const [sort, setSort] = React.useState<"title" | "updated_desc" | "updated_asc">("updated_desc")
   const [query, setQuery] = React.useState("")
   const [open, setOpen] = React.useState(false)
@@ -52,10 +54,10 @@ function NotesListPageContent({ params }: { params: { id: string } }) {
               size="sm"
               className="bg-transparent"
               onClick={() => router.push(`/projects/${params.id}/docs`)}
-              aria-label="Back to Docs"
+              aria-label={t("backToDocs")}
             >
               <ChevronLeft className="mr-1 h-4 w-4" />
-              {"Back to Docs"}
+              {t("backToDocs")}
             </Button>
 
             <div className="relative">
@@ -64,7 +66,7 @@ function NotesListPageContent({ params }: { params: { id: string } }) {
                 aria-hidden={true}
               />
               <Input
-                placeholder="Search notes (title, summary, transcript)"
+                placeholder={t("searchPlaceholder")}
                 className="w-80 pl-9"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -73,7 +75,7 @@ function NotesListPageContent({ params }: { params: { id: string } }) {
 
             <Button variant="outline" size="sm" className="hidden bg-transparent sm:inline-flex">
               <Filter className="mr-2 h-4 w-4" />
-              {"Filter"}
+              {t("filter")}
             </Button>
           </div>
 
@@ -81,19 +83,19 @@ function NotesListPageContent({ params }: { params: { id: string } }) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="bg-neutral-900 text-white hover:bg-neutral-800">
-                  {"✨ New Note"}
+                  {t("newNote")}
                   <ChevronDown className="ml-1 h-4 w-4 opacity-80" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem>
-                  {"From Zoom call (paste link or select past meeting)"}
+                  {t("fromZoom")}
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  {"From Site Visit (upload audio/photos)"}
+                  {t("fromSiteVisit")}
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  {"Blank note (paste text)"}
+                  {t("blankNote")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -104,16 +106,16 @@ function NotesListPageContent({ params }: { params: { id: string } }) {
         <div className="ai-notes-scroll overflow-x-auto rounded-xl border border-neutral-200 bg-white">
           {/* Header: match global list styling; tighter gaps between mid columns */}
           <div className="sticky top-0 z-10 grid grid-cols-12 gap-1 border-b border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-600">
-            <div className="col-span-4">{"Heading"}</div>
-            <div className="col-span-2">{"Source"}</div>
-            <div className="col-span-2">{"Status"}</div>
-            <div className="col-span-2">{"Linked"}</div>
+            <div className="col-span-4">{t("heading")}</div>
+            <div className="col-span-2">{t("source")}</div>
+            <div className="col-span-2">{t("status")}</div>
+            <div className="col-span-2">{t("linked")}</div>
             {/* Wider actions column so buttons stay on one line */}
             <div className="col-span-2" />
           </div>
 
           {/* Rows */}
-          <div role="table" aria-label="AI notes list" className="divide-y divide-neutral-200">
+          <div role="table" aria-label={t("notesListAria")} className="divide-y divide-neutral-200">
             {notes.map((n) => (
               <div
                 key={n.id}
@@ -143,14 +145,14 @@ function NotesListPageContent({ params }: { params: { id: string } }) {
                   <div className="inline-flex items-center gap-1 rounded-md border border-neutral-300 bg-stone-50 px-2 py-0.5 text-xs text-neutral-700">
                     <SourceIcon source={n.source} />
                     {n.source === "zoom"
-                      ? "Zoom"
+                      ? t("sourceZoom")
                       : n.source === "mobile"
-                        ? "Mobile"
+                        ? t("sourceMobile")
                         : n.source === "upload"
-                          ? "Upload"
+                          ? t("sourceUpload")
                           : n.source === "ai"
-                            ? "AI notes"
-                            : "Other"}
+                            ? t("sourceAi")
+                            : t("sourceOther")}
                   </div>
                 </div>
 
@@ -174,7 +176,7 @@ function NotesListPageContent({ params }: { params: { id: string } }) {
                           e.stopPropagation()
                         }}
                       >
-                        {"Approve"}
+                        {t("approve")}
                       </Button>
                     ) : null}
                     <DropdownMenu>
@@ -185,13 +187,13 @@ function NotesListPageContent({ params }: { params: { id: string } }) {
                           className="h-7 shrink-0 bg-transparent px-2 text-xs"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          {"Convert →"}
+                          {t("convert")}
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Task</DropdownMenuItem>
-                        <DropdownMenuItem>RFI</DropdownMenuItem>
-                        <DropdownMenuItem>PO</DropdownMenuItem>
+                        <DropdownMenuItem>{t("convertTask")}</DropdownMenuItem>
+                        <DropdownMenuItem>{t("convertRfi")}</DropdownMenuItem>
+                        <DropdownMenuItem>{t("convertPo")}</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                     <Button
@@ -202,7 +204,7 @@ function NotesListPageContent({ params }: { params: { id: string } }) {
                         e.stopPropagation()
                       }}
                     >
-                      {"Link…"}
+                      {t("link")}
                     </Button>
                     <Button
                       size="sm"
@@ -212,7 +214,7 @@ function NotesListPageContent({ params }: { params: { id: string } }) {
                         openNote(n)
                       }}
                     >
-                      {"Open"}
+                      {t("open")}
                     </Button>
                   </div>
                 </div>

@@ -1,0 +1,85 @@
+{
+  "designShareDialog": {
+    "title": "Share design",
+    "tabs": {
+      "project": "Project",
+      "team": "Team",
+      "contractor": "Contractor"
+    },
+    "project": "Project",
+    "selectProject": "Select project",
+    "loading": "Loading…",
+    "attachToProject": "Attach to project Files",
+    "attached": "Attached.",
+    "viewInFiles": "View in Files",
+    "messageOptional": "Message (optional)",
+    "messagePlaceholder": "Check out this design concept…",
+    "postToTeam": "Post to team chat",
+    "contractorDesc": "The design will be saved to project Files, then shared with a contractor on that project.",
+    "shareWithContractor": "Share with contractor",
+    "contractorDialogTitle": "Share design with contractor",
+    "defaultTeamMessage": "Shared a design render from Design Studio",
+    "toasts": {
+      "selectProject": "Select a project",
+      "attached": "Design attached to project Files",
+      "attachFailed": "Failed to attach design to project",
+      "sharedTeam": "Shared with project team",
+      "shareTeamFailed": "Failed to share with team",
+      "selectProjectFirst": "Select a project first",
+      "attachBeforeContractor": "Attach to project before sharing with contractor"
+    }
+  },
+  "productDetailSheet": {
+    "supplierLabel": "Supplier: {name}",
+    "productImages": "Product images",
+    "productImageAlt": "Product Image",
+    "placeholderAlt": "Placeholder",
+    "showImage": "Show image {index}",
+    "thumbnailAlt": "Thumbnail",
+    "copyLink": "Copy Link",
+    "website": "Website",
+    "measurementsSection": "Measurements",
+    "descriptionSection": "Description",
+    "packagingSection": "Packaging Details",
+    "instructionsSection": "Instructions",
+    "productDetailsSection": "Product Details",
+    "statusBadge": "Status: {status}",
+    "initialStatusBadge": "Initial Status: {status}",
+    "sendToClientBadge": "Send to Client: {value}",
+    "footerHint": "Add this product to a project.",
+    "viewProduct": "View Product",
+    "addToProject": "Add to Project",
+    "toasts": {
+      "addedToProject": "Product added to project",
+      "addFailed": "Failed to add product",
+      "noUrl": "No URL available",
+      "copied": "Copied!"
+    }
+  },
+  "contractorCard": {
+    "expiresInDays": "Expires in {days} days",
+    "validUntil": "Valid until {date}",
+    "lastAccessOnDate": "Last access: {date}",
+    "builder": "Builder",
+    "itemsCount": "{count} items",
+    "drawingsCount": "{count} drawings",
+    "shareItems": "Share Items",
+    "shareDrawings": "Share Drawings",
+    "profile": "Profile",
+    "sharedItemsTitle": "Shared Items ({count})",
+    "sharedDrawingsTitle": "Shared Drawings ({count})",
+    "confirmedCount": "{count} confirmed",
+    "addFromProcurement": "Add from Procurement",
+    "addFromFiles": "Add from Files",
+    "noItemsShared": "No items shared yet",
+    "noDrawingsShared": "No drawings shared yet",
+    "recentActivity": "Recent Activity"
+  },
+  "libraryProductModal": {
+    "descriptionAddHint": "Fill in the details below. Name and currency are required.",
+    "namePlaceholder": "e.g. Oslo Lounge Chair",
+    "productUrlPlaceholder": "https://supplier.com/product",
+    "noSuppliersFound": "No suppliers found.",
+    "addNewSupplier": "+ Add new supplier"
+  }
+}

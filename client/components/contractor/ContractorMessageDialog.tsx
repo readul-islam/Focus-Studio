@@ -14,6 +14,7 @@ import type { ProjectContractor } from '@/lib/contractor/types';
 import useFetch from '@/hooks/useFetch';
 import { usePost } from '@/hooks/usePost';
 import { gooeyToast as toast } from 'goey-toast';
+import { useTranslations } from 'next-intl';
 
 interface ContractorMessage {
   id: number;
@@ -31,7 +32,10 @@ interface ContractorMessageDialogProps {
   onMessageSent?: () => void;
 }
 
-function formatMessageTime(timestamp: string): string {
+function formatMessageTime(
+  timestamp: string,
+  t: ReturnType<typeof useTranslations<'contractorMessageDialog'>>,
+): string {
   const date = new Date(timestamp);
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
@@ -42,9 +46,9 @@ function formatMessageTime(timestamp: string): string {
     minute: '2-digit',
   });
 
-  if (diffDays === 0) return `Today at ${time}`;
-  if (diffDays === 1) return `Yesterday at ${time}`;
-  if (diffDays < 7) return `${diffDays} days ago at ${time}`;
+  if (diffDays === 0) return t('todayAt', { time });
+  if (diffDays === 1) return t('yesterdayAt', { time });
+  if (diffDays < 7) return t('daysAgoAt', { days: diffDays, time });
   return date.toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'short',
@@ -60,6 +64,7 @@ export function ContractorMessageDialog({
   onOpenChange,
   onMessageSent,
 }: ContractorMessageDialogProps) {
+  const t = useTranslations('contractorMessageDialog');
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -76,10 +81,10 @@ export function ContractorMessageDialog({
       setNewMessage('');
       refetchMessages();
       onMessageSent?.();
-      toast.success('Message sent');
+      toast.success(t('messageSent'));
     },
     onError: (error: any) => {
-      toast.error('Failed to send message');
+      toast.error(t('sendFailed'));
       console.error('Failed to send message:', error);
     },
   });
@@ -119,7 +124,7 @@ export function ContractorMessageDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <MessageSquare className="w-5 h-5 text-neutral-600" />
-            Message {contractor.name}
+            {t('title', { name: contractor.name })}
           </DialogTitle>
         </DialogHeader>
 
@@ -128,9 +133,9 @@ export function ContractorMessageDialog({
           {messages.length === 0 ? (
             <div className="text-center py-8">
               <MessageSquare className="w-10 h-10 text-neutral-300 mx-auto mb-3" />
-              <p className="text-sm text-neutral-500">No messages yet</p>
+              <p className="text-sm text-neutral-500">{t('noMessages')}</p>
               <p className="text-xs text-neutral-400 mt-1">
-                Start the conversation with {contractor.name}
+                {t('startConversation', { name: contractor.name })}
               </p>
             </div>
           ) : (
@@ -155,7 +160,7 @@ export function ContractorMessageDialog({
                     {msg.sender_type === 'contractor' && contractor && (
                       <span className="font-medium">{contractor.name} · </span>
                     )}
-                    {formatMessageTime(msg.created_at)}
+                    {formatMessageTime(msg.created_at, t)}
                   </p>
                 </div>
               </div>
@@ -168,7 +173,7 @@ export function ContractorMessageDialog({
         <div className="border-t border-neutral-200 pt-4">
           <div className="flex gap-2">
             <Textarea
-              placeholder="Type your message..."
+              placeholder={t('messagePlaceholder')}
               value={newMessage}
               onChange={e => setNewMessage(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -185,12 +190,12 @@ export function ContractorMessageDialog({
               {sendMessageMutation.isPending ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Sending...
+                  {t('sending')}
                 </>
               ) : (
                 <>
                   <Send className="w-4 h-4 mr-2" />
-                  Send
+                  {t('send')}
                 </>
               )}
             </Button>

@@ -3,12 +3,16 @@ import type { Area } from 'react-easy-crop/types';
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
 const MAX_SIZE = 5 * 1024 * 1024;
 
-export function validateRasterImageFile(file: File): { ok: true } | { ok: false; message: string } {
+export type ImageValidationError = 'unsupportedType' | 'fileTooLarge';
+
+export function validateRasterImageFile(
+  file: File,
+): { ok: true } | { ok: false; code: ImageValidationError } {
   if (!ALLOWED_TYPES.includes(file.type)) {
-    return { ok: false, message: 'Unsupported file type. Use PNG, JPG or WEBP.' };
+    return { ok: false, code: 'unsupportedType' };
   }
   if (file.size > MAX_SIZE) {
-    return { ok: false, message: 'File too large. Maximum 5MB.' };
+    return { ok: false, code: 'fileTooLarge' };
   }
   return { ok: true };
 }

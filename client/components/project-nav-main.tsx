@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 type TabKey = 'all' | 'active' | 'completed' | 'archived';
 
@@ -11,14 +12,15 @@ interface ProjectNavMainProps {
   onChange?: (tab: TabKey) => void;
 }
 
-const tabs: { key: TabKey; label: string }[] = [
-  { key: 'active', label: 'Active' },
-  { key: 'completed', label: 'Completed' },
-  { key: 'all', label: 'All Projects' },
-  { key: 'archived', label: 'Archived' },
-];
-
 export function ProjectNavMain({ activeTab = 'all', counts = { active: 3 }, onChange }: ProjectNavMainProps) {
+  const t = useTranslations('projectNav');
+  const tabs: { key: TabKey; label: string }[] = [
+    { key: 'active', label: t('active') },
+    { key: 'completed', label: t('completed') },
+    { key: 'all', label: t('allProjects') },
+    { key: 'archived', label: t('archived') },
+  ];
+
   return (
     <div className="bg-card/45 border border-border/40 rounded-xl p-1 backdrop-blur-sm">
       <div className="flex scrollbar-thin items-center gap-2 overflow-x-auto">

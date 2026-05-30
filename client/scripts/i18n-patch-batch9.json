@@ -1,0 +1,30 @@
+{
+  "designChatPanel": {
+    "designStudio": "Design Studio",
+    "interior": "Interior",
+    "exterior": "Exterior",
+    "download": "Download",
+    "shareOrAttach": "Share or attach",
+    "copy": "Copy",
+    "copied": "Copied",
+    "generate": "Generate",
+    "enterToSendHint": "Enter to send · Shift+Enter newline",
+    "aiDisclaimer": "AI-generated designs may need professional review before client presentation.",
+    "analyzingSketch": "Analyzing sketch…",
+    "renderingDesign": "Rendering design…",
+    "generationFailed": "Generation failed",
+    "removeFile": "Remove {name}",
+    "sketchLabel": "Sketch"
+  },
+  "crmPipelinePage": {
+    "stage": "Stage",
+    "createProposal": "Create Proposal",
+    "email": "Email",
+    "viewProject": "View Project",
+    "owner": "Owner:",
+    "unassigned": "Unassigned"
+  },
+  "projectDocsPage": {
+    "uploadDocumentsDescFolder": "Upload files to this folder. You can select multiple files at once."
+  }
+}

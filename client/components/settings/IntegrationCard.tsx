@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 export type IntegrationCardStatus = 'connected' | 'configured';
 
@@ -38,7 +39,8 @@ function StatusBadge({
   status: IntegrationCardStatus;
   label?: string;
 }) {
-  const text = label || (status === 'configured' ? 'Configured' : 'Connected');
+  const t = useTranslations('settingsIntegrationsPage.card');
+  const text = label || (status === 'configured' ? t('configured') : t('connected'));
   return (
     <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-50 border border-green-200 px-2 py-0.5">
       <CheckCircle2 className="h-3 w-3" aria-hidden />

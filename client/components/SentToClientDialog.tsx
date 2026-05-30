@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Send, MessageSquare } from "lucide-react";
+import { useTranslations } from "next-intl";
 import {
   Dialog,
   DialogContent,
@@ -15,10 +16,10 @@ import { Input } from "@/components/ui/input";
 export const SentToClientDialog = ({
   open,
   onOpenChange,
-  onConfirm, // (message: string) => Promise<any> | any
+  onConfirm,
   itemName = "",
-  confirmText = "Send",
-  cancelText = "Cancel",
+  confirmText,
+  cancelText,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
@@ -27,6 +28,7 @@ export const SentToClientDialog = ({
   confirmText?: string;
   cancelText?: string;
 }) => {
+  const t = useTranslations("sentToClientDialog");
   const [isSending, setIsSending] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -58,45 +60,43 @@ export const SentToClientDialog = ({
             <Send className="w-5 h-5 text-sky-600" />
           </div>
           <div>
-            <DialogTitle>Send to Client</DialogTitle>
+            <DialogTitle>{t("title")}</DialogTitle>
             {itemName && (
-              <p className="text-sm text-muted-foreground mt-1">"{itemName}"</p>
+              <p className="text-sm text-muted-foreground mt-1">&quot;{itemName}&quot;</p>
             )}
           </div>
         </DialogHeader>
 
         <div className="mt-4">
-          <p className="text-sm text-muted-foreground mb-2">
-            Add a message to include with the document being sent to the client.
-          </p>
+          <p className="text-sm text-muted-foreground mb-2">{t("description")}</p>
           <Input
             type="text"
-            placeholder="Enter message to client"
+            placeholder={t("placeholder")}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             disabled={isSending}
             className="w-full"
-            aria-label="Message to client"
+            aria-label={t("messageAria")}
           />
         </div>
 
         <DialogFooter className="mt-4 flex gap-3 sm:justify-end">
           <Button variant="outline" onClick={handleClose} disabled={isSending}>
-            {cancelText}
+            {cancelText ?? t("cancel")}
           </Button>
           <Button
             onClick={handleConfirm}
-            disabled={isSending}
+            disabled={isSending || !isValid}
             variant="default">
             {isSending ? (
               <>
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                Sending...
+                {t("sending")}
               </>
             ) : (
               <>
                 <MessageSquare className="w-4 h-4 mr-2" />
-                {confirmText}
+                {confirmText ?? t("send")}
               </>
             )}
           </Button>

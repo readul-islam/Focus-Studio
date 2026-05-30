@@ -1,0 +1,125 @@
+{
+  "settingsIntegrationsPage": {
+    "shared": {
+      "connecting": "Connecting...",
+      "disconnecting": "Disconnecting...",
+      "continue": "Continue",
+      "done": "Done",
+      "refresh": "Refresh",
+      "none": "None",
+      "syncing": "Syncing..."
+    },
+    "notion": {
+      "outboundDescLong": "New Focuspilot projects create a Notion page; tasks on that project add rows to a task table on the page.{workspacePart}",
+      "inboundDescLong": "Map a shared database below to import Notion rows as Focuspilot projects (manual sync).",
+      "workspacePart": " Workspace: {workspace}.",
+      "parentPageLabelOptional": "Parent page for new projects (optional)",
+      "lastSyncAt": " · Last sync {date}",
+      "mapDatabaseHint": "Map a Notion database (e.g. Tasks Tracker) to create and update Focuspilot projects.",
+      "lastRunSummary": "Last run: {created} created, {updated} updated{tasksPart}{pagesPart}.",
+      "tasksFromNotionPart": ", {count} tasks from Notion",
+      "rowsInNotionPart": " ({count} rows in Notion)",
+      "setupProjectSync": "Set up project sync",
+      "editProjectSyncMapping": "Edit project sync mapping",
+      "syncProjectsNow": "Sync projects now",
+      "disconnectTitle": "Disconnect Notion?",
+      "disconnectDescLong": "Focuspilot will lose access to your Notion workspace. You can reconnect anytime.",
+      "connectTitle": "Connect Notion",
+      "connectDescLong": "Authorize Focuspilot in Notion and share the databases you want to use.",
+      "cardDescProjectSync": "Project sync: {database}{workspacePart}",
+      "cardDescWorkspace": "Workspace: {workspace}. Use settings to browse databases and sync projects.",
+      "cardDescBrowse": "Use settings to browse databases and sync projects.",
+      "cardDescDisconnected": "Connect your Notion workspace to browse databases and sync projects.",
+      "mappingDialogTitle": "Map Notion database → projects",
+      "mappingDialogDesc": "Each row in the database becomes a Focuspilot project. Re-sync updates names and status.",
+      "databaseLabel": "Database",
+      "nameFieldLabel": "Name field (title column)",
+      "statusFieldLabel": "Status field (optional)",
+      "statusMappingHint": "Done/Complete → Completed · In progress → Active",
+      "browseDialogTitle": "Notion databases",
+      "browseDialogDesc": "Only databases you shared when connecting Notion appear here. Copy an ID for Zapier or open in Notion.",
+      "databasesLoadFailed": "Could not load databases from Notion.",
+      "reconnectHint": "Reconnect Notion on this environment (localhost uses its own token).",
+      "noDatabasesFound": "No databases found. In Notion, open a database → ••• → Connect to → your Focuspilot integration.",
+      "useForProjectSync": "Use for project sync",
+      "copyDatabaseId": "Copy database ID",
+      "openInNotion": "Open in Notion",
+      "syncBtn": "Sync"
+    },
+    "googleCalendar": {
+      "disconnect": "Disconnect",
+      "disconnectTitle": "Disconnect Google Calendar?",
+      "disconnectDesc": "This disconnects Google (Gmail Inbox uses the same OAuth connection).",
+      "connectWithGoogleCalendar": "Connect with Google Calendar",
+      "connectTitle": "Connect Google Calendar",
+      "connectDesc": "Uses Google OAuth (same as Gmail). Enable Calendar API in Google Cloud Console.",
+      "continueWithGoogle": "Continue with Google",
+      "gmailMissingCalendarWarning": "Gmail is connected but Calendar access is missing. Reconnect and allow Calendar permissions."
+    },
+    "xero": {
+      "disconnect": "Disconnect",
+      "disconnectTitle": "Disconnect Xero?",
+      "disconnectDesc": "Focuspilot will stop syncing with Xero. You can reconnect anytime.",
+      "connectWithXero": "Connect with Xero"
+    }
+  },
+  "settingsRolesPage": {
+    "matrix": {
+      "roles": {
+        "admin": "Admin",
+        "manager": "Manager",
+        "member": "Member"
+      },
+      "columns": {
+        "view": "View",
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "resources": {
+        "projects": {
+          "label": "Projects",
+          "desc": "Project overview, phases, timelines"
+        },
+        "tasks": {
+          "label": "Tasks",
+          "desc": "Task creation and assignment"
+        },
+        "finance": {
+          "label": "Finance",
+          "desc": "Invoices, POs, expenses"
+        },
+        "clients": {
+          "label": "Clients",
+          "desc": "CRM contacts and client records"
+        },
+        "library": {
+          "label": "Library",
+          "desc": "Products, materials, specs"
+        },
+        "team": {
+          "label": "Team",
+          "desc": "Member management and roles"
+        },
+        "documents": {
+          "label": "Documents",
+          "desc": "Project files, folders and notes"
+        },
+        "reports": {
+          "label": "Reports",
+          "desc": "Studio analytics and exports"
+        },
+        "design": {
+          "label": "Design",
+          "desc": "AI design workspace and image generation"
+        },
+        "settings": {
+          "label": "Settings",
+          "desc": "Studio-wide settings and configuration"
+        }
+      }
+    }
+  },
+  "projectSettingsPage": {
+    "qrPrintTitle": "Contractor QR — {name}"
+  }
+}

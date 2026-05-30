@@ -27,6 +27,7 @@ import useFetch from '@/hooks/useFetch';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { useTranslations } from 'next-intl';
 
 dayjs.extend(relativeTime);
 
@@ -35,6 +36,7 @@ import { DailyBriefHero } from '@/components/ai/DailyBriefHero';
 
 // Scope toggle for owners/admins
 function ScopeToggle({ scope, onScopeChange, canSeeStudio }: { scope: string, onScopeChange: (s: string) => void, canSeeStudio: boolean }) {
+  const t = useTranslations('dashboardPage');
   if (!canSeeStudio) return null;
 
   return (
@@ -47,7 +49,7 @@ function ScopeToggle({ scope, onScopeChange, canSeeStudio }: { scope: string, on
             : 'text-muted-foreground hover:text-foreground'
         }`}
       >
-        My View
+        {t('myView')}
       </button>
       <button
         onClick={() => onScopeChange('studio')}
@@ -57,7 +59,7 @@ function ScopeToggle({ scope, onScopeChange, canSeeStudio }: { scope: string, on
             : 'text-muted-foreground hover:text-foreground'
         }`}
       >
-        Studio View
+        {t('studioView')}
       </button>
     </div>
   );
@@ -65,6 +67,7 @@ function ScopeToggle({ scope, onScopeChange, canSeeStudio }: { scope: string, on
 
 // Workspace Setup Tour Card
 function WorkspaceTourCard() {
+  const t = useTranslations('dashboardPage');
   const [completedSteps, setCompletedSteps] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
@@ -95,35 +98,35 @@ function WorkspaceTourCard() {
   const steps = [
     {
       id: 'inbox',
-      title: 'Connect AI Inbox',
-      desc: 'Sync your Gmail to automatically synthesize email summaries and action items.',
+      title: t('tour.connectInboxTitle'),
+      desc: t('tour.connectInboxDesc'),
       icon: Sparkles,
       link: '/ai/inbox',
-      btnLabel: 'Go to Inbox'
+      btnLabel: t('tour.goToInbox')
     },
     {
       id: 'theme',
-      title: 'Personalize Interface Theme',
-      desc: 'Choose your color presets, dark modes, and interface grid density.',
+      title: t('tour.personalizeThemeTitle'),
+      desc: t('tour.personalizeThemeDesc'),
       icon: Paintbrush,
       link: '/settings/user/appearance',
-      btnLabel: 'Customize Theme'
+      btnLabel: t('tour.customizeTheme')
     },
     {
       id: 'team',
-      title: 'Invite Team & Contractors',
-      desc: 'Add external trade teams and set up shared portal links for accessing plans.',
+      title: t('tour.inviteTeamTitle'),
+      desc: t('tour.inviteTeamDesc'),
       icon: ShieldCheck,
       link: '/projects',
-      btnLabel: 'Onboard Team'
+      btnLabel: t('tour.onboardTeam')
     },
     {
       id: 'project',
-      title: 'Configure Your First Project',
-      desc: 'Set up digital workboards, outline access controls, and assign tasks.',
+      title: t('tour.firstProjectTitle'),
+      desc: t('tour.firstProjectDesc'),
       icon: Milestone,
       link: '/projects',
-      btnLabel: 'Launch Projects'
+      btnLabel: t('tour.launchProjects')
     }
   ];
 
@@ -135,16 +138,16 @@ function WorkspaceTourCard() {
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
         <div>
           <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-            <Compass className="w-5 h-5 text-primary animate-pulse" /> Focuspilot Onboarding Guide
+            <Compass className="w-5 h-5 text-primary animate-pulse" /> {t('tour.title')}
           </h2>
           <p className="text-sm text-muted-foreground mt-0.5 leading-relaxed">
-            Complete your workspace configuration to unlock advance AI-driven project features.
+            {t('tour.subtitle')}
           </p>
         </div>
         <div className="flex flex-col gap-1 items-end min-w-[220px]">
           <div className="flex justify-between w-full text-xs font-semibold text-foreground/80">
-            <span>Setup Milestones</span>
-            <span>{completedCount}/{steps.length} Completed</span>
+            <span>{t('tour.setupMilestones')}</span>
+            <span>{completedCount}/{steps.length} {t('tour.completed')}</span>
           </div>
           <Progress value={progressPercent} className="w-full h-2 rounded-full bg-muted mt-1.5 [&>div]:bg-primary" />
         </div>
@@ -207,10 +210,11 @@ function WorkspaceTourCard() {
 
 // Today's Meetings Card
 function TodaysMeetingsCard({ meetings = [] }: { scope: string, meetings: any[] }) {
+  const t = useTranslations('dashboardPage');
   const displayMeetings = meetings;
 
   const formatMeetingTime = (start: string, end: string) => {
-    if (start.length === 10) return 'All Day';
+    if (start.length === 10) return t('allDay');
 
     try {
       const startDate = new Date(start);
@@ -218,7 +222,7 @@ function TodaysMeetingsCard({ meetings = [] }: { scope: string, meetings: any[] 
       const timeOptions: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: '2-digit' };
       return `${startDate.toLocaleTimeString([], timeOptions)} - ${endDate.toLocaleTimeString([], timeOptions)}`;
     } catch (e) {
-      return 'Invalid Time';
+      return t('invalidTime');
     }
   };
 
@@ -230,7 +234,7 @@ function TodaysMeetingsCard({ meetings = [] }: { scope: string, meetings: any[] 
             <div className="p-2 bg-primary/10 text-primary border border-primary/20 rounded-xl shadow-inner">
               <Calendar className="w-4.5 h-4.5" />
             </div>
-            <h3 className="font-bold text-foreground text-sm sm:text-base tracking-tight">Today's Meetings</h3>
+            <h3 className="font-bold text-foreground text-sm sm:text-base tracking-tight">{t('todaysMeetings')}</h3>
           </div>
           {displayMeetings?.length > 0 && (
             <Badge variant="outline" className="bg-primary/10 text-primary border-primary/25 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm animate-pulse">
@@ -268,8 +272,8 @@ function TodaysMeetingsCard({ meetings = [] }: { scope: string, meetings: any[] 
               <div className="p-3 bg-muted/20 rounded-full mb-3 border border-border/20 shadow-inner">
                 <Calendar className="h-7 w-7 text-muted-foreground/60" />
               </div>
-              <p className="text-foreground font-bold text-sm">Schedule is clear</p>
-              <p className="text-muted-foreground text-xs mt-1 max-w-[180px] leading-relaxed">Relax! You have no meetings on your calendar today.</p>
+              <p className="text-foreground font-bold text-sm">{t('scheduleClear')}</p>
+              <p className="text-muted-foreground text-xs mt-1 max-w-[180px] leading-relaxed">{t('scheduleClearDesc')}</p>
             </div>
           )}
         </div>
@@ -279,6 +283,7 @@ function TodaysMeetingsCard({ meetings = [] }: { scope: string, meetings: any[] 
 }
 
 export default function DashboardPage() {
+  const t = useTranslations('dashboardPage');
   const { user } = useUser();
   const { data: dashboardInfo } = useFetch('user/dashboard/');
   const { data: dailyBrief, refetch, isLoading } = useFetch('user/daily-brief/');
@@ -302,7 +307,7 @@ export default function DashboardPage() {
   const canSeeStudio = false;
 
   const getGreeting = () => {
-    return dashboardInfo?.greeting?.greeting || 'Good morning';
+    return dashboardInfo?.greeting?.greeting || t('goodMorning');
   };
 
   // Overdue Tasks Card
@@ -317,7 +322,7 @@ export default function DashboardPage() {
               <div className="p-2 bg-destructive/10 text-destructive border border-destructive/20 rounded-xl shadow-inner">
                 <AlertTriangle className="w-4.5 h-4.5" />
               </div>
-              <h3 className="font-bold text-foreground text-sm sm:text-base tracking-tight">Overdue Tasks</h3>
+              <h3 className="font-bold text-foreground text-sm sm:text-base tracking-tight">{t('overdueTasks')}</h3>
             </div>
             <Badge className="bg-destructive/15 text-destructive border border-destructive/25 text-xs font-bold rounded-full px-2.5 py-0.5 shadow-sm">
               {overdueData?.count || 0}
@@ -338,7 +343,7 @@ export default function DashboardPage() {
                     </p>
                     <div className="flex items-center justify-between mt-1 gap-2">
                       <span className="text-[10px] bg-destructive/5 text-destructive/85 border border-destructive/10 px-2 py-0.5 rounded-md font-semibold truncate max-w-[150px]">
-                        {task.project || 'No Project'}
+                        {task.project || t('noProject')}
                       </span>
                     </div>
                   </div>
@@ -350,8 +355,8 @@ export default function DashboardPage() {
                 <div className="p-3 bg-primary/10 text-primary border border-primary/20 rounded-full mb-3 shadow-sm animate-pulse">
                   <CheckCircle2 className="h-7 w-7 text-primary fill-primary/10" />
                 </div>
-                <p className="text-foreground font-bold text-sm">All caught up!</p>
-                <p className="text-muted-foreground text-xs mt-1 max-w-[180px] leading-relaxed">No overdue tasks. Enjoy your neat, productive workspace!</p>
+                <p className="text-foreground font-bold text-sm">{t('allCaughtUp')}</p>
+                <p className="text-muted-foreground text-xs mt-1 max-w-[180px] leading-relaxed">{t('allCaughtUpDesc')}</p>
               </div>
             )}
           </div>
@@ -369,7 +374,7 @@ export default function DashboardPage() {
             <div className="p-2 bg-primary/10 text-primary border border-primary/20 rounded-xl shadow-inner">
               <TrendingUp className="w-4.5 h-4.5" />
             </div>
-            <h3 className="font-bold text-foreground text-sm sm:text-base tracking-tight">Jump Back In</h3>
+            <h3 className="font-bold text-foreground text-sm sm:text-base tracking-tight">{t('jumpBackIn')}</h3>
           </div>
           <div className="space-y-2.5 flex-grow overflow-y-auto max-h-[220px] pr-1 scrollbar-thin">
             {projects?.length > 0 ? (
@@ -388,7 +393,7 @@ export default function DashboardPage() {
                         {project.name}
                       </p>
                     </div>
-                    <span className="text-[10px] bg-card/80 border border-border/50 px-2 py-0.5 rounded-full text-muted-foreground font-semibold capitalize shrink-0 shadow-sm">{project.pill || 'Project'}</span>
+                    <span className="text-[10px] bg-card/80 border border-border/50 px-2 py-0.5 rounded-full text-muted-foreground font-semibold capitalize shrink-0 shadow-sm">{project.pill || t('project')}</span>
                   </div>
                   
                   <div className="flex items-center gap-3 mt-0.5">
@@ -409,8 +414,8 @@ export default function DashboardPage() {
                 <div className="p-3 bg-muted/20 rounded-full mb-3 border border-border/20 shadow-inner">
                   <TrendingUp className="h-7 w-7 text-muted-foreground/60" />
                 </div>
-                <p className="text-foreground font-bold text-sm">No recent boards</p>
-                <p className="text-muted-foreground text-xs mt-1 max-w-[180px] leading-relaxed">Your active digital boards will appear right here.</p>
+                <p className="text-foreground font-bold text-sm">{t('noRecentBoards')}</p>
+                <p className="text-muted-foreground text-xs mt-1 max-w-[180px] leading-relaxed">{t('noRecentBoardsDesc')}</p>
               </div>
             )}
           </div>
@@ -429,14 +434,14 @@ export default function DashboardPage() {
               <div className="p-2 bg-primary/10 text-primary border border-primary/20 rounded-xl shadow-inner">
                 <Clock className="w-4.5 h-4.5" />
               </div>
-              <h3 className="font-bold text-foreground text-sm sm:text-base tracking-tight">Time Tracked</h3>
+              <h3 className="font-bold text-foreground text-sm sm:text-base tracking-tight">{t('timeTracked')}</h3>
             </div>
             
             <div className="bg-gradient-to-r from-primary/15 to-accent/10 border border-primary/25 rounded-2xl p-4 flex items-center justify-between mb-4 shadow-sm relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative z-10">
                 <p className="text-2xl font-black text-foreground tracking-tight leading-none">{timeData?.total_hours || '0h 0m'}</p>
-                <p className="text-[10px] font-bold text-primary tracking-wider uppercase mt-1">Productive Hours</p>
+                <p className="text-[10px] font-bold text-primary tracking-wider uppercase mt-1">{t('productiveHours')}</p>
               </div>
               <div className="p-2.5 bg-primary/10 text-primary border border-primary/20 rounded-xl shadow-inner relative z-10 group-hover:scale-110 transition-transform duration-300 shrink-0">
                 <Clock className="w-4 h-4" />
@@ -485,7 +490,7 @@ export default function DashboardPage() {
         <section>
           <DailyBriefHero
             brief={dailyBrief?.daily_brief}
-            userName={dashboardInfo?.greeting?.name || user?.name || 'there'}
+            userName={dashboardInfo?.greeting?.name || user?.name || t('there')}
             greeting={getGreeting()}
             date={formattedDate}
             onRegenerate={handleRegenerateBrief}

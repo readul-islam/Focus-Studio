@@ -41,8 +41,12 @@ import {
 import { Avatar } from '@radix-ui/react-avatar';
 import { AvatarFallback } from '@/components/ui/avatar';
 import AddEventDialog from './AddEventDialog';
+import { useTranslations } from 'next-intl';
+
+const WEEKDAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const;
 
 export default function CalendarStudioPage() {
+    const t = useTranslations('calendarStudioPage');
 
     // State
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -247,9 +251,9 @@ export default function CalendarStudioPage() {
             <div className="flex animate-in fade-in slide-in-from-bottom-2 duration-200 flex-col h-full border border-gray-200 rounded-lg overflow-y-scroll bg-white shadow-sm">
                 {/* Header */}
                 <div className="grid grid-cols-7 border-b border-gray-200 bg-white">
-                    {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
+                    {WEEKDAY_KEYS.map((d) => (
                         <div key={d} className="py-2 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                            {d}
+                            {t(`weekdays.${d}`)}
                         </div>
                     ))}
                 </div>
@@ -379,7 +383,7 @@ export default function CalendarStudioPage() {
                                                                 <div className="font-semibold">{phase.project_name}</div>
                                                                 <div className="text-sm">{phase.name}</div>
                                                                 <div className="text-xs text-gray-500">{format(phase.startDate, 'MMM d')} - {format(phase.endDate, 'MMM d')}</div>
-                                                                <div className="text-xs mt-1">Progress: {phase.progress}%</div>
+                                                                <div className="text-xs mt-1">{t('progress')}: {phase.progress}%</div>
                                                             </TooltipContent>
                                                         </Tooltip>
                                                     </TooltipProvider>
@@ -432,7 +436,7 @@ export default function CalendarStudioPage() {
                         <p className="text-gray-500">{format(currentDate, 'MMMM do, yyyy')}</p>
                     </div>
                     <Badge variant="outline" className="px-3 py-1 text-sm">
-                        {activePhases.length} Active Phase{activePhases.length !== 1 ? 's' : ''}
+                        {t('activePhaseCount', { count: activePhases.length })}
                     </Badge>
                 </div>
 
@@ -457,7 +461,7 @@ export default function CalendarStudioPage() {
 
                                 <div className="mt-4">
                                     <div className="flex justify-between text-xs text-gray-500 mb-1">
-                                        <span>Progress</span>
+                                        <span>{t('progress')}</span>
                                         <span>{phase.progress}%</span>
                                     </div>
                                     <div className="w-full bg-stone-200 h-2 rounded-full overflow-hidden">
@@ -760,7 +764,7 @@ export default function CalendarStudioPage() {
                                                                         <div className="text-xs opacity-70 mt-1">
                                                                             {format(phase.startDate, 'MMM d, yyyy')} - {format(phase.endDate, 'MMM d, yyyy')}
                                                                         </div>
-                                                                        <div className="text-xs mt-1">Progress: {phase.progress}%</div>
+                                                                        <div className="text-xs mt-1">{t('progress')}: {phase.progress}%</div>
                                                                     </TooltipContent>
                                                                 </Tooltip>
                                                             </TooltipProvider>
@@ -776,7 +780,7 @@ export default function CalendarStudioPage() {
 
                         {members.length === 0 && (
                             <div className="p-12 text-center text-gray-400 bg-stone-50/50">
-                                No team members found.
+                                {t('noMembers')}
                             </div>
                         )}
                     </div>
@@ -805,7 +809,7 @@ export default function CalendarStudioPage() {
                                 onClick={() => { setMode('calendar'); setView('month'); }}
                                 className={`h-8 px-3 rounded-md text-sm font-medium transition-all ${mode === 'calendar' ? 'bg-stone-100 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-stone-50'}`}
                             >
-                                Calendar
+                                {t('modes.calendar')}
                             </Button>
                             <Button
                                 variant="ghost"
@@ -813,7 +817,7 @@ export default function CalendarStudioPage() {
                                 onClick={() => setMode('timeline')}
                                 className={`h-8 px-3 rounded-md text-sm font-medium transition-all ${mode === 'timeline' ? 'bg-stone-100 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-stone-50'}`}
                             >
-                                Timeline
+                                {t('modes.timeline')}
                             </Button>
                         </div>
 
@@ -826,7 +830,7 @@ export default function CalendarStudioPage() {
                                     onClick={() => setView('month')}
                                     className={`h-8 px-3 rounded-md text-xs font-medium transition-all ${view === 'month' ? 'bg-stone-100 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-stone-50'}`}
                                 >
-                                    Month
+                                    {t('views.month')}
                                 </Button>
                                 <Button
                                     variant="ghost"
@@ -834,7 +838,7 @@ export default function CalendarStudioPage() {
                                     onClick={() => setView('week')}
                                     className={`h-8 px-3 rounded-md text-xs font-medium transition-all ${view === 'week' ? 'bg-stone-100 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-stone-50'}`}
                                 >
-                                    Week
+                                    {t('views.week')}
                                 </Button>
                                 <Button
                                     variant="ghost"
@@ -842,7 +846,7 @@ export default function CalendarStudioPage() {
                                     onClick={() => setView('day')}
                                     className={`h-8 px-3 rounded-md text-xs font-medium transition-all ${view === 'day' ? 'bg-stone-100 text-gray-900' : 'text-gray-500 hover:text-gray-700 hover:bg-stone-50'}`}
                                 >
-                                    Day
+                                    {t('views.day')}
                                 </Button>
                             </div>
                         </div>
@@ -874,7 +878,7 @@ export default function CalendarStudioPage() {
                             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                             <Input
                                 className="h-9 w-64 pl-9 bg-white border-gray-200"
-                                placeholder="Search phases..."
+                                placeholder={t('searchPhases')}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -882,12 +886,12 @@ export default function CalendarStudioPage() {
 
                         <Select value={filterType} onValueChange={(val: any) => setFilterType(val)}>
                             <SelectTrigger className="w-[140px] h-9 bg-white border-gray-200">
-                                <SelectValue placeholder="Filter" />
+                                <SelectValue placeholder={t('filters.filter')} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="all">All</SelectItem>
-                                <SelectItem value="phases">Phases</SelectItem>
-                                <SelectItem value="delivery">Delivery Date</SelectItem>
+                                <SelectItem value="all">{t('filters.all')}</SelectItem>
+                                <SelectItem value="phases">{t('filters.phases')}</SelectItem>
+                                <SelectItem value="delivery">{t('filters.deliveryDate')}</SelectItem>
                             </SelectContent>
                         </Select>
 
@@ -921,7 +925,7 @@ export default function CalendarStudioPage() {
                                 {/* Phases Section */}
                                 {(filterType === 'all' || filterType === 'phases') && phasesForSelectedDate.length > 0 && (
                                     <div className="space-y-3">
-                                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Active Phases</h3>
+                                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('activePhases')}</h3>
                                         {phasesForSelectedDate.map((phase: any) => (
                                             <div key={phase.id} className={`p-3 rounded-lg border ${getPhaseLightColor(phase.colorIndex)} border-opacity-20`}>
                                                 <h3 className={`font-medium text-sm`}>{phase.project_name}</h3>
@@ -963,7 +967,7 @@ export default function CalendarStudioPage() {
                                     (filterType === 'all' && phasesForSelectedDate.length === 0 && deliveryDates.filter((d: any) => isSameDay(d.deliveryDate, selectedDate)).length === 0)) && (
                                         <div className="text-center py-10 bg-white rounded-lg border border-dashed border-gray-200">
                                             <Clock className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-                                            <p className="text-sm text-gray-500">No events for this date.</p>
+                                            <p className="text-sm text-gray-500">{t('noEventsDate')}</p>
                                         </div>
                                     )}
                             </div>

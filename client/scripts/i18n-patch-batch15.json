@@ -1,0 +1,54 @@
+{
+  "topBar": {
+    "selectProject": "Select Project",
+    "searchProjects": "Search projects…",
+    "noProjectsFound": "No projects found",
+    "selectTask": "Select Task",
+    "searchTasks": "Search tasks…",
+    "noTasksAvailable": "No tasks available"
+  },
+  "taskComments": {
+    "title": "Comments",
+    "placeholder": "Add comment (@mention to notify)",
+    "submit": "Comment",
+    "loading": "Loading comments…",
+    "empty": "No comments yet.",
+    "you": "You",
+    "toasts": {
+      "addFailed": "Failed to add comment"
+    }
+  },
+  "taskAttachments": {
+    "label": "Attachment",
+    "loading": "Loading attachments…",
+    "uploadedOn": "Uploaded on {date}",
+    "pendingHint": "Will upload when you save the task · {size} MB",
+    "saveHint": "Add files now — they upload automatically when you save the task.",
+    "deleteTitle": "Delete attachment",
+    "deleteDescription": "Are you sure you want to delete this file? This action cannot be undone.",
+    "defaultFileName": "file",
+    "toasts": {
+      "removed": "Attachment removed",
+      "deleteFailed": "Failed to delete attachment",
+      "uploaded": "Attachment uploaded",
+      "uploadedPlural": "Attachments uploaded",
+      "uploadFailed": "Failed to upload attachment",
+      "fileTooLarge": "{name} must be less than 5MB"
+    }
+  },
+  "helpArticleFeedback": {
+    "question": "Was this article helpful?",
+    "yes": "Yes",
+    "no": "No",
+    "placeholderHelpful": "Anything we could improve? (optional)",
+    "placeholderNotHelpful": "What was missing or unclear? (optional)",
+    "submit": "Submit feedback",
+    "sending": "Sending…",
+    "thanksTitle": "Thank you for your feedback",
+    "thanksDescription": "It helps us improve this article.",
+    "toasts": {
+      "thanks": "Thanks for your feedback!",
+      "saveFailed": "Could not save feedback. Please try again."
+    }
+  }
+}

@@ -35,17 +35,13 @@ import {
   type DesignLightboxSlide,
 } from '@/components/design/DesignImageLightbox';
 import { gooeyToast as toast } from 'goey-toast';
+import { useTranslations } from 'next-intl';
 
 function makeOptimisticId() {
   return -Math.floor(Math.random() * 1_000_000_000);
 }
 
-const SUGGESTED_PROMPTS = [
-  'Modern minimalist living room with natural light',
-  'Luxury kitchen with marble island and brass accents',
-  'Cozy Scandinavian bedroom with warm wood tones',
-  'Contemporary exterior facade with large glazing',
-];
+const SUGGESTED_PROMPT_KEYS = ['suggest1', 'suggest2', 'suggest3', 'suggest4'] as const;
 
 function DesignStar({ size = 20, className = '' }: { size?: number; className?: string }) {
   return (
@@ -62,7 +58,7 @@ function DesignStar({ size = 20, className = '' }: { size?: number; className?: 
   );
 }
 
-function ThinkingSkeleton({ label = 'Thinking...' }: { label?: string }) {
+function ThinkingSkeleton({ label }: { label: string }) {
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
@@ -114,12 +110,13 @@ function GeneratedImageBlock({
   onShare: () => void;
   onOpenFullscreen: () => void;
 }) {
+  const t = useTranslations('designChatPanel');
   return (
     <div className="space-y-2 max-w-md">
       <div className="relative rounded-xl overflow-hidden border border-gray-200 bg-gray-50 aspect-square">
         <DesignClickableImage
           src={imageUrl}
-          alt="Generated design render"
+          alt={t('generatedRenderAlt')}
           className="absolute inset-0 w-full h-full"
           onOpen={onOpenFullscreen}
         />
@@ -133,7 +130,7 @@ function GeneratedImageBlock({
           className="inline-flex items-center gap-1.5 text-xs text-gray-600 hover:text-gray-900 px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-stone-50"
         >
           <Download className="w-3.5 h-3.5" />
-          Download
+          {t('download')}
         </a>
         <button
           type="button"
@@ -141,7 +138,7 @@ function GeneratedImageBlock({
           className="inline-flex items-center gap-1.5 text-xs text-white px-2.5 py-1.5 rounded-lg bg-gray-900 hover:bg-gray-800"
         >
           <Share2 className="w-3.5 h-3.5" />
-          Share or attach
+          {t('shareOrAttach')}
         </button>
       </div>
     </div>
@@ -161,6 +158,8 @@ export function DesignChatPanel({
   onDesignTypeChange,
   canEdit,
 }: Props) {
+  const t = useTranslations('designChatPanel');
+  const suggestedPrompts = SUGGESTED_PROMPT_KEYS.map((key) => t(key));
   const [input, setInput] = useState('');
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [pendingPreviews, setPendingPreviews] = useState<string[]>([]);
@@ -189,14 +188,14 @@ export function DesignChatPanel({
     const slides: DesignLightboxSlide[] = [];
     for (const msg of displayMessages) {
       if (msg.sketch_url) {
-        slides.push({ src: msg.sketch_url, alt: 'Uploaded sketch' });
+        slides.push({ src: msg.sketch_url, alt: t('sketchAlt') });
       }
       if (msg.image_url) {
-        slides.push({ src: msg.image_url, alt: 'Generated design' });
+        slides.push({ src: msg.image_url, alt: t('generatedRenderAlt') });
       }
     }
     return slides;
-  }, [displayMessages]);
+  }, [displayMessages, t]);
 
   const scrollBottom = useCallback(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -217,15 +216,15 @@ export function DesignChatPanel({
     const next: File[] = [];
     for (const f of Array.from(files)) {
       if (!isAllowedChatFile(f) || f.type.startsWith('video/')) {
-        toast.error(`${f.name} is not a supported image`);
+        toast.error(t('unsupportedImage', { name: f.name }));
         continue;
       }
       if (f.size > MAX_CHAT_FILE_BYTES) {
-        toast.error(`${f.name} exceeds ${formatFileSize(MAX_CHAT_FILE_BYTES)}`);
+        toast.error(t('fileTooLarge', { name: f.name, size: formatFileSize(MAX_CHAT_FILE_BYTES) }));
         continue;
       }
       if (!f.type.startsWith('image/')) {
-        toast.error('Only image sketches are supported for design generation');
+        toast.error(t('sketchesOnly'));
         continue;
       }
       next.push(f);
@@ -235,12 +234,12 @@ export function DesignChatPanel({
 
   const handleGenerate = () => {
     if (!canEdit) {
-      toast.error("You don't have permission to generate designs");
+      toast.error(t('noGeneratePermission'));
       return;
     }
     const trimmed = input.trim();
     if (!trimmed && pendingFiles.length === 0) {
-      toast.error('Add a prompt or upload a sketch');
+      toast.error(t('promptOrSketchRequired'));
       return;
     }
 
@@ -257,8 +256,8 @@ export function DesignChatPanel({
       },
     ]);
 
-    setGeneratePhase('Analyzing sketch…');
-    const phaseTimer = setTimeout(() => setGeneratePhase('Rendering design…'), 3000);
+    setGeneratePhase(t('analyzingSketch'));
+    const phaseTimer = setTimeout(() => setGeneratePhase(t('renderingDesign')), 3000);
 
     generateMutation.mutate(
       { prompt: trimmed, design_type: designType, files: [...pendingFiles] },
@@ -275,7 +274,7 @@ export function DesignChatPanel({
           setOptimisticMessages([]);
           setGeneratePhase(null);
           const msg =
-            err?.response?.data?.error || err?.message || 'Generation failed';
+            err?.response?.data?.error || err?.message || t('generationFailed');
           toast.error(msg);
         },
       }
@@ -286,7 +285,7 @@ export function DesignChatPanel({
     const trimmed = input.trim();
     if (!trimmed || isPending) return;
     if (!canEdit) {
-      toast.error("You don't have permission to chat");
+      toast.error(t('noChatPermission'));
       return;
     }
 
@@ -307,7 +306,7 @@ export function DesignChatPanel({
       onSuccess: () => setOptimisticMessages([]),
       onError: (err: { response?: { data?: { error?: string } }; message?: string }) => {
         setOptimisticMessages([]);
-        toast.error(err?.response?.data?.error || 'Chat failed');
+        toast.error(err?.response?.data?.error || t('chatFailed'));
       },
     });
   };
@@ -328,23 +327,23 @@ export function DesignChatPanel({
       <div className="flex items-center justify-between px-4 pt-4 pb-3 shrink-0 border-b border-stone-200">
         <div className="flex items-center gap-2">
           <DesignStar size={20} className="text-sage-700" />
-          <span className="text-[15px] font-medium text-gray-900">Design Studio</span>
+          <span className="text-[15px] font-medium text-gray-900">{t('designStudio')}</span>
         </div>
         <div className="flex items-center gap-2">
           <select
             value={designType}
             onChange={e => onDesignTypeChange(e.target.value as 'interior' | 'exterior')}
             className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white text-gray-700"
-            aria-label="Design type"
+            aria-label={t('designType')}
           >
-            <option value="interior">Interior</option>
-            <option value="exterior">Exterior</option>
+            <option value="interior">{t('interior')}</option>
+            <option value="exterior">{t('exterior')}</option>
           </select>
           <button
             type="button"
             onClick={() => refetch()}
             className="p-1.5 rounded-full hover:bg-stone-100 text-gray-400"
-            title="Refresh"
+            title={t('refresh')}
           >
             <RotateCcw className="w-4 h-4" />
           </button>
@@ -355,13 +354,13 @@ export function DesignChatPanel({
         <div className="flex flex-col items-center justify-center flex-1 px-6 pb-4 text-center">
           <DesignStar size={38} className="text-sage-700 mb-4 opacity-80" />
           <p className="text-xl font-medium text-gray-900 mb-2 leading-tight">
-            Interior & exterior design
+            {t('emptyTitle')}
           </p>
           <p className="text-sm text-gray-500 mb-8 max-w-sm">
-            Upload a sketch or diagram, describe your vision, and generate photorealistic design renders.
+            {t('emptyDescription')}
           </p>
           <div className="w-full max-w-md space-y-1">
-            {SUGGESTED_PROMPTS.map(q => (
+            {suggestedPrompts.map(q => (
               <button
                 key={q}
                 type="button"
@@ -378,7 +377,7 @@ export function DesignChatPanel({
 
       {!isEmpty && (
         <div className="flex-1 overflow-y-auto px-4 py-3 space-y-5 min-h-0">
-          {messagesLoading && <ThinkingSkeleton />}
+          {messagesLoading && <ThinkingSkeleton label={t('thinking')} />}
           {displayMessages.map((msg: DesignMessage) => (
             <MessageBubble
               key={msg.id}
@@ -397,7 +396,7 @@ export function DesignChatPanel({
           ))}
           {isPending && (
             <ThinkingSkeleton
-              label={generatePhase || 'Thinking...'}
+              label={generatePhase || t('thinking')}
             />
           )}
           <div ref={bottomRef} />
@@ -422,7 +421,7 @@ export function DesignChatPanel({
                         alt: f.name,
                         gallery: pendingPreviews.map((src, j) => ({
                           src,
-                          alt: pendingFiles[j]?.name ?? 'Sketch',
+                          alt: pendingFiles[j]?.name ?? t('sketchLabel'),
                         })),
                       })
                     }
@@ -436,7 +435,7 @@ export function DesignChatPanel({
                   type="button"
                   onClick={() => setPendingFiles(prev => prev.filter((_, j) => j !== i))}
                   className="absolute top-0.5 right-0.5 p-0.5 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                  aria-label={`Remove ${f.name}`}
+                  aria-label={t('removeFile', { name: f.name })}
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -458,7 +457,7 @@ export function DesignChatPanel({
               });
             }}
             onKeyDown={handleKeyDown}
-            placeholder="Describe your design or upload a sketch below…"
+            placeholder={t('inputPlaceholder')}
             disabled={!canEdit}
             className="w-full bg-transparent text-sm text-gray-800 placeholder-gray-400 outline-none resize-none px-4 pt-3 pb-1 leading-relaxed max-h-40 overflow-y-auto"
             style={{ minHeight: '40px' }}
@@ -481,12 +480,12 @@ export function DesignChatPanel({
                 onClick={() => fileInputRef.current?.click()}
                 disabled={!canEdit}
                 className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-stone-100 disabled:opacity-40"
-                title="Upload sketch"
+                title={t('uploadSketch')}
               >
                 <Paperclip className="w-4 h-4" />
               </button>
               <span className="text-[10px] text-gray-400 hidden sm:inline">
-                Enter to send · Shift+Enter newline
+                {t('enterToSendHint')}
               </span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -502,7 +501,7 @@ export function DesignChatPanel({
                   ) : (
                     <Sparkles className="w-3.5 h-3.5" />
                   )}
-                  Generate
+                  {t('generate')}
                 </button>
               )}
               <button
@@ -510,7 +509,7 @@ export function DesignChatPanel({
                 onClick={handleChat}
                 disabled={!input.trim() || isPending || !canEdit}
                 className="w-8 h-8 rounded-full bg-gray-900 flex items-center justify-center disabled:opacity-30 hover:bg-gray-800 transition-colors shrink-0"
-                title="Send message"
+                title={t('sendMessage')}
               >
                 <Send className="w-3.5 h-3.5 text-white" />
               </button>
@@ -518,7 +517,7 @@ export function DesignChatPanel({
           </div>
         </div>
         <p className="text-[10px] text-gray-400 text-center mt-2">
-          AI-generated designs may need professional review before client presentation.
+          {t('aiDisclaimer')}
         </p>
       </div>
 
@@ -546,6 +545,7 @@ function MessageBubble({
   onShare: (url: string, assetId: number) => void;
   onOpenImage: (src: string, alt: string) => void;
 }) {
+  const t = useTranslations('designChatPanel');
   const [copied, setCopied] = useState(false);
 
   if (msg.role === 'user') {
@@ -555,9 +555,9 @@ function MessageBubble({
           <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-xl overflow-hidden border border-gray-200 shadow-sm">
             <DesignClickableImage
               src={msg.sketch_url}
-              alt="Uploaded sketch"
+              alt={t('sketchAlt')}
               className="w-full h-full"
-              onOpen={() => onOpenImage(msg.sketch_url!, 'Uploaded sketch')}
+              onOpen={() => onOpenImage(msg.sketch_url!, t('sketchAlt'))}
             />
           </div>
         )}
@@ -578,7 +578,7 @@ function MessageBubble({
           imageUrl={msg.image_url}
           assetId={msg.asset_id}
           onShare={() => onShare(msg.image_url!, msg.asset_id!)}
-          onOpenFullscreen={() => onOpenImage(msg.image_url!, 'Generated design')}
+          onOpenFullscreen={() => onOpenImage(msg.image_url!, t('generatedRenderAlt'))}
         />
       ) : null}
       {msg.content && <MarkdownContent content={msg.content} />}
@@ -593,7 +593,7 @@ function MessageBubble({
           className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-600"
         >
           {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-          {copied ? 'Copied' : 'Copy'}
+          {copied ? t('copied') : t('copy')}
         </button>
       )}
     </div>

@@ -1,0 +1,33 @@
+{
+  "imageCropUpload": {
+    "change": "変更",
+    "cropTitle": "{label}を切り抜き",
+    "removeAriaLabel": "{label}を削除",
+    "imageRemoved": "画像を削除しました",
+    "removeFailed": "画像を削除できませんでした",
+    "updated": "{label}を更新しました",
+    "uploadFailed": "画像をアップロードできませんでした",
+    "unsupportedFileType": "サポートされていないファイル形式です。PNG、JPG、またはWEBPを使用してください。",
+    "fileTooLarge": "ファイルが大きすぎます。最大5MBです。"
+  },
+  "settingsProfilePage": {
+    "altProfileCover": "プロフィールカバー",
+    "altProfilePhoto": "プロフィール写真",
+    "removeCoverAria": "カバー画像を削除",
+    "deleteProfilePictureAria": "プロフィール写真を削除",
+    "placeholders": {
+      "name": "Jane Designer",
+      "designation": "デザイナー",
+      "role": "メンバー"
+    }
+  },
+  "settingsPublicProfilePage": {
+    "linkLabels": {
+      "website": "ウェブサイト",
+      "linkedin": "LinkedIn",
+      "instagram": "Instagram",
+      "pinterest": "Pinterest",
+      "houzz": "Houzz"
+    }
+  }
+}

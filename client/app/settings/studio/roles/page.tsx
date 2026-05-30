@@ -8,22 +8,22 @@ import usePatch from "@/hooks/usePatch"
 import { useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { usePermissions } from "@/hooks/usePermissions"
+import { useTranslations } from 'next-intl'
 
 const ROLES_URL = "/user/studio/roles/"
 
 function RolesPageContent() {
+  const t = useTranslations('settingsRolesPage')
   const queryClient = useQueryClient()
   const { userRole } = usePermissions()
   const { data: matrix, isLoading } = useFetch(ROLES_URL)
   const { mutate: saveRoles, isPending } = usePatch({
     onSuccess: () => {
-      toast.success("Permissions updated.")
-      // Invalidate the matrix so the UI reflects the new values
+      toast.success(t('toasts.updated'))
       queryClient.invalidateQueries({ queryKey: [ROLES_URL] })
-      // Invalidate user/self/ so capability tokens are re-fetched for all hooks
       queryClient.invalidateQueries({ queryKey: ['user/self/'] })
     },
-    onError: () => toast.error("Failed to save permissions."),
+    onError: () => toast.error(t('toasts.saveFailed')),
   })
 
   const handleToggle = (role: string, permission: string, enabled: boolean) => {
@@ -33,12 +33,12 @@ function RolesPageContent() {
   return (
     <div className="space-y-6 md:space-y-8 animate-in fade-in duration-300">
       <div>
-        <h1 className="text-base font-bold text-foreground tracking-tight">Roles & permissions</h1>
-        <p className="text-sm text-muted-foreground mt-1">Define what each role can view and edit across the workspace.</p>
+        <h1 className="text-base font-bold text-foreground tracking-tight">{t('title')}</h1>
+        <p className="text-sm text-muted-foreground mt-1">{t('description')}</p>
       </div>
 
-      <Section title="Permissions matrix" description="Customise access for each role.">
-        {isLoading && <div className="py-6 text-sm text-gray-500">Loading permissions…</div>}
+      <Section title={t('matrixTitle')} description={t('matrixDescription')}>
+        {isLoading && <div className="py-6 text-sm text-gray-500">{t('loadingPermissions')}</div>}
         {!isLoading && matrix && (
           <PermissionsMatrix
             matrix={matrix as ApiMatrix}

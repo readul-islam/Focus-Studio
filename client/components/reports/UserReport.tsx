@@ -15,6 +15,7 @@ import { Bar, BarChart, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useTranslations } from 'next-intl';
 
 interface UserReportProps {
     externalStartDate?: string;
@@ -22,6 +23,7 @@ interface UserReportProps {
 }
 
 const UserReport = ({ externalStartDate, externalEndDate }: UserReportProps = {}) => {
+    const t = useTranslations('reportsUserPage');
     const router = useRouter();
     const [sortBy, setSortBy] = useState('time-desc');
     const [chartMetric, setChartMetric] = useState<'hours' | 'cost'>('hours');
@@ -56,8 +58,8 @@ const UserReport = ({ externalStartDate, externalEndDate }: UserReportProps = {}
     }, [filteredUsers]);
 
     const chartConfig = {
-        hours: { label: 'Hours', color: '#94A88C' },
-        cost: { label: 'Cost', color: '#A59F96' },
+        hours: { label: t('hours'), color: '#94A88C' },
+        cost: { label: t('cost'), color: '#A59F96' },
     };
 
     const exportData = useMemo(() => {
@@ -98,33 +100,33 @@ const UserReport = ({ externalStartDate, externalEndDate }: UserReportProps = {}
         <div className="space-y-6">
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                <KpiCard label="Team Members" value={reportData.users?.length || 0} sub={reportData.studio_name} icon={Users} />
-                <KpiCard label="Total Time Logged" value={totalHours} sub="This period" icon={Timer} />
-                <KpiCard label="Total Cost" value={totalCost} sub="Staff cost this period" icon={DollarSign} />
+                <KpiCard label={t('teamMembers')} value={reportData.users?.length || 0} sub={reportData.studio_name} icon={Users} />
+                <KpiCard label={t('totalTimeLogged')} value={totalHours} sub={t('thisPeriod')} icon={Timer} />
+                <KpiCard label={t('totalCost')} value={totalCost} sub={t('staffCostSub')} icon={DollarSign} />
             </div>
 
             {/* Controls row — sort + export only */}
             <div className="flex items-center justify-end gap-3">
                 <Select value={chartMetric} onValueChange={(v: 'hours' | 'cost') => setChartMetric(v)}>
                     <SelectTrigger className="w-[120px]">
-                        <SelectValue placeholder="Metric" />
+                        <SelectValue placeholder={t('metric')} />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="hours">Hours</SelectItem>
-                        <SelectItem value="cost">Cost</SelectItem>
+                        <SelectItem value="hours">{t('hours')}</SelectItem>
+                        <SelectItem value="cost">{t('cost')}</SelectItem>
                     </SelectContent>
                 </Select>
                 <Select value={sortBy} onValueChange={setSortBy}>
                     <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Sort By" />
+                        <SelectValue placeholder={t('sortBy')} />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="time-desc">Most Time Logged</SelectItem>
-                        <SelectItem value="time-asc">Least Time Logged</SelectItem>
-                        <SelectItem value="cost-desc">Highest Cost</SelectItem>
-                        <SelectItem value="cost-asc">Lowest Cost</SelectItem>
-                        <SelectItem value="name-asc">Name (A-Z)</SelectItem>
-                        <SelectItem value="name-desc">Name (Z-A)</SelectItem>
+                        <SelectItem value="time-desc">{t('mostTimeLogged')}</SelectItem>
+                        <SelectItem value="time-asc">{t('leastTimeLogged')}</SelectItem>
+                        <SelectItem value="cost-desc">{t('highestCost')}</SelectItem>
+                        <SelectItem value="cost-asc">{t('lowestCost')}</SelectItem>
+                        <SelectItem value="name-asc">{t('nameAsc')}</SelectItem>
+                        <SelectItem value="name-desc">{t('nameDesc')}</SelectItem>
                     </SelectContent>
                 </Select>
                 <ExportButton
@@ -139,9 +141,9 @@ const UserReport = ({ externalStartDate, externalEndDate }: UserReportProps = {}
                 <Card className="bg-white border-gray-200 rounded-xl shadow-sm">
                     <CardHeader>
                         <CardTitle className="text-lg font-semibold text-gray-900">
-                            User {chartMetric === 'hours' ? 'Time' : 'Cost'} Distribution
+                            {chartMetric === 'hours' ? t('chartTimeDistribution') : t('chartCostDistribution')}
                         </CardTitle>
-                        <CardDescription>Top users by {chartMetric === 'hours' ? 'hours logged' : 'cost'}</CardDescription>
+                        <CardDescription>{chartMetric === 'hours' ? t('topUsersByHours') : t('topUsersByCost')}</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="h-[300px] w-full">
@@ -181,9 +183,9 @@ const UserReport = ({ externalStartDate, externalEndDate }: UserReportProps = {}
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>User</TableHead>
-                                <TableHead className="text-right">Cost</TableHead>
-                                <TableHead className="text-right">Duration</TableHead>
+                                <TableHead>{t('userColumn')}</TableHead>
+                                <TableHead className="text-right">{t('costColumn')}</TableHead>
+                                <TableHead className="text-right">{t('durationColumn')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -220,7 +222,7 @@ const UserReport = ({ externalStartDate, externalEndDate }: UserReportProps = {}
                             ) : (
                                 <TableRow>
                                     <TableCell colSpan={3} className="text-center h-24 text-gray-500">
-                                        No team members found.
+                                        {t('noTeamMembers')}
                                     </TableCell>
                                 </TableRow>
                             )}

@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
 import './globals.css';
 import { Providers } from '@/lib/Providers';
 import GoeyToasterClient from '@/components/GoeyToasterClient';
@@ -16,9 +18,16 @@ export const metadata: Metadata = {
   description: "Focuspilot Web Application",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+function getTextDirection(locale: string): 'ltr' | 'rtl' {
+  return locale === 'ar-AE' ? 'rtl' : 'ltr';
+}
+
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} dir={getTextDirection(locale)} suppressHydrationWarning>
       <head>
         <ThemeScript />
       </head>
@@ -27,7 +36,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <AppUpdateChecker />
         <GoeyToasterClient />
         <Providers>
-          <RootLayoutWrapper>{children}</RootLayoutWrapper>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <RootLayoutWrapper>{children}</RootLayoutWrapper>
+          </NextIntlClientProvider>
         </Providers>
       </body>
     </html>

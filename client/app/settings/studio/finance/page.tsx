@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchData } from '@/lib/Api';
 import { gooeyToast as toast } from 'goey-toast';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
+import { useTranslations } from 'next-intl';
 
 interface StudioFinanceData {
   default_currency?: string;
@@ -18,6 +19,7 @@ interface StudioFinanceData {
 }
 
 function StudioFinancePageContent() {
+  const t = useTranslations('settingsFinancePage');
   const { user, isLoading } = useUser();
   const [studioData, setStudioData] = useState<StudioFinanceData | null>(null);
   const queryClient = useQueryClient();
@@ -45,11 +47,10 @@ function StudioFinancePageContent() {
     onSuccess: () => {
       localStorage.setItem('studioCurrency', JSON.stringify(studioData?.default_currency));
       queryClient.invalidateQueries({ queryKey: ['users', user?.email] });
-      toast.success('Finance Settings Updated');
+      toast.success(t('toasts.updated'));
     },
-    onError: error => {
-
-      toast.error('Error! Try again');
+    onError: () => {
+      toast.error(t('toasts.updateFailed'));
     },
   });
 
@@ -78,19 +79,19 @@ function StudioFinancePageContent() {
   return (
     <div className="space-y-6 md:space-y-8">
       <div>
-        <h1 className="text-base font-semibold text-gray-900">Finance</h1>
-        <p className="text-sm text-gray-600">Currency, tax, invoice numbering, and payment terms.</p>
+        <h1 className="text-base font-semibold text-gray-900">{t('title')}</h1>
+        <p className="text-sm text-gray-600">{t('description')}</p>
       </div>
 
-      <Section title="Defaults" description="Set your studio-wide financial defaults.">
+      <Section title={t('defaultsTitle')} description={t('defaultsDescription')}>
         <form onSubmit={e => handleSubmit(e)} className="grid gap-6 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="default_currency">Default studio currency</Label>
+            <Label htmlFor="default_currency">{t('defaultCurrency')}</Label>
             <CurrencySelector value={studioData?.default_currency} onChange={handleUpdateCurrency} />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="default_tax_rate">Default tax rate (%)</Label>
+            <Label htmlFor="default_tax_rate">{t('defaultTaxRate')}</Label>
             <Input
               value={studioData?.default_tax_rate}
               onChange={value => {
@@ -112,7 +113,7 @@ function StudioFinancePageContent() {
           </div>
 
           <div className="sm:col-span-2 flex justify-end">
-            <Button>Save finance settings</Button>
+            <Button>{t('saveFinanceSettings')}</Button>
           </div>
         </form>
       </Section>

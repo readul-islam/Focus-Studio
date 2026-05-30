@@ -44,6 +44,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { useTranslations } from 'next-intl';
 
 
 // extend once in your app (e.g., in _app.tsx or a utils/date.ts file)
@@ -102,13 +103,13 @@ export function splitGmailEmail(html: string) {
   };
 }
 
-const MessageBlock = ({ msg, userEmail }: { msg: MessageItem; userEmail?: string | null }) => {
+const MessageBlock = ({ msg, userEmail, t }: { msg: MessageItem; userEmail?: string | null; t: ReturnType<typeof useTranslations<'homeInboxPage'>> }) => {
   const [expanded, setExpanded] = useState(false);
   const { main, quoted } = useMemo(() => splitGmailEmail(msg.body), [msg.body]);
   const sentByMe = messageIsSentByUser(msg.sender, userEmail);
   const senderLabel =
     msg.sender_label ||
-    (sentByMe ? 'You' : msg.sender?.split('<')[0]?.trim().replace(/^["']|["']$/g, '') || 'Unknown');
+    (sentByMe ? t('you') : msg.sender?.split('<')[0]?.trim().replace(/^["']|["']$/g, '') || t('unknown'));
 
   return (
     <div className={`flex gap-4 `}>
@@ -145,7 +146,7 @@ const MessageBlock = ({ msg, userEmail }: { msg: MessageItem; userEmail?: string
                 <button
                   onClick={() => setExpanded(true)}
                   className="flex items-center justify-center px-1  bg-stone-200 hover:bg-stone-300 rounded-[5px] text-gray-500 transition-colors"
-                  title="Show trimmed content"
+                  title={t('showTrimmedContent')}
                 >
                   <MoreHorizontal className="w-4 h-4" />
                 </button>
@@ -154,7 +155,7 @@ const MessageBlock = ({ msg, userEmail }: { msg: MessageItem; userEmail?: string
                  <button
                   onClick={() => setExpanded(false)}
                   className="flex items-center justify-center px-1  bg-stone-200 hover:bg-stone-300 rounded-[5px] text-gray-500 transition-colors"
-                  title="Show trimmed content"
+                  title={t('showTrimmedContent')}
                 >
                   <MoreHorizontal className="w-4 h-4" />
                 </button>
@@ -180,6 +181,8 @@ const MessageBlock = ({ msg, userEmail }: { msg: MessageItem; userEmail?: string
 
 
 export default function InboxPage() {
+  const t = useTranslations('homeInboxPage');
+  const tc = useTranslations('common');
   const { user } = useUser();
   const queryClient = useQueryClient();
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
@@ -222,7 +225,7 @@ export default function InboxPage() {
     },
     {
       onSuccess: () => {
-        toast.success('Email added to project');
+        toast.success(t('toasts.addedToProject'));
         setProjectOpen(false);
         setProjectSearch('');
         setSelectedProjectId(null);
@@ -270,8 +273,8 @@ export default function InboxPage() {
   // Send Reply Mutation
 
   useEffect(() => {
-    document.title = 'My Inbox | Focuspilot';
-  }, []);
+    document.title = t('documentTitle');
+  }, [t]);
 
   // Auto-scroll to bottom of conversation
   useEffect(() => {
@@ -298,10 +301,10 @@ export default function InboxPage() {
     const subject =
       messages.find((m) => m.subject)?.subject ||
       messages[messages.length - 1]?.subject ||
-      '(No Subject)';
+      t('noSubject');
 
     if (!toEmail) {
-      toast.error('Could not determine who to reply to.');
+      toast.error(t('toasts.replyTargetUnknown'));
       return;
     }
 
@@ -315,12 +318,12 @@ export default function InboxPage() {
     setIsSending(true);
     try {
       await postFormData({ url: 'gmail/send/', data: formData });
-      toast.success('Reply sent successfully');
+      toast.success(t('toasts.replySent'));
       setReplyBody('');
       refetchMessages();
       refetchThreads();
     } catch (err: unknown) {
-      toast.error(`Failed to send reply: ${getApiErrorMessage(err, 'Unknown error')}`);
+      toast.error(t('toasts.replyFailed', { error: getApiErrorMessage(err, t('unknown')) }));
     } finally {
       setIsSending(false);
     }
@@ -367,7 +370,7 @@ export default function InboxPage() {
                 <Input
                   value={searchText}
                   onChange={e => setSearchText(e.target.value)}
-                  placeholder="Search inbox..."
+                  placeholder={t('searchPlaceholder')}
                   className="pl-10 bg-white border-gray-200 focus:border-gray-300 focus:ring-0"
                 />
             </div>
@@ -380,7 +383,7 @@ export default function InboxPage() {
                 style={filter === "all" ? { backgroundColor: "rgb(17, 24, 39)" } : {}}
                 onClick={() => setFilter("all")}
               >
-                All
+                {t('filters.all')}
               </Button>
               <Button
                 variant="ghost"
@@ -389,7 +392,7 @@ export default function InboxPage() {
                 style={filter === "unread" ? { backgroundColor: "rgb(17, 24, 39)" } : {}}
                 onClick={() => setFilter("unread")}
               >
-                Unread
+                {t('filters.unread')}
               </Button>
               <Button
                 variant="ghost"
@@ -398,7 +401,7 @@ export default function InboxPage() {
                 style={filter === "mentions" ? { backgroundColor: "rgb(17, 24, 39)" } : {}}
                 onClick={() => setFilter("mentions")}
               >
-                Mentions
+                {t('filters.mentions')}
               </Button>
               <Button
                 variant="ghost"
@@ -407,7 +410,7 @@ export default function InboxPage() {
                 style={filter === "system" ? { backgroundColor: "rgb(17, 24, 39)" } : {}}
                 onClick={() => setFilter("system")}
               >
-                System
+                {t('filters.system')}
               </Button>
               <Button
                 variant="ghost"
@@ -416,7 +419,7 @@ export default function InboxPage() {
                 style={filter === "emails" ? { backgroundColor: "rgb(17, 24, 39)" } : {}}
                 onClick={() => setFilter("emails")}
               >
-                Emails
+                {t('filters.emails')}
               </Button>
               <Button
                 variant="ghost"
@@ -425,7 +428,7 @@ export default function InboxPage() {
                 style={filter === "ai-notes" ? { backgroundColor: "rgb(17, 24, 39)" } : {}}
                 onClick={() => setFilter("ai-notes")}
               >
-                AI Notes
+                {t('filters.aiNotes')}
               </Button>
             </div>
 
@@ -435,14 +438,14 @@ export default function InboxPage() {
                 <div className="border-b border-stone-200 bg-stone-50 px-4 py-3 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2 min-w-0">
                     <Mail className="h-4 w-4 text-stone-400 flex-shrink-0" />
-                    <span className="text-xs text-stone-600 truncate">Connect your Gmail to see emails here</span>
+                    <span className="text-xs text-stone-600 truncate">{t('connectGmailBanner')}</span>
                   </div>
                   <GmailIntegration isLoading={integrationStatusLoading} isConnected={integrationStatus?.gmail_connected} compact />
                 </div>
               )}
 
               <div className="p-4 border-b border-gray-100 flex-shrink-0">
-                <h3 className="text-sm font-medium text-gray-900">Recent Messages</h3>
+                <h3 className="text-sm font-medium text-gray-900">{t('recentMessages')}</h3>
               </div>
 
               <div className="overflow-y-auto flex-1 p-0">
@@ -458,8 +461,8 @@ export default function InboxPage() {
                       <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-4">
                         <Mail className="w-6 h-6 text-gray-400" />
                       </div>
-                      <p className="text-sm font-medium text-gray-900 mb-1">Connect your Gmail</p>
-                      <p className="text-xs text-gray-500">Connect your Gmail account to see your emails automatically categorised with AI summaries.</p>
+                      <p className="text-sm font-medium text-gray-900 mb-1">{t('connectGmailTitle')}</p>
+                      <p className="text-xs text-gray-500">{t('connectGmailListDesc')}</p>
                     </div>
                   ) : (
                     <div className="p-8 text-center text-sm text-gray-500"></div>
@@ -503,13 +506,13 @@ export default function InboxPage() {
                           </span>
                         </div>
                         <p className={`text-sm mb-1 line-clamp-1 ${isUnread ? 'text-gray-900 font-medium' : 'text-gray-700'}`}>
-                          {thread.subject || '(No Subject)'}
+                          {thread.subject || t('noSubject')}
                         </p>
                         <p className="text-xs text-gray-500 line-clamp-2">
                           {thread.snippet}
                         </p>
                         {thread?.project && <div className='text-xs mt-3 text-gray-500'>
-                          <p>Projects: <span className='text-black'>{thread?.project?.name}</span> </p>
+                          <p>{t('projectsLabel')} <span className='text-black'>{thread?.project?.name}</span> </p>
                         </div>}
                       </div>
                     </div>
@@ -537,7 +540,7 @@ export default function InboxPage() {
                 <Input
                   value={searchText}
                   onChange={e => setSearchText(e.target.value)}
-                  placeholder="Search inbox..."
+                  placeholder={t('searchPlaceholder')}
                   className="pl-10 bg-white border-gray-200 focus:border-gray-300 focus:ring-0"
                 />
               </div>
@@ -555,7 +558,7 @@ export default function InboxPage() {
                     onClick={() => setProjectOpen(true)}
                   >
                     <FolderPlus className="w-4 h-4 mr-2" />
-                    Add to project
+                    {t('addToProject')}
                   </Button>
                 )}
                 <Button 
@@ -563,7 +566,7 @@ export default function InboxPage() {
                   size="icon" 
                   className="text-gray-600 border-gray-300 bg-white w-9 h-9"
                   onClick={() => setIsFullScreen(!isFullScreen)}
-                  title={isFullScreen ? "Exit Full Screen" : "Enter Full Screen"}
+                  title={isFullScreen ? t('exitFullScreen') : t('enterFullScreen')}
                 >
                   {isFullScreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
                 </Button>
@@ -578,9 +581,9 @@ export default function InboxPage() {
                     <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-6">
                       <Mail className="w-8 h-8 text-gray-600" />
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Connect your Gmail</h3>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('connectGmailDetailTitle')}</h3>
                     <p className="text-sm text-gray-500 text-center max-w-xs mb-6">
-                      Connect your Gmail account to see emails automatically from your client and supplier from CRM.
+                      {t('connectGmailDetailDesc')}
                     </p>
                     {/* <div className="bg-white border border-gray-200 rounded-xl p-4 w-full max-w-lg space-y-3 mb-6">
                       <div className="flex items-center gap-3">
@@ -602,13 +605,13 @@ export default function InboxPage() {
                       className="bg-black text-white hover:bg-gray-800 px-6"
                       onClick={() => window.location.href = '/settings/studio/integrations'}
                     >
-                      Connect Gmail
+                      {t('connectGmail')}
                     </Button>
                   </div>
                 ) : (
                   <div className="h-full flex flex-col items-center justify-center text-gray-400">
                     <Mail className="w-12 h-12 mb-4 opacity-20" />
-                    <p>Select a conversation to view details</p>
+                    <p>{t('selectConversation')}</p>
                   </div>
                 )
               ) : (
@@ -617,10 +620,10 @@ export default function InboxPage() {
                   <div className="p-4 border-b border-gray-100 bg-white flex-shrink-0 flex justify-between items-center">
                     <div className="max-w-[90%]">
                       <h2 className="text-lg font-semibold text-gray-900 truncate w-full">
-                        {messages?.[0]?.subject || (filteredThreads.find(t => t.thread_id === selectedThreadId)?.subject) || 'Conversation'}
+                        {messages?.[0]?.subject || (filteredThreads.find(th => th.thread_id === selectedThreadId)?.subject) || t('conversation')}
                       </h2>
                       <div className="text-xs text-gray-500 mt-1">
-                        {messages?.length || 0} messages
+                        {t('messagesCount', { count: messages?.length || 0 })}
                       </div>
                     </div>
                     <div className="flex gap-2">
@@ -640,12 +643,12 @@ export default function InboxPage() {
                       <>
                         {(!messages || messages.length <= 3 || messagesExpanded) ? (
                             messages?.map((msg: MessageItem) => (
-                              <MessageBlock key={msg.id} msg={msg} userEmail={user?.email} />
+                              <MessageBlock key={msg.id} msg={msg} userEmail={user?.email} t={t} />
                             ))
                         ) : (
                           <>
                             {/* First Message */}
-                            {messages.length > 0 && <MessageBlock msg={messages[0]} userEmail={user?.email} />}
+                            {messages.length > 0 && <MessageBlock msg={messages[0]} userEmail={user?.email} t={t} />}
 
                             {/* Divider / Expander */}
                             <div className="relative py-2 flex items-center justify-start pl-4 cursor-pointer group" onClick={() => setMessagesExpanded(true)}>
@@ -659,7 +662,7 @@ export default function InboxPage() {
 
                             {/* Last Two Messages */}
                             {messages.slice(-2).map((msg: MessageItem) => (
-                              <MessageBlock key={msg.id} msg={msg} userEmail={user?.email} />
+                              <MessageBlock key={msg.id} msg={msg} userEmail={user?.email} t={t} />
                             ))}
                           </>
                         )}
@@ -673,7 +676,7 @@ export default function InboxPage() {
                     <div className={`p-4 border-t flex flex-col overflow-hidden border-gray-100 bg-white ${isFullScreen ? 'fixed bottom-4 right-8 w-[600px] h-[400px] z-50 shadow-2xl rounded-xl border border-gray-200 animate-in slide-in-from-bottom-5' : ''}`}>
                       {isFullScreen && (
                         <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm font-medium text-gray-700">Reply</span>
+                          <span className="text-sm font-medium text-gray-700">{t('reply')}</span>
                           <Button 
                             variant="ghost" 
                             size="icon" 
@@ -704,7 +707,7 @@ export default function InboxPage() {
                         onClick={() => setIsReplyVisible(true)}
                        >
                          <ReplyIcon className="w-5 h-5" />
-                         Reply
+                         {t('reply')}
                        </Button>
                     </div>
                   )}
@@ -727,14 +730,14 @@ export default function InboxPage() {
       }}>
         <DialogContent className="sm:max-w-md bg-white ">
           <DialogHeader>
-            <DialogTitle>Add to Project</DialogTitle>
+            <DialogTitle>{t('addToProjectTitle')}</DialogTitle>
           </DialogHeader>
           
           <div className="py-4">
              <div className="relative mb-4">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input 
-                   placeholder="Search projects..." 
+                   placeholder={t('searchProjectsPlaceholder')} 
                    value={projectSearch}
                    onChange={(e) => setProjectSearch(e.target.value)}
                    className="pl-9 bg-white border-gray-200"
@@ -763,15 +766,15 @@ export default function InboxPage() {
                   ))
                 ) : (
                   <div className="text-center text-gray-500 py-8 text-sm">
-                    No projects found
+                    {t('noProjectsFound')}
                   </div>
                 )}
              </div>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setProjectOpen(false)}>Cancel</Button>
-            <Button onClick={handleAddToProject} disabled={!selectedProjectId} className='bg-black text-white hover:bg-gray-800'>Submit</Button>
+            <Button variant="outline" onClick={() => setProjectOpen(false)}>{tc('cancel')}</Button>
+            <Button onClick={handleAddToProject} disabled={!selectedProjectId} className='bg-black text-white hover:bg-gray-800'>{t('submit')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

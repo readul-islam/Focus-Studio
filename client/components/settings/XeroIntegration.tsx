@@ -29,6 +29,7 @@ import { confirmIntegrationConnection } from '@/lib/integrations/confirm-connect
 import { useIntegrationStatusContext } from '@/components/settings/integration-status-context';
 
 import { gooeyToast as toast } from 'goey-toast';
+import { useTranslations } from 'next-intl';
 
 import { IntegrationCard } from './IntegrationCard';
 
@@ -51,6 +52,11 @@ const XeroIntegration = ({
   isSyncing?: boolean;
 
 }) => {
+
+  const t = useTranslations('settingsIntegrationsPage.xero');
+  const tt = useTranslations('settingsIntegrationsPage.xero.toasts');
+  const ts = useTranslations('settingsIntegrationsPage.shared');
+  const tc = useTranslations('common');
 
   const [isConnecting, setIsConnecting] = useState(false);
 
@@ -150,19 +156,19 @@ const XeroIntegration = ({
 
         if (connected) {
 
-          toast.success('Xero connected.');
+          toast.success(tt('connected'));
 
         } else if (!oauthSuccess) {
 
           applyPatch({ xero_connected: false });
 
-          toast.error('Xero connection was cancelled.');
+          toast.error(tt('cancelled'));
 
         } else {
 
           applyPatch({ xero_connected: false });
 
-          toast.error('Xero authorized but status did not update. Please try again.');
+          toast.error(tt('statusNotUpdated'));
 
         }
 
@@ -198,11 +204,11 @@ const XeroIntegration = ({
 
             await waitForStatus((s) => !s.xero_connected);
 
-            toast.success('Xero disconnected.');
+            toast.success(tt('disconnected'));
 
           },
 
-          onError: () => toast.error('Failed to disconnect Xero.'),
+          onError: () => toast.error(tt('disconnectFailed')),
 
         }
 
@@ -224,17 +230,9 @@ const XeroIntegration = ({
 
       icon={<PlugZap className="h-4 w-4 text-stone-500" />}
 
-      title="Xero"
+      title={t('title')}
 
-      description={
-
-        isConnected
-
-          ? 'Invoices and expenses are syncing with Xero.'
-
-          : 'Sync invoices, expenses, and financials with Xero.'
-
-      }
+      description={isConnected ? t('descriptionConnected') : t('descriptionDisconnected')}
 
       isLoading={stateLoading && !isConnected}
 
@@ -260,7 +258,7 @@ const XeroIntegration = ({
 
               >
 
-                Disconnect
+                {t('disconnect')}
 
               </Button>
 
@@ -270,13 +268,13 @@ const XeroIntegration = ({
 
               <DialogHeader>
 
-                <DialogTitle>Disconnect Xero?</DialogTitle>
+                <DialogTitle>{t('disconnectTitle')}</DialogTitle>
 
               </DialogHeader>
 
               <p className="text-sm text-gray-600">
 
-                Focuspilot will stop syncing with Xero. You can reconnect anytime.
+                {t('disconnectDesc')}
 
               </p>
 
@@ -284,7 +282,7 @@ const XeroIntegration = ({
 
                 <Button variant="outline" onClick={() => setIsDisconnectDialogOpen(false)}>
 
-                  Cancel
+                  {tc('cancel')}
 
                 </Button>
 
@@ -292,7 +290,7 @@ const XeroIntegration = ({
 
                   {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
 
-                  {busy ? 'Disconnecting...' : 'Disconnect'}
+                  {busy ? ts('disconnecting') : t('disconnect')}
 
                 </Button>
 
@@ -308,7 +306,7 @@ const XeroIntegration = ({
 
             {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
 
-            {busy ? 'Connecting...' : 'Connect with Xero'}
+            {busy ? ts('connecting') : t('connectWithXero')}
 
           </Button>
 

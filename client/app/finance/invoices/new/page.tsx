@@ -1,6 +1,7 @@
 'use client';
 import { PermissionGuard } from '@/components/PermissionGuard';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { format } from 'date-fns';
@@ -32,6 +33,10 @@ const formatDate = (date) => {
 
 
 const EditInvoiceContent = () => {
+  const t = useTranslations('invoiceEditorPage');
+  const tCommon = useTranslations('common');
+  const tFinance = useTranslations('financePage');
+
   const [defaultValue, setDefaultValue] = useState<any>({
     products: [],
     dueDate: new Date().toISOString(),
@@ -62,10 +67,10 @@ const EditInvoiceContent = () => {
     onSuccess: () => {
       queryClient.refetchQueries(['finance/invoices/']);
       router.push('/finance');
-      toast('Invoice Created');
+      toast(t('toasts.created'));
     },
     onError: () => {
-      toast('Error! Try again');
+      toast(t('toasts.createFailed'));
     },
   });
 
@@ -221,17 +226,17 @@ const EditInvoiceContent = () => {
             {/* Heading */}
             <div className="flex items-start justify-between">
               <div>
-                <h1 className="text-[#091E42] font-semibold mb-1 text-2xl">Create Invoice</h1>
+                <h1 className="text-[#091E42] font-semibold mb-1 text-2xl">{t('createTitle')}</h1>
                 <div className="my-8 text-[14px] leading-[180%]">
                   {/* <p className="mb-1 font-semibold">Supplier</p> */}
-                  Issue Date : {new Date(defaultValue?.issueDate).toLocaleDateString('en-GB')}
+                  {t('issueDate')} : {new Date(defaultValue?.issueDate).toLocaleDateString('en-GB')}
                   <br />
-                  Due Date : {defaultValue?.dueDate ? new Date(defaultValue.dueDate).toLocaleDateString('en-GB') : '-'}
+                  {t('dueDate')} : {defaultValue?.dueDate ? new Date(defaultValue.dueDate).toLocaleDateString('en-GB') : '-'}
                   <br />
-                  Client Name : {defaultValue?.clientName} <br />
-                  Client Email : {defaultValue?.clientEmail} <br />
-                  Client Phone : {defaultValue?.clientPhone} <br />
-                  Client Address : {defaultValue?.clientAddress}
+                  {t('clientName')} : {defaultValue?.clientName} <br />
+                  {t('clientEmail')} : {defaultValue?.clientEmail} <br />
+                  {t('clientPhone')} : {defaultValue?.clientPhone} <br />
+                  {t('clientAddress')} : {defaultValue?.clientAddress}
                 </div>
               </div>
               <div>
@@ -247,7 +252,7 @@ const EditInvoiceContent = () => {
             <div className="grid grid-cols-4 gap-4">
               <div className="space-y-2 col-span-2">
                 <Label className="font-normal text-[#091E42] text-sm " htmlFor="poNumber">
-                  Issue Date
+                  {t('issueDate')}
                 </Label>
                 <Form {...form}>
                   <form className="flex items-end gap-4 justify-center">
@@ -266,7 +271,7 @@ const EditInvoiceContent = () => {
                                     !field.value && 'text-[#595F69]'
                                   )}
                                 >
-                                  {field.value ? format(field.value, 'MMM dd, yyyy') : <span>Pick a date</span>}
+                                  {field.value ? format(field.value, 'MMM dd, yyyy') : <span>{t('pickDate')}</span>}
                                   <CalendarIcon className="mr-2 h-4 w-4" />
                                 </Button>
                               </PopoverTrigger>
@@ -297,7 +302,7 @@ const EditInvoiceContent = () => {
               {/* Due Date */}
               <div className="space-y-2  col-span-2">
                 <Label className="font-normal text-[#091E42] text-sm " htmlFor="poNumber">
-                  Due Date
+                  {t('dueDate')}
                 </Label>
                 <Form {...form2}>
                   <form className="flex items-end gap-4 justify-center">
@@ -316,7 +321,7 @@ const EditInvoiceContent = () => {
                                     !field.value && 'text-[#595F69]'
                                   )}
                                 >
-                                  {field.value ? format(field.value, 'MMM dd, yyyy') : <span>Pick a date</span>}
+                                  {field.value ? format(field.value, 'MMM dd, yyyy') : <span>{t('pickDate')}</span>}
                                   <CalendarIcon className="mr-2 h-4 w-4" />
                                 </Button>
                               </PopoverTrigger>
@@ -347,7 +352,7 @@ const EditInvoiceContent = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="project">Projects</Label>
+              <Label htmlFor="project">{t('projects')}</Label>
               <Select
                 value={defaultValue?.project || ''}
                 onValueChange={value => {
@@ -355,7 +360,7 @@ const EditInvoiceContent = () => {
                 }}
               >
                 <SelectTrigger className="bg-white rounded-[10px] w-full px-3 py-[10px] border">
-                  <SelectValue placeholder="Select Project" />
+                  <SelectValue placeholder={t('selectProject')} />
                 </SelectTrigger>
                 <SelectContent className="bg-white z-[999]">
                   {!projectsLoading &&
@@ -369,11 +374,11 @@ const EditInvoiceContent = () => {
             </div>
 
             <div className="pt-8 mt-8 border-t">
-              <h2 className="text-[#091E42] uppercase font-medium mb-5 text-base">Delivery to:</h2>
+              <h2 className="text-[#091E42] uppercase font-medium mb-5 text-base">{t('deliveryTo')}</h2>
 
               <div className="grid grid-cols-4 mb-4 gap-4">
                 <div className="space-y-2 col-span-4">
-                  <Label htmlFor="client">Client</Label>
+                  <Label htmlFor="client">{tCommon('client')}</Label>
                   <Select
                     onValueChange={value => {
                       const selectedClient = clientsData?.find(
@@ -394,7 +399,7 @@ const EditInvoiceContent = () => {
                     }}
                   >
                     <SelectTrigger className="bg-white rounded-[10px] w-full px-3 py-[10px] border">
-                      <SelectValue placeholder="Select Client" />
+                      <SelectValue placeholder={t('selectClient')} />
                     </SelectTrigger>
 
                     <SelectContent className="bg-white z-[999]">
@@ -410,7 +415,7 @@ const EditInvoiceContent = () => {
                 </div>
                 <div className="space-y-2  col-span-2">
                   <Label className="font-normal text-[#091E42] text-sm " htmlFor="poNumber">
-                    Client Name
+                    {t('clientName')}
                   </Label>
                   <Input
                     onChange={updateClientInfo}
@@ -422,7 +427,7 @@ const EditInvoiceContent = () => {
                 </div>
                 <div className="space-y-2 col-span-2">
                   <Label className="font-normal text-[#091E42] text-sm " htmlFor="poNumber">
-                    Client Email
+                    {t('clientEmail')}
                   </Label>
                   <Input
                     onChange={updateClientInfo}
@@ -435,7 +440,7 @@ const EditInvoiceContent = () => {
               </div>
               <div className="space-y-2 mb-4 col-span-2">
                 <Label className="font-normal text-[#091E42] text-sm " htmlFor="poNumber">
-                  Client Phone
+                  {t('clientPhone')}
                 </Label>
                 <Input
                   onChange={updateClientInfo}
@@ -447,7 +452,7 @@ const EditInvoiceContent = () => {
               </div>
               <div className="space-y-2 mb-4 col-span-2">
                 <Label className="font-normal text-[#091E42] text-sm " htmlFor="poNumber">
-                  Client Address
+                  {t('clientAddress')}
                 </Label>
                 <Textarea
                   onChange={updateClientInfo}
@@ -580,7 +585,7 @@ const EditInvoiceContent = () => {
                     className="font-normal block mb-2 text-[#091E42] text-sm"
                     htmlFor="delivery_charge"
                   >
-                    Status :
+                    {tCommon('status')} :
                   </Label>
 
                   <Select
@@ -596,14 +601,14 @@ const EditInvoiceContent = () => {
                     }}
                   >
                     <SelectTrigger className="bg-white focus:ring-0 focus:ring-offset-0 text-sm py-1 font-medium w-full focus:border-0 focus-visible:outline-0">
-                      <SelectValue placeholder="Select Status" />
+                      <SelectValue placeholder={t('selectStatus')} />
                     </SelectTrigger>
 
                     <SelectContent className="bg-white z-[99]">
-                      <SelectItem value="DFT">Draft</SelectItem>
-                      <SelectItem value="SNT">Sent</SelectItem>
-                      <SelectItem value="PD">Paid</SelectItem>
-                      <SelectItem value="OVD">Overdue</SelectItem>
+                      <SelectItem value="DFT">{tFinance('status.draft')}</SelectItem>
+                      <SelectItem value="SNT">{tFinance('status.sent')}</SelectItem>
+                      <SelectItem value="PD">{tFinance('status.paid')}</SelectItem>
+                      <SelectItem value="OVD">{tFinance('status.overdue')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -675,10 +680,10 @@ const EditInvoiceContent = () => {
               type="button"
               className="bg-white rounded-[10px] hover:bg-stone-50 text-gray-700 px-8 py-2"
             >
-              Cancel
+              {tCommon('cancel')}
             </Button>
             <Button type="submit" className="bg-[#1e1e1e] rounded-[10px] hover:bg-[#2d2d2d] text-white px-8 py-2">
-              Save
+              {t('save')}
             </Button>
           </div>
         </form>

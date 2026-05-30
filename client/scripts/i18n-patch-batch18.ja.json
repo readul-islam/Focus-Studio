@@ -1,0 +1,26 @@
+{
+  "contractorCard": {
+    "insuranceLabel": "保険: {status}"
+  },
+  "libraryProductModal": {
+    "fields": {
+      "status": "ステータス",
+      "sample": "サンプル",
+      "quantity": "数量",
+      "boxedDimensions": "梱包サイズ",
+      "boxedWeight": "梱包重量"
+    },
+    "furniturePlaceholders": {
+      "seatWidth": "例: 55 cm",
+      "seatDepth": "例: 50 cm",
+      "seatHeight": "例: 44 cm",
+      "composition": "例: ポリエステル 80%",
+      "construction": "例: キルンドライオークフレーム",
+      "feet": "例: 15",
+      "filling": "例: 高密度フォーム",
+      "frame": "例: 無垢オーク"
+    },
+    "editImagesSavedHint": "{count}件保存済み · 星印でメイン画像を設定 · 下から追加アップロード",
+    "newImageBadge": "新規"
+  }
+}
