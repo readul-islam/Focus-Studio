@@ -798,6 +798,19 @@ Quick path:
 2. Add a Zapier **Catch Hook** URL as a webhook → **Test**
 3. In Zapier, use **Webhooks → POST** to `{API_URL}/integrations/v1/projects/create/` with `Authorization: Bearer fp_live_…`
 
+### Manual QA & E2E testing
+
+Test all three apps (Studio, Client portal, Contractor portal) end-to-end:
+
+| Guide | Purpose |
+|-------|---------|
+| **[docs/E2E-TESTING-GUIDE.md](docs/E2E-TESTING-GUIDE.md)** | Master guide — mock data, paths, cross-app scenarios |
+| [oneProjectfullworkflow.md](oneProjectfullworkflow.md) | 45-min smoke across 3 apps |
+| [test.md](test.md) | Full studio module test matrix |
+| [CONTRACTOR-PORTAL-TESTING-GUIDE.md](CONTRACTOR-PORTAL-TESTING-GUIDE.md) | Share docs + insurance deep dive |
+
+**Quick start:** Run API + 3 frontends (ports 8000, 3000, 3001, 3002) → follow Scenario A in the E2E guide using the **Riverside Penthouse** mock project.
+
 ---
 
 ## 🏗 Architecture

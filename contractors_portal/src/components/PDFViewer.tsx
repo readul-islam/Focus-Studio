@@ -14,6 +14,7 @@ import '@react-pdf-viewer/thumbnail/lib/styles/index.css';
 import '@react-pdf-viewer/highlight/lib/styles/index.css';
 
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface PDFViewerProps {
   url: string;
@@ -21,8 +22,8 @@ interface PDFViewerProps {
 }
 
 export function PDFViewer({ url }: PDFViewerProps) {
-  // Plugin instances must be plain calls — their factories use React hooks internally
-  // and cannot be wrapped in useMemo. No loading state is needed; renderLoader handles it.
+  const t = useTranslations('pdfViewer');
+
   const pageNavigationPluginInstance = pageNavigationPlugin();
   const zoomPluginInstance = zoomPlugin();
   const searchPluginInstance = searchPlugin();
@@ -37,9 +38,7 @@ export function PDFViewer({ url }: PDFViewerProps) {
   return (
     <div className="flex flex-col w-full h-full bg-[#262626]">
       <Worker workerUrl={workerUrl}>
-        {/* Toolbar */}
         <div className="flex items-center justify-between gap-4 px-4 py-2 bg-neutral-800 border-b border-neutral-700 mt-10">
-          {/* Left side - Navigation */}
           <div className="flex items-center gap-1.5">
             <GoToPreviousPage>
               {props => (
@@ -48,7 +47,7 @@ export function PDFViewer({ url }: PDFViewerProps) {
                   onClick={props.onClick}
                   disabled={props.isDisabled}
                 >
-                  Prev
+                  {t('prev')}
                 </button>
               )}
             </GoToPreviousPage>
@@ -64,20 +63,19 @@ export function PDFViewer({ url }: PDFViewerProps) {
                   onClick={props.onClick}
                   disabled={props.isDisabled}
                 >
-                  Next
+                  {t('next')}
                 </button>
               )}
             </GoToNextPage>
           </div>
 
-          {/* Center - Search */}
           <div className="flex-1 max-w-md">
             <Search>
               {props => (
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Search in PDF..."
+                    placeholder={t('searchInPdf')}
                     className="w-full px-3 py-1.5 text-sm bg-neutral-700 text-white placeholder-neutral-400 rounded border border-neutral-600 focus:outline-none focus:border-neutral-500"
                     value={props.keyword}
                     onChange={e => props.setKeyword(e.target.value)}
@@ -90,7 +88,6 @@ export function PDFViewer({ url }: PDFViewerProps) {
             </Search>
           </div>
 
-          {/* Right side - Zoom */}
           <div className="flex items-center gap-1.5">
             <ZoomOut>
               {props => (
@@ -120,14 +117,11 @@ export function PDFViewer({ url }: PDFViewerProps) {
           </div>
         </div>
 
-        {/* PDF Viewer */}
         <div className="flex flex-1 min-h-0">
-          {/* Thumbnail Sidebar */}
           <div className="w-48 flex-none border-r border-neutral-700 overflow-y-auto bg-neutral-800">
             <Thumbnails />
           </div>
 
-          {/* Main Viewer */}
           <div className="flex-1 min-w-0 overflow-auto">
             <Viewer
               fileUrl={url}

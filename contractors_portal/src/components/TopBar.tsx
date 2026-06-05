@@ -1,4 +1,5 @@
 import { UserInfo } from './topbar/UserInfo';
+import { LanguageSwitcher } from './language-switcher';
 import { useNavigate } from '@/lib/navigation';
 import useUser from '@/hooks/userUser';
 import {
@@ -13,10 +14,13 @@ import {
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';
 import { ChevronsUpDown } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export function TopBar() {
   const navigate = useNavigate();
   const { user, project, projects, setSelectedProject } = useUser();
+  const t = useTranslations('topBar');
+  const tc = useTranslations('common');
 
   const handleLogoutClick = () => {
     localStorage.removeItem('session_type');
@@ -33,19 +37,19 @@ export function TopBar() {
       <div className="flex items-center justify-between">
         {/* Mobile: Logo + Project switcher on left */}
         <div className="md:hidden flex items-center gap-2 min-w-0">
-          <img src="/brand/Logo.png" alt="Focuspilot" className="w-8 h-8 flex-shrink-0 object-contain" />
+          <img src="/brand/Logo.png" alt={t('focuspilotLogo')} className="w-8 h-8 flex-shrink-0 object-contain" />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-1 focus:outline-none min-w-0">
                 <span className="font-semibold text-gray-900 text-sm truncate max-w-[140px]">
-                  {project?.project_name ?? 'Focuspilot'}
+                  {project?.project_name ?? t('focuspilotLogo')}
                 </span>
                 <ChevronsUpDown className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 bg-white rounded-lg" align="start" sideOffset={8}>
               <DropdownMenuLabel className="text-xs text-gray-500 font-normal">
-                Your projects
+                {t('yourProjects')}
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               {projects.map((p: any) => (
@@ -65,61 +69,65 @@ export function TopBar() {
               ))}
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigate('/select-project')} className="text-xs text-gray-500 cursor-pointer">
-                View all projects
+                {t('viewAllProjects')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
 
-        {/* Desktop: UserInfo */}
+        {/* Desktop: UserInfo + language */}
         <div className="hidden md:flex items-center gap-4">
           <UserInfo />
         </div>
 
-        {/* Mobile: Profile on right */}
-        <div className="md:hidden">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-2 focus:outline-none">
-                <Avatar className="h-9 w-9 rounded-full">
-                  <AvatarFallback className="rounded-full bg-gray-900 text-white font-bold text-sm">
-                    {user?.name?.[0]?.toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-              </button>
-            </DropdownMenuTrigger>
+        <div className="flex items-center gap-2">
+          <LanguageSwitcher />
 
-            <DropdownMenuContent
-              className="w-56 bg-white rounded-lg"
-              align="end"
-              sideOffset={8}
-            >
-              <DropdownMenuLabel className="p-0 font-normal">
-                <div className="flex items-center gap-2 px-2 py-2 text-left text-sm">
-                  <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarFallback className="rounded-lg bg-gray-900 text-white font-bold text-xs">
-                    <span>{user?.name?.[0]?.toUpperCase()}</span>
+          {/* Mobile: Profile on right */}
+          <div className="md:hidden">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-2 focus:outline-none">
+                  <Avatar className="h-9 w-9 rounded-full">
+                    <AvatarFallback className="rounded-full bg-gray-900 text-white font-bold text-sm">
+                      {user?.name?.[0]?.toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">{user?.name}</span>
-                    <span className="truncate text-xs text-gray-600">{user?.email || 'Loading..'}</span>
-                  </div>
-                </div>
-              </DropdownMenuLabel>
+                </button>
+              </DropdownMenuTrigger>
 
-              <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <Button
-                    className="w-full"
-                    onClick={handleLogoutClick}
-                  >
-                    Logout
-                  </Button>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              <DropdownMenuContent
+                className="w-56 bg-white rounded-lg"
+                align="end"
+                sideOffset={8}
+              >
+                <DropdownMenuLabel className="p-0 font-normal">
+                  <div className="flex items-center gap-2 px-2 py-2 text-left text-sm">
+                    <Avatar className="h-8 w-8 rounded-lg">
+                      <AvatarFallback className="rounded-lg bg-gray-900 text-white font-bold text-xs">
+                        <span>{user?.name?.[0]?.toUpperCase()}</span>
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="grid flex-1 text-left text-sm leading-tight">
+                      <span className="truncate font-semibold">{user?.name}</span>
+                      <span className="truncate text-xs text-gray-600">{user?.email || tc('loading')}</span>
+                    </div>
+                  </div>
+                </DropdownMenuLabel>
+
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <Button
+                      className="w-full"
+                      onClick={handleLogoutClick}
+                    >
+                      {tc('logout')}
+                    </Button>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       </div>
     </div>

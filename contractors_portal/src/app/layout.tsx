@@ -1,18 +1,32 @@
-import type { Metadata } from 'next'
-import { Providers } from './providers'
-import './globals.css'
+import type { Metadata } from 'next';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
+import { Providers } from './providers';
+import './globals.css';
 
-export const metadata: Metadata = {
-  title: 'Contractor Portal | Focuspilot',
-  description: 'Focuspilot contractor portal',
+export async function generateMetadata(): Promise<Metadata> {
+  const messages = await getMessages();
+  const app = messages.app as { contractorPortal?: string; pageTitleSuffix?: string; metaDescription?: string };
+
+  return {
+    title: `${app?.contractorPortal ?? 'Contractor Portal'} | ${app?.pageTitleSuffix ?? 'Focuspilot'}`,
+    description: app?.metaDescription ?? 'Focuspilot contractor portal',
+  };
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            {children}
+          </NextIntlClientProvider>
+        </Providers>
       </body>
     </html>
-  )
+  );
 }

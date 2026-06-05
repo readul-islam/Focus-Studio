@@ -40,8 +40,9 @@ import Fullscreen from 'yet-another-react-lightbox/plugins/fullscreen';
 import 'yet-another-react-lightbox/styles.css';
 import '@cyntler/react-doc-viewer/dist/index.css';
 import { toast } from 'sonner';
-import { formatDistanceToNow } from 'date-fns';
 import { Helmet } from 'react-helmet-async';
+import { useTranslations } from 'next-intl';
+import { useFileTypeLabel, useRelativeTime } from '@/lib/i18n-helpers';
 
 const getFileIcon = (type: string, fileName?: string) => {
   const name = fileName?.toLowerCase() || '';
@@ -75,29 +76,7 @@ const getFileIcon = (type: string, fileName?: string) => {
   }
 };
 
-const getFileType = (name?: string): string => {
-  if (!name) return 'File';
-  if (name.match(/\\.(png|jpg|jpeg|gif|webp)$/i)) return 'Image';
-  if (name.match(/\\.pdf$/i)) return 'PDF';
-  if (name.match(/\\.(xls|xlsx|csv)$/i)) return 'Spreadsheet';
-  if (name.match(/\\.(doc|docx)$/i)) return 'Document';
-  return 'File';
-};
-
-// Helper function for nice date formatting
-function formatDate(dateString?: string) {
-  if (!dateString) return '-';
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-  if (diffInHours < 1) return 'Just now';
-  if (diffInHours < 24) return `${diffInHours}h ago`;
-  if (diffInHours < 48) return 'Yesterday';
-  // Format as "8 Mar 2026"
-  return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-}
-
-function downloadFile(url: string, fileName: string) {
+function downloadFile(url: string, fileName: string, onError: () => void) {
   fetch(url)
     .then(r => {
       if (!r.ok) throw new Error('Network response was not ok');
@@ -113,11 +92,15 @@ function downloadFile(url: string, fileName: string) {
       a.remove();
       window.URL.revokeObjectURL(objectUrl);
     })
-    .catch(() => toast.error('Download failed'));
+    .catch(onError);
 }
 
 const Documents = () => {
   const navigate = useNavigate();
+  const t = useTranslations('documents');
+  const tc = useTranslations('common');
+  const labelFile = useFileTypeLabel();
+  const formatDate = useRelativeTime();
   const [searchQuery, setSearchQuery] = useState('');
   const [viewerOpen, setViewerOpen] = useState(false);
   const [currentDoc, setCurrentDoc] = useState<any>(null);
@@ -252,12 +235,12 @@ const Documents = () => {
 
   const copyLinkToClipboard = (url: string) => {
     navigator.clipboard.writeText(url);
-    toast.success('Link copied to clipboard!');
+    toast.success(t('linkCopied'));
   };
 
   const handlePdfLightboxDownload = () => {
     const current = galleryPdfs[currentPdfIndex];
-    if (current) downloadFile(current.src, current.alt || 'document.pdf');
+    if (current) downloadFile(current.src, current.alt || t('defaultFilename'), () => toast.error(t('downloadFailed')));
   };
 
   const handleClickFile = (url: string, fileName: string) => {
@@ -294,7 +277,7 @@ const Documents = () => {
 
   return (
     <DashboardLayout>
-      <Helmet title="Documents | TechStyle" />
+      <Helmet title={t('pageTitle')} />
       <div className="space-y-6">
           {/* Toolbar */}
           <div className="flex items-center justify-between gap-4">
@@ -303,7 +286,7 @@ const Documents = () => {
               <Input
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search documents…"
+                placeholder={t('searchPlaceholder')}
                 className="bg-white pl-9 border-gray-200"
               />
             </div>
@@ -313,7 +296,7 @@ const Documents = () => {
           <div className="hidden md:block space-y-8">
             {/* Folders Section */}
             <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-              <h2 className="text-base font-semibold text-gray-900 mb-4">Folders</h2>
+              <h2 className="text-base font-semibold text-gray-900 mb-4">{t('folders')}</h2>
               {filteredFolders.length > 0 ? (
                 <div className="space-y-2">
                   {filteredFolders.map((folder: any) => (
@@ -325,13 +308,13 @@ const Documents = () => {
                       <Folder className="w-5 h-5 text-gray-600 flex-shrink-0" />
                       <span className="font-medium text-gray-900 flex-1 min-w-0 truncate">{folder.name}</span>
                       <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 flex-shrink-0">
-                        Folder
+                        {t('folder')}
                       </span>
                       <span className="text-xs text-gray-400 flex-shrink-0">{formatDate(folder.lastModified)}</span>
                       {folder.is_viewed ? (
                         <span className="inline-flex flex-col items-end flex-shrink-0">
                           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-emerald-50 text-emerald-700">
-                            <CheckCircle2 className="w-3 h-3" /> Viewed
+                            <CheckCircle2 className="w-3 h-3" /> {tc('viewed')}
                           </span>
                           {folder.viewed_at && <span className="text-xs text-gray-400 mt-0.5">{formatDate(folder.viewed_at)}</span>}
                         </span>
@@ -342,7 +325,7 @@ const Documents = () => {
                           onClick={(e) => { e.stopPropagation(); handleMarkViewed(folder.id); }}
                           className="text-xs text-gray-400 hover:text-emerald-700 flex-shrink-0"
                         >
-                          Mark viewed
+                          {tc('markViewed')}
                         </Button>
                       )}
                       <Button
@@ -357,18 +340,18 @@ const Documents = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-sm text-gray-500 py-4">No items</p>
+                <p className="text-center text-sm text-gray-500 py-4">{tc('noItems')}</p>
               )}
             </div>
 
             {/* Files Section */}
             <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-              <h2 className="text-base font-semibold text-gray-900 mb-4">Files</h2>
+              <h2 className="text-base font-semibold text-gray-900 mb-4">{t('files')}</h2>
               {filteredFiles.length > 0 ? (
                 <div className="space-y-2">
                   {filteredFiles.map((file: any) => {
                     const url = file.url || '';
-                    const fileType = getFileType(file.name);
+                    const fileType = labelFile(file.name);
                     return (
                       <div
                         key={`file-${file.id}`}
@@ -384,7 +367,7 @@ const Documents = () => {
                         {file.is_viewed ? (
                           <span className="inline-flex flex-col items-end flex-shrink-0">
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-emerald-50 text-emerald-700">
-                              <CheckCircle2 className="w-3 h-3" /> Viewed
+                              <CheckCircle2 className="w-3 h-3" /> {tc('viewed')}
                             </span>
                             {file.viewed_at && <span className="text-xs text-gray-400 mt-0.5">{formatDate(file.viewed_at)}</span>}
                           </span>
@@ -395,13 +378,13 @@ const Documents = () => {
                             onClick={(e) => { e.stopPropagation(); handleMarkViewed(file.id); }}
                             className="text-xs text-gray-400 hover:text-emerald-700 flex-shrink-0"
                           >
-                            Mark viewed
+                            {tc('markViewed')}
                           </Button>
                         )}
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={(e) => { e.stopPropagation(); downloadFile(url, file.name); }}
+                          onClick={(e) => { e.stopPropagation(); downloadFile(url, file.name, () => toast.error(t('downloadFailed'))); }}
                           className="text-gray-400 hover:text-gray-600 flex-shrink-0"
                         >
                           <Download className="w-4 h-4" />
@@ -419,17 +402,17 @@ const Documents = () => {
                   })}
                 </div>
               ) : (
-                <p className="text-center text-sm text-gray-500 py-4">No items</p>
+                <p className="text-center text-sm text-gray-500 py-4">{tc('noItems')}</p>
               )}
             </div>
 
             {/* Links Section */}
             <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-              <h2 className="text-base font-semibold text-gray-900 mb-4">Links</h2>
+              <h2 className="text-base font-semibold text-gray-900 mb-4">{t('links')}</h2>
               {filteredLinks.length > 0 ? (
                 <div className="space-y-2">
                   {filteredLinks.map((link: any) => {
-                    const fileName = link.name || link.link_url?.split('/').pop() || 'Untitled Link';
+                    const fileName = link.name || link.link_url?.split('/').pop() || t('untitledLink');
                     return (
                       <div
                         key={`link-${link.id}`}
@@ -439,13 +422,13 @@ const Documents = () => {
                         <Link2 className="w-5 h-5 text-gray-600 flex-shrink-0" />
                         <span className="font-medium text-gray-900 flex-1 min-w-0 truncate">{fileName}</span>
                         <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 flex-shrink-0">
-                          Link
+                          {t('link')}
                         </span>
                         <span className="text-xs text-gray-400 flex-shrink-0">{formatDate(link.lastModified)}</span>
                         {link.is_viewed ? (
                           <span className="inline-flex flex-col items-end flex-shrink-0">
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-emerald-50 text-emerald-700">
-                              <CheckCircle2 className="w-3 h-3" /> Viewed
+                              <CheckCircle2 className="w-3 h-3" /> {tc('viewed')}
                             </span>
                             {link.viewed_at && <span className="text-xs text-gray-400 mt-0.5">{formatDate(link.viewed_at)}</span>}
                           </span>
@@ -456,7 +439,7 @@ const Documents = () => {
                             onClick={(e) => { e.stopPropagation(); handleMarkViewed(link.id); }}
                             className="text-xs text-gray-400 hover:text-emerald-700 flex-shrink-0"
                           >
-                            Mark viewed
+                            {tc('markViewed')}
                           </Button>
                         )}
                         <Button
@@ -472,7 +455,7 @@ const Documents = () => {
                   })}
                 </div>
               ) : (
-                <p className="text-center text-sm text-gray-500 py-4">No items</p>
+                <p className="text-center text-sm text-gray-500 py-4">{tc('noItems')}</p>
               )}
             </div>
 
@@ -480,7 +463,7 @@ const Documents = () => {
             {!isLoading && filteredFolders.length === 0 && filteredFiles.length === 0 && filteredLinks.length === 0 && (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <FileText className="w-12 h-12 text-gray-400 mb-3" />
-                <p className="text-gray-600 font-medium">No documents found</p>
+                <p className="text-gray-600 font-medium">{t('noDocuments')}</p>
               </div>
             )}
           </div>
@@ -519,13 +502,13 @@ const Documents = () => {
                       <div className="mt-2 space-y-1">
                         <div className="flex items-center gap-2">
                           <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600">
-                            {doc.isFolder ? 'Folder' : doc.type === 'LINK' ? 'Link' : getFileType(doc.name)}
+                            {doc.isFolder ? t('folder') : doc.type === 'LINK' ? t('link') : labelFile(doc.name)}
                           </span>
                           <span className="text-xs text-gray-400">{formatDate(doc.created_at)}</span>
                           {doc.is_viewed && (
                             <span className="inline-flex flex-col">
                               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-emerald-50 text-emerald-700">
-                                <CheckCircle2 className="w-3 h-3" /> Viewed
+                                <CheckCircle2 className="w-3 h-3" /> {tc('viewed')}
                               </span>
                               {doc.viewed_at && <span className="text-xs text-gray-400 mt-0.5 pl-1">{formatDate(doc.viewed_at)}</span>}
                             </span>
@@ -543,7 +526,7 @@ const Documents = () => {
                             onClick={e => { e.stopPropagation(); handleMarkViewed(doc.id); }}
                           >
                             <CheckCircle2 className="w-3 h-3 mr-1" />
-                            Mark viewed
+                            {tc('markViewed')}
                           </Button>
                         )}
                         {!doc.isFolder && doc.type !== 'LINK' && (
@@ -555,16 +538,16 @@ const Documents = () => {
                               onClick={e => { e.stopPropagation(); handleMarkViewed(doc.id); handleClickFile(doc.file || '', doc.name); }}
                             >
                               <Eye className="w-3 h-3 mr-1" />
-                              View
+                              {tc('view')}
                             </Button>
                             <Button
                               variant="outline"
                               size="sm"
                               className="flex-1 text-xs"
-                              onClick={e => { e.stopPropagation(); downloadFile(doc.file || '', doc.name); }}
+                              onClick={e => { e.stopPropagation(); downloadFile(doc.file || '', doc.name, () => toast.error(t('downloadFailed'))); }}
                             >
                               <Download className="w-3 h-3 mr-1" />
-                              Download
+                              {tc('download')}
                             </Button>
                           </>
                         )}
@@ -576,7 +559,7 @@ const Documents = () => {
             {!isLoading && filteredItems.length === 0 && (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <FileText className="w-12 h-12 text-gray-400 mb-3" />
-                <p className="text-gray-600 font-medium">No documents found</p>
+                <p className="text-gray-600 font-medium">{t('noDocuments')}</p>
               </div>
             )}
           </div>
@@ -587,7 +570,7 @@ const Documents = () => {
           className="!h-[90vh] !max-w-[1200px] !py-7 outline-none bg-white rounded-lg shadow-xl mx-auto mt-10 p-4 relative"
           isOpen={viewerOpen}
           onRequestClose={() => setViewerOpen(false)}
-          contentLabel="Document Viewer"
+          contentLabel={t('documentViewer')}
           style={{
             overlay: {
               backgroundColor: 'rgba(0, 0, 0, 0.75)',
@@ -599,7 +582,7 @@ const Documents = () => {
             <h3 className="text-base font-semibold text-gray-900 truncate max-w-[80%]">{currentDoc?.[0]?.fileName}</h3>
             <div className="flex items-center gap-2">
               {currentDoc && (
-                <Button variant="ghost" size="icon" onClick={() => downloadFile(currentDoc[0].uri, currentDoc[0].fileName)}>
+                <Button variant="ghost" size="icon" onClick={() => downloadFile(currentDoc[0].uri, currentDoc[0].fileName, () => toast.error(t('downloadFailed')))}>
                   <CloudDownload className="h-5 w-5" />
                 </Button>
               )}
@@ -632,7 +615,7 @@ const Documents = () => {
             view: ({ index }) => setCurrentPdfIndex(index),
           }}
           render={{
-            slide: ({ slide }) => <PDFViewer url={(slide as any).src} fileName={(slide as any).alt || 'Document'} />,
+            slide: ({ slide }) => <PDFViewer url={(slide as any).src} fileName={(slide as any).alt || t('fileTypes.document')} />,
           }}
           animation={{ fade: 300 }}
           carousel={{ finite: true }}

@@ -16,6 +16,8 @@ import useUser from '@/hooks/userUser';
 import { ViewCurrencySymbol } from '@/components/ViewCurrencySymbol';
 import { Helmet } from 'react-helmet-async';
 import { statusColors } from '@/lib/status-colors';
+import { useTranslations } from 'next-intl';
+import { useDateLocale, useInvoiceStatusLabel, useInvoiceStatusOptions, usePageTitle } from '@/lib/portal-i18n';
 
 // Inline StatusBadge component
 const StatusBadge = ({ status, label, className }: { status: string; label: string; className?: string }) => {
@@ -28,21 +30,18 @@ const StatusBadge = ({ status, label, className }: { status: string; label: stri
 
 
 
-const STATUS_OPTIONS = [
-  { label: 'All', value: 'All' },
-  { label: 'Draft', value: 'DFT' },
-  { label: 'Sent', value: 'SNT' },
-  { label: 'Approved', value: 'APR' },
-  { label: 'Paid', value: 'PD' },
-  { label: 'Overdue', value: 'OVD' },
-];
-
 const Finance = () => {
   const [searchText, setSearchText] = useState('');
   const [sort, setSort] = useState('All');
 
   const navigate = useNavigate();
-  const { user, project: projectData } = useUser()
+  const { user, project: projectData } = useUser();
+  const t = useTranslations('finance');
+  const tc = useTranslations('common');
+  const statusOptions = useInvoiceStatusOptions(true);
+  const statusLabel = useInvoiceStatusLabel();
+  const dateLocale = useDateLocale();
+  const pageTitle = usePageTitle();
 
   const {
     data: financeData,
@@ -120,7 +119,7 @@ const Finance = () => {
 
   const financeStats = [
     {
-      title: 'Total Invoices',
+      title: t('totalInvoices'),
       value: (
         <span className="flex items-center gap-1">
           <ViewCurrencySymbol code={projectData?.currency || 'GBP'} />
@@ -130,7 +129,7 @@ const Finance = () => {
           })}
         </span>
       ),
-      subtitle: `${(invoiceList.length || 0)} Invoices`,
+      subtitle: t('invoiceCount', { count: invoiceList.length || 0 }),
       icon: FileText,
     },
   ];
@@ -142,7 +141,7 @@ const Finance = () => {
 
   return (
     <DashboardLayout>
-       <Helmet title="Finance | TechStyle" />
+       <Helmet title={pageTitle(t('pageTitle'))} />
       <div className="space-y-6 ">
           {/* Finance Stats */}
           <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
@@ -169,11 +168,11 @@ const Finance = () => {
               <div className="relative w-full bg-white">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <Input
-                  placeholder="Search invoices..."
+                  placeholder={t('searchPlaceholder')}
                   className="pl-9 w-full bg-white"
                   value={searchText}
                   onChange={e => setSearchText(e.target.value)}
-                  aria-label="Search invoices"
+                  aria-label={t('searchAria')}
                 />
               </div>
               <DropdownMenu>
@@ -181,12 +180,12 @@ const Finance = () => {
                   <Button className='h-10 w-[180px] bg-white justify-between' variant="outline" size='sm'>
                     <div className="flex items-center">
                       <Filter className="w-4 h-4 mr-2" />
-                      {STATUS_OPTIONS.find(opt => opt.value === sort)?.label || 'Filter'}
+                      {statusOptions.find(opt => opt.value === sort)?.label || tc('filter')}
                     </div>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-[180px]">
-                  {STATUS_OPTIONS.map(status => (
+                  {statusOptions.map(status => (
                     <DropdownMenuItem
                       key={status.value}
                       onClick={() => setSort(status.value)}
@@ -206,13 +205,13 @@ const Finance = () => {
               <table className="w-full table-fixed">
                 <thead className="bg-gray-50 border-b border-gray-200 sticky top-0 z-10">
                   <tr>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-32">Number</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-40">Type</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-32">Date Issued</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-32">Due Date</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-32">Amount</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-28">Status</th>
-                    <th className="pl-4 pr-6 py-3 text-right text-sm font-medium text-gray-600 whitespace-nowrap w-24">Actions</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-32">{t('number')}</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-40">{t('type')}</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-32">{t('dateIssued')}</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-32">{t('dueDate')}</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-32">{t('amount')}</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 whitespace-nowrap w-28">{tc('status')}</th>
+                    <th className="pl-4 pr-6 py-3 text-right text-sm font-medium text-gray-600 whitespace-nowrap w-24">{tc('actions')}</th>
                   </tr>
                 </thead>
 
@@ -253,12 +252,12 @@ const Finance = () => {
                             {inv.invoice_number}
                           </Link>
                         </td>
-                        <td className="px-4 py-3 text-gray-600 whitespace-nowrap">Invoice</td>
+                        <td className="px-4 py-3 text-gray-600 whitespace-nowrap">{t('invoice')}</td>
                         <td className="px-4 py-3 text-gray-600 whitespace-nowrap">
-                          {inv.date ? new Date(inv.date).toLocaleDateString('en-GB') : '-'}
+                          {inv.date ? new Date(inv.date).toLocaleDateString(dateLocale) : '-'}
                         </td>
                         <td className="px-4 py-3 text-gray-600 whitespace-nowrap">
-                          {inv.due_date ? new Date(inv.due_date).toLocaleDateString('en-GB') : '-'}
+                          {inv.due_date ? new Date(inv.due_date).toLocaleDateString(dateLocale) : '-'}
                         </td>
                         <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">
                           <ViewCurrencySymbol code={inv.currency || projectData?.currency || 'GBP'} />
@@ -270,7 +269,7 @@ const Finance = () => {
                         <td className="px-4 py-3">
                           <StatusBadge
                             status={inv.status}
-                            label={STATUS_OPTIONS.find(o => o.value === inv.status)?.label || inv.status}
+                            label={statusLabel(inv.status)}
                             className={getStatusStyle(inv.status)}
                           />
                         </td>
@@ -281,7 +280,7 @@ const Finance = () => {
                                 variant="ghost"
                                 size="icon"
                                 className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600"
-                                aria-label={`Actions for ${inv.invoice_number}`}
+                                aria-label={t('actionsFor', { number: inv.invoice_number })}
                               >
                                 <MoreHorizontal className="w-4 h-4" />
                               </Button>
@@ -289,7 +288,7 @@ const Finance = () => {
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem>
                                 <Link className="w-full" to={`/finance/${inv.id}`}>
-                                  View Details
+                                  {t('viewDetails')}
                                 </Link>
                               </DropdownMenuItem>
                               <DropdownMenuItem>
@@ -297,7 +296,7 @@ const Finance = () => {
                                   onClick={() => handleOpenInvoice(inv.id)}
                                   className="w-full text-left"
                                 >
-                                  Download PDF
+                                  {t('downloadPdf')}
                                 </button>
                               </DropdownMenuItem>
                             </DropdownMenuContent>
@@ -335,7 +334,7 @@ const Finance = () => {
                         <Link to={`/finance/${inv.id}`} className="font-semibold text-gray-900 hover:underline">
                           {inv.invoice_number}
                         </Link>
-                        <p className="text-xs text-gray-500 mt-1">Invoice</p>
+                        <p className="text-xs text-gray-500 mt-1">{t('invoice')}</p>
                       </div>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -350,7 +349,7 @@ const Finance = () => {
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem>
                             <Link className="w-full" to={`/finance/${inv.id}`}>
-                              View Details
+                              {t('viewDetails')}
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem>
@@ -358,7 +357,7 @@ const Finance = () => {
                               onClick={() => handleOpenInvoice(inv.id)}
                               className="w-full text-left"
                             >
-                              Download PDF
+                              {t('downloadPdf')}
                             </button>
                           </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -367,7 +366,7 @@ const Finance = () => {
 
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Amount:</span>
+                        <span className="text-sm text-gray-600">{t('amount')}:</span>
                         <span className="font-medium text-gray-900">
                           <ViewCurrencySymbol code={inv.currency || projectData?.currency || 'GBP'} />
                           {Number(inv.total_amount).toLocaleString('en-US', {
@@ -378,24 +377,24 @@ const Finance = () => {
                       </div>
 
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Date Issued:</span>
+                        <span className="text-sm text-gray-600">{t('dateIssued')}:</span>
                         <span className="text-sm text-gray-900">
-                          {inv.date ? new Date(inv.date).toLocaleDateString('en-GB') : '-'}
+                          {inv.date ? new Date(inv.date).toLocaleDateString(dateLocale) : '-'}
                         </span>
                       </div>
 
                       <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">Due Date:</span>
+                        <span className="text-sm text-gray-600">{t('dueDate')}:</span>
                         <span className="text-sm text-gray-900">
-                          {inv.due_date ? new Date(inv.due_date).toLocaleDateString('en-GB') : '-'}
+                          {inv.due_date ? new Date(inv.due_date).toLocaleDateString(dateLocale) : '-'}
                         </span>
                       </div>
 
                       <div className="flex justify-between items-center pt-2">
-                        <span className="text-sm text-gray-600">Status:</span>
+                        <span className="text-sm text-gray-600">{tc('status')}:</span>
                         <StatusBadge
                           status={inv.status}
-                          label={STATUS_OPTIONS.find(o => o.value === inv.status)?.label || inv.status}
+                          label={statusLabel(inv.status)}
                           className={getStatusStyle(inv.status)}
                         />
                       </div>

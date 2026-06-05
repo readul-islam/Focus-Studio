@@ -1,8 +1,7 @@
-import React, { useState, useMemo } from 'react';
-import { useParams, useNavigate, Link as RouterLink } from '@/lib/navigation';
+import React, { useState, useMemo, useCallback } from 'react';
+import { useParams, useNavigate } from '@/lib/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import useFetch from '@/hooks/useFetch';
-import useUser from '@/hooks/userUser';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -33,7 +32,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Modal from 'react-modal';
@@ -45,56 +43,8 @@ import 'yet-another-react-lightbox/styles.css';
 import '@cyntler/react-doc-viewer/dist/index.css';
 import { toast } from 'sonner';
 import { fetchData } from '@/lib/Api';
-
-// Helper functions
-const formatDate = (input: string | Date) => {
-  const date = typeof input === 'string' ? new Date(input) : input;
-  return date?.toLocaleDateString('en-GB', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-};
-
-async function downloadFile(url: string, fileName: string) {
-  try {
-    toast.loading('Preparing download...', { id: 'download-toast' });
-
-    const response = await fetch(url, {
-      method: 'GET',
-      mode: 'cors',
-    });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    const blob = await response.blob();
-    const blobUrl = window.URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = blobUrl;
-    a.download = fileName;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-
-    // Cleanup
-    setTimeout(() => {
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(blobUrl);
-    }, 100);
-
-    toast.dismiss('download-toast');
-    toast.success('Download started');
-  } catch (error) {
-    console.error('Download failed:', error);
-    toast.dismiss('download-toast');
-    toast.error('Download failed. The file may be opening in a new tab instead.');
-    // Fallback: open in new tab
-    window.open(url, '_blank');
-  }
-}
+import { useTranslations } from 'next-intl';
+import { useFileTypeLabel, useRelativeDateFormatter } from '@/lib/portal-i18n';
 
 const getFileIcon = (type: string) => {
   switch (type?.toLowerCase()) {
@@ -114,19 +64,13 @@ const getFileIcon = (type: string) => {
   }
 };
 
-const getFileType = (name?: string): string => {
-  if (!name) return 'File';
-  if (name.match(/\\.(png|jpg|jpeg|gif|webp)$/i)) return 'Image';
-  if (name.match(/\\.pdf$/i)) return 'PDF';
-  if (name.match(/\\.(xls|xlsx|csv)$/i)) return 'Spreadsheet';
-  if (name.match(/\\.(doc|docx)$/i)) return 'Document';
-  return 'File';
-};
-
 const DocumentFolder = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user, project } = useUser();
+  const t = useTranslations('documents');
+  const tc = useTranslations('common');
+  const getFileType = useFileTypeLabel();
+  const { formatRelative, formatShort } = useRelativeDateFormatter();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [viewerOpen, setViewerOpen] = useState(false);
@@ -135,7 +79,47 @@ const DocumentFolder = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [galleryImages, setGalleryImages] = useState<any[]>([]);
 
-  // Fetch folder content
+  const downloadFile = useCallback(
+    async (url: string, fileName: string) => {
+      try {
+        toast.loading(t('preparingDownload'), { id: 'download-toast' });
+
+        const response = await fetch(url, {
+          method: 'GET',
+          mode: 'cors',
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = fileName;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+
+        setTimeout(() => {
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(blobUrl);
+        }, 100);
+
+        toast.dismiss('download-toast');
+        toast.success(t('downloadStarted'));
+      } catch (error) {
+        console.error('Download failed:', error);
+        toast.dismiss('download-toast');
+        toast.error(t('downloadFailedFallback'));
+        window.open(url, '_blank');
+      }
+    },
+    [t],
+  );
+
   const {
     data: filesResp,
     isLoading,
@@ -143,7 +127,6 @@ const DocumentFolder = () => {
     enabled: !!id,
   });
 
-  // Fetch folder info for breadcrumb
   const { data: folderInfo } = useFetch(`client_portal/documents/${id}/`, {
     enabled: !!id,
   });
@@ -166,7 +149,7 @@ const DocumentFolder = () => {
         const path = [];
         let currentParentId = folderInfo.parent;
         let depth = 0;
-        const MAX_DEPTH = 10; // Prevent infinite loops
+        const MAX_DEPTH = 10;
 
         while (currentParentId && depth < MAX_DEPTH) {
           const parentData = await fetchData(`client_portal/documents/${currentParentId}/`);
@@ -206,7 +189,6 @@ const DocumentFolder = () => {
 
   const handleClickFile = (url: string, fileName: string) => {
     if (isImageFile(url)) {
-      // Open in lightbox
       const allImageFiles = allItems.filter((item: any) => {
         if (item.isFolder || item.type === 'LINK') return false;
         return isImageFile(item.url || '');
@@ -223,7 +205,6 @@ const DocumentFolder = () => {
       setCurrentImageIndex(startIndex >= 0 ? startIndex : 0);
       setLightboxOpen(true);
     } else {
-      // Use DocViewer for documents
       setCurrentDoc([{ uri: url, fileName: fileName }]);
       setViewerOpen(true);
     }
@@ -243,14 +224,19 @@ const DocumentFolder = () => {
 
   const copyLinkToClipboard = (url: string) => {
     navigator.clipboard.writeText(url);
-    toast.success('Link copied to clipboard!');
+    toast.success(t('linkCopied'));
+  };
+
+  const getItemTypeLabel = (doc: any) => {
+    if (doc.isFolder) return t('folder');
+    if (doc.type === 'LINK') return t('link');
+    return getFileType(doc.name);
   };
 
   return (
     <DashboardLayout>
       <div className="flex-1 bg-gray-50 p-3 md:p-6 h-full">
         <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
-          {/* Breadcrumbs and Back */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3 w-full sm:w-auto overflow-x-auto">
               <button
@@ -258,14 +244,14 @@ const DocumentFolder = () => {
                 className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 flex-shrink-0"
               >
                 <ArrowLeft className="w-4 h-4" />
-                Up
+                {tc('up')}
               </button>
               <span className="text-gray-300 flex-shrink-0">|</span>
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem>
                     <BreadcrumbLink className="cursor-pointer text-xs md:text-sm" onClick={() => navigate('/documents')}>
-                      Documents
+                      {t('pageTitle')}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
 
@@ -302,7 +288,7 @@ const DocumentFolder = () => {
                         <ChevronRight className="w-4 h-4 text-gray-400" />
                       </BreadcrumbSeparator>
                       <BreadcrumbItem>
-                        <BreadcrumbPage className="text-xs md:text-sm">Loading...</BreadcrumbPage>
+                        <BreadcrumbPage className="text-xs md:text-sm">{t('loadingFolder')}</BreadcrumbPage>
                       </BreadcrumbItem>
                     </>
                   )}
@@ -311,7 +297,6 @@ const DocumentFolder = () => {
             </div>
           </div>
 
-          {/* Actions Bar */}
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
             <div className="flex items-center gap-3 w-full sm:w-auto">
               <div className="relative w-full sm:w-72">
@@ -319,14 +304,13 @@ const DocumentFolder = () => {
                 <Input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search files..."
+                  placeholder={t('searchFilesPlaceholder')}
                   className="pl-9 bg-white w-full"
                 />
               </div>
             </div>
           </div>
 
-          {/* Desktop Table View */}
           <Card className="hidden md:block bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
             <CardContent className="p-0">
               <div className="relative overflow-x-auto">
@@ -335,19 +319,19 @@ const DocumentFolder = () => {
                     <tr>
                       <th scope="col" className="w-10 px-4 py-3"></th>
                       <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">
-                        File
+                        {t('file')}
                       </th>
                       <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">
-                        Type
+                        {t('type')}
                       </th>
                       <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">
-                        Created
+                        {t('created')}
                       </th>
                       <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">
-                        Modified
+                        {t('modified')}
                       </th>
                       <th scope="col" className="px-4 py-3 text-right text-sm font-medium text-gray-600 w-24">
-                        Actions
+                        {tc('actions')}
                       </th>
                     </tr>
                   </thead>
@@ -386,44 +370,20 @@ const DocumentFolder = () => {
                               </div>
                             </div>
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-600">
-                            {doc.isFolder ? 'Folder' : doc.type === 'LINK' ? 'Link' : getFileType(doc.name)}
-                          </td>
-                          <td className="px-4 py-3 text-sm text-gray-600 whitespace-nowrap">{formatDate(doc.created_at)}</td>
+                          <td className="px-4 py-3 text-sm text-gray-600">{getItemTypeLabel(doc)}</td>
+                          <td className="px-4 py-3 text-sm text-gray-600 whitespace-nowrap">{formatShort(doc.created_at)}</td>
                           <td className="px-4 py-3 text-sm text-gray-600 whitespace-nowrap">
-                            {formatDate(doc.updated_at || doc.created_at)}
+                            {formatShort(doc.updated_at || doc.created_at)}
                           </td>
                           <td className="px-4 py-3 pr-6 text-right">
                             <div className="inline-flex items-center gap-1">
-                              {/* {!doc.isFolder && doc.type !== 'LINK' && (
-                                <>
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="w-8 h-8 p-0 text-gray-400 hover:text-gray-600"
-                                    aria-label="Preview"
-                                    onClick={() => handleClickFile(doc.url || '', doc.name)}
-                                  >
-                                    <Eye className="w-4 h-4" />
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    className="w-8 h-8 p-0 text-gray-400 hover:text-gray-600"
-                                    aria-label="Download"
-                                    onClick={() => downloadFile(doc.url || '', doc.name)}
-                                  >
-                                    <Download className="w-4 h-4" />
-                                  </Button>
-                                </>
-                              )} */}
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                   <Button
                                     variant="ghost"
                                     size="sm"
                                     className="w-8 h-8 p-0 text-gray-400 hover:text-gray-600"
-                                    aria-label="More"
+                                    aria-label={tc('more')}
                                   >
                                     <MoreHorizontal className="w-4 h-4" />
                                   </Button>
@@ -441,23 +401,23 @@ const DocumentFolder = () => {
                                     }}
                                   >
                                     <Eye className="w-4 h-4 mr-2" />
-                                    Open
+                                    {tc('open')}
                                   </DropdownMenuItem>
                                   {!doc.isFolder && doc.type !== 'LINK' && (
                                     <DropdownMenuItem onClick={() => downloadFile(doc.url || '', doc.name)}>
                                       <Download className="w-4 h-4 mr-2" />
-                                      Download
+                                      {tc('download')}
                                     </DropdownMenuItem>
                                   )}
                                   {doc.type === 'LINK' && (
                                     <>
                                       <DropdownMenuItem onClick={() => window.open(doc.url, '_blank')}>
                                         <SquareArrowOutUpRight className="w-4 h-4 mr-2" />
-                                        Open Link
+                                        {t('openLink')}
                                       </DropdownMenuItem>
                                       <DropdownMenuItem onClick={() => copyLinkToClipboard(doc.url)}>
                                         <Copy className="w-4 h-4 mr-2" />
-                                        Copy Link
+                                        {t('copyLink')}
                                       </DropdownMenuItem>
                                     </>
                                   )}
@@ -470,7 +430,7 @@ const DocumentFolder = () => {
                     {!isLoading && filteredFiles.length === 0 && (
                       <tr>
                         <td colSpan={6} className="px-4 py-12 text-center text-gray-500">
-                          No files found.
+                          {t('noFilesFound')}
                         </td>
                       </tr>
                     )}
@@ -480,7 +440,6 @@ const DocumentFolder = () => {
             </CardContent>
           </Card>
 
-          {/* Mobile Card View */}
           <div className="md:hidden space-y-3">
             {!isLoading &&
               filteredFiles.map((doc: any, index: number) => (
@@ -509,27 +468,22 @@ const DocumentFolder = () => {
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="font-medium text-gray-900 text-sm break-words">
-                          {doc.name}
-                        </div>
+                        <div className="font-medium text-gray-900 text-sm break-words">{doc.name}</div>
                         <div className="mt-2 space-y-1">
                           <div className="flex justify-between text-xs text-gray-600">
-                            <span>Type:</span>
-                            <span className="font-medium">
-                              {doc.isFolder ? 'Folder' : doc.type === 'LINK' ? 'Link' : getFileType(doc.name)}
-                            </span>
+                            <span>{t('type')}:</span>
+                            <span className="font-medium">{getItemTypeLabel(doc)}</span>
                           </div>
                           <div className="flex justify-between text-xs text-gray-600">
-                            <span>Created:</span>
-                            <span className="font-medium">{formatDate(doc.created_at)}</span>
+                            <span>{t('created')}:</span>
+                            <span className="font-medium">{formatRelative(doc.created_at)}</span>
                           </div>
                           <div className="flex justify-between text-xs text-gray-600">
-                            <span>Modified:</span>
-                            <span className="font-medium">{formatDate(doc.updated_at || doc.created_at)}</span>
+                            <span>{t('modified')}:</span>
+                            <span className="font-medium">{formatRelative(doc.updated_at || doc.created_at)}</span>
                           </div>
                         </div>
 
-                        {/* Action buttons for mobile */}
                         {!doc.isFolder && doc.type !== 'LINK' && (
                           <div className="flex gap-2 mt-3">
                             <Button
@@ -542,7 +496,7 @@ const DocumentFolder = () => {
                               }}
                             >
                               <Eye className="w-3 h-3 mr-1" />
-                              View
+                              {tc('view')}
                             </Button>
                             <Button
                               variant="outline"
@@ -554,7 +508,7 @@ const DocumentFolder = () => {
                               }}
                             >
                               <Download className="w-3 h-3 mr-1" />
-                              Download
+                              {tc('download')}
                             </Button>
                           </div>
                         )}
@@ -564,17 +518,16 @@ const DocumentFolder = () => {
                 </Card>
               ))}
             {!isLoading && filteredFiles.length === 0 && (
-              <div className="text-center py-12 text-gray-500">No files found.</div>
+              <div className="text-center py-12 text-gray-500">{t('noFilesFound')}</div>
             )}
           </div>
         </div>
 
-        {/* Document Viewer Modal */}
         <Modal
           className="!h-[90vh] !max-w-[1200px] !py-7 outline-none bg-white rounded-lg shadow-xl mx-auto mt-10 p-4 relative"
           isOpen={viewerOpen}
           onRequestClose={() => setViewerOpen(false)}
-          contentLabel="Document Viewer"
+          contentLabel={tc('documentViewer')}
           style={{
             overlay: {
               backgroundColor: 'rgba(0, 0, 0, 0.75)',
@@ -604,7 +557,6 @@ const DocumentFolder = () => {
           </div>
         </Modal>
 
-        {/* Lightbox for images */}
         <Lightbox
           open={lightboxOpen}
           close={() => setLightboxOpen(false)}

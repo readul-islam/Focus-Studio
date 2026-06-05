@@ -16,16 +16,16 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ViewCurrencySymbol } from '@/components/ViewCurrencySymbol';
 import { Link } from '@/lib/navigation';
 import { statusColors } from '@/lib/status-colors';
-// Unit type mapping
-const unitTypeMapping: Record<string, string> = {
-  'EA': 'EA',
-  'M': 'M',
-  'M^^2': 'M²',
-  'ST': 'ST'
-};
+import { useTranslations } from 'next-intl';
+import { UNCATEGORIZED_ROOM_KEY, usePageTitle, useRoomDisplayName, useUnitTypeLabel } from '@/lib/portal-i18n';
 
 const Procurement = () => {
   const { project: projectData } = useUser();
+  const t = useTranslations('procurement');
+  const tc = useTranslations('common');
+  const pageTitle = usePageTitle();
+  const getRoomLabel = useRoomDisplayName();
+  const unitLabel = useUnitTypeLabel();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [deliveryFilter, setDeliveryFilter] = useState('all');
@@ -47,7 +47,7 @@ const Procurement = () => {
 
   const { mutate: updateProcurement } = usePatch({
     onSuccess: () => {
-      toast.success('Procurement updated successfully');
+      toast.success(t('updateSuccess'));
       refetch();
     }
   });
@@ -126,7 +126,7 @@ const Procurement = () => {
     const roomMap: Record<string, { room_name: string; room_id: string; total: number; item_count: number }> = {};
 
     filteredProcurements.forEach((item) => {
-      const key = item.room || 'Uncategorized';
+      const key = item.room || UNCATEGORIZED_ROOM_KEY;
       if (!roomMap[key]) {
         roomMap[key] = { room_name: key, room_id: key, total: 0, item_count: 0 };
       }
@@ -145,7 +145,7 @@ const Procurement = () => {
     const groups: Record<string, any[]> = {};
     
     filteredProcurements.forEach(item => {
-      const roomName = item.room || 'Uncategorized';
+      const roomName = item.room || UNCATEGORIZED_ROOM_KEY;
       if (!groups[roomName]) {
         groups[roomName] = [];
       }
@@ -163,12 +163,12 @@ const Procurement = () => {
 
   return (
     <DashboardLayout>
-      <Helmet title="Procurement | TechStyle" />
+      <Helmet title={pageTitle(t('pageTitle'))} />
       <div className="space-y-6">
         <ProcurementOverview roomInfo={filteredRoomInfo} isLoading={roomTotalLoading} />
         {/* Header */}
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-gray-900">Product Proposals</h1>
+          <h1 className="text-xl font-semibold text-gray-900">{t('productProposals')}</h1>
         </div>
 
         {/* Filters and Search */}
@@ -182,7 +182,7 @@ const Procurement = () => {
                                  <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
                 <Input
-                  placeholder="Search products..."
+                  placeholder={t('searchPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-9 bg-white"
@@ -193,27 +193,27 @@ const Procurement = () => {
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger className="w-full bg-white md:w-[180px]">
                   <Filter className="h-4 w-4 mr-2" />
-                  <SelectValue placeholder="Filter by status" />
+                  <SelectValue placeholder={t('filterByStatus')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All</SelectItem>
-                  <SelectItem value="APR">Approved</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="REJ">Rejected</SelectItem>
-                  <SelectItem value="ordered">Ordered</SelectItem>
-                  <SelectItem value="not_ordered">Not Ordered</SelectItem>
+                  <SelectItem value="all">{tc('all')}</SelectItem>
+                  <SelectItem value="APR">{t('approve')}</SelectItem>
+                  <SelectItem value="pending">{t('pending')}</SelectItem>
+                  <SelectItem value="REJ">{t('rejected')}</SelectItem>
+                  <SelectItem value="ordered">{t('ordered')}</SelectItem>
+                  <SelectItem value="not_ordered">{t('notOrdered')}</SelectItem>
                 </SelectContent>
               </Select>
 
               {/* Delivery Date Filter */}
               <Select value={deliveryFilter} onValueChange={setDeliveryFilter}>
                 <SelectTrigger className="w-full bg-white md:w-[180px]">
-                  <SelectValue placeholder="Delivery status" />
+                  <SelectValue placeholder={t('deliveryStatus')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Dates</SelectItem>
-                  <SelectItem value="scheduled">Scheduled</SelectItem>
-                  <SelectItem value="unscheduled">Unscheduled</SelectItem>
+                  <SelectItem value="all">{t('allDates')}</SelectItem>
+                  <SelectItem value="scheduled">{t('scheduled')}</SelectItem>
+                  <SelectItem value="unscheduled">{t('unscheduled')}</SelectItem>
                 </SelectContent>
               </Select>
            </div>
@@ -231,7 +231,7 @@ const Procurement = () => {
                     setDeliveryFilter('all');
                   }}
                 >
-                  Clear
+                  {tc('clear')}
                 </Button>
               )}
              </div>
@@ -248,25 +248,25 @@ const Procurement = () => {
                   <tr>
                     {/* <th className="px-4 py-3 w-10"></th> */}
                     <th className="px-4 py-3 text-left text-xs font-medium text-neutral-700">
-                      Product
+                      {t('product')}
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-neutral-700">
-                      Dimension
+                      {t('dimension')}
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-neutral-700">
-                      Delivery
+                      {t('delivery')}
                     </th>
                     <th className="px-4 py-3 text-center text-xs font-medium text-neutral-700">
-                      Qty / Unit
+                      {t('qtyUnit')}
                     </th>
                     <th className="px-4 py-3 text-right text-xs font-medium text-neutral-700">
-                      Unit
+                      {t('unit')}
                     </th>
                     <th className="px-4 py-3 text-right text-xs font-medium text-neutral-700">
-                      Total
+                      {tc('total')}
                     </th>
                     <th className="px-4 py-3 text-right text-xs font-medium text-neutral-700">
-                     Status
+                     {tc('status')}
                     </th>
                   </tr>
                 </thead>
@@ -310,10 +310,10 @@ const Procurement = () => {
                       <td colSpan={7} className="px-6 py-12 text-center">
                         <div className="flex flex-col items-center gap-2">
                           <ShoppingBag className="h-12 w-12 text-neutral-300" />
-                          <p className="text-neutral-500 font-medium">No procurement items found</p>
+                          <p className="text-neutral-500 font-medium">{t('emptyTitle')}</p>
                           {(searchQuery || statusFilter !== 'all' || deliveryFilter !== 'all') && (
                             <p className="text-sm text-neutral-400">
-                              Try adjusting your filters or search query
+                              {t('emptyHint')}
                             </p>
                           )}
                         </div>
@@ -340,7 +340,7 @@ const Procurement = () => {
                                   <ChevronRight className="w-4 h-4 text-neutral-600 shrink-0" />
                                 )}
                                 <span className="font-semibold text-neutral-900">
-                                  {roomName} — {items.length} {items.length === 1 ? 'Item' : 'Items'} • Subtotal {' '}
+                                  {getRoomLabel(roomName)} — {items.length} {items.length === 1 ? tc('item') : tc('items')} • {tc('subtotal')}{' '}
                                   <ViewCurrencySymbol code={projectData?.currency || 'USD'} />
                                   {subtotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                                 </span>
@@ -355,7 +355,7 @@ const Procurement = () => {
                                 <Checkbox />
                               </td> */}
                               <td className="px-4 py-3">
-                                <Link title='Visit Product' target="_blank" rel="noopener noreferrer" to={item?.product_url || '#'} className="flex items-center gap-3">
+                                <Link title={t('visitProduct')} target="_blank" rel="noopener noreferrer" to={item?.product_url || '#'} className="flex items-center gap-3">
                                   {item.image ? (
                                     <img
                                       src={item.image}
@@ -384,13 +384,13 @@ const Procurement = () => {
                                 {item.dimension || '—'}
                               </td>
                                   <td className="px-4 py-3 text-center text-sm text-neutral-600">
-                                    {item?.is_ordered && <span className='text-xs border border-[#8fa989] block bg-[#dbe2db]  text-[#646f52] px-2 py-0.5 rounded-full'>Ordered</span> }
+                                    {item?.is_ordered && <span className='text-xs border border-[#8fa989] block bg-[#dbe2db]  text-[#646f52] px-2 py-0.5 rounded-full'>{t('ordered')}</span> }
                                 {item.delivery_date && <span className='block mt-2'>{item?.delivery_date}</span> }
                               </td>
                               <td className="px-4 py-3">
                                 <div className="flex items-center justify-center gap-2">
                                   <span className="text-sm font-medium text-neutral-900">{item.qty}</span>
-                                  <span className="text-xs text-neutral-700">{unitTypeMapping[item.unit] || item.unit}</span>
+                                  <span className="text-xs text-neutral-700">{unitLabel(item.unit)}</span>
                                 </div>
                               </td>
                               <td className="px-4 py-3 text-right text-sm text-neutral-900 tabular-nums">
@@ -409,20 +409,20 @@ const Procurement = () => {
                                       className={`px-4 text-xs ${item.client_approval == 'APR' ? `${statusColors.approved.bg} ${statusColors.approved.text}` : `bg-transparent border ${statusColors.approved.border} text-black hover:${statusColors.approved.bg} hover:${statusColors.approved.text}`}`}
                                       onClick={() => handleStatusUpdate(item.id, 'APR')}
                                     >
-                                      Approved
+                                      {t('approve')}
                                     </Button>
 
                                     <Button
                                       className={`px-4   text-xs ${item.client_approval == 'RVW' ? `${statusColors.review.bg} ${statusColors.review.text}` : `bg-transparent border ${statusColors.review.border} text-black hover:${statusColors.review.bg} hover:${statusColors.review.text}`}`}
                                       onClick={() => handleStatusUpdate(item.id, 'RVW')}
                                     >
-                                      Review
+                                      {t('review')}
                                     </Button>
                                            <Button
                                       className={`px-4   text-xs ${item.client_approval == 'REJ' ? `${statusColors.rejected.bg} ${statusColors.rejected.text}` : `bg-transparent border ${statusColors.rejected.border} text-black hover:${statusColors.rejected.bg} hover:${statusColors.rejected.text}`}`}
                                       onClick={() => handleStatusUpdate(item.id, 'REJ')}
                                     >
-                                      Rejected
+                                      {t('rejected')}
                                     </Button>
                                   </div>
                                 </div>
@@ -457,11 +457,9 @@ const Procurement = () => {
           ) : Object.keys(groupedByRoom).length === 0 ? (
              <div className="flex flex-col items-center gap-2 py-12 text-center bg-white rounded-xl border border-greige-500/30">
                 <ShoppingBag className="h-12 w-12 text-neutral-300" />
-                <p className="text-neutral-500 font-medium">No procurement items found</p>
+                <p className="text-neutral-500 font-medium">{t('emptyTitle')}</p>
                 {(searchQuery || statusFilter !== 'all' || deliveryFilter !== 'all') && (
-                  <p className="text-sm text-neutral-400">
-                    Try adjusting your filters or search query
-                  </p>
+                  <p className="text-sm text-neutral-400">{t('emptyHint')}</p>
                 )}
              </div>
           ) : (
@@ -477,9 +475,9 @@ const Procurement = () => {
                       className={`bg-white p-3 rounded-xl border border-greige-500/30 flex items-center justify-between shadow-sm cursor-pointer ${isExpanded ? 'sticky top-2 shadow-lg z-10' : ''}`}
                     >
                        <div className="flex flex-col">
-                         <span className="font-semibold text-neutral-900 text-sm">{roomName}</span>
+                         <span className="font-semibold text-neutral-900 text-sm">{getRoomLabel(roomName)}</span>
                          <span className="text-xs text-neutral-500">
-                           {items.length} {items.length === 1 ? 'Item' : 'Items'} • <ViewCurrencySymbol code={projectData?.currency || 'USD'} />{subtotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                           {items.length} {items.length === 1 ? tc('item') : tc('items')} • <ViewCurrencySymbol code={projectData?.currency || 'USD'} />{subtotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                          </span>
                        </div>
                        {isExpanded ? <ChevronDown className="w-4 h-4 text-neutral-600" /> : <ChevronRight className="w-4 h-4 text-neutral-600" />}
@@ -517,27 +515,27 @@ const Procurement = () => {
                                     )}
                                     <div className="flex-1 min-w-0">
                                       <div className="font-medium text-neutral-900 text-sm truncate">{item.product_name}</div>
-                                      <div className="text-xs text-neutral-500 truncate">{item.supplier || 'No Supplier'}</div>
+                                      <div className="text-xs text-neutral-500 truncate">{item.supplier || tc('noSupplier')}</div>
                                     </div>
                                   </Link>
 
                                   {/* Details Grid */}
                                   <div className="grid grid-cols-2 gap-y-3 text-sm border-t border-greige-500/10 pt-3">
                                     <div>
-                                      <span className="block text-xs uppercase tracking-wider text-neutral-500">Dimension</span>
+                                      <span className="block text-xs uppercase tracking-wider text-neutral-500">{t('dimension')}</span>
                                       <span className="text-neutral-700">{item.dimension || '—'}</span>
                                     </div>
                                     <div>
-                                      <span className="block text-xs uppercase tracking-wider text-neutral-500">Delivery</span>
-                                          {item?.is_ordered ? <span className='text-xs border border-[#8fa989] mt-1 inline-block bg-[#dbe2db]  text-[#646f52] px-2 py-0.5 rounded-full'>Ordered</span> : <span className='text-xs border border-[#fecfcf] mt-1 inline-block bg-[#fee2e2]  text-[#bc2626] px-2 py-0.5 rounded-full'>Not Ordered</span> }
+                                      <span className="block text-xs uppercase tracking-wider text-neutral-500">{t('delivery')}</span>
+                                          {item?.is_ordered ? <span className='text-xs border border-[#8fa989] mt-1 inline-block bg-[#dbe2db]  text-[#646f52] px-2 py-0.5 rounded-full'>{t('ordered')}</span> : <span className='text-xs border border-[#fecfcf] mt-1 inline-block bg-[#fee2e2]  text-[#bc2626] px-2 py-0.5 rounded-full'>{t('notOrdered')}</span> }
                                 {item.delivery_date && <span className='block mt-2'>{item?.delivery_date}</span> }
                                     </div>
                                     <div>
-                                      <span className="block text-xs uppercase tracking-wider text-neutral-500">Qty / Unit</span>
-                                      <span className="text-neutral-700">{item.qty} {unitTypeMapping[item.unit] || item.unit}</span>
+                                      <span className="block text-xs uppercase tracking-wider text-neutral-500">{t('qtyUnit')}</span>
+                                      <span className="text-neutral-700">{item.qty} {unitLabel(item.unit)}</span>
                                     </div>
                                     <div>
-                                      <span className="block text-xs uppercase tracking-wider text-neutral-500">Unit Price</span>
+                                      <span className="block text-xs uppercase tracking-wider text-neutral-500">{t('unit')}</span>
                                       <span className="text-neutral-700">
                                         <ViewCurrencySymbol code={projectData?.currency || 'USD'} />
                                         {item?.unit_price ? item?.unit_price?.toLocaleString('en-US', { minimumFractionDigits: 2 }) : 0}
@@ -547,7 +545,7 @@ const Procurement = () => {
 
                                   {/* Total Price */}
                                   <div className="flex justify-between items-center py-2 border-t border-b border-greige-500/10">
-                                    <span className="font-medium text-sm text-neutral-900">Total</span>
+                                    <span className="font-medium text-sm text-neutral-900">{tc('total')}</span>
                                     <span className="font-semibold text-neutral-900">
                                       <ViewCurrencySymbol code={projectData?.currency || 'USD'} />
                                       {item?.total_price?.toLocaleString('en-US', { minimumFractionDigits: 2 })}
@@ -560,19 +558,19 @@ const Procurement = () => {
                                       className={`h-8 text-xs ${item.client_approval == 'APR' ? `${statusColors.approved.bg} ${statusColors.approved.text}` : `bg-transparent border ${statusColors.approved.border} text-black hover:${statusColors.approved.bg} hover:${statusColors.approved.text}`}`}
                                       onClick={() => handleStatusUpdate(item.id, 'APR')}
                                     >
-                                      Approve
+                                      {t('approve')}
                                     </Button>
                                     <Button
                                       className={`h-8 text-xs ${item.client_approval == 'RVW' ? `${statusColors.review.bg} ${statusColors.review.text}` : `bg-transparent border ${statusColors.review.border} text-black hover:${statusColors.review.bg} hover:${statusColors.review.text}`}`}
                                       onClick={() => handleStatusUpdate(item.id, 'RVW')}
                                     >
-                                      Review
+                                      {t('review')}
                                     </Button>
                                     <Button
                                       className={`h-8 text-xs ${item.client_approval == 'REJ' ? `${statusColors.rejected.bg} ${statusColors.rejected.text}` : `bg-transparent border ${statusColors.rejected.border} text-black hover:${statusColors.rejected.bg} hover:${statusColors.rejected.text}`}`}
                                       onClick={() => handleStatusUpdate(item.id, 'REJ')}
                                     >
-                                      Reject
+                                      {t('reject')}
                                     </Button>
                                   </div>
                                 </CardContent>
@@ -593,7 +591,7 @@ const Procurement = () => {
         {!procurementsLoading && filteredProcurements.length > 0 && (
           <div className="flex justify-between items-center text-sm text-neutral-600">
             <p>
-              Showing {filteredProcurements.length} of {procurements?.length || 0} items
+              {t('showingCount', { shown: filteredProcurements.length, total: procurements?.length || 0 })}
             </p>
           </div>
         )}

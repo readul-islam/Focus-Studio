@@ -48,58 +48,22 @@ import 'yet-another-react-lightbox/styles.css';
 import '@cyntler/react-doc-viewer/dist/index.css';
 import { toast } from 'sonner';
 import { fetchData } from '@/lib/Api';
+import { useTranslations } from 'next-intl';
+import { useFileTypeLabel, useShortDate } from '@/lib/i18n-helpers';
 
-// Helper functions
-const formatDate = (input: string | Date) => {
-  const date = typeof input === 'string' ? new Date(input) : input;
-  return date?.toLocaleDateString('en-GB', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-};
+const getFileIcon = (type: string, fileName?: string) => {
+  const name = fileName?.toLowerCase() || '';
 
-async function downloadFile(url: string, fileName: string) {
-  try {
-    toast.loading('Preparing download...', { id: 'download-toast' });
-
-    const response = await fetch(url, {
-      method: 'GET',
-      mode: 'cors',
-    });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    const blob = await response.blob();
-    const blobUrl = window.URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = blobUrl;
-    a.download = fileName;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-
-    // Cleanup
-    setTimeout(() => {
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(blobUrl);
-    }, 100);
-
-    toast.dismiss('download-toast');
-    toast.success('Download started');
-  } catch (error) {
-    console.error('Download failed:', error);
-    toast.dismiss('download-toast');
-    toast.error('Download failed. The file may be opening in a new tab instead.');
-    // Fallback: open in new tab
-    window.open(url, '_blank');
+  if (name.match(/\.(jpg|jpeg|png|gif|webp|svg|bmp)$/i)) {
+    return <FileText className="w-4 h-4 text-gray-500" />;
   }
-}
+  if (name.match(/\.pdf$/i)) {
+    return <FileText className="w-4 h-4 text-gray-500" />;
+  }
+  if (name.match(/\.(dwg|dxf|cad)$/i)) {
+    return <FileIcon className="w-4 h-4 text-gray-500" />;
+  }
 
-const getFileIcon = (type: string) => {
   switch (type?.toLowerCase()) {
     case 'image':
     case 'jpg':
@@ -117,19 +81,52 @@ const getFileIcon = (type: string) => {
   }
 };
 
-const getFileType = (name?: string): string => {
-  if (!name) return 'File';
-  if (name.match(/\\.(png|jpg|jpeg|gif|webp)$/i)) return 'Image';
-  if (name.match(/\\.pdf$/i)) return 'PDF';
-  if (name.match(/\\.(xls|xlsx|csv)$/i)) return 'Spreadsheet';
-  if (name.match(/\\.(doc|docx)$/i)) return 'Document';
-  return 'File';
-};
-
 const DocumentFolder = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user, project } = useUser();
+  const t = useTranslations('documents');
+  const tc = useTranslations('common');
+  const labelFile = useFileTypeLabel();
+  const formatDate = useShortDate();
+
+  const downloadFile = async (url: string, fileName: string) => {
+    try {
+      toast.loading(t('preparingDownload'), { id: 'download-toast' });
+
+      const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = fileName;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+
+      setTimeout(() => {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(blobUrl);
+      }, 100);
+
+      toast.dismiss('download-toast');
+      toast.success(t('downloadStarted'));
+    } catch (error) {
+      console.error('Download failed:', error);
+      toast.dismiss('download-toast');
+      toast.error(t('downloadFailedTab'));
+      window.open(url, '_blank');
+    }
+  };
 
   const { mutate: markViewedMutate } = usePost();
 
@@ -224,7 +221,7 @@ const DocumentFolder = () => {
 
   const handlePdfLightboxDownload = () => {
     const current = galleryPdfs[currentPdfIndex];
-    if (current) downloadFile(current.src, current.alt || 'document.pdf');
+    if (current) downloadFile(current.src, current.alt || t('defaultFilename'));
   };
 
   const handleClickFile = (url: string, fileName: string) => {
@@ -273,7 +270,7 @@ const DocumentFolder = () => {
 
   const copyLinkToClipboard = (url: string) => {
     navigator.clipboard.writeText(url);
-    toast.success('Link copied to clipboard!');
+    toast.success(t('linkCopied'));
   };
 
   return (
@@ -288,14 +285,14 @@ const DocumentFolder = () => {
                 className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 flex-shrink-0"
               >
                 <ArrowLeft className="w-4 h-4" />
-                Up
+                {t('up')}
               </button>
               <span className="text-gray-300 flex-shrink-0">|</span>
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem>
                     <BreadcrumbLink className="cursor-pointer text-xs md:text-sm" onClick={() => navigate('/documents')}>
-                      Documents
+                      {t('breadcrumbRoot')}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
 
@@ -332,7 +329,7 @@ const DocumentFolder = () => {
                         <ChevronRight className="w-4 h-4 text-gray-400" />
                       </BreadcrumbSeparator>
                       <BreadcrumbItem>
-                        <BreadcrumbPage className="text-xs md:text-sm">Loading...</BreadcrumbPage>
+                        <BreadcrumbPage className="text-xs md:text-sm">{tc('loading')}</BreadcrumbPage>
                       </BreadcrumbItem>
                     </>
                   )}
@@ -349,7 +346,7 @@ const DocumentFolder = () => {
                 <Input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search files..."
+                  placeholder={t('searchFiles')}
                   className="pl-10 bg-white w-full"
                 />
               </div>
@@ -365,19 +362,19 @@ const DocumentFolder = () => {
                     <tr>
                       <th scope="col" className="w-10 px-4 py-3"></th>
                       <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">
-                        File
+                        {t('fileColumn')}
                       </th>
                       <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">
-                        Type
+                        {t('typeColumn')}
                       </th>
                       <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">
-                        Created
+                        {t('created')}
                       </th>
                       <th scope="col" className="px-4 py-3 text-left text-sm font-medium text-gray-600">
-                        Modified
+                        {t('modified')}
                       </th>
                       <th scope="col" className="px-4 py-3 text-right text-sm font-medium text-gray-600 w-24">
-                        Actions
+                        {t('actions')}
                       </th>
                     </tr>
                   </thead>
@@ -394,7 +391,7 @@ const DocumentFolder = () => {
                                 ) : doc.type === 'LINK' ? (
                                   <LinkIcon className="w-4 h-4 text-gray-500" />
                                 ) : (
-                                  getFileIcon(getFileType(doc.name))
+                                  getFileIcon(doc.type, doc.name)
                                 )}
                               </div>
                               <div className="min-w-0">
@@ -419,7 +416,7 @@ const DocumentFolder = () => {
                             </div>
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-600">
-                            {doc.isFolder ? 'Folder' : doc.type === 'LINK' ? 'Link' : getFileType(doc.name)}
+                            {doc.isFolder ? t('folder') : doc.type === 'LINK' ? t('link') : labelFile(doc.name)}
                           </td>
                           <td className="px-4 py-3 text-sm text-gray-600 whitespace-nowrap">{formatDate(doc.created_at)}</td>
                           <td className="px-4 py-3 text-sm text-gray-600 whitespace-nowrap">
@@ -430,7 +427,7 @@ const DocumentFolder = () => {
                               {doc.is_viewed ? (
                                 <span className="inline-flex flex-col items-end">
                                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-emerald-50 text-emerald-700">
-                                    <CheckCircle2 className="w-3 h-3" /> Viewed
+                                    <CheckCircle2 className="w-3 h-3" /> {tc('viewed')}
                                   </span>
                                   {doc.viewed_at && <span className="text-xs text-gray-400 mt-0.5">{formatDate(doc.viewed_at)}</span>}
                                 </span>
@@ -441,7 +438,7 @@ const DocumentFolder = () => {
                                   className="text-xs text-gray-400 hover:text-emerald-700"
                                   onClick={(e) => { e.stopPropagation(); handleMarkViewed(doc.id); }}
                                 >
-                                  Mark viewed
+                                  {tc('markViewed')}
                                 </Button>
                               )}
                               <DropdownMenu>
@@ -450,7 +447,7 @@ const DocumentFolder = () => {
                                     variant="ghost"
                                     size="sm"
                                     className="w-8 h-8 p-0 text-gray-400 hover:text-gray-600"
-                                    aria-label="More"
+                                    aria-label={t('more')}
                                   >
                                     <MoreHorizontal className="w-4 h-4" />
                                   </Button>
@@ -470,23 +467,23 @@ const DocumentFolder = () => {
                                     }}
                                   >
                                     <Eye className="w-4 h-4 mr-2" />
-                                    Open
+                                    {t('open')}
                                   </DropdownMenuItem>
                                   {!doc.isFolder && doc.type !== 'LINK' && (
                                     <DropdownMenuItem onClick={() => downloadFile(doc.url || '', doc.name)}>
                                       <Download className="w-4 h-4 mr-2" />
-                                      Download
+                                      {tc('download')}
                                     </DropdownMenuItem>
                                   )}
                                   {doc.type === 'LINK' && (
                                     <>
                                       <DropdownMenuItem onClick={() => { handleMarkViewed(doc.id); window.open(doc.url, '_blank'); }}>
                                         <SquareArrowOutUpRight className="w-4 h-4 mr-2" />
-                                        Open Link
+                                        {t('openLink')}
                                       </DropdownMenuItem>
                                       <DropdownMenuItem onClick={() => copyLinkToClipboard(doc.url)}>
                                         <Copy className="w-4 h-4 mr-2" />
-                                        Copy Link
+                                        {t('copyLink')}
                                       </DropdownMenuItem>
                                     </>
                                   )}
@@ -499,7 +496,7 @@ const DocumentFolder = () => {
                     {!isLoading && filteredFiles.length === 0 && (
                       <tr>
                         <td colSpan={6} className="px-4 py-12 text-center text-gray-500">
-                          No files found.
+                          {t('noFilesFound')}
                         </td>
                       </tr>
                     )}
@@ -536,7 +533,7 @@ const DocumentFolder = () => {
                         ) : doc.type === 'LINK' ? (
                           <LinkIcon className="w-5 h-5 text-gray-500" />
                         ) : (
-                          getFileIcon(getFileType(doc.name))
+                          getFileIcon(doc.type, doc.name)
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -545,24 +542,24 @@ const DocumentFolder = () => {
                         </div>
                         <div className="mt-2 space-y-1">
                           <div className="flex justify-between text-xs text-gray-600">
-                            <span>Type:</span>
+                            <span>{t('typeLabel')}</span>
                             <span className="font-medium">
-                              {doc.isFolder ? 'Folder' : doc.type === 'LINK' ? 'Link' : getFileType(doc.name)}
+                              {doc.isFolder ? t('folder') : doc.type === 'LINK' ? t('link') : labelFile(doc.name)}
                             </span>
                           </div>
                           <div className="flex justify-between text-xs text-gray-600">
-                            <span>Created:</span>
+                            <span>{t('createdLabel')}</span>
                             <span className="font-medium">{formatDate(doc.created_at)}</span>
                           </div>
                           <div className="flex justify-between text-xs text-gray-600">
-                            <span>Modified:</span>
+                            <span>{t('modifiedLabel')}</span>
                             <span className="font-medium">{formatDate(doc.updated_at || doc.created_at)}</span>
                           </div>
                           {doc.is_viewed && (
                             <div className="flex justify-between text-xs">
                               <span className="inline-flex flex-col">
                                 <span className="inline-flex items-center gap-1 text-emerald-700 font-medium">
-                                  <CheckCircle2 className="w-3 h-3" /> Viewed
+                                  <CheckCircle2 className="w-3 h-3" /> {tc('viewed')}
                                 </span>
                                 {doc.viewed_at && <span className="text-gray-400 mt-0.5">{formatDate(doc.viewed_at)}</span>}
                               </span>
@@ -580,7 +577,7 @@ const DocumentFolder = () => {
                               onClick={(e) => { e.stopPropagation(); handleMarkViewed(doc.id); }}
                             >
                               <CheckCircle2 className="w-3 h-3 mr-1" />
-                              Mark viewed
+                              {tc('markViewed')}
                             </Button>
                           )}
                           {!doc.isFolder && doc.type !== 'LINK' && (
@@ -592,7 +589,7 @@ const DocumentFolder = () => {
                                 onClick={(e) => { e.stopPropagation(); handleMarkViewed(doc.id); handleClickFile(doc.url || '', doc.name); }}
                               >
                                 <Eye className="w-3 h-3 mr-1" />
-                                View
+                                {tc('view')}
                               </Button>
                               <Button
                                 variant="outline"
@@ -601,7 +598,7 @@ const DocumentFolder = () => {
                                 onClick={(e) => { e.stopPropagation(); downloadFile(doc.url || '', doc.name); }}
                               >
                                 <Download className="w-3 h-3 mr-1" />
-                                Download
+                                {tc('download')}
                               </Button>
                             </>
                           )}
@@ -612,7 +609,7 @@ const DocumentFolder = () => {
                 </Card>
               ))}
             {!isLoading && filteredFiles.length === 0 && (
-              <div className="text-center py-12 text-gray-500">No files found.</div>
+              <div className="text-center py-12 text-gray-500">{t('noFilesFound')}</div>
             )}
           </div>
         </div>
@@ -622,7 +619,7 @@ const DocumentFolder = () => {
           className="!h-[90vh] !max-w-[1200px] !py-7 outline-none bg-white rounded-lg shadow-xl mx-auto mt-10 p-4 relative"
           isOpen={viewerOpen}
           onRequestClose={() => setViewerOpen(false)}
-          contentLabel="Document Viewer"
+          contentLabel={t('documentViewer')}
           style={{
             overlay: {
               backgroundColor: 'rgba(0, 0, 0, 0.75)',
@@ -672,7 +669,7 @@ const DocumentFolder = () => {
           }}
           render={{
             slide: ({ slide }) => (
-              <PDFViewer url={(slide as any).src} fileName={(slide as any).alt || 'Document'} />
+              <PDFViewer url={(slide as any).src} fileName={(slide as any).alt || t('fileTypes.document')} />
             ),
           }}
           animation={{ fade: 300 }}

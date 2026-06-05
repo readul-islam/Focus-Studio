@@ -8,6 +8,8 @@ import useFetch from '@/hooks/useFetch';
 import { usePost } from '@/hooks/usePost';
 import useUser from '@/hooks/userUser';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
+import { useRelativeTime } from '@/lib/i18n-helpers';
 
 interface Message {
   id: number;
@@ -22,6 +24,8 @@ export default function Messages() {
   const [messageContent, setMessageContent] = useState('');
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations('messagesPage');
+  const formatMessageTime = useRelativeTime();
 
   const { data: messages, isLoading, refetch } = useFetch(
     `contractor_portal/messages/?project_id=${projectData?.project_id}`,
@@ -34,14 +38,13 @@ export default function Messages() {
     onSuccess: () => {
       setMessageContent('');
       refetch();
-      toast.success('Message sent');
+      toast.success(t('sent'));
     },
     onError: (error: any) => {
-      // If 404, still show success since UI is there
       if (error?.response?.status === 404) {
-        toast.info('Messaging feature coming soon');
+        toast.info(t('comingSoon'));
       } else {
-        toast.error('Failed to send message');
+        toast.error(t('sendFailed'));
       }
     },
   });
@@ -84,24 +87,9 @@ export default function Messages() {
 
   const getSenderName = (senderType: string) => {
     if (senderType === 'contractor') {
-      return user?.name || 'You';
+      return user?.name || t('you');
     }
-    return 'Studio';
-  };
-
-  const formatMessageTime = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-
-    if (diffInHours < 1) return 'Just now';
-    if (diffInHours < 24) return `${diffInHours}h ago`;
-    if (diffInHours < 48) return 'Yesterday';
-
-    return date.toLocaleDateString('en-GB', {
-      day: 'numeric',
-      month: 'short'
-    });
+    return t('studio');
   };
 
   const getMessagePreview = (content: string, maxLength: number = 50) => {
@@ -112,29 +100,28 @@ export default function Messages() {
   return (
     <DashboardLayout>
       <Helmet>
-        <title>Messages | Focuspilot</title>
+        <title>{t('title')}</title>
       </Helmet>
 
       <div className="flex-1 bg-gray-50 p-4 lg:p-6 h-[calc(100vh-64px)] flex flex-col">
         <div className="max-w-7xl mx-auto w-full h-full flex flex-col space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-6 gap-6 h-full min-h-0">
 
-            {/* LEFT - col-span-2 */}
             <div className="col-span-1 lg:col-span-2 flex flex-col h-full min-h-0">
               <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col flex-1 min-h-0">
                 <div className="p-4 border-b border-gray-100 flex-shrink-0">
-                  <h3 className="text-sm font-medium text-gray-900">Recent Messages</h3>
+                  <h3 className="text-sm font-medium text-gray-900">{t('recentMessages')}</h3>
                 </div>
                 <div className="overflow-y-auto flex-1 p-0">
                   {isLoading ? (
                     <div className="flex items-center justify-center h-full">
-                      <div className="text-gray-500 text-sm">Loading messages...</div>
+                      <div className="text-gray-500 text-sm">{t('loadingMessages')}</div>
                     </div>
                   ) : messagesList.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full text-center p-6">
                       <MessageSquare className="w-12 h-12 text-gray-400 mb-3" />
-                      <p className="text-gray-600 font-medium">No messages yet</p>
-                      <p className="text-gray-400 text-sm mt-1">Start a conversation with your project team</p>
+                      <p className="text-gray-600 font-medium">{t('emptyTitle')}</p>
+                      <p className="text-gray-400 text-sm mt-1">{t('emptyDescription')}</p>
                     </div>
                   ) : (
                     <div className="divide-y divide-gray-100">
@@ -153,7 +140,6 @@ export default function Messages() {
                             }`}
                           >
                             <div className="flex gap-3">
-                              {/* Avatar */}
                               <div
                                 className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${
                                   isContractor
@@ -164,7 +150,6 @@ export default function Messages() {
                                 {initials}
                               </div>
 
-                              {/* Message Info */}
                               <div className="flex-1 min-w-0">
                                 <div className="flex justify-between items-start mb-1">
                                   <span className="font-medium text-gray-900 text-sm">
@@ -188,23 +173,20 @@ export default function Messages() {
               </div>
             </div>
 
-            {/* RIGHT - col-span-4 */}
             <div className="col-span-1 lg:col-span-4 flex flex-col h-full min-h-0">
               <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col flex-1 min-h-0 mt-0">
-                {/* Message Detail View */}
                 {!selectedMessage ? (
                   <div className="flex-1 flex flex-col items-center justify-center text-center p-6">
                     <MessageSquare className="w-16 h-16 text-gray-400 mb-4" />
                     <h3 className="text-base font-semibold text-gray-900 mb-2">
-                      Select a message to see more
+                      {t('selectTitle')}
                     </h3>
                     <p className="text-sm text-gray-600">
-                      Choose a conversation from the list to view the full message
+                      {t('selectDescription')}
                     </p>
                   </div>
                 ) : (
                   <div className="flex-1 flex flex-col h-full">
-                    {/* Message Header */}
                     <div className="p-4 border-b border-gray-200">
                       <div className="flex items-center gap-3">
                         <div
@@ -221,33 +203,25 @@ export default function Messages() {
                             {getSenderName(selectedMessage.sender_type)}
                           </p>
                           <p className="text-xs text-gray-500">
-                            {new Date(selectedMessage.created_at).toLocaleString('en-GB', {
-                              day: 'numeric',
-                              month: 'short',
-                              year: 'numeric',
-                              hour: '2-digit',
-                              minute: '2-digit',
-                            })}
+                            {formatMessageTime(selectedMessage.created_at)}
                           </p>
                         </div>
                       </div>
                     </div>
 
-                    {/* Message Content */}
                     <div className="flex-1 overflow-y-auto p-6">
                       <p className="text-gray-900 whitespace-pre-wrap break-words">
                         {selectedMessage.content}
                       </p>
                     </div>
 
-                    {/* Reply Input */}
                     <div className="border-t border-gray-200 p-4 bg-gray-50">
                       <div className="flex gap-3 items-end">
                         <Textarea
                           value={messageContent}
                           onChange={(e) => setMessageContent(e.target.value)}
                           onKeyDown={handleKeyDown}
-                          placeholder="Type your reply..."
+                          placeholder={t('replyPlaceholder')}
                           className="flex-1 min-h-20 resize-none bg-white border border-gray-200 rounded-lg"
                           disabled={sendMessageMutation.isPending}
                         />

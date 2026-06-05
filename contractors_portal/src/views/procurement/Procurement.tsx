@@ -17,6 +17,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ViewCurrencySymbol } from '@/components/ViewCurrencySymbol';
 import { Link } from '@/lib/navigation';
 import { statusColors } from '@/lib/status-colors';
+import { useTranslations } from 'next-intl';
 // Unit type mapping
 const unitTypeMapping: Record<string, string> = {
   EA: 'EA',
@@ -25,24 +26,27 @@ const unitTypeMapping: Record<string, string> = {
   ST: 'ST',
 };
 
-// Status badge helper
-const getStatusBadge = (status: string) => {
-  switch (status) {
-    case 'ordered':
-      return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">Ordered</span>;
-    case 'delivered':
-      return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">Delivered</span>;
-    case 'pending':
-      return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700">Pending</span>;
-    case 'cancelled':
-      return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">Cancelled</span>;
-    default:
-      return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">Unknown</span>;
-  }
-};
+// Status badge helper — uses translations inside component
 
 const Procurement = () => {
   const { project: projectData , user } = useUser();
+  const t = useTranslations('procurement');
+  const tc = useTranslations('common');
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'ordered':
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">{t('status.ordered')}</span>;
+      case 'delivered':
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">{t('status.delivered')}</span>;
+      case 'pending':
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700">{t('status.pending')}</span>;
+      case 'cancelled':
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">{t('status.cancelled')}</span>;
+      default:
+        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">{t('status.unknown')}</span>;
+    }
+  };
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [deliveryFilter, setDeliveryFilter] = useState('all');
@@ -76,7 +80,7 @@ const Procurement = () => {
 
   const { mutate: updateProcurement } = usePatch({
     onSuccess: () => {
-      toast.success('Procurement updated successfully');
+      toast.success(t('updated'));
       refetch();
     },
   });
@@ -144,7 +148,7 @@ const Procurement = () => {
     const groups: Record<string, any[]> = {};
 
     filteredProcurements.forEach(item => {
-      const roomName = item.room || 'Uncategorized';
+      const roomName = item.room || t('uncategorized');
       if (!groups[roomName]) {
         groups[roomName] = [];
       }
@@ -161,12 +165,10 @@ const Procurement = () => {
 
   return (
     <DashboardLayout>
-      <Helmet title="Procurement | TechStyle" />
+      <Helmet title={t('pageTitle')} />
       <div className="space-y-6">
-        {/* <ProcurementOverview roomInfo={roomTotal} isLoading={roomTotalLoading} /> */}
-        {/* Header */}
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-gray-900">Products</h1>
+          <h1 className="text-xl font-semibold text-gray-900">{t('products')}</h1>
         </div>
 
         {/* Filters and Search */}
@@ -177,7 +179,7 @@ const Procurement = () => {
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
                   <Input
-                    placeholder="Search products..."
+                    placeholder={t('searchPlaceholder')}
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
                     className="pl-9 bg-white"
@@ -188,25 +190,25 @@ const Procurement = () => {
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
                   <SelectTrigger className="w-full bg-white md:w-[180px]">
                     <Filter className="h-4 w-4 mr-2" />
-                    <SelectValue placeholder="Filter by status" />
+                    <SelectValue placeholder={t('filterByStatus')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Status</SelectItem>
-                    <SelectItem value="APR">Approved</SelectItem>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="REJ">Rejected</SelectItem>
+                    <SelectItem value="all">{t('allStatus')}</SelectItem>
+                    <SelectItem value="APR">{t('approved')}</SelectItem>
+                    <SelectItem value="pending">{t('pending')}</SelectItem>
+                    <SelectItem value="REJ">{t('rejected')}</SelectItem>
                   </SelectContent>
                 </Select>
 
                 {/* Delivery Date Filter */}
                 <Select value={deliveryFilter} onValueChange={setDeliveryFilter}>
                   <SelectTrigger className="w-full bg-white md:w-[180px]">
-                    <SelectValue placeholder="Delivery status" />
+                    <SelectValue placeholder={t('deliveryStatus')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Dates</SelectItem>
-                    <SelectItem value="scheduled">Scheduled</SelectItem>
-                    <SelectItem value="unscheduled">Unscheduled</SelectItem>
+                    <SelectItem value="all">{t('allDates')}</SelectItem>
+                    <SelectItem value="scheduled">{t('scheduled')}</SelectItem>
+                    <SelectItem value="unscheduled">{t('unscheduled')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -222,7 +224,7 @@ const Procurement = () => {
                       setDeliveryFilter('all');
                     }}
                   >
-                    Clear
+                    {tc('clear')}
                   </Button>
                 )}
               </div>
@@ -237,13 +239,13 @@ const Procurement = () => {
               <table className="w-full">
                 <thead className="bg-neutral-50 border-b border-greige-500/30">
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-neutral-700">Product</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-neutral-700">Room</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-neutral-700">Dimension</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-neutral-700">Delivery / ETA</th>
-                    <th className="px-4 py-3 text-center text-xs font-medium text-neutral-700">Qty / Unit</th>
-                    <th className="px-4 py-3 text-center text-xs font-medium text-neutral-700">Status</th>
-                    <th className="px-4 py-3 text-right text-xs font-medium text-neutral-700">Action</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-neutral-700">{t('product')}</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-neutral-700">{t('room')}</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-neutral-700">{t('dimension')}</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-neutral-700">{t('deliveryEta')}</th>
+                    <th className="px-4 py-3 text-center text-xs font-medium text-neutral-700">{t('qtyUnit')}</th>
+                    <th className="px-4 py-3 text-center text-xs font-medium text-neutral-700">{t('statusColumn')}</th>
+                    <th className="px-4 py-3 text-right text-xs font-medium text-neutral-700">{t('action')}</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white">
@@ -286,9 +288,9 @@ const Procurement = () => {
                       <td colSpan={7} className="px-6 py-12 text-center">
                         <div className="flex flex-col items-center gap-2">
                           <ShoppingBag className="h-12 w-12 text-neutral-300" />
-                          <p className="text-neutral-500 font-medium">No procurement items found</p>
+                          <p className="text-neutral-500 font-medium">{t('emptyTitle')}</p>
                           {(searchQuery || statusFilter !== 'all' || deliveryFilter !== 'all') && (
-                            <p className="text-sm text-neutral-400">Try adjusting your filters or search query</p>
+                            <p className="text-sm text-neutral-400">{t('emptyHint')}</p>
                           )}
                         </div>
                       </td>
@@ -314,7 +316,7 @@ const Procurement = () => {
                                   <ChevronRight className="w-4 h-4 text-neutral-600 shrink-0" />
                                 )}
                                 <span className="font-semibold text-neutral-900">
-                                  {roomName} — {items.length} {items.length === 1 ? 'Item' : 'Items'}
+                                  {t('roomItems', { room: roomName, count: items.length })}
                                 </span>
                               </button>
                             </td>
@@ -326,7 +328,7 @@ const Procurement = () => {
                               <tr key={item.id} className="hover:bg-neutral-50 transition-colors border-t border-greige-500/10">
                                 <td className="px-4 py-3">
                                   <Link
-                                    title="Visit Product"
+                                    title={t('visitProduct')}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     to={item?.product_url || '#'}
@@ -371,7 +373,7 @@ const Procurement = () => {
                                     {item.is_viewed ? (
                                       <span className="inline-flex flex-col items-end">
                                         <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700">
-                                          <CheckCircle2 className="w-3 h-3" /> Viewed
+                                          <CheckCircle2 className="w-3 h-3" /> {tc('viewed')}
                                         </span>
                                         {item.viewed_at && <span className="text-xs text-gray-400 mt-0.5">{item.viewed_at ? new Date(item.viewed_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}</span>}
                                       </span>
@@ -380,7 +382,7 @@ const Procurement = () => {
                                         className="px-4 text-xs bg-transparent border text-black hover:bg-emerald-100 hover:text-emerald-800"
                                         onClick={() => handleMarkAsViewed(item.id)}
                                       >
-                                        Mark as viewed
+                                        {tc('markAsViewed')}
                                       </Button>
                                     )}
                                   </div>
@@ -415,9 +417,9 @@ const Procurement = () => {
           ) : Object.keys(groupedByRoom).length === 0 ? (
             <div className="flex flex-col items-center gap-2 py-12 text-center bg-white rounded-xl border border-greige-500/30">
               <ShoppingBag className="h-12 w-12 text-neutral-300" />
-              <p className="text-neutral-500 font-medium">No procurement items found</p>
+              <p className="text-neutral-500 font-medium">{t('emptyTitle')}</p>
               {(searchQuery || statusFilter !== 'all' || deliveryFilter !== 'all') && (
-                <p className="text-sm text-neutral-400">Try adjusting your filters or search query</p>
+                <p className="text-sm text-neutral-400">{t('emptyHint')}</p>
               )}
             </div>
           ) : (
@@ -435,7 +437,7 @@ const Procurement = () => {
                     <div className="flex flex-col">
                       <span className="font-semibold text-neutral-900 text-sm">{roomName}</span>
                       <span className="text-xs text-neutral-500">
-                        {items.length} {items.length === 1 ? 'Item' : 'Items'}
+                        {t('itemCount', { count: items.length })}
                       </span>
                     </div>
                     {isExpanded ? (
@@ -478,30 +480,30 @@ const Procurement = () => {
                                   )}
                                   <div className="flex-1 min-w-0">
                                     <div className="font-medium text-neutral-900 text-sm truncate">{item.product_name}</div>
-                                    <div className="text-xs text-neutral-500 truncate">{item.supplier || 'No Supplier'}</div>
+                                    <div className="text-xs text-neutral-500 truncate">{item.supplier || t('noSupplier')}</div>
                                   </div>
                                 </Link>
 
                                 {/* Details Grid */}
                                 <div className="grid grid-cols-2 gap-y-3 text-sm border-t border-greige-500/10 pt-3">
                                   <div>
-                                    <span className="block text-xs uppercase tracking-wider text-neutral-500">Room</span>
+                                    <span className="block text-xs uppercase tracking-wider text-neutral-500">{t('room')}</span>
                                     <span className="text-neutral-700">{item.room || roomName}</span>
                                   </div>
                                   <div>
-                                    <span className="block text-xs uppercase tracking-wider text-neutral-500">Status</span>
+                                    <span className="block text-xs uppercase tracking-wider text-neutral-500">{t('statusColumn')}</span>
                                     <span className="text-neutral-700">{getStatusBadge(item.status || 'pending')}</span>
                                   </div>
                                   <div>
-                                    <span className="block text-xs uppercase tracking-wider text-neutral-500">Dimension</span>
+                                    <span className="block text-xs uppercase tracking-wider text-neutral-500">{t('dimension')}</span>
                                     <span className="text-neutral-700">{item.dimension || '—'}</span>
                                   </div>
                                   <div>
-                                    <span className="block text-xs uppercase tracking-wider text-neutral-500">Delivery / ETA</span>
+                                    <span className="block text-xs uppercase tracking-wider text-neutral-500">{t('deliveryEta')}</span>
                                     <span className="text-neutral-700">{item.delivery_date || item.lead_time || item.eta || '—'}</span>
                                   </div>
                                   <div>
-                                    <span className="block text-xs uppercase tracking-wider text-neutral-500">Qty / Unit</span>
+                                    <span className="block text-xs uppercase tracking-wider text-neutral-500">{t('qtyUnit')}</span>
                                     <span className="text-neutral-700">
                                       {item.qty} {unitTypeMapping[item.unit] || item.unit}
                                     </span>
@@ -532,7 +534,7 @@ const Procurement = () => {
                                 {item.is_viewed ? (
                                   <span className="inline-flex flex-col items-center w-full">
                                     <span className="inline-flex items-center justify-center gap-1 w-full px-2.5 py-1.5 rounded-md text-xs font-medium bg-emerald-50 text-emerald-700">
-                                      <CheckCircle2 className="w-3 h-3" /> Viewed
+                                      <CheckCircle2 className="w-3 h-3" /> {tc('viewed')}
                                     </span>
                                     {item.viewed_at && <span className="text-xs text-gray-400 mt-0.5">{new Date(item.viewed_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>}
                                   </span>
@@ -541,7 +543,7 @@ const Procurement = () => {
                                     className="px-4 w-full text-xs bg-transparent border text-black hover:bg-emerald-100 hover:text-emerald-800"
                                     onClick={() => handleMarkAsViewed(item.id)}
                                   >
-                                    Mark as viewed
+                                    {tc('markAsViewed')}
                                   </Button>
                                 )}
                               </CardContent>
@@ -561,7 +563,7 @@ const Procurement = () => {
         {!procurementsLoading && filteredProcurements.length > 0 && (
           <div className="flex justify-between items-center text-sm text-neutral-600">
             <p>
-              Showing {filteredProcurements.length} of {procurements?.length || 0} items
+              {t('showingItems', { filtered: filteredProcurements.length, total: procurements?.length || 0 })}
             </p>
           </div>
         )}

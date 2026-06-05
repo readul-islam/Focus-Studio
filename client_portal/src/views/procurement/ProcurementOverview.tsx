@@ -1,34 +1,32 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { ViewCurrencySymbol } from '@/components/ViewCurrencySymbol';
 import useUser from '@/hooks/userUser';
+import { useTranslations } from 'next-intl';
+import { useRoomDisplayName } from '@/lib/portal-i18n';
 
 const ProcurementOverview = ({ isLoading, roomInfo }) => {
-  
-  const {project:projectData} = useUser()
-  
+  const { project: projectData } = useUser();
+  const t = useTranslations('procurement');
+  const getRoomLabel = useRoomDisplayName();
+
   return (
     <div>
-      <h1 className="text-xl font-semibold text-gray-900 mb-5">Budget Overview</h1>
+      <h1 className="text-xl font-semibold text-gray-900 mb-5">{t('budgetOverview')}</h1>
       <div className="p-4 md:p-6 bg-white rounded-lg border">
         {isLoading && (
           <div className=" mb-10">
-            {/* Budget items skeleton */}
             <div className="space-y-5 mb-4 pb-4 border-b">
               {[...Array(5)].map((_, index) => (
                 <div key={index} className="flex font-semibold text-sm gap-3 w-full items-center justify-between">
                   <div className="flex items-center gap-3">
-                    {/* Color dot skeleton */}
                     <Skeleton className="w-6 h-6 rounded-full bg-gray-200" />
-                    {/* Item text skeleton */}
                     <Skeleton className="h-6 w-[200px] bg-gray-200" />
                   </div>
-                  {/* Price skeleton */}
                   <Skeleton className="h-6 w-16 bg-gray-200" />
                 </div>
               ))}
             </div>
 
-            {/* Total budget skeleton */}
             <div className="flex font-medium items-center justify-between">
               <Skeleton className="h-6 w-20 bg-gray-200" />
               <Skeleton className="h-6 w-20 bg-gray-200" />
@@ -39,9 +37,8 @@ const ProcurementOverview = ({ isLoading, roomInfo }) => {
           <table className="w-full">
             <thead>
               <tr className="border-b">
-                <th className="text-left py-3 font-semibold text-sm">Room Name</th>
-                <th className="text-right py-3 font-semibold text-sm">Proposed Budget</th>
-                {/* <th className="text-right py-3 font-semibold text-sm">Approved Budget</th> */}
+                <th className="text-left py-3 font-semibold text-sm">{t('roomName')}</th>
+                <th className="text-right py-3 font-semibold text-sm">{t('proposedBudget')}</th>
               </tr>
             </thead>
             <tbody>
@@ -54,7 +51,7 @@ const ProcurementOverview = ({ isLoading, roomInfo }) => {
                     <td className="py-3 text-sm">
                       <span className="flex items-center gap-3">
                         <span style={{ backgroundColor: colors }} className="w-4 h-4 rounded-full inline-block opacity-40"></span>
-                        {room.room_name} ({room.item_count})
+                        {getRoomLabel(room.room_name)} ({room.item_count})
                       </span>
                     </td>
                     <td className="py-3 text-sm text-right">
@@ -64,14 +61,13 @@ const ProcurementOverview = ({ isLoading, roomInfo }) => {
                         maximumFractionDigits: 2,
                       })}
                     </td>
-                    {/* <td className="py-3 text-sm text-right">R0</td> */}
                   </tr>
                 );
               })}
             </tbody>
             <tfoot>
               <tr className="border-t">
-                <td className="py-3 font-medium">Total Budget</td>
+                <td className="py-3 font-medium">{t('totalBudget')}</td>
                 <td className="py-3 font-medium text-right">
                   <ViewCurrencySymbol code={projectData?.currency || 'USD'} />
                   {roomInfo.grand_total?.toLocaleString('en-US', {
@@ -79,14 +75,13 @@ const ProcurementOverview = ({ isLoading, roomInfo }) => {
                     maximumFractionDigits: 2,
                   })}
                 </td>
-                {/* <td className="py-3 font-medium text-right">R0</td> */}
               </tr>
             </tfoot>
           </table>
         )}
-        
+
         {!isLoading && (!roomInfo?.rooms || roomInfo.rooms.length === 0) && (
-             <div className="text-center text-gray-500 py-4">No budget data available</div>
+          <div className="text-center text-gray-500 py-4">{t('noBudgetData')}</div>
         )}
       </div>
     </div>

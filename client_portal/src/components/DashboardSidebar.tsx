@@ -1,13 +1,13 @@
 import { Link, useLocation, useNavigate } from "@/lib/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { Button } from "./ui/button";
-import { ChevronLeft, ChevronRight, Settings } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,  
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
@@ -15,27 +15,24 @@ import {
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import useUser from "@/hooks/userUser";
 import { menuItems } from "@/lib/menuItems";
+import { useTranslations } from "next-intl";
 
 export function DashboardSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const { user } = useUser()
+  const { user } = useUser();
+  const t = useTranslations("nav");
+  const tc = useTranslations("common");
 
-  const sidebarItems = useMemo(
-    () => menuItems.filter((i) => i.label.toLowerCase() !== "settings"),
-    []
-  );
-
-  // ✅ Collapse by default on md and smaller screens
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 768px)"); // Tailwind md breakpoint
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
 
     const handleResize = () => {
-      setIsCollapsed(mediaQuery.matches); // collapse if <= md
+      setIsCollapsed(mediaQuery.matches);
     };
 
-    handleResize(); // run on mount
+    handleResize();
     mediaQuery.addEventListener("change", handleResize);
 
     return () => mediaQuery.removeEventListener("change", handleResize);
@@ -54,32 +51,31 @@ export function DashboardSidebar() {
         "bg-white border-r border-gray-200 h-screen flex-col transition-all duration-300 hidden md:flex",
         isCollapsed ? "w-20" : "w-[220px]"
       )}>
-      {/* Logo */}
       <div className={cn("p-4 bg-white", isCollapsed && "px-2")}>
         <div className="flex items-center gap-2">
           <img
             src="/brand/Logo.png"
-            alt="Focuspilot logo mark"
+            alt={tc("brand")}
             className={cn(isCollapsed ? "w-8 h-8 mx-auto" : "w-8 h-8", "block")}
           />
           {!isCollapsed && (
-            <span className="font-semibold text-gray-900">Focuspilot</span>
+            <span className="font-semibold text-gray-900">{tc("brand")}</span>
           )}
         </div>
       </div>
 
-      {/* Navigation */}
       <nav
         className={cn(
           "flex-1 space-y-1 bg-white",
           isCollapsed ? "px-2 py-4" : "p-4"
         )}>
-        {sidebarItems.map((item) => {
+        {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname.startsWith(item.basePath);
+          const label = t(item.labelKey);
 
           return (
-            <div key={item.label}>
+            <div key={item.labelKey}>
               {isCollapsed ? (
                 <Tooltip delayDuration={500}>
                   <TooltipTrigger asChild>
@@ -98,7 +94,7 @@ export function DashboardSidebar() {
                     </Link>
                   </TooltipTrigger>
                   <TooltipContent side="right">
-                    <p>{item.label}</p>
+                    <p>{label}</p>
                   </TooltipContent>
                 </Tooltip>
               ) : (
@@ -112,14 +108,13 @@ export function DashboardSidebar() {
                       : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                   )}>
                   <Icon className="w-5 h-5" />
-                  {item.label}
+                  {label}
                 </Link>
               )}
             </div>
           );
         })}
 
-        {/* Collapse/Expand Button */}
         <Button
           variant="ghost"
           size="sm"
@@ -130,50 +125,19 @@ export function DashboardSidebar() {
               ? "justify-center p-3 w-12 h-12 mx-auto"
               : "gap-3 px-3 py-2 w-full justify-start"
           )}
-          title={isCollapsed ? "Expand" : "Collapse"}>
+          title={isCollapsed ? tc("expand") : tc("collapse")}>
           {isCollapsed ? (
             <ChevronRight className="w-6 h-6" />
           ) : (
             <>
               <ChevronLeft className="w-5 h-5" />
-              Collapse
+              {tc("collapse")}
             </>
           )}
         </Button>
       </nav>
 
-      {/* Utility Links + User Profile */}
       <div className={cn("p-4 bg-white", isCollapsed && "px-2")}>
-        {!isCollapsed && (
-          <div className="space-y-1 mb-4">
-            {/* <Link
-              to="/help"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50">
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              Help Center
-            </Link> */}
-            {/* <Link
-              to="/settings"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50">
-              <Settings className="w-5 h-5" />
-              Settings
-            </Link> */}
-          </div>
-        )}
-
-        {/* User Profile Card */}
         <div
           className={cn("bg-gray-900 rounded-xl", isCollapsed ? "p-2" : "p-3")}>
           <div className="flex items-center gap-3">
@@ -197,7 +161,7 @@ export function DashboardSidebar() {
                     {user?.name}
                   </p>
                   <p className="text-gray-400 text-xs truncate">
-                    {user?.email || "Loading.."}
+                    {user?.email || tc("loading")}
                   </p>
                 </div>
                 <DropdownMenu>
@@ -234,7 +198,7 @@ export function DashboardSidebar() {
                             {user?.name}
                           </span>
                           <span className="truncate text-xs">
-                            {user?.email || "Loading.."}
+                            {user?.email || tc("loading")}
                           </span>
                         </div>
                       </div>
@@ -245,7 +209,7 @@ export function DashboardSidebar() {
                         <Button
                           className="w-full"
                           onClick={() => handleLogout()}>
-                          Logout
+                          {tc("logout")}
                         </Button>
                       </DropdownMenuItem>
                     </DropdownMenuGroup>

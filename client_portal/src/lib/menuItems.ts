@@ -9,32 +9,32 @@ import {
 export const menuItems = [
   {
     icon: LayoutGrid,
-    label: 'Dashboard',
+    labelKey: 'dashboard',
     href: '/dashboard',
     basePath: '/dashboard',
   },
   {
     icon: MessageSquareMore,
-    label: 'Messages',
+    labelKey: 'messages',
     href: '#',
     basePath: '/communications',
   },
   {
     icon: ShoppingCart,
-    label: 'Procurement',
+    labelKey: 'procurement',
     href: '/procurement',
     basePath: '/procurement',
   },
   {
     icon: DollarSign,
-    label: 'Finances',
+    labelKey: 'finances',
     href: '/finance',
     basePath: '/finance',
   },
   {
     icon: File,
-    label: 'Documents',
+    labelKey: 'documents',
     href: '/documents',
     basePath: '/documents',
   },
-];
+] as const;

@@ -1,17 +1,33 @@
 import type { Metadata } from 'next'
+import { NextIntlClientProvider } from 'next-intl'
+import { getLocale, getMessages, getTranslations } from 'next-intl/server'
 import { Providers } from './providers'
 import './globals.css'
 
-export const metadata: Metadata = {
-  title: 'Client Portal | Focuspilot',
-  description: 'Focuspilot client portal',
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('meta')
+  return {
+    title: t('appTitle'),
+    description: t('appDescription'),
+  }
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+function getTextDirection(locale: string): 'ltr' | 'rtl' {
+  return locale === 'ar-AE' ? 'rtl' : 'ltr'
+}
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = await getLocale()
+  const messages = await getMessages()
+
   return (
-    <html lang="en">
+    <html lang={locale} dir={getTextDirection(locale)}>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            {children}
+          </NextIntlClientProvider>
+        </Providers>
       </body>
     </html>
   )

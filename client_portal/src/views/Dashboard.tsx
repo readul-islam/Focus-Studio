@@ -12,9 +12,14 @@ import { Link } from "@/lib/navigation";
 import { Helmet } from "react-helmet-async";
 import useUser from "@/hooks/userUser";
 import useFetch from "@/hooks/useFetch";
+import { useTranslations } from "next-intl";
+import { usePageTitle } from "@/lib/portal-i18n";
 
 export default function Dashboard() {
   const { user  , project:projectData} = useUser()
+  const t = useTranslations("dashboard");
+  const tc = useTranslations("common");
+  const pageTitle = usePageTitle();
   
   console.log('projectData',projectData)
   
@@ -26,9 +31,7 @@ export default function Dashboard() {
   return (
     <DashboardLayout>
       <Helmet>
-        <title>{`${
-          dashboardData?.project_name ? dashboardData?.project_name : "Dashboard"
-        } | Focuspilot`}</title>
+        <title>{pageTitle(dashboardData?.project_name ? dashboardData?.project_name : t("pageTitle"))}</title>
       </Helmet>
       <div className="space-y-6 ">
         {!dashboardLoading && (
@@ -51,13 +54,13 @@ export default function Dashboard() {
         )}
         <StatsGrid project={dashboardData}  />
         <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
-          <h2 className="font-semibold mb-4 text-base text-gray-900">Action Items</h2>
+          <h2 className="font-semibold mb-4 text-base text-gray-900">{t("actionItems")}</h2>
           <div className=" flex flex-col sm:flex-row gap-2 rounded-lg items-center justify-between bg-gray-50 py-3 px-4">
-            <p className="text-sm font-medium text-gray-700">Requested to Review</p>
+            <p className="text-sm font-medium text-gray-700">{t("requestedReview")}</p>
             <Link
               className="flex items-center text-sm font-semibold py-2.5 duration-200 hover:bg-black hover:text-white px-4 gap-3 border border-black rounded-lg"
               to={"/procurement"}>
-              <SquareCheckBig size={15} /> Approve Now
+              <SquareCheckBig size={15} /> {t("approveNow")}
             </Link>
           </div>
         </div>

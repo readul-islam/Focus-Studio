@@ -8,6 +8,8 @@ const logo = '/images/studio.jpeg';
 const placeHolder = '/images/product-placeholder-wp.jpg';
 import { Badge } from '@/components/ui/badge';
 import { useCurrency } from '@/hooks/getCurrencySymbol';
+import { useTranslations } from 'next-intl';
+import { useFinanceStatusOptions, useShortDate } from '@/lib/i18n-helpers';
 
 // Inline StatusBadge component
 const StatusBadge = ({ status, label, className }: { status: string; label: string; className?: string }) => {
@@ -18,17 +20,13 @@ const StatusBadge = ({ status, label, className }: { status: string; label: stri
   );
 };
 
-const STATUS_OPTIONS = [
-  { label: 'Draft', value: 'DFT' },
-  { label: 'Sent', value: 'SNT' },
-  { label: 'Approved', value: 'APR' },
-  { label: 'Paid', value: 'PD' },
-  { label: 'Overdue', value: 'OVD' },
-];
 
 const Invoice = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const t = useTranslations('finance');
+  const statusOptions = useFinanceStatusOptions().filter((o) => o.value !== 'All');
+  const formatShortDate = useShortDate();
 
   const { data: invoiceData, isLoading: invoiceLoading } = useFetch(`contractor_portal/invoices/${id}/`);
   const { currency: currencyDetails } = useCurrency(invoiceData?.currency);
@@ -65,7 +63,7 @@ const Invoice = () => {
     return (
       <div className="flex justify-center items-center h-screen">
         <Loader className="animate-spin" size={32} />
-        <span className="ml-2">Loading invoice...</span>
+        <span className="ml-2">{t('loadingInvoice')}</span>
       </div>
     );
   }
@@ -94,7 +92,7 @@ const Invoice = () => {
             >
               <div className="hidden md:flex items-center gap-2">
                 <ArrowLeft className="w-5 h-5" />
-                <span className="font-medium text-sm">Back</span>
+                <span className="font-medium text-sm">{t('back')}</span>
               </div>
               <div className="md:hidden">
                 <X className="w-6 h-6" />
@@ -104,37 +102,37 @@ const Invoice = () => {
           {/* Heading */}
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
             <div className="flex-1">
-              <h1 className="text-xl font-semibold text-gray-900 mb-1">Invoice Details</h1>
+              <h1 className="text-xl font-semibold text-gray-900 mb-1">{t('invoiceDetails')}</h1>
               <h4 className="text-base font-medium text-gray-600">#{invoiceData?.invoice_number}</h4>
               <div className="my-4 md:my-8 text-xs md:text-sm leading-[180%] text-gray-600">
-                Issue Date : {invoiceData?.date ? new Date(invoiceData.date).toLocaleDateString('en-GB') : '-'}<br />
-                Due Date : {invoiceData?.due_date ? new Date(invoiceData.due_date).toLocaleDateString('en-GB') : '-'}<br />
+                {t('issueDateLabel')} : {formatShortDate(invoiceData?.date)}<br />
+                {t('dueDateLabel')} : {formatShortDate(invoiceData?.due_date)}<br />
                 {invoiceData?.project && (
-                  <>Project : {invoiceData?.project?.project_name || '-'}</>
+                  <>{t('projectLabel')} : {invoiceData?.project?.project_name || '-'}</>
                 )}
               </div>
             </div>
             <div className="flex flex-col items-start md:items-end">
-              <img alt="Studio Logo" src={logo} className="w-16 h-16 md:w-[90px] md:h-[90px] mb-4 object-contain" />
+              <img alt={t('studioLogoAlt')} src={logo} className="w-16 h-16 md:w-[90px] md:h-[90px] mb-4 object-contain" />
               <p className="text-gray-600 font-medium text-xs md:text-sm leading-[150%] text-left md:text-right">
-                Manifest Designs Ltd t/a Souq.Studio <br /> Sandstones <br /> Langton Rd <br /> Tunbridge Wells <br /> TN3 0JU <br />
-                VAT NO: GB423127335 <br />
-                hello@souqdesign.co.uk
+                {t('companyName')} <br /> {t('companyAddressLine1')} <br /> {t('companyAddressLine2')} <br /> {t('companyCity')} <br /> {t('companyPostcode')} <br />
+                {t('vatNumber')} <br />
+                {t('companyEmail')}
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
             <div className="space-y-2">
-              <Label className="text-gray-500">Issue Date</Label>
+              <Label className="text-gray-500">{t('issueDateLabel')}</Label>
               <div className="font-medium text-gray-900">
-                {invoiceData?.date ? new Date(invoiceData.date).toLocaleDateString('en-GB') : '-'}
+                {formatShortDate(invoiceData?.date)}
               </div>
             </div>
             <div className="space-y-2">
-              <Label className="text-gray-500">Due Date</Label>
+              <Label className="text-gray-500">{t('dueDateLabel')}</Label>
               <div className="font-medium text-gray-900">
-                {invoiceData?.due_date ? new Date(invoiceData.due_date).toLocaleDateString('en-GB') : '-'}
+                {formatShortDate(invoiceData?.due_date)}
               </div>
             </div>
           </div>
@@ -144,7 +142,7 @@ const Invoice = () => {
           {invoiceData?.project && (
             <>
               <div className="space-y-2">
-                <Label className="text-gray-500">Project</Label>
+                <Label className="text-gray-500">{t('projectLabel')}</Label>
                 <div className="font-medium text-gray-900">
                   {invoiceData?.project?.project_name || '-'}
                 </div>
@@ -161,11 +159,11 @@ const Invoice = () => {
                 <table className="w-full text-sm">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="p-3 text-left font-medium text-gray-500">Image</th>
-                      <th className="p-3 text-left font-medium text-gray-500">Description</th>
-                      <th className="p-3 text-center font-medium text-gray-500">Qty</th>
-                      <th className="p-3 text-right font-medium text-gray-500">Unit Price</th>
-                      <th className="p-3 text-right font-medium text-gray-500">Amount</th>
+                      <th className="p-3 text-left font-medium text-gray-500">{t('image')}</th>
+                      <th className="p-3 text-left font-medium text-gray-500">{t('description')}</th>
+                      <th className="p-3 text-center font-medium text-gray-500">{t('qty')}</th>
+                      <th className="p-3 text-right font-medium text-gray-500">{t('unitPrice')}</th>
+                      <th className="p-3 text-right font-medium text-gray-500">{t('amount')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
@@ -174,9 +172,9 @@ const Invoice = () => {
                         <td className="p-3 w-[80px]">
                           <div className="w-12 h-12 rounded bg-gray-100 overflow-hidden">
                             {item?.product?.images?.find((img: any) => img.is_primary)?.image || item?.product?.images?.[0]?.image ? (
-                              <img className="w-full h-full object-cover" src={item?.product?.images?.find((img: any) => img.is_primary)?.image || item?.product?.images?.[0]?.image} alt="Product" />
+                              <img className="w-full h-full object-cover" src={item?.product?.images?.find((img: any) => img.is_primary)?.image || item?.product?.images?.[0]?.image} alt={t('productImageAlt')} />
                             ) : (
-                              <img className="w-full h-full object-cover" src={placeHolder} alt="Placeholder" />
+                              <img className="w-full h-full object-cover" src={placeHolder} alt={t('placeholderImageAlt')} />
                             )}
                           </div>
                         </td>
@@ -206,7 +204,7 @@ const Invoice = () => {
                       <tr>
                         <td className="p-3"></td>
                         <td className="p-3">
-                          <p className="font-medium text-gray-900">{invoiceData?.ffne_desc || 'FFNE'}</p>
+                          <p className="font-medium text-gray-900">{invoiceData?.ffne_desc || t('ffneDefault')}</p>
                         </td>
                         <td className="p-3 text-center">1</td>
                         <td className="p-3 text-right">
@@ -236,20 +234,20 @@ const Invoice = () => {
                     <div className="flex gap-3">
                       <div className="w-16 h-16 rounded bg-gray-100 overflow-hidden flex-shrink-0">
                         {item?.product?.images?.find((img: any) => img.is_primary)?.image || item?.product?.images?.[0]?.image ? (
-                          <img className="w-full h-full object-cover" src={item?.product?.images?.find((img: any) => img.is_primary)?.image || item?.product?.images?.[0]?.image} alt="Product" />
+                          <img className="w-full h-full object-cover" src={item?.product?.images?.find((img: any) => img.is_primary)?.image || item?.product?.images?.[0]?.image} alt={t('productImageAlt')} />
                         ) : (
-                          <img className="w-full h-full object-cover" src={placeHolder} alt="Placeholder" />
+                          <img className="w-full h-full object-cover" src={placeHolder} alt={t('placeholderImageAlt')} />
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-gray-900 text-sm mb-2">{item.description}</p>
                         <div className="space-y-1 text-xs text-gray-600">
                           <div className="flex justify-between">
-                            <span>Qty:</span>
+                            <span>{t('qtyColon')}</span>
                             <span className="font-medium">{item.quantity}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Unit Price:</span>
+                            <span>{t('unitPriceColon')}</span>
                             <span className="font-medium">
                               {currencySymbol}
                               {parseFloat(item.unit_price || '0').toLocaleString(undefined, {
@@ -259,7 +257,7 @@ const Invoice = () => {
                             </span>
                           </div>
                           <div className="flex justify-between pt-1 border-t border-gray-200">
-                            <span>Amount:</span>
+                            <span>{t('amountColon')}</span>
                             <span className="font-semibold text-gray-900">
                               {currencySymbol}
                               {((parseFloat(item.unit_price || '0') * (item.quantity || 1))).toLocaleString(undefined, {
@@ -277,14 +275,14 @@ const Invoice = () => {
                 {/* FFNE Card if exists */}
                 {(invoiceData?.ffne && Number(invoiceData.ffne) > 0) && (
                   <div className="border border-gray-200 rounded-lg p-3 bg-white">
-                    <p className="font-medium text-gray-900 text-sm mb-2">{invoiceData?.ffne_desc || 'FFNE'}</p>
+                    <p className="font-medium text-gray-900 text-sm mb-2">{invoiceData?.ffne_desc || t('ffneDefault')}</p>
                     <div className="space-y-1 text-xs text-gray-600">
                       <div className="flex justify-between">
-                        <span>Qty:</span>
+                        <span>{t('qtyColon')}</span>
                         <span className="font-medium">1</span>
                       </div>
                       <div className="flex justify-between pt-1 border-t border-gray-200">
-                        <span>Amount:</span>
+                        <span>{t('amountColon')}</span>
                         <span className="font-semibold text-gray-900">
                           {currencySymbol}
                           {Number(invoiceData.ffne).toLocaleString(undefined, {
@@ -305,12 +303,12 @@ const Invoice = () => {
             <div className="grid grid-cols-1 gap-4">
               <div className='flex items-center gap-4 md:gap-10'>
                 <Label className="font-normal block text-gray-900 text-sm md:text-sm">
-                  Status :
+                  {t('statusColon')}
                 </Label>
                 <div className="flex items-center">
                   <StatusBadge
                     status={invoiceData?.status}
-                    label={STATUS_OPTIONS.find(o => o.value === invoiceData?.status)?.label || invoiceData?.status}
+                    label={statusOptions.find(o => o.value === invoiceData?.status)?.label || invoiceData?.status}
                     className={getStatusStyle(invoiceData?.status)}
                   />
                 </div>
@@ -322,18 +320,18 @@ const Invoice = () => {
           <div className="flex justify-end pt-4">
             <div className="w-full md:w-64 space-y-3">
               <div className="flex justify-between text-sm text-gray-600">
-                <span>Subtotal:</span>
+                <span>{t('subtotalColon')}</span>
                 <span>{currencySymbol}{subTotalNum.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
               {deliveryCharge > 0 && (
                 <div className="flex justify-between text-sm text-gray-600">
-                  <span>Delivery Charge:</span>
+                  <span>{t('deliveryCharge')}</span>
                   <span>{currencySymbol}{deliveryCharge.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                 </div>
               )}
               <Separator />
               <div className="flex justify-between font-semibold text-gray-900">
-                <span>Total:</span>
+                <span>{t('totalColon')}</span>
                 <span>{currencySymbol}{totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
             </div>
@@ -342,26 +340,26 @@ const Invoice = () => {
           {/* Footer */}
           <div className="pt-8 md:pt-14 flex flex-col md:flex-row md:items-center md:justify-between gap-6 border-t mt-8">
             <div>
-              <h2 className="text-sm font-semibold text-gray-900 uppercase mb-3 md:mb-5">Payment Advance</h2>
+              <h2 className="text-sm font-semibold text-gray-900 uppercase mb-3 md:mb-5">{t('paymentAdvance')}</h2>
               <p className="text-gray-600 font-medium text-xs md:text-sm">
-                Manifest Designs Ltd t/a Souq.Studio <br /> Sandstones <br /> Langton Rd <br /> Tunbridge Wells <br /> TN3 0JU <br />
-                VAT NO: GB423127335 <br />
-                hello@souqdesign.co.uk
+                {t('companyName')} <br /> {t('companyAddressLine1')} <br /> {t('companyAddressLine2')} <br /> {t('companyCity')} <br /> {t('companyPostcode')} <br />
+                {t('vatNumber')} <br />
+                {t('companyEmail')}
               </p>
             </div>
             <div className="w-full md:min-w-[220px] space-y-3 md:space-y-[14px] text-gray-900 text-sm md:text-sm font-medium">
               <div className="grid grid-cols-2 gap-4">
-                <p className="text-gray-500">Document Number</p>
+                <p className="text-gray-500">{t('documentNumber')}</p>
                 <p className="text-right">{invoiceData?.invoice_number}</p>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <p className="text-gray-500">Amount Due</p>
+                <p className="text-gray-500">{t('amountDue')}</p>
                 <p className="text-right">{currencySymbol}0.00</p>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <p className="text-gray-500">Due Date</p>
+                <p className="text-gray-500">{t('dueDateLabel')}</p>
                 <p className="text-right">
-                  {invoiceData?.due_date ? new Date(invoiceData.due_date).toLocaleDateString('en-GB') : '-'}
+                  {formatShortDate(invoiceData?.due_date)}
                 </p>
               </div>
             </div>

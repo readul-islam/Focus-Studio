@@ -1,9 +1,9 @@
-import { useCurrency } from "@/hooks/getCurrencySymbol";
+import { useCurrency } from '@/hooks/getCurrencySymbol';
+import { useTranslations } from 'next-intl';
 
+export const ViewCurrencySymbol = ({ code }: { code: string }) => {
+  const { currency, isLoading } = useCurrency(code);
+  const tc = useTranslations('common');
 
-export const ViewCurrencySymbol = ({code}: {code: string}) => {
-    const { currency, isLoading } = useCurrency(code);
-    return(
-        <span>{isLoading ? '...' : currency.symbol}</span>
-    )
-}
+  return <span>{isLoading ? tc('loadingEllipsis') : currency.symbol}</span>;
+};

@@ -1,46 +1,36 @@
-import { LayoutGrid, DollarSign, MessageSquareMore, ShoppingCart, File, MessageSquare, User } from 'lucide-react';
+import { LayoutGrid, ShoppingCart, MessageSquare, File, User } from 'lucide-react';
 
 export const menuItems = [
   {
     icon: LayoutGrid,
-    label: 'Dashboard',
+    labelKey: 'dashboard',
     href: '/dashboard',
     basePath: '/dashboard',
   },
-  // {
-  //   icon: MessageSquareMore,
-  //   label: 'Communications',
-  //   href: '#',
-  //   basePath: '/communications',
-  // },
   {
     icon: ShoppingCart,
-    label: 'Procurement',
+    labelKey: 'procurement',
     href: '/procurement',
     basePath: '/procurement',
   },
   {
     icon: MessageSquare,
-    label: 'Messages',
+    labelKey: 'messages',
     href: '/messages',
     basePath: '/messages',
   },
-  // {
-  //   icon: DollarSign,
-  //   label: 'Finances',
-  //   href: '/finance',
-  //   basePath: '/finance',
-  // },
   {
     icon: File,
-    label: 'Files',
+    labelKey: 'files',
     href: '/documents',
     basePath: '/documents',
   },
   {
     icon: User,
-    label: 'Profile',
+    labelKey: 'profile',
     href: '/profile',
     basePath: '/profile',
   },
-];
+] as const;
+
+export type MenuLabelKey = (typeof menuItems)[number]['labelKey'];

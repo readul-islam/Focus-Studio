@@ -9,6 +9,7 @@ import useUser from '@/hooks/userUser';
 import { toast } from 'sonner';
 import { Upload, Loader2 } from 'lucide-react';
 import { patchData, patchFormData } from '@/lib/Api';
+import { useTranslations } from 'next-intl';
 
 type ProfileResponse = {
   name: string;
@@ -27,6 +28,8 @@ type ProfileResponse = {
 
 export default function Profile() {
   const { user } = useUser();
+  const t = useTranslations('profile');
+  const tc = useTranslations('common');
   const { data: profileData, isLoading, refetch } = useFetch<ProfileResponse>(
     'contractor_portal/me/',
     { enabled: !!user }
@@ -76,12 +79,12 @@ export default function Profile() {
       } else {
         await patchData({ url: 'contractor_portal/me/', data: form });
       }
-      toast.success('Profile updated');
+      toast.success(t('updated'));
       setInsuranceDocument(null);
       setTradeCert(null);
       refetch();
     } catch {
-      toast.error('Failed to update profile');
+      toast.error(t('updateFailed'));
     } finally {
       setSaving(false);
     }
@@ -100,44 +103,44 @@ export default function Profile() {
   return (
     <DashboardLayout>
       <Helmet>
-        <title>Profile | Focuspilot</title>
+        <title>{t('pageTitle')}</title>
       </Helmet>
 
       <div className="max-w-3xl">
-        <h1 className="text-xl font-semibold text-gray-900 mb-6">My profile</h1>
+        <h1 className="text-xl font-semibold text-gray-900 mb-6">{t('title')}</h1>
 
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm divide-y divide-gray-200">
           <section className="p-5 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label>First name</Label>
+              <Label>{t('firstName')}</Label>
               <Input className="mt-1" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
             </div>
             <div>
-              <Label>Surname</Label>
+              <Label>{t('surname')}</Label>
               <Input className="mt-1" value={form.surname} onChange={e => setForm({ ...form, surname: e.target.value })} />
             </div>
             <div>
-              <Label>Email</Label>
+              <Label>{t('email')}</Label>
               <Input className="mt-1" type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
             </div>
             <div>
-              <Label>Phone</Label>
+              <Label>{t('phone')}</Label>
               <Input className="mt-1" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} />
             </div>
             <div className="md:col-span-2">
-              <Label>Company</Label>
+              <Label>{t('company')}</Label>
               <Input className="mt-1" value={form.company_name} onChange={e => setForm({ ...form, company_name: e.target.value })} />
             </div>
             <div className="md:col-span-2">
-              <Label>Trade</Label>
+              <Label>{t('trade')}</Label>
               <Input className="mt-1" value={form.trade} onChange={e => setForm({ ...form, trade: e.target.value })} />
             </div>
           </section>
 
           <section className="p-5 space-y-4">
-            <h2 className="text-sm font-semibold text-gray-900">Insurance</h2>
+            <h2 className="text-sm font-semibold text-gray-900">{t('insurance')}</h2>
             <div>
-              <Label>Expiry date</Label>
+              <Label>{t('expiryDate')}</Label>
               <Input
                 className="mt-1"
                 type="date"
@@ -146,11 +149,11 @@ export default function Profile() {
               />
             </div>
             {profileData?.insurance_document && (
-              <p className="text-xs text-gray-500">Current: {profileData.insurance_document.split('/').pop()}</p>
+              <p className="text-xs text-gray-500">{tc('current', { name: profileData.insurance_document.split('/').pop() })}</p>
             )}
             <Button variant="outline" size="sm" type="button" onClick={() => document.getElementById('ins-upload')?.click()}>
               <Upload className="w-4 h-4 mr-2" />
-              Upload insurance document
+              {t('uploadInsurance')}
             </Button>
             <input
               id="ins-upload"
@@ -162,13 +165,13 @@ export default function Profile() {
           </section>
 
           <section className="p-5 space-y-4">
-            <h2 className="text-sm font-semibold text-gray-900">Trade certificate</h2>
+            <h2 className="text-sm font-semibold text-gray-900">{t('tradeCertificate')}</h2>
             {profileData?.trade_cert && (
-              <p className="text-xs text-gray-500">Current: {profileData.trade_cert.split('/').pop()}</p>
+              <p className="text-xs text-gray-500">{tc('current', { name: profileData.trade_cert.split('/').pop() })}</p>
             )}
             <Button variant="outline" size="sm" type="button" onClick={() => document.getElementById('cert-upload')?.click()}>
               <Upload className="w-4 h-4 mr-2" />
-              Upload trade certificate
+              {t('uploadTradeCert')}
             </Button>
             <input
               id="cert-upload"
@@ -180,9 +183,9 @@ export default function Profile() {
           </section>
 
           <section className="p-5 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <h2 className="text-sm font-semibold text-gray-900 md:col-span-2">Emergency contact</h2>
+            <h2 className="text-sm font-semibold text-gray-900 md:col-span-2">{t('emergencyContact')}</h2>
             <div>
-              <Label>Name</Label>
+              <Label>{t('name')}</Label>
               <Input
                 className="mt-1"
                 value={form.emergency_contact_name}
@@ -190,7 +193,7 @@ export default function Profile() {
               />
             </div>
             <div>
-              <Label>Phone</Label>
+              <Label>{t('phone')}</Label>
               <Input
                 className="mt-1"
                 value={form.emergency_contact_phone}
@@ -200,7 +203,7 @@ export default function Profile() {
           </section>
 
           <section className="p-5">
-            <Label>Notes</Label>
+            <Label>{t('notes')}</Label>
             <textarea
               className="mt-1 w-full rounded-md border border-gray-200 px-3 py-2 text-sm min-h-[80px]"
               value={form.notes}
@@ -211,7 +214,7 @@ export default function Profile() {
           <div className="p-5 flex justify-end">
             <Button onClick={handleSave} disabled={saving} className="bg-gray-900 text-white hover:bg-gray-800">
               {saving && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
-              Save changes
+              {t('saveChanges')}
             </Button>
           </div>
         </div>

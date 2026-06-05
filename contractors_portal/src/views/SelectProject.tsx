@@ -3,19 +3,21 @@ import { useNavigate } from '@/lib/navigation';
 import useUser from '@/hooks/userUser';
 import useFetch from '@/hooks/useFetch';
 import { Loader2, MapPin, Building2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { LanguageSwitcher } from '@/components/language-switcher';
 
 export default function SelectProject() {
   const navigate = useNavigate();
   const { user, projects, setSelectedProject } = useUser();
   const lastUsedProjectId = localStorage.getItem('lastUsedProjectId');
+  const t = useTranslations('selectProject');
+  const tApp = useTranslations('app');
 
-  // Fetch enriched project list (includes location)
   const { data: activeProjects, isLoading } = useFetch(
     `contractor_portal/active-projects/?contractor_id=${user?.id}`,
     { enabled: !!user?.id },
   );
 
-  // If only one project, auto-select and redirect
   useEffect(() => {
     if (!user) {
       navigate('/login', { replace: true });
@@ -28,7 +30,6 @@ export default function SelectProject() {
 
   if (!user) return null;
 
-  // Merge login projects (has currency) with active-projects (has location), last-used first
   const enriched = projects
     .map((p: any) => {
       const extra = activeProjects?.projects?.find((a: any) => a.id === p.project_id) ?? {};
@@ -45,20 +46,21 @@ export default function SelectProject() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4">
-      {/* Header */}
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4 relative">
+      <div className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </div>
       <div className="mb-8 text-center">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <img src="/brand/Logo.png" alt="Focuspilot" className="w-9 h-9" />
-          <span className="font-semibold text-gray-900 text-lg">Focuspilot</span>
-        </div>    
-        <h1 className="text-2xl font-bold text-gray-900">Select a Project</h1>
+          <img src="/brand/Logo.png" alt={tApp('name')} className="w-9 h-9" />
+          <span className="font-semibold text-gray-900 text-lg">{tApp('name')}</span>
+        </div>
+        <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
         <p className="text-sm text-gray-500 mt-1">
-          Welcome back, {user.name}. Choose a project to continue.
+          {t('welcomeBack', { name: user.name })}
         </p>
       </div>
 
-      {/* Project Cards */}
       <div className="w-full max-w-lg space-y-3">
         {isLoading ? (
           <div className="flex justify-center py-12">
@@ -82,7 +84,7 @@ export default function SelectProject() {
                       {String(project.project_id) === lastUsedProjectId && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 flex-shrink-0 ring-1 ring-emerald-200">
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                          Last used
+                          {t('lastUsed')}
                         </span>
                       )}
                     </div>
@@ -92,7 +94,7 @@ export default function SelectProject() {
                         {project.location}
                       </p>
                     ) : (
-                      <p className="text-xs text-gray-400 mt-0.5">No location set</p>
+                      <p className="text-xs text-gray-400 mt-0.5">{t('noLocation')}</p>
                     )}
                   </div>
                 </div>
