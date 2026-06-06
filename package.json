@@ -1,0 +1,11 @@
+{
+  "name": "focus-studio",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -k -n api,studio,client,contractor,landing -c blue,green,yellow,magenta,cyan \"node scripts/run-server.mjs\" \"pnpm -C client dev\" \"pnpm -C client_portal dev\" \"pnpm -C contractors_portal dev\" \"pnpm -C landing dev\"",
+    "dev:core": "concurrently -k -n api,studio,client,contractor -c blue,green,yellow,magenta \"node scripts/run-server.mjs\" \"pnpm -C client dev\" \"pnpm -C client_portal dev\" \"pnpm -C contractors_portal dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

@@ -4,6 +4,7 @@ import {
   MessageSquareMore,
   ShoppingCart,
   File,
+  Presentation,
 } from 'lucide-react';
 
 export const menuItems = [
@@ -36,5 +37,11 @@ export const menuItems = [
     labelKey: 'documents',
     href: '/documents',
     basePath: '/documents',
+  },
+  {
+    icon: Presentation,
+    labelKey: 'presentations',
+    href: '/presentations',
+    basePath: '/presentations',
   },
 ] as const;

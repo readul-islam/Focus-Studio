@@ -17,6 +17,7 @@ import {
   ArrowRight,
   Upload,
   X,
+  Presentation,
 } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -629,6 +630,28 @@ function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
               </div>
             </CardContent>
           </Card>
+
+          {can('presentations.view') && (
+            <Card className="border border-greige-500/30 shadow-sm">
+              <CardContent className="p-6 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Presentation className="w-5 h-5 text-clay-600" />
+                  <div>
+                    <h3 className="text-sm font-medium text-neutral-900">Client Presentations</h3>
+                    <p className="text-xs text-neutral-500">Create and share concept decks with your client</p>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => router.push(`/projects/${params?.id}/presentations`)}
+                  variant="outline"
+                  size="sm"
+                >
+                  <ArrowRight className="w-4 h-4 mr-1" />
+                  Open
+                </Button>
+              </CardContent>
+            </Card>
+          )}
 
           <Card className="border border-greige-500/30 shadow-sm">
             <CardContent className="p-6">

@@ -10,6 +10,7 @@
       "myTasks": "私のタスク",
       "calendar": "カレンダー",
       "projects": "プロジェクト",
+      "presentations": "プレゼンテーション",
       "crm": "CRM",
       "library": "図書館",
       "team": "チーム",
@@ -70,6 +71,7 @@
     "procurement": "調達",
     "finance": "ファイナンス",
     "files": "ファイル",
+    "presentations": "プレゼンテーション",
     "contractors": "請負業者",
     "settings": "設定"
   },
@@ -1662,6 +1664,7 @@
       "tasksDesc": "タスクを表示する",
       "calendarDesc": "カレンダーを開く",
       "projectsDesc": "すべてのプロジェクト",
+      "presentationsDesc": "クライアント向けプレゼンテーション",
       "crmDesc": "連絡先とパイプライン",
       "crmContactsDesc": "すべての連絡先を表示",
       "crmPipelineDesc": "販売パイプライン",
@@ -4445,7 +4448,8 @@
     "tabs": {
       "project": "プロジェクト",
       "team": "チーム",
-      "contractor": "業者"
+      "contractor": "業者",
+      "presentation": "プレゼン"
     },
     "project": "プロジェクト",
     "selectProject": "プロジェクトを選択",
@@ -4459,6 +4463,10 @@
     "contractorDesc": "デザインはプロジェクトファイルに保存され、その後プロジェクトの業者と共有されます。",
     "shareWithContractor": "業者と共有",
     "contractorDialogTitle": "業者とデザインを共有",
+    "presentation": "プレゼンテーション",
+    "selectPresentation": "プレゼンテーションを選択",
+    "presentationDesc": "選択したプレゼンテーションの最初のスライドにシーンピンとして追加します。",
+    "addToPresentation": "プレゼンテーションに追加",
     "defaultTeamMessage": "デザインスタジオからレンダリングを共有しました",
     "toasts": {
       "selectProject": "プロジェクトを選択してください",
@@ -4467,7 +4475,10 @@
       "sharedTeam": "プロジェクトチームと共有しました",
       "shareTeamFailed": "チームへの共有に失敗しました",
       "selectProjectFirst": "先にプロジェクトを選択してください",
-      "attachBeforeContractor": "業者と共有する前にプロジェクトに添付してください"
+      "attachBeforeContractor": "業者と共有する前にプロジェクトに添付してください",
+      "selectPresentation": "プレゼンテーションを選択してください",
+      "addedToPresentation": "プレゼンテーションに追加しました",
+      "addToPresentationFailed": "プレゼンテーションへの追加に失敗しました"
     }
   },
   "productDetailSheet": {
@@ -4559,6 +4570,7 @@
     "selectRoom": "部屋を選択",
     "noRoomsFound": "部屋が見つかりません",
     "addRoomsHint": "先にプロジェクト設定で部屋を追加してください",
+    "goToRoomSettings": "プロジェクト設定で部屋を追加",
     "quantity": "数量",
     "quantityHint": "追加する数量は？",
     "unit": "1個",
@@ -4671,5 +4683,199 @@
     "Plasterer": "左官",
     "Decorator": "装飾業者",
     "Other": "その他"
+  },
+  "presentationsPage": {
+    "title": "プレゼンテーション",
+    "searchPlaceholder": "プレゼンテーションを検索",
+    "createButton": "プレゼンテーションを作成",
+    "empty": "プレゼンテーションがありません。最初のクライアント向けデッキを作成しましょう。",
+    "card": {
+      "edited": "編集",
+      "rename": "名前を変更",
+      "duplicate": "複製",
+      "delete": "削除"
+    },
+    "createDialog": {
+      "title": "プレゼンテーションを作成",
+      "nameLabel": "名前",
+      "namePlaceholder": "クライアントプレゼンテーション",
+      "projectLabel": "プロジェクト",
+      "projectPlaceholder": "プロジェクトを選択",
+      "cancel": "キャンセル",
+      "create": "作成"
+    },
+    "renameDialog": {
+      "title": "名前を変更",
+      "label": "名前",
+      "cancel": "キャンセル",
+      "save": "保存"
+    },
+    "toasts": {
+      "created": "プレゼンテーションを作成しました",
+      "createFailed": "作成に失敗しました",
+      "renamed": "名前を変更しました",
+      "renameFailed": "名前の変更に失敗しました",
+      "duplicated": "複製しました",
+      "duplicateFailed": "複製に失敗しました",
+      "deleted": "削除しました",
+      "deleteFailed": "削除に失敗しました"
+    }
+  },
+  "presentationEditor": {
+    "breadcrumb": {
+      "presentations": "プレゼンテーション"
+    },
+    "toolbar": {
+      "startTimer": "タイマーを開始",
+      "pins": "ピン",
+      "share": "共有",
+      "present": "プレゼン",
+      "saving": "保存中…",
+      "unsaved": "未保存"
+    },
+    "emptyState": {
+      "title": "スライドを作成",
+      "description": "ピッチ、レポート、研修、クライアント向け資料など、あらゆるプレゼンに対応。テキスト、画像、図形を追加して始めましょう。",
+      "addText": "テキストを追加",
+      "addImage": "画像を追加",
+      "uploadImage": "画像をアップロード",
+      "addImageFromLibrary": "ライブラリから",
+      "addShape": "図形を追加",
+      "quickThemes": "クイックテーマ",
+      "dropHint": "またはキャンバスに画像をドロップ",
+      "dropActive": "画像をドロップしてスライドに追加"
+    },
+    "slideFormat": {
+      "background": "背景",
+      "themesLabel": "テーマ",
+      "themes": {
+        "white": "ホワイト",
+        "light": "ライト",
+        "ocean": "オーシャン",
+        "mint": "ミント",
+        "sand": "サンド",
+        "rose": "ローズ",
+        "lavender": "ラベンダー",
+        "slate": "スレート",
+        "charcoal": "チャコール",
+        "midnight": "ミッドナイト"
+      }
+    },
+    "slideNavigator": {
+      "title": "スライド"
+    },
+    "slide": {
+      "defaultTitle": "スライド {n}",
+      "duplicate": "複製",
+      "delete": "削除",
+      "drag": "ドラッグしてスライドを並べ替え"
+    },
+    "elementToolbar": {
+      "deselect": "選択解除",
+      "lock": "要素をロック",
+      "unlock": "ロック解除",
+      "delete": "要素を削除",
+      "more": "その他のオプション",
+      "duplicate": "複製",
+      "bringForward": "前面へ",
+      "sendBackward": "背面へ",
+      "setAsBackground": "背景に設定",
+      "detachBackground": "背景を解除"
+    },
+    "textToolbar": {
+      "bold": "太字",
+      "italic": "斜体",
+      "underline": "下線",
+      "alignLeft": "左揃え",
+      "alignCenter": "中央揃え",
+      "alignRight": "右揃え",
+      "color": "文字色",
+      "lock": "テキストをロック",
+      "unlock": "ロック解除",
+      "delete": "テキストを削除",
+      "increaseSize": "フォントサイズを大きく",
+      "decreaseSize": "フォントサイズを小さく",
+      "editHint": "Escでキャンセル · Ctrl+Enterで完了"
+    },
+    "addMenu": {
+      "drag": "ツールバーを移動",
+      "add": "追加",
+      "content": "コンテンツ",
+      "library": "ライブラリから",
+      "text": "テキスト",
+      "shape": "図形",
+      "image": "画像",
+      "uploadImage": "コンピュータからアップロード",
+      "imageLibrary": "ライブラリから",
+      "product": "製品",
+      "scene": "シーン",
+      "newPage": "新しいスライド",
+      "pin": "ピン"
+    },
+    "pinsPanel": {
+      "title": "ピン",
+      "products": "製品",
+      "scenes": "シーン ({count})",
+      "noProducts": "製品ピンはまだありません。",
+      "noScenes": "シーンピンはまだありません。",
+      "addProductPin": "製品ピンを追加",
+      "addScenePin": "シーンピンを追加",
+      "clickToPlace": "スライドをクリックしてピンを配置",
+      "unnamed": "名前なしピン"
+    },
+    "assetPicker": {
+      "title": "ライブラリから追加",
+      "products": "製品",
+      "scenes": "シーン",
+      "files": "プロジェクトファイル",
+      "search": "検索...",
+      "noScenes": "デザインシーンがありません。Design AIでレンダリングを生成してください。",
+      "scene": "シーン",
+      "uploadFromComputer": "コンピュータからアップロード"
+    },
+    "share": {
+      "title": "プレゼンテーションを共有",
+      "description": "クライアントダッシュボードに公開するか、固有のリンクで共有します。",
+      "clientDashboard": "クライアントダッシュボードに公開",
+      "clientDashboardDesc": "このプロジェクトのクライアントポータルに追加します。",
+      "webPublish": "Webに公開",
+      "webPublishDesc": "オンラインプレゼンテーションへのリンクを生成します。",
+      "showPricing": "製品価格を表示",
+      "showSupplier": "サプライヤー情報を表示",
+      "cancel": "キャンセル",
+      "save": "保存",
+      "copied": "リンクをコピーしました"
+    },
+    "presentMode": {
+      "startTimer": "タイマーを開始"
+    },
+    "publicViewer": {
+      "notFound": "プレゼンテーションが見つからないか、公開されていません。",
+      "empty": "このプレゼンテーションにはスライドがありません。",
+      "previous": "前のスライド",
+      "next": "次のスライド"
+    },
+    "toasts": {
+      "noActiveSlide": "コンテンツを追加する前にスライドを選択してください",
+      "noProductImage": "この製品には追加できる画像がありません",
+      "noSceneImage": "このシーンには追加できる画像がありません",
+      "saveFailed": "スライドの保存に失敗しました",
+      "lastSlide": "最後のスライドは削除できません",
+      "published": "共有設定を保存しました",
+      "publishFailed": "共有の更新に失敗しました",
+      "timerStarted": "タイマーを開始しました",
+      "timerFailed": "タイマーの開始に失敗しました",
+      "missingInfo": "ユーザー情報がありません",
+      "addedToProcurement": "調達に追加しました",
+      "procurementFailed": "調達への追加に失敗しました",
+      "imageAdded": "画像をスライドに追加しました",
+      "imageTooLarge": "画像が大きすぎます。3MB以下かライブラリから追加してください。",
+      "unsupportedFile": "キャンバスには画像ファイルのみドロップできます",
+      "imageAddFailed": "画像を追加できませんでした",
+      "backgroundSet": "画像をスライドの背景に設定しました",
+      "backgroundSetFailed": "背景の設定に失敗しました",
+      "backgroundDetached": "背景をキャンバスに戻しました",
+      "backgroundDetachFailed": "背景の解除に失敗しました"
+    }
   }
 }

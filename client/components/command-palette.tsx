@@ -9,7 +9,7 @@ import {
   Users, BookOpen, DollarSign, BarChart2, Zap, HelpCircle, Palette,
   Settings, Contact, GitBranch, FileText, Package, Clock,
   User, Shield, Bell, Receipt, ShoppingCart, Activity,
-  Search, ArrowRight, Hash,
+  Search, ArrowRight, Hash, Presentation,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { usePermissions } from '@/hooks/usePermissions';
@@ -41,6 +41,7 @@ function useNavCommands(): CommandItem[] {
     { id: 'tasks', label: tNav('myTasks'), description: tCmd('items.tasksDesc'), shortcut: 'mt', icon: <CheckSquare className="w-4 h-4" />, group: g('navigation'), href: '/home/tasks', permission: 'tasks.view' },
     { id: 'calendar', label: tNav('calendar'), description: tCmd('items.calendarDesc'), shortcut: 'ca', icon: <Calendar className="w-4 h-4" />, group: g('navigation'), href: '/calendar' },
     { id: 'projects', label: tNav('projects'), description: tCmd('items.projectsDesc'), shortcut: 'pr', icon: <FolderOpen className="w-4 h-4" />, group: g('navigation'), href: '/projects', permission: 'projects.view' },
+    { id: 'presentations', label: tNav('presentations'), description: tCmd('items.presentationsDesc'), shortcut: 'pe', icon: <Presentation className="w-4 h-4" />, group: g('navigation'), href: '/presentations', permission: 'presentations.view' },
     { id: 'crm', label: tNav('crm'), description: tCmd('items.crmDesc'), shortcut: 'cr', icon: <Contact className="w-4 h-4" />, group: g('studio'), href: '/crm/contacts', permission: 'clients.view' },
     { id: 'crm-contacts', label: tCmd('items.crmContactsLabel'), description: tCmd('items.crmContactsDesc'), shortcut: 'cc', icon: <Users className="w-4 h-4" />, group: g('studio'), href: '/crm/contacts', permission: 'clients.view' },
     { id: 'crm-pipeline', label: tCmd('items.crmPipelineLabel'), description: tCmd('items.crmPipelineDesc'), shortcut: 'cp', icon: <GitBranch className="w-4 h-4" />, group: g('studio'), href: '/crm/pipeline', permission: 'clients.view' },

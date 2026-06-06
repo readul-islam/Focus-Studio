@@ -29,6 +29,7 @@ import {
   Plus,
   Package,
 } from 'lucide-react';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import useFetch from '@/hooks/useFetch';
 import { ViewCurrencySymbol } from '@/components/ViewCurrencySymbol';
@@ -537,6 +538,16 @@ export function AddToProjectDialog({
                         <p className="text-xs text-neutral-400 mt-1">
                           {t('addRoomsHint')}
                         </p>
+                        {selectedProject && (
+                          <Button asChild variant="outline" size="sm" className="mt-4">
+                            <Link
+                              href={`/projects/${selectedProject.id}/settings?section=rooms`}
+                              onClick={() => onOpenChange(false)}
+                            >
+                              {t('goToRoomSettings')}
+                            </Link>
+                          </Button>
+                        )}
                       </motion.div>
                     )}
                   </div>

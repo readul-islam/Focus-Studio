@@ -18,6 +18,7 @@ export const PUBLIC_APP_ROUTES = [
 
 export function isPublicAppRoute(pathname: string | null | undefined): boolean {
   if (!pathname) return false;
+  if (pathname.startsWith('/p/presentations/')) return true;
   return PUBLIC_APP_ROUTES.some(
     (route) => pathname === route || pathname.startsWith(`${route}/`)
   );
@@ -42,5 +43,6 @@ export const PUBLIC_API_AUTH_PATHS = [
 
 export function isPublicApiAuthPath(url: string | undefined): boolean {
   if (!url) return false;
+  if (url.includes('/presentations/public/')) return true;
   return PUBLIC_API_AUTH_PATHS.some((p) => url.includes(p));
 }

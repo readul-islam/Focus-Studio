@@ -128,5 +128,6 @@ export function useNavMenuItems() {
     { labelKey: 'procurement' as const, label: t('procurement') },
     { labelKey: 'finances' as const, label: t('finances') },
     { labelKey: 'documents' as const, label: t('documents') },
+    { labelKey: 'presentations' as const, label: t('presentations') },
   ];
 }

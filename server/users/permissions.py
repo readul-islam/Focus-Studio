@@ -114,3 +114,10 @@ class DesignViewPermission(_ModulePermission):
     read_permission = 'design.view'
     write_permission = 'design.edit'
     delete_permission = None
+
+
+class PresentationsViewPermission(_ModulePermission):
+    """Controls access to the Presentations module (view / edit / delete)."""
+    read_permission = 'presentations.view'
+    write_permission = 'presentations.edit'
+    delete_permission = 'presentations.delete'

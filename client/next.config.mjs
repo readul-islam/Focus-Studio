@@ -1,4 +1,8 @@
+import path from 'path'
+import { fileURLToPath } from 'url'
 import createNextIntlPlugin from 'next-intl/plugin'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // BACKEND_URL: real Django origin used by the server-side proxy and CSP.
 // Never expose tokens — this is only for Next.js server → Django server traffic.
@@ -40,17 +44,31 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "**.amazonaws.com",
+        pathname: "/media/**",
+      },
+      {
+        protocol: "https",
         hostname: "techstyles.s3.amazonaws.com",
       },
       {
         protocol: "https",
         hostname: "techstyles.s3.eu-west-2.amazonaws.com",
-      }
+      },
+      {
+        protocol: "https",
+        hostname: "focuspilot.s3.us-east-1.amazonaws.com",
+      },
     ],
   },
   webpack: (config) => {
-    config.resolve.alias.canvas = false;
-    config.resolve.alias.encoding = false;
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      canvas: false,
+      encoding: false,
+      'react-konva': path.resolve(__dirname, 'node_modules/react-konva'),
+      konva: path.resolve(__dirname, 'node_modules/konva'),
+    };
     return config;
   },
 }

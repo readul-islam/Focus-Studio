@@ -12,6 +12,13 @@ class TimeLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='time_logs', null=True, blank=True)
     project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
     task = models.ForeignKey(Task, on_delete=models.SET_NULL, null=True, blank=True)
+    presentation = models.ForeignKey(
+        'presentations.Presentation',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='time_logs',
+    )
     clock_status = models.CharField(max_length=200, choices=CLOCK_STATUS, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     studio = models.ForeignKey(Studio, on_delete=models.SET_NULL, null=True, blank=True)

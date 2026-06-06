@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -218,17 +218,20 @@ export default function AIActivityPage() {
 
   useEffect(() => {
     document.title = t('documentTitle');
-    loadActivities();
   }, [t]);
 
-  async function loadActivities() {
+  const loadActivities = useCallback(async () => {
     setLoading(true);
     const result = await getAIActivities();
     if (result.success && result.data) {
       setActivities(result.data);
     }
     setLoading(false);
-  }
+  }, []);
+
+  useEffect(() => {
+    void loadActivities();
+  }, [loadActivities]);
 
   const groupActivitiesByDate = (items: AIActivity[]) => {
     const today = new Date();

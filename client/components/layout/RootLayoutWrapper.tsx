@@ -33,11 +33,14 @@ const STANDALONE_ROUTES = [
 
 export function RootLayoutWrapper({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const isPublicPresentation = pathname?.startsWith('/p/presentations/');
   const isPublic =
     !!pathname &&
-    PUBLIC_ROUTES.some((r) => pathname === r || pathname.startsWith(`${r}/`));
+    (isPublicPresentation ||
+      PUBLIC_ROUTES.some((r) => pathname === r || pathname.startsWith(`${r}/`)));
   const isPdfRoute = pathname?.includes('/pdf/');
-  const isStandalone = STANDALONE_ROUTES.includes(pathname);
+  const isPresentationPresent = !!pathname?.match(/\/presentations\/\d+\/present\/?$/);
+  const isStandalone = STANDALONE_ROUTES.includes(pathname) || isPresentationPresent;
   const isContractorPortal = pathname?.startsWith('/contractor/');
   const isSignPage = pathname?.startsWith('/sign/');
   const isPrototype = pathname?.startsWith('/prototype/');

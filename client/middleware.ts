@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { isPublicAppRoute } from './lib/auth-routes';
 import { countryToLocale, defaultLocale, targetLocales, type TargetLocale } from './i18n/routing';
+
+const PUBLIC_PRESENTATION_TOKEN =
+  /^\/presentations\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\/?$/i;
 
 // Routes that require no auth
 const PUBLIC_ROUTES = [
@@ -52,7 +56,10 @@ function detectLocale(request: NextRequest): TargetLocale {
 }
 
 function isPublic(pathname: string): boolean {
-  return PUBLIC_ROUTES.some(r => pathname === r || pathname.startsWith(r + '/'));
+  return (
+    isPublicAppRoute(pathname) ||
+    PUBLIC_ROUTES.some((r) => pathname === r || pathname.startsWith(`${r}/`))
+  );
 }
 
 function isAuthOnly(pathname: string): boolean {
@@ -73,6 +80,15 @@ export function middleware(request: NextRequest) {
     const passThrough = NextResponse.next();
     passThrough.cookies.set(LOCALE_COOKIE_NAME, locale, { path: '/', sameSite: 'lax' });
     return passThrough;
+  }
+
+  const publicPresentationMatch = pathname.match(PUBLIC_PRESENTATION_TOKEN);
+  if (publicPresentationMatch) {
+    const response = NextResponse.redirect(
+      new URL(`/p/presentations/${publicPresentationMatch[1]}`, request.url)
+    );
+    response.cookies.set(LOCALE_COOKIE_NAME, locale, { path: '/', sameSite: 'lax' });
+    return response;
   }
 
   const hasSession = !!request.cookies.get('access')?.value || !!request.cookies.get('refresh')?.value;

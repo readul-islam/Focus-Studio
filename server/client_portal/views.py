@@ -11,6 +11,8 @@ from documents.models import Document
 from documents.serializers import DocumentSerializer
 from projects.models import Procurement, Project
 from finance.models import Invoice
+from presentations.models import Presentation
+from presentations.serializers import ClientPresentationSerializer, PublicPresentationSerializer
 from .serializers import ClientProcurementSerializer, ClientInvoiceSerializer, ClientLoginSerializer, ClientProjectSerializer
 from crm.models import Client
 from .models import ClientProject
@@ -69,6 +71,32 @@ class ClientProcurementViewSet(viewsets.ModelViewSet):
         queryset = self.get_queryset().filter(project_id=project_id)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+class ClientPresentationViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet for client access to published presentations.
+    """
+    serializer_class = ClientPresentationSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        return Presentation.objects.filter(client_dashboard_published=True)
+
+    def list(self, request, *args, **kwargs):
+        project_id = request.query_params.get('project_id')
+        if not project_id:
+            return Response({'error': 'project_id is required'}, status=status.HTTP_400_BAD_REQUEST)
+        queryset = self.get_queryset().filter(project_id=project_id)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if not instance.client_dashboard_published:
+            return Response({'error': 'Presentation not published.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = PublicPresentationSerializer(instance, context={'request': request})
+        return Response(serializer.data)
+
 
 class ClientInvoiceViewSet(viewsets.ReadOnlyModelViewSet):
     """

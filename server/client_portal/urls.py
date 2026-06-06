@@ -1,11 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ClientDocumentViewSet, ClientProcurementViewSet, client_dashboard, ClientInvoiceViewSet, ClientLoginView, generate_client_credentials, room_totals, copy_client_credentials, fetch_client_credentials_email_html
+from .views import ClientDocumentViewSet, ClientProcurementViewSet, client_dashboard, ClientInvoiceViewSet, ClientPresentationViewSet, ClientLoginView, generate_client_credentials, room_totals, copy_client_credentials, fetch_client_credentials_email_html
 
 router = DefaultRouter()
 router.register(r'documents', ClientDocumentViewSet, basename='client-documents')
 router.register(r'procurements', ClientProcurementViewSet, basename='client-procurements')
 router.register(r'invoices', ClientInvoiceViewSet, basename='client-invoices')
+router.register(r'presentations', ClientPresentationViewSet, basename='client-presentations')
 
 urlpatterns = [
     path('', include(router.urls)),

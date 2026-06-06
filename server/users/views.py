@@ -1399,6 +1399,7 @@ def _seed_role_permissions(studio):
         'documents.view', 'documents.edit',
         'reports.view',
         'design.view', 'design.edit',
+        'presentations.view', 'presentations.edit', 'presentations.share',
         'team.view',
     }
     member_defaults = {
@@ -1408,6 +1409,7 @@ def _seed_role_permissions(studio):
         'library.view',
         'documents.view',
         'design.view',
+        'presentations.view', 'presentations.edit',
     }
     defaults_map = {'admin': admin_always_on, 'manager': manager_defaults, 'member': member_defaults}
 

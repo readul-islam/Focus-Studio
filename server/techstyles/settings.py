@@ -87,6 +87,7 @@ INSTALLED_APPS = [
     'notion',
     'collaboration',
     'design',
+    'presentations',
     'public_profiles',
 ]
 

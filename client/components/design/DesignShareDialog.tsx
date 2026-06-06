@@ -18,9 +18,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Loader2, FolderOpen, Users, HardHat } from 'lucide-react';
+import { Loader2, FolderOpen, Users, HardHat, Presentation } from 'lucide-react';
+import { usePresentations } from '@/hooks/usePresentations';
+import { postData } from '@/lib/Api';
 import useFetch from '@/hooks/useFetch';
-import { postFormData } from '@/lib/Api';
+import { postFormData, fetchData } from '@/lib/Api';
 import { createDocument } from '@/services/documentService';
 import { urlToFile } from '@/hooks/useDesignSessions';
 import { SelectContractorDialog } from '@/components/contractor/SelectContractorDialog';
@@ -56,10 +58,16 @@ export function DesignShareDialog({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [attachedDocumentId, setAttachedDocumentId] = useState<number | null>(null);
   const [contractorDialogOpen, setContractorDialogOpen] = useState(false);
+  const [presentationId, setPresentationId] = useState('');
 
   const { data: projectsRaw, isLoading: projectsLoading } = useFetch(
     open ? 'projects/user-projects/' : null
   );
+
+  const { query: presentationsQuery } = usePresentations(
+    projectId ? Number(projectId) : undefined
+  );
+  const presentations = presentationsQuery.data || [];
 
   const projects: ProjectOption[] = Array.isArray(projectsRaw)
     ? projectsRaw
@@ -127,6 +135,38 @@ export function DesignShareDialog({
     }
   };
 
+  const handleAddToPresentation = async () => {
+    if (!presentationId) {
+      toast.error(t('toasts.selectPresentation'));
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const pres = await fetchData(`/presentations/presentations/${presentationId}/`) as {
+        slides?: { id: number }[];
+      };
+      const slideId = pres.slides?.[0]?.id;
+      if (!slideId) throw new Error('No slide');
+      await postData({
+        url: '/presentations/pins/',
+        data: {
+          slide: slideId,
+          pin_type: 'scene',
+          design_asset: assetId,
+          x: 200,
+          y: 200,
+          label: downloadFilename,
+        },
+      });
+      toast.success(t('toasts.addedToPresentation'));
+      handleClose();
+    } catch {
+      toast.error(t('toasts.addToPresentationFailed'));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleOpenContractorShare = async () => {
     if (!projectId) {
       toast.error(t('toasts.selectProjectFirst'));
@@ -182,7 +222,7 @@ export function DesignShareDialog({
             <DialogTitle>{t('title')}</DialogTitle>
           </DialogHeader>
           <Tabs value={tab} onValueChange={setTab}>
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="project" className="text-xs gap-1">
                 <FolderOpen className="w-3.5 h-3.5" />
                 {t('tabs.project')}
@@ -194,6 +234,10 @@ export function DesignShareDialog({
               <TabsTrigger value="contractor" className="text-xs gap-1">
                 <HardHat className="w-3.5 h-3.5" />
                 {t('tabs.contractor')}
+              </TabsTrigger>
+              <TabsTrigger value="presentation" className="text-xs gap-1">
+                <Presentation className="w-3.5 h-3.5" />
+                {t('tabs.presentation')}
               </TabsTrigger>
             </TabsList>
             <TabsContent value="project" className="space-y-4 mt-4">
@@ -250,6 +294,33 @@ export function DesignShareDialog({
               >
                 {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                 {t('shareWithContractor')}
+              </Button>
+            </TabsContent>
+            <TabsContent value="presentation" className="space-y-4 mt-4">
+              {projectSelect}
+              <div className="space-y-2">
+                <Label>{t('presentation')}</Label>
+                <Select value={presentationId} onValueChange={setPresentationId} disabled={!projectId}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={t('selectPresentation')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {presentations.map((p) => (
+                      <SelectItem key={p.id} value={String(p.id)}>
+                        {p.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <p className="text-xs text-gray-500">{t('presentationDesc')}</p>
+              <Button
+                className="w-full bg-gray-900 hover:bg-gray-800"
+                onClick={handleAddToPresentation}
+                disabled={isSubmitting || !presentationId}
+              >
+                {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                {t('addToPresentation')}
               </Button>
             </TabsContent>
           </Tabs>

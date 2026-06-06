@@ -10,6 +10,7 @@
       "myTasks": "My Tasks",
       "calendar": "Calendar",
       "projects": "Projects",
+      "presentations": "Presentations",
       "crm": "CRM",
       "library": "Library",
       "team": "Team",
@@ -70,6 +71,7 @@
     "procurement": "Procurement",
     "finance": "Finance",
     "files": "Files",
+    "presentations": "Presentations",
     "contractors": "Contractors",
     "settings": "Settings"
   },
@@ -1662,6 +1664,7 @@
       "tasksDesc": "View your tasks",
       "calendarDesc": "Open calendar",
       "projectsDesc": "All projects",
+      "presentationsDesc": "Client presentation decks",
       "crmDesc": "Contacts and pipeline",
       "crmContactsDesc": "View all contacts",
       "crmPipelineDesc": "Sales pipeline",
@@ -4445,7 +4448,8 @@
     "tabs": {
       "project": "Project",
       "team": "Team",
-      "contractor": "Contractor"
+      "contractor": "Contractor",
+      "presentation": "Presentation"
     },
     "project": "Project",
     "selectProject": "Select project",
@@ -4459,6 +4463,10 @@
     "contractorDesc": "The design will be saved to project Files, then shared with a contractor on that project.",
     "shareWithContractor": "Share with contractor",
     "contractorDialogTitle": "Share design with contractor",
+    "presentation": "Presentation",
+    "selectPresentation": "Select presentation",
+    "presentationDesc": "Adds this render as a scene pin on the first slide of the selected presentation.",
+    "addToPresentation": "Add to presentation",
     "defaultTeamMessage": "Shared a design render from Design Studio",
     "toasts": {
       "selectProject": "Select a project",
@@ -4467,7 +4475,10 @@
       "sharedTeam": "Shared with project team",
       "shareTeamFailed": "Failed to share with team",
       "selectProjectFirst": "Select a project first",
-      "attachBeforeContractor": "Attach to project before sharing with contractor"
+      "attachBeforeContractor": "Attach to project before sharing with contractor",
+      "selectPresentation": "Select a presentation",
+      "addedToPresentation": "Added to presentation",
+      "addToPresentationFailed": "Failed to add to presentation"
     }
   },
   "productDetailSheet": {
@@ -4559,6 +4570,7 @@
     "selectRoom": "Select a room",
     "noRoomsFound": "No rooms found",
     "addRoomsHint": "Add rooms in project settings first",
+    "goToRoomSettings": "Add rooms in project settings",
     "quantity": "Quantity",
     "quantityHint": "How many units to add?",
     "unit": "1 unit",
@@ -4671,5 +4683,199 @@
     "Plasterer": "Plasterer",
     "Decorator": "Decorator",
     "Other": "Other"
+  },
+  "presentationsPage": {
+    "title": "Presentations",
+    "searchPlaceholder": "Search presentations",
+    "createButton": "Create presentation",
+    "empty": "No presentations yet. Create your first deck to get started.",
+    "card": {
+      "edited": "Edited",
+      "rename": "Rename",
+      "duplicate": "Duplicate",
+      "delete": "Delete"
+    },
+    "createDialog": {
+      "title": "Create presentation",
+      "nameLabel": "Name",
+      "namePlaceholder": "Untitled presentation",
+      "projectLabel": "Project",
+      "projectPlaceholder": "Select a project",
+      "cancel": "Cancel",
+      "create": "Create"
+    },
+    "renameDialog": {
+      "title": "Rename presentation",
+      "label": "Name",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "toasts": {
+      "created": "Presentation created",
+      "createFailed": "Failed to create presentation",
+      "renamed": "Presentation renamed",
+      "renameFailed": "Failed to rename",
+      "duplicated": "Presentation duplicated",
+      "duplicateFailed": "Failed to duplicate",
+      "deleted": "Presentation deleted",
+      "deleteFailed": "Failed to delete"
+    }
+  },
+  "presentationEditor": {
+    "breadcrumb": {
+      "presentations": "Presentations"
+    },
+    "toolbar": {
+      "startTimer": "Start timer",
+      "pins": "Pins",
+      "share": "Share",
+      "present": "Present",
+      "saving": "Saving…",
+      "unsaved": "Unsaved"
+    },
+    "emptyState": {
+      "title": "Start your slide",
+      "description": "Build any presentation — pitch decks, reports, training, or client reviews. Add text, images, and shapes to get started.",
+      "addText": "Add text",
+      "addImage": "Add image",
+      "uploadImage": "Upload image",
+      "addImageFromLibrary": "From library",
+      "addShape": "Add shape",
+      "quickThemes": "Quick themes",
+      "dropHint": "Or drop an image anywhere on the canvas",
+      "dropActive": "Drop image to add to slide"
+    },
+    "slideFormat": {
+      "background": "Background",
+      "themesLabel": "Themes",
+      "themes": {
+        "white": "White",
+        "light": "Light",
+        "ocean": "Ocean",
+        "mint": "Mint",
+        "sand": "Sand",
+        "rose": "Rose",
+        "lavender": "Lavender",
+        "slate": "Slate",
+        "charcoal": "Charcoal",
+        "midnight": "Midnight"
+      }
+    },
+    "slideNavigator": {
+      "title": "Slides"
+    },
+    "slide": {
+      "defaultTitle": "Slide {n}",
+      "duplicate": "Duplicate",
+      "delete": "Delete",
+      "drag": "Drag to reorder slide"
+    },
+    "elementToolbar": {
+      "deselect": "Deselect",
+      "lock": "Lock element",
+      "unlock": "Unlock element",
+      "delete": "Delete element",
+      "more": "More options",
+      "duplicate": "Duplicate",
+      "bringForward": "Bring forward",
+      "sendBackward": "Send backward",
+      "setAsBackground": "Set as background",
+      "detachBackground": "Detach background"
+    },
+    "textToolbar": {
+      "bold": "Bold",
+      "italic": "Italic",
+      "underline": "Underline",
+      "alignLeft": "Align left",
+      "alignCenter": "Align center",
+      "alignRight": "Align right",
+      "color": "Text color",
+      "lock": "Lock text",
+      "unlock": "Unlock text",
+      "delete": "Delete text",
+      "increaseSize": "Increase font size",
+      "decreaseSize": "Decrease font size",
+      "editHint": "Esc to cancel · Ctrl+Enter to finish"
+    },
+    "addMenu": {
+      "drag": "Drag toolbar",
+      "add": "Add",
+      "content": "Content",
+      "library": "From library",
+      "text": "Text",
+      "shape": "Shape",
+      "image": "Image",
+      "uploadImage": "Upload from computer",
+      "imageLibrary": "From library",
+      "product": "Product",
+      "scene": "Scene",
+      "newPage": "New slide",
+      "pin": "Pin"
+    },
+    "pinsPanel": {
+      "title": "Pins",
+      "products": "Products",
+      "scenes": "Scenes ({count})",
+      "noProducts": "No product pins yet. Add product pins to your presentation and they'll show up here.",
+      "noScenes": "No scene pins yet.",
+      "addProductPin": "Add product pin",
+      "addScenePin": "Add scene pin",
+      "clickToPlace": "Click on the slide to place a pin",
+      "unnamed": "Unnamed pin"
+    },
+    "assetPicker": {
+      "title": "Add from library",
+      "products": "Products",
+      "scenes": "Scenes",
+      "files": "Project files",
+      "search": "Search...",
+      "noScenes": "No design scenes yet. Generate renders in Design AI first.",
+      "scene": "Scene",
+      "uploadFromComputer": "Upload from computer"
+    },
+    "share": {
+      "title": "Share your presentation",
+      "description": "Publish your presentation on the Client Dashboard or share via a unique link.",
+      "clientDashboard": "Publish to Client Dashboard",
+      "clientDashboardDesc": "Add your presentation to the client portal for this project.",
+      "webPublish": "Publish to web",
+      "webPublishDesc": "Generate a live link to your online presentation.",
+      "showPricing": "Show product pricing",
+      "showSupplier": "Show supplier information",
+      "cancel": "Cancel",
+      "save": "Save",
+      "copied": "Link copied"
+    },
+    "presentMode": {
+      "startTimer": "Start timer"
+    },
+    "publicViewer": {
+      "notFound": "Presentation not found or not published.",
+      "empty": "This presentation has no slides yet.",
+      "previous": "Previous slide",
+      "next": "Next slide"
+    },
+    "toasts": {
+      "noActiveSlide": "Select a slide before adding content",
+      "noProductImage": "This product has no image to add",
+      "noSceneImage": "This scene has no image to add",
+      "saveFailed": "Failed to save slide",
+      "lastSlide": "Cannot delete the last slide",
+      "published": "Sharing settings saved",
+      "publishFailed": "Failed to update sharing",
+      "timerStarted": "Timer started",
+      "timerFailed": "Failed to start timer",
+      "missingInfo": "Missing user information",
+      "addedToProcurement": "Added to procurement",
+      "procurementFailed": "Failed to add to procurement",
+      "imageAdded": "Image added to slide",
+      "imageTooLarge": "Image is too large. Use a file under 3 MB or add from library.",
+      "unsupportedFile": "Only image files can be dropped onto the canvas",
+      "imageAddFailed": "Could not add image",
+      "backgroundSet": "Image set as slide background",
+      "backgroundSetFailed": "Could not set slide background",
+      "backgroundDetached": "Background moved to canvas",
+      "backgroundDetachFailed": "Could not detach background"
+    }
   }
 }

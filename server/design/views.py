@@ -352,6 +352,20 @@ def design_meshy_status(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated, DesignViewPermission])
+def studio_assets(request):
+    """List image design assets for the current studio (for presentations, etc.)."""
+    studio = _require_studio(request.user)
+    if not studio:
+        return Response([])
+    assets = DesignAsset.objects.filter(
+        session__studio=studio,
+        asset_type='image',
+    ).select_related('session').order_by('-created_at')[:100]
+    return Response(DesignAssetSerializer(assets, many=True, context={'request': request}).data)
+
+
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def design_asset_detail(request, asset_id):
     """Return asset metadata for share/download flows."""

@@ -13,6 +13,7 @@ const navItemKeys = [
   { labelKey: 'procurement', href: '/procurement', permission: 'procurement.view' },
   { labelKey: 'finance', href: '/finance', permission: 'finance.view' },
   { labelKey: 'files', href: '/docs', permission: 'documents.view' },
+  { labelKey: 'presentations', href: '/presentations', permission: 'presentations.view' },
   { labelKey: 'contractors', href: '/contractors', permission: null },
   { labelKey: 'settings', href: '/settings', permission: null },
 ] as const;

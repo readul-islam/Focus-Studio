@@ -293,8 +293,11 @@ Run steps **4.1–4.27 in order**. Each uses the standard test format.
 2. Click **Add Project** / **New Project**
 3. Fill §3 hero project fields
 4. Select client **Sarah Mitchell**
-5. Add 3 phases and 3 rooms (or apply template)
-6. Save → open project overview `/projects/{id}`
+5. Add 3 phases (or apply template) and save the project
+6. **Add rooms** (not in the New Project wizard): Project → **Settings** → **Rooms** → `/projects/{id}/settings?section=rooms`
+   - Add: `Master Bedroom`, `Living Room`, `Kitchen`
+   - Click **Save** on the Rooms section (required — rooms are not linked until saved)
+7. Open project overview `/projects/{id}`
 
 **Mock data:** §3 hero project (`RIV-2026`, budget £185,000).
 
@@ -354,19 +357,28 @@ Run steps **4.1–4.27 in order**. Each uses the standard test format.
 
 **Explanation:** Procurement drives client approvals and contractor visibility. Test ends when 3 items exist across 3 rooms.
 
+> **Note:** The Procurement tab has **no Add button**. Items are added via **Library → Products → Add to Project** (or AI Clipper). The Procurement page is for viewing, status, POs, and sharing.
+
 **Path:**
 
-1. Project → **Procurement** → `/projects/{id}/procurement`
-2. Add items per §3 procurement table
-3. Set supplier = BuildMart for each
-4. Set statuses: wardrobe `Ordered`, sofa `Pending`, worktop `Pending`
-5. Verify room hierarchy expands correctly
+1. **Prerequisites:** §4.2 BuildMart supplier in CRM; §4.3 Riverside Penthouse with rooms saved in **Settings → Rooms** (`Master Bedroom`, `Living Room`, `Kitchen`)
+2. Sidebar → **Library** → **Products** → `/library/products`
+3. Click **Add Product** and create each §3 item (set supplier = **BuildMart Supplies Ltd**, price = §3 cost):
+   - `Custom oak wardrobe` — £4,200
+   - `Velvet sectional sofa` — £8,900
+   - `Quartz worktop` — £3,200
+4. For each product: hover the card → **Add to Project** (or open product sheet → **Add to Project**)
+   - Project: **Riverside Penthouse**
+   - Room: match §3 table (`Master Bedroom` / `Living Room` / `Kitchen`)
+   - Qty: `1` → Submit
+5. Project → **Procurement** → `/projects/{id}/procurement` — verify 3 items grouped by room
+6. In the **Status** column: wardrobe → **Ordered**; sofa & worktop → **Quoting** (default)
 
 **Mock data:** §3 procurement (3 items, 3 rooms).
 
 **Visibility:** Only items with `client_access=true` appear in client portal. Only explicitly shared items appear in contractor portal.
 
-**Others:** API: `POST /projects/procurements/`. Toggle `client_access` per row or project-level setting.
+**Others:** API: `POST /projects/procurements/` with `{ project, room, product, quantity, studio, created_by }`. Alternative: clip a product in AI Inbox → **Add to Project**.
 
 ---
 
@@ -374,22 +386,30 @@ Run steps **4.1–4.27 in order**. Each uses the standard test format.
 
 **Name:** Enable Client Procurement Visibility
 
-**Explanation:** Client portal filters by `client_access`. Test ends when wardrobe + sofa have client access; worktop does not.
+**Explanation:** Client portal filters by per-item `client_access`. Test ends when wardrobe + sofa are visible in client portal; worktop is not.
 
-**Path:**
+> **UI note:** The procurement page has a project-level **Client Portal** switch (top-right) that sets `client_access=true` on **all** items at once. Per-row toggles are not in the UI yet.
 
-1. On procurement page, toggle **Client access** on wardrobe and sofa rows
-2. Leave kitchen worktop **off**
-3. Verify toggle state persists after page reload
+**Path (current UI — all items shared):**
 
-**Mock data:** 2 of 3 items enabled.
+1. Project → **Procurement** → toggle **Client Portal** **on**
+2. Reload page — switch stays on
+3. **Client portal** `/procurement` → all 3 items visible
+
+**Path (E2E target — 2 of 3 items, via API):**
+
+1. Enable **Client Portal** switch (step above)
+2. DevTools or API client: `PATCH /projects/procurements/{worktop_id}/` with `{ "client_access": false }`
+3. Reload client portal — wardrobe + sofa only
+
+**Mock data:** 2 of 3 items enabled (worktop hidden).
 
 **Visibility:**
 
-- **Client portal** `/procurement` → sees 2 items only
+- **Client portal** `/procurement` → sees items where `client_access=true`
 - **Contractor portal** → unaffected (uses explicit share, not `client_access`)
 
-**Others:** API: `PATCH` procurement with `client_access: true`.
+**Others:** Project toggle: `POST /projects/client-access/` with `{ project_id, client_access }`. Per item: `PATCH /projects/procurements/{id}/`.
 
 ---
 

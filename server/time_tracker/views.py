@@ -123,6 +123,7 @@ def clock_in(request):
         user=user,
         project_id=request.data.get('project'),
         task_id=request.data.get('task'),
+        presentation_id=request.data.get('presentation'),
         description=request.data.get('description'),
         studio_id=request.data.get('studio'),
         created_by=user,

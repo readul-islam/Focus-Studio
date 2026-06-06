@@ -43,7 +43,8 @@
     "messages": "Messages",
     "procurement": "Procurement",
     "finances": "Finances",
-    "documents": "Documents"
+    "documents": "Documents",
+    "presentations": "Presentations"
   },
   "login": {
     "title": "Login",
@@ -191,6 +192,14 @@
     "pdf": "PDF",
     "spreadsheet": "Spreadsheet",
     "document": "Document"
+  },
+  "presentations": {
+    "pageTitle": "Presentations",
+    "title": "Presentations",
+    "searchPlaceholder": "Search presentations",
+    "loading": "Loading...",
+    "empty": "No presentations shared with you yet.",
+    "slides": "slides"
   },
   "notFound": {
     "title": "Page Not Found",

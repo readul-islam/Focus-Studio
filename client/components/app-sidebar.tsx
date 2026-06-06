@@ -18,6 +18,7 @@ import {
   Mail,
   MoreHorizontal,
   Palette,
+  Presentation,
   Settings,
   Users,
   Users2
@@ -54,7 +55,8 @@ const buildPersonalSidebarItems = (t: ReturnType<typeof useTranslations>): Item[
   { label: t('sidebar.inbox'), icon: Mail, href: '/ai/inbox', basePath: '/ai/inbox', tourId: 'nav-inbox' },
   { label: t('sidebar.myTasks'), icon: CheckSquare, href: '/home/tasks', basePath: '/home/tasks', permission: 'tasks.view' },
   { label: t('sidebar.calendar'), icon: Calendar, href: '/calendar', basePath: '/calendar' },
-  { label: t('sidebar.projects'), icon: FolderOpen, href: '/projects', basePath: '/projects', permission: 'projects.view', tourId: 'nav-projects' }
+  { label: t('sidebar.projects'), icon: FolderOpen, href: '/projects', basePath: '/projects', permission: 'projects.view', tourId: 'nav-projects' },
+  { label: t('sidebar.presentations'), icon: Presentation, href: '/presentations', basePath: '/presentations', permission: 'presentations.view' }
 ];
 
 const buildStudioSidebarItems = (t: ReturnType<typeof useTranslations>): Item[] => [
