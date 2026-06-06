@@ -878,3 +878,47 @@ class CreateInvoiceView(viewsets.ViewSet):
         data = serializer.data
         data['trade_invoices'] = trade_invoices
         return Response(data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, FinanceViewPermission])
+def stripe_connect_status(request):
+    studio = request.user.studio
+    if not studio:
+        return Response({'detail': 'No studio associated with user.'}, status=status.HTTP_400_BAD_REQUEST)
+    from .stripe_connect import connect_status
+    payload = connect_status(studio, fallback_email=request.user.email)
+    return Response(payload)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, FinanceViewPermission])
+def stripe_connect_sync(request):
+    """Refresh Connect account state after Stripe redirect."""
+    studio = request.user.studio
+    if not studio:
+        return Response({'detail': 'No studio associated with user.'}, status=status.HTTP_400_BAD_REQUEST)
+    from .stripe_connect import connect_status
+    payload = connect_status(studio, fallback_email=request.user.email)
+    return Response(payload)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, FinanceViewPermission])
+def stripe_connect_onboard(request):
+    studio = request.user.studio
+    if not studio:
+        return Response({'detail': 'No studio associated with user.'}, status=status.HTTP_400_BAD_REQUEST)
+    from .stripe_connect import create_onboarding_link, stripe_configured
+    if not stripe_configured():
+        return Response({'detail': 'Stripe is not configured.'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+    email = (request.data.get('email') or request.user.email or '').strip()
+    if not email:
+        return Response({'detail': 'Email is required.'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        url = create_onboarding_link(studio=studio, user_email=email)
+    except Exception as exc:
+        logger = __import__('logging').getLogger(__name__)
+        logger.exception('Stripe Connect onboarding failed')
+        return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
+    return Response({'url': url})

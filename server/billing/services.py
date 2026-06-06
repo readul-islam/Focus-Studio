@@ -222,6 +222,9 @@ def handle_webhook_event(payload: bytes, sig_header: str) -> None:
         _on_subscription_deleted(data)
     elif event_type == 'invoice.payment_failed':
         _on_payment_failed(data)
+    elif event_type == 'account.updated':
+        from finance.stripe_connect import handle_connect_account_updated
+        handle_connect_account_updated(data)
 
 
 def _studio_from_metadata(metadata: dict) -> Studio | None:

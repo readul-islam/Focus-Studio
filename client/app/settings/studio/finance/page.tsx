@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { patchData } from '@/lib/Api';
 import { gooeyToast as toast } from 'goey-toast';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
+import { StripePaymentsSetup } from '@/components/finance/stripe-payments-setup';
 import { useTranslations } from 'next-intl';
 
 interface StudioFinanceData {
@@ -116,6 +117,10 @@ function StudioFinancePageContent() {
             <Button>{t('saveFinanceSettings')}</Button>
           </div>
         </form>
+      </Section>
+
+      <Section title={t('paymentsTitle')} description={t('paymentsDescription')}>
+        <StripePaymentsSetup variant="banner" />
       </Section>
     </div>
   );

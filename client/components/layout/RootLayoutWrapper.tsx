@@ -29,6 +29,7 @@ const STANDALONE_ROUTES = [
   '/onboarding',
   '/billing/success',
   '/billing/cancel',
+  '/finance/stripe-connect',
 ];
 
 export function RootLayoutWrapper({ children }: { children: ReactNode }) {

@@ -27,6 +27,11 @@ class Studio(models.Model):
     primary_color = models.CharField(max_length=20, null=True, blank=True)
     secondary_color = models.CharField(max_length=20, null=True, blank=True)
 
+    # Stripe Connect (client invoice payments)
+    stripe_connect_account_id = models.CharField(max_length=255, null=True, blank=True, db_index=True)
+    stripe_connect_onboarded = models.BooleanField(default=False)
+    stripe_connect_charges_enabled = models.BooleanField(default=False)
+
     def __str__(self):
         return self.name
 

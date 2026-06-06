@@ -23,8 +23,7 @@ import {
   Users,
   Users2
 } from 'lucide-react';
-import Image from 'next/image';
-import { useTheme } from 'next-themes';
+import { BrandLogo } from '@/components/brand/brand-logo';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -63,7 +62,7 @@ const buildStudioSidebarItems = (t: ReturnType<typeof useTranslations>): Item[] 
   { label: t('sidebar.crm'), icon: Users, href: '/crm/contacts', basePath: '/crm', permission: 'clients.view', tourId: 'nav-crm' },
   { label: t('sidebar.library'), icon: BookOpen, href: '/library/products', basePath: '/library/products', permission: 'library.view' },
   { label: t('sidebar.team'), icon: Users2, href: '/teams', basePath: '/teams', permission: 'team.view' },
-  { label: t('sidebar.finance'), icon: DollarSign, href: '/finance', basePath: '/finance', permission: 'finance.view' },
+  { label: t('sidebar.finance'), icon: DollarSign, href: '/finance/invoices', basePath: '/finance', permission: 'finance.view' },
   { label: t('sidebar.reports'), icon: BarChart3, href: '/reports', basePath: '/reports', permission: 'reports.view' },
   { label: t('sidebar.design'), icon: Palette, href: '/design', basePath: '/design', permission: 'design.view', tourId: 'nav-design' },
   { label: t('sidebar.aiActivity'), icon: Activity, href: '/ai/activity', basePath: '/ai/activity' }
@@ -212,7 +211,6 @@ export function AppSidebar() {
   const studioSidebarItems = useMemo(() => buildStudioSidebarItems(t), [t]);
   const extraSidebarItems = useMemo(() => buildExtraSidebarItems(t), [t]);
 
-  const { theme, resolvedTheme } = useTheme();
   const [isCollapsed, setIsCollapsed] = useState(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('sidebarCollapsed');
@@ -226,11 +224,6 @@ export function AppSidebar() {
   const isTablet = useMediaQuery('(max-width: 1024px)');
   const isShortScreen = useMediaQuery('(max-height: 600px)');
   const router = useRouter();
-
-  // Decide if the sidebar theme is dark/custom to toggle filters
-  const isDarkSidebar = hasMounted && 
-    theme !== 'light' && 
-    (theme === 'dark' || theme === 'system' ? resolvedTheme === 'dark' : true);
 
   useEffect(() => {
     setHasMounted(true);
@@ -336,16 +329,7 @@ export function AppSidebar() {
           <div className="flex items-center h-11">
             <div className="flex items-center flex-1 min-w-0">
               <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
-                <Image
-                  width={35}
-                  height={35}
-                  src="/brand/Logo.png"
-                  alt="Focuspilot"
-                  className={cn(
-                    "w-8 h-8 pl-1 object-contain",
-                    isDarkSidebar ? "invert mix-blend-screen" : "mix-blend-multiply"
-                  )}
-                />
+                <BrandLogo size={35} iconClassName="w-8 h-8 pl-1" />
               </div>
               <motion.span
                 variants={logoTextVariants}

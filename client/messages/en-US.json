@@ -15,6 +15,9 @@
       "library": "Library",
       "team": "Team",
       "finance": "Finance",
+      "financials": "Financials",
+      "invoices": "Invoices",
+      "purchaseOrders": "Purchase Orders",
       "reports": "Reports",
       "design": "Design",
       "aiActivity": "AI Activity",
@@ -204,6 +207,7 @@
     "noResultsFor": "No results for",
     "emptyDescription": "Create your first purchase order or invoice to start managing your project costs and billing with ease.",
     "newInvoice": "New Invoice",
+    "newPurchaseOrder": "New Purchase Order",
     "toasts": {
       "invoiceDeleted": "Invoice deleted",
       "noDeletePermission": "You do not have permission to delete this item",
@@ -219,6 +223,70 @@
       "noItemsSelected": "No items selected",
       "poDeleted": "PO deleted",
       "pdfFailed": "Failed to generate PDF"
+    }
+  },
+  "financeNav": {
+    "ariaLabel": "Financials navigation",
+    "invoices": "Invoices",
+    "purchaseOrders": "Purchase Orders"
+  },
+  "financeStripe": {
+    "setupButton": "Setup Stripe Payments",
+    "continueSetupButton": "Continue Stripe setup",
+    "manageConnection": "Manage connection",
+    "connected": "Stripe payments are active — clients can pay invoices online.",
+    "bannerDescription": "Connect Stripe to accept card payments on invoices sent through Focuspilot.",
+    "partnerHeading": "Focuspilot partners with Stripe for secure payments",
+    "partnerDescription": "Connect your studio to receive client invoice payments directly to your bank account.",
+    "backToInvoices": "Return to invoices",
+    "poweredBy": "Powered by",
+    "getStartedTitle": "Get started with Stripe",
+    "getStartedDescription": "If you're completing this on behalf of a business, it must be completed by the business owner or someone with significant management responsibility.",
+    "emailLabel": "Email address",
+    "emailHint": "Have a Stripe account? You can use the same email.",
+    "emailPlaceholder": "you@studio.com",
+    "continueButton": "Continue",
+    "continueSetupHint": "Your Stripe setup isn't finished yet. Continue to complete verification and enable payments.",
+    "successTitle": "Stripe connected",
+    "successDescription": "Your studio can now accept online invoice payments. Clients will see a secure pay link on sent invoices.",
+    "loading": "Loading Stripe status…",
+    "syncing": "Updating your Stripe connection…",
+    "notConfigured": "Stripe is not configured for this environment. Contact your administrator.",
+    "adminOnly": "Only users with finance edit permission can connect Stripe.",
+    "toasts": {
+      "linkFailed": "Could not start Stripe setup. Try again.",
+      "connectedSuccess": "Stripe payments are now active for your studio.",
+      "setupIncomplete": "Stripe setup is not complete yet. Continue where you left off.",
+      "syncFailed": "Could not refresh Stripe status. Try again.",
+      "emailRequired": "Enter an email address to continue.",
+      "noPermission": "You do not have permission to connect Stripe."
+    }
+  },
+  "financeInvoicesHero": {
+    "title": "Professional invoices, simplified",
+    "description": "Streamline billing and get paid faster with invoicing integrated across your studio workflow.",
+    "learnMore": "Learn more",
+    "createInvoice": "Create invoice",
+    "previewLabel": "Continue where you left off",
+    "draftNumber": "Draft invoice",
+    "noClient": "No client selected",
+    "draftBadge": "Draft",
+    "continueEditing": "Continue editing",
+    "columns": {
+      "description": "Description",
+      "qty": "Qty",
+      "amount": "Amount",
+      "tax": "Tax",
+      "total": "Total"
+    },
+    "demo": {
+      "invoiceNumber": "Invoice #FP-1001",
+      "clientName": "Velora Klein",
+      "line1": "Variation: Amendments to floor plan",
+      "line2": "Design development — 50% progress payment",
+      "line3": "Throne Chair — specification & procurement",
+      "taxLabel": "GST",
+      "hint": "Sample preview — your invoices will look like this in Focuspilot"
     }
   },
   "auth": {
@@ -1639,6 +1707,8 @@
     "defaultCurrency": "Default studio currency",
     "defaultTaxRate": "Default tax rate (%)",
     "saveFinanceSettings": "Save finance settings",
+    "paymentsTitle": "Online payments",
+    "paymentsDescription": "Connect Stripe so clients can pay invoices securely from the client portal.",
     "toasts": {
       "updated": "Finance Settings Updated",
       "updateFailed": "Error! Try again"
@@ -2533,7 +2603,9 @@
     "confirmPoXero": "The purchase order has been approved from Xero, the changes made here won't be reflected on the Xero bill",
     "submit": "Submit",
     "toasts": {
-      "updated": "PO Updated"
+      "updated": "PO Updated",
+      "createFailed": "Could not create purchase order",
+      "creatingDraft": "Creating purchase order…"
     }
   },
   "crmProposalReviewStep": {

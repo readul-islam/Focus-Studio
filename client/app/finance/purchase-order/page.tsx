@@ -1,14 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { PermissionGuard } from '@/components/PermissionGuard';
+import { FinanceListView } from '@/components/finance/finance-list-view';
 
-export default function Page() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace('/finance');
-  }, [router]);
-
-  return null;
+export default function PurchaseOrdersPage() {
+  return (
+    <PermissionGuard permission="finance.view">
+      <FinanceListView mode="purchase-orders" />
+    </PermissionGuard>
+  );
 }

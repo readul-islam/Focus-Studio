@@ -14,8 +14,11 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { CalendarIcon, CircleX, Loader2, Paperclip } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
+import { FinanceDocumentShell } from '@/components/finance/finance-document-shell';
+import { fd, formatPartyName } from '@/lib/finance-document-styles';
+
 import { gooeyToast as toast } from 'goey-toast';
-import souqLogo from '/public/studio.jpeg';
+import { StudioLetterhead } from '@/components/finance/studio-letterhead';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import errorImage from '/public/product-placeholder-wp.jpg';
 import { Textarea } from '@/components/ui/textarea';
@@ -68,7 +71,7 @@ const EditInvoiceContent = ({ params }: any) => {
     onSuccess: () => {
       queryClient.refetchQueries({ queryKey: [`finance/invoices/${id}/`] });
       queryClient.refetchQueries({ queryKey: ['finance/studio-finance/'] });
-      router.push('/finance');
+      router.push('/finance/invoices');
       toast(t('toasts.updated'));
     },
   });
@@ -185,46 +188,27 @@ const EditInvoiceContent = ({ params }: any) => {
 
   if (invoiceLoading || !invoiceData) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex min-h-[50vh] items-center justify-center text-muted-foreground">
         <p>{tCommon('loading')}</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="mx-auto px-10 max-w-4xl p-[28px] rounded-xl bg-gradient-to-br from-[#F3F3F3] to-[#F1F5FA]">
-        <form onSubmit={(e) => e.preventDefault()} className="relative">
-          {/* <ScrollArea className="h-[calc(100vh-16rem)] px-1"> */}
-          <div className="space-y-8 pb-8">
-            {/* Heading */}
-            <div className="flex items-start justify-between">
-              <div>
-                <h1 className="text-[#091E42] font-semibold mb-1 text-2xl">{t('editTitle')}</h1>
-                <h4 className="text-xl">#{invoiceData?.display_invoice}</h4>
-                <div className="my-8 text-[14px] leading-[180%]">
-                  {t('issueDate')} : {invoiceData?.date ? new Date(invoiceData.date).toLocaleDateString('en-GB') : '-'}
-                  <br />
-                  {t('dueDate')} : {invoiceData?.due_date ? new Date(invoiceData.due_date).toLocaleDateString('en-GB') : '-'}
-                  <br />
-                  {tCommon('client')} : {invoiceData?.client?.company_name || `${invoiceData?.client?.name} ${invoiceData?.client?.surname}`} <br />
-                  <br />
-                  {tCommon('project')} : {invoiceData?.project?.project_name}
-                </div>
-              </div>
-              <div>
-                <Image alt="Souq Logo" src={souqLogo} className="w-[90px] h-[90px] mb-4" />
-                <p className="text-[#5D6573] font-medium text-[14px] leading-[150%]">
-                  Manifest Designs Ltd t/a Souq.Studio<br /> 11 Wilman Rd <br /> Tunbridge Wells <br /> TN4 9AJ <br />
-                  VAT NO: GB423127335 <br />
-                  hello@souqdesign.co.uk
-                </p>
-              </div>
+    <FinanceDocumentShell>
+      <form onSubmit={(e) => e.preventDefault()} className="relative">
+        <div className="space-y-8 pb-8">
+          <div className="flex items-start justify-between gap-6">
+            <div>
+              <h1 className={fd.title}>{t('editTitle')}</h1>
+              <p className={fd.docId}>#{invoiceData?.display_invoice}</p>
             </div>
+            <StudioLetterhead className="shrink-0 text-right" />
+          </div>
 
             <div className="grid grid-cols-4 gap-4">
               <div className="space-y-2 col-span-2">
-                <Label className="font-normal text-[#091E42] text-sm " htmlFor="poNumber">
+                <Label className="font-normal text-foreground text-sm " htmlFor="poNumber">
                   {t('issueDate')}
                 </Label>
                 <Form {...form}>
@@ -240,8 +224,8 @@ const EditInvoiceContent = ({ params }: any) => {
                                 <Button
                                   variant="outline"
                                   className={cn(
-                                    'justify-between bg-white rounded-lg w-full text-left font-normal',
-                                    !field.value && 'text-[#595F69]'
+                                    fd.dateTrigger,
+                                    !field.value && 'text-muted-foreground'
                                   )}
                                 >
                                   {field.value ? format(field.value, 'MMM dd, yyyy') : <span>{t('pickDate')}</span>}
@@ -249,7 +233,7 @@ const EditInvoiceContent = ({ params }: any) => {
                                 </Button>
                               </PopoverTrigger>
                             </FormControl>
-                            <PopoverContent className="w-auto pt-3 shadow-2xl bg-white">
+                            <PopoverContent className={fd.popoverContent}>
                               <Calendar
                                 mode="single"
                                 selected={field.value || undefined}
@@ -274,7 +258,7 @@ const EditInvoiceContent = ({ params }: any) => {
               </div>
               {/* Due Date */}
               <div className="space-y-2  col-span-2">
-                <Label className="font-normal text-[#091E42] text-sm " htmlFor="poNumber">
+                <Label className="font-normal text-foreground text-sm " htmlFor="poNumber">
                   {t('dueDate')}
                 </Label>
                 <Form {...form2}>
@@ -290,8 +274,8 @@ const EditInvoiceContent = ({ params }: any) => {
                                 <Button
                                   variant="outline"
                                   className={cn(
-                                    'justify-between bg-white rounded-lg w-full text-left font-normal',
-                                    !field.value && 'text-[#595F69]'
+                                    fd.dateTrigger,
+                                    !field.value && 'text-muted-foreground'
                                   )}
                                 >
                                   {field.value ? format(field.value, 'MMM dd, yyyy') : <span>{t('pickDate')}</span>}
@@ -299,7 +283,7 @@ const EditInvoiceContent = ({ params }: any) => {
                                 </Button>
                               </PopoverTrigger>
                             </FormControl>
-                            <PopoverContent className="w-auto pt-3 shadow-2xl bg-white">
+                            <PopoverContent className={fd.popoverContent}>
                               <Calendar
                                 mode="single"
                                 selected={field.value || undefined}
@@ -328,19 +312,19 @@ const EditInvoiceContent = ({ params }: any) => {
               <Label htmlFor="project">{tCommon('project')}</Label>
               <Input
                 value={invoiceData?.project?.project_name || ''}
-                className="border disabled:opacity-100 rounded-lg text-sm font-medium text-black"
+                className="disabled:opacity-80"
                 readOnly
                 disabled
               />
             </div>
 
             <div className="pt-8 mt-8 border-t">
-              {/* <h2 className="text-[#091E42] uppercase font-medium mb-5 text-base">Client:</h2> */}
+              {/* <h2 className="text-foreground uppercase font-medium mb-5 text-base">Client:</h2> */}
               <div className="space-y-2">
                 <Label htmlFor="client">{tCommon('client')}</Label>
                 <Input
-                  value={invoiceData?.client?.company_name || `${invoiceData?.client?.name} ${invoiceData?.client?.surname}` || ''}
-                  className="border disabled:opacity-100 rounded-lg text-sm font-medium text-black"
+                  value={formatPartyName(invoiceData?.client)}
+                  className="disabled:opacity-80"
                   readOnly
                   disabled
                 />
@@ -348,17 +332,17 @@ const EditInvoiceContent = ({ params }: any) => {
             </div>
             <div className="pt-8 mt-8 border-t">
 
-              <div className="bg-white p-4 rounded-xl scrollbar scrollbar-thin">
+              <div className={fd.tableWrap}>
                 <table className="border-collapse w-full">
                   <thead>
                     <tr>
-                      <th className=" p-2 pb-4 w-[80px] text-left font-normal text-[#091E42] text-sm">Image</th>
-                      <th className=" p-2 pb-4 text-left font-normal text-[#091E42] text-sm">Description</th>
-                      {/* <th className=" p-2 pb-4 text-left font-normal text-[#091E42] text-sm">Dimensions</th> */}
-                      <th className=" p-2 pb-4 text-left font-normal text-[#091E42] text-sm">Quantity</th>
-                      <th className=" p-2 pb-4 text-left font-normal text-[#091E42] text-sm">Unit Price</th>
-                      <th className=" p-2 pb-4 text-left font-normal text-[#091E42] text-sm">Amount</th>
-                      <th className=" p-2 pb-4 w-[20px] text-left font-normal text-[#091E42] text-sm"></th>
+                      <th className={cn("p-2 pb-4 w-[80px]", fd.tableHead)}>Image</th>
+                      <th className={cn("p-2 pb-4", fd.tableHead)}>Description</th>
+                      {/* <th className={cn("p-2 pb-4", fd.tableHead)}>Dimensions</th> */}
+                      <th className={cn("p-2 pb-4", fd.tableHead)}>Quantity</th>
+                      <th className={cn("p-2 pb-4", fd.tableHead)}>Unit Price</th>
+                      <th className={cn("p-2 pb-4", fd.tableHead)}>Amount</th>
+                      <th className={cn("p-2 pb-4 w-[20px]", fd.tableHead)}></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -376,7 +360,7 @@ const EditInvoiceContent = ({ params }: any) => {
                         <td className=" p-2">
                           <textarea
                             rows={3}
-                            className="bg-white border h-full rounded-lg text-sm font-medium text-[#091E42] w-full py-2 px-2"
+                            className={cn(fd.tableInput, "h-full")}
                             name="description"
                             value={item?.description}
                             onChange={e => updateLineItem(e, item.id)}
@@ -385,7 +369,7 @@ const EditInvoiceContent = ({ params }: any) => {
                         <td className=" p-2">
                           <input
                             type="number"
-                            className="bg-white border rounded-lg text-sm font-medium text-[#091E42] w-full py-2 px-2"
+                            className={fd.tableInput}
                             name="quantity"
                             value={item?.quantity}
                             onChange={e => updateLineItem(e, item.id)}
@@ -395,7 +379,7 @@ const EditInvoiceContent = ({ params }: any) => {
                           <input
                             type="number"
                             step="0.01"
-                            className="bg-white border rounded-lg text-sm font-medium text-[#091E42] w-full p-2"
+                            className={fd.tableInput}
                             name="unit_price"
                             value={item?.unit_price}
                             onChange={e => updateLineItem(e, item.id)}
@@ -403,7 +387,7 @@ const EditInvoiceContent = ({ params }: any) => {
                         </td>
                         <td className=" p-2">
                           <Input disabled
-                            className="bg-white disabled:opacity-100 rounded-lg text-sm font-medium text-[#091E42] w-full p-2 border"
+                            className={cn(fd.tableInput, fd.tableInputDisabled, 'w-full p-2')}
                             value={`${currency?.symbol || '$'}${(item?.quantity * parseFloat(item?.unit_price || 0)).toLocaleString()}`}
                             readOnly
                           />
@@ -443,17 +427,17 @@ const EditInvoiceContent = ({ params }: any) => {
             <div className="pt-6 mt-8 border-t">
               <div className="grid grid-cols-1 gap-4">
                 <div>
-                  <Label className="font-normal block mb-2 text-[#091E42] text-sm " htmlFor="status">
+                  <Label className="font-normal block mb-2 text-foreground text-sm " htmlFor="status">
                     {tCommon('status')} :
                   </Label>
                   <Select
                     value={invoiceData?.status || 'DFT'}
                     onValueChange={updateStatus}
                   >
-                    <SelectTrigger className="bg-white focus:ring-0 focus:ring-offset-0 text-sm py-1 font-medium w-full focus:border-0 focus-visible:outline-0">
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder={t('selectStatus')} />
                     </SelectTrigger>
-                    <SelectContent className="bg-white z-[99]">
+                    <SelectContent>
                       <SelectItem value="DFT">{tFinance('status.draft')}</SelectItem>
                       <SelectItem value="SNT">{tFinance('status.sent')}</SelectItem>
                       <SelectItem value="PD">{tFinance('status.paid')}</SelectItem>
@@ -463,7 +447,7 @@ const EditInvoiceContent = ({ params }: any) => {
                 </div>
 
                 <div>
-                  <Label className="font-normal block mb-2 text-[#091E42] text-sm " htmlFor="delivery_charge">
+                  <Label className="font-normal block mb-2 text-foreground text-sm " htmlFor="delivery_charge">
                     Delivery Charge :
                   </Label>
                   <Input
@@ -474,12 +458,12 @@ const EditInvoiceContent = ({ params }: any) => {
                     placeholder="0.00"
                     value={invoiceData?.delivery_charge || ''}
                     onChange={(e) => setInvoiceData((prev: any) => ({ ...prev, delivery_charge: e.target.value }))}
-                    className="bg-white border rounded-lg text-sm font-medium text-[#091E42]"
+                    
                   />
                 </div>
               {invoiceData?.trade_invoices?.length > 0 && (
                 <div className="mt-4">
-                  <Label className="font-normal block mb-2 text-[#091E42] text-sm">
+                  <Label className="font-normal block mb-2 text-foreground text-sm">
                     Trade Invoices :
                   </Label>
                   <div className="flex flex-row flex-wrap gap-2">
@@ -489,7 +473,7 @@ const EditInvoiceContent = ({ params }: any) => {
                         href={ti?.trade_invoice || '#'}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 border rounded-lg px-4 py-2 text-sm font-medium text-[#091E42] bg-white hover:bg-stone-50 w-fit"
+                        className={fd.fileUploadLabel}
                       >
                         <Paperclip size={14} />
                         PO-{ti.po_id} Trade Invoice
@@ -502,7 +486,7 @@ const EditInvoiceContent = ({ params }: any) => {
             </div>
             {/* Total Details */}
             <div className="flex pb-9 border-b justify-end">
-              <div className="min-w-[220px]  space-y-[14px] text-[#091E42] text-sm font-medium">
+              <div className={fd.totalsBox}>
                 <div className="grid grid-cols-4">
                   <p className="col-span-2">Subtotal:</p>
                   <p className="col-span-2 text-right">{` ${currency?.symbol || '$'}${subTotal}`}</p>
@@ -534,14 +518,10 @@ const EditInvoiceContent = ({ params }: any) => {
             {/* Bottom Details */}
             <div className="pt-14 flex items-center justify-between">
               <div>
-                <h2 className="text-[#091E42] uppercase font-medium mb-5 text-base">Payment Advance</h2>
-                <p className="text-[#5D6573] font-medium text-sm">
-                  Manifest Designs Ltd t/a Souq.Studio<br /> 11 Wilman Rd <br /> Tunbridge Wells <br /> TN4 9AJ <br />
-                  VAT NO: GB423127335 <br />
-                  hello@souqdesign.co.uk
-                </p>
+                <h2 className="text-foreground uppercase font-medium mb-5 text-base">Payment Advance</h2>
+                <StudioLetterhead compact />
               </div>
-              <div className="min-w-[220px]  space-y-[14px] text-[#091E42] text-sm font-medium">
+              <div className={fd.totalsBox}>
                 <div className="grid grid-cols-4">
                   <p className="col-span-2">Document Number</p>
                   <p className="col-span-2 text-right">{invoiceData?.display_invoice}</p>
@@ -556,41 +536,41 @@ const EditInvoiceContent = ({ params }: any) => {
                     {invoiceData?.due_date && new Date(invoiceData?.due_date).toLocaleDateString('en-GB')}
                   </p>
                 </div>
-                <p className="font-medium text-sm text-gray-400 pt-4 mt-4 border-t">Enter the amount you are paying above</p>
+                <p className={fd.totalsHint}>Enter the amount you are paying above</p>
               </div>
             </div>
           </div>
           {/* </ScrollArea> */}
           {/* 
           <div className="space-y-2 mb-4 col-span-2">
-            <Label className="font-normal text-[#091E42] text-sm " htmlFor="note">
+            <Label className="font-normal text-foreground text-sm " htmlFor="note">
               Add Note
             </Label>
             <Input
               onChange={updateClientInfo}
               value={defaultValue?.note}
-              className="bg-white rounded-lg text-sm font-medium text-[#091E42]"
+              
               id="note"
               name="note"
             />
           </div> */}
 
-          <div className="flex justify-end space-x-4 mt-6  py-4 ">
-            <Button
-              onClick={handleBack}
-              variant="outline"
-              type="button"
-              className="bg-white rounded-[10px] hover:bg-stone-50 text-gray-700 px-8 py-2"
-            >
+          <div className={fd.footerActions}>
+            <Button onClick={handleBack} variant="outline" type="button" className="px-8">
               {tCommon('cancel')}
             </Button>
-            <Button type="button" disabled={isUpdating} onClick={() => {
-              if (invoiceData?.status !== 'DFT') {
-                setIsDialogOpen(true);
-              } else {
-                handleConfirmSave();
-              }
-            }} className="bg-[#1e1e1e] rounded-[10px] hover:bg-[#2d2d2d] text-white px-8 py-2 flex items-center gap-2">
+            <Button
+              type="button"
+              disabled={isUpdating}
+              onClick={() => {
+                if (invoiceData?.status !== 'DFT') {
+                  setIsDialogOpen(true);
+                } else {
+                  handleConfirmSave();
+                }
+              }}
+              className="px-8 flex items-center gap-2"
+            >
               {isUpdating && <Loader2 size={15} className="animate-spin" />}
               {isUpdating ? tCommon('saving') : t('save')}
             </Button>
@@ -606,8 +586,7 @@ const EditInvoiceContent = ({ params }: any) => {
             isArchive={true}
           />
         </form>
-      </div>
-    </div>
+    </FinanceDocumentShell>
   );
 };
 
