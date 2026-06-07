@@ -1,6 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from client_portal.authentication import ClientJWTAuthentication
+from help_center.portal_views import make_portal_support_views
 from .views import ClientDocumentViewSet, ClientProcurementViewSet, client_dashboard, ClientInvoiceViewSet, ClientPresentationViewSet, ClientLoginView, generate_client_credentials, room_totals, copy_client_credentials, fetch_client_credentials_email_html
+
+client_support_conversation, client_support_chat, client_support_clear = make_portal_support_views(
+    ClientJWTAuthentication,
+    'client_portal',
+)
 
 router = DefaultRouter()
 router.register(r'documents', ClientDocumentViewSet, basename='client-documents')
@@ -16,4 +23,7 @@ urlpatterns = [
     path('copy-client-credentials/', copy_client_credentials, name='copy-client-credentials'),
     path('fetch-client-email-html/', fetch_client_credentials_email_html, name='fetch-client-email-html'),
     path('room-totals/', room_totals, name='room-totals'),
+    path('support/conversation/', client_support_conversation, name='client-support-conversation'),
+    path('support/chat/', client_support_chat, name='client-support-chat'),
+    path('support/conversation/clear/', client_support_clear, name='client-support-conversation-clear'),
 ]

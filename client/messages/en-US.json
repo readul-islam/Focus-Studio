@@ -252,9 +252,11 @@
     "loading": "Loading Stripe status…",
     "syncing": "Updating your Stripe connection…",
     "notConfigured": "Stripe is not configured for this environment. Contact your administrator.",
+    "connectNotEnabledLink": "Enable Stripe Connect in the Stripe Dashboard",
     "adminOnly": "Only users with finance edit permission can connect Stripe.",
     "toasts": {
       "linkFailed": "Could not start Stripe setup. Try again.",
+      "connectNotEnabled": "Stripe Connect is not enabled on the platform Stripe account yet.",
       "connectedSuccess": "Stripe payments are now active for your studio.",
       "setupIncomplete": "Stripe setup is not complete yet. Continue where you left off.",
       "syncFailed": "Could not refresh Stripe status. Try again.",
@@ -287,6 +289,68 @@
       "line3": "Throne Chair — specification & procurement",
       "taxLabel": "GST",
       "hint": "Sample preview — your invoices will look like this in Focuspilot"
+    }
+  },
+  "supportWidget": {
+    "launcherLabel": "FocusPilot AI",
+    "close": "Close",
+    "tabsAria": "Support navigation",
+    "tabs": {
+      "home": "Home",
+      "ai": "AI",
+      "messages": "Messages",
+      "help": "Help"
+    },
+    "header": {
+      "homeSubtitle": "Your studio help hub",
+      "chatSubtitle": "Your studio operations assistant",
+      "helpSubtitle": "Browse guides and articles"
+    },
+    "home": {
+      "greeting": "Hi {name}, we're here to help!",
+      "there": "there",
+      "subtitle": "Get answers about Focuspilot, billing, and your studio workflow.",
+      "askPilot": "Chat with FocusPilot AI",
+      "askPilotHint": "Instant answers grounded in our Help Centre",
+      "helpCentre": "Browse Help Centre",
+      "helpCentreHint": "Guides for every part of Focuspilot",
+      "contactSupport": "Email support",
+      "contactHint": "We typically reply within one business day",
+      "popularTitle": "Popular guides",
+      "openHelpCentre": "Open full Help Centre"
+    },
+    "chat": {
+      "intro": "Need help using Focuspilot? Ask about projects, finance, CRM, permissions, and more.",
+      "greeting": "Hi {name}, how can we help?",
+      "there": "there",
+      "aiAgent": "AI Agent",
+      "justNow": "Just now",
+      "contextLabel": "You're in {page}",
+      "placeholder": "Message…",
+      "thinking": "FocusPilot AI is thinking…",
+      "loading": "Loading conversation…",
+      "sendFailed": "Could not send your message. Try again.",
+      "clearFailed": "Could not start a new conversation.",
+      "newConversation": "Start new conversation",
+      "send": "Send message",
+      "suggestInvoice": "How do I create and send an invoice?",
+      "suggestStripe": "How do I set up Stripe payments?",
+      "suggestProjects": "How do project tasks and phases work?",
+      "suggestPermissions": "How do team roles and permissions work?",
+      "suggestCrm": "How does the CRM pipeline work?",
+      "suggestLibrary": "How do I add products to the library?",
+      "suggestReports": "How do I read studio reports?",
+      "suggestInbox": "How does the AI inbox work?",
+      "suggestTasks": "How do I manage my tasks?",
+      "suggestPresentations": "How do client presentations work?",
+      "suggestDesign": "How do design sessions work?"
+    },
+    "help": {
+      "title": "Help Centre",
+      "subtitle": "Search guides or browse by topic",
+      "searchPlaceholder": "Search help articles…",
+      "categories": "Browse by category",
+      "viewAll": "View all articles"
     }
   },
   "auth": {

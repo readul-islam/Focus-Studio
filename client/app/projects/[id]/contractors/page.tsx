@@ -380,7 +380,7 @@ export default function ProjectContractorsPage({ params }: { params: { id: strin
   if (isLoading) {
     return (
       <div className="flex-1 bg-stone-50 p-6 min-h-screen">
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className=" space-y-6">
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-8 h-8 animate-spin text-neutral-400" />
           </div>

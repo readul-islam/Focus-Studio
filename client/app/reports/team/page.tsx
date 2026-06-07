@@ -68,7 +68,7 @@ function TeamPageContent() {
 
   return (
     <ReportPageLayout>
-      <div className="report-print-area max-w-7xl mx-auto space-y-6">
+      <div className="report-print-area  space-y-6">
 
         <ReportPageHeader
           title={t('title')}

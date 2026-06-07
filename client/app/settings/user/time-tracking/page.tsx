@@ -596,7 +596,7 @@ export default function HomeTimePage() {
 
   return (
     <main className="space-y-6 p">
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className=" space-y-6">
         {/* Global horizontal nav (stable across Home pages) */}
         {/* <HomeNav /> */}
 

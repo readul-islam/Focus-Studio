@@ -340,7 +340,7 @@ const handleCheckAll = (checked: boolean) => {
 
   return (
     <div className="flex flex-col h-[calc(100svh-3.5rem)] min-h-0 bg-background p-4 sm:p-6">
-      <div className="max-w-7xl mx-auto w-full flex flex-col flex-1 min-h-0 space-y-6">
+      <div className=" w-full flex flex-col flex-1 min-h-0 space-y-6">
         <CrmNav />
 
         {/* Toolbar */}

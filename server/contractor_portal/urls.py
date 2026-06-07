@@ -1,5 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from help_center.portal_views import make_portal_support_views
+from .authentication import ContractorJWTAuthentication
 from .views import (
     ContractorDocumentViewSet,
     ContractorProcurementViewSet,
@@ -28,6 +30,11 @@ from .views import (
     contractor_me_profile,
     project_by_access_token,
     authenticate_with_access_code,
+)
+
+contractor_support_conversation, contractor_support_chat, contractor_support_clear = make_portal_support_views(
+    ContractorJWTAuthentication,
+    'contractor_portal',
 )
 
 router = DefaultRouter()
@@ -64,4 +71,7 @@ urlpatterns = [
     # QR Code Access (Phase 2)
     path('project/<uuid:access_token>/', project_by_access_token, name='project-by-access-token'),
     path('project/<uuid:access_token>/auth/', authenticate_with_access_code, name='authenticate-with-access-code'),
+    path('support/conversation/', contractor_support_conversation, name='contractor-support-conversation'),
+    path('support/chat/', contractor_support_chat, name='contractor-support-chat'),
+    path('support/conversation/clear/', contractor_support_clear, name='contractor-support-conversation-clear'),
 ]

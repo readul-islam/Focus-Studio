@@ -121,7 +121,7 @@ export default function ProjectsPage() {
   return (
     <div className="flex-1 space-y-6 min-h-[calc(100svh-3.5rem)] bg-background p-4 sm:p-6">
       {/* Header */}
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className=" space-y-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <ProjectNavMain
             onChange={setActiveTab}

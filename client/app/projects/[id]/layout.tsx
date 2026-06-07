@@ -44,7 +44,7 @@ export default function ProjectLayout({
 
   return (
     <main className="flex-1 bg-stone-50 p-4 sm:p-6 h-full">
-      <div className="space-y-6 max-w-7xl mx-auto">
+      <div className="space-y-6 ">
         {!isSettingsPage ? (
           <ProjectCollaborationProvider projectId={params.id}>
             <ProjectLayoutNav projectId={params.id} />

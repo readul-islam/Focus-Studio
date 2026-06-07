@@ -236,7 +236,7 @@ const DocumentFolder = () => {
   return (
     <DashboardLayout>
       <div className="flex-1 bg-gray-50 p-3 md:p-6 h-full">
-        <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
+        <div className=" space-y-4 md:space-y-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3 w-full sm:w-auto overflow-x-auto">
               <button

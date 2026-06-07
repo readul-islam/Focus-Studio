@@ -104,7 +104,7 @@ export default function Messages() {
       </Helmet>
 
       <div className="flex-1 bg-gray-50 p-4 lg:p-6 h-[calc(100vh-64px)] flex flex-col">
-        <div className="max-w-7xl mx-auto w-full h-full flex flex-col space-y-6">
+        <div className=" w-full h-full flex flex-col space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-6 gap-6 h-full min-h-0">
 
             <div className="col-span-1 lg:col-span-2 flex flex-col h-full min-h-0">

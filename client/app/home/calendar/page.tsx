@@ -474,7 +474,7 @@ export default function CalendarStudioPage() {
 
     return (
         <div className="flex-1 bg-stone-50 p-6 flex flex-col overflow-hidden">
-            <div className="max-w-7xl w-full mx-auto flex flex-col h-full gap-6">
+            <div className="w-full flex flex-col h-full gap-6">
                 {/* <HomeNav /> */}
                 {/* Top Toolbar */}
                 <div className="flex flex-col lg:flex-row gap-4 items-center justify-between bg-white py-4 lg:py-2 px-2 rounded-xl border border-gray-200 shadow-sm shrink-0">

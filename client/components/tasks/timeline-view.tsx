@@ -173,7 +173,7 @@ export default function TimelineView({
 
     return (
       <div className="flex-1 bg-stone">
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className=" space-y-6">
           {/* Timeline Controls */}
           <div className="p-4 border rounded-[12px] border-gray-200 flex items-center justify-between bg-white">
             <div className="flex bg-stone-100 rounded-lg p-1">

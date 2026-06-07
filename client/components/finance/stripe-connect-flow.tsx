@@ -15,6 +15,22 @@ import { usePermissions } from '@/hooks/usePermissions';
 import { gooeyToast as toast } from 'goey-toast';
 import { BrandLogo } from '@/components/brand/brand-logo';
 
+function getApiErrorDetail(error: unknown, fallback: string): string {
+  if (error && typeof error === 'object' && 'response' in error) {
+    const data = (error as { response?: { data?: { detail?: string; error?: string } } }).response?.data;
+    if (data?.detail) return String(data.detail);
+    if (data?.error) return String(data.error);
+  }
+  return fallback;
+}
+
+function getApiErrorCode(error: unknown): string | undefined {
+  if (error && typeof error === 'object' && 'response' in error) {
+    return (error as { response?: { data?: { code?: string } } }).response?.data?.code;
+  }
+  return undefined;
+}
+
 export type StripeConnectStatus = {
   configured: boolean;
   connected: boolean;
@@ -35,6 +51,8 @@ export function StripeConnectFlow() {
 
   const [email, setEmail] = useState('');
   const [syncing, setSyncing] = useState(false);
+  const [setupError, setSetupError] = useState<string | null>(null);
+  const [setupErrorCode, setSetupErrorCode] = useState<string | null>(null);
 
   const {
     data: status,
@@ -60,13 +78,21 @@ export function StripeConnectFlow() {
 
   const { mutate: startOnboarding, isPending: isStarting } = usePost<{ url: string }>({
     onSuccess: (response) => {
+      setSetupError(null);
+      setSetupErrorCode(null);
       if (response?.url) {
         window.location.href = response.url;
         return;
       }
       toast.error(t('toasts.linkFailed'));
     },
-    onError: () => toast.error(t('toasts.linkFailed')),
+    onError: (error) => {
+      const code = getApiErrorCode(error);
+      const detail = getApiErrorDetail(error, t('toasts.linkFailed'));
+      setSetupErrorCode(code ?? null);
+      setSetupError(detail);
+      toast.error(code === 'connect_not_enabled' ? t('toasts.connectNotEnabled') : detail);
+    },
   });
 
   useEffect(() => {
@@ -103,6 +129,8 @@ export function StripeConnectFlow() {
       toast.error(t('toasts.emailRequired'));
       return;
     }
+    setSetupError(null);
+    setSetupErrorCode(null);
     startOnboarding({ url: 'finance/stripe-connect/onboard/', data: { email: trimmed } });
   };
 
@@ -187,6 +215,22 @@ export function StripeConnectFlow() {
                   <span>{t('continueSetupHint')}</span>
                 </div>
               )}
+
+              {setupError ? (
+                <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                  <p>{setupError}</p>
+                  {setupErrorCode === 'connect_not_enabled' ? (
+                    <a
+                      href="https://dashboard.stripe.com/connect"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2 inline-block font-medium underline underline-offset-2"
+                    >
+                      {t('connectNotEnabledLink')}
+                    </a>
+                  ) : null}
+                </div>
+              ) : null}
 
               <div className="space-y-2">
                 <Label htmlFor="stripe-email">{t('emailLabel')}</Label>

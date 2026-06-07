@@ -209,5 +209,42 @@
   "meta": {
     "appTitle": "Client Portal | Focuspilot",
     "appDescription": "Focuspilot client portal"
+  },
+  "supportWidget": {
+    "launcherLabel": "FocusPilot AI",
+    "close": "Close",
+    "tabs": {
+      "home": "Home",
+      "messages": "AI"
+    },
+    "headerSubtitle": "Your client portal assistant",
+    "home": {
+      "greeting": "Hi {name}, we're here to help!",
+      "there": "there",
+      "subtitle": "Questions about procurement, invoices, documents, or presentations in your portal.",
+      "askPilot": "Chat with FocusPilot AI",
+      "askPilotHint": "Instant help for the client portal",
+      "contactSupport": "Email support",
+      "contactHint": "For technical issues with the portal",
+      "faqTitle": "Quick tips",
+      "faq1": "Use Procurement to review items your studio shared.",
+      "faq2": "Finance shows invoices and payment status when enabled.",
+      "faq3": "Documents and Presentations hold files your studio publishes for you."
+    },
+    "chat": {
+      "greeting": "Hi {name}, how can I help with the client portal?",
+      "there": "there",
+      "aiAgent": "AI Agent",
+      "justNow": "Just now",
+      "intro": "Ask about procurement, invoices, documents, or presentations shared with you.",
+      "placeholder": "Message…",
+      "thinking": "FocusPilot AI is thinking…",
+      "sendFailed": "Could not send your message. Try again.",
+      "clearFailed": "Could not start a new conversation.",
+      "newConversation": "New conversation",
+      "suggestProcurement": "How do I review procurement items?",
+      "suggestInvoices": "Where do I find my invoices?",
+      "suggestDocuments": "How do I access shared documents?"
+    }
   }
 }

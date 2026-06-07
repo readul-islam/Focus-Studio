@@ -484,7 +484,7 @@ export default function DashboardPage() {
 
   return (
     <div className="flex-1 pb-8 min-h-0 bg-stone-50 overflow-y-auto">
-      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 space-y-6 flex flex-col min-h-0">
+      <div className=" w-full px-4 sm:px-6 py-6 space-y-6 flex flex-col min-h-0">
 
         {/* AI Daily Brief Hero Section */}
         <section>

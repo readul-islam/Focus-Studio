@@ -1269,7 +1269,7 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
             }}
             className="fixed shadow-2xl bottom-0 left-0 right-0 z-30 bg-white border-t border-greige-500/30 drop-shadow-top "
           >
-            <div className="max-w-7xl mx-auto px-6 py-6">
+            <div className=" px-6 py-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <span className="text-sm font-medium text-neutral-900">

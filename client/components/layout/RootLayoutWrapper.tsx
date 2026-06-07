@@ -8,6 +8,7 @@ import { TopBar } from '@/components/top-bar';
 import { SubscriptionGate } from '@/components/billing/subscription-gate';
 import { MainAppTour } from '@/components/product-tour/MainAppTour';
 import PrivateRoute from '@/layout/PrivateRoute';
+import { SupportWidget } from '@/components/support/support-widget';
 
 const PUBLIC_ROUTES = [
   '/',
@@ -59,7 +60,12 @@ export function RootLayoutWrapper({ children }: { children: ReactNode }) {
 
   // Standalone routes with auth but no sidebar/topbar (prototypes, OAuth callbacks, etc.)
   if (isStandalone || isPrototype) {
-    return <PrivateRoute>{children}</PrivateRoute>;
+    return (
+      <PrivateRoute>
+        {children}
+        <SupportWidget />
+      </PrivateRoute>
+    );
   }
 
   return (
@@ -75,6 +81,7 @@ export function RootLayoutWrapper({ children }: { children: ReactNode }) {
           </div>
         </SidebarProvider>
         <MainAppTour />
+        <SupportWidget />
       </SubscriptionGate>
     </PrivateRoute>
   );

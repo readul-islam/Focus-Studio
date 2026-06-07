@@ -214,7 +214,7 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
     return (
       <div className="flex-1 p-6">
         <CrmNav />
-        <div className="max-w-7xl mx-auto mt-6 text-center py-24">
+        <div className=" mt-6 text-center py-24">
           <p className="text-gray-500 mb-4">Contact not found.</p>
           <Button variant="outline" onClick={() => router.push('/crm/contacts')}>
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Contacts
@@ -403,11 +403,11 @@ function ContactDetailPageContent({ params }: { params: { id: string } }) {
 
   return (
     <div className="flex-1  p-4 sm:p-6">
-      <div className="max-w-7xl mx-auto">
+      <div className="">
         <CrmNav />
       </div>
 
-      <div className="max-w-7xl mx-auto mt-6 space-y-6">
+      <div className=" mt-6 space-y-6">
         {/* Page header */}
         <div className="flex items-start justify-between gap-4">
           <div>

@@ -360,7 +360,7 @@ export default function InboxPage() {
 
   return (
     <div className="flex-1 bg-stone-50 p-4 lg:p-6 h-[calc(100vh-64px)] flex flex-col">
-      <div className="max-w-7xl mx-auto w-full h-full flex flex-col space-y-6">
+      <div className=" w-full h-full flex flex-col space-y-6">
         <div className={`grid grid-cols-1 lg:grid-cols-6 gap-6 h-full min-h-0 ${isFullScreen ? 'fixed h-screen w-screen inset-0 z-50 bg-stone-50 top-0 p-2' : ''}`}>
           {/* Left Column: Messages List */}
           <div className={`col-span-1 lg:col-span-2 flex flex-col h-full min-h-0 ${selectedThreadId ? 'hidden lg:flex' : 'flex'}`}>

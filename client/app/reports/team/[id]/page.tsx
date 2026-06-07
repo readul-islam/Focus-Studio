@@ -77,7 +77,7 @@ const UserDetailsPageContent = () => {
     if (isLoading) {
         return (
             <main className="flex-1 bg-stone-50 p-6">
-                <div className="max-w-7xl mx-auto space-y-4">
+                <div className=" space-y-4">
                     <Skeleton className="h-10 w-32" />
                     <Skeleton className="h-32 w-full" />
                     <Skeleton className="h-[400px] w-full" />
@@ -89,7 +89,7 @@ const UserDetailsPageContent = () => {
     if (error || !userData) {
         return (
             <main className="flex-1 bg-stone-50 p-6">
-                <div className="max-w-7xl mx-auto">
+                <div className="">
                     <div className="text-muted-foreground">{t('noData')}</div>
                 </div>
             </main>
@@ -98,7 +98,7 @@ const UserDetailsPageContent = () => {
 
     return (
         <main className="flex-1 bg-stone-50 p-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="max-w-7xl mx-auto space-y-6">
+            <div className=" space-y-6">
 
                 {/* Header */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">

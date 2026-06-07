@@ -141,7 +141,7 @@ const Finance = () => {
     <DashboardLayout>
        <Helmet title={t('pageTitle')} />
       <div className="flex-1 bg-gray-50 md:p-6 h-full">
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className=" space-y-6">
           {/* Finance Stats */}
           <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
             {financeStats.map((stat, idx) => {

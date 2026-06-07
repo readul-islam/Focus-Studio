@@ -4,15 +4,15 @@ const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
 });
 
-// api.interceptors.request.use(config => {
-//   if (typeof window !== 'undefined') {
-//     const token = localStorage.getItem('access');
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-//   }
-//   return config;
-// });
+api.interceptors.request.use(config => {
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('access');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+  return config;
+});
 
 const handleError = error => {
   throw new Error(error.response ? `HTTP error! status: ${error.response.status}` : error.message);

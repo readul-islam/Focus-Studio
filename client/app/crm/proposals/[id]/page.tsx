@@ -270,7 +270,7 @@ function EditProposalPageContent() {
 
   return (
     <div className="flex-1 bg-stone-50 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className=" space-y-6">
         <CrmNav />
 
         {/* Step bar — white container */}

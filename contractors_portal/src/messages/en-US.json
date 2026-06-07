@@ -285,5 +285,44 @@
     "title": "Page Not Found",
     "description": "The page you are looking for does not exist or has been moved",
     "goHome": "Go back to home"
+  },
+  "supportWidget": {
+    "launcherLabel": "FocusPilot AI",
+    "close": "Close",
+    "tabs": {
+      "home": "Home",
+      "messages": "AI"
+    },
+    "headerSubtitle": "Your contractor portal assistant",
+    "home": {
+      "greeting": "Hi {name}, we're here to help!",
+      "there": "there",
+      "subtitle": "Questions about procurement, documents, messages, or your contractor profile.",
+      "askPilot": "Chat with FocusPilot AI",
+      "askPilotHint": "Instant help for the contractor portal",
+      "studioMessages": "Message your studio",
+      "studioMessagesHint": "Project chat with the design team — not AI",
+      "contactSupport": "Email support",
+      "contactHint": "For portal technical issues",
+      "faqTitle": "Quick tips",
+      "faq1": "Procurement lists schedules and items assigned to you.",
+      "faq2": "Messages is for direct communication with the studio.",
+      "faq3": "Update insurance and certificates under Profile when requested."
+    },
+    "chat": {
+      "greeting": "Hi {name}, how can I help with the contractor portal?",
+      "there": "there",
+      "aiAgent": "AI Agent",
+      "justNow": "Just now",
+      "intro": "Ask about procurement, documents, or your profile. For site issues, message your studio directly.",
+      "placeholder": "Message…",
+      "thinking": "FocusPilot AI is thinking…",
+      "sendFailed": "Could not send your message. Try again.",
+      "clearFailed": "Could not start a new conversation.",
+      "newConversation": "New conversation",
+      "suggestProcurement": "How do I update procurement pricing?",
+      "suggestMessages": "When should I use Messages vs Pilot?",
+      "suggestDocuments": "How do I find shared drawings?"
+    }
   }
 }

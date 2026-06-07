@@ -717,7 +717,7 @@ export default function UnifiedCalendarPage() {
 
     return (
         <div className="flex-1 bg-stone-50 p-6 flex flex-col overflow-hidden">
-            <div className="max-w-7xl w-full mx-auto flex flex-col h-full gap-4">
+            <div className="w-full flex flex-col h-full gap-4">
                 {/* Top Toolbar */}
                 <div className="flex items-center justify-between bg-white p-2 rounded-xl border border-gray-200 shadow-sm shrink-0">
                     <div className="flex items-center gap-4">

@@ -12,14 +12,35 @@ from users.models import Studio
 logger = logging.getLogger(__name__)
 
 
+class StripeConnectError(Exception):
+    """Raised when Connect onboarding cannot proceed."""
+
+    def __init__(self, message: str, *, code: str = 'stripe_error'):
+        self.message = message
+        self.code = code
+        super().__init__(message)
+
+
 def stripe_configured() -> bool:
     return bool(getattr(settings, 'STRIPE_SECRET_KEY', ''))
 
 
 def _ensure_stripe():
     if not stripe_configured():
-        raise RuntimeError('Stripe is not configured.')
+        raise StripeConnectError('Stripe is not configured.', code='not_configured')
     stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+def _map_stripe_error(exc: stripe.StripeError) -> StripeConnectError:
+    message = getattr(exc, 'user_message', None) or str(exc)
+    lowered = message.lower()
+    if 'signed up for connect' in lowered or 'enable connect' in lowered:
+        return StripeConnectError(
+            'Stripe Connect is not enabled on this platform account. '
+            'Enable Connect in the Stripe Dashboard, then try again.',
+            code='connect_not_enabled',
+        )
+    return StripeConnectError(message, code='stripe_error')
 
 
 def _apply_account_state(studio: Studio, account: dict) -> None:
@@ -84,33 +105,38 @@ def create_onboarding_link(*, studio: Studio, user_email: str) -> str:
     frontend = settings.FRONTEND_URL.rstrip('/')
     email = (user_email or '').strip()
     if not email:
-        raise ValueError('A valid email is required to connect Stripe.')
+        raise StripeConnectError('A valid email is required to connect Stripe.', code='invalid_email')
 
-    if not studio.stripe_connect_account_id:
-        account = stripe.Account.create(
-            controller={
-                'stripe_dashboard': {'type': 'express'},
-                'fees': {'payer': 'application'},
-                'losses': {'payments': 'application'},
-            },
-            capabilities={
-                'card_payments': {'requested': True},
-                'transfers': {'requested': True},
-            },
-            email=email,
-            metadata={'studio_id': str(studio.id)},
+    try:
+        if not studio.stripe_connect_account_id:
+            account = stripe.Account.create(
+                controller={
+                    'stripe_dashboard': {'type': 'express'},
+                    'fees': {'payer': 'application'},
+                    'losses': {'payments': 'application'},
+                },
+                capabilities={
+                    'card_payments': {'requested': True},
+                    'transfers': {'requested': True},
+                },
+                email=email,
+                metadata={'studio_id': str(studio.id)},
+            )
+            studio.stripe_connect_account_id = account.id
+            studio.save(update_fields=['stripe_connect_account_id'])
+        else:
+            stripe.Account.modify(studio.stripe_connect_account_id, email=email)
+
+        link = stripe.AccountLink.create(
+            account=studio.stripe_connect_account_id,
+            refresh_url=f'{frontend}/finance/stripe-connect?refresh=1',
+            return_url=f'{frontend}/finance/stripe-connect?return=1',
+            type='account_onboarding',
         )
-        studio.stripe_connect_account_id = account.id
-        studio.save(update_fields=['stripe_connect_account_id'])
-    else:
-        stripe.Account.modify(studio.stripe_connect_account_id, email=email)
+    except stripe.StripeError as exc:
+        logger.exception('Stripe Connect onboarding failed for studio %s', studio.id)
+        raise _map_stripe_error(exc) from exc
 
-    link = stripe.AccountLink.create(
-        account=studio.stripe_connect_account_id,
-        refresh_url=f'{frontend}/finance/stripe-connect?refresh=1',
-        return_url=f'{frontend}/finance/stripe-connect?return=1',
-        type='account_onboarding',
-    )
     return link.url
 
 

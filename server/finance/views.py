@@ -909,7 +909,7 @@ def stripe_connect_onboard(request):
     studio = request.user.studio
     if not studio:
         return Response({'detail': 'No studio associated with user.'}, status=status.HTTP_400_BAD_REQUEST)
-    from .stripe_connect import create_onboarding_link, stripe_configured
+    from .stripe_connect import StripeConnectError, create_onboarding_link, stripe_configured
     if not stripe_configured():
         return Response({'detail': 'Stripe is not configured.'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
     email = (request.data.get('email') or request.user.email or '').strip()
@@ -917,8 +917,15 @@ def stripe_connect_onboard(request):
         return Response({'detail': 'Email is required.'}, status=status.HTTP_400_BAD_REQUEST)
     try:
         url = create_onboarding_link(studio=studio, user_email=email)
+    except StripeConnectError as exc:
+        status_code = (
+            status.HTTP_503_SERVICE_UNAVAILABLE
+            if exc.code in ('connect_not_enabled', 'not_configured')
+            else status.HTTP_400_BAD_REQUEST
+        )
+        return Response({'detail': exc.message, 'code': exc.code}, status=status_code)
     except Exception as exc:
         logger = __import__('logging').getLogger(__name__)
         logger.exception('Stripe Connect onboarding failed')
-        return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
+        return Response({'detail': str(exc), 'code': 'stripe_error'}, status=status.HTTP_502_BAD_GATEWAY)
     return Response({'url': url})
