@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     'gmail',
     'client_portal',
     'contractor_portal',
+    'supplier_portal',
     'meetings',
     'notifications',
     'changelog',
@@ -297,8 +298,10 @@ STRIPE_PRICE_STARTER = _env('STRIPE_PRICE_STARTER')
 STRIPE_PRICE_PROFESSIONAL = _env('STRIPE_PRICE_PROFESSIONAL')
 STRIPE_PRICE_ENTERPRISE = _env('STRIPE_PRICE_ENTERPRISE')
 STRIPE_TRIAL_DAYS = int(_env('STRIPE_TRIAL_DAYS', '14'))
+STRIPE_SUPPLIER_PLATFORM_FEE_BPS = int(_env('STRIPE_SUPPLIER_PLATFORM_FEE_BPS', '0'))
 CLIENT_PORTAL_URL = _env('CLIENT_PORTAL_URL', 'http://localhost:3001')
 CONTRACTOR_PORTAL_URL = _env('CONTRACTOR_PORTAL_URL', 'http://localhost:3002')
+SUPPLIER_PORTAL_URL = _env('SUPPLIER_PORTAL_URL', 'http://localhost:3003')
 EMAIL_BACKEND = "techstyles.email_backend.CertifiEmailBackend"
 EMAIL_HOST = _env('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(_env('EMAIL_PORT', '587'))

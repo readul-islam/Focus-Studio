@@ -26,7 +26,14 @@ import {
   SlidersHorizontal,
   Trash2,
   Download,
+  Store,
 } from 'lucide-react';
+import { CatalogBrowseDialog } from '@/components/catalog/CatalogBrowseDialog';
+import {
+  getProcurementProductName,
+  getProcurementSupplierName,
+  getProcurementUnitPrice,
+} from '@/lib/procurement-product';
 import { ProductDetailSheet, type ProductDetails } from '@/components/product-detail-sheet';
 import { useQueryClient } from '@tanstack/react-query';
 import { gooeyToast as toast } from 'goey-toast';
@@ -94,6 +101,20 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
   const procurementPermission = can('projects.edit');
   const procurementDeletePermission = can('projects.delete');
   const financePermission = can('finance.edit');
+
+  useEffect(() => {
+    const paid = searchParams.get('supplier_paid');
+    if (paid === '1') {
+      toast.success('Supplier payment completed.');
+      queryClient.invalidateQueries({
+        queryKey: [`projects/project-procurements/?project_id=${params.id}`],
+      });
+      router.replace(`/projects/${params.id}/procurement`, { scroll: false });
+    } else if (paid === '0') {
+      toast.message('Supplier payment was cancelled.');
+      router.replace(`/projects/${params.id}/procurement`, { scroll: false });
+    }
+  }, [searchParams, params.id, queryClient, router]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -232,8 +253,12 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
     const searchLower = debouncedSearchText.trim().toLowerCase();
 
     return procurementItems.filter(item => {
-      if (searchLower && !item.product?.name?.toLowerCase().includes(searchLower)) {
-        return false;
+      if (searchLower) {
+        const productName = getProcurementProductName(item).toLowerCase();
+        const supplierName = getProcurementSupplierName(item).toLowerCase();
+        if (!productName.includes(searchLower) && !supplierName.includes(searchLower)) {
+          return false;
+        }
       }
 
       if (roomFilter !== 'all' && item.room?.name?.trim().toLowerCase() !== roomFilter.trim().toLowerCase()) {
@@ -241,7 +266,7 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
       }
 
       if (supplierFilter !== 'all') {
-        if (item.supplier?.company_name?.trim().toLowerCase() !== supplierFilter.trim().toLowerCase()) {
+        if (getProcurementSupplierName(item).trim().toLowerCase() !== supplierFilter.trim().toLowerCase()) {
           return false;
         }
       }
@@ -390,9 +415,7 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
       // Pre-calculate totals for the room
       if (item.client_approval !== 'REJ') {
         const unitPrice = item.unit_price ? parseFloat(String(item.unit_price).replace(/[^\d.]/g, '')) : 0;
-        const memberPrice = parseFloat(String(item.product?.tader_price || '0').replace(/[^\d.]/g, ''));
-        const regularPrice = parseFloat(String(item.product?.regular_price || '0').replace(/[^\d.]/g, ''));
-        const price = unitPrice > 0 ? unitPrice : memberPrice > 0 ? memberPrice : regularPrice;
+        const price = unitPrice > 0 ? unitPrice : getProcurementUnitPrice(item);
         const qty = Number(item.quantity) || 1;
         grouped[roomName].totalPrice += price * qty;
       }
@@ -437,12 +460,7 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
       if (item.client_approval === 'REJ') return cost;
 
       const quantity = Number(item.quantity) || 1;
-      const product = item.product;
-
-      // Use unit_price if available, otherwise tader_price, then regular_price
-      const priceStr = item.unit_price ? item.unit_price : (product?.tader_price || product?.regular_price || 0);
-      const price = parseFloat(String(priceStr).replace(/[R\s,]/g, '')) || 0;
-
+      const price = getProcurementUnitPrice(item);
       return cost + price * quantity;
     }, 0);
   }, [filteredItems]);
@@ -559,7 +577,8 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
 
   const uniqueSuppliers = useMemo(() => {
     if (!procurementItems || !Array.isArray(procurementItems)) return [];
-    return [...new Set(procurementItems.map(item => item.supplier?.company_name).filter(Boolean))].sort();
+    if (!procurementItems || !Array.isArray(procurementItems)) return [];
+    return [...new Set(procurementItems.map(item => getProcurementSupplierName(item)).filter(Boolean))].sort();
   }, [procurementItems]);
 
   const uniqueRooms = useMemo(() => {
@@ -684,10 +703,7 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
       ];
       const rows = filteredItems.map(item => {
         const qty = Number(item.quantity) || 1;
-        const rawUnitPrice = item.unit_price ? parseFloat(String(item.unit_price).replace(/[^\d.]/g, '')) || 0 : 0;
-        const tradePrice = parseFloat(String(item.product?.tader_price || '0').replace(/[^\d.]/g, '')) || 0;
-        const retailPrice = parseFloat(String(item.product?.regular_price || '0').replace(/[^\d.]/g, '')) || 0;
-        const unitPrice = rawUnitPrice > 0 ? rawUnitPrice : tradePrice > 0 ? tradePrice : retailPrice;
+        const unitPrice = getProcurementUnitPrice(item);
         const totalPrice = unitPrice * qty;
         const poStatus = item.po_received ? 'Paid' : item.po_sent ? 'Sent' : item.po_created ? 'Created' : 'Not Created';
         const billingStatus = item.inv_received ? 'Paid' : item.inv_sent ? 'Sent' : item.inv_created ? 'Created' : 'Not Created';
@@ -697,9 +713,9 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
         const sample = sampleLabels[item.sample] || (item.sample ? item.sample : 'Not Required');
         const deliveryDate = item.ETA ? new Date(item.ETA).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '';
         return [
-          item.product?.name || '',
+          getProcurementProductName(item),
           item.room?.name || '',
-          item.supplier?.company_name || '',
+          getProcurementSupplierName(item),
           item.quantity || '',
           item.unit_type || 'EA',
           unitPrice > 0 ? unitPrice.toFixed(2) : '',
@@ -753,6 +769,7 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<ProductDetails | undefined>(undefined);
   const [isDeleteHovered, setIsDeleteHovered] = useState(false);
+  const [catalogOpen, setCatalogOpen] = useState(false);
 
   return (
     <div className="">
@@ -869,6 +886,18 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
                 </AnimatePresence>
               </div>
             </div>
+
+            {procurementPermission && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 border-greige-500/30 bg-white"
+                onClick={() => setCatalogOpen(true)}
+              >
+                <Store className="mr-2 h-4 w-4" />
+                {t('browseCatalog')}
+              </Button>
+            )}
 
             <Button
               variant={'default'}
@@ -1256,6 +1285,12 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
 
       {/* Product detail sheet */}
       <ProductDetailSheet open={open} onOpenChange={setOpen} product={selected} />
+
+      <CatalogBrowseDialog
+        open={catalogOpen}
+        onOpenChange={setCatalogOpen}
+        projectId={Number(params.id)}
+      />
 
       <AnimatePresence mode="wait" initial={false}>
         {checkedItems?.length > 0 && (

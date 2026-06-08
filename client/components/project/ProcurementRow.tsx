@@ -16,7 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Pin, Users, Copy, AlertTriangle, Check } from "lucide-react";
+import { MoreHorizontal, Pin, Users, Copy, AlertTriangle, Check, Globe } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -29,6 +29,16 @@ import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import ProductImage from "./ProductImage";
+import {
+  getProcurementDisplayProduct,
+  getProcurementProductImage,
+  getProcurementProductName,
+  getProcurementSupplierName,
+  getProcurementUnitPrice,
+  isCatalogProcurement,
+} from "@/lib/procurement-product";
+import { PaySupplierButton } from "@/components/catalog/PaySupplierButton";
+import { RequestQuoteButton } from "@/components/catalog/RequestQuoteButton";
 import { ViewCurrencySymbol } from "../ViewCurrencySymbol";
 import StatusPill from "./StatusPill";
 import SampleIcon from "./SampleIcon";
@@ -125,6 +135,13 @@ const ProcurementRow = React.memo<ProcurementRowProps>(({
     pendingQtyRef.current = null;
   };
 
+  const displayProduct = getProcurementDisplayProduct(item);
+  const productName = getProcurementProductName(item);
+  const productImage = getProcurementProductImage(item);
+  const supplierName = getProcurementSupplierName(item);
+  const fromCatalog = isCatalogProcurement(item);
+  const unitPrice = getProcurementUnitPrice(item);
+
    return (
     <>
     <tr
@@ -152,15 +169,25 @@ const ProcurementRow = React.memo<ProcurementRowProps>(({
           <button type="button" onClick={() => openProduct(item)} className="shrink-0 focus:outline-none focus:ring-2 focus:ring-primary rounded-lg bg-white transition-transform hover:scale-105">
             <ProductImage
               className="w-11 h-11 rounded-lg shadow-sm object-cover border border-greige-500/30 bg-white"
-              alt={item?.product?.name || t('productImageAlt')}
-              src={item?.product?.images?.find((i: any) => i.is_primary)?.image || item?.product?.images?.[0]?.image || errorImage.src}
+              alt={productName || t('productImageAlt')}
+              src={productImage || errorImage.src}
             />
           </button>
           <div className="flex-1 min-w-0">
-            <button onClick={() => openProduct(item)} className="font-semibold text-sm text-neutral-900 hover:text-primary block truncate w-full text-left" title={item?.product?.name}>
-              {item?.product?.name}
+            <button onClick={() => openProduct(item)} className="font-semibold text-sm text-neutral-900 hover:text-primary block truncate w-full text-left" title={productName}>
+              {productName}
             </button>
-            <div className="text-xs text-neutral-600 truncate">{item?.product?.dimension}</div>
+            <div className="mt-0.5 flex items-center gap-1.5">
+              {fromCatalog && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-sky-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-sky-800">
+                  <Globe className="h-3 w-3" />
+                  {t('fromCatalog')}
+                </span>
+              )}
+              {displayProduct?.dimension && (
+                <div className="truncate text-xs text-neutral-600">{displayProduct.dimension as string}</div>
+              )}
+            </div>
           </div>
         </div>
       </td>
@@ -176,7 +203,32 @@ const ProcurementRow = React.memo<ProcurementRowProps>(({
 
       {/* Supplier + Sample */}
       <td className="px-4 flex flex-col justify-center gap-1 h-full">
-        <span className="text-sm text-neutral-700 font-medium truncate">{item?.supplier?.company_name}</span>
+        <span className="text-sm text-neutral-700 font-medium truncate">{supplierName}</span>
+        <div className="flex flex-wrap items-center gap-2">
+          {fromCatalog && item?.quote_status === 'RQ' ? (
+            <span className="inline-flex w-fit rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-800">
+              Quote requested
+            </span>
+          ) : null}
+          {fromCatalog && item?.quote_status === 'QT' ? (
+            <span className="inline-flex w-fit rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-violet-800">
+              Quote received
+            </span>
+          ) : null}
+          {fromCatalog && item?.supplier_order_status_display ? (
+            <span className="inline-flex w-fit rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-700">
+              {item.supplier_order_status_display}
+            </span>
+          ) : null}
+          <RequestQuoteButton item={item} projectId={project?.id} />
+          {fromCatalog && item?.supplier_payment_status === 'paid' ? (
+            <span className="inline-flex w-fit rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-800">
+              Paid to supplier
+            </span>
+          ) : (
+            <PaySupplierButton item={item} />
+          )}
+        </div>
         <SampleIcon status={item?.sample} onChange={(s) => handleChangeSample(item, s, items?.id)} />
       </td>
 
@@ -206,22 +258,14 @@ const ProcurementRow = React.memo<ProcurementRowProps>(({
 
       {/* Item Price */}
       <td className="px-4 flex items-center justify-end text-sm text-neutral-700 h-full tabular-nums">
-        <ViewCurrencySymbol code={project?.currency || item?.product?.currency} />
-        {(() => {
-          const unitPrice = item?.unit_price ? parseFloat(String(item.unit_price).replace(/[^\d.]/g, '')) : 0;
-          const price = unitPrice > 0 ? unitPrice : parseFloat(String(item?.product?.tader_price || item?.product?.regular_price || '0').replace(/[^\d.]/g, ''));
-          return price.toLocaleString('en-GB', { minimumFractionDigits: 2 });
-        })()}
+        <ViewCurrencySymbol code={project?.currency || (displayProduct?.currency as string)} />
+        {getProcurementUnitPrice(item).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
       </td>
 
       {/* Total Price */}
       <td className="px-4 flex items-center justify-end text-sm font-semibold text-neutral-900 h-full tabular-nums">
-        <ViewCurrencySymbol code={project?.currency || item?.product?.currency} />
-        {(() => {
-          const unitPrice = item?.unit_price ? parseFloat(String(item.unit_price).replace(/[^\d.]/g, '')) : 0;
-          const price = unitPrice > 0 ? unitPrice : parseFloat(String(item?.product?.tader_price || item?.product?.regular_price || '0').replace(/[^\d.]/g, ''));
-          return (price * (item?.quantity || 1)).toLocaleString('en-GB', { minimumFractionDigits: 2 });
-        })()}
+        <ViewCurrencySymbol code={project?.currency || (displayProduct?.currency as string)} />
+        {(unitPrice * (item?.quantity || 1)).toLocaleString('en-GB', { minimumFractionDigits: 2 })}
       </td>
 
       {/* Status */}

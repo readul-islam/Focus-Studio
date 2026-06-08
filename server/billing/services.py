@@ -215,6 +215,9 @@ def handle_webhook_event(payload: bytes, sig_header: str) -> None:
     data = event['data']['object']
 
     if event_type == 'checkout.session.completed':
+        from supplier_portal.payments import handle_supplier_checkout_completed
+
+        handle_supplier_checkout_completed(data)
         _on_checkout_completed(data)
     elif event_type in ('customer.subscription.created', 'customer.subscription.updated'):
         _on_subscription_updated(data)
@@ -222,9 +225,16 @@ def handle_webhook_event(payload: bytes, sig_header: str) -> None:
         _on_subscription_deleted(data)
     elif event_type == 'invoice.payment_failed':
         _on_payment_failed(data)
+    elif event_type == 'payment_intent.succeeded':
+        from supplier_portal.payments import handle_supplier_payment_intent_succeeded
+
+        handle_supplier_payment_intent_succeeded(data)
     elif event_type == 'account.updated':
         from finance.stripe_connect import handle_connect_account_updated
+        from supplier_portal.stripe_connect import handle_connect_account_updated as handle_supplier_connect_updated
+
         handle_connect_account_updated(data)
+        handle_supplier_connect_updated(data)
 
 
 def _studio_from_metadata(metadata: dict) -> Studio | None:

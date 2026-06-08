@@ -1,8 +1,10 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { PaySupplierButton } from '@/components/catalog/PaySupplierButton';
 import { StatusBadge } from '@/components/design-system';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import {
+  isCatalogProcurement,
   procurementEtaLabel,
   procurementLineTotal,
   procurementProductImageUrl,
@@ -15,11 +17,12 @@ import { formatCurrency } from '@/lib/format';
 
 type ProcurementItemRowProps = {
   item: ProcurementItem;
+  projectId: string;
   currency?: string | null;
   onPress?: () => void;
 };
 
-export function ProcurementItemRow({ item, currency, onPress }: ProcurementItemRowProps) {
+export function ProcurementItemRow({ item, projectId, currency, onPress }: ProcurementItemRowProps) {
   const imageUrl = procurementProductImageUrl(item);
   const statusStyle = procurementStatusStyle(item.status);
   const lineTotal = procurementLineTotal(item);
@@ -43,15 +46,24 @@ export function ProcurementItemRow({ item, currency, onPress }: ProcurementItemR
 
       <View style={styles.body}>
         <View style={styles.titleRow}>
-          <Text style={styles.title} numberOfLines={2}>
-            {procurementProductName(item)}
-          </Text>
+          <View style={styles.titleBlock}>
+            <Text style={styles.title} numberOfLines={2}>
+              {procurementProductName(item)}
+            </Text>
+            {isCatalogProcurement(item) ? (
+              <View style={styles.catalogBadge}>
+                <Text style={styles.catalogBadgeText}>Catalog</Text>
+              </View>
+            ) : null}
+          </View>
           <StatusBadge label={statusStyle.label} color={statusStyle.color} backgroundColor={statusStyle.backgroundColor} />
         </View>
 
         <Text style={styles.supplier} numberOfLines={1}>
           {procurementSupplierName(item)}
         </Text>
+
+        {isCatalogProcurement(item) ? <PaySupplierButton item={item} projectId={projectId} /> : null}
 
         <View style={styles.metaRow}>
           {item.room?.name ? <Text style={styles.meta}>{item.room.name}</Text> : null}
@@ -120,10 +132,27 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: spacing.sm,
   },
+  titleBlock: {
+    flex: 1,
+    gap: 4,
+  },
   title: {
     ...typography.subheading,
     fontSize: 15,
-    flex: 1,
+  },
+  catalogBadge: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: radius.full,
+    backgroundColor: '#EFF6FF',
+  },
+  catalogBadgeText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#2563EB',
+    textTransform: 'uppercase',
+    letterSpacing: 0.4,
   },
   supplier: {
     fontSize: 13,

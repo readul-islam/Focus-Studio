@@ -10,6 +10,17 @@ export type ProcurementProductImage = {
   is_primary?: boolean;
 };
 
+export type ProcurementCatalogProduct = {
+  id?: number;
+  name?: string | null;
+  supplier_name?: string | null;
+  trade_price?: string | number | null;
+  retail_price?: string | number | null;
+  currency?: string | null;
+  dimension?: string | null;
+  primary_image?: string | null;
+};
+
 export type ProcurementProduct = {
   id?: number;
   name?: string | null;
@@ -42,9 +53,17 @@ export type ProcurementItem = {
   po?: number | null;
   invoice?: number | null;
   product?: ProcurementProduct | null;
+  catalog_product?: ProcurementCatalogProduct | null;
+  catalog_product_id?: number | null;
+  is_from_catalog?: boolean;
+  supplier_payment_status?: string | null;
   supplier?: ProcurementSupplier | null;
   room?: ProcurementRoom | null;
 };
+
+export function isCatalogProcurement(item: ProcurementItem): boolean {
+  return Boolean(item.is_from_catalog || item.catalog_product || item.catalog_product_id);
+}
 
 const STATUS_LABELS: Record<string, string> = {
   QT: 'Quoting',
@@ -76,16 +95,21 @@ export function procurementLogisticsLabel(status?: string | null): string {
 }
 
 export function procurementProductName(item: ProcurementItem): string {
-  return item.product?.name?.trim() || 'Unnamed item';
+  return item.product?.name?.trim() || item.catalog_product?.name?.trim() || 'Unnamed item';
 }
 
 export function procurementSupplierName(item: ProcurementItem): string {
   const supplier = item.supplier;
-  if (!supplier) return 'No supplier';
-  return supplier.company_name || [supplier.name, supplier.surname].filter(Boolean).join(' ') || 'No supplier';
+  if (supplier) {
+    return supplier.company_name || [supplier.name, supplier.surname].filter(Boolean).join(' ') || 'No supplier';
+  }
+  return item.catalog_product?.supplier_name?.trim() || 'No supplier';
 }
 
 export function procurementProductImageUrl(item: ProcurementItem): string | null {
+  if (item.catalog_product?.primary_image) {
+    return item.catalog_product.primary_image;
+  }
   const images = item.product?.images ?? [];
   const primary = images.find(image => image.is_primary && image.image);
   return primary?.image ?? images.find(image => image.image)?.image ?? null;

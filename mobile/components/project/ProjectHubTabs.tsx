@@ -68,6 +68,7 @@ export function useHideProjectHubChrome(): boolean {
   return (
     /\/messages\/[^/]+$/.test(pathname) ||
     /\/files\/\d+$/.test(pathname) ||
+    /\/catalog$/.test(pathname) ||
     /\/edit$/.test(pathname)
   );
 }

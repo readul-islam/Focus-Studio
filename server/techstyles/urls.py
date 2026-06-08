@@ -37,6 +37,7 @@ urlpatterns = [
     path('comment/', include('comment.urls')),
     path('client_portal/', include('client_portal.urls')),
     path('contractor_portal/', include('contractor_portal.urls')),
+    path('supplier_portal/', include('supplier_portal.urls')),
     path('clipper/', include('clipper.urls')),
     path('meetings/', include('meetings.urls')),
     path('notifications/', include('notifications.urls')),

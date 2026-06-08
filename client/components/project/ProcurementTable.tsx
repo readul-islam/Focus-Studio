@@ -105,9 +105,11 @@ const ProcurementTable = React.memo<ProcurementTableProps>(({
   }, [groupedItems]);
 
   const openProduct = useCallback((item: any) => {
+    const displayProduct = item.product || item.catalog_product;
     const updatedItem = {
-      ...(item.product || item),
-      supplier: item.supplier || (item.product?.supplier),
+      ...(displayProduct || item),
+      supplier: item.supplier || item.product?.supplier,
+      is_from_catalog: Boolean(item.catalog_product || item.is_from_catalog),
     };
     setSelected(updatedItem);
     setOpen(true);

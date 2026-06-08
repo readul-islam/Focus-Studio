@@ -732,7 +732,20 @@ def get_project_procurements(request):
             status=status.HTTP_400_BAD_REQUEST
         )
     
-    procurements = Procurement.objects.filter(project_id=project_id)
+    procurements = (
+        Procurement.objects.filter(project_id=project_id)
+        .select_related(
+            'product',
+            'product__supplier',
+            'catalog_product',
+            'catalog_product__supplier',
+            'supplier_order_line',
+            'room',
+            'po',
+            'invoice',
+        )
+        .prefetch_related('product__images', 'catalog_product__images', 'comments')
+    )
 
     # Sync PO and Invoice statuses from Xero before returning
     po_ids = procurements.exclude(po=None).values_list('po_id', flat=True).distinct()
@@ -742,7 +755,7 @@ def get_project_procurements(request):
     update_xero_statuses(purchase_orders)
     update_xero_statuses(invoices)
 
-    serializer = ProcurementGetSerializer(procurements, many=True)
+    serializer = ProcurementGetSerializer(procurements, many=True, context={'request': request})
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])

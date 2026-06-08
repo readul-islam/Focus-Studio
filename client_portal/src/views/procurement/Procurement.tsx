@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
-import { ChevronDown, ChevronRight, Filter, MoveLeftIcon, Search, ShoppingBag } from 'lucide-react';
+import { ChevronDown, ChevronRight, Filter, Globe, MoveLeftIcon, Search, ShoppingBag } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import useFetch from '@/hooks/useFetch';
@@ -85,7 +85,8 @@ const Procurement = () => {
         (item) =>
           item.product_name?.toLowerCase().includes(query) ||
           item.dimension?.toLowerCase().includes(query) ||
-          item.room?.toLowerCase().includes(query)
+          item.room?.toLowerCase().includes(query) ||
+          item.supplier?.toLowerCase().includes(query)
       );
     }
 
@@ -97,6 +98,8 @@ const Procurement = () => {
         filtered = filtered.filter((item) => item.is_ordered);
       } else if (statusFilter === 'not_ordered') {
         filtered = filtered.filter((item) => !item.is_ordered);
+      } else if (statusFilter === 'catalog') {
+        filtered = filtered.filter((item) => item.is_from_catalog);
       } else {
         filtered = filtered.filter((item) => item.client_approval === statusFilter);
       }
@@ -202,6 +205,7 @@ const Procurement = () => {
                   <SelectItem value="REJ">{t('rejected')}</SelectItem>
                   <SelectItem value="ordered">{t('ordered')}</SelectItem>
                   <SelectItem value="not_ordered">{t('notOrdered')}</SelectItem>
+                  <SelectItem value="catalog">{t('catalogOnly')}</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -374,6 +378,34 @@ const Procurement = () => {
                                     <div className="font-medium text-sm text-neutral-900">
                                       {item.product_name}
                                     </div>
+                                    <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                                      {item.is_from_catalog ? (
+                                        <span className="inline-flex items-center gap-1 rounded-full bg-sky-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-sky-800">
+                                          <Globe className="h-3 w-3" />
+                                          {t('fromCatalog')}
+                                        </span>
+                                      ) : null}
+                                      {item.awaiting_quote ? (
+                                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-800">
+                                          {t('quotePending')}
+                                        </span>
+                                      ) : null}
+                                      {item.quote_status === 'QT' ? (
+                                        <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-violet-800">
+                                          {t('quoteReceived')}
+                                        </span>
+                                      ) : null}
+                                      {item.supplier_order_status === 'SH' ? (
+                                        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-700">
+                                          {t('supplierShipped')}
+                                        </span>
+                                      ) : null}
+                                      {item.supplier_order_status === 'DL' ? (
+                                        <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-800">
+                                          {t('supplierDelivered')}
+                                        </span>
+                                      ) : null}
+                                    </div>
                                     <div className="text-xs text-neutral-500">
                                       {item.supplier || '—'}
                                     </div>
@@ -515,6 +547,19 @@ const Procurement = () => {
                                     )}
                                     <div className="flex-1 min-w-0">
                                       <div className="font-medium text-neutral-900 text-sm truncate">{item.product_name}</div>
+                                      <div className="mt-1 flex flex-wrap gap-1.5">
+                                        {item.is_from_catalog ? (
+                                          <span className="inline-flex items-center gap-1 rounded-full bg-sky-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-sky-800">
+                                            <Globe className="h-3 w-3" />
+                                            {t('fromCatalog')}
+                                          </span>
+                                        ) : null}
+                                        {item.awaiting_quote ? (
+                                          <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-800">
+                                            {t('quotePending')}
+                                          </span>
+                                        ) : null}
+                                      </div>
                                       <div className="text-xs text-neutral-500 truncate">{item.supplier || tc('noSupplier')}</div>
                                     </div>
                                   </Link>

@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.utils import timezone
 from .models import Phase, Room, Project, Procurement
 from library.serializers import ProcurementProductSerializer
+from supplier_portal.serializers import CatalogProductProcurementSerializer
 from crm.serializers import ClientSerializer
 from users.serializers import UserSerializer
 from comment.serializers import CommentGetSerializer
@@ -75,6 +76,7 @@ class ProcurementSerializer(serializers.ModelSerializer):
 
 class ProcurementGetSerializer(serializers.ModelSerializer):
     product = ProcurementProductSerializer(read_only=True)
+    catalog_product = CatalogProductProcurementSerializer(read_only=True)
     room = RoomSerializer(read_only=True)
     supplier = serializers.SerializerMethodField()
     display_po = serializers.SerializerMethodField()
@@ -82,14 +84,54 @@ class ProcurementGetSerializer(serializers.ModelSerializer):
     comments = CommentGetSerializer(many=True, read_only=True)
     order_date = serializers.SerializerMethodField()
     internally_approved_by = UserSerializer(read_only=True)
+    is_from_catalog = serializers.SerializerMethodField()
+    supplier_payment_status = serializers.SerializerMethodField()
+    supplier_order_status = serializers.SerializerMethodField()
+    supplier_order_status_display = serializers.SerializerMethodField()
+    quote_status = serializers.SerializerMethodField()
+    quote_status_display = serializers.SerializerMethodField()
 
     class Meta:
         model = Procurement
         fields = '__all__'
 
+    def get_is_from_catalog(self, obj):
+        return obj.catalog_product_id is not None
+
+    def _supplier_order_line(self, obj):
+        return getattr(obj, 'supplier_order_line', None)
+
+    def get_supplier_payment_status(self, obj):
+        order_line = self._supplier_order_line(obj)
+        if order_line is None:
+            return None
+        return order_line.payment_status
+
+    def get_supplier_order_status(self, obj):
+        order_line = self._supplier_order_line(obj)
+        return order_line.status if order_line else None
+
+    def get_supplier_order_status_display(self, obj):
+        order_line = self._supplier_order_line(obj)
+        return order_line.get_status_display() if order_line else None
+
+    def get_quote_status(self, obj):
+        order_line = self._supplier_order_line(obj)
+        return order_line.quote_status if order_line else None
+
+    def get_quote_status_display(self, obj):
+        order_line = self._supplier_order_line(obj)
+        return order_line.get_quote_status_display() if order_line else None
+
     def get_supplier(self, obj):
         if obj.product and obj.product.supplier:
             return ClientSerializer(obj.product.supplier).data
+        if obj.catalog_product:
+            return {
+                'id': None,
+                'company_name': obj.catalog_product.supplier.company_name,
+                'name': obj.catalog_product.supplier.contact_name,
+            }
         return None
     
     def get_display_po(self, obj):

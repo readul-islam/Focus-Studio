@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import { FilterChips, KpiCard, LoadingInline } from '@/components/design-system';
 import { ProcurementItemRow } from '@/components/project/ProcurementItemRow';
-import { EmptyState, Input } from '@/components/ui';
+import { Button, EmptyState, Input } from '@/components/ui';
 import { colors, spacing } from '@/constants/theme';
 import { useProjectHub } from '@/context/ProjectHubContext';
 import { formatCurrency } from '@/lib/format';
@@ -92,6 +92,12 @@ export default function ProjectProcurementTab() {
           />
           <FilterChips options={filterOptions} value={filter} onChange={setFilter} />
 
+          <Button
+            label="Browse supplier catalog"
+            variant="secondary"
+            onPress={() => router.push(`/project/${projectId}/catalog`)}
+          />
+
           <Text style={styles.hint}>
             Tap an item with a PO to open it. Full editing and approvals are on the web app.
           </Text>
@@ -102,6 +108,7 @@ export default function ProjectProcurementTab() {
       renderItem={({ item }) => (
         <ProcurementItemRow
           item={item}
+          projectId={projectId}
           currency={currency}
           onPress={() => handleItemPress(item.po)}
         />
@@ -113,7 +120,7 @@ export default function ProjectProcurementTab() {
             message={
               search || filter !== 'all'
                 ? 'Try another filter or search term.'
-                : 'Add products from the web app procurement tab.'
+                : 'Browse the supplier catalog or add products from the web app.'
             }
           />
         )

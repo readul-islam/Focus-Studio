@@ -250,3 +250,23 @@ def send_contractor_notification_email(to_email: str, subject: str, html_message
         html=html_message,
         plain=plain_message,
     )
+
+
+def send_supplier_notification_email(to_email: str, subject: str, html_message: str, plain_message: str) -> dict:
+    return _send(
+        subject=subject,
+        from_email=FROM_EMAIL,
+        to=[to_email],
+        html=html_message,
+        plain=plain_message,
+    )
+
+
+def send_studio_supplier_payment_email(to_email: str, subject: str, html_message: str, plain_message: str) -> dict:
+    return _send(
+        subject=subject,
+        from_email=FROM_EMAIL,
+        to=[to_email],
+        html=html_message,
+        plain=plain_message,
+    )

@@ -7,10 +7,11 @@ from library.models import ProductImage
 from crm.models import Client
 from .models import ClientProject
 
+
 class ClientProcurementSerializer(serializers.ModelSerializer):
-    product_name = serializers.CharField(source='product.name', read_only=True)
-    product_url = serializers.URLField(source='product.url', read_only=True)
-    dimension = serializers.CharField(source='product.dimension', read_only=True)
+    product_name = serializers.SerializerMethodField()
+    product_url = serializers.SerializerMethodField()
+    dimension = serializers.SerializerMethodField()
     delivery_date = serializers.DateField(source='ETA', read_only=True)
     order_date = serializers.DateField(read_only=True)
     is_ordered = serializers.SerializerMethodField()
@@ -20,7 +21,13 @@ class ClientProcurementSerializer(serializers.ModelSerializer):
     total_price = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     room = serializers.CharField(source='room.name', read_only=True)
-    supplier = serializers.CharField(source='product.supplier.company_name', read_only=True)
+    supplier = serializers.SerializerMethodField()
+    is_from_catalog = serializers.SerializerMethodField()
+    supplier_order_status = serializers.SerializerMethodField()
+    supplier_order_status_display = serializers.SerializerMethodField()
+    quote_status = serializers.SerializerMethodField()
+    quote_status_display = serializers.SerializerMethodField()
+    awaiting_quote = serializers.SerializerMethodField()
 
     class Meta:
         model = Procurement
@@ -40,17 +47,82 @@ class ClientProcurementSerializer(serializers.ModelSerializer):
             'image',
             'room',
             'supplier',
+            'is_from_catalog',
+            'supplier_order_status',
+            'supplier_order_status_display',
+            'quote_status',
+            'quote_status_display',
+            'awaiting_quote',
         ]
-        read_only_fields = ['id', 'product_name', 'product_url', 'dimension', 'delivery_date', 'order_date', 'is_ordered', 'qty', 'unit', 'unit_price', 'total_price', 'image', 'room', 'supplier']
+        read_only_fields = [
+            'id',
+            'product_name',
+            'product_url',
+            'dimension',
+            'delivery_date',
+            'order_date',
+            'is_ordered',
+            'qty',
+            'unit',
+            'unit_price',
+            'total_price',
+            'image',
+            'room',
+            'supplier',
+            'is_from_catalog',
+            'supplier_order_status',
+            'supplier_order_status_display',
+            'quote_status',
+            'quote_status_display',
+            'awaiting_quote',
+        ]
+
+    def get_is_from_catalog(self, obj):
+        return obj.catalog_product_id is not None
+
+    def _order_line(self, obj):
+        return getattr(obj, 'supplier_order_line', None)
+
+    def get_product_name(self, obj):
+        if obj.product:
+            return obj.product.name
+        if obj.catalog_product:
+            return obj.catalog_product.name
+        return 'Unnamed item'
+
+    def get_product_url(self, obj):
+        if obj.product and obj.product.url:
+            return obj.product.url
+        if obj.catalog_product and obj.catalog_product.url:
+            return obj.catalog_product.url
+        return None
+
+    def get_dimension(self, obj):
+        if obj.product and obj.product.dimension:
+            return obj.product.dimension
+        if obj.catalog_product and obj.catalog_product.dimension:
+            return obj.catalog_product.dimension
+        return None
+
+    def get_supplier(self, obj):
+        if obj.product and obj.product.supplier:
+            return obj.product.supplier.company_name
+        if obj.catalog_product:
+            return obj.catalog_product.supplier.company_name
+        return None
 
     def get_is_ordered(self, obj):
-        return obj.status == 'ORD'
+        return obj.status in {'ORD', 'IT', 'DEL', 'INS', 'PD'}
 
     def get_unit_price(self, obj):
+        if obj.unit_price is not None:
+            return float(obj.unit_price)
         if obj.product:
             if obj.product.tader_price:
-                return obj.product.tader_price
-            return obj.product.regular_price or 0.0
+                return float(obj.product.tader_price)
+            return float(obj.product.regular_price or 0.0)
+        if obj.catalog_product and obj.catalog_product.trade_price is not None:
+            return float(obj.catalog_product.trade_price)
         return 0.0
 
     def get_total_price(self, obj):
@@ -60,17 +132,41 @@ class ClientProcurementSerializer(serializers.ModelSerializer):
         return 0.0
 
     def get_image(self, obj):
+        request = self.context.get('request')
+        if obj.catalog_product:
+            image = obj.catalog_product.images.filter(is_primary=True).first() or obj.catalog_product.images.first()
+            if image and image.image:
+                url = image.image.url
+                return request.build_absolute_uri(url) if request else url
         if obj.product:
-             image_obj = ProductImage.objects.filter(product=obj.product, is_primary=True).first()
-             if not image_obj:
-                 image_obj = ProductImage.objects.filter(product=obj.product).first()
-             
-             if image_obj and image_obj.image:
-                 request = self.context.get('request')
-                 if request:
-                     return request.build_absolute_uri(image_obj.image.url)
-                 return image_obj.image.url
+            image_obj = ProductImage.objects.filter(product=obj.product, is_primary=True).first()
+            if not image_obj:
+                image_obj = ProductImage.objects.filter(product=obj.product).first()
+            if image_obj and image_obj.image:
+                url = image_obj.image.url
+                return request.build_absolute_uri(url) if request else url
         return None
+
+    def get_supplier_order_status(self, obj):
+        order_line = self._order_line(obj)
+        return order_line.status if order_line else None
+
+    def get_supplier_order_status_display(self, obj):
+        order_line = self._order_line(obj)
+        return order_line.get_status_display() if order_line else None
+
+    def get_quote_status(self, obj):
+        order_line = self._order_line(obj)
+        return order_line.quote_status if order_line else None
+
+    def get_quote_status_display(self, obj):
+        order_line = self._order_line(obj)
+        return order_line.get_quote_status_display() if order_line else None
+
+    def get_awaiting_quote(self, obj):
+        order_line = self._order_line(obj)
+        return bool(order_line and order_line.quote_status == 'RQ')
+
 
 class ClientInvoiceLineItemSerializer(serializers.ModelSerializer):
     product_name = serializers.CharField(source='product.name', read_only=True)

@@ -2,6 +2,7 @@ packages:
   - 'client'
   - 'client_portal'
   - 'contractors_portal'
+  - 'suppliers_portal'
   - 'landing'
   - 'server'
   - 'packages/*'

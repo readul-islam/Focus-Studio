@@ -68,8 +68,20 @@ class ClientProcurementViewSet(viewsets.ModelViewSet):
         if not project_id:
             return Response({'error': 'project_id is required'}, status=status.HTTP_400_BAD_REQUEST)
         
-        queryset = self.get_queryset().filter(project_id=project_id)
-        serializer = self.get_serializer(queryset, many=True)
+        queryset = (
+            self.get_queryset()
+            .filter(project_id=project_id)
+            .select_related(
+                'room',
+                'product',
+                'product__supplier',
+                'catalog_product',
+                'catalog_product__supplier',
+                'supplier_order_line',
+            )
+            .prefetch_related('catalog_product__images', 'product__images')
+        )
+        serializer = self.get_serializer(queryset, many=True, context={'request': request})
         return Response(serializer.data)
 
 class ClientPresentationViewSet(viewsets.ReadOnlyModelViewSet):
@@ -388,21 +400,28 @@ def room_totals(request):
         client_access=True
     ).exclude(
         client_approval='REJ'
-    ).select_related('room', 'product')
+    ).select_related('room', 'product', 'catalog_product')
 
     # Calculate totals by room
     room_data = {}
     for procurement in procurements:
         room_name = procurement.room.name
-        product = procurement.product
         quantity = procurement.quantity or 0.0
-        
-        # Calculate unit price based on trade/regular price
-        if product:
-            unit_price = product.tader_price if product.tader_price else (product.regular_price or 0.0)
-            item_total = quantity * unit_price
+
+        if procurement.unit_price is not None:
+            unit_price = float(procurement.unit_price)
+        elif procurement.product:
+            unit_price = (
+                float(procurement.product.tader_price)
+                if procurement.product.tader_price
+                else float(procurement.product.regular_price or 0.0)
+            )
+        elif procurement.catalog_product and procurement.catalog_product.trade_price is not None:
+            unit_price = float(procurement.catalog_product.trade_price)
         else:
-            item_total = 0.0
+            unit_price = 0.0
+
+        item_total = quantity * unit_price
         
         # Add to room total
         if room_name in room_data:

@@ -168,6 +168,13 @@ class Procurement(models.Model):
     po = models.ForeignKey(PurchaseOrder, on_delete=models.SET_NULL, null=True, blank=True)
     invoice = models.ForeignKey(Invoice, on_delete=models.SET_NULL, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
+    catalog_product = models.ForeignKey(
+        'supplier_portal.CatalogProduct',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='procurements',
+    )
     sample = models.CharField(max_length=200, choices=SAMPLE_CHOICE, null=True, blank=True)
     order_date = models.DateField(null=True, blank=True)
     lead_time = models.CharField(max_length=200, blank=True, null=True)

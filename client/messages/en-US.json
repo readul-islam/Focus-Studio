@@ -3709,7 +3709,27 @@
       "deliveryProgress": "Delivery Progress"
     },
     "unassigned": "Unassigned",
-    "exporting": "Exporting..."
+    "exporting": "Exporting...",
+    "browseCatalog": "Browse catalog"
+  },
+  "catalogBrowse": {
+    "title": "Supplier catalog",
+    "description": "Browse verified trade products from platform suppliers and add them to this project.",
+    "configureTitle": "Add to procurement",
+    "configureDescription": "Choose a room and quantity for this catalog item.",
+    "searchPlaceholder": "Search products, suppliers, categories…",
+    "allCategories": "All categories",
+    "emptyTitle": "No catalog products found",
+    "emptyDescription": "Verified suppliers will appear here once they publish products to the global catalog.",
+    "priceOnRequest": "Price on request",
+    "backToBrowse": "Back to catalog",
+    "room": "Room",
+    "selectRoom": "Select room (optional)",
+    "quantity": "Quantity",
+    "adding": "Adding…",
+    "addToProcurement": "Add to procurement",
+    "addedToProcurement": "Catalog product added to procurement",
+    "addFailed": "Could not add catalog product"
   },
   "projectPlanPage": {
     "today": "Today",
@@ -4116,7 +4136,8 @@
     "colTracking": "Tracking Number",
     "colContractorAccess": "Contractor Access",
     "leadTimePlaceholder": "e.g. 2-3 weeks",
-    "productImageAlt": "Product image"
+    "productImageAlt": "Product image",
+    "fromCatalog": "Catalog"
   },
   "contractorCard": {
     "neverAccessed": "Never accessed",
