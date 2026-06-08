@@ -1,28 +1,31 @@
-import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
-import { join } from "node:path";
-import { platform } from "node:os";
+import { spawn } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { platform } from 'node:os';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const serverDir = join(process.cwd(), "server");
-const isWindows = platform() === "win32";
+const rootDir = join(dirname(fileURLToPath(import.meta.url)), '..');
+const serverDir = join(rootDir, 'server');
+const isWindows = platform() === 'win32';
 const venvPython = isWindows
-  ? join(serverDir, ".venv", "Scripts", "python.exe")
-  : join(serverDir, ".venv", "bin", "python");
+  ? join(serverDir, '.venv', 'Scripts', 'python.exe')
+  : join(serverDir, '.venv', 'bin', 'python');
 
-const python = existsSync(venvPython) ? venvPython : "python";
+const python = existsSync(venvPython) ? venvPython : 'python3';
 
-const child = spawn(python, ["manage.py", "runserver"], {
+// Bind all interfaces so phones on the same LAN can reach the API during dev.
+const child = spawn(python, ['manage.py', 'runserver', '0.0.0.0:8000'], {
   cwd: serverDir,
-  stdio: "inherit",
+  stdio: 'inherit',
   windowsHide: true,
 });
 
-child.on("error", (err) => {
-  console.error("[api] Failed to start Django server:", err.message);
+child.on('error', err => {
+  console.error('[api] Failed to start Django server:', err.message);
   process.exit(1);
 });
 
-child.on("exit", (code, signal) => {
+child.on('exit', (code, signal) => {
   if (signal) {
     process.kill(process.pid, signal);
     return;

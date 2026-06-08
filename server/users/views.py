@@ -48,6 +48,7 @@ from django.shortcuts import redirect
 import secrets
 import string
 from .utils import get_dashboard_data, generate_daily_brief
+from .mobile_client import is_mobile_client
 
 def _cookie_settings(secure: bool) -> dict:
     """
@@ -80,6 +81,11 @@ class CustomTokenObtainPairView(TokenObtainPairView):
 
         tf = getattr(user, 'two_factor', None)
         if tf and tf.is_enabled:
+            if is_mobile_client(request):
+                return Response(
+                    {'requires_2fa': True, 'email': user.email},
+                    status=status.HTTP_200_OK,
+                )
             secure = not settings.DEBUG
             cookie = _cookie_settings(secure)
             response = Response({'requires_2fa': True}, status=status.HTTP_200_OK)
@@ -87,9 +93,19 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             return response
 
         refresh = RefreshToken.for_user(user)
+        user_data = UserSerializer(user).data
+        if is_mobile_client(request):
+            return Response(
+                {
+                    'user': user_data,
+                    'access': str(refresh.access_token),
+                    'refresh': str(refresh),
+                },
+                status=status.HTTP_200_OK,
+            )
         secure = not settings.DEBUG
         cookie = _cookie_settings(secure)
-        response = Response({'user': UserSerializer(user).data}, status=status.HTTP_200_OK)
+        response = Response({'user': user_data}, status=status.HTTP_200_OK)
         response.set_cookie('access', str(refresh.access_token), max_age=86400, **cookie)
         response.set_cookie('refresh', str(refresh), max_age=86400, **cookie)
         return response
@@ -99,7 +115,7 @@ class CustomTokenRefreshView(TokenRefreshView):
     """Reads refresh cookie, issues new access cookie. Rotates refresh cookie."""
 
     def post(self, request, *args, **kwargs):
-        refresh_token = request.COOKIES.get('refresh')
+        refresh_token = request.COOKIES.get('refresh') or request.data.get('refresh')
         if not refresh_token:
             return Response({'detail': 'Refresh token missing.'}, status=status.HTTP_401_UNAUTHORIZED)
         # Inject the cookie value into request.data so the parent serializer finds it.
@@ -107,12 +123,22 @@ class CustomTokenRefreshView(TokenRefreshView):
         request._full_data = {'refresh': refresh_token}
         response = super().post(request, *args, **kwargs)
         if response.status_code == 200:
+            access = response.data.get('access')
+            new_refresh = response.data.get('refresh')
+            if is_mobile_client(request):
+                return Response(
+                    {
+                        'access': access,
+                        'refresh': new_refresh or refresh_token,
+                    },
+                    status=status.HTTP_200_OK,
+                )
             secure = not settings.DEBUG
             cookie = _cookie_settings(secure)
-            access = response.data.pop('access')
+            response.data.pop('access')
             response.set_cookie('access', access, max_age=86400, **cookie)
-            if 'refresh' in response.data:
-                new_refresh = response.data.pop('refresh')
+            if new_refresh:
+                response.data.pop('refresh')
                 response.set_cookie('refresh', new_refresh, max_age=86400, **cookie)
         return response
 
@@ -122,7 +148,7 @@ class LogoutView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
-        refresh_token = request.COOKIES.get('refresh')
+        refresh_token = request.COOKIES.get('refresh') or request.data.get('refresh')
         if refresh_token:
             try:
                 from rest_framework_simplejwt.tokens import RefreshToken as RT

@@ -25,3 +25,19 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification for {self.recipient.email}: {self.message[:50]}"
+
+
+class PushDeviceToken(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='push_tokens')
+    token = models.CharField(max_length=255, unique=True)
+    platform = models.CharField(max_length=20, blank=True, default='')
+    device_name = models.CharField(max_length=120, blank=True, default='')
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-updated_at']
+
+    def __str__(self):
+        return f"{self.user.email} — {self.platform or 'device'}"

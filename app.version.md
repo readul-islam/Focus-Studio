@@ -1,0 +1,1 @@
+We want to build mobile app for cross platform. analysis our whole application then tell me which technology will be good for us . then read this technolog best practices and best performance and ui guide then take all skill inside you then make a plan to complete the whole app and we have already server so don't need external server.

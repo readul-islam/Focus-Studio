@@ -1,8 +1,14 @@
 import path from 'path'
+import { createRequire } from 'module'
 import { fileURLToPath } from 'url'
 import createNextIntlPlugin from 'next-intl/plugin'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const require = createRequire(import.meta.url)
+
+function resolvePackageDir(name) {
+  return path.dirname(require.resolve(`${name}/package.json`))
+}
 
 // BACKEND_URL: real Django origin used by the server-side proxy and CSP.
 // Never expose tokens — this is only for Next.js server → Django server traffic.
@@ -66,8 +72,8 @@ const nextConfig = {
       ...config.resolve.alias,
       canvas: false,
       encoding: false,
-      'react-konva': path.resolve(__dirname, 'node_modules/react-konva'),
-      konva: path.resolve(__dirname, 'node_modules/konva'),
+      'react-konva': resolvePackageDir('react-konva'),
+      konva: resolvePackageDir('konva'),
     };
     return config;
   },

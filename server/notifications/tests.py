@@ -3,7 +3,7 @@ from rest_framework.test import APITestCase
 from users.models import Studio, User
 from projects.models import Project
 from task.models import Task
-from .models import Notification
+from .models import Notification, PushDeviceToken
 
 
 def create_studio(name="Notif Studio"):
@@ -128,3 +128,48 @@ class NotificationIsolationTest(APITestCase):
         response = self.client.get("/notifications/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 0)
+
+
+class PushTokenRegistrationTest(APITestCase):
+    def setUp(self):
+        self.studio = create_studio()
+        self.user = create_user(self.studio)
+        self.client.force_authenticate(user=self.user)
+
+    def test_register_push_token(self):
+        response = self.client.post(
+            "/notifications/push-token/",
+            {"token": "ExponentPushToken[abc123]", "platform": "ios", "device_name": "iPhone"},
+            format="json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(
+            PushDeviceToken.objects.filter(user=self.user, token="ExponentPushToken[abc123]", is_active=True).exists()
+        )
+
+    def test_register_requires_token(self):
+        response = self.client.post("/notifications/push-token/", {}, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_unregister_single_token(self):
+        PushDeviceToken.objects.create(user=self.user, token="ExponentPushToken[abc123]", is_active=True)
+        response = self.client.delete("/notifications/push-token/?token=ExponentPushToken[abc123]")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        token = PushDeviceToken.objects.get(token="ExponentPushToken[abc123]")
+        self.assertFalse(token.is_active)
+
+    def test_unregister_all_tokens(self):
+        PushDeviceToken.objects.create(user=self.user, token="ExponentPushToken[one]", is_active=True)
+        PushDeviceToken.objects.create(user=self.user, token="ExponentPushToken[two]", is_active=True)
+        response = self.client.delete("/notifications/push-token/")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(PushDeviceToken.objects.filter(user=self.user, is_active=True).count(), 0)
+
+    def test_push_token_unauthenticated(self):
+        self.client.force_authenticate(user=None)
+        response = self.client.post(
+            "/notifications/push-token/",
+            {"token": "ExponentPushToken[abc123]"},
+            format="json",
+        )
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

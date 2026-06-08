@@ -1,0 +1,32 @@
+import type { Href } from 'expo-router';
+
+/** Typed routes — extend when adding screens before expo-router regenerates route types */
+export const routes = {
+  search: '/search' as unknown as Href,
+  projectNew: '/project/new' as unknown as Href,
+  taskNew: '/task/new' as unknown as Href,
+  taskNewForProject: (projectId: number) => `/task/new?projectId=${projectId}` as unknown as Href,
+  taskEdit: (id: number) => `/task/${id}/edit` as unknown as Href,
+  inbox: '/inbox' as unknown as Href,
+  inboxCompose: '/inbox/compose' as unknown as Href,
+  calendar: '/calendar' as unknown as Href,
+  notifications: '/notifications' as unknown as Href,
+  time: '/time' as unknown as Href,
+  settings: '/settings' as unknown as Href,
+  settingsProfile: '/settings/profile' as unknown as Href,
+  settingsSecurity: '/settings/security' as unknown as Href,
+  settingsNotificationPrefs: '/settings/notification-preferences' as unknown as Href,
+  settingsIntegrations: '/settings/integrations' as unknown as Href,
+  contacts: '/contacts' as unknown as Href,
+  pipeline: '/contacts/pipeline' as unknown as Href,
+  leadNew: '/contacts/lead/new' as unknown as Href,
+  contactNew: '/contacts/new' as unknown as Href,
+  contactEdit: (id: number) => `/contacts/${id}/edit` as unknown as Href,
+  contactNewForProject: '/contacts/new?returnTo=project-new&contactType=CL' as unknown as Href,
+  projectNewWithClient: (clientId: number) => `/project/new?clientId=${clientId}` as unknown as Href,
+  projectEdit: (id: number) => `/project/${id}/edit` as unknown as Href,
+  finance: '/finance' as unknown as Href,
+  reports: '/reports' as unknown as Href,
+  help: '/help' as unknown as Href,
+  helpSupport: '/help/support' as unknown as Href,
+} as const;

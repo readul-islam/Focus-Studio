@@ -1,4 +1,4 @@
-from django.db.models.signals import m2m_changed
+from django.db.models.signals import m2m_changed, post_save
 from django.dispatch import receiver
 
 
@@ -66,3 +66,12 @@ def notify_subtask_assigned(sender, instance, action, pk_set, **kwargs):
             )
         except User.DoesNotExist:
             pass
+
+
+@receiver(post_save, sender='notifications.Notification')
+def send_push_for_notification(sender, instance, created, **kwargs):
+    if not created:
+        return
+    from notifications.push import push_for_notification
+
+    push_for_notification(instance)

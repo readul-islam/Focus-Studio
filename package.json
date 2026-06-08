@@ -1,11 +1,17 @@
 {
   "name": "focus-studio",
   "private": true,
+  "packageManager": "pnpm@10.33.4",
   "scripts": {
-    "dev": "concurrently -k -n api,studio,client,contractor,landing -c blue,green,yellow,magenta,cyan \"node scripts/run-server.mjs\" \"pnpm -C client dev\" \"pnpm -C client_portal dev\" \"pnpm -C contractors_portal dev\" \"pnpm -C landing dev\"",
-    "dev:core": "concurrently -k -n api,studio,client,contractor -c blue,green,yellow,magenta \"node scripts/run-server.mjs\" \"pnpm -C client dev\" \"pnpm -C client_portal dev\" \"pnpm -C contractors_portal dev\""
+    "dev": "turbo run dev --filter=@focuspilot/server --filter=@focuspilot/studio --filter=focuspilot-client-portal --filter=focuspilot-contractor-portal --filter=@focuspilot/landing",
+    "dev:web": "pnpm dev",
+    "dev:mobile": "concurrently -k -n api,mobile -c blue,cyan \"node scripts/run-server.mjs\" \"pnpm -C mobile dev\"",
+    "ios": "node scripts/run-ios.mjs",
+    "build": "turbo run build",
+    "lint": "turbo run lint"
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "turbo": "^2.5.4"
   }
 }

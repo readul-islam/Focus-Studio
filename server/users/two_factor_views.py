@@ -18,15 +18,27 @@ from .totp_utils import (
     verify_totp_code,
 )
 from .views import _cookie_settings
+from .mobile_client import is_mobile_client
 
 
-def _issue_auth_response(user) -> Response:
+def _issue_auth_response(user, request=None) -> Response:
     refresh = RefreshToken.for_user(user)
-    secure = not settings.DEBUG
-    cookie = _cookie_settings(secure)
     from .serializers import UserSerializer
 
-    response = Response({'user': UserSerializer(user).data}, status=status.HTTP_200_OK)
+    user_data = UserSerializer(user).data
+    if request is not None and is_mobile_client(request):
+        return Response(
+            {
+                'user': user_data,
+                'access': str(refresh.access_token),
+                'refresh': str(refresh),
+            },
+            status=status.HTTP_200_OK,
+        )
+
+    secure = not settings.DEBUG
+    cookie = _cookie_settings(secure)
+    response = Response({'user': user_data}, status=status.HTTP_200_OK)
     response.set_cookie('access', str(refresh.access_token), max_age=86400, **cookie)
     response.set_cookie('refresh', str(refresh), max_age=86400, **cookie)
     return response
@@ -146,7 +158,7 @@ def two_factor_session(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def verify_two_factor_login(request):
-    email = request.COOKIES.get('pending_2fa')
+    email = request.COOKIES.get('pending_2fa') or request.data.get('email')
     if not email:
         return Response({'detail': 'No pending session.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -176,6 +188,7 @@ def verify_two_factor_login(request):
 
     secure = not settings.DEBUG
     cookie = _cookie_settings(secure)
-    response = _issue_auth_response(user)
-    response.delete_cookie('pending_2fa', path='/', domain=cookie.get('domain'))
+    response = _issue_auth_response(user, request)
+    if not is_mobile_client(request):
+        response.delete_cookie('pending_2fa', path='/', domain=cookie.get('domain'))
     return response

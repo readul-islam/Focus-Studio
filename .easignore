@@ -1,0 +1,15 @@
+# Shrink EAS upload — mobile build only needs packages/ + mobile/
+/pnpm-workspace.yaml
+/package.json
+/pnpm-lock.yaml
+/turbo.json
+/client
+/client_portal
+/contractors_portal
+/landing
+/server
+/scripts
+/.github
+/docs
+*.md
+!mobile/README.md

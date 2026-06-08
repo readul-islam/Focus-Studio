@@ -62,3 +62,7 @@ coverage/
 # Misc
 *.log
 .turbo/
+.turbo-cache/
+.expo/
+mobile/.expo/
+mobile/dist/

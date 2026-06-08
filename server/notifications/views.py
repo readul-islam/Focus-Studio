@@ -1,7 +1,8 @@
+from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .models import Notification
+from .models import Notification, PushDeviceToken
 from .serializers import NotificationSerializer
 
 
@@ -37,3 +38,33 @@ def mark_as_read(request, notification_id):
 def mark_all_as_read(request):
     Notification.objects.filter(recipient=request.user, is_read=False).update(is_read=True)
     return Response({'message': 'All notifications marked as read'})
+
+
+@api_view(['POST', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def register_push_token(request):
+    if request.method == 'DELETE':
+        token = request.query_params.get('token') or request.data.get('token')
+        if token:
+            PushDeviceToken.objects.filter(user=request.user, token=token).update(is_active=False)
+        else:
+            PushDeviceToken.objects.filter(user=request.user).update(is_active=False)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    token = (request.data.get('token') or '').strip()
+    if not token:
+        return Response({'error': 'token is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    platform = (request.data.get('platform') or '').strip()
+    device_name = (request.data.get('device_name') or '').strip()[:120]
+
+    PushDeviceToken.objects.update_or_create(
+        token=token,
+        defaults={
+            'user': request.user,
+            'platform': platform,
+            'device_name': device_name,
+            'is_active': True,
+        },
+    )
+    return Response({'registered': True}, status=status.HTTP_200_OK)

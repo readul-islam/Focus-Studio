@@ -1,0 +1,7 @@
+packages:
+  - 'client'
+  - 'client_portal'
+  - 'contractors_portal'
+  - 'landing'
+  - 'server'
+  - 'packages/*'
