@@ -23,7 +23,8 @@ from .views import (
     get_default_studio_phases,
     project_templates, project_template_detail,
     project_template_phases, project_template_phase_detail,
-    project_template_phase_tasks, project_template_phase_task_detail,
+    project_template_phase_tasks,     project_template_phase_task_detail,
+    studio_audit_logs,
 )
 
 urlpatterns = [
@@ -77,4 +78,5 @@ urlpatterns = [
     path('studio/templates/<int:template_id>/phases/<int:phase_id>/', project_template_phase_detail, name='project-template-phase-detail'),
     path('studio/templates/<int:template_id>/phases/<int:phase_id>/tasks/', project_template_phase_tasks, name='project-template-phase-tasks'),
     path('studio/templates/<int:template_id>/phases/<int:phase_id>/tasks/<int:task_id>/', project_template_phase_task_detail, name='project-template-phase-task-detail'),
+    path('studio/audit-logs/', studio_audit_logs, name='studio-audit-logs'),
 ]

@@ -7,9 +7,15 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, type ReactNode } from 'react'
 
 export function ProtectedShell({ children }: { children: ReactNode }) {
-  const { user } = useUser()
+  const { user, syncFromStorage } = useUser()
   const router = useRouter()
   const pathname = usePathname()
+
+  useEffect(() => {
+    if (user) {
+      syncFromStorage()
+    }
+  }, [user, syncFromStorage])
 
   useEffect(() => {
     if (!user && pathname !== '/login') {
@@ -21,10 +27,12 @@ export function ProtectedShell({ children }: { children: ReactNode }) {
     return <Loader />
   }
 
+  const hideSupportWidget = pathname === '/messages'
+
   return (
     <>
       {children}
-      <PortalSupportWidget />
+      {!hideSupportWidget ? <PortalSupportWidget /> : null}
     </>
   )
 }

@@ -13,6 +13,7 @@ from users.models import User
 from users.permissions import FinanceViewPermission
 from django.conf import settings
 from xero.utils import sync_purchase_order_to_xero, sync_invoice_to_xero, update_xero_statuses
+from finance.reminders import send_invoice_reminder
 from email.utils import formataddr
 from techstyles.mixins import StudioScopedMixin
 
@@ -433,6 +434,13 @@ class InvoiceViewSet(StudioScopedMixin, viewsets.ModelViewSet):
             
             invoice.save()
 
+        if invoice.qb_sync and invoice.studio and invoice.studio.quickbooks:
+            try:
+                from quickbooks.utils import sync_invoice_to_quickbooks
+                sync_invoice_to_quickbooks(invoice)
+            except Exception:
+                pass
+
         try:
             from integrations.events import notify_invoice_created
             notify_invoice_created(invoice.studio, invoice)
@@ -469,6 +477,13 @@ class InvoiceViewSet(StudioScopedMixin, viewsets.ModelViewSet):
                 invoice.xero_sync_error = sync_result['error']
             
             invoice.save()
+
+        if invoice.qb_sync and invoice.studio and invoice.studio.quickbooks:
+            try:
+                from quickbooks.utils import sync_invoice_to_quickbooks
+                sync_invoice_to_quickbooks(invoice)
+            except Exception:
+                pass
         
         return Response(serializer.data)
 
@@ -511,6 +526,14 @@ class InvoiceViewSet(StudioScopedMixin, viewsets.ModelViewSet):
             {'message': f'Updated inv_sent for {updated_count} procurements and set invoice status to Sent.'},
             status=status.HTTP_200_OK
         )
+
+    @action(detail=True, methods=['post'], url_path='send-reminder')
+    def send_reminder(self, request, pk=None):
+        invoice = self.get_object()
+        result = send_invoice_reminder(invoice, manual=True)
+        if result.get('error'):
+            return Response({'error': result['error']}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Payment reminder sent.', 'reminder_count': invoice.reminder_count})
 
 
 @api_view(['GET'])

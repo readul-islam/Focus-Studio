@@ -5,7 +5,7 @@ from projects.models import Procurement, Project
 from finance.models import Invoice, InvoiceLineItem
 from library.models import ProductImage
 from crm.models import Client
-from .models import ClientProject
+from .models import ClientProject, ClientProjectMessage
 
 
 class ClientProcurementSerializer(serializers.ModelSerializer):
@@ -297,3 +297,10 @@ class ClientProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClientProject
         fields = ['id', 'project_id', 'project_name', 'currency', 'created_at']
+
+
+class ClientProjectMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClientProjectMessage
+        fields = ['id', 'project', 'client', 'content', 'sender_type', 'created_at', 'is_read']
+        read_only_fields = ['id', 'created_at', 'is_read', 'client']

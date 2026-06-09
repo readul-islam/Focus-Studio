@@ -17,8 +17,8 @@ export const menuItems = [
   {
     icon: MessageSquareMore,
     labelKey: 'messages',
-    href: '#',
-    basePath: '/communications',
+    href: '/messages',
+    basePath: '/messages',
   },
   {
     icon: ShoppingCart,

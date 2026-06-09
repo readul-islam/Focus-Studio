@@ -14,6 +14,8 @@ import {
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import useUser from "@/hooks/userUser";
+import { ProjectSwitcher } from "@/components/ProjectSwitcher";
+import { clearClientSession } from "@/lib/client-session";
 import { menuItems } from "@/lib/menuItems";
 import { useTranslations } from "next-intl";
 
@@ -21,7 +23,7 @@ export function DashboardSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const { user } = useUser();
+  const { user, clearProjects } = useUser();
   const t = useTranslations("nav");
   const tc = useTranslations("common");
 
@@ -39,9 +41,8 @@ export function DashboardSidebar() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("access");
-    localStorage.removeItem("refresh");
+    clearClientSession();
+    clearProjects();
     navigate("/login");
   };
 
@@ -63,6 +64,12 @@ export function DashboardSidebar() {
           )}
         </div>
       </div>
+
+      {!isCollapsed && (
+        <div className="px-4 pt-2 pb-1 border-b border-gray-100">
+          <ProjectSwitcher />
+        </div>
+      )}
 
       <nav
         className={cn(

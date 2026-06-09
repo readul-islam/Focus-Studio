@@ -41,6 +41,7 @@ import { Switch } from '@/components/ui/switch';
 import ProcurementTable from '@/components/project/ProcurementTable';
 import { ProcurementInsights } from '@/components/ai/ProcurementInsights';
 import { cn } from '@/lib/utils';
+import { api } from '@/lib/Api';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -677,6 +678,33 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
     );
   };
 
+  const downloadFfeExport = async (format: 'csv' | 'html') => {
+    setIsExporting(true);
+    try {
+      const response = await api.get(`projects/export-ffe-schedule/?project_id=${projectId}&format=${format}`, {
+        responseType: format === 'csv' ? 'blob' : 'text',
+      });
+      if (format === 'html') {
+        const blob = new Blob([response.data], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank', 'noopener,noreferrer');
+        URL.revokeObjectURL(url);
+      } else {
+        const url = URL.createObjectURL(response.data);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `ffe-schedule-${projectId}.csv`;
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+      toast.success(format === 'html' ? 'Spec sheet opened' : 'FF&E schedule exported');
+    } catch {
+      toast.error('Export failed');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   const handleExportCSV = () => {
     setIsExporting(true);
     const statusLabels: Record<string, string> = {
@@ -1219,16 +1247,19 @@ function ProjectProcurementPageContent({ params }: { params: { id: string } }) {
           </div>
 
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-9 bg-white gap-1.5"
-              onClick={handleExportCSV}
-              disabled={isExporting}
-            >
-              {isExporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-              {isExporting ? 'Exporting...' : 'Export'}
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="h-9 bg-white gap-1.5" disabled={isExporting}>
+                  {isExporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                  {isExporting ? 'Exporting...' : 'Export FF&E'}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={handleExportCSV}>Quick CSV (table)</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => downloadFfeExport('csv')}>Spec schedule CSV</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => downloadFfeExport('html')}>Spec sheet (print/PDF)</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <div className="flex bg-white border w-[140px] rounded-lg py-[7px] items-center gap-1">
               <Switch
                 title="Toggle Send To Client"

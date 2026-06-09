@@ -40,7 +40,7 @@ function getUserDisplayName(user: Record<string, unknown> | null | undefined) {
   return String(user.name || user.company_name || user.email || '').trim();
 }
 
-function ChatPanel({
+export function ChatPanel({
   isActive,
   userName,
   projectName,

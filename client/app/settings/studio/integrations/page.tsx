@@ -4,6 +4,7 @@ import { Section } from '@/components/settings/section';
 import { PermissionGuard } from '@/components/PermissionGuard';
 import { IntegrationStatusProvider, useIntegrationStatusContext } from '@/components/settings/integration-status-context';
 import XeroIntegration from '@/components/settings/XeroIntegration';
+import QuickBooksIntegration from '@/components/settings/QuickBooksIntegration';
 import GmailIntegration from '@/components/settings/GmailIntegration';
 import GoogleCalendarIntegration from '@/components/settings/GoogleCalendarIntegration';
 import NotionIntegration from '@/components/settings/NotionIntegration';
@@ -28,6 +29,12 @@ function IntegrationsPageContent() {
           <XeroIntegration
             isLoading={pageLoading}
             isConnected={!!status.xero_connected}
+            isSyncing={isFetching}
+          />
+
+          <QuickBooksIntegration
+            isLoading={pageLoading}
+            isConnected={!!status.quickbooks_connected}
             isSyncing={isFetching}
           />
 

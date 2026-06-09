@@ -38,6 +38,27 @@
     "enUS": "English (US)",
     "jaJP": "Japanese (Japan)"
   },
+  "projectSwitcher": {
+    "label": "Active project",
+    "placeholder": "Select a project"
+  },
+  "messagesPage": {
+    "title": "Messages",
+    "subtitle": "Message your studio team or ask FocusPilot AI for help.",
+    "tabs": {
+      "studio": "Your studio",
+      "ai": "FocusPilot AI"
+    },
+    "studioChat": {
+      "title": "Message your studio",
+      "subtitle": "Two-way chat with your design team about this project.",
+      "empty": "No messages yet. Say hello to your studio.",
+      "placeholder": "Message your studio…",
+      "loadFailed": "Could not load messages",
+      "sendFailed": "Could not send your message",
+      "noProject": "Select a project to view messages."
+    }
+  },
   "nav": {
     "dashboard": "Dashboard",
     "messages": "Messages",

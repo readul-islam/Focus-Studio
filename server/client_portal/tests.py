@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 from rest_framework import status
 from rest_framework.test import APITestCase
 from users.models import User, Studio
@@ -181,3 +181,68 @@ class RoomTotalsTests(APITestCase):
         self.assertIn('rooms', response.data)
         self.assertIn('grand_total', response.data)
         self.assertEqual(response.data['grand_total'], 0)
+
+
+class ClientInvoicePayTests(APITestCase):
+    def setUp(self):
+        from finance.models import Invoice
+        from decimal import Decimal
+
+        self.studio = create_studio()
+        self.studio.stripe_connect_account_id = 'acct_test123'
+        self.studio.stripe_connect_charges_enabled = True
+        self.studio.save(update_fields=['stripe_connect_account_id', 'stripe_connect_charges_enabled'])
+
+        self.project = create_project(self.studio)
+        self.cl = create_client(self.studio, password='secret123')
+        ClientProject.objects.create(client=self.cl, project=self.project)
+
+        self.invoice = Invoice.objects.create(
+            studio=self.studio,
+            project=self.project,
+            client=self.cl,
+            status='SNT',
+            currency='GBP',
+            total_amount=Decimal('250.00'),
+        )
+        self.url = f'/client_portal/invoices/{self.invoice.id}/pay/'
+
+    def _client_auth(self):
+        from rest_framework_simplejwt.tokens import RefreshToken
+
+        refresh = RefreshToken()
+        refresh['client_id'] = self.cl.id
+        refresh['email'] = self.cl.email
+        refresh['type'] = 'client'
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
+
+    def test_pay_invoice_requires_client_auth(self):
+        response = self.client.post(self.url, {}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_pay_invoice_not_payable_when_draft(self):
+        from finance.models import Invoice
+
+        draft = Invoice.objects.create(
+            studio=self.studio,
+            project=self.project,
+            client=self.cl,
+            status='DFT',
+            currency='GBP',
+            total_amount=100,
+        )
+        self._client_auth()
+        response = self.client.post(f'/client_portal/invoices/{draft.id}/pay/', {}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    @patch('finance.payments.stripe.checkout.Session.create')
+    @patch('finance.payments.stripe_configured', return_value=True)
+    def test_pay_invoice_creates_checkout(self, _mock_configured, mock_session_create):
+        mock_session_create.return_value = MagicMock(url='https://checkout.stripe.com/invoice-pay')
+
+        self._client_auth()
+        response = self.client.post(self.url, {}, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['url'], 'https://checkout.stripe.com/invoice-pay')
+        mock_session_create.assert_called_once()

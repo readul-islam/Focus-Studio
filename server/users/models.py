@@ -20,6 +20,7 @@ class Studio(models.Model):
     default_currency = models.CharField(max_length=3, null=True, blank=True)
     default_tax_rate = models.FloatField(null=True, blank=True)
     xero = models.BooleanField(default=False, null=True, blank=True)
+    quickbooks = models.BooleanField(default=False, null=True, blank=True)
     notion = models.BooleanField(default=False, null=True, blank=True)
     # Branding
     primary_logo = models.ImageField(upload_to='studio_branding/', null=True, blank=True)

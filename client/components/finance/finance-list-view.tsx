@@ -230,15 +230,23 @@ export function FinanceListView({ mode = 'all' }: FinanceListViewProps) {
   };
 
   const handleSendInvoice = (item: any) => {
-    // console.log(item);
     sendEmailToClient({
-      // url: selectedItem.display_po
-      //   ? `finance/purchase-orders/${selectedItem.id}/send-email/`
-      //   : `finance/invoices/${selectedItem.id}/send-email/`,
       url: `finance/invoices/${item?.id}/send-invoice/`,
       data: {
         id: item?.id,
       }
+    });
+  };
+
+  const { mutate: sendReminder } = usePost({
+    onSuccess: () => toast.success(t('reminderSent')),
+    onError: () => toast.error(t('reminderFailed')),
+  });
+
+  const handleSendReminder = (item: any) => {
+    sendReminder({
+      url: `finance/invoices/${item?.id}/send-reminder/`,
+      data: {},
     });
   };
 
@@ -991,6 +999,11 @@ export function FinanceListView({ mode = 'all' }: FinanceListViewProps) {
                                 {financePermission && (
                                   <DropdownMenuItem onClick={() => handleSendInvoice(inv)} className="flex items-center gap-2">
                                     <Send className="w-4 h-4 " /> Send to Client
+                                  </DropdownMenuItem>
+                                )}
+                                {financePermission && (inv.status === 'SNT' || inv.status === 'OVD') && (
+                                  <DropdownMenuItem onClick={() => handleSendReminder(inv)} className="flex items-center gap-2">
+                                    <Mail className="w-4 h-4 " /> {t('sendReminder')}
                                   </DropdownMenuItem>
                                 )}
                                 {financePermission && (

@@ -94,6 +94,10 @@ def get_studio_products(request):
     product_type = request.query_params.get('type', None)
     if product_type:
         products = products.filter(type__iexact=product_type)
+
+    materials_only = request.query_params.get('materials_only', None)
+    if materials_only in ('1', 'true', 'yes'):
+        products = products.exclude(materials__isnull=True).exclude(materials='')
     
     products = products.order_by('-id')
 

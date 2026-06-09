@@ -79,14 +79,22 @@ class Invoice(models.Model):
     stripe_checkout_session_id = models.CharField(max_length=255, blank=True, null=True)
     stripe_payment_intent_id = models.CharField(max_length=255, blank=True, null=True)
     paid_at = models.DateTimeField(null=True, blank=True)
-    
+    last_reminder_at = models.DateTimeField(null=True, blank=True)
+    reminder_count = models.PositiveIntegerField(default=0)
+
     # Xero integration fields
     xero_sync = models.BooleanField(default=True, help_text="Enable sync with Xero")
     xero_id = models.CharField(max_length=255, null=True, blank=True, help_text="Xero invoice ID")
     xero_invoice_number = models.CharField(max_length=255, null=True, blank=True, help_text="Xero-generated invoice number")
     xero_sync_status = models.CharField(max_length=20, null=True, blank=True, help_text="Sync status: pending, synced, failed")
     xero_sync_error = models.TextField(null=True, blank=True, help_text="Error message if sync fails")
-    
+
+    # QuickBooks integration fields
+    qb_sync = models.BooleanField(default=True, help_text="Enable sync with QuickBooks")
+    qb_id = models.CharField(max_length=255, null=True, blank=True, help_text="QuickBooks invoice ID")
+    qb_sync_status = models.CharField(max_length=20, null=True, blank=True)
+    qb_sync_error = models.TextField(null=True, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='invoices_created', null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)

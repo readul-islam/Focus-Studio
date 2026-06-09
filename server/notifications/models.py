@@ -7,6 +7,8 @@ NOTIFICATION_TYPES = [
     ('subtask_assigned', 'Assigned to Subtask'),
     ('team_message', 'Team Message'),
     ('comment_mention', 'Comment Mention'),
+    ('client_message', 'Client Message'),
+    ('invoice_overdue', 'Invoice Overdue'),
 ]
 
 

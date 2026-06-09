@@ -44,6 +44,11 @@ XERO_SCOPE = _env(
 )
 XERO_REDIRECT_URI = _env('XERO_REDIRECT_URI', 'http://localhost:8000/xero/xero/callback/')
 
+QUICKBOOKS_CLIENT_ID = _env('QUICKBOOKS_CLIENT_ID')
+QUICKBOOKS_CLIENT_SECRET = _env('QUICKBOOKS_CLIENT_SECRET')
+QUICKBOOKS_REDIRECT_URI = _env('QUICKBOOKS_REDIRECT_URI', 'http://localhost:8000/quickbooks/callback/')
+QUICKBOOKS_SCOPE = _env('QUICKBOOKS_SCOPE', 'com.intuit.quickbooks.accounting')
+
 OPENAI_API_KEY = _env('OPENAI_API_KEY')
 MESHY_API_KEY = _env('MESHY_API_KEY', 'msy_dummy_api_key_for_test_mode_12345678')
 
@@ -72,6 +77,7 @@ INSTALLED_APPS = [
     'attachment',
     'comment',
     'xero',
+    'quickbooks',
     'documents',
     'storages',
     'clipper',

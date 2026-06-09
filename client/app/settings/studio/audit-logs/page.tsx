@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { StatusBadge } from "@/components/chip"
+import useFetch from "@/hooks/useFetch"
+import { Loader2 } from "lucide-react"
 import { useTranslations } from 'next-intl'
 
 type Severity = "low" | "medium" | "high"
@@ -20,53 +22,21 @@ type Log = {
   date: string
 }
 
-const seeded: Log[] = [
-  {
-    id: "l1",
-    actor: "Jane",
-    action: "updated finance settings",
-    target: "Finance",
-    severity: "medium",
-    date: "2025-08-07 14:22",
-  },
-  {
-    id: "l2",
-    actor: "Sam",
-    action: "invited member",
-    target: "Team",
-    severity: "low",
-    date: "2025-08-07 09:11",
-  },
-  {
-    id: "l3",
-    actor: "Jane",
-    action: "connected integration",
-    target: "Slack",
-    severity: "low",
-    date: "2025-08-06 18:03",
-  },
-  {
-    id: "l4",
-    actor: "Chris",
-    action: "changed role permissions",
-    target: "Roles",
-    severity: "high",
-    date: "2025-08-05 16:45",
-  },
-]
-
 function AuditLogsPageContent() {
   const t = useTranslations('settingsAuditLogsPage')
+  const { data, isLoading, isError } = useFetch<{ results: Log[] }>('user/studio/audit-logs/')
   const [query, setQuery] = useState("")
   const [severity, setSeverity] = useState<"all" | Severity>("all")
 
+  const logs = data?.results ?? []
+
   const filtered = useMemo(() => {
-    return seeded.filter(
+    return logs.filter(
       (l) =>
         (severity === "all" || l.severity === severity) &&
         [l.actor, l.action, l.target].join(" ").toLowerCase().includes(query.toLowerCase()),
     )
-  }, [query, severity])
+  }, [logs, query, severity])
 
   const severityLabel = (value: Severity) => {
     if (value === 'low') return t('severityLow')
@@ -106,37 +76,43 @@ function AuditLogsPageContent() {
         </div>
 
         <div className="mt-4 rounded-xl scrollbar scrollbar-thin border border-gray-200 overflow-hidden bg-white">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>{t('table.actor')}</TableHead>
-                <TableHead>{t('table.action')}</TableHead>
-                <TableHead>{t('table.target')}</TableHead>
-                <TableHead>{t('table.severity')}</TableHead>
-                <TableHead>{t('table.date')}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filtered.map((l) => (
-                <TableRow key={l.id}>
-                  <TableCell className="font-medium">{l.actor}</TableCell>
-                  <TableCell>{l.action}</TableCell>
-                  <TableCell>{l.target}</TableCell>
-                  <TableCell>
-                    <StatusBadge status={l.severity} label={severityLabel(l.severity)} />
-                  </TableCell>
-                  <TableCell>{l.date}</TableCell>
-                </TableRow>
-              ))}
-              {filtered.length === 0 ? (
+          {isLoading ? (
+            <div className="flex items-center justify-center py-16 text-gray-500">
+              <Loader2 className="h-6 w-6 animate-spin" />
+            </div>
+          ) : (
+            <Table>
+              <TableHeader>
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center text-sm text-gray-500">
-                    {t('noResults')}
-                  </TableCell>
+                  <TableHead>{t('table.actor')}</TableHead>
+                  <TableHead>{t('table.action')}</TableHead>
+                  <TableHead>{t('table.target')}</TableHead>
+                  <TableHead>{t('table.severity')}</TableHead>
+                  <TableHead>{t('table.date')}</TableHead>
                 </TableRow>
-              ) : null}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {filtered.map((l) => (
+                  <TableRow key={l.id}>
+                    <TableCell className="font-medium">{l.actor}</TableCell>
+                    <TableCell>{l.action}</TableCell>
+                    <TableCell>{l.target}</TableCell>
+                    <TableCell>
+                      <StatusBadge status={l.severity} label={severityLabel(l.severity)} />
+                    </TableCell>
+                    <TableCell>{l.date}</TableCell>
+                  </TableRow>
+                ))}
+                {filtered.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center text-sm text-gray-500">
+                      {isError ? t('loadFailed') : t('noResults')}
+                    </TableCell>
+                  </TableRow>
+                ) : null}
+              </TableBody>
+            </Table>
+          )}
         </div>
       </Section>
     </div>

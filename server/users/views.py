@@ -1315,6 +1315,12 @@ def get_integration_status(request):
         from notion.views import is_notion_connected
         notion_connected = is_notion_connected(user.studio)
 
+    quickbooks_connected = bool(user.studio and user.studio.quickbooks)
+    if quickbooks_connected:
+        from quickbooks.models import QuickBooksToken
+        if not QuickBooksToken.objects.filter(studio=user.studio).exists():
+            quickbooks_connected = False
+
     zapier_configured = False
     if user.studio:
         from integrations.models import StudioApiKey, WebhookEndpoint
@@ -1325,6 +1331,7 @@ def get_integration_status(request):
 
     return Response({
         'xero_connected': xero_connected,
+        'quickbooks_connected': quickbooks_connected,
         'gmail_connected': gmail_connected,
         'calendar_connected': calendar_connected,
         'notion_connected': notion_connected,
@@ -1971,3 +1978,109 @@ def get_default_studio_phases(request):
         },
     ]
     return Response(default_phases, status=status.HTTP_200_OK)
+
+
+@extend_schema(
+    summary="Studio audit activity feed",
+    description="Aggregated recent studio activity for the audit logs settings screen.",
+    responses={200: OpenApiTypes.OBJECT},
+)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def studio_audit_logs(request):
+    from crm.models import Client, Proposal
+    from finance.models import Invoice
+    from users.permissions import check_role_permission
+
+    user = request.user
+    studio = user.studio
+    if not studio:
+        return Response({'results': []})
+    if user.role != 'admin' and not check_role_permission(user, 'settings.edit'):
+        return Response({'error': 'Permission denied.'}, status=status.HTTP_403_FORBIDDEN)
+
+    events = []
+
+    def actor_name(actor):
+        if not actor:
+            return 'System'
+        return getattr(actor, 'name', None) or getattr(actor, 'email', None) or 'User'
+
+    def push(event_id, *, actor, action, target, severity, occurred_at):
+        events.append({
+            'id': event_id,
+            'actor': actor_name(actor),
+            'action': action,
+            'target': target,
+            'severity': severity,
+            'date': timezone.localtime(occurred_at).strftime('%Y-%m-%d %H:%M'),
+            'occurred_at': occurred_at.isoformat(),
+        })
+
+    for project in Project.objects.filter(studio=studio).select_related('created_by').order_by('-created_at')[:20]:
+        push(
+            f'project-{project.id}',
+            actor=project.created_by,
+            action='created project',
+            target=project.project_name or f'Project #{project.id}',
+            severity='low',
+            occurred_at=project.created_at or timezone.now(),
+        )
+
+    for invoice in Invoice.objects.filter(studio=studio).exclude(status='DFT').select_related('created_by', 'client').order_by('-updated_at')[:20]:
+        action = {
+            'SNT': 'sent invoice',
+            'PD': 'recorded invoice payment',
+            'OVD': 'invoice marked overdue',
+            'CAN': 'cancelled invoice',
+        }.get(invoice.status, 'updated invoice')
+        target = f'INV-{invoice.id:03d}'
+        if invoice.client:
+            target = f'{target} · {invoice.client.company_name or invoice.client.name}'
+        push(
+            f'invoice-{invoice.id}-{invoice.status}',
+            actor=invoice.created_by,
+            action=action,
+            target=target,
+            severity='medium' if invoice.status in {'SNT', 'PD'} else 'low',
+            occurred_at=invoice.updated_at or invoice.created_at or timezone.now(),
+        )
+
+    for proposal in Proposal.objects.filter(studio=studio, status='SNT').select_related('created_by', 'client').order_by('-updated_at')[:15]:
+        target = proposal.title or f'Proposal #{proposal.id}'
+        if proposal.client:
+            target = f'{target} · {proposal.client.company_name or proposal.client.name}'
+        push(
+            f'proposal-{proposal.id}',
+            actor=proposal.created_by,
+            action='sent proposal',
+            target=target,
+            severity='medium',
+            occurred_at=proposal.updated_at or proposal.created_at or timezone.now(),
+        )
+
+    for client in Client.objects.filter(studio=studio).select_related('created_by').order_by('-created_at')[:15]:
+        push(
+            f'client-{client.id}',
+            actor=client.created_by,
+            action='added contact',
+            target=client.company_name or client.name or client.email,
+            severity='low',
+            occurred_at=client.created_at or timezone.now(),
+        )
+
+    for invite in Invitation.objects.filter(sender__studio=studio).select_related('sender').order_by('-created_at')[:15]:
+        push(
+            f'invite-{invite.id}',
+            actor=invite.sender,
+            action='invited team member',
+            target=invite.email,
+            severity='low',
+            occurred_at=invite.created_at,
+        )
+
+    events.sort(key=lambda item: item['occurred_at'], reverse=True)
+    for item in events:
+        item.pop('occurred_at', None)
+
+    return Response({'results': events[:50]})

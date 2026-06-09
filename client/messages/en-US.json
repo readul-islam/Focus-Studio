@@ -62,6 +62,14 @@
     "products": "Products",
     "materials": "Materials"
   },
+  "clientMessageDialog": {
+    "title": "Message {name}",
+    "client": "your client",
+    "empty": "No messages yet. Send a note to your client.",
+    "placeholder": "Write a message…",
+    "sent": "Message sent",
+    "sendFailed": "Could not send message"
+  },
   "projectNav": {
     "active": "Active",
     "completed": "Completed",
@@ -69,6 +77,7 @@
     "archived": "Archived",
     "overview": "Overview",
     "tasks": "Tasks",
+    "plan": "Timeline",
     "email": "Email",
     "team": "Team",
     "procurement": "Procurement",
@@ -168,6 +177,9 @@
       "paid": "Paid",
       "overdue": "Overdue"
     },
+    "sendReminder": "Send payment reminder",
+    "reminderSent": "Payment reminder sent",
+    "reminderFailed": "Could not send payment reminder",
     "sort": {
       "dateNewest": "Date (Newest)",
       "dateOldest": "Date (Oldest)",
@@ -231,11 +243,15 @@
     "purchaseOrders": "Purchase Orders"
   },
   "financeStripe": {
-    "setupButton": "Setup Stripe Payments",
+    "setupButton": "Connect to accept payments",
     "continueSetupButton": "Continue Stripe setup",
     "manageConnection": "Manage connection",
     "connected": "Stripe payments are active — clients can pay invoices online.",
-    "bannerDescription": "Connect Stripe to accept card payments on invoices sent through Focuspilot.",
+    "connectHeading": "Connect to accept payments",
+    "bannerDescription": "Link your studio's Stripe account so clients can pay sent invoices securely from the client portal.",
+    "benefit1": "Card payments on sent and overdue invoices",
+    "benefit2": "Funds deposited to your connected bank account",
+    "benefit3": "Clients see a Pay now button in their portal",
     "partnerHeading": "Focuspilot partners with Stripe for secure payments",
     "partnerDescription": "Connect your studio to receive client invoice payments directly to your bank account.",
     "backToInvoices": "Return to invoices",
@@ -1589,6 +1605,22 @@
       "continueWithGoogle": "Continue with Google",
       "gmailMissingCalendarWarning": "Gmail is connected but Calendar access is missing. Reconnect and allow Calendar permissions."
     },
+    "quickbooks": {
+      "title": "QuickBooks",
+      "descriptionConnected": "Your QuickBooks company is connected for US invoice sync.",
+      "descriptionDisconnected": "Connect QuickBooks Online to sync invoices for US studios.",
+      "connect": "Connect QuickBooks",
+      "disconnect": "Disconnect",
+      "disconnectTitle": "Disconnect QuickBooks?",
+      "disconnectDesc": "Focuspilot will stop syncing with QuickBooks. You can reconnect anytime.",
+      "toasts": {
+        "connected": "QuickBooks connected.",
+        "cancelled": "QuickBooks connection was cancelled.",
+        "statusNotUpdated": "QuickBooks authorized but status did not update. Please try again.",
+        "disconnected": "QuickBooks disconnected.",
+        "disconnectFailed": "Failed to disconnect QuickBooks."
+      }
+    },
     "xero": {
       "title": "Xero",
       "description": "Sync invoices and purchase orders with Xero.",
@@ -1763,7 +1795,8 @@
       "severity": "Severity",
       "date": "Date"
     },
-    "noResults": "No results."
+    "noResults": "No results.",
+    "loadFailed": "Could not load audit activity. Try again."
   },
   "settingsFinancePage": {
     "title": "Finance",
@@ -2053,8 +2086,12 @@
   },
   "libraryMaterialsPage": {
     "title": "Materials Library",
-    "subtitle": "Coming soon - manage your material samples and specifications",
-    "addMaterial": "Add Material"
+    "subtitle": "Material specifications from products in your library.",
+    "searchPlaceholder": "Search materials…",
+    "empty": "No products with material specs yet. Add materials on a product in the Products library.",
+    "noSearchResults": "No materials match your search.",
+    "untitled": "Untitled product",
+    "supplier": "Supplier"
   },
   "teamsPage": {
     "loading": "Loading...",

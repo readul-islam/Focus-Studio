@@ -6,11 +6,17 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      // Save tokens
       localStorage.setItem("access", data.access);
       localStorage.setItem("refresh", data.refresh);
       localStorage.setItem("user", JSON.stringify(data.client));
-      localStorage.setItem("project", JSON.stringify(data.projects));
+      localStorage.setItem("projects", JSON.stringify(data.projects ?? []));
+      localStorage.removeItem("project");
+      const firstProjectId = data.projects?.[0]?.project_id;
+      if (firstProjectId != null) {
+        localStorage.setItem("selectedProjectId", String(firstProjectId));
+      } else {
+        localStorage.removeItem("selectedProjectId");
+      }
     },
   });
 };

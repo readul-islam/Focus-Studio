@@ -1174,3 +1174,91 @@ def client_access(request):
         }, status=status.HTTP_200_OK)
     except Exception as e:
          return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated, ProjectsViewPermission])
+def client_messages(request):
+    """Studio ↔ client two-way messaging for a project."""
+    from client_portal.models import ClientProject, ClientProjectMessage
+    from client_portal.serializers import ClientProjectMessageSerializer
+    from crm.models import Client
+
+    project_id = request.query_params.get('project_id') or request.data.get('project_id')
+    client_id = request.query_params.get('client_id') or request.data.get('client_id')
+    if not project_id:
+        return Response({'error': 'project_id is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        project = Project.objects.get(id=project_id, studio=request.user.studio)
+    except Project.DoesNotExist:
+        return Response({'error': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        if not client_id:
+            return Response({'error': 'client_id is required'}, status=status.HTTP_400_BAD_REQUEST)
+        messages = ClientProjectMessage.objects.filter(
+            project=project, client_id=client_id
+        ).order_by('created_at')
+        ClientProjectMessage.objects.filter(
+            project=project, client_id=client_id, sender_type='client', is_read=False
+        ).update(is_read=True)
+        return Response(ClientProjectMessageSerializer(messages, many=True).data)
+
+    content = (request.data.get('content') or '').strip()
+    sender_type = request.data.get('sender_type', 'studio')
+    if not client_id or not content:
+        return Response({'error': 'client_id and content are required'}, status=status.HTTP_400_BAD_REQUEST)
+    if sender_type != 'studio':
+        return Response({'error': 'Studio users must send with sender_type=studio'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        client = Client.objects.get(id=client_id, studio=request.user.studio, contact_type='CL')
+    except Client.DoesNotExist:
+        return Response({'error': 'Client not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    if not ClientProject.objects.filter(client=client, project=project).exists():
+        return Response({'error': 'Client does not have portal access to this project'}, status=status.HTTP_400_BAD_REQUEST)
+
+    message = ClientProjectMessage.objects.create(
+        project=project,
+        client=client,
+        studio=request.user.studio,
+        content=content,
+        sender_type='studio',
+    )
+    return Response(ClientProjectMessageSerializer(message).data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, ProjectsViewPermission])
+def export_procurement_schedule(request):
+    """Export FF&E schedule with product specifications (CSV or printable HTML)."""
+    from django.http import HttpResponse
+    from .export_utils import procurement_export_rows, render_procurement_csv, render_procurement_spec_html
+
+    project_id = request.query_params.get('project_id')
+    export_format = (request.query_params.get('format') or 'csv').lower()
+    if not project_id:
+        return Response({'error': 'project_id is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        project = Project.objects.get(id=project_id, studio=request.user.studio)
+    except Project.DoesNotExist:
+        return Response({'error': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    procurements = (
+        Procurement.objects.filter(project=project)
+        .select_related('product', 'product__supplier', 'catalog_product', 'catalog_product__supplier', 'room')
+        .order_by('room__name', 'id')
+    )
+    rows = procurement_export_rows(procurements)
+
+    if export_format == 'html':
+        html = render_procurement_spec_html(project_name=project.project_name or f'Project {project.id}', rows=rows)
+        return HttpResponse(html, content_type='text/html')
+
+    csv_content = render_procurement_csv(rows)
+    response = HttpResponse(csv_content, content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="ffe-schedule-{project.id}.csv"'
+    return response

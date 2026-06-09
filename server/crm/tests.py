@@ -221,6 +221,36 @@ class ProposalTest(APITestCase):
         response = self.client.post("/crm/proposals/", self._proposal_data(), format="json")
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
+    @patch('crm.views.send_proposal_email')
+    def test_send_proposal(self, mock_send_email):
+        proposal = Proposal.objects.create(
+            title='Send Me',
+            studio=self.studio,
+            client=self.contact,
+            created_by=self.user,
+            status='DFT',
+            currency='GBP',
+        )
+        response = self.client.post(f'/crm/proposals/{proposal.id}/send/', {}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        mock_send_email.assert_called_once()
+        proposal.refresh_from_db()
+        self.assertEqual(proposal.status, 'SNT')
+
+    def test_send_proposal_without_client_email(self):
+        contact = create_client(self.studio, self.user, name='NoEmail', company='NoEmail Co')
+        contact.email = ''
+        contact.save(update_fields=['email'])
+        proposal = Proposal.objects.create(
+            title='No Email Proposal',
+            studio=self.studio,
+            client=contact,
+            created_by=self.user,
+            status='DFT',
+        )
+        response = self.client.post(f'/crm/proposals/{proposal.id}/send/', {}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
 
 # ---------------------------------------------------------------------------
 # Client Model - Password Logic

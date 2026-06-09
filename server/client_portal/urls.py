@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from client_portal.authentication import ClientJWTAuthentication
 from help_center.portal_views import make_portal_support_views
+from .messaging import client_project_messages, client_project_messages_unread
 from .views import (
     ClientDocumentViewSet,
     ClientProcurementViewSet,
@@ -39,4 +40,6 @@ urlpatterns = [
     path('support/conversation/', client_support_conversation, name='client-support-conversation'),
     path('support/chat/', client_support_chat, name='client-support-chat'),
     path('support/conversation/clear/', client_support_clear, name='client-support-conversation-clear'),
+    path('project-messages/', client_project_messages, name='client-project-messages'),
+    path('project-messages/unread-count/', client_project_messages_unread, name='client-project-messages-unread'),
 ]

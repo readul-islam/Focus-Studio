@@ -8,6 +8,7 @@ export type IntegrationStatusPayload = {
   calendar_connected?: boolean;
   notion_connected?: boolean;
   xero_connected?: boolean;
+  quickbooks_connected?: boolean;
   zapier_configured?: boolean;
 };
 

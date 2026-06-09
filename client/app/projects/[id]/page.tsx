@@ -18,7 +18,9 @@ import {
   Upload,
   X,
   Presentation,
+  MessageSquare,
 } from 'lucide-react';
+import { ClientMessageDialog } from '@/components/client/ClientMessageDialog';
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import projectCover from '/public/project_cover.jpg';
@@ -72,6 +74,7 @@ const formatTodayDate = () => {
 function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
   const t = useTranslations('projectOverviewPage');
   const [uploadModal, setUploadModal] = useState(false);
+  const [clientMessageOpen, setClientMessageOpen] = useState(false);
   const [file, setFile] = useState<File[]>([]);
   const [error, setError] = useState('');
   const [phaseProgressMap, setPhaseProgressMap] = useState<Record<number, number>>({});
@@ -256,9 +259,21 @@ function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
                   </div>
                   <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4 text-sm">
                     {projectData?.client && (
-                      <div className="flex items-center gap-1">
-                        <Users className="w-4 h-4" />
-                        {projectData?.client?.name}
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1">
+                          <Users className="w-4 h-4" />
+                          {projectData?.client?.name}
+                        </div>
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          size="sm"
+                          className="h-7 bg-white/10 text-white border-white/20 hover:bg-white/20"
+                          onClick={() => setClientMessageOpen(true)}
+                        >
+                          <MessageSquare className="w-3.5 h-3.5 mr-1.5" />
+                          Message
+                        </Button>
                       </div>
                     )}
                     {(projectData?.location || projectData?.city || projectData?.country) && (
@@ -760,6 +775,16 @@ function ProjectOverviewPageContent({ params }: { params: { id: string } }) {
           </div>
         </DialogContent>
       </Dialog>
+
+      {projectData?.client ? (
+        <ClientMessageDialog
+          projectId={params.id}
+          clientId={projectData.client.id}
+          clientName={projectData.client.name}
+          open={clientMessageOpen}
+          onOpenChange={setClientMessageOpen}
+        />
+      ) : null}
     </div>
   );
 }

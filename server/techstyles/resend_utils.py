@@ -152,6 +152,22 @@ def send_purchase_order_email(
     )
 
 
+def send_invoice_reminder_email(
+    to_email: str,
+    studio_name: str,
+    invoice_number: str,
+    html_message: str,
+    plain_message: str,
+) -> dict:
+    return _send(
+        subject=f'Payment reminder: {invoice_number} from {studio_name}',
+        from_email=FROM_EMAIL,
+        to=[to_email],
+        html=html_message,
+        plain=plain_message,
+    )
+
+
 def send_proposal_email(to_email: str, studio_name: str, proposal_title: str, html_message: str, plain_message: str) -> dict:
     return _send(
         subject=f"Proposal: {proposal_title}",

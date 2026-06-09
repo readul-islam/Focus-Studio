@@ -1,6 +1,7 @@
 'use client'
 
 import { AuthProvider } from '@/components/Providers/AuthProvider'
+import { ProjectProvider } from '@/context/ProjectContext'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -24,7 +25,9 @@ export function Providers({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <AuthProvider>
+          <ProjectProvider>
           {children}
+          </ProjectProvider>
           <Toaster
             duration={900}
             toastOptions={{

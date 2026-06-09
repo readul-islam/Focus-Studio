@@ -1,16 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import useFetch from './useFetch';
+'use client';
+
+import { useProjectContext } from '@/context/ProjectContext';
 
 const useUser = () => {
-  // const { data, isLoading, isError, refetch, isPending } = useFetch('user/self/');
-  const data = JSON.parse(localStorage.getItem('user')) || null;
-  const project = JSON.parse(localStorage.getItem('project')) || null;
-  
+  const data = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('user') || 'null') : null;
+  const {
+    project,
+    projects,
+    selectedProjectId,
+    setSelectedProjectId,
+    hydrateProjects,
+    clearProjects,
+    syncFromStorage,
+  } = useProjectContext();
 
   return {
     user: data,
     isLoading: false,
-    project : project ? project[0] : null
+    project,
+    projects,
+    selectedProjectId,
+    setSelectedProjectId,
+    hydrateProjects,
+    clearProjects,
+    syncFromStorage,
   };
 };
 

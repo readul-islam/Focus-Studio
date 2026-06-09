@@ -32,6 +32,7 @@ urlpatterns = [
     path('user/', include('users.urls')),
     path('library/', include('library.urls')),
     path('xero/', include('xero.urls')),
+    path('quickbooks/', include('quickbooks.urls')),
     path('documents/', include('documents.urls')),
     path('gmail/', include('gmail.urls')),
     path('comment/', include('comment.urls')),

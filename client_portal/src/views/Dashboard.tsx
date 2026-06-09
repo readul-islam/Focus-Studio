@@ -21,8 +21,6 @@ export default function Dashboard() {
   const tc = useTranslations("common");
   const pageTitle = usePageTitle();
   
-  console.log('projectData',projectData)
-  
   const {data: dashboardData, isLoading: dashboardLoading} = useFetch(`client_portal/dashboard/?project_id=${projectData?.project_id}`,{
     enabled: !!projectData?.project_id
   })

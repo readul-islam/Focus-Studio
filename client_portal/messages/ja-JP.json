@@ -38,6 +38,14 @@
     "enUS": "英語（米国）",
     "jaJP": "日本語（日本）"
   },
+  "projectSwitcher": {
+    "label": "アクティブなプロジェクト",
+    "placeholder": "プロジェクトを選択"
+  },
+  "messagesPage": {
+    "title": "メッセージ",
+    "subtitle": "プロジェクト、請求書、共有ファイルについて FocusPilot AI に質問できます。"
+  },
   "nav": {
     "dashboard": "ダッシュボード",
     "messages": "メッセージ",

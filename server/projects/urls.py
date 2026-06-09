@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PhaseViewSet, RoomViewSet, ProjectViewSet, ProcurementViewSet, get_studio_projects, get_user_projects, get_project_procurements, get_project_rooms, get_project_phases, seed_project_default_phases, get_default_phases, get_studio_phases, get_project_overview, get_studio_members_phases, get_project_phases_tasks, client_access, get_studio_delivery_dates, get_project_delivery_dates, accept_project_proposal
+from .views import PhaseViewSet, RoomViewSet, ProjectViewSet, ProcurementViewSet, get_studio_projects, get_user_projects, get_project_procurements, get_project_rooms, get_project_phases, seed_project_default_phases, get_default_phases, get_studio_phases, get_project_overview, get_studio_members_phases, get_project_phases_tasks, client_access, get_studio_delivery_dates, get_project_delivery_dates, accept_project_proposal, client_messages, export_procurement_schedule
 router = DefaultRouter()
 router.register(r'phases', PhaseViewSet)
 router.register(r'rooms', RoomViewSet)
@@ -8,6 +8,8 @@ router.register(r'projects', ProjectViewSet)
 router.register(r'procurements', ProcurementViewSet)
 
 urlpatterns = [
+    path('export-ffe-schedule/', export_procurement_schedule, name='export-ffe-schedule'),
+    path('client-messages/', client_messages, name='client-messages'),
     path('', include(router.urls)),
     path('user-projects/', get_user_projects, name='user-projects'),
     path('studio-projects/', get_studio_projects, name='studio-projects'),

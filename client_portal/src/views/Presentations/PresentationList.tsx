@@ -26,8 +26,8 @@ export default function PresentationList() {
   const t = useTranslations('presentations');
   const pageTitle = usePageTitle();
   const navigate = useNavigate();
-  const { user } = useUser();
-  const projectId = user?.project?.id;
+  const { project } = useUser();
+  const projectId = project?.project_id;
   const [search, setSearch] = useState('');
 
   const { data, isLoading } = useFetch(
