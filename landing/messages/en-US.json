@@ -533,10 +533,10 @@
   },
   "pricingPage": {
     "meta": {
-      "title": "Focuspilot Pricing | Interior Design Software from £49/user | Free Trial",
-      "description": "Simple, transparent pricing for interior design studios. Free 3-month beta or £49/user/month Professional. All AI features included. No setup fees. Start free today.",
-      "ogDescription": "Simple, transparent pricing for interior design studios. Free 3-month beta or £49/user/month Professional. All AI features included. No setup fees.",
-      "twitterDescription": "Simple, transparent pricing for interior design studios. Free 3-month beta or £49/user/month Professional. All AI features included."
+      "title": "Focuspilot Pricing | Interior Design Software from £89/month | Free Beta",
+      "description": "Simple, transparent studio pricing for interior design firms. Free beta, Solo from £89/month (1–2 users), Professional £399/month (up to 20). Enterprise from £999/month.",
+      "ogDescription": "Simple, transparent studio pricing for interior design firms. Free beta, Solo from £89/month, Professional £399/month. Enterprise from £999/month.",
+      "twitterDescription": "Interior design studio pricing: Free beta, Solo £89/mo, Professional £399/mo, Enterprise £999/mo."
     },
     "hero": {
       "badge": "Beta program now open",
@@ -544,6 +544,22 @@
       "subtitle": "Join early and get unlimited access for free during beta. Scale with confidence as your studio grows."
     },
     "plans": {
+      "solo": {
+        "name": "Solo",
+        "badge": "1–2 users",
+        "price": "£89",
+        "priceUnit": "/month",
+        "description": "Independent designers & duos",
+        "features": {
+          "users": "Up to 2 team members",
+          "projects": "5 active projects",
+          "portal": "Client portal & basic invoicing",
+          "crm": "Core CRM & project management",
+          "storage": "Document storage (5GB)",
+          "support": "Email support"
+        },
+        "cta": "Start free trial"
+      },
       "beta": {
         "name": "Beta Access",
         "badge": "Limited spots",
@@ -562,24 +578,25 @@
       "professional": {
         "name": "Professional",
         "badge": "Most popular",
-        "price": "£49",
-        "priceUnit": "/user/month",
-        "description": "First 5 users • £39/user for additional users",
+        "price": "£399",
+        "priceUnit": "/month",
+        "description": "Up to 20 team members • unlimited projects",
         "features": {
-          "everything": "Everything in Beta, forever",
+          "everything": "Everything in Beta, plus production billing",
           "unlimited": "Unlimited projects & clients",
-          "automation": "Advanced AI automation",
-          "branding": "Custom branding & white-label",
+          "automation": "Advanced invoicing + Xero sync",
+          "branding": "Contractor portal & advanced reports",
           "support": "Priority support & onboarding",
-          "sla": "99.9% uptime SLA"
+          "sla": "14-day free trial on paid plans"
         },
         "cta": "Start free trial"
       },
       "enterprise": {
         "name": "Enterprise",
-        "badge": "20+ users",
-        "price": "Custom",
-        "description": "Tailored pricing for large studios & networks",
+        "badge": "Large studios",
+        "price": "£999",
+        "priceUnit": "/month",
+        "description": "Unlimited team • API, SSO & dedicated support",
         "features": {
           "everything": "Everything in Professional",
           "unlimited": "Unlimited users & projects",
@@ -601,8 +618,8 @@
           "answer": "Beta users will be offered special pricing and the option to lock in their rate before we officially launch. You'll have plenty of notice before any billing begins."
         },
         "userPricing": {
-          "question": "How does the user pricing work?",
-          "answer": "Your first 5 users are £49 per user per month. Users 6+ are £39 per user per month. You only pay for active users, and you can add or remove users at any time."
+          "question": "How does studio pricing work?",
+          "answer": "Focuspilot uses flat monthly studio tiers — not per-seat billing. Solo is £89/month for 1–2 users. Professional is £399/month for up to 20. Enterprise is £999/month for unlimited users. Starter (£149/month, 3–5 users) launches after beta."
         },
         "tryBeforeBuy": {
           "question": "Can I try before I buy?",
@@ -802,7 +819,7 @@
         },
         "studioSize": {
           "question": "Is Focuspilot better for small studios or larger teams?",
-          "answer": "Focuspilot scales from solo designers to 50+ person studios. Our pricing model (£49/user for first 5, then £39/user) is designed for growing teams. Programa's per-project pricing can become expensive for studios managing many concurrent projects."
+          "answer": "Focuspilot scales from solo designers to 50+ person studios. Our flat studio tiers (£399/month Professional, £999/month Enterprise) are designed for growing teams without per-seat surprises. Programa's per-user pricing can become expensive as headcount grows."
         },
         "migration": {
           "question": "Can I migrate from Programa to Focuspilot?",

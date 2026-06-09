@@ -64,6 +64,7 @@ def _tier_from_price_id(price_id: str | None) -> str | None:
     if not price_id:
         return None
     mapping = {
+        getattr(settings, 'STRIPE_PRICE_SOLO', ''): 'solo',
         getattr(settings, 'STRIPE_PRICE_STARTER', ''): 'starter',
         getattr(settings, 'STRIPE_PRICE_PROFESSIONAL', ''): 'professional',
         getattr(settings, 'STRIPE_PRICE_ENTERPRISE', ''): 'enterprise',
@@ -215,9 +216,11 @@ def handle_webhook_event(payload: bytes, sig_header: str) -> None:
     data = event['data']['object']
 
     if event_type == 'checkout.session.completed':
+        from finance.payments import handle_invoice_checkout_completed
         from supplier_portal.payments import handle_supplier_checkout_completed
 
         handle_supplier_checkout_completed(data)
+        handle_invoice_checkout_completed(data)
         _on_checkout_completed(data)
     elif event_type in ('customer.subscription.created', 'customer.subscription.updated'):
         _on_subscription_updated(data)
@@ -226,9 +229,11 @@ def handle_webhook_event(payload: bytes, sig_header: str) -> None:
     elif event_type == 'invoice.payment_failed':
         _on_payment_failed(data)
     elif event_type == 'payment_intent.succeeded':
+        from finance.payments import handle_invoice_payment_intent_succeeded
         from supplier_portal.payments import handle_supplier_payment_intent_succeeded
 
         handle_supplier_payment_intent_succeeded(data)
+        handle_invoice_payment_intent_succeeded(data)
     elif event_type == 'account.updated':
         from finance.stripe_connect import handle_connect_account_updated
         from supplier_portal.stripe_connect import handle_connect_account_updated as handle_supplier_connect_updated

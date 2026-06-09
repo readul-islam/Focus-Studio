@@ -1,8 +1,8 @@
 import { spawn, spawnSync } from 'node:child_process';
 import { createConnection } from 'node:net';
+import { platform } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { platform } from 'node:os';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const mobileDir = join(root, 'mobile');
@@ -128,12 +128,14 @@ async function main() {
   console.log(`[ios] Starting Metro from mobile/ and opening ${SIMULATOR_NAME}…`);
   console.log('[ios] Tip: If typing does not appear, press Cmd+K in Simulator to toggle the keyboard.\n');
 
-  const child = spawn('npx', ['expo', 'start', '--ios', '--go', '--clear'], {
+  const child = spawn('npx', ['expo', 'start', '--ios', '--go', '--clear', '--localhost'], {
     cwd: mobileDir,
     stdio: 'inherit',
     env: {
       ...process.env,
       EXPO_IOS_SIMULATOR_DEVICE_NAME: SIMULATOR_NAME,
+      // Simulator shares the Mac network stack — LAN IP URLs time out in simctl openurl.
+      REACT_NATIVE_PACKAGER_HOSTNAME: 'localhost',
     },
   });
 

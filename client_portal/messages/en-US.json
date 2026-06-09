@@ -114,7 +114,15 @@
     "addressLine3": "Tunbridge Wells",
     "addressPostcode": "TN3 0JU",
     "vatNumber": "VAT NO: GB423127335",
-    "companyEmail": "hello@souqdesign.co.uk"
+    "companyEmail": "hello@souqdesign.co.uk",
+    "payNow": "Pay now",
+    "paying": "Redirecting to payment…",
+    "paySecurely": "Pay securely with card or bank transfer via Stripe.",
+    "paymentSuccess": "Payment received — thank you.",
+    "paymentCancelled": "Payment was cancelled. You can try again when ready.",
+    "paymentFailed": "Could not start payment. Please contact your studio.",
+    "alreadyPaid": "This invoice has been paid.",
+    "amountDueLabel": "Amount due"
   },
   "invoiceStatus": {
     "all": "All",

@@ -8,7 +8,7 @@ import { ArrowRight, Building2, Check, Headphones, Layers, Sparkles, Wrench } fr
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-const TIER_IDS = ['starter', 'professional', 'enterprise'] as const;
+const TIER_IDS = ['solo', 'professional', 'enterprise'] as const;
 const STREAM_KEYS = ['saas', 'premium', 'services', 'partner'] as const;
 const STREAM_ICONS = { saas: Layers, premium: Sparkles, services: Wrench, partner: Building2 };
 const STREAM_TINTS = {
@@ -17,7 +17,7 @@ const STREAM_TINTS = {
   services: 'bg-sage-500/15 text-sage-800',
   partner: 'bg-primary/10 text-primary',
 };
-const TIER_PRICES = { starter: '£149', professional: '£399', enterprise: '£999' };
+const TIER_PRICES = { solo: '£89', professional: '£399', enterprise: '£999' };
 
 export function PricingContent() {
   const t = useTranslations('pricingPage');
@@ -51,7 +51,7 @@ export function PricingContent() {
           <p className="mt-4 text-base leading-relaxed text-gray-600 sm:text-lg">{t('heroSubtitle')}</p>
         </div>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-3 lg:items-stretch">
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:items-stretch">
           {TIER_IDS.map((id) => {
             const emphasis = id === 'professional';
             const features = tf.raw(id) as string[];

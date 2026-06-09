@@ -1,9 +1,13 @@
-import { useParams, useNavigate } from '@/lib/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useParams, useNavigate, useSearchParams } from '@/lib/navigation';
 import useFetch from '@/hooks/useFetch';
+import { postData } from '@/lib/Api';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { Loader, X, ArrowLeft, FileText } from 'lucide-react';
+import { Loader, X, ArrowLeft, FileText, CreditCard } from 'lucide-react';
+import { toast } from 'sonner';
 const logo = '/images/studio.jpeg';
 const placeHolder = '/images/product-placeholder-wp.jpg';
 import { Badge } from '@/components/ui/badge';
@@ -23,13 +27,28 @@ const StatusBadge = ({ status, label, className }: { status: string; label: stri
 const Invoice = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const t = useTranslations('invoiceDetail');
   const tc = useTranslations('common');
   const statusLabel = useInvoiceStatusLabel();
   const dateLocale = useDateLocale();
+  const [isPaying, setIsPaying] = useState(false);
 
-  const { data: invoiceData, isLoading: invoiceLoading } = useFetch(`client_portal/invoices/${id}/`);
+  const { data: invoiceData, isLoading: invoiceLoading, refetch } = useFetch(`client_portal/invoices/${id}/`);
   const { currency: currencyDetails } = useCurrency(invoiceData?.currency);
+
+  useEffect(() => {
+    const paid = searchParams?.get('paid');
+    if (paid === '1') {
+      toast.success(t('paymentSuccess'));
+      refetch();
+      router.replace(`/finance/${id}`);
+    } else if (paid === '0') {
+      toast.message(t('paymentCancelled'));
+      router.replace(`/finance/${id}`);
+    }
+  }, [searchParams, t, refetch, router, id]);
 
   const handleBack = () => {
     navigate('/finance');
@@ -73,6 +92,32 @@ const Invoice = () => {
 
   const currencySymbol = currencyDetails?.symbol || invoiceData?.currency || '£';
   const totalAmount = parseFloat(invoiceData?.total_amount || '0');
+  const amountDue = invoiceData?.status === 'PD' ? 0 : parseFloat(String(invoiceData?.amount_due ?? totalAmount));
+  const canPay = Boolean(invoiceData?.can_pay);
+
+  const handlePay = async () => {
+    if (!id || !canPay) return;
+    setIsPaying(true);
+    try {
+      const portalBase = typeof window !== 'undefined' ? window.location.origin : '';
+      const response = await postData({
+        url: `client_portal/invoices/${id}/pay/`,
+        data: {
+          success_url: `${portalBase}/finance/${id}?paid=1`,
+          cancel_url: `${portalBase}/finance/${id}?paid=0`,
+        },
+      });
+      if (response?.url) {
+        window.location.href = response.url;
+        return;
+      }
+      toast.error(t('paymentFailed'));
+    } catch {
+      toast.error(t('paymentFailed'));
+    } finally {
+      setIsPaying(false);
+    }
+  };
 
   // Calculate subtotal from line items if available, otherwise use total
   const subTotalNum = invoiceData?.line_items?.reduce((total: number, item: any) => {
@@ -323,6 +368,22 @@ const Invoice = () => {
                   />
                 </div>
               </div>
+              {invoiceData?.status === 'PD' && (
+                <p className="text-sm text-emerald-700 font-medium">{t('alreadyPaid')}</p>
+              )}
+              {canPay && (
+                <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-3">
+                  <p className="text-sm text-gray-600">{t('paySecurely')}</p>
+                  <Button
+                    onClick={handlePay}
+                    disabled={isPaying}
+                    className="w-full sm:w-auto gap-2 bg-gray-900 hover:bg-gray-800"
+                  >
+                    <CreditCard className="w-4 h-4" />
+                    {isPaying ? t('paying') : `${t('payNow')} — ${currencySymbol}${amountDue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -384,8 +445,11 @@ const Invoice = () => {
                 <p className="text-right">{invoiceData?.invoice_number}</p>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <p className="text-gray-500">{t('amountDue')}</p>
-                <p className="text-right">{currencySymbol}0.00</p>
+                <p className="text-gray-500">{t('amountDueLabel')}</p>
+                <p className="text-right">
+                  {currencySymbol}
+                  {amountDue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </p>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <p className="text-gray-500">{t('dueDateLabel')}</p>

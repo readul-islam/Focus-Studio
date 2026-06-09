@@ -44,6 +44,7 @@ export function PricingPageContent() {
   )
 
   const betaFeatures = ["users", "ai", "projects", "portal", "procurement", "support"] as const
+  const soloFeatures = ["users", "projects", "portal", "crm", "storage", "support"] as const
   const proFeatures = ["everything", "unlimited", "automation", "branding", "support", "sla"] as const
   const enterpriseFeatures = ["everything", "unlimited", "security", "api", "manager", "billing"] as const
 
@@ -77,7 +78,7 @@ export function PricingPageContent() {
 
         <section className="py-12 sm:py-20 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+            <div className="grid gap-6 sm:gap-8 md:grid-cols-2 xl:grid-cols-4 max-w-7xl mx-auto">
               {/* Beta Plan */}
               <div className="relative rounded-2xl border-2 border-stone-200 bg-white p-6 sm:p-8 shadow-sm hover:shadow-lg transition-shadow">
                 <div className="mb-6">
@@ -110,6 +111,39 @@ export function PricingPageContent() {
                   className="block w-full rounded-lg bg-stone-900 px-4 py-3 text-center text-sm sm:text-base font-medium text-white hover:bg-stone-800 transition-colors"
                 >
                   {t("plans.beta.cta")}
+                </a>
+              </div>
+
+              {/* Solo Plan */}
+              <div className="relative rounded-2xl border-2 border-stone-200 bg-white p-6 sm:p-8 shadow-sm hover:shadow-lg transition-shadow">
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl sm:text-2xl font-medium text-stone-900">{t("plans.solo.name")}</h2>
+                    <span className="rounded-full border border-stone-200 bg-stone-50 px-3 py-1 text-xs font-medium text-stone-600">
+                      {t("plans.solo.badge")}
+                    </span>
+                  </div>
+                  <div className="flex items-baseline gap-2 mb-2">
+                    <span className="text-4xl sm:text-5xl font-bold text-stone-900">{t("plans.solo.price")}</span>
+                    <span className="text-stone-500 text-base sm:text-lg">{t("plans.solo.priceUnit")}</span>
+                  </div>
+                  <p className="text-sm sm:text-base text-stone-600">{t("plans.solo.description")}</p>
+                </div>
+
+                <ul className="space-y-3 sm:space-y-4 mb-8">
+                  {soloFeatures.map((key) => (
+                    <li key={key} className="flex items-start gap-3">
+                      <CheckIcon className="h-5 w-5 flex-shrink-0 mt-0.5" style={{ color: "#8FA58F" }} />
+                      <span className="text-sm sm:text-base text-stone-700">{t(`plans.solo.features.${key}`)}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <a
+                  href="/signup"
+                  className="block w-full rounded-lg border-2 border-stone-900 bg-white px-4 py-3 text-center text-sm sm:text-base font-medium text-stone-900 hover:bg-stone-50 transition-colors"
+                >
+                  {t("plans.solo.cta")}
                 </a>
               </div>
 
@@ -148,7 +182,7 @@ export function PricingPageContent() {
               </div>
 
               {/* Enterprise Plan */}
-              <div className="relative rounded-2xl border-2 border-stone-200 bg-white p-6 sm:p-8 shadow-sm hover:shadow-lg transition-shadow md:col-span-2 lg:col-span-1">
+              <div className="relative rounded-2xl border-2 border-stone-200 bg-white p-6 sm:p-8 shadow-sm hover:shadow-lg transition-shadow">
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-xl sm:text-2xl font-medium text-stone-900">{t("plans.enterprise.name")}</h2>

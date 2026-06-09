@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 
 class CheckoutSerializer(serializers.Serializer):
-    plan_tier = serializers.ChoiceField(choices=['starter', 'beta', 'professional', 'enterprise'])
+    plan_tier = serializers.ChoiceField(choices=['solo', 'starter', 'beta', 'professional', 'enterprise'])
 
 
 class ActivatePlanSerializer(serializers.Serializer):

@@ -156,8 +156,49 @@ function NewProposalPageContent() {
   }
 
   const handleSend = async () => {
-    // API not ready yet - show coming soon message
-    toast.success(t('toasts.sendComingSoon'))
+    if (!canSend()) return
+
+    if (!data.client) {
+      toast.error(t('toasts.clientRequired'))
+      return
+    }
+
+    setIsSaving(true)
+    try {
+      let proposalId = savedId || data.id
+      if (!proposalId) {
+        const payload = buildApiPayload(data, 'DFT')
+        const saved = await postData({ url: '/crm/proposals/', data: payload })
+        proposalId = saved?.id ? String(saved.id) : null
+        if (proposalId) {
+          setSavedId(proposalId)
+          setData((prev) => ({
+            ...prev,
+            id: proposalId!,
+            reference_number: saved.reference_number,
+            access_token: saved.access_token,
+          }))
+        }
+      }
+
+      if (!proposalId) {
+        toast.error(t('toasts.saveFailed'))
+        return
+      }
+
+      await postData({ url: `/crm/proposals/${proposalId}/send/` })
+      toast.success(t('toasts.sentSuccess'))
+      queryClient.refetchQueries({ queryKey: ['/crm/proposals/'] })
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { error?: string; detail?: string } } }
+      const msg =
+        err?.response?.data?.error ||
+        err?.response?.data?.detail ||
+        t('toasts.sendFailed')
+      toast.error(msg)
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   const canSend = () => !!(data.title && data.lineItems?.length)

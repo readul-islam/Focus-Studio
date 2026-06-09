@@ -829,6 +829,7 @@ Test by toggling matrix at `/settings/studio/roles` and verifying sidebar + dire
 | Area | Status | Action |
 |------|--------|--------|
 | Contractor finance/invoices | UI exists, API missing | Skip §5.7 |
+| Client portal invoice Stripe pay | Requires studio Connect + `STRIPE_*` env | Test when configured |
 | Client portal Messages | Nav stub | Skip |
 | Client multi-project picker | Not built | Test single project only |
 | Studio audit logs | Seeded UI, no live API | Visual check only |

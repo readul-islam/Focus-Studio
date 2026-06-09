@@ -1,4 +1,4 @@
-export type PlanTier = 'beta' | 'starter' | 'professional' | 'enterprise';
+export type PlanTier = 'beta' | 'solo' | 'starter' | 'professional' | 'enterprise';
 
 export type SubscriptionStatus =
   | 'incomplete'

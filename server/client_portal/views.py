@@ -1,6 +1,6 @@
 from rest_framework import viewsets, status
 from django.http import HttpResponse
-from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.decorators import action, api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.db.models import Sum
@@ -16,6 +16,7 @@ from presentations.serializers import ClientPresentationSerializer, PublicPresen
 from .serializers import ClientProcurementSerializer, ClientInvoiceSerializer, ClientLoginSerializer, ClientProjectSerializer
 from crm.models import Client
 from .models import ClientProject
+from .authentication import ClientJWTAuthentication
 from rest_framework.views import APIView
 
 class ClientDocumentViewSet(viewsets.ReadOnlyModelViewSet):
@@ -119,7 +120,9 @@ class ClientInvoiceViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        return Invoice.objects.all()
+        return Invoice.objects.select_related('studio', 'project', 'client').prefetch_related(
+            'line_items', 'purchase_orders'
+        )
 
     def list(self, request, *args, **kwargs):
         project_id = request.query_params.get('project_id')
@@ -133,6 +136,55 @@ class ClientInvoiceViewSet(viewsets.ReadOnlyModelViewSet):
         
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+
+@api_view(['POST'])
+@authentication_classes([ClientJWTAuthentication])
+@permission_classes([IsAuthenticated])
+def pay_client_invoice(request, invoice_id):
+    """Create a Stripe Checkout session for a client to pay an invoice in the portal."""
+    from finance.models import Invoice
+    from finance.payments import InvoicePaymentError, create_client_invoice_checkout, invoice_payable
+
+    client = request.user
+    if not isinstance(client, Client) or client.contact_type != 'CL':
+        return Response({'detail': 'Client authentication required.'}, status=status.HTTP_403_FORBIDDEN)
+
+    try:
+        invoice = Invoice.objects.select_related('studio', 'project', 'client').get(id=invoice_id)
+    except Invoice.DoesNotExist:
+        return Response({'detail': 'Invoice not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+    if invoice.project_id and not ClientProject.objects.filter(client=client, project_id=invoice.project_id).exists():
+        return Response({'detail': 'You do not have access to this invoice.'}, status=status.HTTP_403_FORBIDDEN)
+
+    if not invoice_payable(invoice):
+        return Response(
+            {'detail': 'This invoice cannot be paid online.', 'code': 'not_payable'},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    portal_base = settings.CLIENT_PORTAL_URL.rstrip('/')
+    success_url = request.data.get('success_url') or f'{portal_base}/finance/{invoice_id}?paid=1'
+    cancel_url = request.data.get('cancel_url') or f'{portal_base}/finance/{invoice_id}?paid=0'
+
+    try:
+        checkout_url = create_client_invoice_checkout(
+            invoice=invoice,
+            success_url=success_url,
+            cancel_url=cancel_url,
+            client_email=client.email,
+        )
+    except InvoicePaymentError as exc:
+        status_code = (
+            status.HTTP_503_SERVICE_UNAVAILABLE
+            if exc.code == 'not_configured'
+            else status.HTTP_400_BAD_REQUEST
+        )
+        return Response({'detail': exc.message, 'code': exc.code}, status=status_code)
+
+    return Response({'url': checkout_url})
+
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -188,6 +240,8 @@ class ClientLoginView(APIView):
         projects = serializer.validated_data['projects']
         
         return Response({
+            'access': serializer.validated_data['access'],
+            'refresh': serializer.validated_data['refresh'],
             'client': {
                 'id': client.id,
                 'name': client.name,

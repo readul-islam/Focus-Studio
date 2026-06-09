@@ -31,6 +31,8 @@ export function useParams<T extends Record<string, string | undefined> = Record<
   return useNextParams() as T
 }
 
+export { useSearchParams }
+
 export function useLocation() {
   const pathname = usePathname() ?? '/'
   const searchParams = useSearchParams()

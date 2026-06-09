@@ -857,7 +857,9 @@
     "toasts": {
       "savedDraft": "Proposal saved as draft",
       "saveFailed": "Failed to save",
-      "sendComingSoon": "Send proposal feature coming soon!"
+      "sentSuccess": "Proposal sent successfully!",
+      "sendFailed": "Failed to send proposal",
+      "clientRequired": "Please select a client before sending"
     }
   },
   "verify2faPage": {
@@ -2723,9 +2725,13 @@
     "revenueSubtitle": "Subscription-first, with optional services as you scale.",
     "ctaButton": "Start free trial",
     "tiers": {
+      "solo": {
+        "name": "Solo",
+        "tagline": "For independent designers & duos"
+      },
       "starter": {
         "name": "Starter",
-        "tagline": "For solo practitioners & small teams"
+        "tagline": "For small teams (3–5 people)"
       },
       "professional": {
         "name": "Professional",
@@ -2760,6 +2766,14 @@
       }
     },
     "tierFeatures": {
+      "solo": [
+        "Up to 2 team members",
+        "5 active projects",
+        "Client portal & basic invoicing",
+        "Core CRM & project management",
+        "Document storage (5GB)",
+        "Email support"
+      ],
       "starter": [
         "Up to 5 team members",
         "10 active projects",

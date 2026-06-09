@@ -482,7 +482,23 @@ Design and architecture studios face significant operational challenges:
 
 **SaaS Subscription Model** with tiered pricing:
 
-#### Tier 1: Starter (£99–149/month)
+#### Tier 1: Beta (Free during beta)
+- Unlimited users during beta
+- All AI features included
+- Project management, CRM, client portal
+- Priority support & feedback
+- **Ideal For:** Early adopters, design partner studios
+
+#### Tier 2: Solo (£89/month)
+- Up to 2 team members
+- 5 active projects
+- Client portal & basic invoicing
+- Core CRM & project management
+- Document storage (5GB)
+- Email support
+- **Ideal For:** Independent designers, 2-person practices
+
+#### Tier 3: Starter (£149/month) — pre-launch
 - Up to 5 team members
 - 10 active projects
 - Basic invoicing
@@ -491,7 +507,7 @@ Design and architecture studios face significant operational challenges:
 - Core CRM features
 - **Ideal For:** Solo practitioners, small teams
 
-#### Tier 2: Professional (£299–399/month)
+#### Tier 4: Professional (£399/month)
 - Up to 20 team members
 - Unlimited projects
 - Advanced invoicing + Xero sync
@@ -502,7 +518,7 @@ Design and architecture studios face significant operational challenges:
 - Priority email + chat support
 - **Ideal For:** Mid-size studios (10–30 people)
 
-#### Tier 3: Enterprise (Custom pricing)
+#### Tier 5: Enterprise (£999/month or contact sales)
 - Unlimited team members
 - Unlimited projects
 - Full feature set
@@ -512,6 +528,8 @@ Design and architecture studios face significant operational challenges:
 - Custom integrations
 - SSO / Advanced security
 - **Ideal For:** Large studios, networks
+
+> **Source of truth:** Plan definitions and Stripe price IDs live in `server/billing/plans.py`.
 
 ### Revenue Streams
 
@@ -930,8 +948,8 @@ Proprietary — All rights reserved. Focuspilot © 2026.
 - 80%+ feature adoption rate
 
 ### Revenue
-- £150–300k ARR (Year 1)
-- £600–900k ARR (Year 2)
+- £150–300k  (Year 1)
+- £600–900k (Year 2)
 - 90%+ gross margins
 
 ### Customer Satisfaction

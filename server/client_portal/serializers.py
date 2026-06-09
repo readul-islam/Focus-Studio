@@ -179,6 +179,10 @@ class ClientInvoiceSerializer(serializers.ModelSerializer):
     invoice_number = serializers.SerializerMethodField()
     line_items = ClientInvoiceLineItemSerializer(many=True, read_only=True)
     trade_invoices = serializers.SerializerMethodField()
+    client = serializers.SerializerMethodField()
+    project = serializers.SerializerMethodField()
+    can_pay = serializers.SerializerMethodField()
+    amount_due = serializers.SerializerMethodField()
 
     class Meta:
         model = Invoice
@@ -195,10 +199,44 @@ class ClientInvoiceSerializer(serializers.ModelSerializer):
             'ffne',
             'ffne_desc',
             'trade_invoices',
+            'client',
+            'project',
+            'can_pay',
+            'amount_due',
+            'paid_at',
         ]
 
     def get_invoice_number(self, obj):
         return f"INV-{obj.id:03d}"
+
+    def get_client(self, obj):
+        if not obj.client:
+            return None
+        return {
+            'id': obj.client.id,
+            'name': obj.client.name,
+            'surname': obj.client.surname,
+            'company_name': obj.client.company_name,
+            'email': obj.client.email,
+        }
+
+    def get_project(self, obj):
+        if not obj.project:
+            return None
+        return {
+            'id': obj.project.id,
+            'project_name': obj.project.project_name,
+        }
+
+    def get_can_pay(self, obj):
+        from finance.payments import invoice_payable
+
+        return invoice_payable(obj)
+
+    def get_amount_due(self, obj):
+        if obj.status == 'PD':
+            return 0
+        return float(obj.total_amount or 0)
 
     def get_trade_invoices(self, obj):
         request = self.context.get('request')

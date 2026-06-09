@@ -1,11 +1,11 @@
-"""Plan catalogue — aligned with README / marketing pricing."""
+"""Plan catalogue — source of truth for Focuspilot SaaS pricing (README + landing align here)."""
 
 from django.conf import settings
 
-PLAN_TIERS = ('starter', 'beta', 'professional', 'enterprise')
+PLAN_TIERS = ('solo', 'starter', 'beta', 'professional', 'enterprise')
 
 # Plans shown in the app (Starter hidden until launch).
-PUBLIC_PLAN_TIERS = ('beta', 'professional', 'enterprise')
+PUBLIC_PLAN_TIERS = ('beta', 'solo', 'professional', 'enterprise')
 
 PLAN_DEFINITIONS = {
     'beta': {
@@ -31,10 +31,33 @@ PLAN_DEFINITIONS = {
         'badge': 'Limited spots',
         'no_payment_required': True,
     },
+    'solo': {
+        'id': 'solo',
+        'name': 'Solo',
+        'tagline': 'For independent designers & duos',
+        'stripe_name': 'Focuspilot Solo',
+        'stripe_description': (
+            'Run your practice from one place — projects, CRM, client portal, and invoicing '
+            'for up to 2 team members.'
+        ),
+        'price_display': '£89',
+        'price_note': 'per month',
+        'ideal_for': 'Solo designers, 2-person practices',
+        'stripe_price_id': settings.STRIPE_PRICE_SOLO,
+        'features': [
+            'Up to 2 team members',
+            '5 active projects',
+            'Client portal & basic invoicing',
+            'Core CRM & project management',
+            'Document storage (5GB)',
+            'Email support',
+        ],
+        'emphasis': False,
+    },
     'starter': {
         'id': 'starter',
         'name': 'Starter',
-        'tagline': 'For solo practitioners & small teams',
+        'tagline': 'For small teams (3–5 people)',
         'stripe_name': 'Focuspilot Starter',
         'stripe_description': (
             'Everything you need to run a small studio — projects, CRM, basic invoicing, '

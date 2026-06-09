@@ -74,6 +74,11 @@ class Invoice(models.Model):
     ffne  = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     ffne_desc = models.CharField(max_length=255, null=True, blank=True)
     delivery_charge = models.FloatField(null=True, blank=True)
+
+    # Stripe client portal payments
+    stripe_checkout_session_id = models.CharField(max_length=255, blank=True, null=True)
+    stripe_payment_intent_id = models.CharField(max_length=255, blank=True, null=True)
+    paid_at = models.DateTimeField(null=True, blank=True)
     
     # Xero integration fields
     xero_sync = models.BooleanField(default=True, help_text="Enable sync with Xero")
