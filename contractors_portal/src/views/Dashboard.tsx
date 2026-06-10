@@ -1,4 +1,5 @@
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { StatsGrid } from '@/components/dashboard/StatsGrid';
 import { SquareCheckBig } from 'lucide-react';
 const projectCover = '/images/project_cover.jpg';
 import { Link } from '@/lib/navigation';
@@ -44,6 +45,10 @@ export default function Dashboard() {
             </div>
           </div>
         )}
+        {!dashboardLoading && dashboardData && (
+          <StatsGrid project={dashboardData} />
+        )}
+
         {!dashboardLoading && dashboardData && (
           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
             <h2 className="text-base font-semibold text-gray-900 mb-4">{t('projectInformation')}</h2>

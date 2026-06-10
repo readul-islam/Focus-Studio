@@ -440,6 +440,31 @@
         "strong": "Strong"
       }
     },
+    "acceptInvitation": {
+      "title": "Join your studio",
+      "subtitle": "Set up your account to accept the team invitation.",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "Jane Smith",
+      "password": "Password",
+      "passwordPlaceholder": "Min. 8 characters",
+      "confirmPassword": "Confirm password",
+      "confirmPasswordPlaceholder": "Repeat your password",
+      "joinStudio": "Join studio",
+      "joining": "Joining...",
+      "existingAccountHint": "Already have a Focuspilot account with this email?",
+      "acceptExisting": "Accept invitation with my existing account",
+      "alreadySignedIn": "Prefer to sign in first?",
+      "signIn": "Sign in",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "invalidTitle": "Invalid invitation link",
+      "invalidSubtitle": "This invitation link is missing or invalid. Ask your studio admin to resend the invite.",
+      "backToSignIn": "Back to sign in",
+      "toasts": {
+        "success": "Welcome to the studio!",
+        "failed": "Could not accept invitation. The link may have expired."
+      }
+    },
     "resetPassword": {
       "verifying": "Verifying reset link...",
       "invalidTitle": "Invalid reset link",

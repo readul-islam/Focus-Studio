@@ -39,6 +39,7 @@ export const PUBLIC_API_AUTH_PATHS = [
   '/user/2fa-session/',
   '/user/verify-2fa/',
   '/user/google/',
+  '/user/accept-invitation/',
 ];
 
 export function isPublicApiAuthPath(url: string | undefined): boolean {

@@ -118,6 +118,8 @@ class ContractorInvoiceLineItemSerializer(serializers.ModelSerializer):
 class ContractorInvoiceSerializer(serializers.ModelSerializer):
     invoice_number = serializers.SerializerMethodField()
     line_items = ContractorInvoiceLineItemSerializer(many=True, read_only=True)
+    project = serializers.SerializerMethodField()
+    amount_due = serializers.SerializerMethodField()
 
     class Meta:
         model = Invoice
@@ -133,11 +135,26 @@ class ContractorInvoiceSerializer(serializers.ModelSerializer):
             'delivery_charge',
             'ffne',
             'ffne_desc',
+            'project',
+            'amount_due',
         ]
 
     @extend_schema_field(OpenApiTypes.STR)
     def get_invoice_number(self, obj):
         return f"INV-{obj.id:03d}"
+
+    def get_project(self, obj):
+        if not obj.project:
+            return None
+        return {
+            'id': obj.project.id,
+            'project_name': obj.project.project_name,
+        }
+
+    def get_amount_due(self, obj):
+        if obj.status == 'PD':
+            return 0
+        return float(obj.total_amount or 0)
 
 
 class ContractorLoginSerializer(serializers.Serializer):

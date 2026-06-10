@@ -354,7 +354,13 @@ const Invoice = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <p className="text-gray-500">{t('amountDue')}</p>
-                <p className="text-right">{currencySymbol}0.00</p>
+                <p className="text-right">
+                  {currencySymbol}
+                  {(invoiceData?.amount_due ?? (invoiceData?.status === 'PD' ? 0 : totalAmount)).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </p>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <p className="text-gray-500">{t('dueDateLabel')}</p>

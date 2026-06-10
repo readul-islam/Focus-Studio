@@ -828,15 +828,15 @@ Test by toggling matrix at `/settings/studio/roles` and verifying sidebar + dire
 
 | Area | Status | Action |
 |------|--------|--------|
-| Contractor finance/invoices | UI exists, API missing | Skip §5.7 |
 | Client portal invoice Stripe pay | Requires studio Connect + `STRIPE_*` env | Test when configured |
-| Client portal Messages | Nav stub | Skip |
-| Client multi-project picker | Not built | Test single project only |
-| Studio audit logs | Seeded UI, no live API | Visual check only |
-| Library materials | Placeholder page | Skip CRUD tests |
-| `/accept-invitation` route | Middleware only, no page | Use settings team invite instead |
 | AI features without keys | Use `NEXT_PUBLIC_AI_USE_MOCK=true` | Mock data mode |
-| Contractor dashboard StatsGrid | Component not wired | Stats API works; UI partial |
+| AI procurement (non-mock) | Server actions stubbed | Use mock mode or skip |
+| Contractor finance/invoices | API live (`GET /contractor_portal/invoices/`) | Test §5.7 when sent invoices exist |
+| Client multi-project picker | Shipped | Test project switcher in client portal |
+| Studio audit logs | Live API | Verify settings → audit logs |
+| Library materials | Live API (`materials_only=1`) | Optional CRUD smoke |
+| `/accept-invitation` | Studio app page + API | Test token invite flow |
+| Contractor dashboard StatsGrid | Wired to dashboard API | Verify paid/due totals |
 
 ---
 

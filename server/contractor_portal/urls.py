@@ -6,6 +6,7 @@ from .views import (
     ContractorDocumentViewSet,
     ContractorProcurementViewSet,
     ContractorMessageViewSet,
+    ContractorInvoiceViewSet,
     contractor_dashboard,
     ContractorLoginView,
     add_contractor,
@@ -41,6 +42,7 @@ router = DefaultRouter()
 router.register(r'documents', ContractorDocumentViewSet, basename='contractor-documents')
 router.register(r'procurements', ContractorProcurementViewSet, basename='contractor-procurements')
 router.register(r'messages', ContractorMessageViewSet, basename='contractor-messages')
+router.register(r'invoices', ContractorInvoiceViewSet, basename='contractor-invoices')
 
 urlpatterns = [
     path('', include(router.urls)),

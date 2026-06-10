@@ -433,6 +433,92 @@ def contractor_dashboard(request):
     return Response(response_data)
 
 
+def _contractor_invoice_queryset():
+    return Invoice.objects.select_related('project', 'studio').prefetch_related(
+        'line_items__product',
+        'purchase_orders',
+    )
+
+
+def _validate_contractor_project_access(contractor_id, project_id):
+    """Return (contractor, error_response) for invoice access checks."""
+    if not contractor_id:
+        return None, None
+    contractor = Client.objects.filter(id=contractor_id, contact_type='CN').first()
+    if not contractor:
+        return None, Response({'error': 'Contractor not found'}, status=status.HTTP_404_NOT_FOUND)
+    if not _contractor_on_project(contractor, project_id):
+        return None, Response(
+            {'error': 'Contractor does not have access to this project.'},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+    return contractor, None
+
+
+@extend_schema_view(
+    list=extend_schema(
+        tags=['Contractor Portal - Finance'],
+        summary='List project invoices',
+        description='Returns non-draft invoices for a project visible in the contractor portal.',
+        parameters=[
+            OpenApiParameter(name='project_id', description='ID of the project', required=True, type=int),
+            OpenApiParameter(name='contractor_id', description='ID of the contractor (optional access check)', required=False, type=int),
+        ],
+        responses={200: ContractorInvoiceSerializer(many=True)},
+    ),
+    retrieve=extend_schema(
+        tags=['Contractor Portal - Finance'],
+        summary='Retrieve an invoice',
+        description='Returns a single non-draft invoice for a project the contractor can access.',
+        parameters=[
+            OpenApiParameter(name='contractor_id', description='ID of the contractor (optional access check)', required=False, type=int),
+        ],
+        responses={200: ContractorInvoiceSerializer},
+    ),
+)
+class ContractorInvoiceViewSet(viewsets.ReadOnlyModelViewSet):
+    """Read-only invoice access for contractors on projects they are linked to."""
+
+    serializer_class = ContractorInvoiceSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        return _contractor_invoice_queryset().exclude(status='DFT')
+
+    def list(self, request, *args, **kwargs):
+        project_id = request.query_params.get('project_id')
+        if not project_id:
+            return Response({'error': 'project_id is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            Project.objects.get(id=project_id)
+        except Project.DoesNotExist:
+            return Response({'error': 'Project not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        contractor_id = request.query_params.get('contractor_id')
+        _, err = _validate_contractor_project_access(contractor_id, project_id)
+        if err:
+            return err
+
+        queryset = self.get_queryset().filter(project_id=project_id).order_by('-date', '-id')
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.status == 'DFT':
+            return Response({'error': 'Invoice not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if instance.project_id:
+            contractor_id = request.query_params.get('contractor_id')
+            _, err = _validate_contractor_project_access(contractor_id, instance.project_id)
+            if err:
+                return err
+
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
 def _generate_access_code(surname, studio_id):
     """
     Generate a 6-character access code for a contractor.
