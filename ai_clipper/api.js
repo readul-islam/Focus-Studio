@@ -1,10 +1,28 @@
-// // API Configuration and Service
+// API Configuration and Service
 // const API_BASE_URL = 'http://127.0.0.1:8000';
-const API_BASE_URL = 'https://be-stg.techstyles.ai';
+const API_BASE_URL = 'https://api.focuspilot.io';
+
+// Same as Focuspilot mobile — tells the API to return JWT in JSON (extensions cannot use httpOnly cookies).
+const EXTENSION_CLIENT_HEADERS = {
+  'X-Client-Platform': 'mobile',
+};
 
 class ApiService {
   constructor() {
     this.baseUrl = API_BASE_URL;
+  }
+
+  parseErrorBody(body) {
+    if (!body || typeof body !== 'object') return null;
+    if (typeof body.detail === 'string') return body.detail;
+    if (Array.isArray(body.detail) && body.detail[0]) return body.detail[0];
+    if (body.message) return body.message;
+    if (body.error) return body.error;
+    const firstKey = Object.keys(body)[0];
+    const val = firstKey ? body[firstKey] : null;
+    if (Array.isArray(val) && val[0]) return val[0];
+    if (typeof val === 'string') return val;
+    return null;
   }
 
   // Get auth token from storage
@@ -33,6 +51,7 @@ class ApiService {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              ...EXTENSION_CLIENT_HEADERS,
             },
             body: JSON.stringify({ refresh }),
           });
@@ -103,8 +122,13 @@ class ApiService {
       }
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'API request failed');
+        let errorBody = {};
+        try {
+          errorBody = await response.json();
+        } catch (_) {
+          /* non-JSON error */
+        }
+        throw new Error(this.parseErrorBody(errorBody) || 'API request failed');
       }
 
       return await response.json();
@@ -113,35 +137,72 @@ class ApiService {
     }
   }
 
-  // Login
-  async login(email, password) {
-    try {
-      const response = await fetch(`${this.baseUrl}/user/login/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Invalid credentials.');
-      }
-
-      const data = await response.json();
-
-      // Save tokens and user data to storage
-      await chrome.storage.local.set({
-        access: data.access,
-        refresh: data.refresh,
-        user: data.user, // User data is included in login response
-      });
-
-      return data;
-    } catch (error) {
-      throw error;
+  async saveSession(data) {
+    if (!data.access || !data.refresh) {
+      throw new Error('Login succeeded but no API tokens were returned.');
     }
+    await chrome.storage.local.set({
+      access: data.access,
+      refresh: data.refresh,
+      user: data.user || null,
+    });
+    return data;
+  }
+
+  // Login — returns { requires_2fa, email } when 2FA is required
+  async login(email, password) {
+    const response = await fetch(`${this.baseUrl}/user/login/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...EXTENSION_CLIENT_HEADERS,
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    let data = {};
+    try {
+      data = await response.json();
+    } catch (_) {
+      /* empty body */
+    }
+
+    if (!response.ok) {
+      throw new Error(this.parseErrorBody(data) || 'Invalid credentials.');
+    }
+
+    if (data.requires_2fa) {
+      return { requires_2fa: true, email: data.email || email };
+    }
+
+    await this.saveSession(data);
+    return data;
+  }
+
+  // Complete login after 2FA (authenticator or backup code)
+  async verify2fa(email, code) {
+    const response = await fetch(`${this.baseUrl}/user/verify-2fa/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...EXTENSION_CLIENT_HEADERS,
+      },
+      body: JSON.stringify({ email, code: code.trim() }),
+    });
+
+    let data = {};
+    try {
+      data = await response.json();
+    } catch (_) {
+      /* empty body */
+    }
+
+    if (!response.ok) {
+      throw new Error(this.parseErrorBody(data) || 'Invalid code.');
+    }
+
+    await this.saveSession(data);
+    return data;
   }
 
   // Extract product details using AI
