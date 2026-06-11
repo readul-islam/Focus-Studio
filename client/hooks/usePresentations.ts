@@ -29,7 +29,7 @@ export function usePresentations(projectId?: string | number, search?: string) {
   });
 
   const createPresentation = useMutation({
-    mutationFn: (data: { title: string; project: number }) =>
+    mutationFn: (data: { title: string; project: number; template_id?: string }) =>
       postData({ url: '/presentations/presentations/', data }) as Promise<Presentation>,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: PRESENTATIONS_KEY }),
   });

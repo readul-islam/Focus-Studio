@@ -45,7 +45,7 @@ export function PresentationGallery({ projectId }: Props) {
 
   const presentations = query.data || [];
 
-  const handleCreate = (data: { title: string; project: number }) => {
+  const handleCreate = (data: { title: string; project: number; template_id?: string }) => {
     createPresentation.mutate(data, {
       onSuccess: (created) => {
         setCreateOpen(false);

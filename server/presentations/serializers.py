@@ -3,6 +3,7 @@ from rest_framework import serializers
 from design.serializers import DesignAssetSerializer
 from library.models import Product, ProductImage
 from .models import Presentation, PresentationSlide, PresentationPin, PresentationComment
+from .templates import TEMPLATE_IDS, build_slides_for_template
 
 
 def _absolute_media_url(file_field, request):
@@ -161,17 +162,32 @@ class PresentationDetailSerializer(PresentationListSerializer):
 
 
 class PresentationCreateSerializer(serializers.ModelSerializer):
+    template_id = serializers.CharField(required=False, allow_blank=True, default='blank')
+
     class Meta:
         model = Presentation
-        fields = ['id', 'title', 'project']
+        fields = ['id', 'title', 'project', 'template_id']
+
+    def validate_template_id(self, value):
+        tid = (value or 'blank').strip()
+        if tid not in TEMPLATE_IDS:
+            raise serializers.ValidationError(
+                f'Unknown template_id. Choose one of: {", ".join(sorted(TEMPLATE_IDS))}'
+            )
+        return tid
 
     def create(self, validated_data):
+        template_id = validated_data.pop('template_id', 'blank')
         presentation = Presentation.objects.create(**validated_data)
-        PresentationSlide.objects.create(
-            presentation=presentation,
-            order=0,
-            title='Slide 1',
-        )
+        slide_defs = build_slides_for_template(template_id)
+        for order, slide_def in enumerate(slide_defs):
+            PresentationSlide.objects.create(
+                presentation=presentation,
+                order=order,
+                title=slide_def.get('title', f'Slide {order + 1}'),
+                background_color=slide_def.get('background_color', '#FFFFFF'),
+                canvas_data=slide_def.get('canvas_data', []),
+            )
         return presentation
 
 

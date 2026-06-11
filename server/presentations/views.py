@@ -22,6 +22,7 @@ from .serializers import (
     PublishPresentationSerializer,
     PublicPresentationSerializer,
 )
+from .templates import list_presentation_templates
 
 
 class PresentationViewSet(StudioScopedMixin, viewsets.ModelViewSet):
@@ -52,6 +53,11 @@ class PresentationViewSet(StudioScopedMixin, viewsets.ModelViewSet):
             studio=self.request.user.studio,
             created_by=self.request.user,
         )
+
+    @action(detail=False, methods=['get'], url_path='templates')
+    def templates(self, request):
+        """List built-in presentation deck templates for the create dialog."""
+        return Response(list_presentation_templates())
 
     @action(detail=True, methods=['post'])
     def duplicate(self, request, pk=None):

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -19,15 +19,20 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import useFetch from '@/hooks/useFetch';
+import { fetchData } from '@/lib/Api';
 import { Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import {
+  PresentationTemplatePicker,
+  type PresentationTemplateMeta,
+} from './PresentationTemplatePicker';
 
 type ProjectOption = { id: number; project_name: string };
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  onCreate: (data: { title: string; project: number }) => void;
+  onCreate: (data: { title: string; project: number; template_id?: string }) => void;
   isSubmitting?: boolean;
   defaultProjectId?: number;
 };
@@ -41,11 +46,35 @@ export function CreatePresentationDialog({
 }: Props) {
   const t = useTranslations('presentationsPage');
   const [title, setTitle] = useState('');
+  const [templateId, setTemplateId] = useState('blank');
+  const [templates, setTemplates] = useState<PresentationTemplateMeta[]>([]);
+  const [templatesLoading, setTemplatesLoading] = useState(false);
   const [projectId, setProjectId] = useState<string>(
     defaultProjectId ? String(defaultProjectId) : ''
   );
 
   const { data: projectsRaw, isLoading } = useFetch(open ? 'projects/user-projects/' : null);
+
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    setTemplatesLoading(true);
+    fetchData('/presentations/presentations/templates/')
+      .then((data) => {
+        if (!cancelled && Array.isArray(data)) {
+          setTemplates(data as PresentationTemplateMeta[]);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setTemplates([]);
+      })
+      .finally(() => {
+        if (!cancelled) setTemplatesLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [open]);
   const projects: ProjectOption[] = Array.isArray(projectsRaw)
     ? projectsRaw
     : Array.isArray((projectsRaw as { results?: ProjectOption[] })?.results)
@@ -54,18 +83,23 @@ export function CreatePresentationDialog({
 
   const handleSubmit = () => {
     if (!title.trim() || !projectId) return;
-    onCreate({ title: title.trim(), project: Number(projectId) });
+    onCreate({
+      title: title.trim(),
+      project: Number(projectId),
+      template_id: templateId || 'blank',
+    });
   };
 
   const handleClose = () => {
     setTitle('');
+    setTemplateId('blank');
     if (!defaultProjectId) setProjectId('');
     onClose();
   };
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && handleClose()}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t('createDialog.title')}</DialogTitle>
         </DialogHeader>
@@ -98,6 +132,12 @@ export function CreatePresentationDialog({
               </SelectContent>
             </Select>
           </div>
+          <PresentationTemplatePicker
+            templates={templates}
+            value={templateId}
+            onChange={setTemplateId}
+            isLoading={templatesLoading}
+          />
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={handleClose}>

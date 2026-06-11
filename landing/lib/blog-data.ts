@@ -35,6 +35,38 @@ export type BlogAuthorsMessages = Record<string, { name: string; role: string }>
 
 export const BLOG_POST_META: BlogPostMeta[] = [
   {
+    slug: "interior-design-project-management-system-2026",
+    category: "studio-management",
+    tags: [
+      "Interior Design Project Management System",
+      "Project Management Software",
+      "Studio OS",
+      "FF&E",
+      "Client Portal",
+      "2026",
+    ],
+    publishedAt: "2026-06-10",
+    featured: true,
+    featuredImage: "/blog/interior-design-project-management-system-2026.jpg",
+    authorId: "james",
+  },
+  {
+    slug: "how-to-choose-interior-design-project-management-software",
+    category: "best-practices",
+    tags: [
+      "Interior Design Software",
+      "Buyer's Guide",
+      "Project Management",
+      "Software Comparison",
+      "Studio Management",
+      "ROI",
+    ],
+    publishedAt: "2026-06-09",
+    featured: true,
+    featuredImage: "/blog/choosing-interior-design-project-management-software.jpg",
+    authorId: "maya",
+  },
+  {
     slug: "interior-design-project-management-guide",
     category: "best-practices",
     tags: ["Interior Design Project Management", "Project Management", "Client Management", "Jobsite", "Scope of Work", "Profitability"],

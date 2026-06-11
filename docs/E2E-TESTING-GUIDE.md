@@ -505,7 +505,7 @@ Login as **admin.test@focuspilot.dev** unless testing permissions (§10).
 
 | # | Feature | Path | Action | Expected |
 |---|---------|------|--------|----------|
-| 4.13.1 | Gallery | `/presentations` | Create presentation | Listed in studio gallery |
+| 4.13.1 | Gallery + templates | `/presentations` | **Create** → pick template (Concept / FF&E / Mood / Kickoff) | `GET /presentations/presentations/templates/`; create with `template_id` seeds slides |
 | 4.13.2 | Editor | `/presentations/{id}` | Add slides, product pins | Saves via `presentations/` API |
 | 4.13.3 | Present mode | `/presentations/{id}/present` | Full-screen | No edit chrome |
 | 4.13.4 | Public share | `/p/presentations/{token}` | Copy share link (no auth) | `GET /presentations/public/{token}/` |

@@ -4935,8 +4935,32 @@
       "namePlaceholder": "Untitled presentation",
       "projectLabel": "Project",
       "projectPlaceholder": "Select a project",
+      "templateLabel": "Start from a template",
+      "slideCount": "{count, plural, one {# slide} other {# slides}}",
       "cancel": "Cancel",
-      "create": "Create"
+      "create": "Create",
+      "templates": {
+        "blank": {
+          "name": "Blank",
+          "description": "Single empty slide — start from scratch."
+        },
+        "client-concept": {
+          "name": "Client concept review",
+          "description": "Cover, overview, concept board, materials, and next steps."
+        },
+        "ffe-selection": {
+          "name": "FF&E selections",
+          "description": "Product selection deck with placeholders and approval summary."
+        },
+        "mood-inspiration": {
+          "name": "Mood & inspiration",
+          "description": "Full-bleed inspiration slides plus direction notes."
+        },
+        "project-kickoff": {
+          "name": "Project kickoff",
+          "description": "Scope, timeline, team, and questions for project start."
+        }
+      }
     },
     "renameDialog": {
       "title": "Rename presentation",
