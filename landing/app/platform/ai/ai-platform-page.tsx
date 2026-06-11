@@ -4,6 +4,7 @@ import type React from "react"
 import Link from "next/link"
 import {
   ArrowRight,
+  AudioLines,
   BookOpen,
   CheckCircle2,
   FileText,
@@ -28,12 +29,14 @@ const TITLE_H2 = "text-2xl sm:text-[30px] md:text-4xl font-medium tracking-tight
 
 const FEATURE_CARDS = [
   { key: "dailyBrief", icon: Sun, href: "#daily-brief", accent: "#E07A57" },
+  { key: "noteTaker", icon: AudioLines, href: "#note-taker", accent: "#7A8FA8" },
   { key: "emailRouting", icon: Mail, href: "/platform/features/ai-email", accent: "#8FA58F" },
   { key: "procurementAssist", icon: ShoppingCart, href: "/platform/features/ai-procurement", accent: "#6E7A58" },
   { key: "proposalsDocuments", icon: FileText, href: "/platform/features/invoicing", accent: "#C78A3B" },
 ] as const
 
 const SHOWCASES = [
+  { key: "noteTaker", href: "#note-taker", src: "/images/platform/projects/docs-updated.png" },
   { key: "studioDashboard", href: "#daily-brief", src: "/images/app/dashboard-hero.png" },
   { key: "aiInbox", href: "/platform/features/ai-email", src: "/images/platform/projects/messages.png" },
   { key: "procurementAssist", href: "/platform/features/ai-procurement", src: "/images/procurement/ai-import-chair.png" },
@@ -41,6 +44,7 @@ const SHOWCASES = [
 ] as const
 
 const STEP_KEYS = ["projectContext", "draft", "humanApprove"] as const
+const NOTE_TAKER_BULLETS = ["siteVisit", "liveMeetings", "reviewPublish"] as const
 const DAILY_BRIEF_BULLETS = ["summarisesEmail", "highlightsRisks", "availableAfterSignup"] as const
 
 function FeatureCard({
@@ -143,7 +147,7 @@ export default function AIPlatformPage() {
               <p className="mt-3 text-base text-stone-600">{t("features.subtitle")}</p>
             </Reveal>
 
-            <div className="mt-10 grid gap-6 sm:grid-cols-2">
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {FEATURE_CARDS.map((f, i) => (
                 <FeatureCard
                   key={f.key}
@@ -191,8 +195,43 @@ export default function AIPlatformPage() {
         </section>
 
         <section
-          id="daily-brief"
+          id="note-taker"
           className="scroll-mt-24 border-t border-stone-200 bg-stone-50/80 py-14 sm:py-20"
+          aria-labelledby="note-taker-heading"
+        >
+          <div className={cn(container, "grid items-center gap-10 lg:grid-cols-2 lg:gap-14")}>
+            <Reveal>
+              <h2 id="note-taker-heading" className={TITLE_H2}>
+                {t("noteTaker.title")}
+              </h2>
+              <p className="mt-4 text-base leading-relaxed text-stone-600">{t("noteTaker.description")}</p>
+              <ul className="mt-6 space-y-3 text-sm text-stone-700">
+                {NOTE_TAKER_BULLETS.map((key) => (
+                  <li key={key} className="flex gap-2">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#7A8FA8]" aria-hidden />
+                    {t(`noteTaker.bullets.${key}`)}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6">
+                <CtaButton href="/signup" variant="slate" label={t("noteTaker.cta")} showArrow arrowVariant="white" />
+              </div>
+            </Reveal>
+            <Reveal delay={120}>
+              <UniformFrame
+                src="/images/platform/projects/docs-updated.png"
+                alt={t("noteTaker.imageAlt")}
+                width={1200}
+                height={720}
+                className="mx-auto max-w-lg shadow-md"
+              />
+            </Reveal>
+          </div>
+        </section>
+
+        <section
+          id="daily-brief"
+          className="scroll-mt-24 border-t border-stone-200 py-14 sm:py-20"
           aria-labelledby="daily-brief-heading"
         >
           <div className={cn(container, "grid items-center gap-10 lg:grid-cols-2 lg:gap-14")}>

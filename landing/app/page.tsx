@@ -212,6 +212,9 @@ function AiLayer() {
         icon: LucideReact.AudioLines,
         title: t("cards.noteTaker.title"),
         text: t("cards.noteTaker.text"),
+        badge: t("cards.noteTaker.badge"),
+        href: "/platform/ai#note-taker",
+        linkLabel: t("cards.noteTaker.linkLabel"),
         iconColor: "text-stone-600",
       },
     ],
@@ -283,18 +286,39 @@ function AiLayer() {
 
           {/* Cards */}
           <div className="relative grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4 sm:gap-7">
-            {cards.map((c) => (
-              <Card
-                key={c.title}
-                className="rounded-2xl border border-stone-200 bg-white text-stone-900 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-              >
+            {cards.map((c) => {
+              const cardInner = (
                 <CardContent className="p-6 sm:p-7">
-                  <c.icon className={`h-6 w-6 ${c.iconColor}`} aria-hidden="true" />
+                  <div className="flex items-start justify-between gap-2">
+                    <c.icon className={`h-6 w-6 shrink-0 ${c.iconColor}`} aria-hidden="true" />
+                    {"badge" in c && c.badge ? (
+                      <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-800">
+                        {c.badge}
+                      </span>
+                    ) : null}
+                  </div>
                   <h3 className="mt-5 text-lg font-semibold leading-tight text-stone-950 sm:text-xl">{c.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-stone-800 sm:text-base">{c.text}</p>
+                  {"href" in c && c.href && "linkLabel" in c && c.linkLabel ? (
+                    <p className="mt-4 text-sm font-medium text-stone-900">{c.linkLabel} →</p>
+                  ) : null}
                 </CardContent>
-              </Card>
-            ))}
+              )
+              return "href" in c && c.href ? (
+                <Link key={c.title} href={c.href} className="block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-400">
+                  <Card className="h-full rounded-2xl border border-stone-200 bg-white text-stone-900 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+                    {cardInner}
+                  </Card>
+                </Link>
+              ) : (
+                <Card
+                  key={c.title}
+                  className="rounded-2xl border border-stone-200 bg-white text-stone-900 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                >
+                  {cardInner}
+                </Card>
+              )
+            })}
           </div>
         </div>
 

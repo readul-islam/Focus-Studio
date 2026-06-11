@@ -1,13 +1,15 @@
-# Focuspilot — End-to-End Testing Guide (3 Apps)
+# Focuspilot — End-to-End Testing Guide (4 Apps + API)
 
-Complete manual QA guide for testing **Studio (client)**, **Client Portal**, and **Contractor Portal** from setup through cross-app verification.
+Complete manual QA guide for testing **Studio**, **Client Portal**, **Contractor Portal**, and **Supplier Portal** from setup through cross-app verification.
 
 | App | Directory | Dev URL | Port |
 |-----|-----------|---------|------|
 | **Studio** (main) | `client/` | http://localhost:3000 | 3000 |
 | **Client portal** | `client_portal/` | http://localhost:3001 | 3001 |
 | **Contractor portal** | `contractors_portal/` | http://localhost:3002 | 3002 |
+| **Supplier portal** | `suppliers_portal/` | http://localhost:3003 | 3003 |
 | **API** (Django) | `server/` | http://localhost:8000 | 8000 |
+| **Marketing** (optional smoke) | `landing/` | http://localhost:3005 | 3005 |
 
 **Related docs:** [test.md](../test.md) (full studio module matrix) · [oneProjectfullworkflow.md](../oneProjectfullworkflow.md) (45-min smoke) · [CONTRACTOR-PORTAL-TESTING-GUIDE.md](../CONTRACTOR-PORTAL-TESTING-GUIDE.md) (share docs + insurance deep dive) · [testing.md](../testing.md) (Gmail Inbox + Notion)
 
@@ -21,17 +23,18 @@ Complete manual QA guide for testing **Studio (client)**, **Client Portal**, and
 4. [Studio app — full feature test paths](#4-studio-app--full-feature-test-paths)
 5. [Contractor portal — full feature test paths](#5-contractor-portal--full-feature-test-paths)
 6. [Client portal — full feature test paths](#6-client-portal--full-feature-test-paths)
-7. [Cross-app E2E scenarios](#7-cross-app-e2e-scenarios)
-8. [API verification checklist](#8-api-verification-checklist)
-9. [Role & permission matrix](#9-role--permission-matrix)
-10. [Known gaps & skip list](#10-known-gaps--skip-list)
-11. [Pass / fail criteria](#11-pass--fail-criteria)
+7. [Supplier portal — full feature test paths](#7-supplier-portal--full-feature-test-paths)
+8. [Cross-app E2E scenarios](#8-cross-app-e2e-scenarios)
+9. [API verification checklist](#9-api-verification-checklist)
+10. [Role & permission matrix](#10-role--permission-matrix)
+11. [Known gaps & skip list](#11-known-gaps--skip-list)
+12. [Pass / fail criteria](#12-pass--fail-criteria)
 
 ---
 
 ## 1. Environment setup
 
-### 1.1 Start all services (4 terminals)
+### 1.1 Start all services (5 terminals)
 
 ```powershell
 # Terminal 1 — API
@@ -51,6 +54,10 @@ pnpm dev
 # Terminal 4 — Contractor portal
 cd contractors_portal
 pnpm dev
+
+# Terminal 5 — Supplier portal (optional — procurement/supplier E2E)
+cd suppliers_portal
+pnpm dev
 ```
 
 ### 1.2 Environment variables
@@ -63,25 +70,41 @@ DEBUG=True
 FRONTEND_URL=http://localhost:3000
 CLIENT_PORTAL_URL=http://localhost:3001
 CONTRACTOR_PORTAL_URL=http://localhost:3002
-CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:3002
-RESEND_API_KEY=re_xxx          # Required for contractor + client invite emails
+SUPPLIER_PORTAL_URL=http://localhost:3003
+CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:3002,http://localhost:3003
+RESEND_API_KEY=re_xxx          # Required for contractor + client invite emails + proposal/invoice send
+OPENAI_API_KEY=sk-xxx          # Required for AI note-taker, proposals AI, daily brief (or use mock — see below)
 ```
 
-Each frontend app:
+Each frontend app (`client/`, `client_portal/`, `contractors_portal/`, `suppliers_portal/`):
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
-Optional integrations (test when configured):
+Studio-only optional mock (skips live OpenAI on some AI UI):
 
-| Integration | Env vars | Studio path |
-|-------------|----------|-------------|
-| Gmail / Calendar | `GMAIL_CLIENT_ID`, `GMAIL_CLIENT_SECRET` | `/settings/studio/integrations` |
-| Xero | `XERO_CLIENT_ID`, `XERO_CLIENT_SECRET` | `/settings/studio/integrations` |
-| Notion | Notion OAuth keys | `/settings/studio/integrations` |
-| Stripe billing | `STRIPE_*` | `/settings/studio/billing` |
-| OpenAI (AI) | `OPENAI_API_KEY` or `NEXT_PUBLIC_AI_USE_MOCK=true` | `/ai/inbox`, `/ai/daily-brief` |
+```env
+# client/.env.local
+NEXT_PUBLIC_AI_USE_MOCK=true
+```
+
+Integrations (test when configured):
+
+| Integration | Env vars | Studio path / test |
+|-------------|----------|-------------------|
+| Gmail + Calendar | `GMAIL_CLIENT_ID`, `GMAIL_CLIENT_SECRET` | `/settings/studio/integrations` → `/ai/inbox` |
+| Xero | `XERO_CLIENT_ID`, `XERO_CLIENT_SECRET` | Integrations → push invoice from `/finance/invoices/{id}` |
+| QuickBooks | `QUICKBOOKS_CLIENT_ID`, `QUICKBOOKS_CLIENT_SECRET` | `/settings/studio/integrations` |
+| Notion | `NOTION_CLIENT_ID`, `NOTION_CLIENT_SECRET` | Integrations → map DB → sync tasks |
+| Stripe billing (SaaS) | `STRIPE_SECRET_KEY`, price IDs | `/settings/studio/billing` |
+| Stripe Connect (client pay) | `STRIPE_*` + Connect onboarding | `/settings/studio/finance` → client portal **Pay now** |
+| Zapier / Public API | API key from settings | `/settings/studio/api` → `GET /integrations/v1/projects/` |
+| OpenAI | `OPENAI_API_KEY` | `/ai/note-taker`, `/crm/proposals/new`, `/ai/daily-brief` |
+| Vexa (live Meet) | `VEXA_API_KEY`, `VEXA_API_BASE`, `VEXA_WEBHOOK_SECRET` | `/ai/note-taker` → join bot; webhook `POST /meetings/vexa/webhook/` |
+| Meshy (3D design) | `MESHY_API_KEY` | `/design` → generate 3D |
+| AWS S3 | AWS creds in server env | Project docs upload |
+| Chrome clipper | Extension + studio login | `POST /clipper/extract_product_details/` |
 
 ### 1.3 Create test accounts (once)
 
@@ -93,7 +116,7 @@ Register via http://localhost:3000/register or use these if already seeded:
 | Studio Manager | `manager.test@focuspilot.dev` | `TestPass1!` | Browser B — collaboration |
 | Studio Member | `member.test@focuspilot.dev` | `TestPass1!` | Permission tests |
 
-Portal users are **created from Studio** during project setup (see §2 and §7).
+Portal users are **created from Studio** during project setup (see §2 and §8).
 
 ---
 
@@ -253,10 +276,28 @@ Created from Studio → **Project → Settings → Invite Client to Onboard**:
 |-------|-------|
 | Title | `Riverside Penthouse — Concept Phase` |
 | Client | Sarah Mitchell |
-| Value | `45000` GBP |
-| Status | Draft → Sent |
+| Scope (paste or AI) | `Full interior design — concept through install` |
+| Line item (AI or manual) | `Concept design fee — Phase 1` · qty `1` · rate `45000` |
+| Status | Draft → Sent (requires `RESEND_API_KEY`) |
 
-### 2.12 Time entry
+**AI draft test:** On scope step → **Draft with AI** (`POST /crm/proposals/ai-draft/` `draft_type: scope`). On pricing step → **AI Suggest** (`draft_type: pricing`).
+
+### 2.12 AI note-taker — site visit transcript (paste test)
+
+Use on `/ai/note-taker` or project **Latest Notes** tab (link note to Riverside project):
+
+```text
+Site walk — Riverside Penthouse, 10 June 2026.
+Living room: client wants lighter oak flooring, confirm lead time with BuildMart.
+Kitchen: quartz sample approved; measure site visit booked for 15 June.
+Action: Sarah to confirm sofa fabric by Friday.
+Decision: proceed with Concept & Mood phase sign-off.
+Risk: wardrobe lead time 12 weeks — flag in procurement.
+```
+
+Expected after **Generate**: summary, decisions, risks, action items. **Approve** → published. **Convert to task** → task on Riverside board.
+
+### 2.13 Time entry
 
 | Field | Value |
 |-------|-------|
@@ -269,7 +310,7 @@ Created from Studio → **Project → Settings → Invite Client to Onboard**:
 
 ## 3. Browser layout (recommended)
 
-Use **4 browser windows or profiles** for parallel cross-app testing:
+Use **4–5 browser windows or profiles** for parallel cross-app testing:
 
 ```
 ┌─────────────────────────┬─────────────────────────┐
@@ -281,13 +322,15 @@ Use **4 browser windows or profiles** for parallel cross-app testing:
 │  localhost:3002         │  localhost:3001         │
 │  Docs, Proc, Messages   │  Docs, Proc, Finance    │
 └─────────────────────────┴─────────────────────────┘
+│  E: Supplier Portal (optional) — localhost:3003   │
+└───────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## 4. Studio app — full feature test paths
 
-Login as **admin.test@focuspilot.dev** unless testing permissions (§9).
+Login as **admin.test@focuspilot.dev** unless testing permissions (§10).
 
 ### 4.1 Authentication & onboarding
 
@@ -299,8 +342,9 @@ Login as **admin.test@focuspilot.dev** unless testing permissions (§9).
 | 4.1.4 | Password reset | `/reset-password` | Request reset for admin email | New password works |
 | 4.1.5 | Google OAuth | `/auth/google/callback` | Sign in with Google (if configured) | Session created |
 | 4.1.6 | Onboarding wizard | `/onboarding` | Role → Studio name → Branding → Invite team | Lands on `/home/dashboard` |
-| 4.1.7 | Billing gate | Any protected route | New studio without plan | Subscription gate modal |
-| 4.1.8 | Billing success | `/billing/success` | Complete Stripe test checkout | Plan active |
+| 4.1.7 | Accept team invite | `/accept-invitation?token=` | Open invite link from email | `POST /user/accept-invitation/` 200; user joins studio |
+| 4.1.8 | Billing gate | Any protected route | New studio without plan | Subscription gate modal |
+| 4.1.9 | Billing success | `/billing/success` | Complete Stripe test checkout | Plan active |
 
 ### 4.2 Home & personal workspace
 
@@ -311,7 +355,7 @@ Login as **admin.test@focuspilot.dev** unless testing permissions (§9).
 | 4.2.3 | Home Inbox | `/home/inbox` | Same Gmail account | Classic thread list (not AI) |
 | 4.2.4 | My Tasks | `/home/tasks` | Drag task across status columns | Kanban updates persist |
 | 4.2.5 | Home calendar | `/home/calendar` | View task due dates | Calendar renders |
-| 4.2.6 | Time tracking | `/home/time` | Log 3.5h on Riverside (§2.12) | Entry saved, week grid updates |
+| 4.2.6 | Time tracking | `/home/time` | Log 3.5h on Riverside (§2.13) | Entry saved, week grid updates |
 | 4.2.7 | Top-bar timer | Global | Start timer on active task | Timer runs, stop saves entry |
 
 ### 4.3 Calendar (studio-wide)
@@ -338,6 +382,7 @@ Login as **admin.test@focuspilot.dev** unless testing permissions (§9).
 | 4.4.10 | Share proc to contractor | Procurement row menu | Select James Fletcher | `POST /contractor_portal/share-procurement/` 200 |
 | 4.4.11 | Bulk share procurement | Multi-select rows | Bulk share dialog | `bulk-share-procurements` 200 |
 | 4.4.12 | Client proc access | Procurement settings | Enable client visibility per item | Client portal sees subset |
+| 4.4.12b | FF&E export | `/projects/{id}/procurement` | **Export FF&E** → CSV or HTML | `GET /projects/export-ffe-schedule/?format=csv` downloads |
 | 4.4.13 | Project finance | `/projects/{id}/finance` | View budget vs actual | Totals match invoice/PO |
 | 4.4.14 | Project invoices | `/projects/{id}/finance/invoices` | Create/edit invoice | Project-scoped list |
 | 4.4.15 | Project POs | `/projects/{id}/finance/purchase-order` | Link PO to project | PO appears in list |
@@ -360,9 +405,10 @@ Login as **admin.test@focuspilot.dev** unless testing permissions (§9).
 | 4.5.3 | Lead pipeline | `/crm/pipeline` | Add Tom Hartley lead (§2.2) | Kanban card draggable |
 | 4.5.4 | Convert lead | Pipeline card menu | Convert to project | New project pre-filled |
 | 4.5.5 | Proposals list | `/crm/proposals` | List all proposals | Table loads |
-| 4.5.6 | New proposal | `/crm/proposals/new` | §2.11 proposal wizard | Multi-step save |
-| 4.5.7 | AI proposal draft | Proposal wizard | Click AI draft (if configured) | Scope text generated |
-| 4.5.8 | Send proposal | `/crm/proposals/{id}` | Mark sent | Status updates |
+| 4.5.6 | New proposal wizard | `/crm/proposals/new` | Client → Scope → Pricing → Review (§2.11) | Draft saved via `POST /crm/proposals/` |
+| 4.5.7 | AI scope draft | Proposal wizard → Scope step | **Draft with AI** or **AI Enhance** | `POST /crm/proposals/ai-draft/` `draft_type: scope` → `scope` populated |
+| 4.5.8 | AI pricing draft | Proposal wizard → Pricing step | **AI Suggest** (after scope filled) | `draft_type: pricing` → `line_items[]` with rate/amount |
+| 4.5.9 | Send proposal | `/crm/proposals/{id}` or Review step | **Send** | `POST /crm/proposals/{id}/send/` 200; status SNT; email via Resend |
 
 ### 4.6 Finance (studio-level)
 
@@ -373,9 +419,12 @@ Login as **admin.test@focuspilot.dev** unless testing permissions (§9).
 | 4.6.3 | Edit invoice | `/finance/invoices/{id}` | Status Draft → Sent | Client portal sees it |
 | 4.6.4 | Invoice PDF | `/finance/invoices/pdf/{id}` | Open in new tab | Print layout, no app chrome |
 | 4.6.5 | Send invoice email | Invoice detail | Send to client | Email dispatched (Resend) |
-| 4.6.6 | Create PO | `/finance/purchase-order` | §2.6 PO | PO saved |
-| 4.6.7 | PO PDF | `/finance/purchase-order/pdf/{id}` | Open PDF route | Layout correct |
-| 4.6.8 | Bulk delete | Finance list | Select multiple → delete | Items removed |
+| 4.6.6 | Payment reminder | `/finance/invoices` | Overdue/sent invoice → **Send reminder** | `POST /finance/invoices/{id}/send-reminder/` 200 |
+| 4.6.7 | Stripe Connect | `/settings/studio/finance` or `/finance/stripe-connect` | Onboard studio | Client portal **Pay now** enabled when complete |
+| 4.6.8 | Create PO | `/finance/purchase-order` | §2.6 PO | PO saved |
+| 4.6.9 | PO from procurement | `/finance/purchase-order/new` | Create from procurement line | `POST /finance/create-po-from-procurement/` |
+| 4.6.10 | PO PDF | `/finance/purchase-order/pdf/{id}` | Open PDF route | Layout correct |
+| 4.6.11 | Bulk delete | Finance list | Select multiple → delete | Items removed |
 
 ### 4.7 Library
 
@@ -384,7 +433,8 @@ Login as **admin.test@focuspilot.dev** unless testing permissions (§9).
 | 4.7.1 | Products catalog | `/library/products` | §2.10 product | CRUD works |
 | 4.7.2 | Add to procurement | Product row action | Add to Riverside / Living Room | Item appears in project procurement |
 | 4.7.3 | Product preview | `/library/products/preview` | Open product | Detail view loads |
-| 4.7.4 | Materials | `/library/materials` | — | UI shell only (placeholder) |
+| 4.7.4 | Materials | `/library/materials` | Products with material specs | `GET /library/studio-products/?materials_only=1` |
+| 4.7.5 | Chrome clipper | Extension popup | Clip product URL from supplier site | `POST /clipper/extract_product_details/` → save to library |
 
 ### 4.8 Team
 
@@ -424,8 +474,11 @@ Login as **admin.test@focuspilot.dev** unless testing permissions (§9).
 | 4.11.3 | AI Activity | `/ai/activity` | Prior AI actions | Feed lists events |
 | 4.11.4 | Procurement insights | Project procurement page | Stuck quotes exist | AI suggestions panel |
 | 4.11.5 | Reports AI chat | Reports page | Reports data loaded | Chat responds via `/reports/chat/` |
-| 4.11.6 | AI Note-taker hub | `/ai/note-taker` | OpenAI key on server | Sidebar **Note-taker**; create site visit note; review in side panel |
-| 4.11.7 | Note-taker E2E | `/ai/note-taker` | Project Riverside linked | New note → paste transcript → **Generate** → **Approve** → **Convert to task** → task on project board |
+| 4.11.6 | AI Note-taker hub | `/ai/note-taker` | `OPENAI_API_KEY` | Sidebar **Note-taker**; create site visit note; review in side panel |
+| 4.11.7 | Note-taker site visit E2E | `/ai/note-taker` | Link note to Riverside project | Paste §2.12 transcript → **Generate** → **Approve** → **Convert to task** → task on project board |
+| 4.11.8 | Note-taker on project docs | `/projects/{id}/docs` → **Latest Notes** | Same as 4.11.7 | Notes scoped to project; `GET /meetings/meetings/?project_id=` |
+| 4.11.9 | Live Google Meet (optional) | `/ai/note-taker` | `VEXA_API_KEY`, valid Meet URL | Create note → **Join bot** → end meeting → **Fetch transcript** (or Vexa webhook) → AI extraction |
+| 4.11.10 | Gmail AI polish | `/ai/inbox` | Gmail connected | Compose reply → polish (`POST /gmail/polish-reply/`) |
 
 ### 4.12 Settings
 
@@ -446,19 +499,31 @@ Login as **admin.test@focuspilot.dev** unless testing permissions (§9).
 | 4.12.13 | Integrations | `/settings/studio/integrations` | Connect Xero, Gmail, Notion | Connected badges |
 | 4.12.14 | API & webhooks | `/settings/studio/api` | Create API key, test webhook | See docs/ZAPIER.md |
 | 4.12.15 | Branding | `/settings/studio/branding` | Upload logo | Appears on invoices |
-| 4.12.16 | Audit logs | `/settings/studio/audit-logs` | — | UI placeholder (seeded data) |
+| 4.12.16 | Audit logs | `/settings/studio/audit-logs` | Perform admin action first (invite, role change) | `GET /user/studio/audit-logs/` returns live rows (page not in settings sidebar — use direct URL) |
 
-### 4.13 Help, notifications & UX
+### 4.13 Presentations
 
 | # | Feature | Path | Action | Expected |
 |---|---------|------|--------|----------|
-| 4.13.1 | Help center | `/help` | Search `invoice` | Results from 58 articles |
-| 4.13.2 | Help article | `/help/projects/create-a-project` | Read + thumbs feedback | Markdown renders |
-| 4.13.3 | Notifications | `/notifications` | Trigger @mention → open bell | Unread count decreases |
-| 4.13.4 | Command palette | Cmd+K | Navigate to Projects | Route changes |
-| 4.13.5 | Product tour | First login | Complete tour steps | Tour state saved |
-| 4.13.6 | Language switcher | Top bar / settings | Switch en-US ↔ de-DE | UI translates |
-| 4.13.7 | Changelog | `/changelog` | Open entry | Content loads |
+| 4.13.1 | Gallery | `/presentations` | Create presentation | Listed in studio gallery |
+| 4.13.2 | Editor | `/presentations/{id}` | Add slides, product pins | Saves via `presentations/` API |
+| 4.13.3 | Present mode | `/presentations/{id}/present` | Full-screen | No edit chrome |
+| 4.13.4 | Public share | `/p/presentations/{token}` | Copy share link (no auth) | `GET /presentations/public/{token}/` |
+| 4.13.5 | Project presentations | `/projects/{id}/presentations` | Link to project | Project-scoped list |
+| 4.13.6 | Client portal view | Client `:3001/presentations` | Client opens shared deck | Read-only client view |
+
+### 4.14 Help, notifications & UX
+
+| # | Feature | Path | Action | Expected |
+|---|---------|------|--------|----------|
+| 4.14.1 | Help center | `/help` | Search `invoice` | Results from help articles |
+| 4.14.2 | Help article | `/help/projects/create-a-project` | Read + thumbs feedback | Markdown renders |
+| 4.14.3 | In-app support chat | Help widget | Ask support question | `POST /help/support/chat/` |
+| 4.14.4 | Notifications | `/notifications` | Trigger @mention → open bell | Unread count decreases |
+| 4.14.5 | Command palette | Cmd+K | Navigate to Projects | Route changes |
+| 4.14.6 | Product tour | First login | Complete tour steps | Tour state saved |
+| 4.14.7 | Language switcher | Top bar / settings | Switch en-US ↔ ja-JP | UI translates |
+| 4.14.8 | Changelog | `/changelog` | Open entry | `GET /changelog/` loads |
 
 ---
 
@@ -542,12 +607,19 @@ Login as **admin.test@focuspilot.dev** unless testing permissions (§9).
 | 5.6.5 | Upload trade cert | `/profile` | Upload PDF | Filename shown on reopen |
 | 5.6.6 | Emergency contact | `/profile` | Jane Fletcher details | Saved and visible in studio drawer |
 
-### 5.7 Finance (known gap)
+### 5.7 Finance
 
-| # | Feature | Path | Status |
-|---|---------|------|--------|
-| 5.7.1 | Invoice list | `/finance` | **Skip** — API routes not registered (404) |
-| 5.7.2 | Invoice detail | `/finance/{id}` | **Skip** — not in sidebar nav |
+> **Nav note:** `/finance` routes exist but are **not in the contractor sidebar** — test via direct URL or dashboard links.
+
+**Prerequisite:** Studio assigns/sends contractor-related invoices visible to the contractor (linked to Riverside + James Fletcher).
+
+| # | Feature | Path | Steps | Expected |
+|---|---------|------|-------|----------|
+| 5.7.1 | Invoice list | `/finance` | Open direct URL after studio sends invoice | `GET /contractor_portal/invoices/?project_id=` 200; list renders |
+| 5.7.2 | Invoice detail | `/finance/{id}` | Click invoice row | Line items, totals, status badge |
+| 5.7.3 | Draft hidden | `/finance` | — | Only sent/paid contractor-visible invoices |
+| 5.7.4 | Cross-project isolation | `/finance` | Switch project in picker | Only current project's invoices |
+| 5.7.5 | Back navigation | Invoice detail | Back button | Returns to `/finance` |
 
 ---
 
@@ -567,6 +639,7 @@ Login as **admin.test@focuspilot.dev** unless testing permissions (§9).
 | 6.1.4 | Logout desktop | Sidebar user menu | Logout | Session cleared |
 | 6.1.5 | Logout mobile | TopBar avatar menu | Logout | Same as desktop |
 | 6.1.6 | Language switcher | Any page | en-US ↔ ja-JP | UI translates |
+| 6.1.7 | Multi-project picker | Top bar / sidebar `ProjectSwitcher` | Client on 2+ projects | `selectedProjectId` in localStorage; dashboard/proc/finance scope updates |
 
 > **Note:** If login fails with correct password, verify the login form sends the password field (not email twice). Check Network tab for `POST /client_portal/login/`.
 
@@ -608,37 +681,94 @@ Login as **admin.test@focuspilot.dev** unless testing permissions (§9).
 | 6.4.6 | FF&E row | Invoice detail | — | FF&E line if configured |
 | 6.4.7 | Payment footer | Invoice detail | — | Studio payment details shown |
 | 6.4.8 | Back navigation | Invoice detail | Back button | Returns to `/finance` |
-| 6.4.9 | Cross-client isolation | `/finance` | — | No other clients' invoices |
+| 6.4.9 | Stripe Pay now | `/finance/{id}` | Studio Stripe Connect onboarded; invoice Sent/Overdue | **Pay now** → Stripe Checkout → `POST /client_portal/invoices/{id}/pay/` |
+| 6.4.10 | Paid status sync | `/finance` | Complete test payment (Stripe test card) | Invoice shows Paid; dashboard paid total updates |
+| 6.4.11 | Cross-client isolation | `/finance` | — | No other clients' invoices |
 
-### 6.5 Documents
+### 6.5 Messages
 
 | # | Feature | Path | Steps | Expected |
 |---|---------|------|-------|----------|
-| 6.5.1 | Root list | `/documents` | — | Floorplan + mood-board (client_access) |
-| 6.5.2 | Contractor-only hidden | `/documents` | — | Contractor-shared-only docs NOT visible unless also client_access |
-| 6.5.3 | Open folder | `/documents` | Click Concept Drawings | `/documents/folder/{id}` |
-| 6.5.4 | Breadcrumb | Folder view | Navigate up | Returns to root |
-| 6.5.5 | Search | `/documents` | Search `mood` | Filters results |
-| 6.5.6 | PDF preview | Click PDF | Doc viewer modal |
-| 6.5.7 | Image gallery | Click image | Lightbox with zoom |
-| 6.5.8 | Download | File menu | File saves |
-| 6.5.9 | Copy link | LINK doc menu | Clipboard + toast |
-| 6.5.10 | Empty state | No shared docs | — | Friendly empty message |
+| 6.5.1 | Studio messages tab | `/messages` → **Studio** tab | Send message to studio | `GET/POST /client_portal/project-messages/` 200 |
+| 6.5.2 | AI support tab | `/messages` → **AI** tab | Ask project question | `POST /client_portal/support/chat/` responds |
+| 6.5.3 | Studio reply | Studio project overview messages | Reply from Browser A | Appears in client thread |
+| 6.5.4 | Project scoping | Messages | Switch project in picker | Thread scoped to selected project |
 
-### 6.6 Not implemented (skip)
+### 6.6 Presentations
 
-| Feature | Evidence |
-|---------|----------|
-| Messages / Communications | Nav href `#` — stub only |
-| Multi-project switcher | Uses `project[0]` only |
-| Password change | No portal UI |
-| Online payment | Static payment info only |
+| # | Feature | Path | Expected |
+|---|---------|------|----------|
+| 6.6.1 | List | `/presentations` | Shared presentations for project |
+| 6.6.2 | View deck | `/presentations/{id}` | Slides render read-only |
+
+### 6.7 Documents
+
+| # | Feature | Path | Steps | Expected |
+|---|---------|------|-------|----------|
+| 6.7.1 | Root list | `/documents` | — | Floorplan + mood-board (client_access) |
+| 6.7.2 | Contractor-only hidden | `/documents` | — | Contractor-shared-only docs NOT visible unless also client_access |
+| 6.7.3 | Open folder | `/documents` | Click Concept Drawings | `/documents/folder/{id}` |
+| 6.7.4 | Breadcrumb | Folder view | Navigate up | Returns to root |
+| 6.7.5 | Search | `/documents` | Search `mood` | Filters results |
+| 6.7.6 | PDF preview | Click PDF | Doc viewer modal |
+| 6.7.7 | Image gallery | Click image | Lightbox with zoom |
+| 6.7.8 | Download | File menu | File saves |
+| 6.7.9 | Copy link | LINK doc menu | Clipboard + toast |
+| 6.7.10 | Empty state | No shared docs | — | Friendly empty message |
+
+### 6.8 Client portal — skip / not built
+
+| Feature | Status |
+|---------|--------|
+| In-portal password change | No UI — reset via studio invite flow |
+| Outlook Calendar | Marketing only — not in product |
 
 ---
 
-## 7. Cross-app E2E scenarios
+## 7. Supplier portal — full feature test paths
 
-Run these **in order** to validate the full pipeline across all three apps.
+**Base URL:** http://localhost:3003
+
+**Prerequisites:** Supplier contact in Studio CRM (`contact_type=SP`, e.g. BuildMart §2.2); supplier registers or receives invite; `STRIPE_*` for payments Connect tests.
+
+### 7.1 Authentication
+
+| # | Feature | Path | Steps | Expected |
+|---|---------|------|-------|----------|
+| 7.1.1 | Register | `/register` | New supplier account | `POST /supplier_portal/register/` 201 |
+| 7.1.2 | Login | `/login` | Supplier credentials | JWT session; redirect `/dashboard` |
+| 7.1.3 | Logout | Sidebar | Logout | Session cleared |
+| 7.1.4 | Protected guard | `/dashboard` (no session) | Clear storage | Redirect `/login` |
+
+### 7.2 Dashboard & analytics
+
+| # | Feature | Path | Expected |
+|---|---------|------|----------|
+| 7.2.1 | Dashboard | `/dashboard` | Orders/stats overview from `GET /supplier_portal/dashboard/` |
+| 7.2.2 | Analytics | `/analytics` | Performance metrics load |
+
+### 7.3 Catalog & orders
+
+| # | Feature | Path | Steps | Expected |
+|---|---------|------|-------|----------|
+| 7.3.1 | Products list | `/products` | — | Supplier catalog CRUD |
+| 7.3.2 | Add product | `/products/new` | Name, SKU, price, images | `POST /supplier_portal/products/` |
+| 7.3.3 | Edit product | `/products/{id}` | Update specs / images | PATCH 200 |
+| 7.3.4 | Orders | `/orders` | View order lines from studios | `GET /supplier_portal/orders/` |
+
+### 7.4 Payments (Stripe Connect)
+
+| # | Feature | Path | Steps | Expected |
+|---|---------|------|-------|----------|
+| 7.4.1 | Connect onboarding | `/payments` | Complete Stripe Connect | `supplier_portal/stripe-connect/*` status active |
+| 7.4.2 | Studio catalog browse | Studio `/library` or procurement | Browse supplier catalog | `GET /supplier_portal/catalog/browse/` (studio auth) |
+| 7.4.3 | Add to project | Studio procurement | Add supplier product to Riverside | `POST /supplier_portal/catalog/add-to-project/` |
+
+---
+
+## 8. Cross-app E2E scenarios
+
+Run these **in order** to validate the full pipeline across studio + both stakeholder portals (supplier optional).
 
 ### Scenario A — Full project lifecycle (~90 min)
 
@@ -707,19 +837,24 @@ flowchart TB
 | 23 | D | Dashboard stats | `/dashboard` | Paid/due totals correct |
 | 24 | D | Approve procurement | `/procurement` | Client approval saved |
 | 25 | D | View invoice | `/finance` → detail | £12500 line items |
-| 26 | D | View documents | `/documents` | 2 shared files |
-| 27 | A | Mark invoice Paid | `/finance/invoices/{id}` | Status PD |
-| 28 | D | Refresh finance | `/finance` | Paid total updates |
-| 29 | A | Change proc to Delivered | Project procurement | Status updated |
-| 30 | C + D | Refresh procurement | Both portals | Status matches studio |
+| 26 | D | Pay invoice (optional) | `/finance/{id}` → **Pay now** | Stripe test payment; status Paid |
+| 27 | D | View documents | `/documents` | 2 shared files |
+| 28 | D | Send message | `/messages` Studio tab | Studio sees client message |
+| 29 | A | AI note-taker | `/ai/note-taker` | Paste §2.12 → Approve → Convert to task |
+| 30 | A | CRM AI proposal | `/crm/proposals/new` | AI scope + pricing → Send |
+| 31 | C | Contractor invoices | `:3002/finance` | Sent invoice visible (direct URL) |
+| 32 | A | Mark invoice Paid (manual) | `/finance/invoices/{id}` | Status PD if not paid via Stripe |
+| 33 | D | Refresh finance | `/finance` | Paid total updates |
+| 34 | A | Change proc to Delivered | Project procurement | Status updated |
+| 35 | C + D | Refresh procurement | Both portals | Status matches studio |
 
 ### Scenario B — CRM lead to delivery (~60 min)
 
 | Step | Browser | Action | Expected |
 |------|---------|--------|----------|
 | 1 | A | Add lead Tom Hartley | `/crm/pipeline` |
-| 2 | A | Create proposal | `/crm/proposals/new` |
-| 3 | A | Send proposal | Status Sent |
+| 2 | A | Create proposal with AI | `/crm/proposals/new` — AI scope + pricing (§4.5.7–8) |
+| 3 | A | Send proposal | `POST /crm/proposals/{id}/send/` — status Sent |
 | 4 | A | Convert lead to project | New project from pipeline |
 | 5 | A | Run project setup | Tasks, procurement, finance |
 | 6 | A | Invite client + contractor | Portals configured |
@@ -745,14 +880,26 @@ Studio:  CRM client → Create project → Task → Procurement → Invoice (Sen
 
 Contractor:  Login → Documents → Procurement approve → Message
 
-Client:  Login → Documents → Procurement → Finance invoice
+Client:  Login → Messages → Documents → Procurement → Finance invoice (optional Pay)
+
+AI:      Note-taker paste → Approve → Convert to task
 ```
 
-Exact step IDs: **A2 → A4 → A6 → A8 → A10 → A12 → A13 → A14 → B2 → B3 → C1 → C3 → C5**
+Exact step IDs: **4.4.2 → 4.4.4 → 4.4.9 → 4.6.3 → 4.4.16 → 4.4.21 → 4.11.7 → 5.1.2 → 5.3.7 → 6.1.1 → 6.5.1 → 6.4.5**
+
+### Scenario E — AI & CRM only (~20 min)
+
+| Step | Browser | Action | Pass |
+|------|---------|--------|------|
+| 1 | A | Note-taker site visit | §4.11.7 with §2.12 transcript |
+| 2 | A | Verify task on board | `/projects/{id}/tasks` shows converted task |
+| 3 | A | CRM AI proposal | §4.5.7–9 — scope + pricing AI → send |
+| 4 | A | Daily brief | `/ai/daily-brief` generates |
+| 5 | A | Audit log entry | `/settings/studio/audit-logs` shows recent actions |
 
 ---
 
-## 8. API verification checklist
+## 9. API verification checklist
 
 Open DevTools → Network while running scenarios.
 
@@ -791,7 +938,45 @@ Open DevTools → Network while running scenarios.
 | Procurements | GET | `/client_portal/procurements/?project_id=` | client_access items only |
 | Approve item | PATCH | `/client_portal/procurements/{id}/` | 200 |
 | Invoices | GET | `/client_portal/invoices/?project_id=` | inv_sent=true only |
+| Pay invoice | POST | `/client_portal/invoices/{id}/pay/` | 200 + Stripe session (Connect required) |
+| Project messages | GET/POST | `/client_portal/project-messages/?project_id=` | 200 |
+| Support chat | POST | `/client_portal/support/chat/` | 200 AI reply |
 | Documents | GET | `/client_portal/documents/root_documents/?project_id=` | client_access only |
+| Presentations | GET | `/client_portal/presentations/?project_id=` | 200 |
+
+### CRM / proposals
+
+| Action | Method | Endpoint | Pass |
+|--------|--------|----------|------|
+| Create proposal | POST | `/crm/proposals/` | 201 |
+| AI scope draft | POST | `/crm/proposals/ai-draft/` body `draft_type: scope` | 200 + `scope` |
+| AI pricing draft | POST | `/crm/proposals/ai-draft/` body `draft_type: pricing` | 200 + `line_items` |
+| Send proposal | POST | `/crm/proposals/{id}/send/` | 200; status SNT |
+
+### Studio finance
+
+| Action | Method | Endpoint | Pass |
+|--------|--------|----------|------|
+| Send payment reminder | POST | `/finance/invoices/{id}/send-reminder/` | 200 |
+| Stripe Connect onboard | POST | `/finance/stripe-connect/onboard/` | 200 |
+| FF&E export | GET | `/projects/export-ffe-schedule/?project_id=&format=csv` | 200 file |
+
+### Contractor finance
+
+| Action | Method | Endpoint | Pass |
+|--------|--------|----------|------|
+| Invoice list | GET | `/contractor_portal/invoices/?project_id=&contractor_id=` | 200 |
+| Invoice detail | GET | `/contractor_portal/invoices/{id}/` | 200 |
+
+### Integrations & admin
+
+| Action | Method | Endpoint | Pass |
+|--------|--------|----------|------|
+| Accept invite | POST | `/user/accept-invitation/` | 200 |
+| Audit logs | GET | `/user/studio/audit-logs/` | 200 paginated |
+| API key auth | GET | `/integrations/v1/projects/` | 200 with `Authorization: Bearer fp_live_...` |
+| Notion sync | POST | `/notion/mapping/sync/` | 200 (if connected) |
+| Zapier webhook | POST | Studio-configured webhook URL | 200 on test event |
 
 ### Meetings / AI note-taker
 
@@ -803,18 +988,30 @@ Open DevTools → Network while running scenarios.
 | Publish | POST | `/meetings/meetings/{id}/publish/` | 200, `note_status=published` |
 | Convert action item | POST | `/meetings/meetings/{id}/action-items/{item_id}/convert-to-task/` | 200, task created on project |
 | Join bot (optional) | POST | `/meetings/meetings/{id}/join-bot/` | 200 or 502 if Vexa not configured |
+| Fetch transcript | POST | `/meetings/meetings/{id}/fetch-transcript/` | 200 after meeting ends |
+| Vexa webhook | POST | `/meetings/vexa/webhook/` | 200 with valid `VEXA_WEBHOOK_SECRET` |
+
+### Supplier portal
+
+| Action | Method | Endpoint | Pass |
+|--------|--------|----------|------|
+| Register | POST | `/supplier_portal/register/` | 201 |
+| Login | POST | `/supplier_portal/login/` | 200 + JWT |
+| Products | GET/POST | `/supplier_portal/products/` | 200 |
+| Orders | GET | `/supplier_portal/orders/` | 200 |
+| Stripe Connect | GET | `/supplier_portal/stripe-connect/status/` | 200 |
 
 ### Automated backend tests (optional)
 
 ```powershell
 cd server
 .\.venv\Scripts\Activate.ps1
-python manage.py test client_portal contractor_portal meetings.tests.NoteTakerFlowTests
+python manage.py test client_portal contractor_portal crm.tests.ProposalAiDraftTest meetings.tests.NoteTakerFlowTests
 ```
 
 ---
 
-## 9. Role & permission matrix
+## 10. Role & permission matrix
 
 ### Studio roles
 
@@ -833,28 +1030,31 @@ Test by toggling matrix at `/settings/studio/roles` and verifying sidebar + dire
 
 | Portal | Role | Auth | Scope |
 |--------|------|------|-------|
-| Client portal | CRM Client (`contact_type=CL`) | Email/password | Single project (first in list) |
-| Contractor portal | CRM Client (`contact_type=CN`) | Email/password OR QR+code | Shared items per project |
+| Client portal | CRM Client (`contact_type=CL`) | Email/password | Selected project via `ProjectSwitcher` (multi-project supported) |
+| Contractor portal | CRM Client (`contact_type=CN`) | Email/password OR QR+code | Shared items per project; multi-project picker |
+| Supplier portal | Supplier account | Email/password | Own catalog + orders only |
 
 ---
 
-## 10. Known gaps & skip list
+## 11. Known gaps & skip list
 
-| Area | Status | Action |
-|------|--------|--------|
-| Client portal invoice Stripe pay | Requires studio Connect + `STRIPE_*` env | Test when configured |
-| AI features without keys | Use `NEXT_PUBLIC_AI_USE_MOCK=true` | Mock data mode |
-| AI procurement (non-mock) | Server actions stubbed | Use mock mode or skip |
-| Contractor finance/invoices | API live (`GET /contractor_portal/invoices/`) | Test §5.7 when sent invoices exist |
-| Client multi-project picker | Shipped | Test project switcher in client portal |
-| Studio audit logs | Live API | Verify settings → audit logs |
-| Library materials | Live API (`materials_only=1`) | Optional CRUD smoke |
-| `/accept-invitation` | Studio app page + API | Test token invite flow |
-| Contractor dashboard StatsGrid | Wired to dashboard API | Verify paid/due totals |
+| Area | Status | E2E action |
+|------|--------|------------|
+| AI brief → task map | Not built | Skip — homepage marketing only |
+| AI procurement (studio panel) | Partial / mock | Use `NEXT_PUBLIC_AI_USE_MOCK=true` or skip |
+| Contractor `/finance` in sidebar | UI exists, not in nav | Test via direct URL §5.7 |
+| Studio audit logs in sidebar | Page at `/settings/studio/audit-logs` only | Use direct URL §4.12.16 |
+| Supplier portal landing page | Product shipped, no marketing page | Test app `:3003` only |
+| WebSockets team chat | Polling ~5s | Expect delay in §4.4.5 / §4.4.7 |
+| Outlook Calendar | Marketing only | Skip |
+| Enterprise SSO | Not built | Skip |
+| RFI/PO convert from note-taker | Not built | Only **Convert to task** works §4.11.7 |
+| Live Meet without Vexa | Optional | Skip join-bot; use site-visit paste path |
+| Free migration tooling | Copy only | Skip import tests |
 
 ---
 
-## 11. Pass / fail criteria
+## 12. Pass / fail criteria
 
 ### Full E2E PASS requires all:
 
@@ -863,8 +1063,11 @@ Test by toggling matrix at `/settings/studio/roles` and verifying sidebar + dire
 - [ ] **Tasks, procurement, invoice (Sent), PO** created in studio
 - [ ] **Documents** uploaded with client_access and contractor share
 - [ ] **James Fletcher** on project with working QR/access code login
-- [ ] **Contractor portal:** shared PDF visible; procurement approve works; message reaches studio; profile/insurance saves
-- [ ] **Client invited;** client portal shows dashboard, shared docs, client-visible procurement, sent invoice
+- [ ] **Contractor portal:** shared PDF visible; procurement approve works; message reaches studio; profile/insurance saves; invoices at `/finance` when assigned
+- [ ] **Client invited;** client portal shows dashboard, messages, shared docs, client-visible procurement, sent invoice
+- [ ] **Client pay (optional):** Stripe Connect + **Pay now** completes in test mode
+- [ ] **AI note-taker:** site-visit paste → approve → convert to task on Riverside
+- [ ] **CRM AI proposal:** `ai-draft` scope + pricing → proposal sent
 - [ ] **No cross-client data leak** on client portal
 - [ ] **Status sync:** studio procurement change reflects in both portals after refresh
 - [ ] **Reports/overview** reflects same project time and invoice amounts
@@ -877,9 +1080,29 @@ Test by toggling matrix at `/settings/studio/roles` and verifying sidebar + dire
 | Contractor sees no docs | Verify `bulk-share-documents` 200; check `contractor_id` |
 | Client sees no invoice | Mark invoice **Sent** (`inv_sent=true`) |
 | Client sees no procurement | Enable `client_access` on items |
-| Wrong portal project | Client portal uses first project in list — re-invite if needed |
-| CORS errors | Add all localhost ports to `CORS_ALLOWED_ORIGINS` |
+| Wrong portal project | Use client **ProjectSwitcher**; verify `project_id` query on API calls |
+| AI proposal 503 | Set `OPENAI_API_KEY` in `server/.env` |
+| AI proposal 404 | Restart server after deploy; route is `POST /crm/proposals/ai-draft/` |
+| Note-taker empty transcript | Vexa uses `segments[]` — use **Fetch transcript** after meeting ends |
+| CORS errors | Add ports 3000–3003 to `CORS_ALLOWED_ORIGINS` |
 | Login 401 on portal | Check credentials from copy dialog; verify password field on login form |
+
+---
+
+## Appendix A — Marketing site smoke (optional)
+
+**URL:** http://localhost:3005 (`cd landing && pnpm dev`)
+
+| # | Page | Path | Verify |
+|---|------|------|--------|
+| A.1 | Homepage | `/` | AI layer cards; note-taker **Available now** badge → `/platform/ai#note-taker` |
+| A.2 | Platform AI | `/platform/ai` | Note-taker section + feature cards |
+| A.3 | Pricing | `/pricing` | Plans load; CTA to signup |
+| A.4 | Compare | `/compare/programa` | Comparison table renders |
+| A.5 | Changelog | `/changelog` | v2.7 note-taker entry |
+| A.6 | Public studio | `/studio/focus-test-studio` | Loads if public profile published (§4.12.7) |
+
+No API beyond signup redirects — smoke UI/copy only.
 
 ---
 
@@ -887,11 +1110,32 @@ Test by toggling matrix at `/settings/studio/roles` and verifying sidebar + dire
 
 | App | Login | Main areas |
 |-----|-------|------------|
-| Studio | http://localhost:3000/login | Dashboard `/home/dashboard`, Projects `/projects`, CRM `/crm/contacts`, Finance `/finance`, Reports `/reports`, Settings `/settings/user/profile` |
-| Client portal | http://localhost:3001/login | Dashboard `/dashboard`, Procurement `/procurement`, Finance `/finance`, Documents `/documents` |
-| Contractor portal | http://localhost:3002/login | Dashboard `/dashboard`, Procurement `/procurement`, Documents `/documents`, Messages `/messages`, Profile `/profile` |
+| Studio | http://localhost:3000/login | Dashboard `/home/dashboard`, AI `/ai/note-taker`, Projects `/projects`, CRM `/crm/proposals`, Finance `/finance`, Reports `/reports`, Settings `/settings/studio/integrations` |
+| Client portal | http://localhost:3001/login | Dashboard `/dashboard`, Messages `/messages`, Procurement `/procurement`, Finance `/finance`, Documents `/documents`, Presentations `/presentations` |
+| Contractor portal | http://localhost:3002/login | Dashboard `/dashboard`, Procurement `/procurement`, Documents `/documents`, Messages `/messages`, Profile `/profile`, Finance `/finance` (direct URL) |
+| Supplier portal | http://localhost:3003/login | Dashboard `/dashboard`, Products `/products`, Orders `/orders`, Payments `/payments` |
 | QR landing | http://localhost:3002/project/{accessToken} | From Studio → Project → Settings → QR code |
+| API docs | http://localhost:8000/swagger/ | OpenAPI — all modules |
+
+### Studio sidebar map (QA navigation)
+
+| Sidebar item | Route |
+|--------------|-------|
+| Home | `/home/dashboard` |
+| Inbox (AI) | `/ai/inbox` |
+| Note-taker | `/ai/note-taker` |
+| My Tasks | `/home/tasks` |
+| Calendar | `/calendar` |
+| Projects | `/projects` |
+| Presentations | `/presentations` |
+| CRM | `/crm/pipeline` |
+| Finance | `/finance/invoices` |
+| Library | `/library/products` |
+| Reports | `/reports` |
+| Teams | `/teams` |
+| Design | `/design` |
+| Settings | `/settings/user/profile` |
 
 ---
 
-*Last updated: June 2026 · Apps: Studio :3000, Client :3001, Contractor :3002, API :8000*
+*Last updated: 10 June 2026 · Apps: Studio :3000, Client :3001, Contractor :3002, Supplier :3003, API :8000*

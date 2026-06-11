@@ -51,8 +51,9 @@ const paymentScheduleTemplates = [
   },
 ];
 
-function buildAiPayload(data: ProposalData) {
+function buildAiPayload(data: ProposalData, draftType: 'scope' | 'pricing') {
   return {
+    draft_type: draftType,
     project_type: data.title || '',
     client_name: data.client || '',
     project_description: data.scope || '',
@@ -125,7 +126,7 @@ export function PricingStep({ data, onUpdate }: PricingStepProps) {
   const handleAIPricing = async () => {
     setIsGenerating(true);
     try {
-      const payload = buildAiPayload(data);
+      const payload = buildAiPayload(data, 'pricing');
       const result = await postData({ url: '/crm/proposals/ai-draft/', data: payload });
 
       if (result?.line_items && Array.isArray(result.line_items) && result.line_items.length > 0) {

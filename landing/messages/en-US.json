@@ -83,7 +83,9 @@
         },
         "noteTaker": {
           "title": "AI note-taker",
-          "text": "Auto-transcribe meetings or site visits into action-items, RFIs, and searchable project notes."
+          "badge": "Available now",
+          "text": "Paste a site visit or send a bot to Google Meet. Get summaries, decisions, and action items — publish to project notes and convert to tasks.",
+          "linkLabel": "See note-taker"
         }
       },
       "pills": {
@@ -1366,9 +1368,9 @@
   "platformAI": {
     "meta": {
       "title": "AI for Interior Design Studios | Focuspilot",
-      "description": "AI built for design studios: daily brief, email routing, procurement assist, and proposals — connected to your projects. Human approval on every client-facing output.",
-      "ogDescription": "Daily brief, smart inbox, procurement assist, and AI proposals — project context first, human approval always.",
-      "twitterDescription": "AI built for design studios — inbox, procurement, and proposals tied to real project data."
+      "description": "AI built for design studios: daily brief, AI note-taker, email routing, procurement assist, and proposals — connected to your projects. Human approval on every client-facing output.",
+      "ogDescription": "Daily brief, note-taker, smart inbox, procurement assist, and AI proposals — project context first, human approval always.",
+      "twitterDescription": "AI built for design studios — note-taker, inbox, procurement, and proposals tied to real project data."
     },
     "breadcrumbLabel": "AI",
     "hero": {
@@ -1380,7 +1382,7 @@
     },
     "features": {
       "title": "AI across your studio workflow",
-      "subtitle": "Four places where AI saves hours every week — each tied to real project data in Focuspilot.",
+      "subtitle": "Five places where AI saves hours every week — each tied to real project data in Focuspilot.",
       "showcasesHeading": "Inside the product",
       "showcasesSubtitle": "Screenshots from the live studio app — the same AI tools you get after signup.",
       "cards": {
@@ -1403,9 +1405,19 @@
           "title": "Proposals & documents",
           "description": "Turn briefs and selections into scoped proposals and invoice-ready line items with checks that match your templates.",
           "linkLabel": "Proposals & invoicing"
+        },
+        "noteTaker": {
+          "title": "AI note-taker",
+          "description": "Transcribe site walks or live Google Meet sessions. AI extracts summaries, decisions, risks, and action items — review, publish, and convert to project tasks.",
+          "linkLabel": "See note-taker"
         }
       },
       "showcases": {
+        "noteTaker": {
+          "title": "AI note-taker",
+          "caption": "Site visits and live meetings turned into project notes and tasks.",
+          "alt": "Focuspilot AI note-taker with meeting summary and action items on a project"
+        },
         "studioDashboard": {
           "title": "Studio dashboard",
           "caption": "Project health, tasks, and your daily brief in one view.",
@@ -1427,6 +1439,17 @@
           "alt": "AI proposal wizard with phased pricing for interior design studios"
         }
       }
+    },
+    "noteTaker": {
+      "title": "Meeting & site-visit notes, without the admin",
+      "description": "Open Note-taker in the studio app: paste field notes from a site walk, or send a transcription bot to Google Meet. When the session ends, Focuspilot pulls the transcript, runs AI extraction, and saves searchable notes on the project.",
+      "bullets": {
+        "siteVisit": "Site visit paste — no bot required; ideal for walk-throughs and voice memo transcripts",
+        "liveMeetings": "Live meetings via Google Meet bot integration (Vexa)",
+        "reviewPublish": "Review AI summary, approve to publish, and convert action items to tasks on the project board"
+      },
+      "imageAlt": "Focuspilot AI note-taker showing meeting summary, decisions, and action items",
+      "cta": "Try note-taker"
     },
     "dailyBrief": {
       "title": "Your morning brief, project by project",
@@ -1466,7 +1489,7 @@
     "finalCta": {
       "ariaLabel": "Get started",
       "title": "Ship beautiful work with less admin",
-      "subtitle": "Join studios using Focuspilot AI for inbox, procurement, and proposals — connected to one project workspace.",
+      "subtitle": "Join studios using Focuspilot AI for note-taker, inbox, procurement, and proposals — connected to one project workspace.",
       "playbookLink": "Read the AI Playbook"
     }
   },
@@ -3591,6 +3614,17 @@
       "subtitle": "Join hundreds of interior designers who've simplified their workflow with Focuspilot."
     },
     "updates": {
+      "v27": {
+        "date": "June 2026",
+        "version": "2.7",
+        "changes": {
+          "aiNoteTaker": {
+            "type": "new",
+            "title": "AI Note-taker",
+            "description": "Transcribe site visits or live Google Meet sessions into summaries, decisions, risks, and action items. Review in Note-taker, publish to project docs, and convert items to tasks."
+          }
+        }
+      },
       "v26": {
         "date": "May 2026",
         "version": "2.6",

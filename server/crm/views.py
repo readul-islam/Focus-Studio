@@ -13,6 +13,21 @@ from django.conf import settings
 from techstyles.resend_utils import send_proposal_email
 from techstyles.email_branding import email_brand_row_html
 from techstyles.mixins import StudioScopedMixin
+from .ai import generate_proposal_draft
+
+
+def _resolve_client_display_name(studio, client_ref) -> str:
+    """client_ref may be a display name or a numeric client ID from the wizard."""
+    if client_ref is None or client_ref == '':
+        return ''
+    ref = str(client_ref).strip()
+    if ref.isdigit() and studio:
+        try:
+            client = Client.objects.get(id=int(ref), studio=studio)
+            return client.name or client.company_name or ref
+        except Client.DoesNotExist:
+            pass
+    return ref
 
 
 @extend_schema(tags=['Clients'])
@@ -634,6 +649,91 @@ class ProposalViewSet(StudioScopedMixin, viewsets.ModelViewSet):
         proposals.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @extend_schema(
+        summary="Generate proposal scope and/or pricing with AI",
+        description=(
+            "Draft proposal content for the CRM wizard. Pass `draft_type` as `scope`, `pricing`, or `both`. "
+            "Returns `scope` (Markdown) and/or `line_items` (description, quantity, rate, amount)."
+        ),
+        request={
+            'application/json': {
+                'type': 'object',
+                'properties': {
+                    'draft_type': {
+                        'type': 'string',
+                        'enum': ['scope', 'pricing', 'both'],
+                        'description': 'What to generate. Defaults to both.',
+                    },
+                    'project_type': {'type': 'string', 'description': 'Proposal / project title'},
+                    'client_name': {'type': 'string', 'description': 'Client name or client ID'},
+                    'project_description': {'type': 'string', 'description': 'Existing scope or brief notes'},
+                    'budget_range': {'type': 'string'},
+                    'timeline': {'type': 'string'},
+                    'rooms': {'type': 'string'},
+                    'style_preference': {'type': 'string'},
+                },
+            }
+        },
+        responses={
+            200: OpenApiTypes.OBJECT,
+            400: OpenApiTypes.OBJECT,
+            502: OpenApiTypes.OBJECT,
+            503: OpenApiTypes.OBJECT,
+        },
+    )
+    @action(detail=False, methods=['post'], url_path='ai-draft')
+    def ai_draft(self, request):
+        import openai
+
+        if not settings.OPENAI_API_KEY:
+            return Response(
+                {'error': 'AI assistant is not configured'},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
+
+        data = request.data
+        draft_type = (data.get('draft_type') or 'both').strip().lower()
+        if draft_type not in ('scope', 'pricing', 'both'):
+            return Response(
+                {'error': 'draft_type must be scope, pricing, or both'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        project_type = (data.get('project_type') or '').strip()
+        project_description = (data.get('project_description') or '').strip()
+        client_ref = data.get('client_name')
+        if not any([project_type, project_description, str(client_ref or '').strip()]):
+            return Response(
+                {'error': 'Add a project title, client, or scope notes before generating.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        studio = request.user.studio
+        studio_name = studio.name if studio else 'Your studio'
+        client_name = _resolve_client_display_name(studio, client_ref)
+
+        try:
+            result = generate_proposal_draft(
+                draft_type=draft_type,
+                project_type=project_type,
+                client_name=client_name,
+                project_description=project_description,
+                budget_range=(data.get('budget_range') or '').strip(),
+                timeline=(data.get('timeline') or '').strip(),
+                rooms=(data.get('rooms') or '').strip(),
+                style_preference=(data.get('style_preference') or '').strip(),
+                studio_name=studio_name,
+            )
+        except ValueError as exc:
+            return Response({'error': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+        except openai.APIError:
+            return Response(
+                {'error': 'AI generation failed. Try again in a moment.'},
+                status=status.HTTP_502_BAD_GATEWAY,
+            )
+
+        return Response(result, status=status.HTTP_200_OK)
 
     @extend_schema(
         summary="Send proposal to client via email",

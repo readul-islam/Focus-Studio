@@ -15,6 +15,7 @@ const TITLE_H1 = "text-[30px] sm:text-5xl md:text-[56px] font-medium tracking-ti
 const TITLE_H2 = "text-2xl sm:text-[30px] md:text-4xl font-medium tracking-tight"
 
 const UPDATE_VERSIONS = [
+  { id: "v27", changeKeys: ["aiNoteTaker"] },
   { id: "v26", changeKeys: ["zapierApi", "notionIntegration", "integrationsSettings"] },
   { id: "v25", changeKeys: ["gmailIntegration", "googleCalendar", "projectCalendarEvents", "calendarEventDisplay", "projectCalendarFiltering"] },
   { id: "v24", changeKeys: ["aiEmailDrafting", "bulkPoGeneration", "fasterDashboard", "contractorPortal"] },

@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -250,6 +252,78 @@ class ProposalTest(APITestCase):
         )
         response = self.client.post(f'/crm/proposals/{proposal.id}/send/', {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class ProposalAiDraftTest(APITestCase):
+    def setUp(self):
+        self.studio = create_studio()
+        self.user = create_user(self.studio)
+        self.contact = create_client(self.studio, self.user)
+        self.client.force_authenticate(user=self.user)
+        self.url = '/crm/proposals/ai-draft/'
+
+    def test_ai_draft_unauthenticated(self):
+        self.client.force_authenticate(user=None)
+        response = self.client.post(self.url, {'project_type': 'Kitchen'}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_ai_draft_requires_input(self):
+        response = self.client.post(self.url, {}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    @patch('crm.views.settings.OPENAI_API_KEY', '')
+    def test_ai_draft_without_openai_key(self):
+        response = self.client.post(
+            self.url,
+            {'draft_type': 'scope', 'project_type': 'Chelsea Penthouse'},
+            format='json',
+        )
+        self.assertEqual(response.status_code, status.HTTP_503_SERVICE_UNAVAILABLE)
+
+    @patch('crm.views.generate_proposal_draft')
+    def test_ai_draft_scope(self, mock_generate):
+        mock_generate.return_value = {'scope': '## Project Scope\n\n### Design Development'}
+        response = self.client.post(
+            self.url,
+            {
+                'draft_type': 'scope',
+                'project_type': 'Chelsea Penthouse',
+                'client_name': str(self.contact.id),
+                'project_description': 'Full refurb',
+            },
+            format='json',
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('scope', response.data)
+        mock_generate.assert_called_once()
+        kwargs = mock_generate.call_args.kwargs
+        self.assertEqual(kwargs['draft_type'], 'scope')
+        self.assertEqual(kwargs['client_name'], 'Alice')
+
+    @patch('crm.views.generate_proposal_draft')
+    def test_ai_draft_pricing(self, mock_generate):
+        mock_generate.return_value = {
+            'line_items': [
+                {
+                    'description': 'Concept design',
+                    'quantity': 1,
+                    'rate': 3500,
+                    'amount': 3500,
+                }
+            ]
+        }
+        response = self.client.post(
+            self.url,
+            {
+                'draft_type': 'pricing',
+                'project_type': 'Chelsea Penthouse',
+                'project_description': '## Scope\nDesign and delivery',
+            },
+            format='json',
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['line_items']), 1)
+        self.assertEqual(response.data['line_items'][0]['rate'], 3500)
 
 
 # ---------------------------------------------------------------------------
