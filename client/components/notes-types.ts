@@ -21,10 +21,18 @@ export interface NoteAuthor {
   avatarUrl?: string
 }
 
+export interface NoteActionItem {
+  id: string
+  title: string
+  description?: string
+  convertedTaskId?: number | null
+}
+
 export interface Note {
   id: string
   title: string
   summary: string
+  transcriptText?: string
   transcriptUrl?: string
   recordingUrl?: string
   source: NoteSource
@@ -41,5 +49,12 @@ export interface Note {
     risks: string[]
     confidence?: number
   }
+  actionItems?: NoteActionItem[]
   attachments: NoteAttachment[]
+  /** API-backed fields for note-taker actions */
+  meetingId?: number
+  botStatus?: string
+  meetingUrl?: string
+  nativeMeetingId?: string
+  platform?: string
 }

@@ -345,7 +345,7 @@ Login as **admin.test@focuspilot.dev** unless testing permissions (§9).
 | 4.4.17 | Document folder | `/projects/{id}/docs/folders/{id}` | Browse nested folder | Upload, version, preview |
 | 4.4.18 | Client doc access | Docs → toggle client_access | Enable on floorplan | Client portal sees file |
 | 4.4.19 | Bulk share docs (contractor) | Docs multi-select | Share with James | `bulk-share-documents` 200 |
-| 4.4.20 | Project notes | `/projects/{id}/docs/notes` | Add note | Note persists |
+| 4.4.20 | Project AI notes | `/projects/{id}/docs` → **Latest Notes** tab | Paste site visit transcript | AI summary + action items; Approve publishes; Convert → creates task on project |
 | 4.4.21 | Contractors tab | `/projects/{id}/contractors` | Add James Fletcher (§2.8) | Card with access code, insurance badge |
 | 4.4.22 | Contractor messages | Contractor card → Message | Send studio message | Appears in contractor portal |
 | 4.4.23 | Contractor profile drawer | Contractor card → Profile | Edit trade, insurance | PATCH 200, badge updates |
@@ -424,6 +424,8 @@ Login as **admin.test@focuspilot.dev** unless testing permissions (§9).
 | 4.11.3 | AI Activity | `/ai/activity` | Prior AI actions | Feed lists events |
 | 4.11.4 | Procurement insights | Project procurement page | Stuck quotes exist | AI suggestions panel |
 | 4.11.5 | Reports AI chat | Reports page | Reports data loaded | Chat responds via `/reports/chat/` |
+| 4.11.6 | AI Note-taker hub | `/ai/note-taker` | OpenAI key on server | Sidebar **Note-taker**; create site visit note; review in side panel |
+| 4.11.7 | Note-taker E2E | `/ai/note-taker` | Project Riverside linked | New note → paste transcript → **Generate** → **Approve** → **Convert to task** → task on project board |
 
 ### 4.12 Settings
 
@@ -791,11 +793,23 @@ Open DevTools → Network while running scenarios.
 | Invoices | GET | `/client_portal/invoices/?project_id=` | inv_sent=true only |
 | Documents | GET | `/client_portal/documents/root_documents/?project_id=` | client_access only |
 
+### Meetings / AI note-taker
+
+| Action | Method | Endpoint | Pass |
+|--------|--------|----------|------|
+| List notes | GET | `/meetings/meetings/?project_id={id}` | 200, project-scoped |
+| Create note | POST | `/meetings/meetings/` | 201 |
+| Process pasted text | POST | `/meetings/meetings/{id}/process-text/` | 200, summary + action items |
+| Publish | POST | `/meetings/meetings/{id}/publish/` | 200, `note_status=published` |
+| Convert action item | POST | `/meetings/meetings/{id}/action-items/{item_id}/convert-to-task/` | 200, task created on project |
+| Join bot (optional) | POST | `/meetings/meetings/{id}/join-bot/` | 200 or 502 if Vexa not configured |
+
 ### Automated backend tests (optional)
 
 ```powershell
 cd server
-python manage.py test client_portal contractor_portal
+.\.venv\Scripts\Activate.ps1
+python manage.py test client_portal contractor_portal meetings.tests.NoteTakerFlowTests
 ```
 
 ---

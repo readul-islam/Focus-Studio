@@ -13,6 +13,7 @@ import {
   CheckSquare,
   ChevronRight,
   DollarSign,
+  FileText,
   FolderOpen,
   Home,
   Mail,
@@ -52,6 +53,7 @@ type Item = {
 const buildPersonalSidebarItems = (t: ReturnType<typeof useTranslations>): Item[] => [
   { label: t('sidebar.home'), icon: Home, href: '/home/dashboard', basePath: '/home/dashboard', tourId: 'nav-home' },
   { label: t('sidebar.inbox'), icon: Mail, href: '/ai/inbox', basePath: '/ai/inbox', tourId: 'nav-inbox' },
+  { label: t('sidebar.noteTaker'), icon: FileText, href: '/ai/note-taker', basePath: '/ai/note-taker' },
   { label: t('sidebar.myTasks'), icon: CheckSquare, href: '/home/tasks', basePath: '/home/tasks', permission: 'tasks.view' },
   { label: t('sidebar.calendar'), icon: Calendar, href: '/calendar', basePath: '/calendar' },
   { label: t('sidebar.projects'), icon: FolderOpen, href: '/projects', basePath: '/projects', permission: 'projects.view', tourId: 'nav-projects' },

@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import User, Studio
+from projects.models import Project
 
 PLATFORM_CHOICES = [
     ('google_meet', 'Google Meet'),
@@ -21,14 +22,28 @@ ACTION_ITEM_STATUS_CHOICES = [
     ('done', 'Done'),
 ]
 
+NOTE_STATUS_CHOICES = [
+    ('needs_review', 'Needs review'),
+    ('published', 'Published'),
+]
+
+CAPTURE_SOURCE_CHOICES = [
+    ('meeting_bot', 'Meeting bot'),
+    ('site_visit', 'Site visit'),
+    ('upload', 'Upload'),
+]
+
 
 class Meeting(models.Model):
     title = models.CharField(max_length=255)
     platform = models.CharField(max_length=50, choices=PLATFORM_CHOICES)
-    native_meeting_id = models.CharField(max_length=255)
+    native_meeting_id = models.CharField(max_length=255, blank=True, default='')
     meeting_url = models.URLField(blank=True)
     bot_id = models.CharField(max_length=255, blank=True, null=True)
     bot_status = models.CharField(max_length=20, choices=BOT_STATUS_CHOICES, default='pending')
+    capture_source = models.CharField(max_length=20, choices=CAPTURE_SOURCE_CHOICES, default='meeting_bot')
+    note_status = models.CharField(max_length=20, choices=NOTE_STATUS_CHOICES, default='needs_review')
+    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True, related_name='meetings')
     scheduled_at = models.DateTimeField(null=True, blank=True)
     studio = models.ForeignKey(Studio, on_delete=models.SET_NULL, null=True, blank=True, related_name='meetings')
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='meetings_created')
@@ -44,6 +59,8 @@ class MeetingTranscript(models.Model):
     raw_transcript = models.JSONField(default=list)
     transcript_text = models.TextField(blank=True)
     summary = models.TextField(blank=True)
+    decisions = models.JSONField(default=list, blank=True)
+    risks = models.JSONField(default=list, blank=True)
     fetched_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -57,6 +74,7 @@ class MeetingActionItem(models.Model):
     assignee = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='meeting_action_items')
     due_date = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=ACTION_ITEM_STATUS_CHOICES, default='pending')
+    converted_task_id = models.IntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

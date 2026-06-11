@@ -36,6 +36,15 @@ DEBUG = _env('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = [h.strip() for h in _env('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',') if h.strip()]
 
+# ngrok tunnels (Vexa webhooks in local dev) — leading dot = any subdomain
+_NGROK_TUNNEL_HOST = _env('NGROK_TUNNEL_HOST', '').strip()
+if _NGROK_TUNNEL_HOST and _NGROK_TUNNEL_HOST not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(_NGROK_TUNNEL_HOST)
+if DEBUG:
+    for _ngrok_wildcard in ('.ngrok-free.dev', '.ngrok-free.app', '.ngrok.io', '.ngrok.app'):
+        if _ngrok_wildcard not in ALLOWED_HOSTS:
+            ALLOWED_HOSTS.append(_ngrok_wildcard)
+
 XERO_CLIENT_ID = _env('XERO_CLIENT_ID')
 XERO_CLIENT_SECRET = _env('XERO_CLIENT_SECRET')
 XERO_SCOPE = _env(
@@ -107,7 +116,8 @@ NOTION_API_VERSION = _env('NOTION_API_VERSION', '2022-06-28')
 NOTION_VIEWS_API_VERSION = _env('NOTION_VIEWS_API_VERSION', '2025-09-03')
 
 VEXA_API_KEY = _env('VEXA_API_KEY')
-VEXA_API_BASE = _env('VEXA_API_BASE', 'https://gateway.vexa.ai')
+VEXA_API_BASE = _env('VEXA_API_BASE', 'https://api.cloud.vexa.ai')
+VEXA_WEBHOOK_SECRET = _env('VEXA_WEBHOOK_SECRET')
 
 # AWS S3 Settings
 AWS_ACCESS_KEY_ID = _env('AWS_ACCESS_KEY_ID')

@@ -16,10 +16,20 @@ type Sort = "newest" | "oldest" | "title"
 export function NotesFeed({
   notes,
   onOpen,
+  onApprove,
+  onConvertTask,
+  onNewNote,
+  emptyCtaLabel = "✨ New Note",
+  emptyDescription = "Record a site visit or paste a meeting transcript to generate AI notes.",
   className,
 }: {
   notes: Note[]
   onOpen: (n: Note) => void
+  onApprove?: (n: Note) => void
+  onConvertTask?: (n: Note) => void
+  onNewNote?: () => void
+  emptyCtaLabel?: string
+  emptyDescription?: string
   className?: string
 }) {
   const [filter, setFilter] = React.useState<Filter>("all")
@@ -48,7 +58,6 @@ export function NotesFeed({
   return (
     <Card className={cn("rounded-xl bg-white", className)}>
       <CardContent className="p-4 sm:p-6">
-        {/* Filters */}
         <div className="mb-3 flex flex-wrap items-center gap-2">
           {(
             [
@@ -62,10 +71,7 @@ export function NotesFeed({
               <button
                 key={f.key}
                 type="button"
-                onClick={() => {
-                  setFilter(f.key)
-
-                }}
+                onClick={() => setFilter(f.key)}
                 aria-pressed={active}
                 className={cn(
                   "inline-flex items-center rounded-md border px-2.5 py-1 text-xs font-medium",
@@ -79,11 +85,20 @@ export function NotesFeed({
             )
           })}
 
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center gap-2">
+            {onNewNote ? (
+              <Button
+                size="sm"
+                className="h-8 bg-neutral-900 text-white hover:bg-neutral-800"
+                onClick={onNewNote}
+              >
+                {emptyCtaLabel}
+              </Button>
+            ) : null}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button size="sm" variant="outline" className="h-8 rounded-md bg-transparent">
-                  {"Sort"}
+                  Sort
                   <ChevronDown className="ml-1 h-4 w-4 opacity-70" />
                 </Button>
               </DropdownMenuTrigger>
@@ -96,7 +111,6 @@ export function NotesFeed({
           </div>
         </div>
 
-        {/* List */}
         {hasItems ? (
           <div className="space-y-2.5">
             {list.map((n) => (
@@ -104,13 +118,11 @@ export function NotesFeed({
                 key={n.id}
                 className="flex items-center gap-4 rounded-lg border border-neutral-200 bg-white p-3 transition-colors hover:bg-stone-50 focus-within:ring-2 focus-within:ring-neutral-300"
               >
-                {/* Left: source + AI */}
                 <div className="flex items-center gap-2">
                   <SourceIcon source={n.source} />
                   <AIPill />
                 </div>
 
-                {/* Title/meta */}
                 <div className="min-w-0 flex-1">
                   <button
                     type="button"
@@ -123,7 +135,7 @@ export function NotesFeed({
                       <NoteStatusPill status={n.status} />
                     </div>
                     <p className="line-clamp-1 text-xs text-neutral-600">
-                      {"by "}
+                      by{" "}
                       <span className="font-medium text-neutral-800">{n.author.name}</span>
                       {" • "}
                       {formatRelative(n.updatedAt)}
@@ -131,47 +143,35 @@ export function NotesFeed({
                   </button>
                 </div>
 
-                {/* Actions */}
                 <div className="flex items-center gap-1">
-                  {n.status === "needs_review" ? (
+                  {n.status === "needs_review" && onApprove ? (
                     <Button
                       size="sm"
                       variant="outline"
                       className="h-8 bg-transparent"
-                      onClick={() => {}}
+                      onClick={() => onApprove(n)}
                     >
-                      {"Approve"}
+                      Approve
                     </Button>
                   ) : null}
 
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button size="sm" variant="outline" className="h-8 bg-transparent">
-                        {"Convert →"}
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem>Task</DropdownMenuItem>
-                      <DropdownMenuItem>RFI</DropdownMenuItem>
-                      <DropdownMenuItem>PO</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="h-8 bg-transparent"
-                    onClick={() => {}}
-                  >
-                    {"Link…"}
-                  </Button>
+                  {onConvertTask ? (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-8 bg-transparent"
+                      onClick={() => onConvertTask(n)}
+                    >
+                      Convert →
+                    </Button>
+                  ) : null}
 
                   <Button
                     size="sm"
                     className="h-8 bg-neutral-900 text-white hover:bg-neutral-800"
                     onClick={() => onOpen(n)}
                   >
-                    {"Open"}
+                    Open
                   </Button>
                 </div>
               </div>
@@ -179,16 +179,16 @@ export function NotesFeed({
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed border-neutral-300 bg-white p-10 text-center">
-            <h4 className="text-sm font-semibold text-neutral-900">{"No notes yet"}</h4>
-            <p className="max-w-sm text-xs text-neutral-600">
-              {"Connect Zoom or record a site visit from the mobile app."}
-            </p>
-            <Button
-              className="mt-2 bg-neutral-900 text-white hover:bg-neutral-800"
-              onClick={() => {}}
-            >
-              {"✨ New Note"}
-            </Button>
+            <h4 className="text-sm font-semibold text-neutral-900">No notes yet</h4>
+            <p className="max-w-sm text-xs text-neutral-600">{emptyDescription}</p>
+            {onNewNote ? (
+              <Button
+                className="mt-2 bg-neutral-900 text-white hover:bg-neutral-800"
+                onClick={onNewNote}
+              >
+                {emptyCtaLabel}
+              </Button>
+            ) : null}
           </div>
         )}
       </CardContent>

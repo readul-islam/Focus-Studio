@@ -56,9 +56,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { NotesFeed } from '@/components/notes-feed';
-import { NotesSidePanel } from '@/components/notes-side-panel';
-import type { Note } from '@/components/notes-types';
+import { MeetingNotesHub } from '@/components/meetings/meeting-notes-hub';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { gooeyToast as toast } from 'goey-toast';
 import DocViewer, { DocViewerRenderers } from '@cyntler/react-doc-viewer';
@@ -203,8 +201,6 @@ function ProjectDocsPageContent({ params }: { params: { id: string } }) {
   const shareWithContractor = searchParams.get('shareWith');
   const contractorName = searchParams.get('contractorName');
   const [activePane, setActivePane] = React.useState<'notes' | 'files'>('files');
-  const [sideOpen, setSideOpen] = React.useState(false);
-  const [selectedNote, setSelectedNote] = React.useState<Note | undefined>(undefined);
   const [modalOpen, setModalOpen] = React.useState(false);
   const [uploadModal, setUploadModal] = React.useState(false);
   const [newFolderName, setNewFolderName] = React.useState('');
@@ -628,11 +624,6 @@ const moveMutation = useMutation({
 
   function fileUrl(file: any) {
     return file.url || '';
-  }
-
-  function openNote(n: Note) {
-    setSelectedNote(n);
-    setSideOpen(true);
   }
 
   function RenameAfterCloseModal() {
@@ -2443,7 +2434,7 @@ const moveMutation = useMutation({
           </div>
 
           {activePane === 'notes' ? (
-            <NotesFeed notes={[]} onOpen={n => openNote(n)} className="border border-neutral-200" />
+            <MeetingNotesHub projectId={params.id} compact className="border border-neutral-200" />
           ) : (
             <Card className="rounded-xl border border-neutral-200">
               <CardContent className="p-6">
@@ -2532,9 +2523,6 @@ const moveMutation = useMutation({
           )}
         </div>
       </div>
-
-      {/* Side Panel for notes */}
-      <NotesSidePanel open={sideOpen} onOpenChange={setSideOpen} note={selectedNote} />
 
       {/* Rename Folder Dialog */}
       <Dialog
