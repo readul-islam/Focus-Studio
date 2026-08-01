@@ -150,6 +150,12 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link href="/sale" className="font-semibold text-amber-800 hover:text-amber-900 inline-flex items-center gap-1">
+                <span>Domain & Brand Sale</span>
+                <span className="text-[9px] bg-amber-200 text-amber-900 px-1 py-0.2 rounded font-mono uppercase">Sedo</span>
+              </Link>
+            </li>
+            <li>
               <Link href="/careers" className="hover:text-stone-900">
                 Careers
               </Link>

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import { CtaButton } from "@/components/cta-button"
 import { MegaNavPlatform } from "@/components/navigation/mega-nav"
 import { ResourcesMenu } from "@/components/navigation/resources-menu"
+import { SaleBanner } from "@/components/layout/sale-banner"
 import { useShowHeaderCta } from "@/hooks/use-show-header-cta"
 import { useIsMobile } from "@/hooks/use-mobile"
 import * as React from "react"
@@ -50,6 +51,7 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
 
   return (
     <>
+      <SaleBanner />
       <header className="sticky top-0 z-60 border-b border-stone-200 bg-stone-50 backdrop-blur">
         <div className={cn(container, "flex items-center justify-between py-2.5 sm:py-3")}>
           {" "}
@@ -59,13 +61,21 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
             {/* Fluid logo text */}
             <AuthBrandMark />
           </Link>
-          {/* Desktop Navigation - unchanged */}
+          {/* Desktop Navigation */}
           <nav className="hidden items-center gap-6 text-sm md:flex" aria-label="Primary">
             <MegaNavPlatform />
-            <Link href="/platform/ai" className="text-stone-700 hover:text-stone-900">
+            <Link href="/platform/ai" className="text-stone-700 hover:text-stone-900 font-medium">
               AI
             </Link>
             <ResourcesMenu />
+            <Link
+              href="/sale"
+              className="inline-flex items-center gap-1.5 font-semibold text-amber-900 bg-gradient-to-r from-amber-200 to-amber-100 hover:from-amber-300 hover:to-amber-200 px-3 py-1 rounded-full text-xs border border-amber-300 shadow-xs transition-all hover:scale-[1.02]"
+            >
+              <LucideReact.Tag className="h-3 w-3 text-amber-700" />
+              <span>Asset Sale</span>
+              <span className="rounded bg-amber-800 text-[10px] text-amber-100 px-1 py-0.2 font-mono uppercase font-bold">SEDO</span>
+            </Link>
           </nav>
           <div className="flex items-center gap-2">
             <button
@@ -111,6 +121,24 @@ export function SiteHeader({ showCta }: { showCta?: boolean }) {
 
             {/* Mobile navigation content */}
             <div className="px-6 py-6 space-y-6 max-h-[calc(100vh-80px)] overflow-y-auto">
+              {/* Asset Sale Highlight */}
+              <Link
+                href="/sale"
+                className="flex items-center gap-3 p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-950 font-medium"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <div className="rounded-lg bg-amber-500/20 p-2 text-amber-700">
+                  <LucideReact.Tag className="h-5 w-5" />
+                </div>
+                <div>
+                  <div className="font-semibold flex items-center gap-2">
+                    <span>Domain & Assets For Sale</span>
+                    <span className="text-[10px] bg-amber-800 text-amber-100 px-1.5 py-0.5 rounded font-mono">SEDO</span>
+                  </div>
+                  <div className="text-xs text-amber-800/80">Domain, Codebase, LinkedIn & Facebook Pages</div>
+                </div>
+              </Link>
+
               {/* Platform section */}
               <div>
                 <h3 className="text-lg font-semibold text-stone-900 mb-4">Platform</h3>

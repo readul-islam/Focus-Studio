@@ -4,8 +4,11 @@ import { studioTemplates } from "@/lib/resources-data"
 
 const baseUrl = "https://focuspilot.io"
 
-/** Regional SEO articles (also listed via getAllPosts() — no duplicate static paths). */
-const REGIONAL_SEO_BLOG_SLUGS = new Set([
+/** High-priority SEO blog articles. */
+const HIGH_PRIORITY_BLOG_SLUGS = new Set([
+  "the-complete-focuspilot-brand-identity-guide-signage-cards-social",
+  "why-focuspilot-is-the-ultimate-ai-studio-operating-system",
+  "scaling-interior-design-practices-with-focuspilot",
   "best-interior-design-software-uk",
   "best-interior-design-software-us",
 ])
@@ -19,6 +22,7 @@ type RouteConfig = {
 /** Marketing pages we want indexed (auth/dev routes live in robots disallow). */
 const staticRoutes: RouteConfig[] = [
   { path: "", changeFrequency: "weekly", priority: 1 },
+  { path: "sale", changeFrequency: "weekly", priority: 0.95 },
   { path: "platform/projects", changeFrequency: "weekly", priority: 0.9 },
   { path: "platform/procurement", changeFrequency: "weekly", priority: 0.9 },
   { path: "platform/ai", changeFrequency: "weekly", priority: 0.9 },
@@ -32,7 +36,7 @@ const staticRoutes: RouteConfig[] = [
   { path: "platform/features/approvals", changeFrequency: "monthly", priority: 0.7 },
   { path: "platform/features/invoicing", changeFrequency: "monthly", priority: 0.7 },
   { path: "pricing", changeFrequency: "monthly", priority: 0.8 },
-  { path: "blog", changeFrequency: "weekly", priority: 0.6 },
+  { path: "blog", changeFrequency: "weekly", priority: 0.8 },
   { path: "compare", changeFrequency: "monthly", priority: 0.6 },
   { path: "compare/programa", changeFrequency: "monthly", priority: 0.6 },
   { path: "compare/design-manager", changeFrequency: "monthly", priority: 0.6 },
@@ -72,8 +76,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const blogEntries: MetadataRoute.Sitemap = getAllPosts().map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: new Date(post.publishedAt),
-    changeFrequency: "monthly",
-    priority: REGIONAL_SEO_BLOG_SLUGS.has(post.slug) ? 0.72 : 0.65,
+    changeFrequency: "weekly",
+    priority: HIGH_PRIORITY_BLOG_SLUGS.has(post.slug) ? 0.85 : 0.65,
   }))
 
   const templateEntries: MetadataRoute.Sitemap = studioTemplates.map((template) => ({

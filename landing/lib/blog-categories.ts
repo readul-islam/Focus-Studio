@@ -1,9 +1,11 @@
-export type BlogCategoryId = "workflow" | "studio-management" | "industry-trends" | "best-practices"
+export type BlogCategoryId = "workflow" | "studio-management" | "industry-trends" | "best-practices" | "ai-automation" | "branding"
 
 export type BlogCategoryFilter = "all" | BlogCategoryId
 
 export const BLOG_CATEGORY_TABS: { id: BlogCategoryFilter; label: string }[] = [
   { id: "all", label: "All" },
+  { id: "branding", label: "Branding & Identity" },
+  { id: "ai-automation", label: "AI & Automation" },
   { id: "workflow", label: "Workflow" },
   { id: "studio-management", label: "Studio Management" },
   { id: "industry-trends", label: "Industry Trends" },
@@ -11,6 +13,8 @@ export const BLOG_CATEGORY_TABS: { id: BlogCategoryFilter; label: string }[] = [
 ]
 
 const LABELS: Record<BlogCategoryId, string> = {
+  branding: "Branding & Identity",
+  "ai-automation": "AI & Automation",
   workflow: "Workflow",
   "studio-management": "Studio Management",
   "industry-trends": "Industry Trends",

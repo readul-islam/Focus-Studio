@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils"
 import FeatureBlocks from "@/components/sections/feature-blocks"
 import AttentionBanner from "@/components/sections/attention-banner"
 import SloganBanner from "@/components/sections/slogan-banner"
+import LatestBlogs from "@/components/sections/latest-blogs"
 import { CtaButton } from "@/components/cta-button"
 import { LandingHeroBackground } from "@/components/landing-hero-background"
 
@@ -758,6 +759,7 @@ export default function Page() {
       <AiLayer />
       <SloganBanner />
       <DesignerTestimonials />
+      <LatestBlogs />
       <BigCTA />
     </>
   )

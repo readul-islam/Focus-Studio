@@ -31,6 +31,121 @@ const AUTHORS = {
 }
 
 export const blogPosts: BlogPost[] = [
+  {
+    slug: "the-complete-focuspilot-brand-identity-guide-signage-cards-social",
+    title: "The Complete Focuspilot Brand Identity Guide: Physical Signage, Business Cards, Office Decor & Digital Branding",
+    excerpt:
+      "An in-depth showcase on presenting the Focuspilot brand across all physical & digital touchpoints: 3D office signboards, luxury embossed cards, promotional flyers, building decor, and Facebook marketing.",
+    category: "branding",
+    tags: [
+      "Focuspilot",
+      "Focuspilot Brand",
+      "Brand Identity",
+      "Office Signage",
+      "Business Cards",
+      "Flyer Cards",
+      "Facebook Branding",
+      "Focuspilot Assets",
+    ],
+    publishedAt: "2026-08-02",
+    readTime: "10 min",
+    featured: true,
+    featuredImage: "/blog/focuspilot-brand-identity-showcase.png",
+    author: AUTHORS.maya,
+    content: `
+      <p>A cohesive brand identity transforms software from a digital tool into an iconic, industry-leading operating system. <strong>Focuspilot</strong> was built with premium design aesthetics, sophisticated typography, and a commanding visual presence that extends far beyond the browser screen. In this comprehensive guide, we demonstrate how the <strong>Focuspilot</strong> brand assets are presented across physical studio spaces, executive business stationery, promotional flyers, office signboards, and digital marketing channels.</p>
+
+      <h2>1. Office Decoration & 3D Architectural Signboards for Focuspilot</h2>
+      <p>In high-end architectural studios and corporate headquarters, the physical environment reflects the studio's standards. The <strong>Focuspilot</strong> brand mark translates effortlessly into physical environments:</p>
+      <ul>
+        <li><strong>Backlit Acrylic & Metal Wall Signboards:</strong> Featuring warm ambient illumination behind 3D gold-brushed or matte obsidian metal lettering of the <strong>Focuspilot</strong> logotype on textured marble or concrete office walls.</li>
+        <li><strong>Building Exterior Signage & Entrance Graphics:</strong> Clear, high-contrast <strong>Focuspilot</strong> branding for building lobbies, glass partitions, and executive conference rooms.</li>
+        <li><strong>Studio Interior Styling:</strong> Integrating the warm clay, rich amber, and deep obsidian color tokens of <strong>Focuspilot</strong> into modern studio furniture and material mood boards.</li>
+      </ul>
+
+      <h2>2. Executive Business Cards & Promotional Flyer Card Designs</h2>
+      <p>Physical collateral remains essential for high-value B2B introductions, trade shows, and client presentations. The <strong>Focuspilot</strong> visual suite includes templates for:</p>
+      <ul>
+        <li><strong>Foil-Embossed Executive Business Cards:</strong> Heavyweight 400gsm cotton stock cards featuring gold foil or blind-embossed <strong>Focuspilot</strong> logos with minimalist typography and contact details.</li>
+        <li><strong>Promotional Flyer Cards & Media Kits:</strong> Premium square and portrait flyer cards highlighting key <strong>Focuspilot</strong> features—such as AI procurement, automated client portals, and financial synchronization.</li>
+        <li><strong>Client Onboarding Welcome Packages:</strong> Physical presentation folders incorporating the <strong>Focuspilot</strong> emblem for studio clients during kickoff meetings.</li>
+      </ul>
+
+      <h2>3. Digital Touchpoints: Facebook Page, LinkedIn & Multi-Channel Marketing</h2>
+      <p>A strong brand presence requires absolute consistency across digital platforms. The <strong>Focuspilot</strong> brand package includes turnkey digital design assets for social media:</p>
+      <ul>
+        <li><strong>Official Facebook Page Branding:</strong> Custom cover banners, profile avatars, and post templates highlighting <strong>Focuspilot</strong> feature updates and design insights.</li>
+        <li><strong>LinkedIn Corporate Presence:</strong> Standardized corporate banners, employee badging, and announcement templates maintaining the calm, authoritative tone of <strong>Focuspilot</strong>.</li>
+        <li><strong>Digital Ad Creatives & Web Banners:</strong> Multi-format web banners optimized for high conversion, reinforcing the <strong>Focuspilot</strong> proposition across search and display channels.</li>
+      </ul>
+
+      <h2>4. The Turnkey Value of the Focuspilot Brand Package</h2>
+      <p>Because <strong>Focuspilot</strong> maintains complete visual and structural alignment across website codebase, domain name, social media pages (Facebook & LinkedIn), and physical marketing templates, it represents an extraordinary turn-key asset for SaaS acquisition.</p>
+
+      <p>Discover more about the <a href="/sale">Focuspilot Brand Acquisition Opportunity on Sedo</a> or read how <a href="/blog/why-focuspilot-is-the-ultimate-ai-studio-operating-system">Focuspilot powers modern interior design practices</a>.</p>
+    `,
+  },
+  {
+    slug: "why-focuspilot-is-the-ultimate-ai-studio-operating-system",
+    title: "Why Focuspilot is the Ultimate AI Studio Operating System for Interior Designers & Architects",
+    excerpt:
+      "Discover how Focuspilot combines AI-driven project management, FF&E procurement, real-time client approvals, and financial sync into a unified operating system for design practices.",
+    category: "ai-automation",
+    tags: ["Focuspilot", "Focuspilot AI", "Interior Design Software", "Studio Operating System", "FF&E Procurement", "Focuspilot Platform"],
+    publishedAt: "2026-08-01",
+    readTime: "8 min",
+    featured: true,
+    featuredImage: "/blog/focuspilot-ai-studio-os.png",
+    author: AUTHORS.maya,
+    content: `
+      <p>In today's fast-evolving architectural and interior design landscape, fragmented tools—juggling separate spreadsheets, disparate email threads, manual purchase orders, and standalone accounting software—are costing studios valuable time and billable profit. Enter <strong>Focuspilot</strong>: the premier AI-powered operating system designed explicitly for interior design firms and architectural practices.</p>
+      
+      <p>Whether you are a growing boutique design studio or a full-service multi-disciplinary practice, <strong>Focuspilot</strong> unifies every stage of your project lifecycle into one seamless, calming workspace.</p>
+
+      <h2>What Makes Focuspilot the Leading Studio Operating System?</h2>
+      <p>Unlike generic project management apps or complex construction management platforms, <strong>Focuspilot</strong> is tailor-made for interior design workflows. Key capabilities of <strong>Focuspilot</strong> include:</p>
+      <ul>
+        <li><strong>AI-Powered Automation:</strong> Focuspilot automatically turns design briefs into task breakdowns, summarizes complex email threads, and extracts specifications directly from vendor websites.</li>
+        <li><strong>End-to-End Procurement & FF&E Tracking:</strong> Focuspilot centralizes product libraries, purchase orders, shipping tracking, and client deposit schedules in real time.</li>
+        <li><strong>Branded Client Approval Portals:</strong> Deliver a white-glove client experience with Focuspilot’s instant 1-click approvals for mood boards, specs, and invoices.</li>
+        <li><strong>Direct Financial Sync:</strong> Seamlessly integrate Focuspilot with Xero and QuickBooks for automated invoice creation and profitability tracking.</li>
+      </ul>
+
+      <h2>SEO & Acquisition Advantage of Focuspilot</h2>
+      <p>As digital architecture and SaaS solutions scale, <strong>Focuspilot</strong> represents a high-value, turn-key brand asset. Built with modern Next.js 14, TypeScript, and a high-converting design system, the <strong>Focuspilot</strong> domain and software platform offer immediate turn-key readiness for founders, design agencies, and tech investors.</p>
+
+      <p>Learn more about how <a href="/platform/ai">Focuspilot AI features</a> transform design workflows, or explore the <a href="/sale">Focuspilot Brand Acquisition Opportunity</a> currently listed on Sedo.</p>
+    `,
+  },
+  {
+    slug: "scaling-interior-design-practices-with-focuspilot",
+    title: "How Design Studios Scale Profitability and Simplify Operations with Focuspilot",
+    excerpt:
+      "Learn how growing interior design firms eliminate manual administrative overhead, master project procurement, and boost profitability using the Focuspilot platform.",
+    category: "studio-management",
+    tags: ["Focuspilot", "Focuspilot Platform", "Design Studio Growth", "Interior Design CRM", "QuickBooks", "Xero"],
+    publishedAt: "2026-07-28",
+    readTime: "7 min",
+    featured: true,
+    featuredImage: "/blog/scaling-with-focuspilot.png",
+    author: AUTHORS.james,
+    content: `
+      <p>Scaling an interior design firm is notoriously difficult when team members spend up to 40% of their week on manual administrative tasks: double-entering product specs, chasing vendor lead times, and emailing clients for sign-offs. <strong>Focuspilot</strong> changes the equation by turning studio operations into a streamlined profit center.</p>
+
+      <h2>Eliminating Administrative Friction with Focuspilot</h2>
+      <p>Design practices that switch to <strong>Focuspilot</strong> experience immediate efficiency gains:</p>
+      <ul>
+        <li><strong>Unified FF&E Libraries:</strong> Save items from anywhere on the web into Focuspilot with 1-click browser extension tools.</li>
+        <li><strong>Real-Time Profit Margin Protection:</strong> Focuspilot monitors budget drift, trade mark-ups, and freight costs across every line item before purchase orders go out.</li>
+        <li><strong>Faster Payment Cycles:</strong> Focuspilot client portals enable clients to review and approve proposals or pay stage invoices directly online.</li>
+      </ul>
+
+      <h2>Why Top Design Studios Choose Focuspilot</h2>
+      <p>From residential design studios in London and New York to commercial hospitality firms, <strong>Focuspilot</strong> provides the stability, clarity, and aesthetic sophistication required by modern design leaders.</p>
+
+      <p>Explore the full <a href="/platform/projects">Focuspilot Project Management Suite</a> or contact our team to see how <strong>Focuspilot</strong> can transform your practice.</p>
+    `,
+  },
   // —— Regional SEO (UK & US) ——
   {
     slug: "best-interior-design-software-uk",
