@@ -62,3 +62,5 @@ coverage/
 # Misc
 *.log
 .turbo/
+.vercel
+.env*

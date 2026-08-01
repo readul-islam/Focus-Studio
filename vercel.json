@@ -1,5 +1,0 @@
-{
-  "buildCommand": "cd landing && pnpm install --no-frozen-lockfile && pnpm build",
-  "outputDirectory": "landing/.next",
-  "framework": "nextjs"
-}

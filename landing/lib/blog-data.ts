@@ -32,6 +32,151 @@ const AUTHORS = {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "definitive-guide-interior-design-project-management",
+    title: "The Definitive Guide to Interior Design Project Management: Workflows, Timelines & Software (2026)",
+    excerpt:
+      "A comprehensive masterclass on managing residential and commercial interior design projects. Learn how to structure project phases, eliminate budget drift, manage client expectations, and choose modern interior design project management software.",
+    category: "studio-management",
+    tags: [
+      "Interior Design Project Management",
+      "Interior Design Project Management Software",
+      "Project Management for Interior Designers",
+      "Managing Commercial Interior Design Project",
+      "Small Business Project Management Tools for Interior Designers",
+      "Focuspilot",
+    ],
+    publishedAt: "2026-08-02",
+    readTime: "14 min",
+    featured: true,
+    featuredImage: "/blog/interior-design-project-management-guide.png",
+    author: AUTHORS.james,
+    content: `
+      <p>Managing an interior design project requires balancing artistic vision with rigorous commercial execution. From initial client briefs and spatial concepts to FF&E procurement, site contractor coordination, and final installation, interior design project management is among the most multi-faceted disciplines in the creative industry.</p>
+
+      <p>In this guide, we break down the end-to-end framework top-tier design practices use to run profitable projects without administrative burnout, and how dedicated <strong>interior design project management software</strong> like <a href="https://focuspilot.io">Focuspilot</a> streamlines operations.</p>
+
+      <h2>1. The 5 Essential Phases of Interior Design Project Management</h2>
+      <p>Successful studios do not treat a project as one giant task list. Instead, work is structured into distinct delivery milestones:</p>
+      <ul>
+        <li><strong>Phase 1: Discovery & Programming:</strong> Client brief analysis, budget allocation, site measurements, and fee proposal sign-offs.</li>
+        <li><strong>Phase 2: Concept & Schematic Design:</strong> Spatial layouts, mood boards, initial material selections, and budget sanity checks.</li>
+        <li><strong>Phase 3: Design Development & Specification:</strong> Detailed technical drawings, FF&E specification schedules, vendor quotes, and client deposit invoicing.</li>
+        <li><strong>Phase 4: Procurement & Construction Administration:</strong> Raising purchase orders, tracking vendor lead times, managing contractor schedules, and site visits.</li>
+        <li><strong>Phase 5: Installation & Snagging:</strong> White-glove delivery, styling, client walkthroughs, final invoicing, and project close-out.</li>
+      </ul>
+
+      <h2>2. Why Generic Project Management Tools Fail Interior Designers</h2>
+      <p>Many design practices start with generic tools like Asana, Trello, or spreadsheets. However, generic tools lack critical features built specifically for interior design workflows:</p>
+      <ul>
+        <li><strong>No Native FF&E Procurement Tracking:</strong> Generic task boards cannot handle trade discounts, vendor lead times, deposit tracking, or customs delays.</li>
+        <li><strong>Fragmented Client Approvals:</strong> Designers waste hours searching through email threads for attached PDFs and signed proposals.</li>
+        <li><strong>Lack of Direct Accounting Sync:</strong> Generic tools require manual double-entry of invoices into QuickBooks or Xero, leading to human error and unaccounted margin loss.</li>
+      </ul>
+
+      <h2>3. Choosing the Best Interior Design Project Management Software</h2>
+      <p>Modern design studios require a single operating system that unifies timelines, client portals, procurement, and accounting. <a href="https://focuspilot.io">Focuspilot</a> was engineered from the ground up to solve these challenges:</p>
+      <ul>
+        <li><strong>Unified Workspace:</strong> Timelines, purchase orders, client proposals, and finances live in one serene platform.</li>
+        <li><strong>AI-Assisted Workflow:</strong> Focuspilot automatically translates design briefs into project tasks, summarizes long client email threads, and extracts specifications from vendor websites.</li>
+        <li><strong>Xero & QuickBooks Integration:</strong> Pushes deposit invoices, stage payments, and trade purchasing cost of goods directly to your accounting platform.</li>
+      </ul>
+
+      <h2>4. Managing Commercial vs. Residential Interior Design Projects</h2>
+      <p>Commercial interior projects involve multiple stakeholders, strict building compliance, and aggressive timelines. Using dedicated <strong>interior design project management software</strong> ensures clear RACI matrix responsibility, vendor accountability, and transparent client reporting.</p>
+
+      <p>Explore <a href="https://focuspilot.io/platform/projects">Focuspilot’s Project Management Suite</a> or check out <a href="https://focuspilot.io/sale">how Focuspilot is leading the next generation of studio operating systems</a>.</p>
+    `,
+  },
+  {
+    slug: "mastering-ffe-procurement-software-guide",
+    title: "Mastering FF&E Procurement: The Complete Guide to Specification, Purchasing & Vendor Tracking",
+    excerpt:
+      "Master furniture, fixtures, and equipment (FF&E) procurement. Explore specification writing, trade purchase orders, markups, shipping logistics, and modern FF&E procurement software.",
+    category: "workflow",
+    tags: [
+      "FF&E Procurement",
+      "FF&E Procurement Software",
+      "FF&E Software",
+      "FF&E Sourcing",
+      "FF&E Purchasing",
+      "Retail FF&E Inventory Control",
+      "Focuspilot",
+    ],
+    publishedAt: "2026-08-02",
+    readTime: "12 min",
+    featured: true,
+    featuredImage: "/blog/ffe-procurement-software-guide.png",
+    author: AUTHORS.maya,
+    content: `
+      <p>Furniture, Fixtures, and Equipment (FF&E) procurement often represents up to 70% of an interior design project's total budget. Managing hundreds of custom line items across international trade suppliers, fabricators, and freight forwarders requires extreme precision.</p>
+
+      <p>Without modern <strong>FF&E procurement software</strong>, design practices face shipping delays, inaccurate trade markups, and uncollected client deposits. In this guide, we outline best practices for mastering FF&E procurement.</p>
+
+      <h2>1. What is FF&E Procurement and Why is it Critical?</h2>
+      <p>FF&E encompasses all movable items that are not permanently attached to the building structure: custom sofas, decorative lighting, drapery, case goods, artwork, and sanitaryware. Effective FF&E procurement bridges the gap between creative specification and financial execution.</p>
+
+      <h2>2. Key Stages in the FF&E Procurement Lifecycle</h2>
+      <ul>
+        <li><strong>Specification & Slicing:</strong> Clipping product specs, finish options, dimensions, and trade pricing from vendor catalogs.</li>
+        <li><strong>Client Proposal & Approval:</strong> Presenting itemized FF&E specs in a client portal for 1-click digital sign-off and deposit collection.</li>
+        <li><strong>Purchase Order Generation:</strong> Issuing formal POs to trade vendors with custom fabric specifications and shipping instructions.</li>
+        <li><strong>Expediting & Logistics:</strong> Monitoring lead times, warehouse receiving, damage inspections, and consolidated delivery dates.</li>
+      </ul>
+
+      <h2>3. Why Focuspilot is the Premier FF&E Procurement Software</h2>
+      <p><a href="https://focuspilot.io">Focuspilot</a> replaces chaotic procurement spreadsheets with an intuitive, real-time FF&E engine:</p>
+      <ul>
+        <li><strong>Web Clipper & Library:</strong> Save products from any trade website into your private studio library with 1 click.</li>
+        <li><strong>Automated PO & Invoice Generation:</strong> Turn client-approved items into formal vendor POs and client deposit invoices instantly.</li>
+        <li><strong>Margin & Markup Protection:</strong> Focuspilot automatically computes net cost, trade discount, client retail price, and tax line items.</li>
+      </ul>
+
+      <p>Read more about <a href="https://focuspilot.io/platform/procurement">Focuspilot FF&E Procurement Tools</a> or discover how design studios scale operations effortlessly.</p>
+    `,
+  },
+  {
+    slug: "ai-interior-design-studio-procurement-client-approvals",
+    title: "AI-Powered Interior Design Studios: How Automation & Client Approval Portals Eliminate Project Delays",
+    excerpt:
+      "Discover how AI studio automation and branded client approval portals streamline specifications, eliminate email back-and-forth, and accelerate stage payments.",
+    category: "ai-automation",
+    tags: [
+      "AI Studio Streamlines Procurement Workflows",
+      "Client Approval Software",
+      "Interior Design Management",
+      "Interior Project Management Software",
+      "Focuspilot",
+    ],
+    publishedAt: "2026-08-02",
+    readTime: "11 min",
+    featured: true,
+    featuredImage: "/blog/ai-interior-design-procurement-approvals.png",
+    author: AUTHORS.elena,
+    content: `
+      <p>The modern interior design practice demands speed, transparency, and digital sophistication. Clients expect instant updates and seamless online approvals, while studio directors need automated tools that reduce overhead and prevent project scope creep.</p>
+
+      <p>Combining artificial intelligence with client approval software is transforming how architectural and interior design firms operate in 2026.</p>
+
+      <h2>1. How AI Streamlines Interior Design Procurement Workflows</h2>
+      <p>Artificial intelligence in design software is no longer a buzzword—it is an operational necessity. Modern platforms like <a href="https://focuspilot.io">Focuspilot</a> utilize AI to:</p>
+      <ul>
+        <li><strong>Automate Spec Extraction:</strong> Parse vendor web pages to auto-fill dimensions, lead times, materials, and trade prices.</li>
+        <li><strong>Summarize Client Feedback:</strong> Distill lengthy email threads into clear, actionable design revisions and task items.</li>
+        <li><strong>Predict Lead Time Delays:</strong> Flag potential supply chain bottlenecks before purchase orders are issued.</li>
+      </ul>
+
+      <h2>2. The Power of Branded Client Approval Portals</h2>
+      <p>Chasing clients for approvals via email attachments creates friction and delays ordering windows. Focuspilot’s client portal provides:</p>
+      <ul>
+        <li><strong>1-Click Spec Approvals:</strong> Clients review high-resolution images, finishes, and pricing on desktop or mobile.</li>
+        <li><strong>Integrated Stage Payments:</strong> Collect deposit payments securely via Stripe or bank transfer at the moment of approval.</li>
+        <li><strong>Audit Trail & History:</strong> Complete transparency on who approved what item and when, preventing disputes.</li>
+      </ul>
+
+      <p>Explore <a href="https://focuspilot.io/platform/ai">Focuspilot AI Automation Features</a> and elevate your studio workflow today.</p>
+    `,
+  },
+  {
     slug: "the-complete-focuspilot-brand-identity-guide-signage-cards-social",
     title: "The Complete Focuspilot Brand Identity Guide: Physical Signage, Business Cards, Office Decor & Digital Branding",
     excerpt:

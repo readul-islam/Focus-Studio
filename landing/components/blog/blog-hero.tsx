@@ -4,6 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight, BookOpen, ChevronRight, Clock, Home } from "lucide-react"
 import { MarketingPageHero } from "@/components/marketing/marketing-page-hero"
+import { BlogSaleBanner } from "@/components/blog/blog-sale-banner"
 import {
   BLOG_CATEGORY_TABS,
   type BlogCategoryFilter,
@@ -46,6 +47,9 @@ export function BlogHero({ activeFilter, onFilterChange }: BlogHeroProps) {
             </li>
           </ol>
         </nav>
+
+        {/* Top Domain & Brand Sale Banner Card */}
+        <BlogSaleBanner />
 
         <div className="mt-8 grid gap-10 pb-10 lg:grid-cols-[1fr_minmax(0,420px)] lg:items-center lg:gap-14 lg:pb-14">
           <div className="max-w-2xl">

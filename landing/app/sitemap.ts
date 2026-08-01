@@ -6,6 +6,9 @@ const baseUrl = "https://focuspilot.io"
 
 /** High-priority SEO blog articles. */
 const HIGH_PRIORITY_BLOG_SLUGS = new Set([
+  "definitive-guide-interior-design-project-management",
+  "mastering-ffe-procurement-software-guide",
+  "ai-interior-design-studio-procurement-client-approvals",
   "the-complete-focuspilot-brand-identity-guide-signage-cards-social",
   "why-focuspilot-is-the-ultimate-ai-studio-operating-system",
   "scaling-interior-design-practices-with-focuspilot",

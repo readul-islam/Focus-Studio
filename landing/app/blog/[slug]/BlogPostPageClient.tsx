@@ -5,6 +5,7 @@ import Image from "next/image"
 import { Calendar, Clock, ArrowLeft, Twitter, Facebook, Linkedin, LinkIcon } from "lucide-react"
 import { getPostBySlug, getAllPosts, getCategoryDisplay } from "@/lib/blog-data"
 import { CtaButton } from "@/components/cta-button"
+import { BlogSaleBanner } from "@/components/blog/blog-sale-banner"
 
 export function BlogPostPageClient({ params }: { params: { slug: string } }) {
   const post = getPostBySlug(params.slug)
@@ -38,8 +39,11 @@ export function BlogPostPageClient({ params }: { params: { slug: string } }) {
           </div>
         </nav>
 
-        <header className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
-          <span className="inline-block rounded-full bg-stone-900 px-4 py-1.5 text-xs font-medium tracking-wide text-white">
+        <header className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
+          {/* Top Domain & Brand Assets Sale Card */}
+          <BlogSaleBanner />
+
+          <span className="inline-block rounded-full bg-stone-900 px-4 py-1.5 text-xs font-medium tracking-wide text-white mt-4">
             {getCategoryDisplay(post)}
           </span>
 
