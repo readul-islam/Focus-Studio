@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "@/app/globals.css"
 import { ClientLayout } from "@/components/layout/client-layout"
+import { CanonicalTag } from "@/components/seo/canonical-tag"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -172,6 +173,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
       <head>
+        <CanonicalTag />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://blob.v0.dev" crossOrigin="anonymous" />
