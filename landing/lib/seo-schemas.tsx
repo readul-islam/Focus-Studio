@@ -92,12 +92,24 @@ export function generateSoftwareApplicationSchema() {
     "@type": "SoftwareApplication",
     name: "Focuspilot",
     applicationCategory: "BusinessApplication",
+    applicationSubCategory: "Interior Design Studio Management Software",
     operatingSystem: "Web",
+    url: "https://focuspilot.io",
+    description:
+      "Focuspilot is the modern interior design studio operating system for project management, FF&E procurement, client approval portals, and accounting sync.",
     offers: {
       "@type": "Offer",
       price: "49",
       priceCurrency: "GBP",
+      availability: "https://schema.org/InStock",
     },
+    featureList: [
+      "Interior Design Project Management",
+      "FF&E Procurement & Web Clipper",
+      "Client Approval Portal",
+      "Xero & QuickBooks Financial Sync",
+      "AI Email & Brief Automation",
+    ],
   }
 }
 

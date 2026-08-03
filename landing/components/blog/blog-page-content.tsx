@@ -1,10 +1,10 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
-import { Clock } from "lucide-react"
+import { Clock, Tag, X } from "lucide-react"
 import {
   getCategoryLabel,
   isBlogCategoryFilter,
@@ -14,47 +14,131 @@ import { getAllPosts, getCategoryDisplay, getFeaturedPosts, type BlogPost } from
 import { BlogHero } from "@/components/blog/blog-hero"
 import SloganBanner from "@/components/sections/slogan-banner"
 
-function filterPosts(posts: BlogPost[], active: BlogCategoryFilter): BlogPost[] {
-  if (active === "all") return posts
-  return posts.filter((post) => post.category === active)
+function filterPosts(
+  posts: BlogPost[],
+  activeCategory: BlogCategoryFilter,
+  activeTag: string | null,
+): BlogPost[] {
+  let result = posts
+
+  if (activeCategory !== "all") {
+    result = result.filter((post) => post.category === activeCategory)
+  }
+
+  if (activeTag) {
+    const normalizedTag = activeTag.toLowerCase().trim()
+    result = result.filter((post) =>
+      post.tags.some((t) => t.toLowerCase().trim() === normalizedTag),
+    )
+  }
+
+  return result
 }
 
 export function BlogPageContent() {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const allPosts = useMemo(() => getAllPosts(), [])
   const [activeFilter, setActiveFilter] = useState<BlogCategoryFilter>("all")
+  const [activeTag, setActiveTag] = useState<string | null>(null)
 
   useEffect(() => {
     const category = searchParams.get("category")
     if (isBlogCategoryFilter(category)) {
       setActiveFilter(category)
+    } else {
+      setActiveFilter("all")
+    }
+
+    const tagParam = searchParams.get("tag")
+    if (tagParam) {
+      setActiveTag(tagParam)
+    } else {
+      setActiveTag(null)
     }
   }, [searchParams])
 
   const featuredSlug = getFeaturedPosts()[0]?.slug
 
   const visiblePosts = useMemo(() => {
-    const filtered = filterPosts(allPosts, activeFilter)
-    if (activeFilter === "all" && featuredSlug) {
+    const filtered = filterPosts(allPosts, activeFilter, activeTag)
+    if (activeFilter === "all" && !activeTag && featuredSlug) {
       return filtered.filter((post) => post.slug !== featuredSlug)
     }
     return filtered
-  }, [allPosts, activeFilter, featuredSlug])
+  }, [allPosts, activeFilter, activeTag, featuredSlug])
 
-  const gridHeading =
-    activeFilter === "all" ? "More articles" : getCategoryLabel(activeFilter)
+  const handleClearTag = () => {
+    setActiveTag(null)
+    const params = new URLSearchParams(searchParams.toString())
+    params.delete("tag")
+    const newQuery = params.toString()
+    router.push(newQuery ? `/blog?${newQuery}` : "/blog", { scroll: false })
+  }
+
+  const handleFilterChange = (filter: BlogCategoryFilter) => {
+    setActiveFilter(filter)
+    const params = new URLSearchParams(searchParams.toString())
+    if (filter === "all") {
+      params.delete("category")
+    } else {
+      params.set("category", filter)
+    }
+    const newQuery = params.toString()
+    router.push(newQuery ? `/blog?${newQuery}` : "/blog", { scroll: false })
+  }
+
+  let gridHeading = activeFilter === "all" ? "More articles" : getCategoryLabel(activeFilter)
+  if (activeTag) {
+    gridHeading = `Articles tagged with "${activeTag}"`
+  }
 
   return (
     <main className="bg-white">
-      <BlogHero activeFilter={activeFilter} onFilterChange={setActiveFilter} />
+      <BlogHero activeFilter={activeFilter} onFilterChange={handleFilterChange} />
 
       <section className="py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-10 text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">
-            {gridHeading}
-          </h2>
+          <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
+            <h2 className="text-2xl font-semibold tracking-tight text-stone-900 sm:text-3xl">
+              {gridHeading}
+            </h2>
+
+            {activeTag && (
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-stone-100 px-3.5 py-1.5 text-sm font-medium text-stone-800 border border-stone-200">
+                  <Tag className="h-3.5 w-3.5 text-stone-500" />
+                  <span>Tag: <strong>{activeTag}</strong></span>
+                  <button
+                    type="button"
+                    onClick={handleClearTag}
+                    className="ml-1 inline-flex h-4 w-4 items-center justify-center rounded-full text-stone-500 hover:bg-stone-200 hover:text-stone-900 transition-colors"
+                    aria-label="Clear tag filter"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </span>
+              </div>
+            )}
+          </div>
+
           {visiblePosts.length === 0 ? (
-            <p className="text-center text-stone-600">No articles in this category yet.</p>
+            <div className="py-12 text-center">
+              <p className="text-stone-600 text-lg">No articles found matching your selected filter.</p>
+              {(activeTag || activeFilter !== "all") && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveFilter("all")
+                    setActiveTag(null)
+                    router.push("/blog", { scroll: false })
+                  }}
+                  className="mt-4 inline-flex items-center gap-2 rounded-lg bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800 transition-colors"
+                >
+                  Show all articles
+                </button>
+              )}
+            </div>
           ) : (
             <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
               {visiblePosts.map((post) => (
@@ -102,3 +186,4 @@ export function BlogPageContent() {
     </main>
   )
 }
+

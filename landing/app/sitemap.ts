@@ -4,18 +4,6 @@ import { studioTemplates } from "@/lib/resources-data"
 
 const baseUrl = "https://focuspilot.io"
 
-/** High-priority SEO blog articles. */
-const HIGH_PRIORITY_BLOG_SLUGS = new Set([
-  "definitive-guide-interior-design-project-management",
-  "mastering-ffe-procurement-software-guide",
-  "ai-interior-design-studio-procurement-client-approvals",
-  "the-complete-focuspilot-brand-identity-guide-signage-cards-social",
-  "why-focuspilot-is-the-ultimate-ai-studio-operating-system",
-  "scaling-interior-design-practices-with-focuspilot",
-  "best-interior-design-software-uk",
-  "best-interior-design-software-us",
-])
-
 type RouteConfig = {
   path: string
   changeFrequency: NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>
@@ -32,29 +20,29 @@ const staticRoutes: RouteConfig[] = [
   { path: "platform/finance", changeFrequency: "weekly", priority: 0.9 },
   { path: "platform/client-portal", changeFrequency: "weekly", priority: 0.9 },
   { path: "platform/crm", changeFrequency: "weekly", priority: 0.9 },
-  { path: "platform/contractor-portal", changeFrequency: "monthly", priority: 0.7 },
-  { path: "platform/features/library", changeFrequency: "monthly", priority: 0.7 },
-  { path: "platform/features/ai-procurement", changeFrequency: "monthly", priority: 0.7 },
-  { path: "platform/features/ai-email", changeFrequency: "monthly", priority: 0.7 },
-  { path: "platform/features/approvals", changeFrequency: "monthly", priority: 0.7 },
-  { path: "platform/features/invoicing", changeFrequency: "monthly", priority: 0.7 },
-  { path: "pricing", changeFrequency: "monthly", priority: 0.8 },
-  { path: "blog", changeFrequency: "weekly", priority: 0.8 },
-  { path: "compare", changeFrequency: "monthly", priority: 0.6 },
-  { path: "compare/programa", changeFrequency: "monthly", priority: 0.6 },
-  { path: "compare/design-manager", changeFrequency: "monthly", priority: 0.6 },
-  { path: "compare/houzz-pro", changeFrequency: "monthly", priority: 0.6 },
-  { path: "compare/studio-designer", changeFrequency: "monthly", priority: 0.6 },
-  { path: "compare/designfiles", changeFrequency: "monthly", priority: 0.6 },
+  { path: "platform/contractor-portal", changeFrequency: "monthly", priority: 0.75 },
+  { path: "platform/features/library", changeFrequency: "monthly", priority: 0.75 },
+  { path: "platform/features/ai-procurement", changeFrequency: "monthly", priority: 0.75 },
+  { path: "platform/features/ai-email", changeFrequency: "monthly", priority: 0.75 },
+  { path: "platform/features/approvals", changeFrequency: "monthly", priority: 0.75 },
+  { path: "platform/features/invoicing", changeFrequency: "monthly", priority: 0.75 },
+  { path: "pricing", changeFrequency: "weekly", priority: 0.85 },
+  { path: "blog", changeFrequency: "daily", priority: 0.9 },
+  { path: "compare", changeFrequency: "weekly", priority: 0.8 },
+  { path: "compare/programa", changeFrequency: "weekly", priority: 0.8 },
+  { path: "compare/design-manager", changeFrequency: "weekly", priority: 0.8 },
+  { path: "compare/houzz-pro", changeFrequency: "weekly", priority: 0.8 },
+  { path: "compare/studio-designer", changeFrequency: "weekly", priority: 0.8 },
+  { path: "compare/designfiles", changeFrequency: "weekly", priority: 0.8 },
   { path: "signup", changeFrequency: "monthly", priority: 0.5 },
-  { path: "knowledge", changeFrequency: "weekly", priority: 0.5 },
-  { path: "customers", changeFrequency: "monthly", priority: 0.5 },
-  { path: "changelog", changeFrequency: "weekly", priority: 0.5 },
-  { path: "resources/templates", changeFrequency: "monthly", priority: 0.5 },
-  { path: "resources/ai-playbook", changeFrequency: "monthly", priority: 0.55 },
-  { path: "integrations", changeFrequency: "monthly", priority: 0.5 },
-  { path: "about", changeFrequency: "monthly", priority: 0.5 },
-  { path: "contact", changeFrequency: "yearly", priority: 0.5 },
+  { path: "knowledge", changeFrequency: "weekly", priority: 0.7 },
+  { path: "customers", changeFrequency: "weekly", priority: 0.7 },
+  { path: "changelog", changeFrequency: "weekly", priority: 0.7 },
+  { path: "resources/templates", changeFrequency: "weekly", priority: 0.85 },
+  { path: "resources/ai-playbook", changeFrequency: "weekly", priority: 0.85 },
+  { path: "integrations", changeFrequency: "monthly", priority: 0.6 },
+  { path: "about", changeFrequency: "monthly", priority: 0.6 },
+  { path: "contact", changeFrequency: "monthly", priority: 0.6 },
   { path: "careers", changeFrequency: "monthly", priority: 0.4 },
   { path: "privacy", changeFrequency: "yearly", priority: 0.3 },
   { path: "terms", changeFrequency: "yearly", priority: 0.3 },
@@ -80,15 +68,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: new Date(post.publishedAt),
     changeFrequency: "weekly",
-    priority: HIGH_PRIORITY_BLOG_SLUGS.has(post.slug) ? 0.85 : 0.65,
+    priority: 0.85,
   }))
 
   const templateEntries: MetadataRoute.Sitemap = studioTemplates.map((template) => ({
     url: `${baseUrl}/resources/templates/${template.slug}`,
     lastModified: builtAt,
-    changeFrequency: "monthly",
-    priority: 0.5,
+    changeFrequency: "weekly",
+    priority: 0.85,
   }))
 
   return [...staticEntries, ...blogEntries, ...templateEntries]
 }
+

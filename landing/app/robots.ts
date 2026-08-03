@@ -15,9 +15,12 @@ export default function robots(): MetadataRoute.Robots {
         "/verify-otp",
         "/palette",
         "/style-guide/",
+        "/*?ref=*",
+        "/*?lang=*",
       ],
     },
     sitemap: "https://focuspilot.io/sitemap.xml",
     host: "https://focuspilot.io",
   }
 }
+

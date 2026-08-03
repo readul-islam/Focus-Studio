@@ -20,6 +20,13 @@ export const metadata: Metadata = {
   description:
     "AI-powered project management for interior designers & architects. Manage projects, procurement, client approvals & invoicing in one workspace. Free 3-month trial.",
   keywords: [
+    "Focuspilot",
+    "Focuspilot software",
+    "Focuspilot interior design software",
+    "Focuspilot studio management",
+    "Focuspilot FF&E procurement",
+    "Focuspilot project management",
+    "Focuspilot CRM",
     "interior design software",
     "design studio management",
     "project management for designers",
@@ -30,6 +37,7 @@ export const metadata: Metadata = {
     "design studio workflow",
     "interior design business software",
     "design project collaboration",
+    "FF&E procurement software",
   ],
   authors: [{ name: "Focuspilot" }],
   creator: "Focuspilot",
