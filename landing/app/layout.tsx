@@ -4,6 +4,8 @@ import { Inter } from "next/font/google"
 import "@/app/globals.css"
 import { ClientLayout } from "@/components/layout/client-layout"
 import { CanonicalTag } from "@/components/seo/canonical-tag"
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -221,6 +223,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body className={inter.className}>
         <ClientLayout>{children}</ClientLayout>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
